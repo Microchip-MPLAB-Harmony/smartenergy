@@ -62,34 +62,34 @@
 // *****************************************************************************
 
 
+/*** Macros for PL360_LDO pin ***/
+#define PL360_LDO_Set()               (PIOB_REGS->PIO_SODR = (1<<2))
+#define PL360_LDO_Clear()             (PIOB_REGS->PIO_CODR = (1<<2))
+#define PL360_LDO_Toggle()            (PIOB_REGS->PIO_ODSR ^= (1<<2))
+#define PL360_LDO_Get()               ((PIOB_REGS->PIO_PDSR >> 2) & 0x1)
+#define PL360_LDO_OutputEnable()      (PIOB_REGS->PIO_OER = (1<<2))
+#define PL360_LDO_InputEnable()       (PIOB_REGS->PIO_ODR = (1<<2))
+#define PL360_LDO_PIN                  PIO_PIN_PB2
+
 /*** Macros for PL360_RST pin ***/
-#define PL360_RST_Set()               (PIOB_REGS->PIO_SODR = (1<<2))
-#define PL360_RST_Clear()             (PIOB_REGS->PIO_CODR = (1<<2))
-#define PL360_RST_Toggle()            (PIOB_REGS->PIO_ODSR ^= (1<<2))
-#define PL360_RST_Get()               ((PIOB_REGS->PIO_PDSR >> 2) & 0x1)
-#define PL360_RST_OutputEnable()      (PIOB_REGS->PIO_OER = (1<<2))
-#define PL360_RST_InputEnable()       (PIOB_REGS->PIO_ODR = (1<<2))
-#define PL360_RST_PIN                  PIO_PIN_PB2
+#define PL360_RST_Set()               (PIOB_REGS->PIO_SODR = (1<<3))
+#define PL360_RST_Clear()             (PIOB_REGS->PIO_CODR = (1<<3))
+#define PL360_RST_Toggle()            (PIOB_REGS->PIO_ODSR ^= (1<<3))
+#define PL360_RST_Get()               ((PIOB_REGS->PIO_PDSR >> 3) & 0x1)
+#define PL360_RST_OutputEnable()      (PIOB_REGS->PIO_OER = (1<<3))
+#define PL360_RST_InputEnable()       (PIOB_REGS->PIO_ODR = (1<<3))
+#define PL360_RST_PIN                  PIO_PIN_PB3
 
-/*** Macros for PL360_LDO_EN pin ***/
-#define PL360_LDO_EN_Set()               (PIOB_REGS->PIO_SODR = (1<<3))
-#define PL360_LDO_EN_Clear()             (PIOB_REGS->PIO_CODR = (1<<3))
-#define PL360_LDO_EN_Toggle()            (PIOB_REGS->PIO_ODSR ^= (1<<3))
-#define PL360_LDO_EN_Get()               ((PIOB_REGS->PIO_PDSR >> 3) & 0x1)
-#define PL360_LDO_EN_OutputEnable()      (PIOB_REGS->PIO_OER = (1<<3))
-#define PL360_LDO_EN_InputEnable()       (PIOB_REGS->PIO_ODR = (1<<3))
-#define PL360_LDO_EN_PIN                  PIO_PIN_PB3
-
-/*** Macros for PL360_EXT_INT pin ***/
-#define PL360_EXT_INT_Set()               (PIOD_REGS->PIO_SODR = (1<<28))
-#define PL360_EXT_INT_Clear()             (PIOD_REGS->PIO_CODR = (1<<28))
-#define PL360_EXT_INT_Toggle()            (PIOD_REGS->PIO_ODSR ^= (1<<28))
-#define PL360_EXT_INT_Get()               ((PIOD_REGS->PIO_PDSR >> 28) & 0x1)
-#define PL360_EXT_INT_OutputEnable()      (PIOD_REGS->PIO_OER = (1<<28))
-#define PL360_EXT_INT_InputEnable()       (PIOD_REGS->PIO_ODR = (1<<28))
-#define PL360_EXT_INT_InterruptEnable()   (PIOD_REGS->PIO_IER = (1<<28))
-#define PL360_EXT_INT_InterruptDisable()  (PIOD_REGS->PIO_IDR = (1<<28))
-#define PL360_EXT_INT_PIN                  PIO_PIN_PD28
+/*** Macros for PL360_INT pin ***/
+#define PL360_INT_Set()               (PIOD_REGS->PIO_SODR = (1<<28))
+#define PL360_INT_Clear()             (PIOD_REGS->PIO_CODR = (1<<28))
+#define PL360_INT_Toggle()            (PIOD_REGS->PIO_ODSR ^= (1<<28))
+#define PL360_INT_Get()               ((PIOD_REGS->PIO_PDSR >> 28) & 0x1)
+#define PL360_INT_OutputEnable()      (PIOD_REGS->PIO_OER = (1<<28))
+#define PL360_INT_InputEnable()       (PIOD_REGS->PIO_ODR = (1<<28))
+#define PL360_INT_InterruptEnable()   (PIOD_REGS->PIO_IER = (1<<28))
+#define PL360_INT_InterruptDisable()  (PIOD_REGS->PIO_IDR = (1<<28))
+#define PL360_INT_PIN                  PIO_PIN_PD28
 
 /*** Macros for LED pin ***/
 #define LED_Set()               (PIOC_REGS->PIO_SODR = (1<<8))
