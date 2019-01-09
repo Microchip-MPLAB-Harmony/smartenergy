@@ -50,7 +50,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "driver/pl360/src/drv_pl360_local.h"
+#include "driver/phy/pl360/src/drv_pl360_local.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

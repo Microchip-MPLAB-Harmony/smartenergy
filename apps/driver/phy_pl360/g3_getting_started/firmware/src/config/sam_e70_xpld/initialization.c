@@ -45,6 +45,7 @@
 // *****************************************************************************
 #include "configuration.h"
 #include "definitions.h"
+#include "device.h"
 
 
 // ****************************************************************************
@@ -268,7 +269,6 @@ void SYS_Initialize ( void* data )
 	PIO_Initialize();
 
 
-    NVIC_Initialize();
     XDMAC_Initialize();
 
 	RSWDT_REGS->RSWDT_MR = RSWDT_MR_WDDIS_Msk;	// Disable RSWDT 
@@ -283,6 +283,8 @@ void SYS_Initialize ( void* data )
     
 	USART1_Initialize();
 
+
+    NVIC_Initialize();
 
     sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
     PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
@@ -302,4 +304,3 @@ void SYS_Initialize ( void* data )
 /*******************************************************************************
  End of File
 */
-

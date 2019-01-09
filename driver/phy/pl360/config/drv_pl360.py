@@ -216,7 +216,7 @@ def instantiateComponent(pl360Component):
     pl360SymHeaderDefFile = pl360Component.createFileSymbol("DRV_PL360_DEF", None)
     pl360SymHeaderDefFile.setSourcePath("driver/phy/pl360/drv_pl360_definitions.h")
     pl360SymHeaderDefFile.setOutputName("drv_pl360_definitions.h")
-    pl360SymHeaderDefFile.setDestPath("driver/pl360")
+    pl360SymHeaderDefFile.setDestPath("driver/phy/pl360")
     pl360SymHeaderDefFile.setProjectPath("config/" + configName + "/driver/phy/pl360/")
     pl360SymHeaderDefFile.setType("HEADER")
 
@@ -224,7 +224,7 @@ def instantiateComponent(pl360Component):
     pl360ProfileFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE", None)
     pl360ProfileFile.setSourcePath("driver/phy/pl360/src/drv_pl360_g3.c")
     pl360ProfileFile.setOutputName("drv_pl360_comm.c")
-    pl360ProfileFile.setDestPath("driver/pl360")
+    pl360ProfileFile.setDestPath("driver/phy/pl360")
     pl360ProfileFile.setProjectPath("config/" + configName + "/driver/phy/pl360/")
     pl360ProfileFile.setType("SOURCE")
     pl360ProfileFile.setDependencies(pl360ProfileTrigger, ["DRV_PL360_PLC_PROFILE"])
@@ -233,7 +233,7 @@ def instantiateComponent(pl360Component):
     pl360ProfileDefFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE_DEF", None)
     pl360ProfileDefFile.setSourcePath("driver/phy/pl360/drv_pl360_g3.h")
     pl360ProfileDefFile.setOutputName("drv_pl360_comm.h")
-    pl360ProfileDefFile.setDestPath("driver/pl360")
+    pl360ProfileDefFile.setDestPath("driver/phy/pl360")
     pl360ProfileDefFile.setProjectPath("config/" + configName + "/driver/phy/pl360/")
     pl360ProfileDefFile.setType("HEADER")
 

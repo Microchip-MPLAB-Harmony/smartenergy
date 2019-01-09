@@ -787,7 +787,7 @@ void DRV_PL360_Tasks(SYS_MODULE_OBJ object );
 }
 #endif
 
-#include "driver/pl360/src/drv_pl360_local.h"
+#include "driver/phy/pl360/src/drv_pl360_local.h"
 
 #endif // #ifndef _DRV_PL360_H
 /*******************************************************************************

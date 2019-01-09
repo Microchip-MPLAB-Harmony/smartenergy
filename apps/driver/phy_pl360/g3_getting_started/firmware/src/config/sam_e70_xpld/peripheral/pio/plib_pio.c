@@ -100,8 +100,6 @@ void PIO_Initialize ( void )
     ((pio_registers_t*)PIO_PORT_C)->PIO_OWER = PIO_OWER_Msk;
     /* PORTC Output Direction Enable */
     ((pio_registers_t*)PIO_PORT_C)->PIO_OER = 0x100;
-    /* PORTC Initial state High */
-    ((pio_registers_t*)PIO_PORT_C)->PIO_SODR = 0x100;
 
     /************************ PIO D Initialization ************************/
     /* PORTD Peripheral Function Selection */
@@ -125,9 +123,6 @@ void PIO_Initialize ( void )
     /* PORTD system level interrupt will be enabled by NVIC Manager */
     /* PORTD module level Interrupt for every pin has to be enabled by user
        by calling PIO_PinInterruptEnable() API dynamically as and when needed*/
-    /* PORTD Glitch/Debounce Filter Enable */
-    ((pio_registers_t*)PIO_PORT_D)->PIO_IFER = 0x10000000;
-    ((pio_registers_t*)PIO_PORT_D)->PIO_IFSCER = 0x10000000;
 
     /************************ PIO E Initialization ************************/
     /* PORTE Pull Up Enable/Disable as per MHC selection */

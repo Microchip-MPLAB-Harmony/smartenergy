@@ -9,12 +9,14 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld" projectFiles="true">
-          <logicalFolder name="f3" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="pl360" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_definitions.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_comm.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_hal.h</itemPath>
+          <logicalFolder name="f2" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="phy" projectFiles="true">
+              <logicalFolder name="f1" displayName="pl360" projectFiles="true">
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_definitions.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_comm.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_hal.h</itemPath>
+              </logicalFolder>
             </logicalFolder>
             <itemPath>../src/config/sam_e70_xpld/driver/driver.h</itemPath>
             <itemPath>../src/config/sam_e70_xpld/driver/driver_common.h</itemPath>
@@ -46,7 +48,7 @@
               <itemPath>../src/config/sam_e70_xpld/peripheral/xdmac/plib_xdmac.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f2" displayName="system" projectFiles="true">
+          <logicalFolder name="f3" displayName="system" projectFiles="true">
             <logicalFolder name="f1" displayName="console" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/console/sys_console.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/sys_debug.h</itemPath>
@@ -132,6 +134,7 @@
             <logicalFolder name="f1" displayName="Core" projectFiles="true">
               <logicalFolder name="f1" displayName="Include" projectFiles="true">
                 <itemPath>../src/packs/CMSIS/CMSIS/Core/Include/cmsis_compiler.h</itemPath>
+                <itemPath>../src/packs/CMSIS/CMSIS/Core/Include/cmsis_iccarm.h</itemPath>
                 <itemPath>../src/packs/CMSIS/CMSIS/Core/Include/cmsis_gcc.h</itemPath>
                 <itemPath>../src/packs/CMSIS/CMSIS/Core/Include/tz_context.h</itemPath>
                 <itemPath>../src/packs/CMSIS/CMSIS/Core/Include/core_cm7.h</itemPath>
@@ -160,19 +163,21 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld" projectFiles="true">
-          <logicalFolder name="f4" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="pl360" projectFiles="true">
-              <logicalFolder name="f1" displayName="bin" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld/driver/pl360/bin/PL360.bin</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/pl360/bin/pl360_bin.S</itemPath>
+          <logicalFolder name="f3" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="phy" projectFiles="true">
+              <logicalFolder name="f1" displayName="pl360" projectFiles="true">
+                <logicalFolder name="f1" displayName="bin" projectFiles="true">
+                  <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/bin/PL360.bin</itemPath>
+                  <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/bin/pl360_bin.S</itemPath>
+                </logicalFolder>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_comm.c</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360.c</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_boot.c</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_boot.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_hal.c</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_local.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_local_comm.h</itemPath>
               </logicalFolder>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_comm.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_boot.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_boot.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_hal.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_local.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_local_comm.h</itemPath>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
@@ -201,7 +206,7 @@
           <logicalFolder name="f1" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/sam_e70_xpld/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
-          <logicalFolder name="f3" displayName="system" projectFiles="true">
+          <logicalFolder name="f4" displayName="system" projectFiles="true">
             <logicalFolder name="f1" displayName="console" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console_local.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console.c</itemPath>
@@ -225,7 +230,7 @@
           <itemPath>../src/config/sam_e70_xpld/initialization.c</itemPath>
           <itemPath>../src/config/sam_e70_xpld/interrupts.c</itemPath>
           <itemPath>../src/config/sam_e70_xpld/exceptions.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld/startup.c</itemPath>
+          <itemPath>../src/config/sam_e70_xpld/startup_xc32.c</itemPath>
           <itemPath>../src/config/sam_e70_xpld/libc_syscalls.c</itemPath>
           <itemPath>../src/config/sam_e70_xpld/tasks.c</itemPath>
         </logicalFolder>
@@ -343,7 +348,7 @@
         <property key="exclude-floating-point-library" value="false"/>
         <property key="expand-macros" value="false"/>
         <property key="extra-include-directories-for-assembler"
-                  value="../src/config/sam_e70_xpld/driver/pl360/bin"/>
+                  value="../src/config/sam_e70_xpld/driver/phy/pl360/bin"/>
         <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="false-conditionals" value="false"/>
         <property key="generate-16-bit-code" value="false"/>
