@@ -48,6 +48,7 @@
 #include "device.h"
 
 
+
 // ****************************************************************************
 // ****************************************************************************
 // Section: Configuration Bits
@@ -81,6 +82,7 @@
 #pragma config TCM_CONFIGURATION = 0
 #pragma config SECURITY_BIT = CLEAR
 #pragma config BOOT_MODE = SET
+
 
 
 
@@ -177,6 +179,7 @@ DRV_PL360_INIT drvPL360InitData =
 // *****************************************************************************
 /* Structure to hold the object handles for the modules in the system. */
 SYSTEM_OBJECTS sysObj;
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Library/Stack Initialization Data
@@ -206,6 +209,16 @@ const SYS_CONSOLE_UART_PLIB_INTERFACE sysConsole0UARTPlibAPI =
     .errorGet = (SYS_CONSOLE_UART_PLIB_ERROR_GET)USART1_ErrorGet,
 };
 
+
+const SYS_CONSOLE_UART_INTERRUPT_SOURCES sysConsole0UARTInterruptSources =
+{
+    /* Peripheral has single interrupt vector */
+    .isSingleIntSrc                        = true,
+
+    /* Peripheral interrupt line */
+    .intSources.usartInterrupt             = USART1_IRQn,
+};
+
 const SYS_CONSOLE_UART_INIT_DATA sysConsole0UARTInitData =
 {
     .uartPLIB = &sysConsole0UARTPlibAPI,
@@ -213,7 +226,7 @@ const SYS_CONSOLE_UART_INIT_DATA sysConsole0UARTInitData =
     .writeQueueElementsArr = sysConsole0UARTWrQueueElements,
     .readQueueDepth = SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0,
     .writeQueueDepth = SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0,
-    .interruptSource = USART1_IRQn,
+    .interruptSources = &sysConsole0UARTInterruptSources,
 };
 
 const SYS_CONSOLE_INIT sysConsole0Init =
@@ -253,6 +266,7 @@ const SYS_TIME_INIT sysTimeInitData =
 // </editor-fold>
 
 
+
 /*******************************************************************************
   Function:
     void SYS_Initialize ( void *data )
@@ -265,6 +279,7 @@ const SYS_TIME_INIT sysTimeInitData =
 
 void SYS_Initialize ( void* data )
 {
+  
     CLK_Initialize();
 	PIO_Initialize();
 
@@ -284,8 +299,6 @@ void SYS_Initialize ( void* data )
 	USART1_Initialize();
 
 
-    NVIC_Initialize();
-
     sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
     PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
 
@@ -297,6 +310,8 @@ void SYS_Initialize ( void* data )
 
     APP_Initialize();
 
+
+    NVIC_Initialize();
 
 }
 
