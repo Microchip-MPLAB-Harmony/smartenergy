@@ -183,13 +183,13 @@ def instantiateComponent(pl360Component):
     pl360StaticAddressing.setVisible(True)
     pl360StaticAddressing.setDefaultValue(False)
 
-    pl360BinaryAddress = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_ADDRESS", None)
+    pl360BinaryAddress = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_ADDRESS", pl360StaticAddressing)
     pl360BinaryAddress.setLabel("PLC Bin Address")
     pl360BinaryAddress.setVisible(False)
     pl360BinaryAddress.setDefaultValue(0x004A0000)
     pl360BinaryAddress.setDependencies(pl360BinAddressingMode, ["DRV_PL360_BIN_STATIC_ADDRESSING"])
 
-    pl360BinarySize = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_SIZE", None)
+    pl360BinarySize = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_SIZE", pl360StaticAddressing)
     pl360BinarySize.setLabel("PLC Bin Size (bytes)")
     pl360BinarySize.setVisible(False)
     pl360BinarySize.setDefaultValue(0x10000)
@@ -199,6 +199,12 @@ def instantiateComponent(pl360Component):
     pl360SecureMode.setLabel("PL360 Secure Mode")
     pl360SecureMode.setVisible(True)
     pl360SecureMode.setDefaultValue(False)
+
+    pl360AsmPathSetting = pl360Component.createSettingSymbol("DRV_PL360_ASM_PATH_SETTING", None)
+    pl360AsmPathSetting.setCategory("C32-AS")
+    pl360AsmPathSetting.setKey("extra-include-directories-for-assembler")
+    pl360AsmPathSetting.setValue("../src/config/sam_e70_xpld/driver/phy/pl360/bin")
+    pl360AsmPathSetting.setAppend(True, ";")
 
     ############################################################################
     #### Code Generation ####
