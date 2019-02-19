@@ -41,9 +41,8 @@ def setDepencies(symbol, event):
         localComponent.setDependencyEnabled("srv_usi_USB_dependency", True)
         localComponent.setDependencyEnabled("srv_usi_ETH_dependency", True)
 
-#def enableUSIProtocols(localComponent):
-#    deviceUsed = localComponent.getSymbolByID("SRV_USI_CONN")
-
+def enableUSIProtocols(symbol, event):
+    symbol.setVisible(event["value"])
 
 ################################################################################
 #### Component ####
@@ -70,53 +69,57 @@ def instantiateComponent(usiComponent, index):
 
     usiSymConnPHY = usiComponent.createBooleanSymbol("SRV_USI_CONN_PHY", usiSymConn)
     usiSymConnPHY.setLabel("PHY")
-    usiSymConnPHY.setVisible(True)
+    usiSymConnPHY.setVisible(False)
     usiSymConnPHY.setDefaultValue(False)
+    usiSymConnPHY.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnPRIMEMNGP = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEMNGP", usiSymConn)
     usiSymConnPRIMEMNGP.setLabel("PRIME MNGP")
-    usiSymConnPRIMEMNGP.setVisible(True)
+    usiSymConnPRIMEMNGP.setVisible(False)
     usiSymConnPRIMEMNGP.setDefaultValue(False)
+    usiSymConnPRIMEMNGP.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnPRIMESNIF = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMESNIF", usiSymConn)
     usiSymConnPRIMESNIF.setLabel("PRIME SNIFFER")
-    usiSymConnPRIMESNIF.setVisible(True)
+    usiSymConnPRIMESNIF.setVisible(False)
     usiSymConnPRIMESNIF.setDefaultValue(False)
+    usiSymConnPRIMESNIF.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnPRIMEPHYSerial = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEPHYSERIAL", usiSymConn)
     usiSymConnPRIMEPHYSerial.setLabel("PRIME PHY SERIAL")
-    usiSymConnPRIMEPHYSerial.setVisible(True)
+    usiSymConnPRIMEPHYSerial.setVisible(False)
     usiSymConnPRIMEPHYSerial.setDefaultValue(False)
+    usiSymConnPRIMEPHYSerial.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnPRIMEAPI = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEAPI", usiSymConn)
     usiSymConnPRIMEAPI.setLabel("PRIME API")
-    usiSymConnPRIMEAPI.setVisible(True)
+    usiSymConnPRIMEAPI.setVisible(False)
     usiSymConnPRIMEAPI.setDefaultValue(False)
+    usiSymConnPRIMEAPI.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnG3SNIF = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3SNIF", usiSymConn)
     usiSymConnG3SNIF.setLabel("G3 SNIFFER")
-    usiSymConnG3SNIF.setVisible(True)
+    usiSymConnG3SNIF.setVisible(False)
     usiSymConnG3SNIF.setDefaultValue(False)
+    usiSymConnG3SNIF.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnG3MAC = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3MAC", usiSymConn)
     usiSymConnG3MAC.setLabel("G3 MAC")
-    usiSymConnG3MAC.setVisible(True)
+    usiSymConnG3MAC.setVisible(False)
     usiSymConnG3MAC.setDefaultValue(False)
+    usiSymConnG3MAC.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnG3ADP = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3ADP", usiSymConn)
     usiSymConnG3ADP.setLabel("G3 ADP")
-    usiSymConnG3ADP.setVisible(True)
+    usiSymConnG3ADP.setVisible(False)
     usiSymConnG3ADP.setDefaultValue(False)
+    usiSymConnG3ADP.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     usiSymConnG3COORD = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3COORDINATOR", usiSymConn)
     usiSymConnG3COORD.setLabel("G3 COORDINATOR")
-    usiSymConnG3COORD.setVisible(True)
+    usiSymConnG3COORD.setVisible(False)
     usiSymConnG3COORD.setDefaultValue(False)
-
-    usiSymConnMICROPHY = usiComponent.createBooleanSymbol("SRV_USI_CONN_MICROPHY", usiSymConn)
-    usiSymConnMICROPHY.setLabel("MICROPHY")
-    usiSymConnMICROPHY.setVisible(True)
-    usiSymConnMICROPHY.setDefaultValue(False)
+    usiSymConnG3COORD.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
 
     ############################################################################
     #### Code Generation ####
@@ -161,8 +164,6 @@ def onAttachmentConnected(source, target):
         ##localComponent.setDependencyEnabled("srv_usi_USB_dependency", False)
         ##localComponent.setDependencyEnabled("srv_usi_ETH_dependency", False)
 
-        #enableUSIProtocols(localComponent)
-
 def onAttachmentDisconnected(source, target):
     localComponent = source["component"]
     remoteComponent = target["component"]
@@ -179,5 +180,3 @@ def onAttachmentDisconnected(source, target):
         plibUsed.setValue("", 0)
         ##localComponent.setDependencyEnabled("srv_usi_USB_dependency", True)
         ##localComponent.setDependencyEnabled("srv_usi_ETH_dependency", True)
-        
-        #disableUSIProtocols(localComponent)
