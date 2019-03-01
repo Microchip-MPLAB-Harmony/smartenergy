@@ -9,7 +9,7 @@
 | driver/pl360 | Driver for PL360B | Beta |
 
 
-- **Services support** - This release introduces initial support for Universal Synchronous Interface [USI](https://www.microchip.com/wwwproducts/en/PL360B) providing multiprotocol serialización through UART, USB or ETH interfaces.
+- **Services support** - This release introduces initial support for Universal Synchronous Interface(USI) providing multiprotocol serialización through UART, USB or ETH interfaces.
 
 | Service | Description | Release Type |
 |---|---|---|
