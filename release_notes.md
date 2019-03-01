@@ -16,7 +16,7 @@
 | service/usi | Universal Serial Interface (USI) | Beta |
 
 
-- **Example application support** - The following table provides number of PLC applications available for different development kits
+- **Development kit and demo application support** - The following table provides number of PLC applications available for different development kits
 
 | Development Kits | Number of applications |
 | --- | --- |
