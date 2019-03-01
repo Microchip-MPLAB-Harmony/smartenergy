@@ -26,7 +26,7 @@
 
 The current known issues are as follows:
 
-* Interactive help using the Show User Manual Entry in the Right-click menu for configuration options provided by this module is not yet available from within the MPLAB Harmony Configurator (MHC).  Please see the *Configuring the Library* section in the help documentation in the doc folder for this Harmony 3 module instead.  Help is available in both CHM and PDF formats.
+* No known issues
 
 ### DEVELOPMENT TOOLS
 
