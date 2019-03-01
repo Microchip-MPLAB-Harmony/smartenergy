@@ -1,4 +1,4 @@
-# MPLAB® Harmony 3 Chip Support Package
+# MPLAB® Harmony 3 Power Line Communications Support Package
 
 MPLAB Harmony 3 is an extension of the MPLAB® ecosystem for creating
 embedded firmware solutions for Microchip 32-bit SAM and PIC microcontroller
@@ -10,11 +10,11 @@ and microprocessor devices.  Refer to the following links for more information.
  - [Microchip MPLAB Harmony Pages]( https://microchip-mplab-harmony.github.io/ )
 
 This repository contains the MPLAB® Harmony 3 Power Line Communication (PLC) package. 
-Refer to the following links for more information about PLC.
+Refer to the following link for more information about PLC.
  - [Microchip Smart Energy]( https://www.microchip.com/design-centers/smart-energy-products/power-line-communications )
  
 The PLC package supports initialization of Microchip PLC modem devices, PLC communication 
-stacks such us G3 and PRIME, and development of standard PLC applications. 
+stacks such as G3 and PRIME, and development of standard PLC applications. 
 Refer to the following links for release notes, training materials, and interface 
 reference information.
  - [Release Notes](./release_notes.md)
