@@ -50,13 +50,7 @@
 // *****************************************************************************
 
 #include "system/system_module.h"
-<#if SRV_USI_USART_API = true>
 #include "driver/usart/drv_usart.h"
-</#if>
-<#if SRV_USI_CDC_API = true>
-</#if>
-<#if SRV_USI_TCP_API = true>
-</#if>
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -209,7 +203,6 @@ typedef enum
 
 } SRV_USI_INTERFACE_API;
 
-<#if SRV_USI_USART_API = true>
 typedef DRV_HANDLE (* SRV_USI_USART_OPEN)( const SYS_MODULE_INDEX, const DRV_IO_INTENT );
 
 typedef bool (* SRV_USI_USART_READ)( DRV_HANDLE, void*, const size_t, DRV_USART_BUFFER_HANDLE* );
@@ -257,53 +250,6 @@ typedef struct
 
 } SRV_USI_USART_INTERFACE;
 
-</#if>
-<#if SRV_USI_CDC_API = true>
-// *****************************************************************************
-/* USI Service USB CDC Interface Data
-
-  Summary:
-    Defines the data required to initialize the USI service CDC Interface.
-
-  Description:
-    This data type defines the data required to initialize the USI service CDC
-    Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* CDC Driver open API */
-    SRV_USI_CDC_OPEN                            open;
-
-} SRV_USI_CDC_INTERFACE;
-
-</#if>
-<#if SRV_USI_TCP_API = true>
-// *****************************************************************************
-/* USI Service USB TCP Interface Data
-
-  Summary:
-    Defines the data required to initialize the USI service TCP Interface.
-
-  Description:
-    This data type defines the data required to initialize the USI service TCP
-    Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* TCP Driver open API */
-    SRV_USI_TCP_OPEN                            open;
-
-} SRV_USI_TCP_INTERFACE;
-
-</#if>
 // *****************************************************************************
 /* USI Service Initialization Data
 
