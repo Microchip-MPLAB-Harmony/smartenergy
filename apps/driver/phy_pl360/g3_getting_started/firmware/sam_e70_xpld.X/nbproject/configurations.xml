@@ -7,13 +7,11 @@
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld" projectFiles="true">
           <logicalFolder name="f2" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="phy" projectFiles="true">
-              <logicalFolder name="f1" displayName="pl360" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_definitions.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_comm.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_hal.h</itemPath>
-              </logicalFolder>
+            <logicalFolder name="f1" displayName="pl360" projectFiles="true">
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_definitions.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_comm.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_hal.h</itemPath>
             </logicalFolder>
             <itemPath>../src/config/sam_e70_xpld/driver/driver.h</itemPath>
             <itemPath>../src/config/sam_e70_xpld/driver/driver_common.h</itemPath>
@@ -46,18 +44,15 @@
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f3" displayName="system" projectFiles="true">
-            <logicalFolder name="f4" displayName="cache" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld/system/cache/sys_cache.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="f1" displayName="console" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/console/sys_console.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console_local.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console_uart.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console_uart_definitions.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld/system/console/sys_debug.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_debug_local.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/system/console/sys_debug.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="dma" projectFiles="true">
+            <logicalFolder name="f4" displayName="dma" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/dma/sys_dma.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/dma/sys_dma_mapping.h</itemPath>
             </logicalFolder>
@@ -69,7 +64,7 @@
               <itemPath>../src/config/sam_e70_xpld/system/ports/sys_ports.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/ports/sys_ports_mapping.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="time" projectFiles="true">
+            <logicalFolder name="f5" displayName="time" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/time/sys_time.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/time/sys_time_definitions.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/time/src/sys_time_local.h</itemPath>
@@ -171,20 +166,18 @@
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld" projectFiles="true">
           <logicalFolder name="f3" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="phy" projectFiles="true">
-              <logicalFolder name="f1" displayName="pl360" projectFiles="true">
-                <logicalFolder name="f1" displayName="bin" projectFiles="true">
-                  <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/bin/PL360.bin</itemPath>
-                  <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/bin/pl360_bin.S</itemPath>
-                </logicalFolder>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_comm.c</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360.c</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_boot.c</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_boot.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/drv_pl360_hal.c</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_local.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld/driver/phy/pl360/src/drv_pl360_local_comm.h</itemPath>
+            <logicalFolder name="f1" displayName="pl360" projectFiles="true">
+              <logicalFolder name="f1" displayName="bin" projectFiles="true">
+                <itemPath>../src/config/sam_e70_xpld/driver/pl360/bin/PL360.bin</itemPath>
+                <itemPath>../src/config/sam_e70_xpld/driver/pl360/bin/pl360_bin.S</itemPath>
               </logicalFolder>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_comm.c</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360.c</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_boot.c</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_boot.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_hal.c</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_local.h</itemPath>
+              <itemPath>../src/config/sam_e70_xpld/driver/pl360/src/drv_pl360_local_comm.h</itemPath>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
@@ -214,21 +207,18 @@
             <itemPath>../src/config/sam_e70_xpld/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
           <logicalFolder name="f4" displayName="system" projectFiles="true">
-            <logicalFolder name="f3" displayName="cache" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld/system/cache/sys_cache.c</itemPath>
-            </logicalFolder>
             <logicalFolder name="f1" displayName="console" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console.c</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_console_uart.c</itemPath>
               <itemPath>../src/config/sam_e70_xpld/system/console/src/sys_debug.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="dma" projectFiles="true">
+            <logicalFolder name="f3" displayName="dma" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/dma/sys_dma.c</itemPath>
             </logicalFolder>
             <logicalFolder name="f2" displayName="int" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/int/src/sys_int.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="time" projectFiles="true">
+            <logicalFolder name="f4" displayName="time" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld/system/time/src/sys_time.c</itemPath>
             </logicalFolder>
           </logicalFolder>
@@ -260,14 +250,14 @@
         <targetDevice>ATSAME70Q21B</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool></platformTool>
+        <platformTool>jlink</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>2.15</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="SAME70_DFP" vendor="Atmel" version="2.4.152"/>
         <pack name="CMSIS" vendor="ARM" version="5.0.1"/>
+        <pack name="SAME70_DFP" vendor="Microchip" version="3.0.10"/>
       </packs>
       <compileType>
         <linkerTool>
@@ -353,7 +343,7 @@
         <property key="exclude-floating-point-library" value="false"/>
         <property key="expand-macros" value="false"/>
         <property key="extra-include-directories-for-assembler"
-                  value="../src/config/sam_e70_xpld/driver/phy/pl360/bin"/>
+                  value="../src/config/sam_e70_xpld/driver/phy/pl360/bin;../src/config/sam_e70_xpld/driver/pl360/bin"/>
         <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="false-conditionals" value="false"/>
         <property key="generate-16-bit-code" value="false"/>
@@ -917,6 +907,29 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Simulator>
+      <jlink>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="jtagcommunication.autoselectspeed" value="false"/>
+        <property key="jtagcommunication.method" value="swd"/>
+        <property key="jtagcommunication.speed" value="4000"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.eeprom" value="true"/>
+        <property key="memories.id" value="true"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.end"
+                  value="${memories.instruction.ram.end.value}"/>
+        <property key="memories.instruction.ram.start"
+                  value="${memories.instruction.ram.start.value}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.end" value="0x5fffff"/>
+        <property key="memories.programmemory.start" value="0x400000"/>
+        <property key="programoptions.preservebootflash" value="false"/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.preserveprogramrange.end" value="0x5fffff"/>
+        <property key="programoptions.preserveprogramrange.start" value="0x400000"/>
+        <property key="programoptions.resetafterprogram" value="true"/>
+      </jlink>
     </conf>
   </confs>
 </configurationDescriptor>

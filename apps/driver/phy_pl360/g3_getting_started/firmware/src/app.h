@@ -67,6 +67,7 @@ typedef enum
     /* Application's state machine's initial state. */
     APP_STATE_IDLE=0,
     APP_STATE_INIT,
+    APP_STATE_DEV_OPEN,
     APP_STATE_TX_SETUP,
     APP_STATE_TX,
     APP_STATE_WAITING_TX_CFM,

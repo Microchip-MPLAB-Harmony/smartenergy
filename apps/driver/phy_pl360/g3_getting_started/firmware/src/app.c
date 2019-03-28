@@ -401,18 +401,9 @@ void APP_Initialize ( void )
     appData.counterTx = 0;
     appData.counterRx = 0;
     appData.counterTxCfm = 0;
-
-    /* Open PL360 driver */
-    appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
-
-    if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
-    {
-        appData.state = APP_STATE_INIT;
-    }
-    else
-    {
-        appData.state = APP_STATE_ERROR;
-    }
+    
+    /* Update state machine */
+    appData.state = APP_STATE_INIT;
 }
 
 
@@ -432,7 +423,20 @@ void APP_Tasks ( void )
     {
         /* Application's initial state. */
         case APP_STATE_INIT:
-        {
+            /* Open PL360 driver */
+            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
+            
+            if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
+            {
+                appData.state = APP_STATE_DEV_OPEN;
+            }
+            else
+            {
+                appData.state = APP_STATE_ERROR;
+            }
+            break;
+            
+        case APP_STATE_DEV_OPEN:
             /* Check PL360 device */
             if (DRV_PL360_Status(DRV_PL360_INDEX_0) == SYS_STATUS_READY)
             {
@@ -455,7 +459,6 @@ void APP_Tasks ( void )
 
             }                
             break;
-        }
 
         case APP_STATE_TX_SETUP:
         {

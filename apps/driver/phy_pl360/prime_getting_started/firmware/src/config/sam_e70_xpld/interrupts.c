@@ -161,8 +161,8 @@ void GMAC_Q5_Handler            ( void ) __attribute__((weak, alias("Dummy_Handl
 __attribute__ ((section(".vectors")))
 const DeviceVectors exception_table=
 {
-  /* Configure Initial Stack Pointer, using linker-generated symbols */
-  .pvStack = (void*) (&_stack),
+    /* Configure Initial Stack Pointer, using linker-generated symbols */
+    .pvStack = (void*) (&_stack),
 
     .pfnReset_Handler              = ( void * ) Reset_Handler,
     .pfnNonMaskableInt_Handler     = ( void * ) NonMaskableInt_Handler,
@@ -247,7 +247,6 @@ const DeviceVectors exception_table=
 
 
 };
-
 
 /*******************************************************************************
  End of File
