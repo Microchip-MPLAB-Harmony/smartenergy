@@ -95,6 +95,12 @@ extern "C" {
 // Section: Driver Configuration
 // *****************************************************************************
 // *****************************************************************************
+/* USI Service Common Configuration Options */
+#define SRV_USI_INSTANCES_NUMBER              1
+#define SRV_USI_USART_CONNECTIONS             1
+#define SRV_USI_CDC_CONNECTIONS               0
+#define SRV_USI_TCP_CONNECTIONS               0
+#define SRV_USI_MSG_POOL_SIZE                 5
 /* PL360 Driver Configuration Options */
 #define DRV_PL360_INSTANCES_NUMBER              1
 #define DRV_PL360_INDEX                         0
@@ -111,12 +117,6 @@ extern "C" {
 #define SRV_USI0_RD_BUF_SIZE                  1024
 #define SRV_USI0_WR_BUF_SIZE                  1024
 
-/* USI Service Common Configuration Options */
-#define SRV_USI_INSTANCES_NUMBER              1
-#define SRV_USI_USART_CONNECTIONS             1
-#define SRV_USI_CDC_CONNECTIONS               0
-#define SRV_USI_TCP_CONNECTIONS               0
-#define SRV_USI_MSG_POOL_SIZE                 5
 
 
 // *****************************************************************************

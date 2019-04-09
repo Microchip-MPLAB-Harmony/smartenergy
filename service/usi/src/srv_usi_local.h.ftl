@@ -83,7 +83,7 @@
 #define USI_CMD_MSK                   0x3F
 #define USI_CMD2_MSK                  0x0F
         
-#define USI_TYPE_PROTOCOL(A)       ((A)&USI_TYPE_OFFSET)
+#define USI_TYPE_PROTOCOL(A)       ((A)&USI_TYPE_MSK)
 #define USI_LEN_PROTOCOL(A, B)     ((((uint16_t)(A)) << USI_LEN_HI_SHIFT) \
                                    + ((B) >> USI_LEN_LO_SHIFT))
 #define USI_XLEN_PROTOCOL(A, B, C) ((((uint16_t)(A)) << USI_LEN_HI_SHIFT) \

@@ -172,7 +172,8 @@ void APP_Initialize ( void )
  */
 
                     
-char usart_MsgInit[] = "*** USI init ***\r\n";
+//char usart_Msg[] = "*** USI init ***\r\n";
+char usart_Msg[] = {0x00,0x01,0x0C,0x04};
 void APP_Tasks ( void )
 {
     /* Check the application's current state. */
@@ -228,7 +229,7 @@ void APP_Tasks ( void )
                     LED_On();
         
                     SRV_USI_Send_Message( appData.srvUSIHandle, 
-                    SRV_USI_PROT_ID_PHY, (uint8_t *)usart_MsgInit, sizeof(usart_MsgInit));
+                    SRV_USI_PROT_ID_PHY, (uint8_t *)usart_Msg, sizeof(usart_Msg));
 
                     /* Set Application to next state */
                     appData.state = APP_STATE_READY;

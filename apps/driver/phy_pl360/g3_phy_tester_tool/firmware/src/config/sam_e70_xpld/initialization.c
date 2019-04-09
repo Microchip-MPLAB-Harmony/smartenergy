@@ -156,7 +156,7 @@ const SRV_USI_USART_INTERFACE srvUsiUSART1PlibAPI = {
     .readIsBusy = (USI_USART_PLIB_READ_IS_BUSY)USART1_ReadIsBusy,
     .readCountGet = (USI_USART_PLIB_READ_COUNT_GET)USART1_ReadCountGet,
     .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
-    .dmaChannelTx = SYS_DMA_CHANNEL_2,
+    .dmaChannelTx = SYS_DMA_CHANNEL_6,
     .usartAddressTx = (void *)&(USART1_REGS->US_THR)
 };
 
@@ -244,13 +244,13 @@ void SYS_Initialize ( void* data )
 
 	WDT_REGS->WDT_MR = WDT_MR_WDDIS_Msk; 		// Disable WDT 
 
-	SPI0_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
     
 	BSP_Initialize();
+	SPI0_Initialize();
+
 	USART1_Initialize();
 
 

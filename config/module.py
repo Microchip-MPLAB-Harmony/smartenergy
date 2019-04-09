@@ -7,7 +7,7 @@ def loadModule():
 	drvExtPhyPl360Component.addCapability("libdrvExtPhyPL360", "DRV_PLC")	
 	drvExtPhyPl360Component.addDependency("drv_pl360_SPI_dependency", "SPI", False, True)
 	drvExtPhyPl360Component.addDependency("drv_pl360_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	drvExtPhyPl360Component.setDisplayType("Driver")
+	drvExtPhyPl360Component.setDisplayType("PLC Driver")
 
 	## USI Service (Universal Synchronous Interface)
 	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/Libraries/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
@@ -15,10 +15,16 @@ def loadModule():
 	srvUSIComponent.addDependency("srv_usi_USART_dependency", "UART", False, False)
 	srvUSIComponent.addDependency("srv_usi_CDC_dependency", "USB_DEVICE_CDC", False, False)
 	srvUSIComponent.addDependency("srv_usi_TCP_AUX_dependency", "USI_TCP_AUX", False, False)
-	srvUSIComponent.addDependency("drv_usi_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	srvUSIComponent.setDisplayType("Service")
+	srvUSIComponent.addDependency("drv_usi_HarmonyCore_dependency", "Core Service", "Core Service", True, True)
+	srvUSIComponent.addDependency("drv_usi_CRC_dependency", "PCRC", "PLC CRC", True, True)
+	srvUSIComponent.setDisplayType("PLC Service")
 
 	srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/Libraries/PLC/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
 	srvUSITCPAuxComponent.addCapability("libsrvUSITCPAux", "USI_TCP_AUX")
 	srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
-	srvUSITCPAuxComponent.setDisplayType("Service")
+	srvUSITCPAuxComponent.setDisplayType("PLC Service")
+
+	## PCRC Service (PLC CRC service)
+	srvPCRCComponent = Module.CreateComponent("srv_pcrc", "PLC CRC", "/Libraries/PLC/Services/", "service/pcrc/config/srv_pcrc.py")
+	srvPCRCComponent.addCapability("libsrvPCRC", "PCRC", "PCRC", True)
+	srvPCRCComponent.setDisplayType("PLC Service")

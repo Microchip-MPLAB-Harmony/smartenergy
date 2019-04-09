@@ -49,6 +49,7 @@
 #include "configuration.h"
 #include "driver/driver_common.h"
 #include "service/usi/srv_usi.h"
+#include "service/pcrc/srv_pcrc.h"
 #include "srv_usi_local.h"
 <#if __PROCESSOR?matches("PIC32M.*") == false>
 <#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
@@ -64,11 +65,6 @@
 // Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
-//__attribute__ ((aligned (32))) static char usart0_StartMessage[192] = 
-//"*** USART Driver Multi-Instance Echo Demo Application ***\r\n"
-//"*** Type 10 characters and observe it echo back using DMA ***\r\n"
-//"*** LED toggles each time the data is echoed ***\r\n";
-
 /* This is the service instance object array. */
 static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {NULL};
 
@@ -79,6 +75,7 @@ typedef struct
 {
     uint8_t *pData;
     uint16_t length;
+    uint8_t content;
 }usi_msg_t;
 
 static usi_msg_t usi_msg[8] = {0};
@@ -97,6 +94,7 @@ static void _SRV_USART_Callback_Handle ( uint8_t *data, uint16_t length )
         /* new received message */
         usi_msg[msg_idx].pData = data;
         usi_msg[msg_idx].length = length;
+        usi_msg[msg_idx].content = *data;
         msg_idx++;
         msg_idx &= 0x07;
         
@@ -185,6 +183,42 @@ static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROT
     return callbackIndex;    
 }
 
+static PCRC_CRC_TYPE _SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol)
+{
+    PCRC_CRC_TYPE crcType;
+
+    switch(protocol)
+    {
+        case SRV_USI_PROT_ID_MNGP_PRIME_GETQRY:
+        case SRV_USI_PROT_ID_MNGP_PRIME_GETRSP:
+        case SRV_USI_PROT_ID_MNGP_PRIME_SET:
+        case SRV_USI_PROT_ID_MNGP_PRIME_RESET:
+        case SRV_USI_PROT_ID_MNGP_PRIME_REBOOT:
+        case SRV_USI_PROT_ID_MNGP_PRIME_FU:
+        case SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN:
+        case SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN:
+            crcType = PCRC_CRC32;
+            break;
+
+        case SRV_USI_PROT_ID_SNIF_PRIME:
+        case SRV_USI_PROT_ID_PHY_SERIAL_PRIME:
+        case SRV_USI_PROT_ID_PHY:
+        case SRV_USI_PROT_ID_SNIFF_G3:
+        case SRV_USI_PROT_ID_MAC_G3:
+        case SRV_USI_PROT_ID_ADP_G3:
+        case SRV_USI_PROT_ID_COORD_G3:
+            crcType = PCRC_CRC16;
+            break;
+            
+        case SRV_USI_PROT_ID_PRIME_API:
+        default:
+            crcType = PCRC_CRC8;
+            break;
+    }
+
+    return crcType;    
+}
+
 static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
                                       uint16_t length, uint8_t *pEndData )
 {
@@ -225,6 +259,11 @@ static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj,
     uint8_t* pNewData;
     uint8_t* pEndData;
     uint8_t valueTmp[4];
+    uint32_t valueTmp32;
+    PCRC_CRC_TYPE crcType;
+    
+    /* Get CRC type from Protocol */
+    crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
     
     /* Build new message */
     pNewData = (uint8_t*)dObj->writeBuffer;
@@ -234,24 +273,46 @@ static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj,
     *pNewData++ = USI_ESC_KEY_7E;
     valueTmp[0] = USI_LEN_HI_PROTOCOL(length);
     valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL(protocol);
+    
+    /* Get CRC from USI header: 2 bytes */
+    valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, PCRC_CRC16);
+    /* Escape USI header */
     pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
     if (pNewData == 0)
     {
         /* Error in Escape Data: can't fit in Destiny buffer */
         return 0;
     }
+    
+    /* Get CRC from USI data. */
+    SRV_PCRC_SetInitialValue(valueTmp32);
+    valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType);
+    /* Escape USI data */
     pNewData = _SRV_USI_EscapeData(pNewData, pData, length, pEndData);
     if (pNewData == 0)
     {
         /* Error in Escape Data: can't fit in Destiny buffer */
         return 0;
     }
-    /* get CRC */
-    valueTmp[0] = 0x11;
-    valueTmp[1] = 0x22;
-    valueTmp[2] = 0x33;
-    valueTmp[3] = 0x44;
-    pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
+    
+    /* Escape CRC value */
+    valueTmp[0] = (valueTmp32 >> 24) & 0xFF;
+    valueTmp[1] = (valueTmp32 >> 16) & 0xFF;
+    valueTmp[2] = (valueTmp32 >> 8) & 0xFF;
+    valueTmp[3] = valueTmp32 & 0xFF;
+    if (crcType == PCRC_CRC8)
+    {
+        pNewData = _SRV_USI_EscapeData(pNewData, &valueTmp[3], 1, pEndData);
+    } 
+    else if (crcType == PCRC_CRC16)
+    {
+        pNewData = _SRV_USI_EscapeData(pNewData, &valueTmp[2], 2, pEndData);
+    }
+    else
+    {
+        pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
+    }
+    
     if (pNewData == 0)
     {
         /* Error in Escape Data: can't fit in Destiny buffer */

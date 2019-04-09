@@ -1,22 +1,25 @@
 /*******************************************************************************
-  XDMAC PLIB
+  CRC service used by PLC components Header File
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_xdmac.h
+    srv_pcrc.h
 
   Summary:
-    XDMAC PLIB Header File
+    CRC service used by PLC components Implementation.
 
   Description:
-    None
+    The CRC wrapper provides a simple interface to manage the CRC needs
+    for PLC components. This file implements the CRC core interface routines 
+    for PLC. 
 
 *******************************************************************************/
 
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,13 +40,24 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+// DOM-IGNORE-END
 
-#ifndef PLIB_XDMAC_H
-#define PLIB_XDMAC_H
+#ifndef SRV_PCRC_H    // Guards against multiple inclusion
+#define SRV_PCRC_H
 
-#include <stddef.h>
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+/*  This section lists the other files that are included in this file.
+*/
+
+#include <stdint.h>
 #include <stdbool.h>
-#include "plib_xdmac_common.h"
+#include "system/system.h"
+#include "service/usi/srv_usi_definitions.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -55,46 +69,33 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Interface
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-/****************************** XDMAC Data Types ******************************/
-/* XDMAC Channels */
-typedef enum {
-    XDMAC_CHANNEL_0,
-    XDMAC_CHANNEL_1,
-    XDMAC_CHANNEL_2,
-    XDMAC_CHANNEL_3,
-    XDMAC_CHANNEL_4,
-    XDMAC_CHANNEL_5,
-    XDMAC_CHANNEL_6,
-} XDMAC_CHANNEL;
+typedef enum 
+{
+    PCRC_HT_GENERIC = 0,
+    PCRC_HT_PROMOTION = 1,
+    PCRC_HT_BEACON = 2,
+    PCRC_HT_USI = 3
+}PCRC_HEADER_TYPE;
 
+typedef enum 
+{
+    PCRC_CRC8 = 0,
+    PCRC_CRC16 = 1,
+    PCRC_CRC32 = 2,
+    PCRC_NOCRC = 3
+}PCRC_CRC_TYPE;
 
-/****************************** XDMAC API *********************************/
+#define PCRC_INVALID     0xFFFFFFFF
+        
+uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
+        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType);
 
-void XDMAC_Initialize( void );
+void SRV_PCRC_SetInitialValue(uint32_t value);
 
-void XDMAC_ChannelCallbackRegister( XDMAC_CHANNEL channel, const XDMAC_CHANNEL_CALLBACK eventHandler, const uintptr_t contextHandle );
+void SRV_PCRC_SetSNAValue (uint8_t* sna);
 
-bool XDMAC_ChannelTransfer( XDMAC_CHANNEL channel, const void *srcAddr, const void *destAddr, size_t blockSize );
-
-bool XDMAC_ChannelIsBusy (XDMAC_CHANNEL channel);
-
-void XDMAC_ChannelDisable (XDMAC_CHANNEL channel);
-
-XDMAC_CHANNEL_CONFIG XDMAC_ChannelSettingsGet (XDMAC_CHANNEL channel);
-
-bool XDMAC_ChannelSettingsSet (XDMAC_CHANNEL channel, XDMAC_CHANNEL_CONFIG setting);
-
-void XDMAC_ChannelBlockLengthSet (XDMAC_CHANNEL channel, uint16_t length);
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
-#endif
-// DOM-IGNORE-END
-#endif // PLIB_XDMAC_H
+#endif //SRV_PCRC_H
