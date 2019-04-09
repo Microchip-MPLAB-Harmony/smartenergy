@@ -210,19 +210,16 @@ typedef enum
 } SRV_USI_INTERFACE_API;
 
 <#if SRV_USI_USART_API = true>
-typedef DRV_HANDLE (* SRV_USI_USART_OPEN)( const SYS_MODULE_INDEX, const DRV_IO_INTENT );
+// *****************************************************************************
+/* USART PLIB API Set needed by USI service */
 
-typedef bool (* SRV_USI_USART_READ)( DRV_HANDLE, void*, const size_t, DRV_USART_BUFFER_HANDLE* );
+typedef void (* USI_USART_PLIB_CALLBACK)( uintptr_t context);
 
-typedef bool (* SRV_USI_USART_WRITE)( DRV_HANDLE, void*, const size_t, DRV_USART_BUFFER_HANDLE* );
-
-typedef void (* SRV_USI_USART_EVENT_HANDLER_SET)(const DRV_HANDLE, const DRV_USART_BUFFER_EVENT_HANDLER, const uintptr_t );
-
-typedef bool (* SRV_USI_USART_CLOSE)( DRV_HANDLE );
-
-typedef DRV_HANDLE (* SRV_USI_CDC_OPEN)( const SYS_MODULE_INDEX, const DRV_IO_INTENT );
-
-typedef DRV_HANDLE (* SRV_USI_TCP_OPEN)( const SYS_MODULE_INDEX, const DRV_IO_INTENT );
+typedef void(*USI_USART_PLIB_READ_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
+typedef bool(*USI_USART_PLIB_READ)(void *buffer, const size_t size);
+typedef bool(*USI_USART_PLIB_READ_IS_BUSY)(void);
+typedef size_t(*USI_USART_PLIB_READ_COUNT_GET)(void);
+typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
 
 // *****************************************************************************
 /* USI Service USART Interface Data
@@ -240,70 +237,18 @@ typedef DRV_HANDLE (* SRV_USI_TCP_OPEN)( const SYS_MODULE_INDEX, const DRV_IO_IN
 
 typedef struct
 {
-    /* USART Driver open API */
-    SRV_USI_USART_OPEN                          open;
+    USI_USART_PLIB_READ_CALLBACK_REG readCallbackRegister;
+    USI_USART_PLIB_READ read;
+    USI_USART_PLIB_READ_IS_BUSY readIsBusy;
+    USI_USART_PLIB_READ_COUNT_GET readCountGet;
 
-    /* USART Driver read API */
-    SRV_USI_USART_READ                          read;
-
-    /* USART Driver write API */
-    SRV_USI_USART_WRITE                         write;
-
-    /* USART Driver register a buffer event handling function API */
-    SRV_USI_USART_EVENT_HANDLER_SET             eventHandlerSet;
-
-    /* USART Driver close API */
-    SRV_USI_USART_CLOSE                         close;
+    USI_USART_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
+    SYS_DMA_CHANNEL dmaChannelTx;
+    void *usartAddressTx;
 
 } SRV_USI_USART_INTERFACE;
-
 </#if>
-<#if SRV_USI_CDC_API = true>
-// *****************************************************************************
-/* USI Service USB CDC Interface Data
 
-  Summary:
-    Defines the data required to initialize the USI service CDC Interface.
-
-  Description:
-    This data type defines the data required to initialize the USI service CDC
-    Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* CDC Driver open API */
-    SRV_USI_CDC_OPEN                            open;
-
-} SRV_USI_CDC_INTERFACE;
-
-</#if>
-<#if SRV_USI_TCP_API = true>
-// *****************************************************************************
-/* USI Service USB TCP Interface Data
-
-  Summary:
-    Defines the data required to initialize the USI service TCP Interface.
-
-  Description:
-    This data type defines the data required to initialize the USI service TCP
-    Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* TCP Driver open API */
-    SRV_USI_TCP_OPEN                            open;
-
-} SRV_USI_TCP_INTERFACE;
-
-</#if>
 // *****************************************************************************
 /* USI Service Initialization Data
 
@@ -328,17 +273,17 @@ typedef struct
     /* Identifies the USI interface API with peripherals */
     void*                                    usiApi;
 
-    /* Pointer to the application read buffer */
+    /* Pointer to the internal read buffer */
     void*                                    readBuffer;
 
     /* Number of bytes of the buffer to receive serial data */
-    size_t                                   readBufferSize;
+    size_t                                   readSizeMax;
 
-    /* Pointer to the application write buffer */
+    /* Pointer to the internal write buffer */
     void*                                    writeBuffer;
 
     /* Number of bytes of the buffer to send serial data */
-    size_t                                   writeBufferSize;    
+    size_t                                   writeSizeMax;   
 } SRV_USI_INIT;
 
 //DOM-IGNORE-BEGIN

@@ -136,9 +136,6 @@ static void _disable_boot_cmd(void)
     uint32_t reg_value;
     uint8_t cmd_value[4];
     
-    /* Configure 8 bits transfer */
-    sDrvPL360HalObj->setup(false);
-    
     /* Disable CPU Wait */
     reg_value = PL360_MISCR_PPM_CALIB_OFF | PL360_MISCR_MEM_96_96_CFG | PL360_MISCR_EN_ACCESS_ERROR | PL360_MISCR_SET_GPIO_12_ZC;
     cmd_value[3] = (uint8_t)(reg_value >> 24);

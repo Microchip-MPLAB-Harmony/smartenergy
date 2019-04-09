@@ -75,19 +75,29 @@ def instantiateComponent(pl360Component):
     res = Database.activateComponents(["HarmonyCore"])
 
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON")
+    if (hcSymCommon == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+    #hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON")
+    #if (hcSymCommon == False):
+     #   Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
 
     # Enable "Enable System Ports" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True, 1)
+    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS")
+    if (hcSymCommon == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True, 1)
 
     # Enable "Enable System Interrupt" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_INT", True, 1)
+    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_INT")
+    if (hcSymCommon == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_INT", True, 1)
 
     # Enable "Enable System DMA" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True, 1)
+    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA")
+    if (hcSymCommon == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True, 1)
     
     pl360SymNumInst = pl360Component.createIntegerSymbol("DRV_PL360_NUM_INSTANCES", None)
     pl360SymNumInst.setLabel("Number of Instances")
@@ -422,3 +432,11 @@ def onAttachmentDisconnected(source, target):
         pl360TXDMAChannel.setVisible(False)
         pl360RXDMAChannel.setVisible(False)
         pl360DMAChannelComment.setVisible(False)
+
+
+def destroyComponent(spiComponent):
+    spiPeripheral = Database.getSymbolValue("drv_pl360", "DRV_PL360_PLIB")
+    dmaTxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+    dmaRxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
+    Database.setSymbolValue("core", dmaTxID, False, 2) 
+    Database.setSymbolValue("core", dmaRxID, False, 2) 

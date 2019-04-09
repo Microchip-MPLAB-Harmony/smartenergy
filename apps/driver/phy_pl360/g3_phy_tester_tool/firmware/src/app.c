@@ -171,6 +171,8 @@ void APP_Initialize ( void )
     See prototype in app.h.
  */
 
+                    
+char usart_MsgInit[] = "*** USI init ***\r\n";
 void APP_Tasks ( void )
 {
     /* Check the application's current state. */
@@ -216,10 +218,6 @@ void APP_Tasks ( void )
                     /* Register USI callback */
                     SRV_USI_CallbackRegister(appData.srvUSIHandle, 
                             SRV_USI_PROT_ID_PHY, APP_USIPhyProtocolEventHandler);
-                    /* Register Application Data buffers */
-                    SRV_USI_Set_Transfer(appData.srvUSIHandle,
-                             (void *)appData.pDataTx, APP_DATA_BUFFER_SIZE,
-                             (void *)appData.pDataRx, APP_DATA_BUFFER_SIZE);
 
                     /* Register Timer Callback */
                     appData.tmr1Handle = SYS_TIME_CallbackRegisterMS(
@@ -228,6 +226,9 @@ void APP_Tasks ( void )
 
                     /* Enable Led */
                     LED_On();
+        
+                    SRV_USI_Send_Message( appData.srvUSIHandle, 
+                    SRV_USI_PROT_ID_PHY, (uint8_t *)usart_MsgInit, sizeof(usart_MsgInit));
 
                     /* Set Application to next state */
                     appData.state = APP_STATE_READY;

@@ -50,17 +50,18 @@
 #include "driver/driver_common.h"
 #include "service/usi/srv_usi.h"
 #include "srv_usi_local.h"
-#include "driver/usart/drv_usart.h"
+#include "srv_usi_usart.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
-__attribute__ ((aligned (32))) static char usart0_StartMessage[192] = 
-"*** USART Driver Multi-Instance Echo Demo Application ***\r\n"
-"*** Type 10 characters and observe it echo back using DMA ***\r\n"
-"*** LED toggles each time the data is echoed ***\r\n";
+//__attribute__ ((aligned (32))) static char usart_MsgRsp[] = 
+//"*** Mensaje recibido ***\r\n";
+//"*** USART Driver Multi-Instance Echo Demo Application ***\r\n"
+//"*** Type 10 characters and observe it echo back using DMA ***\r\n"
+//"*** LED toggles each time the data is echoed ***\r\n";
 
 /* This is the service instance object array. */
 static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {NULL};
@@ -68,34 +69,31 @@ static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {NULL};
 /* This is the USI callback object for each USI instance. */
 static SRV_USI_CALLBACK gSrvUSICallbackOBJ[SRV_USI_INSTANCES_NUMBER][10] = {NULL};
 
-static uint8_t gSrvUSIInternalReadBuffer[SRV_USI_INSTANCES_NUMBER][1024] = {0};
+typedef struct
+{
+    uint8_t *pData;
+    uint16_t length;
+}usi_msg_t;
 
-static DRV_USART_BUFFER_HANDLE gSrvUSIRxBufferHandle[SRV_USI_INSTANCES_NUMBER];
-static DRV_USART_BUFFER_HANDLE gSrvUSITxBufferHandle[SRV_USI_INSTANCES_NUMBER];
+static usi_msg_t usi_msg[8] = {0};
+static uint8_t msg_idx = 0;
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static void _SRV_USI_Buffer_Handle ( 
-    DRV_USART_BUFFER_EVENT bufferEvent, 
-    DRV_USART_BUFFER_HANDLE bufferHandle, 
-    uintptr_t context 
-)
+static void _SRV_USART_Callback_Handle ( uint8_t *data, uint16_t length ) 
 {
-    switch(bufferEvent)
-    {
-        case DRV_USART_BUFFER_EVENT_COMPLETE:   
-            break;
+    if (length) 
+    {        
+        /* new received message */
+        usi_msg[msg_idx].pData = data;
+        usi_msg[msg_idx].length = length;
+        msg_idx++;
+        msg_idx &= 0x07;        
         
-        case DRV_USART_BUFFER_EVENT_ERROR:   
-            break;
-        
-        default:        
-            break;
-        
-    }    
+    }
 }
 
 static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
@@ -179,6 +177,83 @@ static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROT
     return callbackIndex;    
 }
 
+static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
+                                      uint16_t length, uint8_t *pEndData )
+{
+    while (length)
+    {
+        if (*pSrcData == USI_ESC_KEY_7D)
+        {
+            *pDstData++ = USI_ESC_KEY_7D;
+            *pDstData++ = USI_ESC_KEY_5D;
+        } 
+        else if (*pSrcData == USI_ESC_KEY_7E)
+        {
+            *pDstData++ = USI_ESC_KEY_7D;
+            *pDstData++ = USI_ESC_KEY_5E;
+        } 
+        else
+        {
+            *pDstData++ = *pSrcData;
+        }
+                  
+        if (pDstData == pEndData)
+        {
+            /* Escaped Message can't fit in Write buffer */
+            return 0;
+        }
+        
+        pSrcData++;
+        length--;
+    }
+    
+    return pDstData;
+}
+
+static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj, 
+                                     SRV_USI_PROTOCOL_ID protocol, 
+                                     uint8_t *pData, uint16_t length )
+{
+    uint8_t* pNewData;
+    uint8_t* pEndData;
+    uint8_t valueTmp[4];
+    
+    /* Build new message */
+    pNewData = (uint8_t*)dObj->writeBuffer;
+    pEndData = pNewData + (dObj->writeSizeMax - 3);
+    
+    /* Build header message */
+    *pNewData++ = USI_ESC_KEY_7E;
+    valueTmp[0] = USI_LEN_HI_PROTOCOL(length);
+    valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL(protocol);
+    pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
+    if (pNewData == 0)
+    {
+        /* Error in Escape Data: can't fit in Destiny buffer */
+        return 0;
+    }
+    pNewData = _SRV_USI_EscapeData(pNewData, pData, length, pEndData);
+    if (pNewData == 0)
+    {
+        /* Error in Escape Data: can't fit in Destiny buffer */
+        return 0;
+    }
+    /* get CRC */
+    valueTmp[0] = 0x11;
+    valueTmp[1] = 0x22;
+    valueTmp[2] = 0x33;
+    valueTmp[3] = 0x44;
+    pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
+    if (pNewData == 0)
+    {
+        /* Error in Escape Data: can't fit in Destiny buffer */
+        return 0;
+    }
+    
+    *pNewData++ = USI_ESC_KEY_7E;
+    
+    return (pNewData - (uint8_t*)dObj->writeBuffer);
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -213,15 +288,13 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     dObj->usiInterfaceApi       = usiInit->usiInterfaceApi;
     dObj->usiApi                = usiInit->usiApi;
     dObj->readBuffer            = usiInit->readBuffer;
-    dObj->readSizeMax           = usiInit->readBufferSize;
+    dObj->readSizeMax           = usiInit->readSizeMax;
     dObj->writeBuffer           = usiInit->writeBuffer;
-    dObj->writeSizeMax          = usiInit->writeBufferSize;
+    dObj->writeSizeMax          = usiInit->writeSizeMax;
 
     dObj->apiDriver             = DRV_HANDLE_INVALID;
     dObj->callback              = &gSrvUSICallbackOBJ[index][0];
-    dObj->readInternalBuffer    = &gSrvUSIInternalReadBuffer[index][0];
-    dObj->readInternalSizeMax   = 1024;
-    
+
     /* Update the status */
     dObj->status = SYS_STATUS_READY;
 
@@ -250,14 +323,25 @@ SRV_USI_HANDLE SRV_USI_Open(
     
     if (dObj->usiInterfaceApi == SRV_USI_USART_API)
     {
+        USI_USART_INIT init;
+        
+        init.plib = dObj->usiApi;
+        init.pRdBuffer = dObj->readBuffer;
+        init.rdBufferSize = dObj->readSizeMax;
+        init.pWrBuffer = dObj->writeBuffer;
+        init.wrBufferSize = dObj->writeSizeMax;
+        
         /* Open Serial interface */
-        dObj->apiDriver = DRV_USART_Open(DRV_USART_INDEX_0, DRV_IO_INTENT_READWRITE);
-        if (dObj->apiDriver == SRV_USI_HANDLE_INVALID)
+        dObj->apiDriver = USI_USART_Initialize(&init);
+        if (dObj->apiDriver == DRV_HANDLE_INVALID)
         {
             return SRV_USI_HANDLE_INVALID;
         }
+        
+        /* Register callback and launch reception transfer */
+        USI_USART_RegisterCallback(dObj->apiDriver, _SRV_USART_Callback_Handle);
     }
-
+    
 
     /* Update USI object status */
     dObj->inUse = true;
@@ -289,7 +373,7 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
     if (dObj->usiInterfaceApi == SRV_USI_USART_API)
     {
         /* Close Serial interface */
-        DRV_USART_Close(dObj->apiDriver);
+        USI_USART_Close(dObj->apiDriver);
     }
     
 
@@ -346,8 +430,6 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
 
 void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
 {
-    size_t received;
-
     /* Validate the request */
     if(index >= SRV_USI_INSTANCES_NUMBER)
     {
@@ -365,26 +447,16 @@ void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
     {
         return;
     }
+ 
+    USI_USART_Tasks(gSrvUSIOBJ[index].apiDriver);
     
-    received = DRV_USART_BufferCompletedBytesGet(gSrvUSIRxBufferHandle[index]);
-  
-    if (received == DRV_USART_BUFFER_HANDLE_INVALID)
-    {
-        received = 0;
-        return;
-    }
-    
-    if (received > 0) {
-        received = 0;
-    }
 }
 
-void SRV_USI_Set_Transfer( const SRV_USI_HANDLE handle, 
-    void* pTransmitData, size_t txSize,
-    void* pReceiveData, size_t rxSize)
+void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
+        SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 {
     SRV_USI_OBJ* dObj = NULL;
-    uint8_t index;
+    size_t writeLength;
 
     /* Validate the driver handle */
     if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
@@ -394,29 +466,15 @@ void SRV_USI_Set_Transfer( const SRV_USI_HANDLE handle,
 
     dObj = (SRV_USI_OBJ*)handle;
     
-    dObj->writeBuffer = pTransmitData;
-    dObj->writeSizeMax = txSize;
-    dObj->readBuffer = pReceiveData;
-    dObj->readSizeMax = rxSize;     
+    /* Check length */
+    if ((length == 0) || (length > dObj->writeSizeMax))
+    {
+        return;
+    }
     
-    index = (uint8_t)dObj->usiIndex;
+    /* Build USI message */
+    writeLength = _SRV_USI_BuildMessage(dObj, protocol, data, length);
     
-    /* Set Reception handler */
-    DRV_USART_BufferEventHandlerSet(dObj->apiDriver, _SRV_USI_Buffer_Handle, handle);
-    
-    /* Launch reception transfer */
-    DRV_USART_ReadBufferAdd(dObj->apiDriver, dObj->readInternalBuffer, dObj->readInternalSizeMax, 
-            (DRV_USART_BUFFER_HANDLE*)&gSrvUSIRxBufferHandle[index]);
-    
-    /* Test Transmission */
-    DRV_USART_WriteBufferAdd(dObj->apiDriver, usart0_StartMessage, 
-            192, (DRV_USART_BUFFER_HANDLE*)&gSrvUSITxBufferHandle[index]);
-    
-}
-
-void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
-        SRV_USI_PROTOCOL_ID protocol, uint8_t *data, uint16_t length )
-{
-    
-    
+    /* Send message */
+    USI_USART_Write(dObj->apiDriver, writeLength);
 }

@@ -429,49 +429,6 @@ void SRV_USI_CallbackRegister(
     SRV_USI_PROTOCOL_ID protocol, 
     SRV_USI_CALLBACK callback);
 
-// *****************************************************************************
-/* Function:
-  void SRV_USI_Register_Reception_buffer( const SRV_USI_HANDLE handle, 
-        uint8_t *buffer, uint16_t size )
-
-  Summary:
-    Registers a data buffer to be used to store received messages.
-
-  Description:
-    Registers a data buffer to be used when a new message is received.
-    USI service extracts the protocol information from the new message and leave
-    clean data to application.
-
-  Precondition:
-    The SRV_USI_Initialize function should have been called before calling this
-    function.
-
-  Parameters:
-    buffer    - Pointer to buffer to use in serial reception.
-    size      - Size of the buffer in bytes.
-
-  Returns:
-    None. 
-
-  Example:
-    
-    The following example call will register a data buffer for a given handler
-    <code>
-    static uint8_t MyUSIRxBuffer[512];
- 
-    // 'handle', returned from the SRV_USI_Open
-    SRV_USI_Set_Reception_buffer( handle, MyUSIRxBuffer, sizeof(MyUSIRxBuffer));
- 
-    </code>
-*/
-
-void SRV_USI_Set_Transfer( 
-    const SRV_USI_HANDLE handle, 
-    void*   pTransmitData,
-    size_t  txSize,
-    void*   pReceiveData,
-    size_t  rxSize);
-
 /***************************************************************************
   Function:
        void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
@@ -510,6 +467,9 @@ void SRV_USI_Set_Transfer(
   ***************************************************************************/
 
 void SRV_USI_Tasks( const SYS_MODULE_INDEX index );
+
+void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
+        SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length );
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

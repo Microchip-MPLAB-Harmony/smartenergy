@@ -1,24 +1,29 @@
 // <editor-fold defaultstate="collapsed" desc="SRV_USI Instance ${INDEX?string} Initialization Data">
 
 <#if SRV_USI_USART_API_INDEX == true>
-const SRV_USI_USART_INTERFACE srvUSIUsartApi = {
-    .open = (SRV_USI_USART_OPEN)DRV_USART_Open,
-    .read = (SRV_USI_USART_READ)DRV_USART_ReadBufferAdd,
-    .write = (SRV_USI_USART_WRITE)DRV_USART_WriteBufferAdd,
-    .eventHandlerSet = (SRV_USI_USART_EVENT_HANDLER_SET)DRV_USART_BufferEventHandlerSet,
-    .close = (SRV_USI_USART_CLOSE)DRV_USART_Close
+uint8_t gSrvUSI${SRV_USI_COMM_API?string}ReadBuffer[SRV_USI${INDEX?string}_RD_BUF_SIZE] = {0};
+uint8_t gSrvUSI${SRV_USI_COMM_API?string}WriteBuffer[SRV_USI${INDEX?string}_WR_BUF_SIZE] = {0};
+
+const SRV_USI_USART_INTERFACE srvUsi${SRV_USI_COMM_API?string}PlibAPI = {
+    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${SRV_USI_COMM_API?string}_ReadCallbackRegister,
+    .read = (USI_USART_PLIB_READ)${SRV_USI_COMM_API?string}_Read,
+    .readIsBusy = (USI_USART_PLIB_READ_IS_BUSY)${SRV_USI_COMM_API?string}_ReadIsBusy,
+    .readCountGet = (USI_USART_PLIB_READ_COUNT_GET)${SRV_USI_COMM_API?string}_ReadCountGet,
+    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)${SRV_USI_COMM_API?string}_WriteCallbackRegister,
+    .dmaChannelTx = SYS_DMA_CHANNEL_${SRV_USI_USART_TX_DMA_CHANNEL?string},
+    .usartAddressTx = (void *)&(${SRV_USI_COMM_API?string}_REGS->US_THR)
 };
 
 </#if>
 <#if SRV_USI_CDC_API_INDEX == true>
 const SRV_USI_CDC_INTERFACE srvUSICdcApi = {
-    .open = (SRV_USI_CDC_OPEN)DRV_USART_Open
+    .open = (SRV_USI_CDC_OPEN)USI_USART_Open
 };
 
 </#if>
 <#if SRV_USI_TCP_API_INDEX == true>
 const SRV_USI_TCP_INTERFACE srvUSITcpApi = {
-    .open = (SRV_USI_TCP_OPEN)DRV_USART_Open
+    .open = (SRV_USI_TCP_OPEN)USI_USART_Open
 };
 
 </#if>
@@ -27,7 +32,15 @@ const SRV_USI_INIT srvUSI${INDEX?string}InitData =
 <#if SRV_USI_USART_API_INDEX == true>
     .usiInterfaceApi = SRV_USI_USART_API,
 
-    .usiApi = (void*)&srvUSIUsartApi,
+    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsi${SRV_USI_COMM_API?string}PlibAPI,
+
+    .readBuffer = (void*)gSrvUSI${SRV_USI_COMM_API?string}ReadBuffer,
+
+    .readSizeMax = SRV_USI${INDEX?string}_RD_BUF_SIZE,
+
+    .writeBuffer = (void*)gSrvUSI${SRV_USI_COMM_API?string}WriteBuffer,
+
+    .writeSizeMax = SRV_USI${INDEX?string}_WR_BUF_SIZE,
 
 <#elseif SRV_USI_CDC_API_INDEX == true>
     .usiInterfaceApi = SRV_USI_CDC_API,

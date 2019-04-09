@@ -61,7 +61,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "system/system.h"
-#include "srv_usi_definitions.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -76,48 +75,73 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
+
 // *****************************************************************************
-/* USI Service Handle
+/* USI Service Serial Protocol Identifiers
 
   Summary:
-    Handle to an opened USI service.
+    Defines the identifier to use for each USI serial protocol
 
   Description:
-    This handle identifies the open instance of a USI service.  It must be
-    passed to all other USI routines (except the initialization, deinitialization,
-    or power routines) to identify the caller.
+    This data type defines the identifier required to specify the
+    serial protocol to use by USI service.
 
   Remarks:
-    Every application or module that wants to use the USI service must first call
-    the USI's open routine.  This is the only routine that is absolutely
-    required for every service.
-
-    If a USI service is unable to allow an additional module to use it, it must then
-    return the special value SRV_USI_HANDLE_INVALID.  Callers should check the
-    handle returned for this value to ensure this value was not returned before
-    attempting to call any other USI routines using the handle.
+    Do not rely on the underlying type as it may change in different versions.
 */
 
-typedef uintptr_t SRV_USI_HANDLE;
-
+typedef enum
+{
+    SRV_USI_PROT_ID_MNGP_PRIME                = 0x00,
+    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY         = 0x00,
+    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP         = 0x01,
+    SRV_USI_PROT_ID_MNGP_PRIME_SET            = 0x02,
+    SRV_USI_PROT_ID_MNGP_PRIME_RESET          = 0x03,
+    SRV_USI_PROT_ID_MNGP_PRIME_REBOOT         = 0x04,
+    SRV_USI_PROT_ID_MNGP_PRIME_FU             = 0x05,
+    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN      = 0x06,
+    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN      = 0x07,
+    SRV_USI_PROT_ID_SNIF_PRIME                = 0x13,
+    SRV_USI_PROT_ID_PHY_SERIAL_PRIME          = 0x1F,
+    SRV_USI_PROT_ID_PHY                       = 0x22,
+    SRV_USI_PROT_ID_SNIFF_G3                  = 0x23,
+    SRV_USI_PROT_ID_MAC_G3                    = 0x24,
+    SRV_USI_PROT_ID_ADP_G3                    = 0x25,
+    SRV_USI_PROT_ID_COORD_G3                  = 0x26,
+    SRV_USI_PROT_ID_PHY_MICROPLC              = 0x27,
+    SRV_USI_PROT_ID_PRIME_API                 = 0x30,
+    SRV_USI_PROT_ID_INVALID                   = 0xFF,
+}SRV_USI_PROTOCOL_ID;
 
 // *****************************************************************************
-/* Invalid USI Service Handle
+/* USI Driver Error
 
- Summary:
-    Invalid USI service.
+  Summary:
+    Defines the error values
 
- Description:
-    If the USI service is unable to allow an additional module to use it, it must then
-    return the special value SRV_USI_HANDLE_INVALID.  Callers should check the
-    handle returned for this value to ensure this value was not returned before
-    attempting to call any other USI routines using the handle.
-
- Remarks:
-    None.
+  Description:
+    This data type defines the error values for the errors occured during transfer.
 */
 
-#define SRV_USI_HANDLE_INVALID  (((SRV_USI_HANDLE) -1))
+typedef enum
+{
+    /* Error in protocol identifier */
+    SRV_USI_PROTOCOL_ERROR,
+
+    /* Protocol is not registered */
+    SRV_USI_PROTOCOL_NOT_REGISTERED,
+
+    /* Error in the format of message */
+    SRV_USI_FORMAT_ERROR,
+
+    /* Error in PLIB communication */
+    SRV_USI_PLIB_ERROR,
+
+    /* Invalid operation */
+    SRV_USI_INVALID
+
+} SRV_USI_ERROR;
+
 
 // *****************************************************************************
 /* Function:
@@ -181,192 +205,133 @@ typedef void ( * SRV_USI_CALLBACK ) ( uintptr_t context, uint8_t *data, uint16_t
 // *****************************************************************************
 /* Function:
     SYS_MODULE_OBJ SRV_USI_Initialize ( const SYS_MODULE_INDEX index,
-                                        const SYS_MODULE_INIT * const init )
+                                         const SYS_MODULE_INIT * const init )
 
-  Summary:
-    Initializes the USI System module.
+   Summary:
+        Initializes the USI System module.
 
-  Description:
-    This function initializes the instance of the USI System module.
+   Description:
+        This function initializes the instance of the USI System module.
 
-  Parameters:
-    index    - Index for the instance to be initialized
+   Parameters:
+       index    - Index for the instance to be initialized
 
-    init     - Pointer to a data structure containing data necessary to
-              initialize the module.
+       init     - Pointer to a data structure containing data necessary to
+                  initialize the module.
 
-  Returns:
-    If successful, returns a valid handle to an object. Otherwise, it
-    returns SYS_MODULE_OBJ_INVALID.
+   Returns:
+        If successful, returns a valid handle to an object. Otherwise, it
+        returns SYS_MODULE_OBJ_INVALID.
 
-  Example:
-    <code>
+   Example:
+        <code>
 
-    const SRV_USI_USART_INTERFACE srvUSIUsartApi = {
-      .open = (SRV_USI_USART_OPEN)DRV_USART_Open,
-      .read = (SRV_USI_USART_READ)DRV_USART_ReadBufferAdd,
-      .write = (SRV_USI_USART_WRITE)DRV_USART_WriteBufferAdd,
-      .eventHandlerSet = (SRV_USI_USART_EVENT_HANDLER_SET)DRV_USART_BufferEventHandlerSet,
-      .close = (SRV_USI_USART_CLOSE)DRV_USART_Close
-    };
+        const SRV_USI_PLIB_INTERFACE srvUSIPlibAPI = {
+            ?????????????????????????????????????????????????????????????? TBD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        };
 
-    const SRV_USI_INIT srvUSI0InitData =
-    {
-      .usiInterfaceApi = SRV_USI_USART_API,
+        const SRV_USI_INIT srvUSIInitData =
+        {
+            .USIPlib = &srvUSIPlibAPI,
+            .numClients = SRV_USI_CLIENTS_NUMBER_IDX0,
+            .baudrate = SRV_USI_BAUDRATE_IDX0,
+        };
 
-      .usartApi = &srvUSIUsartApi,
+        SYS_MODULE_OBJ  objSrvUSI;
 
-      .cdcApi = SRV_USI_INVALID_API,
-
-      .tcpApi = SRV_USI_INVALID_API,
-    };
-
-    SYS_MODULE_OBJ  objSrvUSI;
-
-    objSrvUSI= SRV_USI_Initialize(SRV_USI_INDEX_0, (SYS_MODULE_INIT *)&srvUSI0InitData);
-    if (objSrvUSI == SYS_MODULE_OBJ_INVALID)
-    {
-        // Handle error
-    }
-    </code>
+        objSrvUSI = SRV_USI_Initialize(SRV_USI_INDEX_0, (SYS_MODULE_INIT *)&srvUSIInitData);
+        if (objSrvUSI == SYS_MODULE_OBJ_INVALID)
+        {
+            // Handle error
+        }
+        </code>
 
   Remarks:
-    This routine should normally only be called once during system
-    initialization.
+        This routine should normally only be called once during system
+        initialization.
 */
 
-SYS_MODULE_OBJ SRV_USI_Initialize(
-    const SYS_MODULE_INDEX index,
-    const SYS_MODULE_INIT * const init);
+SYS_MODULE_OBJ SRV_USI_Initialize( const SYS_MODULE_INDEX index, const SYS_MODULE_INIT * const init );
+
 
 // *****************************************************************************
 /* Function:
-    SRV_USI_HANDLE SRV_USI_Open
-    (
-        const SYS_MODULE_INDEX index
-    )
+   void SRV_USI_Deinitialize ( const SYS_MODULE_INDEX index )
 
   Summary:
-    Opens the specified USI service instance and returns a handle to it.
+       Deinitializes the specific module instance of the USI Service module
 
   Description:
-    This routine opens the specified USI Service instance and provides a
-    handle that must be provided to all other client-level operations to
-    identify the caller and the instance of the driver.
+       This function deinitializes the specific module instance disabling its
+       operation (and any hardware for driver modules). Resets all of the internal
+       data structures and fields for the specified instance to the default settings.
 
   Precondition:
-    Function SRV_USI_Initialize must have been called before calling this
-    function.
+       The SRV_USI_Initialize function should have been called before calling
+       this function.
 
   Parameters:
-    index - Identifier for the object instance to be opened
+       index    - Index for the instance to be deinitialized
 
   Returns:
-    If successful, the routine returns a valid open-instance handle.
-
-    If an error occurs, the return value is SRV_USI_HANDLE_INVALID. 
-    Error can occur
-    - if the client is trying to open the driver but driver has been already 
-      opened.
-    - if the driver peripheral instance being opened is not initialized or is
-      invalid.
-    - if the driver is not ready to be opened, typically when the initialize
-      routine has not completed execution.
+       None.
 
   Example:
-    <code>
-    SRV_USI_HANDLE handle;
+        <code>
 
-    handle = SRV_USI_Open(SRV_USI_INDEX_0);
-    if (handle == SRV_USI_HANDLE_INVALID)
-    {
-        // Unable to open USI instance
-        // May be the driver is not initialized or the initialization
-        // is not complete.
-    }
-    </code>
+        SRV_USI_Deinitialize (SRV_USI_INDEX_0);
+
+        if (SRV_USI_Status (SRV_USI_INDEX_0) != SYS_STATUS_UNINITIALIZED)
+        {
+            // Check again later if you need to know
+            // when the USI instance is De-initialized.
+        }
+        </code>
 
   Remarks:
-    The handle returned is valid until the SRV_USI_Close routine is called.
-    This routine will NEVER block waiting for hardware. If the requested intent
-    flags are not supported, the routine will return SRV_USI_HANDLE_INVALID. 
+       Once the Initialize operation has been called, the De-initialize
+       operation must be called before the Initialize operation can be called
+       again.
 */
 
-SRV_USI_HANDLE SRV_USI_Open( const SYS_MODULE_INDEX index );
+void  SRV_USI_Deinitialize ( const SYS_MODULE_INDEX index );
+
 
 // *****************************************************************************
 /* Function:
-    void SRV_USI_Close( SRV_USI_HANDLE handle )
+       SYS_STATUS SRV_USI_Status ( const SYS_MODULE_INDEX index )
 
   Summary:
-    Closes an opened-instance of the USI Service.
+      Returns USI instance service status.
 
   Description:
-    This routine closes an opened-instance of the USI Service, invalidating the
-    handle. Any buffers in the driver queue that were submitted by this client
-    will be removed. A new handle must be obtained by calling SRV_USI_Open
-    before the caller may use the driver again.
+       This function returns the current status of the System Time module.
 
   Precondition:
-    SRV_USI_Open must have been called to obtain a valid opened device handle.
+       None.
 
   Parameters:
-    handle - A valid open-instance handle, returned from the driver's
-    open routine
+       index    - Index for the instance to get the status
 
   Returns:
-    None.
+       SYS_STATUS_UNINITIALIZED - Indicates that the USI instance is not initialized.
+
+       SYS_STATUS_READY - Indicates that the USI instance initialization is
+                             complete and it ready to be used.
 
   Example:
-    <code>
-    // 'handle', returned from the SRV_USI_Open
-
-    SRV_USI_Close(handle);
-
-    </code>
-
-  Remarks:
-    None.
-*/
-
-void SRV_USI_Close( const SRV_USI_HANDLE handle );
-
-// *****************************************************************************
-/* Function:
-    SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object)
-
-  Summary:
-    Returns USI instance service status.
-
-  Description:
-    This function returns the current status of the System Time module.
-
-  Precondition:
-    None.
-
-  Parameters:
-    object - USI service object handle, returned from the
-    SRV_USI_Initialize routine
-
-  Returns:
-    SYS_STATUS_UNINITIALIZED - Indicates that the USI instance is not initialized.
-
-    SYS_STATUS_READY - Indicates that the USI instance initialization is
-                       complete and it ready to be used.
-
-  Example:
-    <code>
-    if (SRV_USI_Status (SRV_USI_INDEX_0) == SYS_STATUS_READY)
-    {
-       // USI service is initialized and ready to accept new requests.
-    }
-    </code>
+       <code>
+       if (SRV_USI_Status (SRV_USI_INDEX_0) == SYS_STATUS_READY)
+       {
+           // USI service is initialized and ready to accept new requests.
+       }
+       </code>
 
   Remarks:
-    None.
+       None.
   */
 
-SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
+SYS_STATUS SRV_USI_Status ( const SYS_MODULE_INDEX index );
 
 // *****************************************************************************
 // *****************************************************************************
@@ -376,58 +341,57 @@ SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
 
 // *****************************************************************************
 /* Function:
-  SRV_USI_HANDLE SRV_USI_CallbackRegister ( const SYS_MODULE_INDEX index, 
-                    SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
+    SRV_USI_HANDLE SRV_USI_CallbackRegister ( const SYS_MODULE_INDEX index, 
+                        SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
 
-  Summary:
+Summary:
     Registers a function to be called back when a new message is received and it
     belongs to the specified protocol.
 
-  Description:
+Description:
     Registers a function with it to be called back when a new message is received.
     USI service extracts the protocol information from the new message and, if a
     callback function is registered, it calls to it.
 
-  Precondition:
+Precondition:
     The SRV_USI_Initialize function should have been called before calling this
     function.
 
-  Parameters:
-    handle - A valid open-instance handle, returned from the driver's
-    open routine
+Parameters:
+    index       - Index for the instance to set the callback function
     protocol    - Identifier of the protocol in which callback function will be 
                   registered.
     callback    - Pointer to the function to be called.
 
-  Returns:
-    None. 
+Returns:
+    SRV_USI_HANDLE - A valid object handle if the call succeeds.
+                      SRV_USI_HANDLE_INVALID if it fails.
 
-  Example:
-    Given a callback function implementation matching the following prototype:
-    <code>
-    void MyG3SnifferCallback ( const SYS_MODULE_INDEX index, 
-                      SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback);
-    </code>
+Example:
+  Given a callback function implementation matching the following prototype:
+  <code>
+  void MyG3SnifferCallback ( const SYS_MODULE_INDEX index, 
+                    SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback);
+  </code>
 
-    The following example call will register it, requesting a callback for G3 
-    Sniffer application (SRV_USI_PROT_ID_SNIFF_G3).
-    <code>
-    //Give a SRV_USI_CALLBACK function "MyG3SnifferCallback",
-    // 'handle', returned from the SRV_USI_Open
-    SRV_USI_HANDLE handle = SRV_USI_CallbackRegisterUS(handle, 
-                      SRV_USI_PROT_ID_SNIFF_G3, MyG3SnifferCallback);
-
-    if (handle != SRV_USI_HANDLE_INVALID)
-    {
-          //Callback is registered successfully.
-    }
-    </code>
+  The following example call will register it, requesting a callback for G3 Sniffer
+  application (SRV_USI_PROT_ID_SNIFF_G3)
+  <code>
+  //Give a SRV_USI_CALLBACK function "MyG3SnifferCallback",
+  SRV_USI_HANDLE handle = SRV_USI_CallbackRegisterUS(SRV_USI_INDEX_0, SRV_USI_PROT_ID_SNIFF_G3, 
+                                                     MyG3SnifferCallback);
+  if (handle != SRV_USI_HANDLE_INVALID)
+  {
+        //Callback is registered successfully.
+  }
+  </code>
 */
 
-void SRV_USI_CallbackRegister( 
-    const SRV_USI_HANDLE handle,
-    SRV_USI_PROTOCOL_ID protocol, 
-    SRV_USI_CALLBACK callback);
+SRV_USI_HANDLE SRV_USI_CallbackRegister ( const SYS_MODULE_INDEX index, SRV_USI_PROTOCOL_ID protocol, 
+                                          SRV_USI_CALLBACK callback );
+
+
+
 
 /***************************************************************************
   Function:
@@ -467,9 +431,6 @@ void SRV_USI_CallbackRegister(
   ***************************************************************************/
 
 void SRV_USI_Tasks( const SYS_MODULE_INDEX index );
-
-void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
-        SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length );
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

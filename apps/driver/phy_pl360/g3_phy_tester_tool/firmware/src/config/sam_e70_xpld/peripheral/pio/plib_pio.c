@@ -43,6 +43,7 @@
 
 #include "plib_pio.h"
 
+
 #define PIO_MAX_NUM_OF_CHANNELS     5
 
 /* Array to store callback objects of each configured interrupt */
@@ -401,6 +402,7 @@ void _PIO_Interrupt_Handler ( PIO_PORT port )
 // Section: Interrupt Service Routine (ISR) Implementation(s)
 // *****************************************************************************
 // *****************************************************************************
+
 
 // *****************************************************************************
 /* Function:

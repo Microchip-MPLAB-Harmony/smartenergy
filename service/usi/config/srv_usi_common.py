@@ -21,6 +21,19 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+def setConnections(symbol, event):
+    symbol.setVisible(event["value"]) 
+    if(event["value"] == False):
+        symbol.clearValue()
+    else:
+        symbol.setValue(1, 0)        
+
+def enableUsartFiles(symbol, event):
+    symbol.setEnabled(event["value"])  
+    if(event["value"]):
+        print("Enable USART files")
+    else:
+        print("Disable USART files")
 
 def instantiateComponent(usiComponentCommon):
     
@@ -30,6 +43,12 @@ def instantiateComponent(usiComponentCommon):
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
+
+    usiSymMsgPoolSize = usiComponentCommon.createIntegerSymbol("SRV_USI_MSG_POOL_SIZE", None)
+    usiSymMsgPoolSize.setLabel("Received Message Pool Size")
+    usiSymMsgPoolSize.setMin(1)
+    usiSymMsgPoolSize.setMax(10)
+    usiSymMsgPoolSize.setDefaultValue(5)
 
     usiSymUsartAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_USART_API", None)
     usiSymUsartAPI.setLabel("USART API")
@@ -48,6 +67,24 @@ def instantiateComponent(usiComponentCommon):
     usiSymTcpAPI.setReadOnly(True)
     usiSymTcpAPI.setDefaultValue(False)
     usiSymTcpAPI.setVisible(True)
+
+    usiSymNumUsart = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_USART", usiSymUsartAPI)
+    usiSymNumUsart.setLabel("USART Connections")
+    usiSymNumUsart.setDefaultValue(0)
+    usiSymNumUsart.setVisible(True)
+    usiSymNumUsart.setDependencies(setConnections, ["SRV_USI_USART_API"])
+
+    usiSymNumCdc = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_CDC", usiSymCdcAPI)
+    usiSymNumCdc.setLabel("CDC Connections")
+    usiSymNumCdc.setDefaultValue(0)
+    usiSymNumCdc.setVisible(True)
+    usiSymNumCdc.setDependencies(setConnections, ["SRV_USI_CDC_API"])
+
+    usiSymNumTcp = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_TCP", usiSymTcpAPI)
+    usiSymNumTcp.setLabel("TCP Connections")
+    usiSymNumTcp.setDefaultValue(0)
+    usiSymNumTcp.setVisible(True)
+    usiSymNumTcp.setDependencies(setConnections, ["SRV_USI_TCP_API"])
 
     usiHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_HEADER", None)
     usiHeaderFile.setSourcePath("service/usi/srv_usi.h")
@@ -86,6 +123,29 @@ def instantiateComponent(usiComponentCommon):
     usiSymHeaderDefFile.setType("HEADER")
     usiSymHeaderDefFile.setMarkup(True)
     usiSymHeaderDefFile.setOverwrite(True)
+
+    # USART wrapper Files
+    usiUsartSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_SOURCE", None)
+    usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c")
+    usiUsartSourceFile.setOutputName("srv_usi_usart.c")
+    usiUsartSourceFile.setDestPath("service/usi")
+    usiUsartSourceFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiUsartSourceFile.setType("SOURCE")
+    usiUsartSourceFile.setMarkup(False)
+    usiUsartSourceFile.setOverwrite(True)
+    usiUsartSourceFile.setEnabled(False)
+    usiUsartSourceFile.setDependencies(enableUsartFiles, ["SRV_USI_USART_API"])
+
+    usiUsartHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_HEADER", None)
+    usiUsartHeaderFile.setSourcePath("service/usi/src/srv_usi_usart.h")
+    usiUsartHeaderFile.setOutputName("srv_usi_usart.h")
+    usiUsartHeaderFile.setDestPath("service/usi")
+    usiUsartHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiUsartHeaderFile.setType("SOURCE")
+    usiUsartHeaderFile.setMarkup(False)
+    usiUsartHeaderFile.setOverwrite(True)
+    usiUsartHeaderFile.setEnabled(False)
+    usiUsartHeaderFile.setDependencies(enableUsartFiles, ["SRV_USI_USART_API"])
 
     # System Template Files
     usiSymCommonSysCfgFile = usiComponentCommon.createFileSymbol("SRV_USI_SYS_CFG_COMMON", None)

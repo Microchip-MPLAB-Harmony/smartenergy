@@ -54,31 +54,6 @@
 // Section: Configuration Bits
 // ****************************************************************************
 // ****************************************************************************
-// DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
-
-// DOM-IGNORE-END
 #pragma config TCM_CONFIGURATION = 0
 #pragma config SECURITY_BIT = CLEAR
 #pragma config BOOT_MODE = SET
@@ -91,76 +66,6 @@
 // Section: Driver Initialization Data
 // *****************************************************************************
 // *****************************************************************************
-// <editor-fold defaultstate="collapsed" desc="DRV_USART Instance 0 Initialization Data">
-
-static DRV_USART_CLIENT_OBJ drvUSART0ClientObjPool[DRV_USART_CLIENTS_NUMBER_IDX0];
-
-/* USART transmit/receive transfer objects pool */
-static DRV_USART_BUFFER_OBJ drvUSART0BufferObjPool[DRV_USART_QUEUE_SIZE_IDX0];
-
-const DRV_USART_PLIB_INTERFACE drvUsart0PlibAPI = {
-    .readCallbackRegister = (DRV_USART_PLIB_READ_CALLBACK_REG)USART1_ReadCallbackRegister,
-    .read = (DRV_USART_PLIB_READ)USART1_Read,
-    .readIsBusy = (DRV_USART_PLIB_READ_IS_BUSY)USART1_ReadIsBusy,
-    .readCountGet = (DRV_USART_PLIB_READ_COUNT_GET)USART1_ReadCountGet,
-    .writeCallbackRegister = (DRV_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
-    .write = (DRV_USART_PLIB_WRITE)USART1_Write,
-    .writeIsBusy = (DRV_USART_PLIB_WRITE_IS_BUSY)USART1_WriteIsBusy,
-    .writeCountGet = (DRV_USART_PLIB_WRITE_COUNT_GET)USART1_WriteCountGet,
-    .errorGet = (DRV_USART_PLIB_ERROR_GET)USART1_ErrorGet,
-    .serialSetup = (DRV_USART_PLIB_SERIAL_SETUP)USART1_SerialSetup
-};
-
-const uint32_t drvUsart0remapDataWidth[] = { 0x0, 0x40, 0x80, 0xC0, 0x20000 };
-const uint32_t drvUsart0remapParity[] = { 0x800, 0x0, 0x200, 0x600, 0x400, 0xC00 };
-const uint32_t drvUsart0remapStopBits[] = { 0x0, 0x1000, 0x2000 };
-const uint32_t drvUsart0remapError[] = { 0x20, 0x80, 0x40 };
-
-const DRV_USART_INTERRUPT_SOURCES drvUSART0InterruptSources =
-{
-    /* Peripheral has single interrupt vector */
-    .isSingleIntSrc                        = true,
-
-    /* Peripheral interrupt line */
-    .intSources.usartInterrupt             = USART1_IRQn,
-    /* DMA interrupt line */
-    .intSources.dmaInterrupt               = XDMAC_IRQn,
-};
-
-const DRV_USART_INIT drvUsart0InitData =
-{
-    .usartPlib = &drvUsart0PlibAPI,
-
-    /* USART Number of clients */
-    .numClients = DRV_USART_CLIENTS_NUMBER_IDX0,
-
-    /* USART Client Objects Pool */
-    .clientObjPool = (uintptr_t)&drvUSART0ClientObjPool[0],
-
-    .dmaChannelTransmit = DRV_USART_XMIT_DMA_CH_IDX0,
-
-    .usartTransmitAddress = (void *)&(USART1_REGS->US_THR),
-
-    .dmaChannelReceive = SYS_DMA_CHANNEL_NONE,
-
-    /* Combined size of transmit and receive buffer objects */
-    .bufferObjPoolSize = DRV_USART_QUEUE_SIZE_IDX0,
-
-    /* USART transmit and receive buffer buffer objects pool */
-    .bufferObjPool = (uintptr_t)&drvUSART0BufferObjPool[0],
-
-    .interruptSources = &drvUSART0InterruptSources,
-
-    .remapDataWidth = drvUsart0remapDataWidth,
-
-    .remapParity = drvUsart0remapParity,
-
-    .remapStopBits = drvUsart0remapStopBits,
-
-    .remapError = drvUsart0remapError,
-};
-
-// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="DRV_PL360 Initialization Data">
 
 /* HAL Interface Initialization for PL360 Driver */
@@ -170,10 +75,10 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_1,
+    .dmaChannelTx = SYS_DMA_CHANNEL_2,
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_1,
 
     /* SPI Transmit Register */
     .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
@@ -242,19 +147,32 @@ DRV_PL360_INIT drvPL360InitData =
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="SRV_USI Instance 0 Initialization Data">
 
-const SRV_USI_USART_INTERFACE srvUSIUsartApi = {
-    .open = (SRV_USI_USART_OPEN)DRV_USART_Open,
-    .read = (SRV_USI_USART_READ)DRV_USART_ReadBufferAdd,
-    .write = (SRV_USI_USART_WRITE)DRV_USART_WriteBufferAdd,
-    .eventHandlerSet = (SRV_USI_USART_EVENT_HANDLER_SET)DRV_USART_BufferEventHandlerSet,
-    .close = (SRV_USI_USART_CLOSE)DRV_USART_Close
+uint8_t gSrvUSIUSART1ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {0};
+uint8_t gSrvUSIUSART1WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {0};
+
+const SRV_USI_USART_INTERFACE srvUsiUSART1PlibAPI = {
+    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)USART1_ReadCallbackRegister,
+    .read = (USI_USART_PLIB_READ)USART1_Read,
+    .readIsBusy = (USI_USART_PLIB_READ_IS_BUSY)USART1_ReadIsBusy,
+    .readCountGet = (USI_USART_PLIB_READ_COUNT_GET)USART1_ReadCountGet,
+    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
+    .dmaChannelTx = SYS_DMA_CHANNEL_7,
+    .usartAddressTx = (void *)&(USART1_REGS->US_THR)
 };
 
 const SRV_USI_INIT srvUSI0InitData =
 {
     .usiInterfaceApi = SRV_USI_USART_API,
 
-    .usiApi = (void*)&srvUSIUsartApi,
+    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsiUSART1PlibAPI,
+
+    .readBuffer = (void*)gSrvUSIUSART1ReadBuffer,
+
+    .readSizeMax = SRV_USI0_RD_BUF_SIZE,
+
+    .writeBuffer = (void*)gSrvUSIUSART1WriteBuffer,
+
+    .writeSizeMax = SRV_USI0_WR_BUF_SIZE,
 
 };
 
@@ -326,17 +244,15 @@ void SYS_Initialize ( void* data )
 
 	WDT_REGS->WDT_MR = WDT_MR_WDDIS_Msk; 		// Disable WDT 
 
+	SPI0_Initialize();
+
  
     TC0_CH0_TimerInitialize(); 
      
     
 	BSP_Initialize();
-	SPI0_Initialize();
-
 	USART1_Initialize();
 
-
-    sysObj.drvUsart0 = DRV_USART_Initialize(DRV_USART_INDEX_0, (SYS_MODULE_INIT *)&drvUsart0InitData);
 
     /* Initialize PL360 Driver Instance */
     sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);

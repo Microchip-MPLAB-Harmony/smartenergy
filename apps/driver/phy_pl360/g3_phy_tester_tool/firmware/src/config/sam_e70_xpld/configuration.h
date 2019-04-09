@@ -95,17 +95,6 @@ extern "C" {
 // Section: Driver Configuration
 // *****************************************************************************
 // *****************************************************************************
-/* USI Service Common Configuration Options */
-#define SRV_USI_INSTANCES_NUMBER              1
-
-/* USART Driver Instance 0 Configuration Options */
-#define DRV_USART_INDEX_0                  0
-#define DRV_USART_CLIENTS_NUMBER_IDX0      1
-#define DRV_USART_XMIT_DMA_CH_IDX0         SYS_DMA_CHANNEL_2
-#define DRV_USART_QUEUE_SIZE_IDX0          5
-
-/* USART Driver Global Configuration Options */
-#define DRV_USART_INSTANCES_NUMBER         1
 /* PL360 Driver Configuration Options */
 #define DRV_PL360_INSTANCES_NUMBER              1
 #define DRV_PL360_INDEX                         0
@@ -119,7 +108,15 @@ extern "C" {
 
 /* USI Service Instance 0 Configuration Options */
 #define SRV_USI_INDEX_0                       0
+#define SRV_USI0_RD_BUF_SIZE                  1024
+#define SRV_USI0_WR_BUF_SIZE                  1024
 
+/* USI Service Common Configuration Options */
+#define SRV_USI_INSTANCES_NUMBER              1
+#define SRV_USI_USART_CONNECTIONS             1
+#define SRV_USI_CDC_CONNECTIONS               0
+#define SRV_USI_TCP_CONNECTIONS               0
+#define SRV_USI_MSG_POOL_SIZE                 5
 
 
 // *****************************************************************************

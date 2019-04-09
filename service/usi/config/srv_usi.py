@@ -41,15 +41,15 @@ def setDepencies(symbol, event):
         localComponent.setDependencyEnabled("srv_usi_CDC_dependency", True)
         localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", True)
 
-def enableUSIProtocols(symbol, event):
-    symbol.setVisible(event["value"])
-
 ################################################################################
 #### Component ####
 ################################################################################
 def instantiateComponent(usiComponent, index):
+    global srvUsiInstanceSpace
 
     Log.writeInfoMessage("Loading PLC USI Service...instance:" + str(index))
+
+    srvUsiInstanceSpace = "srv_usi_" + str(index)
 
     usiSymIndex = usiComponent.createIntegerSymbol("INDEX", None)
     usiSymIndex.setVisible(False)
@@ -78,66 +78,21 @@ def instantiateComponent(usiComponent, index):
     usiSymCommAPI.setReadOnly(True)
     usiSymCommAPI.setDefaultValue("")
 
-    usiSymConn = usiComponent.createBooleanSymbol("SRV_USI_CONN", None)
-    usiSymConn.setLabel("USI connection")
-    usiSymConn.setReadOnly(True)
-    usiSymConn.setVisible(True)
-    usiSymConn.setDefaultValue(False)
-    #usiSymConn.setDependencies(setDepencies, ["SRV_USI_CONN"])
+    global usiUsartTXDMAChannel
+    usiUsartTXDMAChannel = usiComponent.createIntegerSymbol("SRV_USI_USART_TX_DMA_CHANNEL", None)
+    usiUsartTXDMAChannel.setLabel("DMA Channel For Transmit")
+    usiUsartTXDMAChannel.setDefaultValue(0)
+    usiUsartTXDMAChannel.setVisible(False)
+    usiUsartTXDMAChannel.setReadOnly(True)
+    usiUsartTXDMAChannel.setDependencies(requestAndAssignTxDMAChannel, ["SRV_USI_USART_API_INDEX"])
 
-    usiSymConnPHY = usiComponent.createBooleanSymbol("SRV_USI_CONN_PHY", usiSymConn)
-    usiSymConnPHY.setLabel("PHY")
-    usiSymConnPHY.setVisible(False)
-    usiSymConnPHY.setDefaultValue(False)
-    usiSymConnPHY.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
+    usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_RD_BUF_SIZE", None)
+    usiSymReadBufferSize.setLabel("Read Buffer Size")
+    usiSymReadBufferSize.setDefaultValue(1024)
 
-    usiSymConnPRIMEMNGP = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEMNGP", usiSymConn)
-    usiSymConnPRIMEMNGP.setLabel("PRIME MNGP")
-    usiSymConnPRIMEMNGP.setVisible(False)
-    usiSymConnPRIMEMNGP.setDefaultValue(False)
-    usiSymConnPRIMEMNGP.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnPRIMESNIF = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMESNIF", usiSymConn)
-    usiSymConnPRIMESNIF.setLabel("PRIME SNIFFER")
-    usiSymConnPRIMESNIF.setVisible(False)
-    usiSymConnPRIMESNIF.setDefaultValue(False)
-    usiSymConnPRIMESNIF.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnPRIMEPHYSerial = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEPHYSERIAL", usiSymConn)
-    usiSymConnPRIMEPHYSerial.setLabel("PRIME PHY SERIAL")
-    usiSymConnPRIMEPHYSerial.setVisible(False)
-    usiSymConnPRIMEPHYSerial.setDefaultValue(False)
-    usiSymConnPRIMEPHYSerial.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnPRIMEAPI = usiComponent.createBooleanSymbol("SRV_USI_CONN_PRIMEAPI", usiSymConn)
-    usiSymConnPRIMEAPI.setLabel("PRIME API")
-    usiSymConnPRIMEAPI.setVisible(False)
-    usiSymConnPRIMEAPI.setDefaultValue(False)
-    usiSymConnPRIMEAPI.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnG3SNIF = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3SNIF", usiSymConn)
-    usiSymConnG3SNIF.setLabel("G3 SNIFFER")
-    usiSymConnG3SNIF.setVisible(False)
-    usiSymConnG3SNIF.setDefaultValue(False)
-    usiSymConnG3SNIF.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnG3MAC = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3MAC", usiSymConn)
-    usiSymConnG3MAC.setLabel("G3 MAC")
-    usiSymConnG3MAC.setVisible(False)
-    usiSymConnG3MAC.setDefaultValue(False)
-    usiSymConnG3MAC.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnG3ADP = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3ADP", usiSymConn)
-    usiSymConnG3ADP.setLabel("G3 ADP")
-    usiSymConnG3ADP.setVisible(False)
-    usiSymConnG3ADP.setDefaultValue(False)
-    usiSymConnG3ADP.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
-
-    usiSymConnG3COORD = usiComponent.createBooleanSymbol("SRV_USI_CONN_G3COORDINATOR", usiSymConn)
-    usiSymConnG3COORD.setLabel("G3 COORDINATOR")
-    usiSymConnG3COORD.setVisible(False)
-    usiSymConnG3COORD.setDefaultValue(False)
-    usiSymConnG3COORD.setDependencies(enableUSIProtocols, ["SRV_USI_CONN"])
+    usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_WR_BUF_SIZE", None)
+    usiSymReadBufferSize.setLabel("Write Buffer Size")
+    usiSymReadBufferSize.setDefaultValue(1024)
 
     # System Template Files
     usiSymSystemDefObjFile = usiComponent.createFileSymbol("SRV_USI_FILE_SYS_DEF_OBJ", None)
@@ -206,45 +161,54 @@ def onAttachmentConnected(source, target):
     print("OnConnection..." + connectID)
     print(remoteID)
 
-    updateDependencies = False
-
     if connectID == "srv_usi_USART_dependency" :
         print("OnConnection...srv_usi_USART_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", False)
-#        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", False)
-        updateDependencies = True
-        Database.setSymbolValue("srv_usi", "SRV_USI_USART_API", True, 1)
+
+        print("Set PLIB connection")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+        plibUsed.clearValue()
+        plibUsed.setValue(remoteID.upper(), 0)
+
         apiUsedIndex = localComponent.getSymbolByID("SRV_USI_USART_API_INDEX")
-        apiUsedIndex.setValue(True, 0)
+        apiUsedIndex.clearValue()
+        apiUsedIndex.setValue(True, 1)
+
+        Database.setSymbolValue("srv_usi", "SRV_USI_USART_API", True, 1)
+
+        # Do not change the order as DMA Channels needs to be allocated
+        # after setting the Usart Api index symbol
+        usiUsartTXDMAChannel.setVisible(True)
 
     if connectID == "srv_usi_TCP_AUX_dependency" :
         print("OnConnection...srv_usi_TCP_AUX_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_USART_dependency", False)
-#        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", False)
-        updateDependencies = True
+        
+        print("Set PLIB connection")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+        plibUsed.clearValue()
+        plibUsed.setValue(remoteID.upper(), 0)
+
         Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", True, 1)
         apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX")
+        apiUsedIndex.clearValue()
         apiUsedIndex.setValue(True, 0)
 
     if connectID == "srv_usi_CDC_dependency" :
         print("OnConnection...srv_usi_CDC_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_USART_dependency", False)
-#        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", False)
-        updateDependencies = True
+        
+        print("Set PLIB connection")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+        plibUsed.clearValue()
+        plibUsed.setValue(remoteID.upper(), 0)
+
         Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", True, 1)
         apiUsedIndex = localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX")
+        apiUsedIndex.clearValue()
         apiUsedIndex.setValue(True, 0)
-
-    if updateDependencies:
-        print("Set PLIB connection")
-        deviceUsed = localComponent.getSymbolByID("SRV_USI_CONN")
-        deviceUsed.clearValue()
-        deviceUsed.setValue(True, 0)
-        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.setValue(remoteID.upper(), 0)
 
 
 def onAttachmentDisconnected(source, target):
+    global isDMAPresent
+
     localComponent = source["component"]
     remoteComponent = target["component"]
     remoteID = remoteComponent.getID()
@@ -252,38 +216,66 @@ def onAttachmentDisconnected(source, target):
     targetID = target["id"]
 
     print("OnDisconnection..." + connectID)
-    updateDependencies = False
 
     if connectID == "srv_usi_USART_dependency" :
         print("OnDisconnection...srv_usi_USART_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", True)
-#        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", True)
-        updateDependencies = True
+
+        # Do not change the order as DMA Channels needs to be cleared
+        # before clearing the Usart Api Index symbol
+        usiUsartTXDMAChannel.setVisible(False)
+
         Database.setSymbolValue("srv_usi", "SRV_USI_USART_API", False, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_USART_API_INDEX")
-        apiUsedIndex.setValue(False, 0)
+        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_USART_API_INDEX").clearValue()
+
+        print("Clear PLIB connection")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+        plibUsed.clearValue()
 
     if connectID == "srv_usi_TCP_AUX_dependency" :
         print("OnDisconnection...srv_usi_TCP_AUX_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_USART_dependency", True)
-#        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", True)
-        updateDependencies = True
+
         Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", False, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX")
-        apiUsedIndex.setValue(False, 0)
+        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX").clearValue()
+
+        print("Clear PLIB connection")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+        plibUsed.clearValue()
 
     if connectID == "srv_usi_CDC_dependency" :
         print("OnDisconnection...srv_usi_CDC_dependency")
-#        localComponent.setDependencyEnabled("srv_usi_USART_dependency", True)
-#        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", True)
-        updateDependencies = True
-        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", False, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX")
-        apiUsedIndex.setValue(False, 0)
 
-    if updateDependencies:
+        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", False, 1)
+        localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX").clearValue()
+
         print("Clear PLIB connection")
-        deviceUsed = localComponent.getSymbolByID("SRV_USI_CONN")
-        deviceUsed.clearValue()
         plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.setValue("", 0)
+        plibUsed.clearValue()
+
+def requestAndAssignTxDMAChannel(symbol, event):
+    global srvUsiInstanceSpace
+
+    usiService = Database.getSymbolValue(srvUsiInstanceSpace, "SRV_USI_COMM_API")
+
+    dmaChannelID = "DMA_CH_FOR_" + str(usiService) + "_Transmit"
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(usiService) + "_Transmit"
+
+    print("requestAndAssignTxDMAChannel : " + dmaChannelID)
+    print("requestAndAssignTxDMAChannel : " + dmaRequestID)
+
+    if event["value"] == False:
+        Database.setSymbolValue("core", dmaRequestID, False, 2)
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+        Database.setSymbolValue("core", dmaRequestID, True, 2)
+
+    # Get the allocated channel and assign it
+    channel = Database.getSymbolValue("core", dmaChannelID)
+    symbol.setValue(channel, 2)
+
+def destroyComponent(spiComponent):
+    global srvUsiInstanceSpace
+
+    usiService = Database.getSymbolValue(srvUsiInstanceSpace, "SRV_USI_COMM_API")
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(usiService) + "_Transmit"
+    Database.setSymbolValue("core", dmaRequestID, False, 2) 
