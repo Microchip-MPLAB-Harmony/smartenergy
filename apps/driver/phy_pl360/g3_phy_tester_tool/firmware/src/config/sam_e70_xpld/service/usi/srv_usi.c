@@ -50,6 +50,7 @@
 #include "driver/driver_common.h"
 #include "service/usi/srv_usi.h"
 #include "srv_usi_local.h"
+#include "system/cache/sys_cache.h"
 #include "srv_usi_usart.h"
 
 // *****************************************************************************
@@ -73,6 +74,7 @@ typedef struct
 {
     uint8_t *pData;
     uint16_t length;
+    uint8_t content;
 }usi_msg_t;
 
 static usi_msg_t usi_msg[8] = {0};
@@ -90,6 +92,7 @@ static void _SRV_USART_Callback_Handle ( uint8_t *data, uint16_t length )
         /* new received message */
         usi_msg[msg_idx].pData = data;
         usi_msg[msg_idx].length = length;
+        usi_msg[msg_idx].content = *data;
         msg_idx++;
         msg_idx &= 0x07;        
         

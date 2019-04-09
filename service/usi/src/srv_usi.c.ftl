@@ -210,6 +210,9 @@ static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
             /* Escaped Message can't fit in Write buffer */
             return 0;
         }
+        
+        pSrcData++;
+        length--;
     }
     
     return pDstData;

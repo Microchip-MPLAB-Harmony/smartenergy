@@ -73,31 +73,6 @@ def pl360SetMemoryDependency(symbol, event):
 def instantiateComponent(pl360Component):  
 
     res = Database.activateComponents(["HarmonyCore"])
-
-    # Enable "Generate Harmony Driver Common Files" option in MHC
-    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON")
-    if (hcSymCommon == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
-
-    # Enable "Generate Harmony System Service Common Files" option in MHC
-    #hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON")
-    #if (hcSymCommon == False):
-     #   Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
-
-    # Enable "Enable System Ports" option in MHC
-    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS")
-    if (hcSymCommon == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True, 1)
-
-    # Enable "Enable System Interrupt" option in MHC
-    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_INT")
-    if (hcSymCommon == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_INT", True, 1)
-
-    # Enable "Enable System DMA" option in MHC
-    hcSymCommon = Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA")
-    if (hcSymCommon == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True, 1)
     
     pl360SymNumInst = pl360Component.createIntegerSymbol("DRV_PL360_NUM_INSTANCES", None)
     pl360SymNumInst.setLabel("Number of Instances")
@@ -399,6 +374,17 @@ def onAttachmentConnected(source, target):
         pl360RXDMAChannel.setValue(rxChannel, 2)
         pl360RXDMAChannel.setVisible(True)
         pl360DMAChannelComment.setVisible(True)
+
+        # Disable SPI interrupts
+        plibIntUsed = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
+        plibIntUsed.clearValue()
+        plibIntUsed.setValue(False, 1)
+
+        # Set SPI baudrate
+        plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        plibBaudrate.clearValue()
+        plibBaudrate.setValue(8000000, 1)
+
   
 def onAttachmentDisconnected(source, target):
     global pl360TXDMAChannel
