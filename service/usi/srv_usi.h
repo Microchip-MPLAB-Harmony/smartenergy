@@ -166,7 +166,7 @@ typedef uintptr_t SRV_USI_HANDLE;
     None.
 */
 
-typedef void ( * SRV_USI_CALLBACK ) ( uintptr_t context, uint8_t *data, uint16_t length );
+typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *data, uint16_t length );
 
 
 // *****************************************************************************

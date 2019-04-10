@@ -7,8 +7,6 @@ uint8_t gSrvUSI${SRV_USI_COMM_API?string}WriteBuffer[SRV_USI${INDEX?string}_WR_B
 const SRV_USI_USART_INTERFACE srvUsi${SRV_USI_COMM_API?string}PlibAPI = {
     .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${SRV_USI_COMM_API?string}_ReadCallbackRegister,
     .read = (USI_USART_PLIB_READ)${SRV_USI_COMM_API?string}_Read,
-    .readIsBusy = (USI_USART_PLIB_READ_IS_BUSY)${SRV_USI_COMM_API?string}_ReadIsBusy,
-    .readCountGet = (USI_USART_PLIB_READ_COUNT_GET)${SRV_USI_COMM_API?string}_ReadCountGet,
     .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)${SRV_USI_COMM_API?string}_WriteCallbackRegister,
     .dmaChannelTx = SYS_DMA_CHANNEL_${SRV_USI_USART_TX_DMA_CHANNEL?string},
     .usartAddressTx = (void *)&(${SRV_USI_COMM_API?string}_REGS->US_THR)

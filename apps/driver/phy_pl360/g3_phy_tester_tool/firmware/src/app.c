@@ -122,10 +122,14 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context 
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
-void APP_USIPhyProtocolEventHandler ( uintptr_t context, uint8_t *data, 
-        uint16_t length )
+void APP_USIPhyProtocolEventHandler ( uint8_t *data, uint16_t length )
 {
+    uint32_t delay;
     
+    SRV_USI_Send_Message( appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, data, length);
+    
+    delay = 0x07FFFFFF;
+    while(delay--);
 }
 
 // *****************************************************************************

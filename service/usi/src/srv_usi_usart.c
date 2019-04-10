@@ -361,7 +361,8 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     return length;
 }
 
-void USI_USART_RegisterCallback( DRV_HANDLE handle, USI_USART_CALLBACK cbFunc )
+void USI_USART_RegisterCallback( DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
+        uintptr_t context)
 {
     USI_USART_OBJ* dObj;
     
@@ -374,6 +375,9 @@ void USI_USART_RegisterCallback( DRV_HANDLE handle, USI_USART_CALLBACK cbFunc )
     
     /* Set callback function */
     dObj->cbFunc = cbFunc;
+    
+    /* Set context related to cbFunc */
+    dObj->context = context;
     
     /* Launch reception */
     dObj->plib->read(&dObj->rcvChar, 1);
@@ -407,7 +411,7 @@ void USI_USART_Tasks ( DRV_HANDLE handle )
     {        
         if (dObj->cbFunc)
         {
-            dObj->cbFunc(pMsg->pMessage, pMsg->length);
+            dObj->cbFunc(pMsg->pMessage, pMsg->length, dObj->context);
         }
         
         /* Remove Message from Queue */

@@ -71,58 +71,11 @@ static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {NULL};
 /* This is the USI callback object for each USI instance. */
 static SRV_USI_CALLBACK gSrvUSICallbackOBJ[SRV_USI_INSTANCES_NUMBER][10] = {NULL};
 
-typedef struct
-{
-    uint8_t *pData;
-    uint16_t length;
-    uint8_t content;
-}usi_msg_t;
-
-static usi_msg_t usi_msg[8] = {0};
-static uint8_t msg_idx = 0;
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
- <#if SRV_USI_USART_API == true>  
-static void _SRV_USART_Callback_Handle ( uint8_t *data, uint16_t length ) 
-{
-    if (length) 
-    {
-        /* new received message */
-        usi_msg[msg_idx].pData = data;
-        usi_msg[msg_idx].length = length;
-        usi_msg[msg_idx].content = *data;
-        msg_idx++;
-        msg_idx &= 0x07;
-        
-    }
-}
-</#if>
-
-static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
-{
-    /* This function returns the same handle if the handle is valid. Returns 
-       SRV_USI_HANDLE_INVALID otherwise. */
-
-    uint8_t srvIndex;
-
-    if((handle != SRV_USI_HANDLE_INVALID) && (handle != 0))
-    {
-        /* Look for the handle */
-        for (srvIndex = 0; srvIndex < SRV_USI_INSTANCES_NUMBER; srvIndex++)
-        {
-            if (handle == (SRV_USI_HANDLE)&gSrvUSIOBJ[srvIndex]) {
-                return handle;
-            }
-        }
-    }
-
-    return(SRV_USI_HANDLE_INVALID);
-}
-
 static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTOCOL_ID protocol)
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
@@ -218,6 +171,111 @@ static PCRC_CRC_TYPE _SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protoco
 
     return crcType;    
 }
+
+static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
+{
+    /* This function returns the same handle if the handle is valid. Returns 
+       SRV_USI_HANDLE_INVALID otherwise. */
+
+    uint8_t srvIndex;
+
+    if((handle != SRV_USI_HANDLE_INVALID) && (handle != 0))
+    {
+        /* Look for the handle */
+        for (srvIndex = 0; srvIndex < SRV_USI_INSTANCES_NUMBER; srvIndex++)
+        {
+            if (handle == (SRV_USI_HANDLE)&gSrvUSIOBJ[srvIndex]) {
+                return handle;
+            }
+        }
+    }
+
+    return(SRV_USI_HANDLE_INVALID);
+}
+
+ <#if SRV_USI_USART_API == true>  
+static void _SRV_USART_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) 
+{    
+    SRV_USI_OBJ* dObj;
+    uint32_t crcGetValue;
+    uint32_t crcRcvValue;
+    SRV_USI_PROTOCOL_ID protocol;
+    PCRC_CRC_TYPE crcType;
+    size_t dataLength;
+    SRV_USI_CALLBACK_INDEX cbIndex;
+    
+    /* Check valid context : the driver handle */
+    if (_SRV_USI_HandleValidate((SRV_USI_HANDLE)context) == SRV_USI_HANDLE_INVALID)
+    {
+        return;
+    }
+
+    dObj = (SRV_USI_OBJ*)context;
+    
+    if (length) 
+    {      
+        /* New received message */
+        /* Extract Protocol */
+        protocol = USI_TYPE_PROTOCOL(*(pData + 1));
+        
+        /* Get CRC type from Protocol */
+        crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
+        
+        /* Extract data length */
+        dataLength = USI_LEN_PROTOCOL(*pData, *(pData + 1));
+                
+        /* Add extended length */
+        if ((protocol == SRV_USI_PROT_ID_ADP_G3) ||
+            (protocol == SRV_USI_PROT_ID_COORD_G3) ||
+            (protocol == SRV_USI_PROT_ID_PRIME_API))
+        {
+            dataLength += *(pData + 2) & USI_XLEN_MSK;
+        }
+
+        /* Check invalid length : remove Header and CRC bytes */
+        if (dataLength != (length - 2 - (1 << crcType)))
+        {
+            /* Discard message */
+            return;
+        }
+        
+        /* Check CRC */
+        SRV_PCRC_SetInitialValue(0);
+        crcGetValue = SRV_PCRC_GetValue(pData, length - (1<<crcType), 
+                PCRC_HT_USI, crcType);
+ 
+        if (crcType == PCRC_CRC8)
+        {
+            crcRcvValue = (uint32_t)(*(pData + length - 1));
+        } 
+        else if (crcType == PCRC_CRC16)
+        {
+            crcRcvValue = (((uint32_t)(*(pData + length - 2))) << 8) + 
+                          (uint32_t)(*(pData + length - 1));
+        }
+        else
+        {            
+            crcRcvValue = (((uint32_t)(*(pData + length - 4))) << 24) + 
+                          (((uint32_t)(*(pData + length - 3))) << 16) + 
+                          (((uint32_t)(*(pData + length - 2))) << 8) + 
+                          (uint32_t)(*(pData + length - 1));
+        }
+        
+        if (crcGetValue != crcRcvValue) 
+        {
+            /* Discard message */
+            return;            
+        }
+    
+        /* Launch USI callback */
+        cbIndex = _SRV_USI_GetCallbackIndexFromProtocol(protocol);
+        if (dObj->callback[cbIndex])
+        {
+            dObj->callback[cbIndex](pData + 2, dataLength);
+        }        
+    }
+}
+</#if>
 
 static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
                                       uint16_t length, uint8_t *pEndData )
@@ -409,7 +467,8 @@ SRV_USI_HANDLE SRV_USI_Open(
         }
         
         /* Register callback and launch reception transfer */
-        USI_USART_RegisterCallback(dObj->apiDriver, _SRV_USART_Callback_Handle);
+        USI_USART_RegisterCallback(dObj->apiDriver, _SRV_USART_Callback_Handle, 
+                (uintptr_t)dObj);
     }
     
 </#if>
@@ -477,7 +536,6 @@ if (dObj->usiInterfaceApi == SRV_USI_TCP_API)
     }
     
 </#if>
-
     /* De-Allocate the service object */
     dObj->inUse = false;
 

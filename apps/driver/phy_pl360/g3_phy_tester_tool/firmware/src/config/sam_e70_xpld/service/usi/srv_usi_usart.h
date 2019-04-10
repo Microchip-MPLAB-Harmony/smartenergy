@@ -73,7 +73,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-typedef void ( * USI_USART_CALLBACK ) ( uint8_t *data, uint16_t length ); 
+typedef void ( * USI_USART_CALLBACK ) ( uint8_t *data, uint16_t length, uintptr_t context ); 
 
 typedef struct
 {
@@ -120,6 +120,7 @@ typedef struct
     USI_USART_MSG*                           pRcvMsg;
     USI_USART_MSG_QUEUE*                     pMsgQueue;
     USI_USART_STATE                          status;
+    uintptr_t                                context;
 } USI_USART_OBJ;
         
         
@@ -129,7 +130,7 @@ void USI_USART_Tasks (SYS_MODULE_OBJ object);
 
 size_t USI_USART_Write(DRV_HANDLE handle, size_t length);
 
-void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc);
+void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc, uintptr_t context);
 
 void USI_USART_Flush(DRV_HANDLE handle);
 

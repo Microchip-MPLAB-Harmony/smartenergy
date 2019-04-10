@@ -99,8 +99,8 @@
           <Name dnOrder="1">initialization.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">E166BD0C0A1AD70B122C90E06ACDDC3B</GeneratedChecksum>
-          <UserChecksum dnOrder="5">E166BD0C0A1AD70B122C90E06ACDDC3B</UserChecksum>
+          <GeneratedChecksum dnOrder="4">1C979A6E5A55F6FA4DF2C55535B5F0DB</GeneratedChecksum>
+          <UserChecksum dnOrder="5">1C979A6E5A55F6FA4DF2C55535B5F0DB</UserChecksum>
         </File>
         <File dnOrder="12">
           <Type dnOrder="0">SOURCE</Type>
@@ -203,8 +203,8 @@
           <Name dnOrder="1">srv_usi.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">E3DD860E996B0A94E3534B916D22312A</GeneratedChecksum>
-          <UserChecksum dnOrder="5">E3DD860E996B0A94E3534B916D22312A</UserChecksum>
+          <GeneratedChecksum dnOrder="4">0D9D24FAF3577D43D9F6381AEE973A8A</GeneratedChecksum>
+          <UserChecksum dnOrder="5">0D9D24FAF3577D43D9F6381AEE973A8A</UserChecksum>
         </File>
         <File dnOrder="25">
           <Type dnOrder="0">SOURCE</Type>
@@ -219,16 +219,16 @@
           <Name dnOrder="1">srv_usi_usart.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">E049C4E537857AF8F9B8E3B27AABE1B9</GeneratedChecksum>
-          <UserChecksum dnOrder="5">E049C4E537857AF8F9B8E3B27AABE1B9</UserChecksum>
+          <GeneratedChecksum dnOrder="4">204323D14BA78AF3A13A3977DB9AE8B3</GeneratedChecksum>
+          <UserChecksum dnOrder="5">204323D14BA78AF3A13A3977DB9AE8B3</UserChecksum>
         </File>
         <File dnOrder="27">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">srv_usi_usart.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">461D7C48BC9061902558A66241E39D46</GeneratedChecksum>
-          <UserChecksum dnOrder="5">461D7C48BC9061902558A66241E39D46</UserChecksum>
+          <GeneratedChecksum dnOrder="4">B491674231BA534E321DF018EEF536F5</GeneratedChecksum>
+          <UserChecksum dnOrder="5">B491674231BA534E321DF018EEF536F5</UserChecksum>
         </File>
         <File dnOrder="28">
           <Type dnOrder="0">SOURCE</Type>
@@ -779,16 +779,16 @@
           <Name dnOrder="1">srv_usi.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">88CC3DA79967A2081A5B6112CBF4BE6A</GeneratedChecksum>
-          <UserChecksum dnOrder="5">88CC3DA79967A2081A5B6112CBF4BE6A</UserChecksum>
+          <GeneratedChecksum dnOrder="4">50AD51FE27BB59B224853193A9C6978F</GeneratedChecksum>
+          <UserChecksum dnOrder="5">50AD51FE27BB59B224853193A9C6978F</UserChecksum>
         </File>
         <File dnOrder="97">
           <Type dnOrder="0">HEADER</Type>
           <Name dnOrder="1">srv_usi_definitions.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">54D7F365EEF64DFD328F0E730882B6CE</GeneratedChecksum>
-          <UserChecksum dnOrder="5">54D7F365EEF64DFD328F0E730882B6CE</UserChecksum>
+          <GeneratedChecksum dnOrder="4">B17B0622A35D0A1C649932A12BDE29AC</GeneratedChecksum>
+          <UserChecksum dnOrder="5">B17B0622A35D0A1C649932A12BDE29AC</UserChecksum>
         </File>
         <File dnOrder="98">
           <Type dnOrder="0">HEADER</Type>

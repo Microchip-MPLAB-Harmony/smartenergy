@@ -206,12 +206,9 @@ typedef enum
 // *****************************************************************************
 /* USART PLIB API Set needed by USI service */
 
-typedef void (* USI_USART_PLIB_CALLBACK)( uintptr_t context);
-
+typedef void(* USI_USART_PLIB_CALLBACK)( uintptr_t context);
 typedef void(*USI_USART_PLIB_READ_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(*USI_USART_PLIB_READ)(void *buffer, const size_t size);
-typedef bool(*USI_USART_PLIB_READ_IS_BUSY)(void);
-typedef size_t(*USI_USART_PLIB_READ_COUNT_GET)(void);
 typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
 
 // *****************************************************************************
@@ -232,9 +229,6 @@ typedef struct
 {
     USI_USART_PLIB_READ_CALLBACK_REG readCallbackRegister;
     USI_USART_PLIB_READ read;
-    USI_USART_PLIB_READ_IS_BUSY readIsBusy;
-    USI_USART_PLIB_READ_COUNT_GET readCountGet;
-
     USI_USART_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
     SYS_DMA_CHANNEL dmaChannelTx;
     void *usartAddressTx;
