@@ -53,10 +53,10 @@ void SPI0_Initialize ( void )
     SPI0_REGS->SPI_CR = SPI_CR_SPIDIS_Msk | SPI_CR_SWRST_Msk;
 
     /* Enable Master mode, select particular NPCS line for chip select and disable mode fault detection */
-    SPI0_REGS->SPI_MR =  SPI_MR_MSTR_Msk | SPI_MR_PCS_NPCS1 | SPI_MR_MODFDIS_Msk;
+    SPI0_REGS->SPI_MR =  SPI_MR_MSTR_Msk | SPI_MR_PCS_NPCS0 | SPI_MR_MODFDIS_Msk;
 
     /* Set up clock Polarity, data phase, Communication Width and Baud Rate */
-    SPI0_REGS->SPI_CSR[1] = SPI_CSR_CPOL_IDLE_LOW | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_BITS_8_BIT | SPI_CSR_SCBR(18);
+    SPI0_REGS->SPI_CSR[0] = SPI_CSR_CPOL_IDLE_LOW | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_BITS_8_BIT | SPI_CSR_SCBR(18);
 
 
     /* Enable SPI0 */
@@ -85,7 +85,7 @@ bool SPI0_WriteRead(void* pTransmitData, size_t txSize, void* pReceiveData, size
             rxSize = 0;
         }
 
-        dataBits = SPI0_REGS->SPI_CSR[1] & SPI_CSR_BITS_Msk;
+        dataBits = SPI0_REGS->SPI_CSR[0] & SPI_CSR_BITS_Msk;
 
         /* Flush out any unread data in SPI read buffer from the previous transfer */
         receivedData = (SPI0_REGS->SPI_RDR & SPI_RDR_RD_Msk) >> SPI_RDR_RD_Pos;
@@ -193,7 +193,7 @@ bool SPI0_TransferSetup (SPI_TRANSFER_SETUP * setup, uint32_t spiSourceClock )
         scbr = 255;
     }
 
-    SPI0_REGS->SPI_CSR[1]= (uint32_t)setup->clockPolarity | (uint32_t)setup->clockPhase | (uint32_t)setup->dataBits | SPI_CSR_SCBR(scbr);
+    SPI0_REGS->SPI_CSR[0]= (uint32_t)setup->clockPolarity | (uint32_t)setup->clockPhase | (uint32_t)setup->dataBits | SPI_CSR_SCBR(scbr);
 
     return true;
 }

@@ -54,31 +54,36 @@
 
 APP_DATA appData;
 
-#define APP_TX_DELAY_US           1000000 /* 1 second */
-
-#define div_ceil(a, b)            (((a) + (b) - 1) / (b))
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
 
-void Timer1_Callback ( uintptr_t context )
+void Timer1_Callback(uintptr_t context)
 {
+    /* Avoid warning */
+    (void)context;
+    
     /* Status Led Toogle */
     LED_Toggle();
 }
 
-void Timer2_Callback ( uintptr_t context )
+void Timer2_Callback(uintptr_t context)
 {
+    /* Avoid warning */
+    (void)context;
+    
     /* RX Led Signalling */
     LED_On();
 }
 
 static void APP_PLCExceptionCb(DRV_PL360_EXCEPTION exceptionObj, 
-        uintptr_t context )
+        uintptr_t context)
 {
+    /* Avoid warning */
+    (void)context;
+    
     switch (exceptionObj) 
     {
         case DRV_PL360_EXCEPTION_UNEXPECTED_KEY:
@@ -100,21 +105,46 @@ static void APP_PLCExceptionCb(DRV_PL360_EXCEPTION exceptionObj,
 	appData.pl360_exception = true;
 }
 
-static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context )
+static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
 {   
-    /* Shows Received PLC message */
+    /* Avoid warning */
+    (void)context;
+    
+    /* Send Received PLC message through USI */
 	if (indObj->dataLength) {
+        size_t length;
+        
         /* Start Timer: LED blinking for each received message */
         LED_Off();
         appData.tmr2Handle = SYS_TIME_CallbackRegisterMS(Timer2_Callback, 0, 
                 LED_BLINK_PLC_MSG_MS, SYS_TIME_SINGLE);
         
-        /* Copy data to Application buffer, excluding CRC info */
-        memcpy(appData.pDataRx, indObj->pReceivedData, indObj->dataLength - 2);
-
-        /* Show received message */
-        appData.pDataRx[indObj->dataLength - 2] = 0;
+        /* Add command */
+        appData.pSerialData[0] = APP_CMD_PHY_RECEIVE_MSG;
+        /* Add received message */
+        length = SRV_PSERIAL_SerialRxMessage(&appData.pSerialData[1], indObj);
+        /* Send through USI */
+        SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
+                appData.pSerialData, length + 1);
     }
+}
+
+static void APP_PLCDataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)
+{   
+    size_t length;
+    
+    /* Avoid warning */
+    (void)context;
+    
+    /* Send Received PLC message through USI */
+    /* Add command */
+    appData.pSerialData[0] = APP_CMD_PHY_SEND_MSG_RSP;
+    /* Add received message */
+    length = SRV_PSERIAL_SerialCfmMessage(&appData.pSerialData[1], cfmObj);
+    /* Send through USI */
+    SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
+            appData.pSerialData, length + 1);
+
 }
 
 // *****************************************************************************
@@ -122,14 +152,76 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context 
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
-void APP_USIPhyProtocolEventHandler ( uint8_t *data, uint16_t length )
+void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 {
-    uint32_t delay;
-    
-    SRV_USI_Send_Message( appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, data, length);
-    
-    delay = 0x07FFFFFF;
-    while(delay--);
+    /* Message received from PLC Tool - USART */
+    uint8_t *pDataMsg;
+	uint8_t command;
+
+	/* Protection for invalid us_length */
+	if (!length) 
+    {
+		return;
+	}
+
+	/* Process received message */
+    pDataMsg = pData;
+	command = *pDataMsg++;
+
+	switch (command) {
+        case APP_CMD_PHY_GET_CFG:
+        {
+            /* Extract PIB information */
+            SRV_PSERIAL_ParseGetPIB(&appData.plcPIB, pDataMsg);
+
+            if (DRV_PL360_PIBGet(appData.drvPl360Handle, &appData.plcPIB))
+            {
+                size_t length;
+                
+                /* Add command */
+                appData.pSerialData[0] = APP_CMD_PHY_GET_CFG_RSP;
+                /* Serialize PIB data */
+                length = SRV_PSERIAL_SerialGetPIB(&appData.pSerialData[1], &appData.plcPIB);
+                /* Send through USI */
+                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
+                        appData.pSerialData, length + 1);
+            }
+        }
+        break;
+
+        case APP_CMD_PHY_SET_CFG:
+        {            
+            /* Extract PIB information */
+            SRV_PSERIAL_ParseSetPIB(&appData.plcPIB, pDataMsg);
+
+            if (DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB))
+            {
+                size_t length;
+                
+                /* Add command */
+                appData.pSerialData[0] = APP_CMD_PHY_SET_CFG_RSP;
+                /* Serialize PIB data */
+                length = SRV_PSERIAL_SerialSetPIB(&appData.pSerialData[1], &appData.plcPIB);
+                /* Send through USI */
+                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
+                        appData.pSerialData, length + 1);
+            }
+        }
+        break;
+
+        case APP_CMD_PHY_SEND_MSG:
+        {
+            /* Capture and parse data from USI */
+            SRV_PSERIAL_ParseTxMessage(&appData.plcTxObj, pData);
+            
+            /* Send Message through PLC */
+            DRV_PL360_Send(appData.drvPl360Handle, &appData.plcTxObj);
+        }
+        break;
+
+        default:
+            break;
+    }    
 }
 
 // *****************************************************************************
@@ -141,18 +233,18 @@ void APP_USIPhyProtocolEventHandler ( uint8_t *data, uint16_t length )
 
 /*******************************************************************************
   Function:
-    void APP_Initialize ( void )
+    void APP_Initialize(void)
 
   Remarks:
     See prototype in app.h.
  */
 
-void APP_Initialize ( void )
+void APP_Initialize(void)
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_IDLE;
     
-    /* Init Timer handler */
+    /* Initialize Timer handler */
     appData.tmr1Handle = SYS_TIME_HANDLE_INVALID;
     appData.tmr2Handle = SYS_TIME_HANDLE_INVALID;
     
@@ -164,24 +256,25 @@ void APP_Initialize ( void )
     
     appData.state = APP_STATE_INIT;
     
+    /* Initialize PLC objects */
+    appData.plcTxObj.pTransmitData = appData.pPLCDataTx;
+    appData.plcRxObj.pReceivedData = appData.pPLCDataRx;
+    appData.plcPIB.pData = appData.pPLCDataPIB;
+    
 }
 
 
 /******************************************************************************
   Function:
-    void APP_Tasks ( void )
+    void APP_Tasks(void)
 
   Remarks:
     See prototype in app.h.
  */
-
-                    
-//char usart_Msg[] = "*** USI init ***\r\n";
-char usart_Msg[] = {0x00,0x01,0x0C,0x04};
-void APP_Tasks ( void )
+void APP_Tasks(void)
 {
     /* Check the application's current state. */
-    switch ( appData.state )
+    switch(appData.state)
     {
         /* Application's initial state. */
         case APP_STATE_INIT:
@@ -214,6 +307,8 @@ void APP_Tasks ( void )
                         APP_PLCExceptionCb, DRV_PL360_INDEX);
                 DRV_PL360_DataIndCallbackRegister(appData.drvPl360Handle, 
                         APP_PLCDataIndCb, DRV_PL360_INDEX);
+                DRV_PL360_DataCfmCallbackRegister(appData.drvPl360Handle, 
+                        APP_PLCDataCfmCb, DRV_PL360_INDEX);
                 
                 /* Open USI Service */
                 appData.srvUSIHandle = SRV_USI_Open(SRV_USI_INDEX_0);
@@ -231,9 +326,6 @@ void APP_Tasks ( void )
 
                     /* Enable Led */
                     LED_On();
-        
-                    SRV_USI_Send_Message( appData.srvUSIHandle, 
-                    SRV_USI_PROT_ID_PHY, (uint8_t *)usart_Msg, sizeof(usart_Msg));
 
                     /* Set Application to next state */
                     appData.state = APP_STATE_READY;

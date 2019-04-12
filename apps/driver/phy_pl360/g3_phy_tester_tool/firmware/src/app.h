@@ -14,7 +14,7 @@
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
     "APP_Initialize" and "APP_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_STATES" definition).  Both
+    internally by the application (such as the "APP_STATE" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
@@ -47,10 +47,12 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define APP_DATA_BUFFER_SIZE      512
+#define APP_SERIAL_DATA_BUFFER_SIZE   512
+#define APP_PLC_DATA_BUFFER_SIZE      512
+#define APP_PLC_PIB_BUFFER_SIZE       256
     
-#define LED_BLINK_RATE_MS         500
-#define LED_BLINK_PLC_MSG_MS      100
+#define LED_BLINK_RATE_MS             500
+#define LED_BLINK_PLC_MSG_MS          100
     
 // *****************************************************************************
 /* Application states
@@ -69,10 +71,39 @@ typedef enum
     APP_STATE_IDLE=0,
     APP_STATE_INIT,
     APP_STATE_REGISTER,
+    APP_STATE_SEND_PLC_MSG,
+    APP_STATE_SEND_USI_MSG,
     APP_STATE_READY,
     APP_STATE_ERROR
 
-} APP_STATES;
+} APP_STATE;
+
+/* PLC Phy Tester Tool command
+
+  Summary:
+    PLC Commands enumeration
+
+  Description:
+    This enumeration defines the PLC commands used by PLC Phy Tester Tool
+    provided by Microchip.
+*/
+typedef enum
+{
+    APP_CMD_PHY_GET_CFG = 0,        /* Get data configuration request */
+    APP_CMD_PHY_GET_CFG_RSP,        /* Get data configuration response */
+    APP_CMD_PHY_SET_CFG,            /* Set data configuration request */
+    APP_CMD_PHY_SET_CFG_RSP,        /* Set data configuration response */
+    APP_CMD_PHY_CMD_CFG,            /* Get command request */
+    APP_CMD_PHY_CMD_CFG_RSP,        /* Get command response */
+    APP_CMD_PHY_SEND_MSG,           /* Send message data */
+    APP_CMD_PHY_SEND_MSG_RSP,       /* Send message data response */
+    APP_CMD_PHY_RECEIVE_MSG,        /* Receive message data */
+    APP_CMD_PHY_NOISE_REQ,          /* Noise capture request */
+    APP_CMD_PHY_NOISE_RSP,          /* Noise capture response */
+    APP_CMD_PHY_GET_CFG_LIST,       /* Get parameter list */
+    APP_CMD_PHY_GET_CFG_LIST_RSP,   /* Parameter list response */
+	APP_CMD_PHY_RESET_PHY_LAYER     /* Reset PHY layer */
+} APP_COMMAND;
 
 // *****************************************************************************
 /* Application Data
@@ -94,7 +125,7 @@ typedef struct
     
     SYS_TIME_HANDLE tmr2Handle; 
     
-    APP_STATES state;
+    APP_STATE state;
     
     DRV_HANDLE drvPl360Handle;
     
@@ -110,9 +141,21 @@ typedef struct
     
     uint32_t pl360_err_unknow;
     
-    uint8_t pDataTx[APP_DATA_BUFFER_SIZE];
+    uint8_t pPLCDataTx[APP_PLC_DATA_BUFFER_SIZE];
     
-    uint8_t pDataRx[APP_DATA_BUFFER_SIZE];
+    uint8_t pPLCDataRx[APP_PLC_DATA_BUFFER_SIZE];
+    
+    uint8_t pPLCDataPIB[APP_PLC_PIB_BUFFER_SIZE];
+    
+    uint8_t pSerialData[APP_SERIAL_DATA_BUFFER_SIZE];
+    
+    DRV_PL360_TRANSMISSION_OBJ plcTxObj;
+    
+    DRV_PL360_TRANSMISSION_CFM_OBJ plcTxCfmObj;
+    
+    DRV_PL360_RECEPTION_OBJ plcRxObj;
+    
+    DRV_PL360_PIB_OBJ plcPIB;
 
 } APP_DATA;
 

@@ -75,10 +75,10 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_1,
+    .dmaChannelTx = SYS_DMA_CHANNEL_2,
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_1,
 
     /* SPI Transmit Register */
     .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
@@ -154,7 +154,7 @@ const SRV_USI_USART_INTERFACE srvUsiUSART1PlibAPI = {
     .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)USART1_ReadCallbackRegister,
     .read = (USI_USART_PLIB_READ)USART1_Read,
     .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
-    .dmaChannelTx = SYS_DMA_CHANNEL_6,
+    .dmaChannelTx = SYS_DMA_CHANNEL_0,
     .usartAddressTx = (void *)&(USART1_REGS->US_THR)
 };
 
