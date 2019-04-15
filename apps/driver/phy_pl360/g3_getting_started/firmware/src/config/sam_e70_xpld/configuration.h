@@ -124,7 +124,13 @@ extern "C" {
 #define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
 #define DRV_PL360_PLC_PROFILE                   0
 #define DRV_PL360_SECURE                        false
-
+/* PL360 Driver Identification */
+#define DRV_PL360_HOST_PRODUCT                  0x3601
+#define DRV_PL360_HOST_VERSION                  0x36010300
+#define DRV_PL360_HOST_PHY                      0x36010103
+#define DRV_PL360_HOST_DESC                     "ATSAME70Q21B"
+#define DRV_PL360_HOST_MODEL                    3
+#define DRV_PL360_HOST_BAND                     0x0
 
 
 // *****************************************************************************

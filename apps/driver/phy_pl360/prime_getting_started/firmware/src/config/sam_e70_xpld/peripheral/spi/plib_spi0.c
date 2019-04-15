@@ -56,7 +56,7 @@ void SPI0_Initialize ( void )
     SPI0_REGS->SPI_MR =  SPI_MR_MSTR_Msk | SPI_MR_PCS_NPCS1 | SPI_MR_MODFDIS_Msk;
 
     /* Set up clock Polarity, data phase, Communication Width and Baud Rate */
-    SPI0_REGS->SPI_CSR[1] = SPI_CSR_CPOL_IDLE_LOW | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_BITS_8_BIT | SPI_CSR_SCBR(150);
+    SPI0_REGS->SPI_CSR[1] = SPI_CSR_CPOL_IDLE_LOW | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_BITS_8_BIT | SPI_CSR_SCBR(18);
 
 
     /* Enable SPI0 */

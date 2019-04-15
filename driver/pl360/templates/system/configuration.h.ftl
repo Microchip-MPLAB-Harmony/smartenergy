@@ -12,3 +12,24 @@
 #define DRV_PL360_BIN_SIZE                      0x${DRV_PL360_PLC_BIN_SIZE?string}
 </#if>
 #define DRV_PL360_SECURE                        ${DRV_PL360_SECURE_MODE?string}
+/* PL360 Driver Identification */
+<#if DRV_PL360_PLC_PROFILE == "0">
+#define DRV_PL360_HOST_PRODUCT                  0x3601
+#define DRV_PL360_HOST_VERSION                  0x36010300
+#define DRV_PL360_HOST_PHY                      0x36010103
+<#elseif DRV_PL360_PLC_PROFILE == "1">
+#define DRV_PL360_HOST_PRODUCT                  0x3601
+#define DRV_PL360_HOST_VERSION                  0x36010300
+#define DRV_PL360_HOST_PHY                      0x36040103
+<#elseif DRV_PL360_PLC_PROFILE == "2">
+#define DRV_PL360_HOST_PRODUCT                  0x3601
+#define DRV_PL360_HOST_VERSION                  0x36010300
+#define DRV_PL360_HOST_PHY                      0x36020103
+<#elseif DRV_PL360_PLC_PROFILE == "4">
+#define DRV_PL360_HOST_PRODUCT                  0x3600
+#define DRV_PL360_HOST_VERSION                  0x36000300
+#define DRV_PL360_HOST_PHY                      0x36000003
+</#if>
+#define DRV_PL360_HOST_DESC                     "${__PROCESSOR?string}"
+#define DRV_PL360_HOST_MODEL                    3
+#define DRV_PL360_HOST_BAND                     0x${DRV_PL360_PLC_PROFILE?string}

@@ -78,7 +78,7 @@ typedef enum {
 #define TX_MODE_CANCEL                         (1 << 1)
 /* TX Mode: SYNCP Continuous transmission */
 #define TX_MODE_PREAMBLE_CONTINUOUS            (1 << 2)
-/* TX Mode: Syimbols Continuous transmission */
+/* TX Mode: Symbols Continuous transmission */
 #define TX_MODE_SYMBOLS_CONTINUOUS             (1 << 3)
 
 /* Impedance Configuration */
@@ -88,6 +88,12 @@ typedef enum {
   
 /* PRIME PLC Information Base (PIBs) */
 typedef enum {
+  PL360_ID_HOST_DESCRIPTION_ID = 0x0100,
+  PL360_ID_HOST_MODEL_ID  = 0x010A,
+  PL360_ID_HOST_PHY_ID = 0x010C,
+  PL360_ID_HOST_PRODUCT_ID = 0x0110,
+  PL360_ID_HOST_VERSION_ID = 0x0112,
+  PL360_ID_HOST_BAND_ID = 0x0116,
   PL360_ID_TIME_REF_ID = 0x0200,
   PL360_ID_PRODID = 0x4000,
   PL360_ID_MODEL,

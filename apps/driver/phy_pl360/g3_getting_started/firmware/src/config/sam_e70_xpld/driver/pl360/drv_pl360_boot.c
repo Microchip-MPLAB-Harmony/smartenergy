@@ -88,14 +88,6 @@ static void _firmware_upload_task(void)
 
     /* Write fragment data */
     sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_WRITE_BUF, progAddr, fragSize, pData, NULL);
-    
-    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_READ_BUF, progAddr, fragSize, NULL, dbgData);
-    
-    if (memcmp(pData, dbgData, fragSize) != 0)
-    {
-        printf("ERROR\r\n");
-        while(1);
-    }
 
     /* Update counters */
     sDrvPL360BootInfo.pendingLength -= (fragSize - padding);
@@ -143,9 +135,6 @@ static void _disable_boot_cmd(void)
 {
     uint32_t reg_value;
     uint8_t cmd_value[4];
-    
-    /* Configure 8 bits transfer */
-    sDrvPL360HalObj->setup(false);
     
     /* Disable CPU Wait */
     reg_value = PL360_MISCR_PPM_CALIB_OFF | PL360_MISCR_MEM_96_96_CFG | PL360_MISCR_EN_ACCESS_ERROR | PL360_MISCR_SET_GPIO_12_ZC;

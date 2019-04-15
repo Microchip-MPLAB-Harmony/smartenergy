@@ -480,7 +480,7 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             _spi_read_command(STATUS_ID, pibObj->pData, pibObj->length);
             return true;
         }
-        else
+        else if (pibObj->id & DRV_PL360_REG_ID_MASK)
         {
             uint8_t *pDst;
             uint32_t address;
@@ -528,6 +528,48 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             /* Reset length of the register response */
             gPl360Obj->evRegRspLength = 0;
 
+            return true;
+        } 
+        else 
+        {
+            uint32_t value;
+            
+            /* Get HOST information */
+            switch(pibObj->id)
+            {
+                case PL360_ID_HOST_DESCRIPTION_ID:
+                    memcpy(pibObj->pData, DRV_PL360_HOST_DESC, 10);
+                    break;
+                    
+                case PL360_ID_HOST_MODEL_ID:
+                    value = DRV_PL360_HOST_MODEL;
+                    memcpy(pibObj->pData, (uint8_t*)&value, 2);
+                    break;
+                    
+                case PL360_ID_HOST_PHY_ID:
+                    value = DRV_PL360_HOST_PHY;
+                    memcpy(pibObj->pData, (uint8_t*)&value, 4);
+                    break;
+                    
+                case PL360_ID_HOST_PRODUCT_ID:
+                    value = DRV_PL360_HOST_PRODUCT;
+                    memcpy(pibObj->pData, (uint8_t*)&value, 2);
+                    break;
+                    
+                case PL360_ID_HOST_VERSION_ID:
+                    value = DRV_PL360_HOST_VERSION;
+                    memcpy(pibObj->pData, (uint8_t*)&value, 4);
+                    break;
+                    
+                case PL360_ID_HOST_BAND_ID:
+                    value = DRV_PL360_HOST_BAND;
+                    memcpy(pibObj->pData, (uint8_t*)&value, 1);
+                    break;
+                    
+                default:
+                    return false;
+            }
+            
             return true;
         }
     }

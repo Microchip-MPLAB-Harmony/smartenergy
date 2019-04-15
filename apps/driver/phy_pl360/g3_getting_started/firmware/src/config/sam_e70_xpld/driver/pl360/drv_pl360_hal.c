@@ -106,6 +106,9 @@ void drv_pl360_hal_init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
 void drv_pl360_hal_setup(bool set16Bits)
 {
     SPI_TRANSFER_SETUP spiPlibSetup;
+    
+    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
         
     if (set16Bits) 
     {

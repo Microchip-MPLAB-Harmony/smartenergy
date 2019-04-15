@@ -104,7 +104,7 @@ SYS_MODULE_OBJ DRV_PL360_Initialize(
 
     /* HAL init */
     gDrvPL360Obj.pl360Hal->init((DRV_PL360_PLIB_INTERFACE *)pl360Init->pl360Hal->pl360Plib);
-    
+
     /* Update status */
     gDrvPL360Obj.status                = SYS_STATUS_BUSY;
 
