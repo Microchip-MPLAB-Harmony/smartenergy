@@ -39,6 +39,14 @@ def instantiateComponent(usiComponentCommon):
     
     Log.writeInfoMessage("Loading PLC USI Common Service")
 
+    res = Database.activateComponents(["HarmonyCore"])
+
+    # Enable "Generate Harmony Driver Common Files" option in MHC
+    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+
+    # Enable "Generate Harmony System Service Common Files" option in MHC
+    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+
     ############################################################################
     #### Code Generation ####
     ############################################################################

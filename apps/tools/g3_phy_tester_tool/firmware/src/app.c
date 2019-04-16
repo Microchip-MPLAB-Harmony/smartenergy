@@ -119,13 +119,11 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
         appData.tmr2Handle = SYS_TIME_CallbackRegisterMS(Timer2_Callback, 0, 
                 LED_BLINK_PLC_MSG_MS, SYS_TIME_SINGLE);
         
-        /* Add command */
-        appData.pSerialData[0] = APP_CMD_PHY_RECEIVE_MSG;
         /* Add received message */
-        length = SRV_PSERIAL_SerialRxMessage(&appData.pSerialData[1], indObj);
+        length = SRV_PSERIAL_SerialRxMessage(appData.pSerialData, indObj);
         /* Send through USI */
         SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-                appData.pSerialData, length + 1);
+                appData.pSerialData, length);
     }
 }
 
@@ -136,14 +134,11 @@ static void APP_PLCDataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t c
     /* Avoid warning */
     (void)context;
     
-    /* Send Received PLC message through USI */
-    /* Add command */
-    appData.pSerialData[0] = APP_CMD_PHY_SEND_MSG_RSP;
     /* Add received message */
-    length = SRV_PSERIAL_SerialCfmMessage(&appData.pSerialData[1], cfmObj);
+    length = SRV_PSERIAL_SerialCfmMessage(appData.pSerialData, cfmObj);
     /* Send through USI */
     SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-            appData.pSerialData, length + 1);
+            appData.pSerialData, length);
 
 }
 
@@ -155,7 +150,6 @@ static void APP_PLCDataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t c
 void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 {
     /* Message received from PLC Tool - USART */
-    uint8_t *pDataMsg;
 	uint8_t command;
 
 	/* Protection for invalid us_length */
@@ -165,54 +159,49 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 	}
 
 	/* Process received message */
-    pDataMsg = pData;
-	command = *pDataMsg++;
+	command = SRV_PSERIAL_GetCommand(pData);
 
 	switch (command) {
-        case APP_CMD_PHY_GET_CFG:
+        case SRV_PSERIAL_CMD_PHY_GET_CFG:
         {
             /* Extract PIB information */
-            SRV_PSERIAL_ParseGetPIB(&appData.plcPIB, pDataMsg);
+            SRV_PSERIAL_ParseGetPIB(&appData.plcPIB, pData);
 
             if (DRV_PL360_PIBGet(appData.drvPl360Handle, &appData.plcPIB))
             {
                 size_t length;
                 
-                /* Add command */
-                appData.pSerialData[0] = APP_CMD_PHY_GET_CFG_RSP;
                 /* Serialize PIB data */
-                length = SRV_PSERIAL_SerialGetPIB(&appData.pSerialData[1], &appData.plcPIB);
+                length = SRV_PSERIAL_SerialGetPIB(appData.pSerialData, &appData.plcPIB);
                 /* Send through USI */
                 SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-                        appData.pSerialData, length + 1);
+                        appData.pSerialData, length);
             }
         }
         break;
 
-        case APP_CMD_PHY_SET_CFG:
+        case SRV_PSERIAL_CMD_PHY_SET_CFG:
         {            
             /* Extract PIB information */
-            SRV_PSERIAL_ParseSetPIB(&appData.plcPIB, pDataMsg);
+            SRV_PSERIAL_ParseSetPIB(&appData.plcPIB, pData);
 
             if (DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB))
             {
                 size_t length;
                 
-                /* Add command */
-                appData.pSerialData[0] = APP_CMD_PHY_SET_CFG_RSP;
                 /* Serialize PIB data */
                 length = SRV_PSERIAL_SerialSetPIB(&appData.pSerialData[1], &appData.plcPIB);
                 /* Send through USI */
                 SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-                        appData.pSerialData, length + 1);
+                        appData.pSerialData, length);
             }
         }
         break;
 
-        case APP_CMD_PHY_SEND_MSG:
+        case SRV_PSERIAL_CMD_PHY_SEND_MSG:
         {
             /* Capture and parse data from USI */
-            SRV_PSERIAL_ParseTxMessage(&appData.plcTxObj, pDataMsg);
+            SRV_PSERIAL_ParseTxMessage(&appData.plcTxObj, pData);
             
             /* Send Message through PLC */
             DRV_PL360_Send(appData.drvPl360Handle, &appData.plcTxObj);

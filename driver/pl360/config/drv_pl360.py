@@ -73,6 +73,12 @@ def pl360SetMemoryDependency(symbol, event):
 def instantiateComponent(pl360Component):  
 
     res = Database.activateComponents(["HarmonyCore"])
+
+    # Enable "Generate Harmony Driver Common Files" option in MHC
+    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+
+    # Enable "Generate Harmony System Service Common Files" option in MHC
+    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
     
     pl360SymNumInst = pl360Component.createIntegerSymbol("DRV_PL360_NUM_INSTANCES", None)
     pl360SymNumInst.setLabel("Number of Instances")

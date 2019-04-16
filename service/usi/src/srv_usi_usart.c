@@ -352,7 +352,7 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */
-        DCACHE_CLEAN_BY_ADDR((uint32_t *)dObj->pWrBuffer, length);
+        DCACHE_CLEAN_BY_ADDR((uint32_t *)dObj->pWrBuffer, dObj->wrBufferSize);
     }
     
     SYS_DMA_ChannelTransfer (dObj->plib->dmaChannelTx, (const void *)dObj->pWrBuffer, 

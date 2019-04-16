@@ -1,19 +1,19 @@
 /*******************************************************************************
-  CRC service used by PLC components Header File
+  Phy layer serialization header file
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    srv_pcrc.h
+    srv_pserial.h
 
   Summary:
-    CRC service used by PLC components Implementation.
+    Phy layer serialization service used by Microchip PLC Tools.
 
   Description:
-    The CRC wrapper provides a simple interface to manage the CRC needs
-    for PLC components. This file implements the CRC core interface routines 
-    for PLC. 
+    The Phy layer serialization provides a service to format messages
+    through serial connection in order to communicate with PLC Tools provided
+    by Microchip.
 
 *******************************************************************************/
 
@@ -77,7 +77,35 @@
 #define PSERIAL_SUBBANDS_SIZE    6   
 #define PSERIAL_CARRIERS_SIZE    36        
 #define PSERIAL_RS_2_BLOCKS      0
-       
+
+/* PLC Phy Tester Tool command
+
+  Summary:
+    PLC Commands enumeration
+
+  Description:
+    This enumeration defines the PLC commands used by PLC Phy Tester Tool
+    provided by Microchip.
+*/
+typedef enum
+{
+  SRV_PSERIAL_CMD_PHY_GET_CFG = 0,        /* Get data configuration request */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_RSP,        /* Get data configuration response */
+  SRV_PSERIAL_CMD_PHY_SET_CFG,            /* Set data configuration request */
+  SRV_PSERIAL_CMD_PHY_SET_CFG_RSP,        /* Set data configuration response */
+  SRV_PSERIAL_CMD_PHY_CMD_CFG,            /* Get command request */
+  SRV_PSERIAL_CMD_PHY_CMD_CFG_RSP,        /* Get command response */
+  SRV_PSERIAL_CMD_PHY_SEND_MSG,           /* Send message data */
+  SRV_PSERIAL_CMD_PHY_SEND_MSG_RSP,       /* Send message data response */
+  SRV_PSERIAL_CMD_PHY_RECEIVE_MSG,        /* Receive message data */
+  SRV_PSERIAL_CMD_PHY_NOISE_REQ,          /* Noise capture request */
+  SRV_PSERIAL_CMD_PHY_NOISE_RSP,          /* Noise capture response */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST,       /* Get parameter list */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST_RSP,   /* Parameter list response */
+  SRV_PSERIAL_CMD_PHY_RESET_PHY_LAYER     /* Reset PHY layer */
+} SRV_PSERIAL_COMMAND;      
+    
+SRV_PSERIAL_COMMAND SRV_PSERIAL_GetCommand(uint8_t* pData);       
 void SRV_PSERIAL_ParseGetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
 size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc);
 void SRV_PSERIAL_ParseSetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc);

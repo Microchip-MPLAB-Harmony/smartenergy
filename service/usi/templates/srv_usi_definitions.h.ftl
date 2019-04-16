@@ -49,9 +49,8 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "system/system_module.h"
 <#if SRV_USI_USART_API = true>
-#include "driver/usart/drv_usart.h"
+#include "system/dma/sys_dma.h"
 </#if>
 <#if SRV_USI_CDC_API = true>
 </#if>
@@ -213,10 +212,12 @@ typedef enum
 // *****************************************************************************
 /* USART PLIB API Set needed by USI service */
 
+typedef void (* PLIB_CALLBACK)( uintptr_t context );
+
 typedef void(* USI_USART_PLIB_CALLBACK)( uintptr_t context);
-typedef void(*USI_USART_PLIB_READ_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
+typedef void(*USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(*USI_USART_PLIB_READ)(void *buffer, const size_t size);
-typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(DRV_USART_PLIB_CALLBACK callback, uintptr_t context);
+typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
 
 // *****************************************************************************
 /* USI Service USART Interface Data

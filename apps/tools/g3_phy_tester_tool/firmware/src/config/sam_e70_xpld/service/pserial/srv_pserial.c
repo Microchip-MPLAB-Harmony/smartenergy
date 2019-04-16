@@ -1,19 +1,19 @@
 /*******************************************************************************
-  CRC service used by PLC components Implementation
+  Phy layer serialization service used by Microchip PLC Tools
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    srv_pcrc.c
+    srv_pserial.c
 
   Summary:
-    CRC service used by PLC components Implementation.
+    Phy layer serialization service used by Microchip PLC Tools.
 
   Description:
-    The CRC wrapper provides a simple interface to manage the CRC needs
-    for PLC components. This file implements the CRC core interface routines 
-    for PLC. 
+    The Phy layer serialization provides a service to format messages
+    through serial connection in order to communicate with PLC Tools provided
+    by Microchip. 
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -72,8 +72,16 @@ static void _SRV_SERIAL_memcpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, size_t l
     }
 }
 
+SRV_PSERIAL_COMMAND SRV_PSERIAL_GetCommand(uint8_t* pData)
+{
+    /* Extract Command */
+    return (SRV_PSERIAL_COMMAND)*pData;
+}
+
 void SRV_PSERIAL_ParseGetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
 {
+    /* Skip command */
+    pDataSrc++;
     /* Extract parameters of PIB */
     pDataDst->id = (DRV_PL360_ID)(((uint16_t)*pDataSrc++) << 8);
     pDataDst->id += (DRV_PL360_ID)((uint16_t)*pDataSrc++);
@@ -85,6 +93,9 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     uint8_t* pData;
     
     pData = pDataDst;
+    
+    /* Insert command */
+    *pData++ = SRV_PSERIAL_CMD_PHY_GET_CFG_RSP;
     
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
@@ -104,6 +115,8 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
 
 void SRV_PSERIAL_ParseSetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
 {
+    /* Skip command */
+    pDataSrc++;
     /* Extract parameters of PIB */
     pDataDst->id = (DRV_PL360_ID)(((uint16_t)*pDataSrc++) << 8);
     pDataDst->id += (DRV_PL360_ID)((uint16_t)*pDataSrc++);
@@ -117,6 +130,9 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     
     pData = pDataDst;
     
+    /* Insert command */
+    *pData++ = SRV_PSERIAL_CMD_PHY_SET_CFG_RSP;
+
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
     *pData++ = (uint8_t)(pDataSrc->id);
@@ -130,41 +146,41 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
 
 void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc)
 {
-    uint8_t* pData;
     uint8_t index;
 
-    pData = pDataSrc;
+    /* Skip command */
+    pDataSrc++;
 
     /* Extract parameters of transmission */
-    pDataDst->mode = *pData++;
-    pDataDst->attenuation = *pData++;
-    pDataDst->modType = (DRV_PL360_MOD_TYPE)(*pData++);
-    pDataDst->modScheme = (DRV_PL360_MOD_SCHEME)(*pData++);
-    pDataDst->pdc = *pData++;
+    pDataDst->mode = *pDataSrc++;
+    pDataDst->attenuation = *pDataSrc++;
+    pDataDst->modType = (DRV_PL360_MOD_TYPE)(*pDataSrc++);
+    pDataDst->modScheme = (DRV_PL360_MOD_SCHEME)(*pDataSrc++);
+    pDataDst->pdc = *pDataSrc++;
 
     for (index = 0; index < PSERIAL_TONEMAP_SIZE; index++) {
-        pDataDst->toneMap[PSERIAL_TONEMAP_SIZE - index - 1] = *pData++;
+        pDataDst->toneMap[PSERIAL_TONEMAP_SIZE - index - 1] = *pDataSrc++;
     }
 
     if (PSERIAL_RS_2_BLOCKS) {
-        pDataDst->rs2Blocks = *pData++;
+        pDataDst->rs2Blocks = *pDataSrc++;
     } else {
         pDataDst->rs2Blocks = 0;
     }
 
-    memcpy(pDataDst->preemphasis, pData, PSERIAL_SUBBANDS_SIZE);
-    pData += PSERIAL_SUBBANDS_SIZE;
+    memcpy(pDataDst->preemphasis, pDataSrc, PSERIAL_SUBBANDS_SIZE);
+    pDataSrc += PSERIAL_SUBBANDS_SIZE;
 
-    pDataDst->delimiterType = (DRV_PL360_DEL_TYPE)(*pData++);
-    pDataDst->time = ((uint32_t)*pData++) << 24;
-    pDataDst->time += ((uint32_t)*pData++) << 16;
-    pDataDst->time += ((uint32_t)*pData++) << 8;
-    pDataDst->time += (uint32_t)*pData++;
-    pDataDst->dataLength = ((uint16_t)*pData++) << 8;
-    pDataDst->dataLength += (uint16_t)*pData++;
+    pDataDst->delimiterType = (DRV_PL360_DEL_TYPE)(*pDataSrc++);
+    pDataDst->time = ((uint32_t)*pDataSrc++) << 24;
+    pDataDst->time += ((uint32_t)*pDataSrc++) << 16;
+    pDataDst->time += ((uint32_t)*pDataSrc++) << 8;
+    pDataDst->time += (uint32_t)*pDataSrc++;
+    pDataDst->dataLength = ((uint16_t)*pDataSrc++) << 8;
+    pDataDst->dataLength += (uint16_t)*pDataSrc++;
 
     /* copy data */
-    memcpy(pDataDst->pTransmitData, pData, pDataDst->dataLength);
+    memcpy(pDataDst->pTransmitData, pDataSrc, pDataDst->dataLength);
     
 }
 
@@ -174,6 +190,9 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* p
     uint8_t index;
     
     pData = pDataDst;
+    
+    /* Insert command */
+    *pData++ = SRV_PSERIAL_CMD_PHY_RECEIVE_MSG; 
     
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)(pDataSrc->modType);
@@ -232,6 +251,9 @@ size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CF
     uint8_t* pData;
     
     pData = pDataDst;
+    
+    /* Insert command */
+    *pData++ = SRV_PSERIAL_CMD_PHY_SEND_MSG_RSP;
     
     /* Serialize parameters of Confirm Message */
     *pData++ = (uint8_t)(pDataSrc->result);

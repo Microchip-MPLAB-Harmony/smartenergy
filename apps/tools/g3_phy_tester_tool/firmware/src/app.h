@@ -78,33 +78,6 @@ typedef enum
 
 } APP_STATE;
 
-/* PLC Phy Tester Tool command
-
-  Summary:
-    PLC Commands enumeration
-
-  Description:
-    This enumeration defines the PLC commands used by PLC Phy Tester Tool
-    provided by Microchip.
-*/
-typedef enum
-{
-    APP_CMD_PHY_GET_CFG = 0,        /* Get data configuration request */
-    APP_CMD_PHY_GET_CFG_RSP,        /* Get data configuration response */
-    APP_CMD_PHY_SET_CFG,            /* Set data configuration request */
-    APP_CMD_PHY_SET_CFG_RSP,        /* Set data configuration response */
-    APP_CMD_PHY_CMD_CFG,            /* Get command request */
-    APP_CMD_PHY_CMD_CFG_RSP,        /* Get command response */
-    APP_CMD_PHY_SEND_MSG,           /* Send message data */
-    APP_CMD_PHY_SEND_MSG_RSP,       /* Send message data response */
-    APP_CMD_PHY_RECEIVE_MSG,        /* Receive message data */
-    APP_CMD_PHY_NOISE_REQ,          /* Noise capture request */
-    APP_CMD_PHY_NOISE_RSP,          /* Noise capture response */
-    APP_CMD_PHY_GET_CFG_LIST,       /* Get parameter list */
-    APP_CMD_PHY_GET_CFG_LIST_RSP,   /* Parameter list response */
-	APP_CMD_PHY_RESET_PHY_LAYER     /* Reset PHY layer */
-} APP_COMMAND;
-
 // *****************************************************************************
 /* Application Data
 
