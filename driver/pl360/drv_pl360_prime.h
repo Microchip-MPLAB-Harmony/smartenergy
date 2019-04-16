@@ -154,6 +154,8 @@ typedef enum {
   PL360_ID_RX_BAD_FORMAT,
   PL360_ID_NOISE_PER_CARRIER,
   PL360_ID_PPM_CALIB_ON,
+  PL360_ID_ZC_PERIOD,
+  PL360_ID_SYNC_THRESHOLDS,
   PL360_ID_OBSOLETE_ID,
   PL360_ID_END_ID,
 } DRV_PL360_ID;    
@@ -244,8 +246,8 @@ typedef struct __attribute__((packed, aligned(1))) {
   uint8_t cinrMin;                               /* Minimum CNIR (Carrier to Interference + Noise ratio) */
   uint8_t berSoftAvg;                            /* Average Soft BER (Bit Error Rate) */
   uint8_t berSoftMax;                            /* Maximum Soft BER (Bit Error Rate) */
-  uint8_t notchActive;                           /* Notch filter active */
-  uint8_t agcValue;                              /* PGA and AGC state */
+  uint8_t narBandPercent;                        /* Percentage of carriers affected by narrow band noise */
+  uint8_t impNoisePercent;                       /* Percentage of symbols affected by impulsive noise */
 } DRV_PL360_RECEPTION_OBJ;
 
 /* PRIME PLC Information Base (PIB) */
