@@ -333,6 +333,7 @@ static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj,
     valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL(protocol);
     
     /* Get CRC from USI header: 2 bytes */
+    SRV_PCRC_SetInitialValue(0);
     valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, PCRC_CRC16);
     /* Escape USI header */
     pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
