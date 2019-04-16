@@ -46,10 +46,9 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "configuration.h"
-#include "definitions.h"
 #include "driver/pl360/drv_pl360.h"
-#include "driver/pl360/drv_pl360_comm.h"
 #include "driver/pl360/src/drv_pl360_boot.h"
+#include "driver/pl360/src/drv_pl360_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -127,7 +126,7 @@ DRV_HANDLE DRV_PL360_Open(
 {
     /* Avoid warning */
     (void)ioIntent;
-    
+
     /* Validate the request */
     if (drvIndex >= DRV_PL360_INSTANCES_NUMBER)
     {

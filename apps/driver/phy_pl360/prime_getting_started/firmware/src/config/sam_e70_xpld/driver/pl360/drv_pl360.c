@@ -46,9 +46,7 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "configuration.h"
-#include "definitions.h"
 #include "driver/pl360/drv_pl360.h"
-#include "driver/pl360/drv_pl360_comm.h"
 #include "driver/pl360/src/drv_pl360_boot.h"
 #include "driver/pl360/src/drv_pl360_local_comm.h"
 
@@ -115,6 +113,8 @@ SYS_MODULE_OBJ DRV_PL360_Initialize(
 
 SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX drvIndex )
 {
+    /* Avoid warning */
+    (void)drvIndex;
     /* Return the driver status */
     return (gDrvPL360Obj.status);
 }
@@ -124,6 +124,9 @@ DRV_HANDLE DRV_PL360_Open(
     const DRV_IO_INTENT ioIntent
 )
 {
+    /* Avoid warning */
+    (void)ioIntent;
+
     /* Validate the request */
     if (drvIndex >= DRV_PL360_INSTANCES_NUMBER)
     {
