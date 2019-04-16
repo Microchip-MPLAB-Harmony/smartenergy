@@ -16,6 +16,8 @@
               <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_comm.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld/driver/pl360/drv_pl360_hal.h</itemPath>
             </logicalFolder>
+            <itemPath>../src/config/sam_e70_xpld/driver/driver.h</itemPath>
+            <itemPath>../src/config/sam_e70_xpld/driver/driver_common.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
             <logicalFolder name="f1" displayName="clk" projectFiles="true">

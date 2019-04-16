@@ -47,7 +47,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
-#include "configuration.h"
 #include "definitions.h"
 
 // *****************************************************************************

@@ -44,9 +44,8 @@
 // Section: Include Files
 // *****************************************************************************
 // *****************************************************************************
-#include "configuration.h"
+#include "driver/pl360/drv_pl360_hal.h"
 #include "driver/pl360/src/drv_pl360_boot.h"
-#include "driver/pl360/src/drv_pl360_local.h"
 #include "driver/pl360/src/drv_pl360_local_comm.h"
 
 // *****************************************************************************
