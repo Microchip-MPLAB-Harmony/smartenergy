@@ -139,8 +139,6 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     *pData++ = pDataSrc->length;
     *pData++ = true;
     
-    pData += pDataSrc->length;
-    
     return (pData - pDataDst);    
 }
 
@@ -213,7 +211,8 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* p
     *pData++ = (uint8_t)((pDataSrc->time) >> 16);
     *pData++ = (uint8_t)((pDataSrc->time) >> 8);
     *pData++ = (uint8_t)(pDataSrc->time);
-    *pData++ = (uint8_t)(pDataSrc->notchActive);
+    *pData++ = (uint8_t)(pDataSrc->narBandPercent);
+    *pData++ = (uint8_t)(pDataSrc->impNoisePercent);
     
     if (pDataSrc->frameType == FRAME_TYPE_A) 
     {
@@ -227,6 +226,8 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* p
     else
     {
         /* copy data */
+        *pData++ = (uint8_t)((pDataSrc->dataLength) >> 8);
+        *pData++ = (uint8_t)(pDataSrc->dataLength);
         memcpy(pData, pDataSrc->pReceivedData + 3, pDataSrc->dataLength);
     }
     

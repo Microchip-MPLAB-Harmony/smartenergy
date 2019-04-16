@@ -139,8 +139,6 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     *pData++ = pDataSrc->length;
     *pData++ = true;
     
-    pData += pDataSrc->length;
-    
     return (pData - pDataDst);    
 }
 

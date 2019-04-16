@@ -99,8 +99,8 @@
           <Name dnOrder="1">initialization.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">2BFE7D6BC772DD1E21F6EDCD5148D47F</GeneratedChecksum>
-          <UserChecksum dnOrder="5">2BFE7D6BC772DD1E21F6EDCD5148D47F</UserChecksum>
+          <GeneratedChecksum dnOrder="4">1C979A6E5A55F6FA4DF2C55535B5F0DB</GeneratedChecksum>
+          <UserChecksum dnOrder="5">1C979A6E5A55F6FA4DF2C55535B5F0DB</UserChecksum>
         </File>
         <File dnOrder="12">
           <Type dnOrder="0">SOURCE</Type>
@@ -187,8 +187,8 @@
           <Name dnOrder="1">plib_xdmac.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/peripheral/xdmac/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/xdmac/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">0445E58E8B3DE62179A550737556460C</GeneratedChecksum>
-          <UserChecksum dnOrder="5">0445E58E8B3DE62179A550737556460C</UserChecksum>
+          <GeneratedChecksum dnOrder="4">01606A8961C937AC5F1D914331621610</GeneratedChecksum>
+          <UserChecksum dnOrder="5">01606A8961C937AC5F1D914331621610</UserChecksum>
         </File>
         <File dnOrder="23">
           <Type dnOrder="0">SOURCE</Type>
@@ -203,16 +203,16 @@
           <Name dnOrder="1">srv_pserial.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/pserial/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/pserial/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">7D7A4D208B214AAE9CCACED062763DBC</GeneratedChecksum>
-          <UserChecksum dnOrder="5">7D7A4D208B214AAE9CCACED062763DBC</UserChecksum>
+          <GeneratedChecksum dnOrder="4">7F6F1E01BE78605F11080FD5CA83F63F</GeneratedChecksum>
+          <UserChecksum dnOrder="5">7F6F1E01BE78605F11080FD5CA83F63F</UserChecksum>
         </File>
         <File dnOrder="25">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">srv_usi.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/service/usi/</LogicalPath>
           <PhysicalPath dnOrder="3">/service/usi/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">0D9D24FAF3577D43D9F6381AEE973A8A</GeneratedChecksum>
-          <UserChecksum dnOrder="5">0D9D24FAF3577D43D9F6381AEE973A8A</UserChecksum>
+          <GeneratedChecksum dnOrder="4">EC79633363DAFF9DB72C28D6FF2B0CA5</GeneratedChecksum>
+          <UserChecksum dnOrder="5">EC79633363DAFF9DB72C28D6FF2B0CA5</UserChecksum>
         </File>
         <File dnOrder="26">
           <Type dnOrder="0">SOURCE</Type>
@@ -691,8 +691,8 @@
           <Name dnOrder="1">plib_xdmac.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/peripheral/xdmac/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/xdmac/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">713C20D62621248FCD11E80C14CC70E8</GeneratedChecksum>
-          <UserChecksum dnOrder="5">713C20D62621248FCD11E80C14CC70E8</UserChecksum>
+          <GeneratedChecksum dnOrder="4">7898E76FAAC7B286676837B73087A780</GeneratedChecksum>
+          <UserChecksum dnOrder="5">7898E76FAAC7B286676837B73087A780</UserChecksum>
         </File>
         <File dnOrder="86">
           <Type dnOrder="0">HEADER</Type>

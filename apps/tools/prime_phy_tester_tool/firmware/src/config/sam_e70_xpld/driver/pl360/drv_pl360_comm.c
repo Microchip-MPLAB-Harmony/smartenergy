@@ -208,8 +208,8 @@ static void _comm_parse_rx_event(DRV_PL360_RECEPTION_OBJ *pRxObj)
     pRxObj->cinrMin = *pSrc++;
     pRxObj->berSoftAvg = *pSrc++;
     pRxObj->berSoftMax = *pSrc++;
-    pRxObj->notchActive = *pSrc++;
-    pRxObj->agcValue = *pSrc++;
+    pRxObj->narBandPercent = *pSrc++;
+    pRxObj->impNoisePercent = *pSrc++;
 
     if (pRxObj->dataLength > PL360_DATA_PKT_SIZE)
     {
