@@ -55,6 +55,26 @@
 APP_DATA appData;
 
 // *****************************************************************************
+/* PLC Coupling configuration data
+
+  Summary:
+    Holds PLC configuration data
+
+  Description:
+    This structure holds the PLC coupling configuration data.
+
+  Remarks: 
+    Parameters are defined in user.h file
+ */ 
+
+APP_PLC_COUPLING_DATA appPLCCoupConfig = {MAX_RMS_HI_TABLE, MAX_RMS_VLO_TABLE, 
+                   THRESHOLD_HI_TABLE, THRESHOLD_VLO_TABLE,
+				   DACC_CFG_TABLE,
+				   PREDIST_HI_TABLE, PREDIST_VLO_TABLE,
+				   GAIN_HI, GAIN_VLO,
+				   NUM_TX_LEVELS};
+
+// *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
 // *****************************************************************************
@@ -76,6 +96,85 @@ void Timer2_Callback(uintptr_t context)
     
     /* RX Led Signalling */
     LED_On();
+}
+
+static void APP_PLC360SetConfiguration(void)
+{    
+    /* Disable AUTO mode and set VLO behavior by default in order to 
+     * maximize signal level in any case */
+    appData.plcPIB.id = PL360_ID_CFG_AUTODETECT_IMPEDANCE;
+    appData.plcPIB.length = 1;
+    *appData.plcPIB.pData = 0;
+    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    
+    appData.plcPIB.id = PL360_ID_CFG_IMPEDANCE;
+    appData.plcPIB.length = 1;
+    *appData.plcPIB.pData = 2;
+    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    
+    if (appData.plcConfigureCoupling)
+    {
+        appData.plcPIB.id = PL360_ID_NUM_TX_LEVELS;
+        appData.plcPIB.length = 1;
+        *appData.plcPIB.pData = appPLCCoupConfig.numTxLevels;
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    
+        appData.plcPIB.id = PL360_ID_MAX_RMS_TABLE_HI;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.maxRMSHigh);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.maxRMSHigh, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_MAX_RMS_TABLE_VLO;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.maxRMSVeryLow);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.maxRMSVeryLow, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_THRESHOLDS_TABLE_HI;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.thresholdHigh);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.thresholdHigh, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_THRESHOLDS_TABLE_VLO;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.thresholdVeryLow);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.thresholdVeryLow, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_GAIN_TABLE_HI;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.gainHigh);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.gainHigh, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_GAIN_TABLE_VLO;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.gainVeryLow);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.gainVeryLow, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_DACC_TABLE_CFG;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.daccConfig);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.daccConfig, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_PREDIST_COEF_TABLE_HI;
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.predistorsionHigh);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.predistorsionHigh, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+        appData.plcPIB.id = PL360_ID_PREDIST_COEF_TABLE_VLO;
+        /* Not use size of array. It depends on PHY band in use */
+        appData.plcPIB.length = sizeof(appPLCCoupConfig.predistorsionVeryLow);
+        memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.predistorsionVeryLow, 
+                appData.plcPIB.length);
+        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        
+    }
 }
 
 static void APP_PLCExceptionCb(DRV_PL360_EXCEPTION exceptionObj, 
@@ -250,6 +349,9 @@ void APP_Initialize(void)
     appData.plcRxObj.pReceivedData = appData.pPLCDataRx;
     appData.plcPIB.pData = appData.pPLCDataPIB;
     
+    /* In case to needs your own calibration, set to True */
+    appData.plcConfigureCoupling = true;
+    
 }
 
 
@@ -317,7 +419,7 @@ void APP_Tasks(void)
                     LED_On();
 
                     /* Set Application to next state */
-                    appData.state = APP_STATE_READY;
+                    appData.state = APP_STATE_CONFIG_PL360;
                 }
                 else
                 {
@@ -325,6 +427,15 @@ void APP_Tasks(void)
                     appData.state = APP_STATE_ERROR;
                 }
             }                
+            break;
+        }
+
+        case APP_STATE_CONFIG_PL360:
+        {
+            /* Set configuration fro PL360 */
+            APP_PLC360SetConfiguration();
+            /* Set Application to next state */
+            appData.state = APP_STATE_READY;
             break;
         }
 

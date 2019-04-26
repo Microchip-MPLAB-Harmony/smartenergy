@@ -71,12 +71,38 @@ typedef enum
     APP_STATE_IDLE=0,
     APP_STATE_INIT,
     APP_STATE_REGISTER,
+    APP_STATE_CONFIG_PL360,
     APP_STATE_SEND_PLC_MSG,
     APP_STATE_SEND_USI_MSG,
     APP_STATE_READY,
     APP_STATE_ERROR
 
 } APP_STATE;
+
+// *****************************************************************************
+/* PLC Coupling configuration data
+
+  Summary:
+    Holds PLC configuration data
+
+  Description:
+    This structure holds the PLC coupling configuration data.
+
+  Remarks: 
+    The maximum number of levels is 8.
+ */    
+typedef struct {
+	uint32_t maxRMSHigh[8];
+	uint32_t maxRMSVeryLow[8];
+	uint32_t thresholdHigh[16];
+	uint32_t thresholdVeryLow[16];
+	uint32_t daccConfig[17];
+	uint16_t predistorsionHigh[NUM_CARRIERS_CENELEC_A];
+	uint16_t predistorsionVeryLow[NUM_CARRIERS_CENELEC_A];
+	uint16_t gainHigh[3];
+	uint16_t gainVeryLow[3];
+	uint8_t numTxLevels;
+} APP_PLC_COUPLING_DATA;
 
 // *****************************************************************************
 /* Application Data
@@ -93,12 +119,13 @@ typedef enum
 
 typedef struct
 {
-    /* The application's current state */
+    /* The application's current state */ 
+    APP_STATE state;
+    
+    /* TODO: Define any additional data used by the application. */
     SYS_TIME_HANDLE tmr1Handle; 
     
-    SYS_TIME_HANDLE tmr2Handle; 
-    
-    APP_STATE state;
+    SYS_TIME_HANDLE tmr2Handle;
     
     DRV_HANDLE drvPl360Handle;
     
@@ -129,6 +156,8 @@ typedef struct
     DRV_PL360_RECEPTION_OBJ plcRxObj;
     
     DRV_PL360_PIB_OBJ plcPIB;
+    
+    bool plcConfigureCoupling;
 
 } APP_DATA;
 
