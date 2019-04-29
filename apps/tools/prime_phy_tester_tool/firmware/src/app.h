@@ -80,31 +80,6 @@ typedef enum
 } APP_STATE;
 
 // *****************************************************************************
-/* PLC Coupling configuration data
-
-  Summary:
-    Holds PLC configuration data
-
-  Description:
-    This structure holds the PLC coupling configuration data.
-
-  Remarks: 
-    The maximum number of levels is 8.
- */    
-typedef struct {
-	uint32_t maxRMSHigh[8];
-	uint32_t maxRMSVeryLow[8];
-	uint32_t thresholdHigh[16];
-	uint32_t thresholdVeryLow[16];
-	uint32_t daccConfig[17];
-	uint16_t predistorsionHigh[NUM_CARRIERS_CENELEC_A];
-	uint16_t predistorsionVeryLow[NUM_CARRIERS_CENELEC_A];
-	uint16_t gainHigh[3];
-	uint16_t gainVeryLow[3];
-	uint8_t numTxLevels;
-} APP_PLC_COUPLING_DATA;
-
-// *****************************************************************************
 /* Application Data
 
   Summary:
@@ -157,7 +132,7 @@ typedef struct
     
     DRV_PL360_PIB_OBJ plcPIB;
     
-    bool plcConfigureCoupling;
+    uint8_t plcChannel;
 
 } APP_DATA;
 
