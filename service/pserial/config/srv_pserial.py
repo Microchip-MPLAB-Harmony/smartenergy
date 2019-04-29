@@ -59,7 +59,7 @@ def instantiateComponent(pSerialComponentCommon):
 
     # Phy Serial Files
     global pSerialSourceFileG3
-    pSerialSourceFileG3 = pSerialComponentCommon.createFileSymbol("SRV_PCRC_SOURCE_G3", None)
+    pSerialSourceFileG3 = pSerialComponentCommon.createFileSymbol("SRV_PSER_SOURCE_G3", None)
     pSerialSourceFileG3.setSourcePath("service/pserial/srv_pserial_g3.c")
     pSerialSourceFileG3.setOutputName("srv_pserial.c")
     pSerialSourceFileG3.setDestPath("service/pserial")
@@ -71,7 +71,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialSourceFileG3.setDependencies(setProfile, ["SRV_PSER_PLC_PROFILE"])
 
     global pSerialSourceFilePrime
-    pSerialSourceFilePrime = pSerialComponentCommon.createFileSymbol("SRV_PCRC_SOURCE_PRIME", None)
+    pSerialSourceFilePrime = pSerialComponentCommon.createFileSymbol("SRV_PSER_SOURCE_PRIME", None)
     pSerialSourceFilePrime.setSourcePath("service/pserial/srv_pserial_prime.c")
     pSerialSourceFilePrime.setOutputName("srv_pserial.c")
     pSerialSourceFilePrime.setDestPath("service/pserial")
@@ -81,7 +81,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialSourceFilePrime.setOverwrite(True)
     pSerialSourceFilePrime.setEnabled(False)
 
-    pSerialHeaderFile = pSerialComponentCommon.createFileSymbol("SRV_PCRC_HEADER", None)
+    pSerialHeaderFile = pSerialComponentCommon.createFileSymbol("SRV_PSER_HEADER", None)
     pSerialHeaderFile.setSourcePath("service/pserial/srv_pserial.h.ftl")
     pSerialHeaderFile.setOutputName("srv_pserial.h")
     pSerialHeaderFile.setDestPath("service/pserial")
@@ -91,7 +91,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialHeaderFile.setOverwrite(True)
     pSerialHeaderFile.setEnabled(True)
 
-    pSerialSystemDefIncFile = pSerialComponentCommon.createFileSymbol("SRV_PCRC_SYSTEM_DEF", None)
+    pSerialSystemDefIncFile = pSerialComponentCommon.createFileSymbol("SRV_PSER_SYSTEM_DEF", None)
     pSerialSystemDefIncFile.setType("STRING")
     pSerialSystemDefIncFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
     pSerialSystemDefIncFile.setSourcePath("service/pserial/templates/system/system_definitions.h.ftl")

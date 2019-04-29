@@ -191,17 +191,17 @@ def instantiateComponent(pl360Component):
     pl360SecureMode.setVisible(True)
     pl360SecureMode.setDefaultValue(False)
 
-    pl360AsmPathSetting = pl360Component.createSettingSymbol("DRV_PL360_ASM_PATH_SETTING", None)
-    pl360AsmPathSetting.setCategory("C32-AS")
-    pl360AsmPathSetting.setKey("extra-include-directories-for-assembler")
-    pl360AsmPathSetting.setValue("../src/config/sam_e70_xpld/driver/pl360/bin")
-    pl360AsmPathSetting.setAppend(True, ";")
-
     ############################################################################
     #### Code Generation ####
     ############################################################################
 
     configName = Variables.get("__CONFIGURATION_NAME")
+
+    pl360AsmPathSetting = pl360Component.createSettingSymbol("DRV_PL360_ASM_PATH_SETTING", None)
+    pl360AsmPathSetting.setCategory("C32-AS")
+    pl360AsmPathSetting.setKey("extra-include-directories-for-assembler")
+    pl360AsmPathSetting.setValue("../src/config/" + configName + "/driver/pl360/bin")
+    pl360AsmPathSetting.setAppend(True, ";")
 
     pl360HeaderFile = pl360Component.createFileSymbol("PL360_HEADER", None)
     pl360HeaderFile.setSourcePath("driver/pl360/drv_pl360.h")

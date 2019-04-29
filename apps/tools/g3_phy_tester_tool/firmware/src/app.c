@@ -349,8 +349,9 @@ void APP_Initialize(void)
     appData.plcRxObj.pReceivedData = appData.pPLCDataRx;
     appData.plcPIB.pData = appData.pPLCDataPIB;
     
-    /* In case to needs your own calibration, set to True */
-    appData.plcConfigureCoupling = true;
+    /* In case to needs your own calibration, set to True. 
+       Configured by user.h file */
+    appData.plcConfigureCoupling = APP_CONFIG_PLC_COUP;
     
 }
 
