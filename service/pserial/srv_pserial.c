@@ -1,19 +1,19 @@
 /*******************************************************************************
-  CRC service used by PLC components Implementation
+  Implementation of Phy layer Serialization
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    srv_pcrc.c
+    srv_pserial.c
 
   Summary:
-    CRC service used by PLC components Implementation.
+    Phy layer serialization service used by Microchip PLC Tools.
 
   Description:
-    The CRC wrapper provides a simple interface to manage the CRC needs
-    for PLC components. This file implements the CRC core interface routines 
-    for PLC. 
+   The Phy layer serialization provides a service to format messages
+    through serial connection in order to communicate with PLC Tools provided
+    by Microchip.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
