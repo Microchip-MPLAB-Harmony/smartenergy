@@ -33,3 +33,8 @@ def loadModule():
 	srvPCRCComponent = Module.CreateComponent("srv_pserial", "PLC PHY Serial", "/Libraries/PLC/Services/", "service/pserial/config/srv_pserial.py")
 	srvPCRCComponent.addCapability("libsrvPSerial", "PSER", "PSER", True)
 	srvPCRCComponent.setDisplayType("PLC Service")
+
+	## PSNIFFER Service (PHY Sniffer serialization service)
+	srvPCRCComponent = Module.CreateComponent("srv_psniffer", "PLC PHY Sniffer", "/Libraries/PLC/Services/", "service/psniffer/config/srv_psniffer.py")
+	srvPCRCComponent.addCapability("libsrvPSniffer", "PSNF", "PSNF", True)
+	srvPCRCComponent.setDisplayType("PLC Service")
