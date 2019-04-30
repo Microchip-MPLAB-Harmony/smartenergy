@@ -71,31 +71,6 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-<#if SRV_PSNF_PLC_PROFILE == "0">
-#define PSNIFFER_TONEMAP_SIZE     1
-#define PSNIFFER_SUBBANDS_SIZE    6   
-#define PSNIFFER_CARRIERS_SIZE    36        
-#define PSNIFFER_RS_2_BLOCKS      0
-#define PSNIFFER_VERSION          0x02
-#define PSNIFFER_PROFILE          0x12
-</#if>
-<#if SRV_PSNF_PLC_PROFILE == "1">
-#define PSNIFFER_TONEMAP_SIZE     1
-#define PSNIFFER_SUBBANDS_SIZE    4   
-#define PSNIFFER_CARRIERS_SIZE    16        
-#define PSNIFFER_RS_2_BLOCKS      0
-#define PSNIFFER_VERSION          0x02
-#define PSNIFFER_PROFILE          0x12
-</#if>
-<#if SRV_PSNF_PLC_PROFILE == "2">
-#define PSNIFFER_TONEMAP_SIZE     3
-#define PSNIFFER_SUBBANDS_SIZE    24   
-#define PSNIFFER_CARRIERS_SIZE    72        
-#define PSNIFFER_RS_2_BLOCKS      1
-#define PSNIFFER_VERSION          0x02
-#define PSNIFFER_PROFILE          0x12
-</#if>
-<#if SRV_PSNF_PLC_PROFILE == "4">
 #define PSNIFFER_VERSION          0x14
 #define PSNIFFER_PROFILE          0x11
 #define PSNIFFER_MSG_TYPE_A       0x20
@@ -106,7 +81,6 @@
 #define PSNIFFER_SYMBOL_US        2240L
 #define PSNIFFER_PP_PREAMBLE_US   (PSNIFFER_P13_PREAMBLE_US << 2)
 #define PSNIFFER_PP_HEADER_US     (PSNIFFER_SYMBOL_US << 2)
-</#if>
 
 /* PLC Phy Sniffer Tool command
 
@@ -130,10 +104,7 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_C
 void SRV_PSNIFFER_SetTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst);
 void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
-<#if SRV_PSNF_PLC_PROFILE == "4">
 void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
-<#else>
-void SRV_PSNIFFER_ConvertToneMask(uint8_t* pToneMaskDst, uint8_t* pToneMaskSrc);
-</#if>
+
 
 #endif //SRV_PSNIFFER_H
