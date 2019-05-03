@@ -59,6 +59,16 @@ DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
     .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)drv_pl360_hal_send_wrrd_cmd,
 };
 
+<#if DRV_PL360_BIN_STATIC_ADDRESSING == false> 
+/* PL360 Binary file addressing */
+extern uint8_t pl360_bin_start;
+extern uint8_t pl360_bin_end;
+<#if DRV_PL360_PLC_PROFILE == "5">
+extern uint8_t pl360_bin2_start;
+extern uint8_t pl360_bin2_end;
+</#if>
+
+</#if>
 /* PL360 Driver Initialization Data */
 DRV_PL360_INIT drvPL360InitData =
 {
@@ -72,11 +82,18 @@ DRV_PL360_INIT drvPL360InitData =
     .plcProfile = DRV_PL360_PLC_PROFILE,
  <#if DRV_PL360_BIN_STATIC_ADDRESSING == true>   
  
-    /* Size (in Bytes) of the PLC binary file */
-    .binSize = DRV_PL360_BIN_SIZE,
-
-    /* Address where PLC binary file is located */
-    .binStartAddress = DRV_PL360_BIN_ADDRESS, 
+    /* PLC Binary start address */
+    .binStartAddress = DRV_PL360_BIN_ADDRESS,
+    
+    /* PLC Binary end address */
+    .binEndAddress = DRV_PL360_BIN_ADDRESS + DRV_PL360_BIN_SIZE,
+<#else>
+ 
+    /* PLC Binary start address */
+    .binStartAddress = (uint32_t)&pl360_bin_start,
+    
+    /* PLC Binary end address */
+    .binEndAddress = (uint32_t)&pl360_bin_end,
 </#if>  
 
     /* Secure Mode */

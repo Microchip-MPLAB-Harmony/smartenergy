@@ -33,13 +33,30 @@ ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************/
 
-	.section .rodata
-	.global pl360_bin_start
-	.global pl360_bin_end
+  .section .rodata
+  .global pl360_bin_start
+  .global pl360_bin_end
+<#if DRV_PL360_PLC_PROFILE == "5">
+  .global pl360_bin2_start
+  .global pl360_bin2_end
+</#if>
 
-	.align 8
+  .align 8
 pl360_bin_start:
-    .incbin "./PL360.bin"
-	.align 8
+<#if (DRV_PL360_PLC_PROFILE == "0") || (DRV_PL360_PLC_PROFILE == "5")>
+  .incbin "./PL360_G3_CENA.bin"
+<#elseif DRV_PL360_PLC_PROFILE == "1">
+  .incbin "./PL360_G3_CENB.bin"
+<#elseif DRV_PL360_PLC_PROFILE == "2">
+  .incbin "./PL360_G3_FCC.bin"
+<#elseif DRV_PL360_PLC_PROFILE == "4">
+  .incbin "./PL360_PRIME.bin"
+</#if>
+  .align 8
 pl360_bin_end:
-
+<#if DRV_PL360_PLC_PROFILE == "5">
+pl360_bin2_start:
+  .incbin "./PL360_G3_FCC.bin"
+  .align 8
+pl360_bin2_end:
+</#if>

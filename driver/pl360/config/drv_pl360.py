@@ -33,27 +33,44 @@ def pl360ProfileTrigger(symbol, event):
     global pl360ProfileFile
     global pl360ProfileDefFile
     global pl360ProfileHeaderLocalFile
-    global pl360SourceBinFile
+    global pl360SourceBinFileG3CENA
+    global pl360SourceBinFileG3CENB
+    global pl360SourceBinFileG3FCC
+    global pl360SourceBinFilePRIME
     if (event["symbol"].getKeyDescription(event["value"]) == "PRIME"):
         print("pl360ProfileTrigger update PRIME files")
         pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_prime.c")
         pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_prime.h")
         pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_prime.h")
-        pl360SourceBinFile.setSourcePath("driver/pl360/src/bin/PL360_PRIME.bin")
+        pl360SourceBinFilePRIME.setEnabled(True)
+        pl360SourceBinFileG3CENA.setEnabled(False)
+        pl360SourceBinFileG3CENB.setEnabled(False)
+        pl360SourceBinFileG3FCC.setEnabled(False)
     else:
+        pl360SourceBinFilePRIME.setEnabled(False)
         pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_g3.c")
         pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_g3.h")
         pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_g3.h")
-        if (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_A"):
-            pl360SourceBinFile.setSourcePath("driver/pl360/src/bin/PL360_G3_CENA.bin")
+        if (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_A"):            
+            pl360SourceBinFileG3CENA.setEnabled(True)
+            pl360SourceBinFileG3CENB.setEnabled(False)
+            pl360SourceBinFileG3FCC.setEnabled(False)
             print("pl360ProfileTrigger update G3 CEN A files")
-        elif (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_B"):
-            pl360SourceBinFile.setSourcePath("driver/pl360/src/bin/PL360_G3_CENB.bin")
+        elif (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_B"):           
+            pl360SourceBinFileG3CENA.setEnabled(False)
+            pl360SourceBinFileG3CENB.setEnabled(True)
+            pl360SourceBinFileG3FCC.setEnabled(False)
             print("pl360ProfileTrigger update G3 CEN B files")
-        else:
-            pl360SourceBinFile.setSourcePath("driver/pl360/src/bin/PL360_G3_FCC.bin")
+        elif (event["symbol"].getKeyDescription(event["value"]) == "G3_FCC"):           
+            pl360SourceBinFileG3CENA.setEnabled(False)
+            pl360SourceBinFileG3CENB.setEnabled(False)
+            pl360SourceBinFileG3FCC.setEnabled(True)
             print("pl360ProfileTrigger update G3 FCC files")
-
+        else:           
+            pl360SourceBinFileG3CENA.setEnabled(True)
+            pl360SourceBinFileG3CENB.setEnabled(False)
+            pl360SourceBinFileG3FCC.setEnabled(True)
+            print("pl360ProfileTrigger update G3 CEN A nd FCC files")
 
 
 def pl360ExternalInterruptTrigger(symbol, event):
@@ -159,12 +176,14 @@ def instantiateComponent(pl360Component):
     pl360DMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.")
     pl360DMAChannelComment.setVisible(False)
 
+    global pl360Profile
     pl360Profile = pl360Component.createKeyValueSetSymbol("DRV_PL360_PLC_PROFILE", None)
     pl360Profile.setLabel("Select PLC Profile")
     pl360Profile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pl360Profile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pl360Profile.addKey("G3_FCC", "2", "G3_FCC")
     pl360Profile.addKey("PRIME", "4", "PRIME")
+    pl360Profile.addKey("G3_MULTIBAND", "5", "G3_MULTIBAND")
     pl360Profile.setDisplayMode("Description")
     pl360Profile.setOutputMode("Value")
     pl360Profile.setDefaultValue(0)
@@ -241,20 +260,53 @@ def instantiateComponent(pl360Component):
     pl360SourceFile.setProjectPath("config/" + configName + "/driver/pl360/")
     pl360SourceFile.setType("SOURCE")
 
-    global pl360SourceBinFile
-    pl360SourceBinFile = pl360Component.createFileSymbol("PL360_SOURCE_BIN", None)
-    pl360SourceBinFile.setSourcePath("driver/pl360/src/bin/PL360_G3_CENA.bin")
-    pl360SourceBinFile.setOutputName("PL360.bin")
-    pl360SourceBinFile.setDestPath("driver/pl360/bin/")
-    pl360SourceBinFile.setProjectPath("config/" + configName + "/driver/pl360/bin/")
-    pl360SourceBinFile.setType("SOURCE")
+    global pl360SourceBinFileG3CENA
+    pl360SourceBinFileG3CENA = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENA", None)
+    pl360SourceBinFileG3CENA.setSourcePath("driver/pl360/src/bin/PL360_G3_CENA.bin")
+    pl360SourceBinFileG3CENA.setOutputName("PL360_G3_CENA.bin")
+    pl360SourceBinFileG3CENA.setDestPath("driver/pl360/bin/")
+    pl360SourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SourceBinFileG3CENA.setType("SOURCE")
+    pl360SourceBinFileG3CENA.setEnabled(False)
+    pl360SourceBinFileG3CENA.setVisible(False)
+
+    global pl360SourceBinFileG3CENB
+    pl360SourceBinFileG3CENB = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENB", None)
+    pl360SourceBinFileG3CENB.setSourcePath("driver/pl360/src/bin/PL360_G3_CENB.bin")
+    pl360SourceBinFileG3CENB.setOutputName("PL360_G3_CENB.bin")
+    pl360SourceBinFileG3CENB.setDestPath("driver/pl360/bin/")
+    pl360SourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SourceBinFileG3CENB.setType("SOURCE")
+    pl360SourceBinFileG3CENB.setEnabled(False)
+    pl360SourceBinFileG3CENB.setVisible(False)
+
+    global pl360SourceBinFileG3FCC
+    pl360SourceBinFileG3FCC = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_FCC", None)
+    pl360SourceBinFileG3FCC.setSourcePath("driver/pl360/src/bin/PL360_G3_FCC.bin")
+    pl360SourceBinFileG3FCC.setOutputName("PL360_G3_FCC.bin")
+    pl360SourceBinFileG3FCC.setDestPath("driver/pl360/bin/")
+    pl360SourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SourceBinFileG3FCC.setType("SOURCE")
+    pl360SourceBinFileG3FCC.setEnabled(False)
+    pl360SourceBinFileG3FCC.setVisible(False)
+
+    global pl360SourceBinFilePRIME
+    pl360SourceBinFilePRIME = pl360Component.createFileSymbol("PL360_SOURCE_BIN_PRIME", None)
+    pl360SourceBinFilePRIME.setSourcePath("driver/pl360/src/bin/PL360_PRIME.bin")
+    pl360SourceBinFilePRIME.setOutputName("PL360_PRIME.bin")
+    pl360SourceBinFilePRIME.setDestPath("driver/pl360/bin/")
+    pl360SourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SourceBinFilePRIME.setType("SOURCE")
+    pl360SourceBinFilePRIME.setEnabled(False)
+    pl360SourceBinFilePRIME.setVisible(False)
 
     pl360AssemblyBinFile = pl360Component.createFileSymbol("PL360_ASSEMBLY_BIN", None)
-    pl360AssemblyBinFile.setSourcePath("driver/pl360/src/bin/pl360_bin.S")
+    pl360AssemblyBinFile.setSourcePath("driver/pl360/src/bin/pl360_bin.S.ftl")
     pl360AssemblyBinFile.setOutputName("pl360_bin.S")
     pl360AssemblyBinFile.setDestPath("driver/pl360/bin/")
     pl360AssemblyBinFile.setProjectPath("config/" + configName + "/driver/pl360/bin/")
     pl360AssemblyBinFile.setType("SOURCE")
+    pl360AssemblyBinFile.setMarkup(True)
 
     pl360BootFile = pl360Component.createFileSymbol("PL360_BOOT", None)
     pl360BootFile.setSourcePath("driver/pl360/src/drv_pl360_boot.c")
@@ -344,6 +396,7 @@ def onAttachmentConnected(source, target):
     global pl360TXDMAChannel
     global pl360RXDMAChannel
     global pl360DMAChannelComment
+    global pl360Profile
 
     print("onAttachmentConnected event")
 
@@ -389,7 +442,12 @@ def onAttachmentConnected(source, target):
         # Set SPI baudrate
         plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         plibBaudrate.clearValue()
-        plibBaudrate.setValue(8000000, 1)
+        if (pl360Profile.getSelectedValue() == "2"): 
+            plibBaudrate.setValue(12000000, 1)
+            print("Set SPI baudrate: 12000000 - " + pl360Profile.getSelectedValue())
+        else:
+            plibBaudrate.setValue(8000000, 1)
+            print("Set SPI baudrate: 8000000 - " + pl360Profile.getSelectedValue())
 
   
 def onAttachmentDisconnected(source, target):

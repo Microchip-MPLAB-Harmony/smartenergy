@@ -6,7 +6,12 @@
 #define DRV_PL360_EXT_INT_PIN                   ${DRV_PL360_EXT_INT_PIN?string}
 #define DRV_PL360_RESET_PIN                     ${DRV_PL360_RESET_PIN?string}
 #define DRV_PL360_LDO_EN_PIN                    ${DRV_PL360_LDO_EN_PIN?string}
+<#if DRV_PL360_PLC_PROFILE == "5">
+#define DRV_PL360_PLC_PROFILE                   0
+<#else>
 #define DRV_PL360_PLC_PROFILE                   ${DRV_PL360_PLC_PROFILE?string}
+</#if>
+
 <#if DRV_PL360_BIN_STATIC_ADDRESSING == true>
 #define DRV_PL360_BIN_ADDRESS                   0x${DRV_PL360_PLC_BIN_ADDRESS?string}
 #define DRV_PL360_BIN_SIZE                      0x${DRV_PL360_PLC_BIN_SIZE?string}
@@ -29,7 +34,11 @@
 #define DRV_PL360_HOST_PRODUCT                  0x3600
 #define DRV_PL360_HOST_VERSION                  0x36000300
 #define DRV_PL360_HOST_PHY                      0x36000003
+<#elseif DRV_PL360_PLC_PROFILE == "5">
+#define DRV_PL360_HOST_PRODUCT                  0x3601
+#define DRV_PL360_HOST_VERSION                  0x36010300
+#define DRV_PL360_HOST_PHY                      0x36010103
 </#if>
 #define DRV_PL360_HOST_DESC                     "${__PROCESSOR?string}"
 #define DRV_PL360_HOST_MODEL                    3
-#define DRV_PL360_HOST_BAND                     0x${DRV_PL360_PLC_PROFILE?string}
+#define DRV_PL360_HOST_BAND                     DRV_PL360_PLC_PROFILE
