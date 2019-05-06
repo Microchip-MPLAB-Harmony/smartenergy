@@ -1,20 +1,21 @@
 /*******************************************************************************
-  XDMAC PLIB
+ Interface definition of EFC PLIB.
 
-  Company:
+ Company:
     Microchip Technology Inc.
 
-  File Name:
-    plib_xdmac.h
+ File Name:
+    plib_efc.h
 
-  Summary:
-    XDMAC PLIB Header File
+ Summary:
+    Interface definition of EFC Plib.
 
-  Description:
-    None
-
+ Description:
+    This file defines the interface for the EFC Plib.
+    It allows user to Program, Erase and lock the on-chip FLASH memory.
 *******************************************************************************/
 
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -37,19 +38,18 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+// DOM-IGNORE-END
 
-#ifndef PLIB_XDMAC_H
-#define PLIB_XDMAC_H
+#ifndef EFC_H    // Guards against multiple inclusion
+#define EFC_H
 
-#include <stddef.h>
+#include <stdint.h>
 #include <stdbool.h>
-#include "plib_xdmac_common.h"
+#include <stddef.h>
 
 // DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
+#ifdef __cplusplus // Provide C++ Compatibility
     extern "C" {
-
 #endif
 // DOM-IGNORE-END
 
@@ -59,41 +59,51 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/****************************** XDMAC Data Types ******************************/
-/* XDMAC Channels */
-typedef enum {
-    XDMAC_CHANNEL_0,
-    XDMAC_CHANNEL_1,
-    XDMAC_CHANNEL_2,
-    XDMAC_CHANNEL_3,
-    XDMAC_CHANNEL_4,
-    XDMAC_CHANNEL_5,
-} XDMAC_CHANNEL;
+#define EFC_SECTORSIZE              8192
+#define EFC_PAGESIZE                512
+#define EFC_LOCKSIZE                0x4000
+#define EFC_START_ADDRESS           0x500000
+#define EFC_MEDIA_SIZE              1024
+#define EFC_ERASE_BUFFER_SIZE       8192
 
 
-/****************************** XDMAC API *********************************/
+typedef enum
+{
+    EFC_ERROR_NONE = 0x1,
+    /*In-valid command*/
+    EFC_CMD_ERROR = 0x2,
+    /*Flash region is locked*/
+    EFC_LOCK_ERROR = 0x4,
+    /*Flash Error*/
+    EFC_FLERR_ERROR = 0x8,
+    /*Flash Encountered an ECC error*/
+    EFC_ECC_ERROR = 0xF0000,
+} EFC_ERROR;
 
-void XDMAC_Initialize( void );
 
-void XDMAC_ChannelCallbackRegister( XDMAC_CHANNEL channel, const XDMAC_CHANNEL_CALLBACK eventHandler, const uintptr_t contextHandle );
+void EFC_Initialize(void);
 
-bool XDMAC_ChannelTransfer( XDMAC_CHANNEL channel, const void *srcAddr, const void *destAddr, size_t blockSize );
+bool EFC_Read( uint32_t *data, uint32_t length, uint32_t address );
 
-bool XDMAC_ChannelIsBusy (XDMAC_CHANNEL channel);
+bool EFC_SectorErase( uint32_t address );
 
-void XDMAC_ChannelDisable (XDMAC_CHANNEL channel);
+bool EFC_PageWrite( uint32_t *data, uint32_t address );
 
-XDMAC_CHANNEL_CONFIG XDMAC_ChannelSettingsGet (XDMAC_CHANNEL channel);
+bool EFC_QuadWordWrite( uint32_t *data, uint32_t address );
 
-bool XDMAC_ChannelSettingsSet (XDMAC_CHANNEL channel, XDMAC_CHANNEL_CONFIG setting);
+EFC_ERROR EFC_ErrorGet( void );
 
-void XDMAC_ChannelBlockLengthSet (XDMAC_CHANNEL channel, uint16_t length);
+bool EFC_IsBusy(void);
+
+void EFC_RegionLock(uint32_t address);
+
+void EFC_RegionUnlock(uint32_t address);
+
 
 // DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
+#ifdef __cplusplus // Provide C++ Compatibility
+}
 #endif
 // DOM-IGNORE-END
-#endif // PLIB_XDMAC_H
+
+#endif

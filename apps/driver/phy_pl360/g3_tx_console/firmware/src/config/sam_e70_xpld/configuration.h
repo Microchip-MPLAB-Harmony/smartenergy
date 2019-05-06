@@ -95,6 +95,19 @@ extern "C" {
 // Section: Driver Configuration
 // *****************************************************************************
 // *****************************************************************************
+/* Memory Driver Global Configuration Options */
+#define DRV_MEMORY_INSTANCES_NUMBER          1
+
+/* Memory Driver Instance 0 Configuration */
+#define DRV_MEMORY_INDEX_0                   0
+#define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
+#define DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0    1
+#define DRV_MEMORY_DEVICE_START_ADDRESS      0x500000
+#define DRV_MEMORY_DEVICE_MEDIA_SIZE         1024UL
+#define DRV_MEMORY_DEVICE_PROGRAM_SIZE       512
+#define DRV_MEMORY_DEVICE_ERASE_SIZE         8192
+
+
 /* PL360 Driver Configuration Options */
 #define DRV_PL360_INSTANCES_NUMBER              1
 #define DRV_PL360_INDEX                         0

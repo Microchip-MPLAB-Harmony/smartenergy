@@ -74,6 +74,8 @@ void SYS_Tasks ( void )
     
 
     /* Maintain Device Drivers */
+    DRV_MEMORY_Tasks(sysObj.drvMemory0);
+
     DRV_PL360_Tasks(sysObj.drvPL360);
 
 
@@ -81,8 +83,8 @@ void SYS_Tasks ( void )
     
 
     /* Maintain the application's state machine. */
-        /* Call Application task APP. */
-    APP_Tasks();
+    APP_CONSOLE_Tasks();
+    APP_PLC_Tasks();
 
 
 

@@ -53,19 +53,24 @@
 #include "peripheral/pio/plib_pio.h"
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/xdmac/plib_xdmac.h"
+#include "driver/memory/drv_memory.h"
+#include "peripheral/efc/plib_efc.h"
+#include "peripheral/tc/plib_tc0.h"
+#include "system/time/sys_time.h"
+#include "driver/memory/drv_memory_efc.h"
+#include "peripheral/trng/plib_trng.h"
 #include "peripheral/spi/plib_spi0.h"
 #include "driver/pl360/drv_pl360.h"
 #include "driver/pl360/drv_pl360_comm.h"
 #include "driver/pl360/drv_pl360_hal.h"
-#include "peripheral/tc/plib_tc0.h"
 #include "peripheral/usart/plib_usart1.h"
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"
 #include "system/cache/sys_cache.h"
 #include "system/dma/sys_dma.h"
 #include "osal/osal.h"
-#include "system/time/sys_time.h"
-#include "app.h"
+#include "app_console.h"
+#include "app_plc.h"
 
 
 
@@ -187,10 +192,11 @@ void SYS_Tasks ( void );
 
 typedef struct
 {
+    SYS_MODULE_OBJ  sysTime;
+    SYS_MODULE_OBJ  drvMemory0;
     /* PL360 Driver Object */
     SYS_MODULE_OBJ drvPL360;
 
-    SYS_MODULE_OBJ  sysTime;
 
 } SYSTEM_OBJECTS;
 

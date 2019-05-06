@@ -1,18 +1,18 @@
 /*******************************************************************************
-  XDMAC PLIB
+  Interface definition of TRNG PLIB.
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_xdmac.h
+    plib_trng.h
 
   Summary:
-    XDMAC PLIB Header File
+    Interface definition of the Watch Dog Timer Plib (TRNG).
 
   Description:
-    None
-
+    This file defines the interface for the TRNG Plib.
+    It allows user to setup timeout duration and restart watch dog timer.
 *******************************************************************************/
 
 /*******************************************************************************
@@ -38,20 +38,17 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-#ifndef PLIB_XDMAC_H
-#define PLIB_XDMAC_H
 
+#ifndef TRNG_H    // Guards against multiple inclusion
+#define TRNG_H
+
+#include <stdint.h>
 #include <stddef.h>
-#include <stdbool.h>
-#include "plib_xdmac_common.h"
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
+#ifdef __cplusplus // Provide C++ Compatibility
+ extern "C" {
 #endif
-// DOM-IGNORE-END
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,41 +56,13 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/****************************** XDMAC Data Types ******************************/
-/* XDMAC Channels */
-typedef enum {
-    XDMAC_CHANNEL_0,
-    XDMAC_CHANNEL_1,
-    XDMAC_CHANNEL_2,
-    XDMAC_CHANNEL_3,
-    XDMAC_CHANNEL_4,
-    XDMAC_CHANNEL_5,
-} XDMAC_CHANNEL;
 
 
-/****************************** XDMAC API *********************************/
+/***************************** TRNG API *******************************/
+uint32_t TRNG_ReadData( void );
 
-void XDMAC_Initialize( void );
-
-void XDMAC_ChannelCallbackRegister( XDMAC_CHANNEL channel, const XDMAC_CHANNEL_CALLBACK eventHandler, const uintptr_t contextHandle );
-
-bool XDMAC_ChannelTransfer( XDMAC_CHANNEL channel, const void *srcAddr, const void *destAddr, size_t blockSize );
-
-bool XDMAC_ChannelIsBusy (XDMAC_CHANNEL channel);
-
-void XDMAC_ChannelDisable (XDMAC_CHANNEL channel);
-
-XDMAC_CHANNEL_CONFIG XDMAC_ChannelSettingsGet (XDMAC_CHANNEL channel);
-
-bool XDMAC_ChannelSettingsSet (XDMAC_CHANNEL channel, XDMAC_CHANNEL_CONFIG setting);
-
-void XDMAC_ChannelBlockLengthSet (XDMAC_CHANNEL channel, uint16_t length);
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
+#ifdef __cplusplus // Provide C++ Compatibility
+ }
 #endif
-// DOM-IGNORE-END
-#endif // PLIB_XDMAC_H
+
+#endif 

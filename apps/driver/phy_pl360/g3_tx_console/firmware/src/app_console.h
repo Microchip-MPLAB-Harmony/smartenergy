@@ -13,13 +13,13 @@
   Description:
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
-    "APP_Initialize" and "APP_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_STATES" definition).  Both
+    "APP_CONSOLE_Initialize" and "APP_CONSOLE_Tasks" prototypes) and some of them are only used
+    internally by the application (such as the "APP_CONSOLE_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef _APP_H
-#define _APP_H
+#ifndef _APP_CONSOLE_H
+#define _APP_CONSOLE_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -48,6 +48,7 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 #define BUFFER_SIZE               512
+#define SERIAL_BUFFER_SIZE        64
     
 #define LED_RX_OFF_RATE_MS        100    
     
@@ -65,43 +66,26 @@ extern "C" {
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_STATE_IDLE=0,
-    APP_STATE_INIT,
-    APP_STATE_CONFIG,
-    APP_STATE_SHOW_MENU,
-    APP_STATE_CONSOLE,
-    APP_STATE_SET_ATT_LEVEL,
-    APP_STATE_SET_SCHEME,
-    APP_STATE_SET_TIME_PERIOD,
-    APP_STATE_SET_DATA,
-    APP_STATE_SET_TONE_MAP,
-    APP_STATE_SET_PREEMPHASIS,
-    APP_STATE_SET_BRANCH_MODE,
-    APP_STATE_SET_OUTPUT_SIGNAL,
-    APP_STATE_VIEW_CONFIG,
-    APP_STATE_TX,
-    APP_STATE_STOP_TX,
-    APP_STATE_ERROR,
+    APP_CONSOLE_STATE_IDLE=0,
+    APP_CONSOLE_STATE_INIT,
+    APP_CONSOLE_STATE_WAIT_PLC,
+    APP_CONSOLE_STATE_SHOW_MENU,
+    APP_CONSOLE_STATE_CONSOLE,
+    APP_CONSOLE_STATE_SET_ATT_LEVEL,
+    APP_CONSOLE_STATE_SET_SCHEME,
+    APP_CONSOLE_STATE_SET_TIME_PERIOD,
+    APP_CONSOLE_STATE_SET_DATA_LEN,
+    APP_CONSOLE_STATE_SET_DATA,
+    APP_CONSOLE_STATE_SET_TONE_MAP,
+    APP_CONSOLE_STATE_SET_PREEMPHASIS,
+    APP_CONSOLE_STATE_SET_BRANCH_MODE,
+    APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL,
+    APP_CONSOLE_STATE_VIEW_CONFIG,
+    APP_CONSOLE_STATE_TX,
+    APP_CONSOLE_STATE_STOP_TX,
+    APP_CONSOLE_STATE_ERROR,
 
-} APP_STATES;
-
-/* Application modes
-
-  Summary:
-    Application modes enumeration
-
-  Description:
-    This enumeration defines the mode of application. This mode
-    determines the behavior of the application at PLC communication.
-*/
-
-typedef enum
-{
-    APP_MODE_TRANSMISION=0,
-    APP_MODE_RECEPTION,
-
-} APP_MODES;
-
+} APP_CONSOLE_STATES;
 
 // *****************************************************************************
 /* Application Data
@@ -121,33 +105,17 @@ typedef struct
     /* The application's current state */
     SYS_TIME_HANDLE tmr1Handle;   
     
-    APP_STATES state;
-    
-    APP_MODES mode;
-    
-    DRV_HANDLE drvPl360Handle;
-    
-    bool pl360_exception;
+    APP_CONSOLE_STATES state;
 
-    char pReceivedChar[10];
+    char pReceivedChar[SERIAL_BUFFER_SIZE];
+
+    char* pNextChar;
     
     uint8_t numCharToReceive;
-    
-    DRV_PL360_TRANSMISSION_OBJ pl360Tx;
-    
-    uint8_t pDataTx[BUFFER_SIZE];
-    
-	uint32_t txPeriod;
-    
-	uint32_t txEndTime;
-    
-	uint8_t txAuto;
-    
-	uint8_t txImpedance;
-    
-	uint8_t txForceNoOutput;
 
-} APP_DATA;
+} APP_CONSOLE_DATA;
+
+extern APP_CONSOLE_DATA appConsole;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -186,11 +154,10 @@ typedef struct
 	"1: DQPSK\n\r" \
 	"2: D8PSK\n\r" \
 	"3: Differential Robust\n\r" \
-	"\n\r" \
 	"4: Coherent BPSK\n\r" \
 	"5: Coherent QPSK\n\r" \
 	"6: Coherent 8PSK\n\r" \
-	"7: Coherent Robust\n\r" \
+	"7: Coherent Robust\n\r" 
 
 #define MENU_MODE "\n\r-- Transmission Mode --------------\r\n"	\
 	"0: Immediate and Not Forced\n\r" \
@@ -200,9 +167,7 @@ typedef struct
 
 #define MENU_DATA_MODE "\n\r-- Select Data Mode --------------\r\n" \
 	"0: Random Data\n\r" \
-	"1: Fixed Data\n\r" \
-	"2: Manual Data\n\r" \
-	"3: Manual Hex Data\n\r"
+	"1: Fixed Data\n\r"
 
 #define MENU_BRANCH_MODE "\n\r-- Select Branch Mode --------------\r\n"	\
 	"0: Autodetect\n\r" \
@@ -217,7 +182,7 @@ typedef struct
 
 /*******************************************************************************
   Function:
-    void APP_Initialize ( void )
+    void APP_CONSOLE_Initialize ( void )
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -225,7 +190,7 @@ typedef struct
   Description:
     This function initializes the Harmony application.  It places the
     application in its initial state and prepares it to run so that its
-    APP_Tasks function can be called.
+    APP_CONSOLE_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -239,19 +204,19 @@ typedef struct
 
   Example:
     <code>
-    APP_Initialize();
+    APP_CONSOLE_Initialize();
     </code>
 
   Remarks:
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_Initialize ( void );
+void APP_CONSOLE_Initialize ( void );
 
 
 /*******************************************************************************
   Function:
-    void APP_Tasks ( void )
+    void APP_CONSOLE_Tasks ( void )
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -272,18 +237,18 @@ void APP_Initialize ( void );
 
   Example:
     <code>
-    APP_Tasks();
+    APP_CONSOLE_Tasks();
     </code>
 
   Remarks:
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_Tasks( void );
+void APP_CONSOLE_Tasks( void );
 
 
 
-#endif /* _APP_H */
+#endif /* _APP_CONSOLE_H */
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

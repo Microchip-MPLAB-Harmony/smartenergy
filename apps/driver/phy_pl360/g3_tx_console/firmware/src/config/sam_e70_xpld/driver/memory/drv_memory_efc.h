@@ -1,20 +1,21 @@
 /*******************************************************************************
-  XDMAC PLIB
+  Memory Driver EFC Interface Definition
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_xdmac.h
+    drv_memory_efc.h
 
   Summary:
-    XDMAC PLIB Header File
+    Memory Driver EFC Interface Definition
 
   Description:
-    None
-
+    The Memory Driver provides a interface to access the EFC peripheral on the
+    microcontroller.
 *******************************************************************************/
 
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -37,63 +38,48 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+//DOM-IGNORE-END
 
-#ifndef PLIB_XDMAC_H
-#define PLIB_XDMAC_H
+#ifndef _DRV_MEMORY_EFC_H
+#define _DRV_MEMORY_EFC_H
 
-#include <stddef.h>
-#include <stdbool.h>
-#include "plib_xdmac_common.h"
+// *****************************************************************************
+// *****************************************************************************
+// Section: File includes
+// *****************************************************************************
+// *****************************************************************************
+
+#include "drv_memory_definitions.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
-
     extern "C" {
-
 #endif
+
 // DOM-IGNORE-END
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interface
-// *****************************************************************************
-// *****************************************************************************
+DRV_HANDLE DRV_EFC_Open( const SYS_MODULE_INDEX drvIndex, const DRV_IO_INTENT ioIntent );
 
-/****************************** XDMAC Data Types ******************************/
-/* XDMAC Channels */
-typedef enum {
-    XDMAC_CHANNEL_0,
-    XDMAC_CHANNEL_1,
-    XDMAC_CHANNEL_2,
-    XDMAC_CHANNEL_3,
-    XDMAC_CHANNEL_4,
-    XDMAC_CHANNEL_5,
-} XDMAC_CHANNEL;
+void DRV_EFC_Close( const DRV_HANDLE handle );
+
+SYS_STATUS DRV_EFC_Status( const SYS_MODULE_INDEX drvIndex );
+
+bool DRV_EFC_SectorErase( const DRV_HANDLE handle, uint32_t address );
+
+bool DRV_EFC_Read( const DRV_HANDLE handle, void *rx_data, uint32_t rx_data_length, uint32_t address );
+
+bool DRV_EFC_PageWrite( const DRV_HANDLE handle, void *tx_data, uint32_t address );
 
 
-/****************************** XDMAC API *********************************/
+MEMORY_DEVICE_TRANSFER_STATUS DRV_EFC_TransferStatusGet( const DRV_HANDLE handle );
 
-void XDMAC_Initialize( void );
+bool DRV_EFC_GeometryGet( const DRV_HANDLE handle, MEMORY_DEVICE_GEOMETRY *geometry );
 
-void XDMAC_ChannelCallbackRegister( XDMAC_CHANNEL channel, const XDMAC_CHANNEL_CALLBACK eventHandler, const uintptr_t contextHandle );
-
-bool XDMAC_ChannelTransfer( XDMAC_CHANNEL channel, const void *srcAddr, const void *destAddr, size_t blockSize );
-
-bool XDMAC_ChannelIsBusy (XDMAC_CHANNEL channel);
-
-void XDMAC_ChannelDisable (XDMAC_CHANNEL channel);
-
-XDMAC_CHANNEL_CONFIG XDMAC_ChannelSettingsGet (XDMAC_CHANNEL channel);
-
-bool XDMAC_ChannelSettingsSet (XDMAC_CHANNEL channel, XDMAC_CHANNEL_CONFIG setting);
-
-void XDMAC_ChannelBlockLengthSet (XDMAC_CHANNEL channel, uint16_t length);
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
+#ifdef __cplusplus
+}
 #endif
-// DOM-IGNORE-END
-#endif // PLIB_XDMAC_H
+
+#endif // #ifndef _DRV_MEMORY_EFC_H
+/*******************************************************************************
+ End of File
+*/
