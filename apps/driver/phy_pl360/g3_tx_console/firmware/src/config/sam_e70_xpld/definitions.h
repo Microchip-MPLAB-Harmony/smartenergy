@@ -71,6 +71,7 @@
 #include "osal/osal.h"
 #include "app_console.h"
 #include "app_plc.h"
+#include "app_nvm.h"
 
 
 

@@ -281,6 +281,7 @@ void SYS_Initialize ( void* data )
 
     APP_CONSOLE_Initialize();
     APP_PLC_Initialize();
+    APP_NVM_Initialize();
 
 
     NVIC_Initialize();

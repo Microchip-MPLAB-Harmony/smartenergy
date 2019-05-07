@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app.h
+    app_plc.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -47,10 +47,7 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define BUFFER_SIZE               512
-#define SERIAL_BUFFER_SIZE        64
-    
-#define LED_RX_OFF_RATE_MS        100    
+#define BUFFER_SIZE               512    
     
 // *****************************************************************************
 /* Application states
@@ -68,31 +65,17 @@ typedef enum
     /* Application's state machine's initial state. */
     APP_PLC_STATE_IDLE=0,
     APP_PLC_STATE_INIT,
-    APP_PLC_STATE_CONFIG,
+    APP_PLC_STATE_OPEN,
+    APP_PLC_STATE_READ_CONFIG,
+    APP_PLC_STATE_WRITE_CONFIG,
+    APP_PLC_STATE_CHECK_CONFIG,
+    APP_PLC_STATE_WAIT_CONFIG,
     APP_PLC_STATE_WAITING,
     APP_PLC_STATE_TX,
     APP_PLC_STATE_STOP_TX,
     APP_PLC_STATE_ERROR,
 
 } APP_PLC_STATES;
-
-/* Application modes
-
-  Summary:
-    Application modes enumeration
-
-  Description:
-    This enumeration defines the mode of application. This mode
-    determines the behavior of the application at PLC communication.
-*/
-
-typedef enum
-{
-    APP_PLC_MODE_TRANSMISION=0,
-    APP_PLC_MODE_RECEPTION,
-
-} APP_PLC_MODES;
-
 
 // *****************************************************************************
 /* Application Data
@@ -116,13 +99,23 @@ typedef struct
     
     bool pl360_exception;
     
+    bool inTx;
+    
+    bool waitingTxCfm;
+
+} APP_PLC_DATA;
+
+typedef struct
+{    
     uint32_t pl360PhyVersion;
+    
+    uint16_t pl360GainHigh[3];
+    
+    uint16_t pl360GainVeryLow[3];
     
     DRV_PL360_TRANSMISSION_OBJ pl360Tx;
     
     uint8_t pDataTx[BUFFER_SIZE];
-    
-	uint32_t txPeriod;
     
 	uint32_t txEndTime;
     
@@ -136,9 +129,10 @@ typedef struct
     
     uint8_t preemphasisSize;
 
-} APP_PLC_DATA;
+} APP_PLC_DATA_TX;
 
-extern APP_PLC_DATA appPLC;
+extern APP_PLC_DATA appPlc;
+extern APP_PLC_DATA_TX appPlcTx;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -147,61 +141,6 @@ extern APP_PLC_DATA appPLC;
 // *****************************************************************************
 /* These routines are called by drivers when certain events occur.
 */
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Console Interface Definition
-// *****************************************************************************
-// *****************************************************************************
-#define STRING_EOL    "\r"
-#define STRING_HEADER "\r\n-- MCHP PLC Tx Console Application --\r\n" \
-	"-- "BOARD_NAME " --\r\n" \
-	"-- Compiled: "__DATE__ " "__TIME__ " --\r\n" \
-	"-- PHY version: "DRV_PL360_HOST_DESC " --\r\n"
-
-#define MENU_HEADER "\n\r-- Menu Configuration --------------\n\r" \
-	"0: Select TX Level\n\r" \
-	"1: Select Modulation/Scheme\n\r" \
-	"2: Select time period between messages to transmit(us.)\n\r" \
-	"3: Select Data to transmit\n\r" \
-	"4: Select TX tone Map\n\r" \
-	"5: Select TX preemphasis\n\r" \
-	"6: Select Branch Mode\n\r" \
-	"7: Set/Clear Force No Output Signal\n\r" \
-	"v: View TX configuration values\n\r" \
-	"e: Execute transmission application\n\r" \
-	"otherwise: Display this main menu\n\n\r"
-
-#define MENU_SCHEME "\n\r-- Modulation Scheme --------------\r\n" \
-	"0: DBPSK\n\r" \
-	"1: DQPSK\n\r" \
-	"2: D8PSK\n\r" \
-	"3: Differential Robust\n\r" \
-	"4: Coherent BPSK\n\r" \
-	"5: Coherent QPSK\n\r" \
-	"6: Coherent 8PSK\n\r" \
-	"7: Coherent Robust\n\r" 
-
-#define MENU_MODE "\n\r-- Transmission Mode --------------\r\n"	\
-	"0: Immediate and Not Forced\n\r" \
-	"1: Immediate and Forced\n\r" \
-	"2: Delayed and Not Forced\n\r"	\
-	"3: Delayed and Forced\n\r"
-
-#define MENU_DATA_MODE "\n\r-- Select Data Mode --------------\r\n" \
-	"0: Random Data\n\r" \
-	"1: Fixed Data\n\r"
-
-#define MENU_BRANCH_MODE "\n\r-- Select Branch Mode --------------\r\n"	\
-	"0: Autodetect\n\r" \
-	"1: High Impedance\n\r"	\
-	"2: Very Low Impedance\n\r"
-
-#define MENU_NO_OUTPUT "\n\r-- Force No Output Signal --------------\r\n"	\
-	"0: Clear\n\r" \
-	"1: Set\n\r"
-
-#define MENU_CONSOLE "\n\rPHY-Console>"
 
 /*******************************************************************************
   Function:

@@ -164,6 +164,7 @@
       </logicalFolder>
       <itemPath>../src/app_console.h</itemPath>
       <itemPath>../src/app_plc.h</itemPath>
+      <itemPath>../src/app_nvm.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -248,9 +249,10 @@
           <itemPath>../src/config/sam_e70_xpld/tasks.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/main.c</itemPath>
       <itemPath>../src/app_console.c</itemPath>
       <itemPath>../src/app_plc.c</itemPath>
+      <itemPath>../src/app_nvm.c</itemPath>
+      <itemPath>../src/main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

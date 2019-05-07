@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app.h
+    app_nvm.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -13,13 +13,38 @@
   Description:
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
-    "APP_CONSOLE_Initialize" and "APP_CONSOLE_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_CONSOLE_STATES" definition).  Both
+    "APP_NVM_Initialize" and "APP_NVM_Tasks" prototypes) and some of them are only used
+    internally by the application (such as the "APP_NVM_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef _APP_CONSOLE_H
-#define _APP_CONSOLE_H
+// DOM-IGNORE-BEGIN
+/*******************************************************************************
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+*
+* Subject to your compliance with these terms, you may use Microchip software
+* and any derivatives exclusively with Microchip products. It is your
+* responsibility to comply with third party license terms applicable to your
+* use of third party software (including open source software) that may
+* accompany Microchip software.
+*
+* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
+* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
+* PARTICULAR PURPOSE.
+*
+* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
+* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
+* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
+* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+*******************************************************************************/
+// DOM-IGNORE-END
+
+#ifndef APP_NVM_H
+#define APP_NVM_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -32,7 +57,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "configuration.h"
-#include "definitions.h"
+#include "driver/memory/drv_memory.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -47,9 +72,16 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define SERIAL_BUFFER_SIZE        64
-#define LED_RX_OFF_RATE_MS        100    
-    
+
+/* Will Erase, Write and Read 1KB of Data */
+#define NVM_BUFFER_SIZE                 (1024U)
+
+#define NVM_GEOMETRY_TABLE_READ_ENTRY   (0)
+#define NVM_GEOMETRY_TABLE_WRITE_ENTRY  (1)
+#define NVM_GEOMETRY_TABLE_ERASE_ENTRY  (2)
+
+#define BLOCK_START                     0x0
+
 // *****************************************************************************
 /* Application states
 
@@ -63,26 +95,34 @@ extern "C" {
 
 typedef enum
 {
-    /* Application's state machine's initial state. */
-    APP_CONSOLE_STATE_IDLE=0,
-    APP_CONSOLE_STATE_INIT,
-    APP_CONSOLE_STATE_WAIT_PLC,
-    APP_CONSOLE_STATE_SHOW_MENU,
-    APP_CONSOLE_STATE_CONSOLE,
-    APP_CONSOLE_STATE_SET_ATT_LEVEL,
-    APP_CONSOLE_STATE_SET_SCHEME,
-    APP_CONSOLE_STATE_SET_TIME_PERIOD,
-    APP_CONSOLE_STATE_SET_DATA_LEN,
-    APP_CONSOLE_STATE_SET_DATA,
-    APP_CONSOLE_STATE_SET_TONE_MAP,
-    APP_CONSOLE_STATE_SET_PREEMPHASIS,
-    APP_CONSOLE_STATE_SET_BRANCH_MODE,
-    APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL,
-    APP_CONSOLE_STATE_VIEW_CONFIG,
-    APP_CONSOLE_STATE_TX,
-    APP_CONSOLE_STATE_ERROR,
+    /* Open the flash driver */
+    APP_NVM_STATE_OPEN_DRIVER,
 
-} APP_CONSOLE_STATES;
+    /* Get the geometry details */
+    APP_NVM_STATE_GEOMETRY_GET,
+
+    /* Write to Memory */
+    APP_NVM_STATE_WRITE_MEMORY,
+
+    /* Read From Memory */
+    APP_NVM_STATE_READ_MEMORY,
+
+    /* Erase Flash */
+    APP_NVM_STATE_ERASE_FLASH,
+
+    /* Wait for transfer to complete */
+    APP_NVM_STATE_XFER_WAIT,
+
+    /* Transfer success */
+    APP_NVM_STATE_SUCCESS,
+
+    /* Wait for commands */
+    APP_NVM_STATE_CMD_WAIT,
+
+    /* An app error has occurred */
+    APP_NVM_STATE_ERROR
+
+} APP_NVM_STATES;
 
 // *****************************************************************************
 /* Application Data
@@ -99,20 +139,44 @@ typedef enum
 
 typedef struct
 {
-    /* The application's current state */
-    SYS_TIME_HANDLE tmr1Handle;   
+    /* Application's current state */
+    APP_NVM_STATES state;
+
+    /* Driver Handle */
+    DRV_HANDLE memoryHandle;
+
+    /* Application transfer status */
+    volatile bool xfer_done;
+
+    /* Application transfer status */
+    bool erase_done;
+
+    /* Erase/Write/Read Command Handles */
+    DRV_MEMORY_COMMAND_HANDLE eraseHandle;
+    DRV_MEMORY_COMMAND_HANDLE writeHandle;
+    DRV_MEMORY_COMMAND_HANDLE readHandle;
+
+    /* Number of Read blocks */
+    uint32_t numReadBlocks;
+
+    /* Number of Write blocks */
+    uint32_t numWriteBlocks;
+
+    /* Number of Erase blocks */
+    uint32_t numEraseBlocks;
     
-    APP_CONSOLE_STATES state;
+    /* NVM Data buffer */
+    uint8_t pNvmBuffer[NVM_BUFFER_SIZE];
 
-    char pReceivedChar[SERIAL_BUFFER_SIZE];
-
-    char* pNextChar;
+    /* Pointer to store Data */
+    uint8_t* pData;
     
-    uint8_t numCharToReceive;
+    /* Length of data to store */
+    size_t dataLength;
+    
+} APP_NVM_DATA;
 
-} APP_CONSOLE_DATA;
-
-extern APP_CONSOLE_DATA appConsole;
+extern APP_NVM_DATA appNvm;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -124,62 +188,13 @@ extern APP_CONSOLE_DATA appConsole;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Console Interface Definition
+// Section: Application Initialization and State Machine Functions
 // *****************************************************************************
 // *****************************************************************************
-#define STRING_EOL    "\r"
-#define STRING_HEADER "\r\n-- MCHP PLC Tx Console Application --\r\n" \
-	"-- "BOARD_NAME " --\r\n" \
-	"-- Compiled: "__DATE__ " "__TIME__ " --\r\n" \
-	"-- PHY version: "DRV_PL360_HOST_DESC " --\r\n"
-
-#define MENU_HEADER "\n\r-- Menu Configuration --------------\n\r" \
-	"0: Select TX Level\n\r" \
-	"1: Select Modulation/Scheme\n\r" \
-	"2: Select time period between messages to transmit(us.)\n\r" \
-	"3: Select Data to transmit\n\r" \
-	"4: Select TX tone Map\n\r" \
-	"5: Select TX preemphasis\n\r" \
-	"6: Select Branch Mode\n\r" \
-	"7: Set/Clear Force No Output Signal\n\r" \
-	"v: View TX configuration values\n\r" \
-	"e: Execute transmission application\n\r" \
-	"otherwise: Display this main menu\n\n\r"
-
-#define MENU_SCHEME "\n\r-- Modulation Scheme --------------\r\n" \
-	"0: DBPSK\n\r" \
-	"1: DQPSK\n\r" \
-	"2: D8PSK\n\r" \
-	"3: Differential Robust\n\r" \
-	"4: Coherent BPSK\n\r" \
-	"5: Coherent QPSK\n\r" \
-	"6: Coherent 8PSK\n\r" \
-	"7: Coherent Robust\n\r" 
-
-#define MENU_MODE "\n\r-- Transmission Mode --------------\r\n"	\
-	"0: Immediate and Not Forced\n\r" \
-	"1: Immediate and Forced\n\r" \
-	"2: Delayed and Not Forced\n\r"	\
-	"3: Delayed and Forced\n\r"
-
-#define MENU_DATA_MODE "\n\r-- Select Data Mode --------------\r\n" \
-	"0: Random Data\n\r" \
-	"1: Fixed Data\n\r"
-
-#define MENU_BRANCH_MODE "\n\r-- Select Branch Mode --------------\r\n"	\
-	"0: Autodetect\n\r" \
-	"1: High Impedance\n\r"	\
-	"2: Very Low Impedance\n\r"
-
-#define MENU_NO_OUTPUT "\n\r-- Force No Output Signal --------------\r\n"	\
-	"0: Clear\n\r" \
-	"1: Set\n\r"
-
-#define MENU_CONSOLE "\n\rPHY-Console>"
 
 /*******************************************************************************
   Function:
-    void APP_CONSOLE_Initialize ( void )
+    void APP_NVM_Initialize ( void )
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -187,7 +202,7 @@ extern APP_CONSOLE_DATA appConsole;
   Description:
     This function initializes the Harmony application.  It places the
     application in its initial state and prepares it to run so that its
-    APP_CONSOLE_Tasks function can be called.
+    APP_NVM_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -201,19 +216,19 @@ extern APP_CONSOLE_DATA appConsole;
 
   Example:
     <code>
-    APP_CONSOLE_Initialize();
+    APP_NVM_Initialize();
     </code>
 
   Remarks:
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_CONSOLE_Initialize ( void );
+void APP_NVM_Initialize ( void );
 
 
 /*******************************************************************************
   Function:
-    void APP_CONSOLE_Tasks ( void )
+    void APP_NVM_Tasks ( void )
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -234,26 +249,20 @@ void APP_CONSOLE_Initialize ( void );
 
   Example:
     <code>
-    APP_CONSOLE_Tasks();
+    APP_NVM_Tasks();
     </code>
 
   Remarks:
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_CONSOLE_Tasks( void );
+void APP_NVM_Tasks( void );
 
 
-
-#endif /* _APP_CONSOLE_H */
+#endif /* APP_NVM_H */
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
 #endif
 //DOM-IGNORE-END
-
-/*******************************************************************************
- End of File
- */
-

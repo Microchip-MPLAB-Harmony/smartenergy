@@ -29,10 +29,7 @@
 
 #include <string.h>
 #include <math.h>
-#include "app_console.h"
 #include "definitions.h"
-#include "app_console.h"
-#include "app_plc.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -54,7 +51,7 @@
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_CONSOLE_DATA appConsole;
+APP_CONSOLE_DATA CACHE_ALIGN appConsole;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -116,7 +113,7 @@ static bool APP_CONSOLE_SetAttenuationLevel(char *level)
     attLevel += (*level - 0x30);
     
     if (attLevel < 32) {
-        appPLC.pl360Tx.attenuation = attLevel;
+        appPlcTx.pl360Tx.attenuation = attLevel;
 //        save_config(PHY_APP_CONSOLE_CMD_MENU_START_MODE);
         res = true;
     }
@@ -131,43 +128,43 @@ static bool APP_CONSOLE_SetScheme(char *scheme)
 	switch (*scheme) 
     {
 		case '0':
-			appPLC.pl360Tx.modType = MOD_TYPE_BPSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_BPSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
 			break;
 
 		case '1':
-			appPLC.pl360Tx.modType = MOD_TYPE_QPSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_QPSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
 			break;
 
 		case '2':
-			appPLC.pl360Tx.modType = MOD_TYPE_8PSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_8PSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
 			break;
 
 		case '3':
-			appPLC.pl360Tx.modType = MOD_TYPE_BPSK_ROBO;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_BPSK_ROBO;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
 			break;
 
 		case '4':
-			appPLC.pl360Tx.modType = MOD_TYPE_BPSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_BPSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
 			break;
 
 		case '5':
-			appPLC.pl360Tx.modType = MOD_TYPE_QPSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_QPSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
 			break;
 
 		case '6':
-			appPLC.pl360Tx.modType = MOD_TYPE_8PSK;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_8PSK;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
 			break;
 
 		case '7':
-			appPLC.pl360Tx.modType = MOD_TYPE_BPSK_ROBO;
-			appPLC.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
+			appPlcTx.pl360Tx.modType = MOD_TYPE_BPSK_ROBO;
+			appPlcTx.pl360Tx.modScheme = MOD_SCHEME_COHERENT;
 			break;
 
 		default:
@@ -183,13 +180,13 @@ static bool APP_CONSOLE_SetTransmissionPeriod(char *pTime, size_t length)
     uint8_t tmpValue;
     bool res = false;
     
-    appPLC.txPeriod = 0;
+    appPlcTx.pl360Tx.time = 0;
 
     for(index = length - 1; index > 0; index--)
     {
         if ((*pTime >= '0') && (*pTime <= '9')) {
 				tmpValue = (*pTime - 0x30);
-                appPLC.txPeriod += (uint32_t)pow(10, index - 1) * tmpValue;
+                appPlcTx.pl360Tx.time += (uint32_t)pow(10, index - 1) * tmpValue;
                 pTime++;
                 
                 res = true;                
@@ -210,13 +207,13 @@ static bool APP_CONSOLE_SetDataLength(char *pDataLength, size_t length)
     uint8_t tmpValue;
     bool res = false;
     
-    appPLC.pl360Tx.dataLength = 0;
+    appPlcTx.pl360Tx.dataLength = 0;
 
     for(index = length; index > 0; index--)
     {
         if ((*pDataLength >= '0') && (*pDataLength <= '9')) {
 				tmpValue = (*pDataLength - 0x30);
-                appPLC.pl360Tx.dataLength += (uint32_t)pow(10, index - 1) * tmpValue;
+                appPlcTx.pl360Tx.dataLength += (uint32_t)pow(10, index - 1) * tmpValue;
                 pDataLength++;
                 
                 res = true;                
@@ -238,8 +235,8 @@ static bool APP_CONSOLE_SetDataMode(char *mode)
     uint32_t dataValue;
     bool res = true;
     
-    length = appPLC.pl360Tx.dataLength;
-    pData = appPLC.pl360Tx.pTransmitData;
+    length = appPlcTx.pl360Tx.dataLength;
+    pData = appPlcTx.pl360Tx.pTransmitData;
     
 	switch (*mode) 
     {
@@ -282,8 +279,8 @@ static bool APP_CONSOLE_SetToneMap(char *toneMap, size_t length)
     uint8_t* pToneMapTx;
     bool res = true;
     
-    pToneMapTx = appPLC.pl360Tx.toneMap;
-    memset(pToneMapTx, 0, sizeof(appPLC.pl360Tx.toneMap));
+    pToneMapTx = appPlcTx.pl360Tx.toneMap;
+    memset(pToneMapTx, 0, sizeof(appPlcTx.pl360Tx.toneMap));
 
     for(index = 0; index < length * 2; index++, toneMap++)
     {
@@ -323,8 +320,8 @@ static bool APP_CONSOLE_SetPreemphasis(char *preemphasis, size_t length)
     uint8_t* pPreemphasisTx;
     bool res = true;
     
-    pPreemphasisTx = appPLC.pl360Tx.preemphasis;
-    memset(pPreemphasisTx, 0, sizeof(appPLC.pl360Tx.preemphasis));
+    pPreemphasisTx = appPlcTx.pl360Tx.preemphasis;
+    memset(pPreemphasisTx, 0, sizeof(appPlcTx.pl360Tx.preemphasis));
 
     for(index = 0; index < length * 2; index++, preemphasis++)
     {
@@ -365,18 +362,18 @@ static bool APP_CONSOLE_SetBranchMode(char *mode)
 	switch (*mode) 
     {
 		case '0':
-			appPLC.txAuto = 1;
-			appPLC.txImpedance = HI_STATE;
+			appPlcTx.txAuto = 1;
+			appPlcTx.txImpedance = HI_STATE;
 			break;
 
 		case '1':
-			appPLC.txAuto = 0;
-			appPLC.txImpedance = HI_STATE;
+			appPlcTx.txAuto = 0;
+			appPlcTx.txImpedance = HI_STATE;
 			break;
 
 		case '2':
-			appPLC.txAuto = 0;
-			appPLC.txImpedance = VLO_STATE;
+			appPlcTx.txAuto = 0;
+			appPlcTx.txImpedance = VLO_STATE;
 			break;
 
 		default:
@@ -393,11 +390,11 @@ static bool APP_CONSOLE_SetOutputMode(char *mode)
 	switch (*mode) 
     {
 		case '0':
-			appPLC.txForceNoOutput = 0;
+			appPlcTx.txForceNoOutput = 0;
 			break;
 
 		case '1':
-			appPLC.txForceNoOutput = 1;
+			appPlcTx.txForceNoOutput = 1;
 			break;
 
 		default:
@@ -412,12 +409,12 @@ static void APP_CONSOLE_ShowConfiguration(void)
     uint8_t index;
     
     printf("\n\r-- Configuration Info --------------\r\n");
-    printf("-I- PHY Version: 0x%08X\n\r", (unsigned int)appPLC.pl360PhyVersion);
-    printf("-I- TX Attenuation: %u\n\r", (unsigned int)appPLC.pl360Tx.attenuation);
-    switch (appPLC.pl360Tx.modType) 
+    printf("-I- PHY Version: 0x%08X\n\r", (unsigned int)appPlcTx.pl360PhyVersion);
+    printf("-I- TX Attenuation: %u\n\r", (unsigned int)appPlcTx.pl360Tx.attenuation);
+    switch (appPlcTx.pl360Tx.modType) 
     {
         case MOD_TYPE_BPSK:
-            if (appPLC.pl360Tx.modScheme) 
+            if (appPlcTx.pl360Tx.modScheme) 
             {
                 printf("-I- Modulation Scheme: Coherent BPSK \n\r");
             }
@@ -428,7 +425,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
 		break;
 
         case MOD_TYPE_QPSK:
-            if (appPLC.pl360Tx.modScheme) 
+            if (appPlcTx.pl360Tx.modScheme) 
             {
                 printf("-I- Modulation Scheme: Coherent QPSK \n\r");
             }
@@ -439,7 +436,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
             break;
 
         case MOD_TYPE_8PSK:
-            if (appPLC.pl360Tx.modScheme) 
+            if (appPlcTx.pl360Tx.modScheme) 
             {
                 printf("-I- Modulation Scheme: Coherent 8PSK \n\r");
             } 
@@ -450,7 +447,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
             break;
 
         case MOD_TYPE_BPSK_ROBO:
-            if (appPLC.pl360Tx.modScheme) 
+            if (appPlcTx.pl360Tx.modScheme) 
             {
                 printf("-I- Modulation Scheme: Coherent Robust\n\r");
             } 
@@ -465,18 +462,18 @@ static void APP_CONSOLE_ShowConfiguration(void)
 	}
     
     printf("-I- Tone Map: ");
-	for (index = 0; index < appPLC.toneMapSize; index++) {
-		printf("%02X", appPLC.pl360Tx.toneMap[index]);
+	for (index = 0; index < appPlcTx.toneMapSize; index++) {
+		printf("%02X", appPlcTx.pl360Tx.toneMap[index]);
 	}
 	printf("\r\n");
     
     printf("-I- Preemphasis: ");
-	for (index = 0; index < appPLC.preemphasisSize; index++) {
-		printf("%02X", appPLC.pl360Tx.preemphasis[index]);
+	for (index = 0; index < appPlcTx.preemphasisSize; index++) {
+		printf("%02X", appPlcTx.pl360Tx.preemphasis[index]);
 	}
 	printf("\r\n");
     
-    if (appPLC.txAuto) 
+    if (appPlcTx.txAuto) 
     {
 		printf("-I- Branch Mode : Autodetect - ");
 	} 
@@ -485,7 +482,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
 		printf("-I- Branch Mode : Fixed - ");
 	}
 
-	if (appPLC.txImpedance == HI_STATE) 
+	if (appPlcTx.txImpedance == HI_STATE) 
     {
 		printf("High Impedance \r\n");
 	} 
@@ -494,9 +491,18 @@ static void APP_CONSOLE_ShowConfiguration(void)
 		printf("Very Low Impedance \r\n");
 	}
     
-    printf("-I- Forced No Output Signal: %u\n\r", (unsigned int)appPLC.txForceNoOutput);
-	printf("-I- Time Period: %u\n\r", (unsigned int)appPLC.txPeriod);
-	printf("-I- Data Len: %u\n\r", (unsigned int)appPLC.pl360Tx.dataLength);
+    printf("-I- Forced No Output Signal: %u\n\r", (unsigned int)appPlcTx.txForceNoOutput);
+	printf("-I- Time Period: %u\n\r", (unsigned int)appPlcTx.pl360Tx.time);
+	printf("-I- Data Len: %u\n\r", (unsigned int)appPlcTx.pl360Tx.dataLength);    
+
+	if (appPlcTx.pl360Tx.pTransmitData[0] == 0x30) 
+    {
+		printf("-I- Fixed Data\r\n");
+	} 
+    else 
+    {
+		printf("-I- Random Data\r\n");
+	}
 }
 
 // *****************************************************************************
@@ -554,7 +560,7 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_WAIT_PLC:
         {
             /* Wait for PL360 device initialization */
-            if (appPLC.state == APP_PLC_STATE_WAITING)
+            if (appPlc.state == APP_PLC_STATE_WAITING)
             {                
                 /* Show Console menu */
                 appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
@@ -607,44 +613,44 @@ void APP_CONSOLE_Tasks ( void )
                         break;
 
                     case '4':
-                        if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x01)
+                        if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x01)
                         {
                             printf("\r\nEnter enter value for tone map. CENA(01 - 3F) : ");
-                            appPLC.toneMapSize = 1;
+                            appPlcTx.toneMapSize = 1;
                         }
-                        else if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x02)
+                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x02)
                         {
                             printf("\r\nEnter enter value for tone map. FCC(000001 - FFFFFF) : ");
-                            appPLC.toneMapSize = 3;
+                            appPlcTx.toneMapSize = 3;
                         }
-                        else if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x04)
+                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x04)
                         {
                             printf("\r\nEnter enter value for tone map. CENB(01 - 0F) : ");
-                            appPLC.toneMapSize = 1;
+                            appPlcTx.toneMapSize = 1;
                         }
                         
-                        APP_CONSOLE_ReadSerialChar(appPLC.toneMapSize << 1, true);                        
+                        APP_CONSOLE_ReadSerialChar(appPlcTx.toneMapSize << 1, true);                        
                         appConsole.state = APP_CONSOLE_STATE_SET_TONE_MAP;
                         break;
 
                     case '5':
-                        if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x01)
+                        if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x01)
                         {
                             printf("\r\nEnter enter value for preemphasis. CENA(6 bytes) : ");
-                            appPLC.preemphasisSize = 6;
+                            appPlcTx.preemphasisSize = 6;
                         }
-                        else if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x02)
+                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x02)
                         {
                             printf("\r\nEnter enter value for preemphasis. FCC(24 bytes) : ");
-                            appPLC.preemphasisSize = 24;
+                            appPlcTx.preemphasisSize = 24;
                         }
-                        else if (((appPLC.pl360PhyVersion >> 16) & 0xFF) == 0x04)
+                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x04)
                         {
                             printf("\r\nEnter enter value for preemphasis. CENB(3 bytes) : ");
-                            appPLC.preemphasisSize = 3;
+                            appPlcTx.preemphasisSize = 3;
                         }
                         
-                        APP_CONSOLE_ReadSerialChar(appPLC.preemphasisSize << 1, true);     
+                        APP_CONSOLE_ReadSerialChar(appPlcTx.preemphasisSize << 1, true);     
                         appConsole.state = APP_CONSOLE_STATE_SET_PREEMPHASIS;
                         break;
 
@@ -667,16 +673,14 @@ void APP_CONSOLE_Tasks ( void )
 
                     case 'e':
                     case 'E':
+                        printf("\r\nStart transmission, type 'x' to cancel.\r\n");
+                        appPlc.state = APP_PLC_STATE_TX;
                         appConsole.state = APP_CONSOLE_STATE_TX;
-                        break;
-
-                    case 'x':
-                    case 'X':
-                        appConsole.state = APP_CONSOLE_STATE_STOP_TX;
+                        APP_CONSOLE_ReadSerialChar(1, true);
                         break;
 
                     default:
-                        /* Discard character */                
+                        /* Discard character */  
                         APP_CONSOLE_ReadSerialChar(1, true);
                         break;
 
@@ -693,7 +697,7 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetAttenuationLevel(appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Attenuation level = %u\r\n", 
-                            (unsigned int)appPLC.pl360Tx.attenuation);
+                            (unsigned int)appPlcTx.pl360Tx.attenuation);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
@@ -713,8 +717,8 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetScheme(appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Type: %u, Scheme: %u \r\n", 
-                            (unsigned int)appPLC.pl360Tx.modType,
-                            (unsigned int)appPLC.pl360Tx.modScheme);
+                            (unsigned int)appPlcTx.pl360Tx.modType,
+                            (unsigned int)appPlcTx.pl360Tx.modScheme);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
@@ -737,7 +741,7 @@ void APP_CONSOLE_Tasks ( void )
                         appConsole.pNextChar - appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Time Period = %u us.\r\n", 
-                            (unsigned int)appPLC.pl360Tx.time);
+                            (unsigned int)appPlcTx.pl360Tx.time);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
@@ -764,7 +768,7 @@ void APP_CONSOLE_Tasks ( void )
                         appConsole.pNextChar - appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Data Length = %u bytes\r\n", 
-                            (unsigned int)appPLC.pl360Tx.dataLength);
+                            (unsigned int)appPlcTx.pl360Tx.dataLength);
                     
                     /* Set Data content */
                     printf(MENU_DATA_MODE);
@@ -808,19 +812,19 @@ void APP_CONSOLE_Tasks ( void )
         {
             if (appConsole.numCharToReceive == 0)
             {
-                if (APP_CONSOLE_SetToneMap(appConsole.pReceivedChar, appPLC.toneMapSize))
+                if (APP_CONSOLE_SetToneMap(appConsole.pReceivedChar, appPlcTx.toneMapSize))
                 {
-                    if (appPLC.toneMapSize == 3)
+                    if (appPlcTx.toneMapSize == 3)
                     {
                         printf("\r\nSet ToneMap: %02x%02x%02x \r\n", 
-                            (unsigned int)appPLC.pl360Tx.toneMap[0],
-                            (unsigned int)appPLC.pl360Tx.toneMap[1],
-                            (unsigned int)appPLC.pl360Tx.toneMap[2]);
+                            (unsigned int)appPlcTx.pl360Tx.toneMap[0],
+                            (unsigned int)appPlcTx.pl360Tx.toneMap[1],
+                            (unsigned int)appPlcTx.pl360Tx.toneMap[2]);
                     }
                     else
                     {
                         printf("\r\nSet ToneMap: %02X \r\n", 
-                            (unsigned int)appPLC.pl360Tx.toneMap[0]);
+                            (unsigned int)appPlcTx.pl360Tx.toneMap[0]);
                     }
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
@@ -828,7 +832,7 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     /* Try it again */
                     printf("\r\nERROR: ToneMap not permitted. Try again : ");
-                    APP_CONSOLE_ReadSerialChar(appPLC.toneMapSize << 1, true);  
+                    APP_CONSOLE_ReadSerialChar(appPlcTx.toneMapSize << 1, true);  
                 }
             }  
             break;
@@ -838,7 +842,7 @@ void APP_CONSOLE_Tasks ( void )
         {
             if (appConsole.numCharToReceive == 0)
             {
-                if (APP_CONSOLE_SetPreemphasis(appConsole.pReceivedChar, appPLC.preemphasisSize))
+                if (APP_CONSOLE_SetPreemphasis(appConsole.pReceivedChar, appPlcTx.preemphasisSize))
                 {
                     printf("\r\nSet Preemphasis values successfully\r\n");
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
@@ -847,7 +851,7 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     /* Try it again */
                     printf("\r\nERROR: Preemphasis values not permitted. Try again : ");
-                    APP_CONSOLE_ReadSerialChar(appPLC.preemphasisSize << 1, true);  
+                    APP_CONSOLE_ReadSerialChar(appPlcTx.preemphasisSize << 1, true);  
                 }
             }  
             break;
@@ -860,8 +864,8 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetBranchMode(appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Auto: %u, Branch: %u \r\n", 
-                            (unsigned int)appPLC.txAuto,
-                            (unsigned int)appPLC.txImpedance);
+                            (unsigned int)appPlcTx.txAuto,
+                            (unsigned int)appPlcTx.txImpedance);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
@@ -881,7 +885,7 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetOutputMode(appConsole.pReceivedChar))
                 {
                     printf("\r\nSet Force No Output : %u\r\n", 
-                            (unsigned int)appPLC.txForceNoOutput);
+                            (unsigned int)appPlcTx.txForceNoOutput);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
@@ -903,11 +907,26 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_TX:
         {
+            if (appConsole.numCharToReceive == 0)
+            {
+                if ((*appConsole.pReceivedChar == 'x') || (*appConsole.pReceivedChar == 'X'))
+                {
+                    printf("\r\nCancel transmission\r\n");
+                    appPlc.state = APP_PLC_STATE_STOP_TX;
+                    appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
+                }
+                else
+                {
+                    APP_CONSOLE_ReadSerialChar(1, true);
+                }
+            }
             break;
         }
 
-        case APP_CONSOLE_STATE_STOP_TX:
+        case APP_CONSOLE_STATE_ERROR:
         {
+            printf("\r\nERROR: Unknown received character\r\n");
+            appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
             break;
         }
 

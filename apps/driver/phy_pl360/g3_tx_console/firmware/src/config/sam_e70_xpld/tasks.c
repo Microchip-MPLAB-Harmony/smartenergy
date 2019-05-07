@@ -85,6 +85,7 @@ void SYS_Tasks ( void )
     /* Maintain the application's state machine. */
     APP_CONSOLE_Tasks();
     APP_PLC_Tasks();
+    APP_NVM_Tasks();
 
 
 

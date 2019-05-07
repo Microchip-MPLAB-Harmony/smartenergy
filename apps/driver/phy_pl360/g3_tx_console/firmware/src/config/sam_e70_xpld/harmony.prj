@@ -27,8 +27,8 @@
           <Name dnOrder="1">app.c</Name>
           <LogicalPath dnOrder="2"/>
           <PhysicalPath dnOrder="3">/../../</PhysicalPath>
-          <GeneratedChecksum dnOrder="4"/>
-          <UserChecksum dnOrder="5"/>
+          <GeneratedChecksum dnOrder="4">3C13720844166A5D97CF4EAD9DDB9FE2</GeneratedChecksum>
+          <UserChecksum dnOrder="5">3C13720844166A5D97CF4EAD9DDB9FE2</UserChecksum>
         </File>
         <File dnOrder="3">
           <Type dnOrder="0">SOURCE</Type>
@@ -116,7 +116,7 @@
           <LogicalPath dnOrder="2">config/sam_e70_xpld/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">893B873AC3A5010174E939A9451D6096</GeneratedChecksum>
-          <UserChecksum dnOrder="5">893B873AC3A5010174E939A9451D6096</UserChecksum>
+          <UserChecksum dnOrder="5">5EAECE58FBC3351669713BC1D1D9395D</UserChecksum>
         </File>
         <File dnOrder="14">
           <Type dnOrder="0">SOURCE</Type>
@@ -268,7 +268,7 @@
           <LogicalPath dnOrder="2">config/sam_e70_xpld/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">FCB49B94A14038FA190B82FA287A4D65</GeneratedChecksum>
-          <UserChecksum dnOrder="5">FCB49B94A14038FA190B82FA287A4D65</UserChecksum>
+          <UserChecksum dnOrder="5">73D535B4A3ED7BCF3C91A21EA0DAF8F0</UserChecksum>
         </File>
         <File dnOrder="33">
           <Type dnOrder="0">SOURCE</Type>
@@ -307,8 +307,8 @@
           <Name dnOrder="1">app.h</Name>
           <LogicalPath dnOrder="2"/>
           <PhysicalPath dnOrder="3">/../../</PhysicalPath>
-          <GeneratedChecksum dnOrder="4"/>
-          <UserChecksum dnOrder="5"/>
+          <GeneratedChecksum dnOrder="4">336C8E87CE40294B92A745B5F2E80300</GeneratedChecksum>
+          <UserChecksum dnOrder="5">336C8E87CE40294B92A745B5F2E80300</UserChecksum>
         </File>
         <File dnOrder="38">
           <Type dnOrder="0">HEADER</Type>
@@ -412,7 +412,7 @@
           <LogicalPath dnOrder="2">config/sam_e70_xpld/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">4AADA0F3FE43A371277173A3789B584E</GeneratedChecksum>
-          <UserChecksum dnOrder="5">4AADA0F3FE43A371277173A3789B584E</UserChecksum>
+          <UserChecksum dnOrder="5">859C078C3F52933ADCE2A08530E9CADE</UserChecksum>
         </File>
         <File dnOrder="51">
           <Type dnOrder="0">HEADER</Type>
