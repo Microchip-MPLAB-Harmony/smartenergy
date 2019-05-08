@@ -129,9 +129,8 @@ extern APP_CONSOLE_DATA appConsole;
 // *****************************************************************************
 #define STRING_EOL    "\r"
 #define STRING_HEADER "\r\n-- MCHP PLC Tx Console Application --\r\n" \
-	"-- "BOARD_NAME " --\r\n" \
 	"-- Compiled: "__DATE__ " "__TIME__ " --\r\n" \
-	"-- PHY version: "DRV_PL360_HOST_DESC " --\r\n"
+	"-- HOST version: "DRV_PL360_HOST_DESC " --\r\n"
 
 #define MENU_HEADER "\n\r-- Menu Configuration --------------\n\r" \
 	"0: Select TX Level\n\r" \

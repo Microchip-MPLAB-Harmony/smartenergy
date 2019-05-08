@@ -67,29 +67,10 @@ static void APP_PLC_ExceptionCb(DRV_PL360_EXCEPTION exceptionObj, uintptr_t cont
     /* Avoid warning */
     (void)context;
     
-    switch (exceptionObj) 
-    {
-        case DRV_PL360_EXCEPTION_UNEXPECTED_KEY:
-            printf("Exception: DRV_PL360_EXCEPTION_UNEXPECTED_KEY]\r\n");
-            break;
-
-        case DRV_PL360_EXCEPTION_CRITICAL_ERROR:
-            printf("Exception: DRV_PL360_EXCEPTION_CRITICAL_ERROR\r\n");
-            break;
-
-        case DRV_PL360_EXCEPTION_RESET:
-            printf("Exception: DRV_PL360_EXCEPTION_RESET\r\n");
-            break;
-
-        case DRV_PL360_EXCEPTION_DEBUG:
-            printf("Exception: DRV_PL360_EXCEPTION_DEBUG\r\n");
-            break;
-
-        default:
-            printf("Exception: UNKNOWN\r\n");
-	}
-
-	appPlc.pl360_exception = true;
+    /* Clear App flag */
+    appPlc.waitingTxCfm = false;
+    /* Restore TX configuration */
+    appPlc.state = APP_PLC_STATE_READ_CONFIG;
 }
 
 static void APP_PLC_DataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context )
@@ -159,6 +140,9 @@ void APP_PLC_Initialize ( void )
     /* Update state machine */
     appPlc.state = APP_PLC_STATE_INIT; 
     
+    /* Init flags of PLC transmission */
+    appPlc.waitingTxCfm = false;
+    
     /* Init PLC objects */
     appPlcTx.pl360Tx.pTransmitData = appPlcTx.pDataTx;
     
@@ -203,10 +187,6 @@ void APP_PLC_Tasks ( void )
                 /* Configure PL360 callbacks */
                 DRV_PL360_ExceptionCallbackRegister(appPlc.drvPl360Handle, APP_PLC_ExceptionCb, DRV_PL360_INDEX_0);
                 DRV_PL360_DataCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb, DRV_PL360_INDEX_0);
-                
-                /* Clear flags of PLC transmission */
-                appPlc.inTx = false;
-                appPlc.waitingTxCfm = false;
                 
                 /* Update configuration from NVM memory */
                 appPlc.state = APP_PLC_STATE_READ_CONFIG;
@@ -253,8 +233,16 @@ void APP_PLC_Tasks ( void )
                 
                 if (appPlcTx.pl360PhyVersion == version)
                 {
-                    /* Correct version of G3 PHY layer */
-                    appPlc.state = APP_PLC_STATE_WAITING;
+                    if (appPlcTx.inTx)
+                    {
+                        /* Previous TX state */
+                        appPlc.state = APP_PLC_STATE_TX;                        
+                    }
+                    else
+                    {
+                        /* Correct version of G3 PHY layer */
+                        appPlc.state = APP_PLC_STATE_WAITING;
+                    }                    
                 }
                 else
                 {
@@ -307,6 +295,9 @@ void APP_PLC_Tasks ( void )
                     
                     memset(appPlcTx.pl360Tx.preemphasis, 0, sizeof(appPlcTx.pl360Tx.preemphasis));
                     
+                    /* Clear Transmission flag */
+                    appPlcTx.inTx = false;
+                    
                     /* Save PLC TX Configuration */
                     appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
                 }                
@@ -331,7 +322,7 @@ void APP_PLC_Tasks ( void )
         {
             if (appNvm.state == APP_NVM_STATE_CMD_WAIT)
             {
-                if (appPlc.inTx)
+                if (appPlcTx.inTx)
                 {
                     appPlc.state = APP_PLC_STATE_TX;
                 }
@@ -350,8 +341,7 @@ void APP_PLC_Tasks ( void )
 
         case APP_PLC_STATE_TX:
         {
-            
-            if (!appPlc.inTx)
+            if (!appPlcTx.inTx)
             {
                 DRV_PL360_PIB_OBJ pibObj;
                 
@@ -390,12 +380,13 @@ void APP_PLC_Tasks ( void )
                     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);                    
                 }
                 /* Set Transmission Mode */
-                appPlcTx.pl360Tx.mode = TX_MODE_RELATIVE;   
+                appPlcTx.pl360Tx.mode = TX_MODE_RELATIVE; 
+                
+                /* Set Transmission flag */
+                appPlcTx.inTx = true;  
                 
                 /* Store TX configuration */
                 appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
-                /* Set Transmission flags */
-                appPlc.inTx = true;
             }
             else
             {
@@ -412,8 +403,12 @@ void APP_PLC_Tasks ( void )
 
         case APP_PLC_STATE_STOP_TX:
         {
-            appPlc.inTx = false;
-            appPlc.state = APP_PLC_STATE_WAITING;
+            /* Clear Transmission flag */
+            appPlcTx.inTx = false;
+            
+            /* Store TX configuration */
+            appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
+            
             /* Cancel last transmission */
             if (appPlc.waitingTxCfm)
             {

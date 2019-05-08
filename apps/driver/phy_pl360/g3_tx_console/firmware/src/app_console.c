@@ -542,6 +542,8 @@ void APP_CONSOLE_Initialize ( void )
 
 void APP_CONSOLE_Tasks ( void )
 {
+    /* Refresh WDG */
+    WDT_Clear();
 
     /* Check the application's current state. */
     switch ( appConsole.state )
@@ -554,6 +556,9 @@ void APP_CONSOLE_Tasks ( void )
             
             appConsole.state = APP_CONSOLE_STATE_WAIT_PLC;
             
+            /* Show App Header */
+            printf(STRING_HEADER);
+            
             break;
         }
             
@@ -564,7 +569,12 @@ void APP_CONSOLE_Tasks ( void )
             {                
                 /* Show Console menu */
                 appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
-            }                
+            }
+            else if (appPlc.state == APP_PLC_STATE_TX)
+            {
+                /* Set TX state */
+                appConsole.state = APP_CONSOLE_STATE_TX;
+            }
             break;
         }
 

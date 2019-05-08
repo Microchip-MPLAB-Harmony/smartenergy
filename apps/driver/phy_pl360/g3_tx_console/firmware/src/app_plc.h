@@ -97,10 +97,6 @@ typedef struct
     
     DRV_HANDLE drvPl360Handle;
     
-    bool pl360_exception;
-    
-    bool inTx;
-    
     bool waitingTxCfm;
 
 } APP_PLC_DATA;
@@ -128,6 +124,8 @@ typedef struct
     uint8_t toneMapSize;
     
     uint8_t preemphasisSize;
+    
+    bool inTx;
 
 } APP_PLC_DATA_TX;
 
