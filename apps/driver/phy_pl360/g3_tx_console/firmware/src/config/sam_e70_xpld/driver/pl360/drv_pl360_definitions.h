@@ -102,6 +102,9 @@ typedef struct
     /* SPI receive register address used for DMA operation. */
     void                                   *spiAddressRx;
 
+    /* SPI clock frequency */
+    uint32_t                               spiClockFrequency;
+
     /* PL360 LDO enable pin */
     SYS_PORT_PIN                           ldoPin;
 

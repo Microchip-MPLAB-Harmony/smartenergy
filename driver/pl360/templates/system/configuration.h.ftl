@@ -11,6 +11,11 @@
 <#else>
 #define DRV_PL360_PLC_PROFILE                   ${DRV_PL360_PLC_PROFILE?string}
 </#if>
+<#if DRV_PL360_PLC_PROFILE == "2">
+#define DRV_PL360_SPI_CLK                       12000000
+<#else>
+#define DRV_PL360_SPI_CLK                       8000000
+</#if>
 
 <#if DRV_PL360_BIN_STATIC_ADDRESSING == true>
 #define DRV_PL360_BIN_ADDRESS                   0x${DRV_PL360_PLC_BIN_ADDRESS?string}

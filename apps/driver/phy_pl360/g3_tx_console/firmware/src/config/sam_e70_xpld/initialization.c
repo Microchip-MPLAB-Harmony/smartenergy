@@ -120,6 +120,9 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
     
+    /* SPI clock frequency */
+    .spiClockFrequency = DRV_PL360_SPI_CLK,
+    
     /* PL360 LDO Enable Pin */
     .ldoPin = DRV_PL360_LDO_EN_PIN, 
     

@@ -117,6 +117,7 @@ extern "C" {
 #define DRV_PL360_RESET_PIN                     SYS_PORT_PIN_PB2
 #define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
 #define DRV_PL360_PLC_PROFILE                   0
+#define DRV_PL360_SPI_CLK                       8000000
 
 #define DRV_PL360_SECURE                        false
 /* PL360 Driver Identification */

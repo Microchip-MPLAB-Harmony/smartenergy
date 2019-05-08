@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_g3.c
+    drv_pl360_comm.c
 
   Summary:
     PL360 Driver G3 Profile Layer
