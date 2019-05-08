@@ -149,7 +149,7 @@ void appNvmTransferHandler
     void APP_NVM_Initialize ( void )
 
   Remarks:
-    See prototype in app.h.
+    See prototype in app_nvm.h.
  */
 
 void APP_NVM_Initialize ( void )
@@ -169,7 +169,7 @@ void APP_NVM_Initialize ( void )
     Each case is a fall through when the request is queued up successfully.
 
   Remarks:
-    See prototype in app.h.
+    See prototype in app_nvm.h.
  */
 
 void APP_NVM_Tasks ( void )

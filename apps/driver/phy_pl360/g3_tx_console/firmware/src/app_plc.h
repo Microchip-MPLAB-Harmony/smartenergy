@@ -73,9 +73,35 @@ typedef enum
     APP_PLC_STATE_WAITING,
     APP_PLC_STATE_TX,
     APP_PLC_STATE_STOP_TX,
+    APP_PLC_STATE_SET_BAND,
     APP_PLC_STATE_ERROR,
 
 } APP_PLC_STATES;
+
+// *****************************************************************************
+/* PLC Coupling configuration data
+
+  Summary:
+    Holds PLC configuration data
+
+  Description:
+    This structure holds the PLC coupling configuration data.
+
+  Remarks: 
+    The maximum number of levels is 8.
+ */    
+typedef struct {
+	uint32_t maxRMSHigh[8];
+	uint32_t maxRMSVeryLow[8];
+	uint32_t thresholdHigh[16];
+	uint32_t thresholdVeryLow[16];
+	uint32_t daccConfig[17];
+	uint16_t predistorsionHigh[NUM_CARRIERS_CENELEC_A];
+	uint16_t predistorsionVeryLow[NUM_CARRIERS_CENELEC_A];
+	uint16_t gainHigh[3];
+	uint16_t gainVeryLow[3];
+	uint8_t numTxLevels;
+} APP_PLC_COUPLING_DATA;
 
 // *****************************************************************************
 /* Application Data
@@ -98,11 +124,15 @@ typedef struct
     DRV_HANDLE drvPl360Handle;
     
     bool waitingTxCfm;
+    
+    bool couplingConfig;
 
 } APP_PLC_DATA;
 
 typedef struct
 {    
+    uint16_t configKey;
+    
     uint32_t pl360PhyVersion;
     
     uint16_t pl360GainHigh[3];
@@ -126,6 +156,8 @@ typedef struct
     uint8_t preemphasisSize;
     
     bool inTx;
+    
+    bool bin2InUse;
 
 } APP_PLC_DATA_TX;
 

@@ -404,6 +404,27 @@ static bool APP_CONSOLE_SetOutputMode(char *mode)
     return res;
 }
 
+static bool APP_CONSOLE_SetPlcBand(char *mode)
+{
+    bool res = true;
+    
+	switch (*mode) 
+    {
+		case '0':
+			appPlcTx.bin2InUse = 0;
+			break;
+
+		case '1':
+			appPlcTx.bin2InUse = 1;
+			break;
+
+		default:
+			res = false;
+	}
+    
+    return res;
+}
+
 static void APP_CONSOLE_ShowConfiguration(void)
 {
     uint8_t index;
@@ -516,7 +537,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
     void APP_CONSOLE_Initialize ( void )
 
   Remarks:
-    See prototype in app.h.
+    See prototype in app_console.h.
  */
 
 void APP_CONSOLE_Initialize ( void )
@@ -537,7 +558,7 @@ void APP_CONSOLE_Initialize ( void )
     void APP_CONSOLE_Tasks ( void )
 
   Remarks:
-    See prototype in app.h.
+    See prototype in app_console.h.
  */
 
 void APP_CONSOLE_Tasks ( void )
@@ -674,6 +695,12 @@ void APP_CONSOLE_Tasks ( void )
                         printf(MENU_NO_OUTPUT);                        
                         APP_CONSOLE_ReadSerialChar(1, true);
                         appConsole.state = APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL;
+                        break;
+
+                    case '8':
+                        printf(MENU_MULTIBAND);                        
+                        APP_CONSOLE_ReadSerialChar(1, true);
+                        appConsole.state = APP_CONSOLE_STATE_SET_PLC_BAND;
                         break;
 
                     case 'v':
@@ -896,6 +923,34 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     printf("\r\nSet Force No Output : %u\r\n", 
                             (unsigned int)appPlcTx.txForceNoOutput);
+                    appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
+                }
+                else
+                {
+                    /* Try it again */
+                    printf("\r\nERROR: Value not permitted. Try again : ");
+                    APP_CONSOLE_ReadSerialChar(1, true);
+                }
+            }  
+            break;
+        }
+
+        case APP_CONSOLE_STATE_SET_PLC_BAND:
+        {
+            if (appConsole.numCharToReceive == 0)
+            {
+                if (APP_CONSOLE_SetPlcBand(appConsole.pReceivedChar))
+                {
+                    if (appPlcTx.bin2InUse)
+                    {
+                        printf("\r\nSet FCC Band\r\n");
+                    }
+                    else
+                    {
+                        printf("\r\nSet CEN A Band\r\n");
+                    }
+                    
+                    appPlc.state = APP_PLC_STATE_SET_BAND;
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else

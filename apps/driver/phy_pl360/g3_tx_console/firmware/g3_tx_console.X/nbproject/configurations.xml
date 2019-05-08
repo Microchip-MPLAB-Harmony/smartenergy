@@ -172,7 +172,6 @@
       <itemPath>../src/app_console.h</itemPath>
       <itemPath>../src/app_plc.h</itemPath>
       <itemPath>../src/app_nvm.h</itemPath>
-      <itemPath>../src/app.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -267,7 +266,6 @@
       <itemPath>../src/app_plc.c</itemPath>
       <itemPath>../src/app_nvm.c</itemPath>
       <itemPath>../src/main.c</itemPath>
-      <itemPath>../src/app.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

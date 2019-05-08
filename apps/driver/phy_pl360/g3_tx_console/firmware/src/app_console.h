@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app.h
+    app_console.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -78,6 +78,7 @@ typedef enum
     APP_CONSOLE_STATE_SET_PREEMPHASIS,
     APP_CONSOLE_STATE_SET_BRANCH_MODE,
     APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL,
+    APP_CONSOLE_STATE_SET_PLC_BAND,
     APP_CONSOLE_STATE_VIEW_CONFIG,
     APP_CONSOLE_STATE_TX,
     APP_CONSOLE_STATE_ERROR,
@@ -141,6 +142,7 @@ extern APP_CONSOLE_DATA appConsole;
 	"5: Select TX preemphasis\n\r" \
 	"6: Select Branch Mode\n\r" \
 	"7: Set/Clear Force No Output Signal\n\r" \
+	"8: Select PLC band (only for multiband boards)\n\r" \
 	"v: View TX configuration values\n\r" \
 	"e: Execute transmission application\n\r" \
 	"otherwise: Display this main menu\n\n\r"
@@ -173,6 +175,10 @@ extern APP_CONSOLE_DATA appConsole;
 #define MENU_NO_OUTPUT "\n\r-- Force No Output Signal --------------\r\n"	\
 	"0: Clear\n\r" \
 	"1: Set\n\r"
+
+#define MENU_MULTIBAND "\n\r-- Select PLC band --------------\r\n"	\
+	"0: CEN A\n\r" \
+	"1: FCC\n\r"
 
 #define MENU_CONSOLE "\n\rPHY-Console>"
 

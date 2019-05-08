@@ -2817,7 +2817,7 @@
         <ElementPosition dnOrder="1" id="cmsis" x="339" y="21"/>
         <ElementPosition dnOrder="2" id="core" x="233" y="21"/>
         <ElementPosition dnOrder="3" id="dfp" x="19" y="21"/>
-        <ElementPosition dnOrder="4" id="drvExtPhyPl360" x="330" y="396"/>
+        <ElementPosition dnOrder="4" id="drvExtPhyPl360" x="330" y="399"/>
         <ElementPosition dnOrder="5" id="drv_memory" x="669" y="126"/>
         <ElementPosition dnOrder="6" id="efc" x="508" y="190"/>
         <ElementPosition dnOrder="7" id="spi0" x="121" y="418"/>
