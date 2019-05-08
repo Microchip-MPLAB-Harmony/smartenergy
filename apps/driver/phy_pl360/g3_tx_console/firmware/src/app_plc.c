@@ -41,8 +41,10 @@
 
 extern uint8_t pl360_bin_start;
 extern uint8_t pl360_bin_end;
+#if defined APP_CONFIG_PLC_MULTIBAND == true
 extern uint8_t pl360_bin2_start;
 extern uint8_t pl360_bin2_end;
+#endif
 
 /* PL360 Driver Initialization Data (initialization.c) */
 extern DRV_PL360_INIT drvPL360InitData;
@@ -264,6 +266,9 @@ void APP_PLC_Initialize ( void )
     /* Set configuration of coupling parameters */
     appPlc.couplingConfig = APP_CONFIG_PLC_COUP;
     
+    /* Set PLC Multi-band option */
+    appPlc.plcMultiband = APP_CONFIG_PLC_MULTIBAND;
+    
     /* Init flags of PLC transmission */
     appPlc.waitingTxCfm = false;
     
@@ -381,8 +386,9 @@ void APP_PLC_Tasks ( void )
         
         case APP_PLC_STATE_INIT:
         {
+#if defined APP_CONFIG_PLC_MULTIBAND == true            
             /* Select PLC Binary file for multiband solution */
-            if (appPlcTx.bin2InUse)
+            if ((appPlcTx.bin2InUse) && (appPlc.plcMultiband))
             {
                 drvPL360InitData.binStartAddress = (uint32_t)&pl360_bin2_start;
                 drvPL360InitData.binEndAddress = (uint32_t)&pl360_bin2_end;
@@ -392,7 +398,7 @@ void APP_PLC_Tasks ( void )
                 drvPL360InitData.binStartAddress = (uint32_t)&pl360_bin_start;
                 drvPL360InitData.binEndAddress = (uint32_t)&pl360_bin_end;
             }
-            
+#endif            
             /* Initialize PL360 Driver Instance */
             sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
             /* Register Callback function to handle PL360 interruption */
@@ -558,6 +564,13 @@ void APP_PLC_Tasks ( void )
 
         case APP_PLC_STATE_SET_BAND:
         {
+            if (!appPlc.plcMultiband) 
+            {
+                /* PLC Multi-band is not supported */
+                appPlc.state = APP_PLC_STATE_WAITING;
+                break;
+            }
+            
             /* Clear Transmission flags */
             appPlcTx.inTx = false;
             appPlc.waitingTxCfm = false;

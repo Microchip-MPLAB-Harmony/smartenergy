@@ -698,9 +698,17 @@ void APP_CONSOLE_Tasks ( void )
                         break;
 
                     case '8':
-                        printf(MENU_MULTIBAND);                        
-                        APP_CONSOLE_ReadSerialChar(1, true);
-                        appConsole.state = APP_CONSOLE_STATE_SET_PLC_BAND;
+                        if (appPlc.plcMultiband)
+                        {
+                            printf(MENU_MULTIBAND);                        
+                            APP_CONSOLE_ReadSerialChar(1, true);
+                            appConsole.state = APP_CONSOLE_STATE_SET_PLC_BAND;   
+                        }
+                        else
+                        {
+                            printf("\r\nMulti-band option is not supported.\r\n");
+                            APP_CONSOLE_ReadSerialChar(1, true);
+                        }                        
                         break;
 
                     case 'v':

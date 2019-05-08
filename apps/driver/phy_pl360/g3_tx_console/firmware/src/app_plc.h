@@ -126,6 +126,8 @@ typedef struct
     bool waitingTxCfm;
     
     bool couplingConfig;
+    
+    bool plcMultiband;
 
 } APP_PLC_DATA;
 

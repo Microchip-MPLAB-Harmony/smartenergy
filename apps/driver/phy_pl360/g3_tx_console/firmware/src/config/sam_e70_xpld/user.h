@@ -108,7 +108,9 @@ extern "C" {
 
 #define DACC_CFG_TABLE_FCC       DACC_CFG_TABLE_COUP11    
     
-#define APP_CONFIG_PLC_COUP      true 
+#define APP_CONFIG_PLC_COUP      true
+    
+#define APP_CONFIG_PLC_MULTIBAND true    
 
 
 //DOM-IGNORE-BEGIN
