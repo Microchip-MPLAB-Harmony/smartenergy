@@ -103,69 +103,69 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* 
     if ((pDataSrc->delimiterType == DT_SOF_NO_RESP) || (pDataSrc->delimiterType == DT_SOF_RESP))
     {
         /* Data frame */
-		/* ModType (high) + ModScheme (low) */
-		*pData++ = (uint8_t)((pDataSrc->modScheme & 0x0F) + (((pDataSrc->modType) << 4) & 0xF0));
-		/* Tone Map */
-		if (PSNIFFER_TONEMAP_SIZE == 1) {
-			*pData++ = 0;
-			*pData++ = 0;
-			*pData++ = pDataSrc->toneMap[0];
-		} else {
-			*pData++ = pDataSrc->toneMap[2];
-			*pData++ = pDataSrc->toneMap[1];
-			*pData++ = pDataSrc->toneMap[0];
-		}
+        /* ModType (high) + ModScheme (low) */
+        *pData++ = (uint8_t)((pDataSrc->modScheme & 0x0F) + (((pDataSrc->modType) << 4) & 0xF0));
+        /* Tone Map */
+        if (PSNIFFER_TONEMAP_SIZE == 1) {
+            *pData++ = 0;
+            *pData++ = 0;
+            *pData++ = pDataSrc->toneMap[0];
+        } else {
+            *pData++ = pDataSrc->toneMap[2];
+            *pData++ = pDataSrc->toneMap[1];
+            *pData++ = pDataSrc->toneMap[0];
+        }
 
-		/* Number of symbols (2 bytes) */
-		*pData++ = (uint8_t)(gLastRxPayloadSymbols >> 8);
-		*pData++ = (uint8_t)gLastRxPayloadSymbols;
-		/* SNR */
-		*pData++ = pDataSrc->lqi;
+        /* Number of symbols (2 bytes) */
+        *pData++ = (uint8_t)(gLastRxPayloadSymbols >> 8);
+        *pData++ = (uint8_t)gLastRxPayloadSymbols;
+        /* SNR */
+        *pData++ = pDataSrc->lqi;
 
     }
     else
     {
         /* ACK */
-		/* ModType (high) + ModScheme (low) */
-		*pData++ = 0;
-		/* Tone Map */
-		*pData++ = 0;
-		*pData++ = 0;
-		*pData++ = 0;
-		/* Number of symbols (2 bytes) */
-		*pData++ = 0;
-		*pData++ = 0;
-		/* SNR */
-		*pData++ = 0xFF;
+        /* ModType (high) + ModScheme (low) */
+        *pData++ = 0;
+        /* Tone Map */
+        *pData++ = 0;
+        *pData++ = 0;
+        *pData++ = 0;
+        /* Number of symbols (2 bytes) */
+        *pData++ = 0;
+        *pData++ = 0;
+        /* SNR */
+        *pData++ = 0xFF;
     }
 
-	/* Delimiter Type */
-	*pData++ = pDataSrc->delimiterType;
-	/* TimeIni */
-	timeIni = pDataSrc->time - pDataSrc->frameDuration;
+    /* Delimiter Type */
+    *pData++ = pDataSrc->delimiterType;
+    /* TimeIni */
+    timeIni = pDataSrc->time - pDataSrc->frameDuration;
 
-	*pData++ = (timeIni >> 24);
-	*pData++ = (timeIni >> 16) & 0xFF;
-	*pData++ = (timeIni >> 8) & 0xFF;
-	*pData++ = timeIni & 0xFF;
-	/* TimeEnd */
-	timeEnd = pDataSrc->time;
-	*pData++ = (timeEnd >> 24);
-	*pData++ = (timeEnd >> 16) & 0xFF;
-	*pData++ = (timeEnd >> 8) & 0xFF;
-	*pData++ = timeEnd & 0xFF;
-	/* RSSI */
-	*pData++ = (uint8_t)(pDataSrc->rssi >> 8);
-	*pData++ = (uint8_t)(pDataSrc->rssi);
-	/* AGC_Factor */
-	*pData++ = (uint8_t)(pDataSrc->agcFactor >> 8);
-	*pData++ = (uint8_t)(pDataSrc->agcFactor);
-	/* Length in bytes */
-	*pData++ = (uint8_t)(pDataSrc->dataLength >> 8);
-	*pData++ = (uint8_t)(pDataSrc->dataLength);
-	/* PDU */
-	memcpy(pData, pDataSrc->pReceivedData, pDataSrc->dataLength);
-	pData += pDataSrc->dataLength;
+    *pData++ = (timeIni >> 24);
+    *pData++ = (timeIni >> 16) & 0xFF;
+    *pData++ = (timeIni >> 8) & 0xFF;
+    *pData++ = timeIni & 0xFF;
+    /* TimeEnd */
+    timeEnd = pDataSrc->time;
+    *pData++ = (timeEnd >> 24);
+    *pData++ = (timeEnd >> 16) & 0xFF;
+    *pData++ = (timeEnd >> 8) & 0xFF;
+    *pData++ = timeEnd & 0xFF;
+    /* RSSI */
+    *pData++ = (uint8_t)(pDataSrc->rssi >> 8);
+    *pData++ = (uint8_t)(pDataSrc->rssi);
+    /* AGC_Factor */
+    *pData++ = (uint8_t)(pDataSrc->agcFactor >> 8);
+    *pData++ = (uint8_t)(pDataSrc->agcFactor);
+    /* Length in bytes */
+    *pData++ = (uint8_t)(pDataSrc->dataLength >> 8);
+    *pData++ = (uint8_t)(pDataSrc->dataLength);
+    /* PDU */
+    memcpy(pData, pDataSrc->pReceivedData, pDataSrc->dataLength);
+    pData += pDataSrc->dataLength;
     
     return (pData - pDataDst);    
 }
@@ -208,33 +208,33 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_C
     *pData++ = (uint8_t)gLastTxPayloadSymbols;
     /* SNR */
     *pData++ = 0xFF;
-	/* Delimiter Type */
-	*pData++ = gLastTxObj.delimiterType;
-	/* TimeIni */
-	timeIni = gLastTxObj.time;
+    /* Delimiter Type */
+    *pData++ = gLastTxObj.delimiterType;
+    /* TimeIni */
+    timeIni = gLastTxObj.time;
 
-	*pData++ = (timeIni >> 24);
-	*pData++ = (timeIni >> 16) & 0xFF;
-	*pData++ = (timeIni >> 8) & 0xFF;
-	*pData++ = timeIni & 0xFF;
-	/* TimeEnd */
-	timeEnd = pDataCfm->time;
-	*pData++ = (timeEnd >> 24);
-	*pData++ = (timeEnd >> 16) & 0xFF;
-	*pData++ = (timeEnd >> 8) & 0xFF;
-	*pData++ = timeEnd & 0xFF;
-	/* RSSI */
-	*pData++ = (uint8_t)(0xFF >> 8);
-	*pData++ = (uint8_t)(0xFF);
-	/* AGC_Factor */
-	*pData++ = (uint8_t)(0xFF >> 8);
-	*pData++ = (uint8_t)(0xFF);
-	/* Length in bytes */
-	*pData++ = (uint8_t)(gLastTxObj.dataLength >> 8);
-	*pData++ = (uint8_t)(gLastTxObj.dataLength);
-	/* PDU */
-	memcpy(pData, gLastTxData, gLastTxObj.dataLength);
-	pData += gLastTxObj.dataLength;
+    *pData++ = (timeIni >> 24);
+    *pData++ = (timeIni >> 16) & 0xFF;
+    *pData++ = (timeIni >> 8) & 0xFF;
+    *pData++ = timeIni & 0xFF;
+    /* TimeEnd */
+    timeEnd = pDataCfm->time;
+    *pData++ = (timeEnd >> 24);
+    *pData++ = (timeEnd >> 16) & 0xFF;
+    *pData++ = (timeEnd >> 8) & 0xFF;
+    *pData++ = timeEnd & 0xFF;
+    /* RSSI */
+    *pData++ = (uint8_t)(0xFF >> 8);
+    *pData++ = (uint8_t)(0xFF);
+    /* AGC_Factor */
+    *pData++ = (uint8_t)(0xFF >> 8);
+    *pData++ = (uint8_t)(0xFF);
+    /* Length in bytes */
+    *pData++ = (uint8_t)(gLastTxObj.dataLength >> 8);
+    *pData++ = (uint8_t)(gLastTxObj.dataLength);
+    /* PDU */
+    memcpy(pData, gLastTxData, gLastTxObj.dataLength);
+    pData += gLastTxObj.dataLength;
     
     return (pData - pDataDst);    
 }

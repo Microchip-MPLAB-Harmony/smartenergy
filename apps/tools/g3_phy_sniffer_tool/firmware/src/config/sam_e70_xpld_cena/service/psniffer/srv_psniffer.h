@@ -102,5 +102,4 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_ConvertToneMask(uint8_t* pToneMaskDst, uint8_t* pToneMaskSrc);
 
-
 #endif //SRV_PSNIFFER_H

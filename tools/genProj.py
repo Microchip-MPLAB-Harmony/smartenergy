@@ -1,5 +1,7 @@
 import shutil, os
+import time
 import argparse
+import sys
 
 curr_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,6 +14,8 @@ if __name__ == '__main__':
 	parser.add_argument('--h3path', required=False, help='Harmony 3 absolute path: [c:\\MH3]')
 	parser.add_argument('--profile', required=True, help='profiles: [G3_PHY], [G3_MAC_RT], [G3_ALL], [PRIME], [ALL]')
 	args = parser.parse_args()
+	
+	time_start = time.time()
 	
 	profile = 'ALL'
 	
@@ -26,7 +30,6 @@ if __name__ == '__main__':
 			
 	plcfolders = [x[0] for x in os.walk(plcpath)]
 
-	folder_counter = 0
 	mplabx = []
 	projects = []
 	xml_files = []
@@ -56,13 +59,45 @@ if __name__ == '__main__':
 							prjFile = os.path.dirname(os.path.abspath(curr_folder)) + "\\src\\config\\" + x[:-4] + "\\harmony.prj"
 							projects.append(prjFile)
 	
-	os.chdir (mhcpath)			
+	
+
+	
+	logGlobalFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\MH3_global_log.txt"
+	fDbg = open(logGlobalFile, 'w')
+	origin_stdout = sys.stdout
+	fOut = open(logGlobalFile, 'w')
+	sys.stdout = fOut	
+	
+	counter_error = 0
+	counter_success = 0
+	os.chdir (mhcpath)
+	
+	print("Regenerating projects...")
 	for project,mplab,config in zip(projects, mplabx, xml_files):
 		cmd = "java -Xverify:none -jar mhc.jar -mode=gen -log=\"DEBUG\" -fw=../ -ide=mplabx "
 		cmd = cmd + "-mplabX=\"" + mplab  + "\" "
 		cmd = cmd + "-c=\"" + project + "\" "
 		cmd = cmd + "-loadstate=\"" + config + "\" "
 		cmd = cmd + "-diff=\"overwrite\" -ignorePackPaths"
-		os.system (cmd)
-		
-	print("Project generation is finished")
+		pathSplit = os.path.split(mplab)
+		logFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\" + pathSplit[1][:-2] + "_log.txt"
+		print("MPLABX: " + mplab)
+		failure = os.system (cmd + ">>" + logFile)
+		if (failure):
+			print("ERROR:" + str(failure) + " : " + cmd)
+			counter_error = counter_error + 1
+			cmd_open = "java -Xverify:none -jar mhc.jar -mode=gui -fw=../"
+			cmd_open = cmd_open + " -c=\" " + project + "\""
+			os.system (cmd_open)
+		else:
+			print("SUCCESS")
+			counter_success = counter_success + 1
+	
+	duration = time.time() - time_start
+	
+	print("Project generation is finished.")
+	print("Successfully ran " + str(counter_success) + " of " + str(counter_success + counter_error) + " projects")
+	print("INFO - Execution finished in " + str(duration) + " seconds")
+	
+	sys.stdout = origin_stdout
+	print("Project generation is finished.")
