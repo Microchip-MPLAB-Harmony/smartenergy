@@ -41,7 +41,7 @@
 
 extern uint8_t pl360_bin_start;
 extern uint8_t pl360_bin_end;
-#if defined APP_CONFIG_PLC_MULTIBAND == true
+#if (APP_CONFIG_PLC_MULTIBAND == true)
 extern uint8_t pl360_bin2_start;
 extern uint8_t pl360_bin2_end;
 #endif
@@ -80,6 +80,7 @@ APP_PLC_DATA_TX CACHE_ALIGN appPlcTx;
     Parameters are defined in user.h file
  */ 
 
+#ifdef MAX_RMS_HI_TABLE_CENA
 APP_PLC_COUPLING_DATA appPLCCoupConfigCENA = {MAX_RMS_HI_TABLE_CENA, 
                                               MAX_RMS_VLO_TABLE_CENA, 
                                               THRESHOLD_HI_TABLE_CENA, 
@@ -90,7 +91,9 @@ APP_PLC_COUPLING_DATA appPLCCoupConfigCENA = {MAX_RMS_HI_TABLE_CENA,
                                               GAIN_HI_CENA, 
                                               GAIN_VLO_CENA,
                                               NUM_TX_LEVELS};
+#endif
 
+#ifdef MAX_RMS_HI_TABLE_FCC
 APP_PLC_COUPLING_DATA appPLCCoupConfigFCC  = {MAX_RMS_HI_TABLE_FCC, 
                                               MAX_RMS_VLO_TABLE_FCC, 
                                               THRESHOLD_HI_TABLE_FCC, 
@@ -101,6 +104,20 @@ APP_PLC_COUPLING_DATA appPLCCoupConfigFCC  = {MAX_RMS_HI_TABLE_FCC,
                                               GAIN_HI_FCC, 
                                               GAIN_VLO_FCC,
                                               NUM_TX_LEVELS};
+#endif
+
+#ifdef MAX_RMS_HI_TABLE_CENB
+APP_PLC_COUPLING_DATA appPLCCoupConfigCENB  = {MAX_RMS_HI_TABLE_CENB, 
+                                              MAX_RMS_VLO_TABLE_CENB, 
+                                              THRESHOLD_HI_TABLE_CENB, 
+                                              THRESHOLD_VLO_TABLE_CENB,
+                                              DACC_CFG_TABLE_CENB,
+                                              PREDIST_HI_TABLE_CENB, 
+                                              PREDIST_VLO_TABLE_CENB,
+                                              GAIN_HI_CENB, 
+                                              GAIN_VLO_CENB,
+                                              NUM_TX_LEVELS};
+#endif
 
 // *****************************************************************************
 // *****************************************************************************
@@ -176,7 +193,13 @@ static void APP_PLC_ApplyPlcConfiguration ( void )
 {
     DRV_PL360_PIB_OBJ pibObj; 
     APP_PLC_COUPLING_DATA* pCfgData;
+
+#ifdef MAX_RMS_HI_TABLE_CENB
+    /* CEN B */
+    pCfgData = &appPLCCoupConfigCENB;
+#endif
     
+#ifdef MAX_RMS_HI_TABLE_CENA
     if (appPlcTx.bin2InUse)
     {
         /* FCC */
@@ -187,6 +210,7 @@ static void APP_PLC_ApplyPlcConfiguration ( void )
         /* CEN A */
         pCfgData = &appPLCCoupConfigCENA;
     }
+#endif
     
     pibObj.id = PL360_ID_NUM_TX_LEVELS;
     pibObj.length = 1;
@@ -386,8 +410,8 @@ void APP_PLC_Tasks ( void )
         
         case APP_PLC_STATE_INIT:
         {
-#if defined APP_CONFIG_PLC_MULTIBAND == true            
-            /* Select PLC Binary file for multiband solution */
+#if (APP_CONFIG_PLC_MULTIBAND == true)          
+            /* Select PLC Binary file for multi-band solution */
             if ((appPlcTx.bin2InUse) && (appPlc.plcMultiband))
             {
                 drvPL360InitData.binStartAddress = (uint32_t)&pl360_bin2_start;
@@ -398,11 +422,12 @@ void APP_PLC_Tasks ( void )
                 drvPL360InitData.binStartAddress = (uint32_t)&pl360_bin_start;
                 drvPL360InitData.binEndAddress = (uint32_t)&pl360_bin_end;
             }
-#endif            
+            
             /* Initialize PL360 Driver Instance */
             sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
             /* Register Callback function to handle PL360 interruption */
             PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
+#endif
     
             /* Open PL360 driver */
             appPlc.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
