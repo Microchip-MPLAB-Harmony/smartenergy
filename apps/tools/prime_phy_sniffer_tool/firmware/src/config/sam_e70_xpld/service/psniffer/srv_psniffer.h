@@ -106,5 +106,4 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
 
-
 #endif //SRV_PSNIFFER_H

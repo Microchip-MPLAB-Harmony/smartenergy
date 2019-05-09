@@ -184,21 +184,10 @@ void drv_pl360_boot_start(void *pl360Drv)
 {
     DRV_PL360_OBJ *pl360DrvObj = (DRV_PL360_OBJ *)pl360Drv;
     
- #ifdef DRV_PL360_BIN_ADDRESS
     sDrvPL360BootInfo.binSize = pl360DrvObj->binSize;
     sDrvPL360BootInfo.binStartAddress = pl360DrvObj->binStartAddress;
     sDrvPL360BootInfo.pendingLength = pl360DrvObj->binSize;
-    sDrvPL360BootInfo.pSrc = pl360DrvObj->binStartAddress;
-#else
-    extern uint8_t pl360_bin_start;
-    extern uint8_t pl360_bin_end;
-
-    sDrvPL360BootInfo.binStartAddress = (int)&pl360_bin_start;
-    sDrvPL360BootInfo.binSize = (int)&pl360_bin_end - (int)&pl360_bin_start;
-    sDrvPL360BootInfo.pendingLength = sDrvPL360BootInfo.binSize;
-    sDrvPL360BootInfo.pSrc = sDrvPL360BootInfo.binStartAddress;    
-#endif
-    
+    sDrvPL360BootInfo.pSrc = pl360DrvObj->binStartAddress;    
     sDrvPL360HalObj = pl360DrvObj->pl360Hal;
     sDrvPL360BootInfo.secure = pl360DrvObj->secure;
     sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;

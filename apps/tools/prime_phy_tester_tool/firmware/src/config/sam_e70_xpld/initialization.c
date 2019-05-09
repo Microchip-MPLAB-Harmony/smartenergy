@@ -86,6 +86,9 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
     
+    /* SPI clock frequency */
+    .spiClockFrequency = DRV_PL360_SPI_CLK,
+    
     /* PL360 LDO Enable Pin */
     .ldoPin = DRV_PL360_LDO_EN_PIN, 
     
@@ -127,6 +130,10 @@ DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
     .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)drv_pl360_hal_send_wrrd_cmd,
 };
 
+/* PL360 Binary file addressing */
+extern uint8_t pl360_bin_start;
+extern uint8_t pl360_bin_end;
+
 /* PL360 Driver Initialization Data */
 DRV_PL360_INIT drvPL360InitData =
 {
@@ -138,6 +145,12 @@ DRV_PL360_INIT drvPL360InitData =
 
     /* PL360 PLC profile */
     .plcProfile = DRV_PL360_PLC_PROFILE,
+ 
+    /* PLC Binary start address */
+    .binStartAddress = (uint32_t)&pl360_bin_start,
+    
+    /* PLC Binary end address */
+    .binEndAddress = (uint32_t)&pl360_bin_end,
 
     /* Secure Mode */
     .secure = DRV_PL360_SECURE,
@@ -231,10 +244,11 @@ const SYS_TIME_INIT sysTimeInitData =
 
 void SYS_Initialize ( void* data )
 {
+
+    EFC_Initialize();
   
     CLK_Initialize();
 	PIO_Initialize();
-
 
     XDMAC_Initialize();
 
@@ -252,11 +266,12 @@ void SYS_Initialize ( void* data )
 	USART1_Initialize();
 
 
+ 
     /* Initialize PL360 Driver Instance */
     sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
     /* Register Callback function to handle PL360 interruption */
     PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
-    
+   
     /* Initialize USI Service Instance 0 */
     sysObj.srvUSI0 = SRV_USI_Initialize(SRV_USI_INDEX_0, (SYS_MODULE_INIT *)&srvUSI0InitData);
 

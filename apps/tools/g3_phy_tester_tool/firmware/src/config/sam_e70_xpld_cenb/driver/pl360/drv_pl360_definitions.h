@@ -102,6 +102,9 @@ typedef struct
     /* SPI receive register address used for DMA operation. */
     void                                   *spiAddressRx;
 
+    /* SPI clock frequency */
+    uint32_t                               spiClockFrequency;
+
     /* PL360 LDO enable pin */
     SYS_PORT_PIN                           ldoPin;
 
@@ -201,11 +204,11 @@ typedef struct
     /* PLC Profile */
     uint8_t                         plcProfile;
 
-    /* Size (in Bytes) of the PLC binary file */
-    uint32_t                        binSize;
-
-    /* Address where PLC binary file is located */
+    /* Start Address where PLC binary file is located */
     uint32_t                        binStartAddress;
+
+    /* End Address where PLC binary file is located */
+    uint32_t                        binEndAddress;
 
     /* Secure mode */
     bool                            secure;

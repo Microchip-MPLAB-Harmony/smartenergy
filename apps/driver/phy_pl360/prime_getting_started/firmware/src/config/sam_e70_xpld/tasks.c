@@ -73,9 +73,8 @@ void SYS_Tasks ( void )
     /* Maintain system services */
     
 
-
     /* Maintain Device Drivers */
-    DRV_PL360_Tasks(sysObj.drvPL360);
+    	DRV_PL360_Tasks(sysObj.drvPL360);
 
 
     /* Maintain Middleware & Other Libraries */

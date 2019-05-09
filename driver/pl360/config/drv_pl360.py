@@ -267,7 +267,7 @@ def instantiateComponent(pl360Component):
     pl360SourceBinFileG3CENA.setDestPath("driver/pl360/bin/")
     pl360SourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/pl360/bin/")
     pl360SourceBinFileG3CENA.setType("SOURCE")
-    pl360SourceBinFileG3CENA.setEnabled(False)
+    pl360SourceBinFileG3CENA.setEnabled(True)
     pl360SourceBinFileG3CENA.setVisible(False)
 
     global pl360SourceBinFileG3CENB

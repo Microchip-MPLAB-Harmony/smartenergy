@@ -347,6 +347,9 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
         return 0;
     }
     
+    /* Waiting for USART is free */
+    while (SYS_DMA_ChannelIsBusy(dObj->plib->dmaChannelTx));
+    
     /* Launch transmission */
     if (DATA_CACHE_ENABLED == true)
     {

@@ -42,8 +42,8 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef SRV_PCRC_H    // Guards against multiple inclusion
-#define SRV_PCRC_H
+#ifndef SRV_PSERIAL_H    // Guards against multiple inclusion
+#define SRV_PSERIAL_H
 
 
 // *****************************************************************************
@@ -109,4 +109,4 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
 size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc);
 size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataSrc);
 
-#endif //SRV_PCRC_H
+#endif //SRV_PSERIAL_H

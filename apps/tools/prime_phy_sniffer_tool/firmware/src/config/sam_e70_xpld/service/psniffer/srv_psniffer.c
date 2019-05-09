@@ -66,18 +66,18 @@ static uint32_t SRV_PSNIFFER_GetMessageDuration(DRV_PL360_FRAME_TYPE frameType, 
 {
     uint32_t duration;
 
-	if (frameType == FRAME_TYPE_A) {
-		duration = PSNIFFER_P13_PREAMBLE_US + PSNIFFER_P13_HEADER_US + (symbols *  PSNIFFER_SYMBOL_US);
-	} else if (frameType == FRAME_TYPE_B) {
-		duration = PSNIFFER_PP_PREAMBLE_US + PSNIFFER_PP_HEADER_US + (symbols * PSNIFFER_SYMBOL_US);
-	} else if (frameType == FRAME_TYPE_BC) {
-		duration = PSNIFFER_P13_PREAMBLE_US + PSNIFFER_P13_HEADER_US + PSNIFFER_PP_PREAMBLE_US + PSNIFFER_PP_HEADER_US +
-				(symbols * PSNIFFER_SYMBOL_US);
-	} else {
-		duration = 0;
-	}
+    if (frameType == FRAME_TYPE_A) {
+        duration = PSNIFFER_P13_PREAMBLE_US + PSNIFFER_P13_HEADER_US + (symbols *  PSNIFFER_SYMBOL_US);
+    } else if (frameType == FRAME_TYPE_B) {
+        duration = PSNIFFER_PP_PREAMBLE_US + PSNIFFER_PP_HEADER_US + (symbols * PSNIFFER_SYMBOL_US);
+    } else if (frameType == FRAME_TYPE_BC) {
+        duration = PSNIFFER_P13_PREAMBLE_US + PSNIFFER_P13_HEADER_US + PSNIFFER_PP_PREAMBLE_US + PSNIFFER_PP_HEADER_US +
+                (symbols * PSNIFFER_SYMBOL_US);
+    } else {
+        duration = 0;
+    }
 
-	return duration;
+    return duration;
 }
 
 SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData)
@@ -121,8 +121,8 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel)
 size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc)
 {
     uint8_t* pData;
-	uint32_t timeIni, timeEnd;
-	uint8_t snr;
+    uint32_t timeIni, timeEnd;
+    uint8_t snr;
     
     pData = pDataDst;
     
@@ -151,42 +151,42 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* 
     *pData++ = (uint8_t)pDataSrc->scheme; 
     *pData++ = (uint8_t)gLastRxPayloadSymbols;     
     /* SNR = (QT/(3 * 4)) + 1 */
-	/* QT = CINR_MIN + 12 */
-	snr = ((pDataSrc->cinrMin + 12) / 12) + 1;
-	if (snr > 7) {
-		snr = 7;
-	}
-	*pData++ = snr;
+    /* QT = CINR_MIN + 12 */
+    snr = ((pDataSrc->cinrMin + 12) / 12) + 1;
+    if (snr > 7) {
+        snr = 7;
+    }
+    *pData++ = snr;
     /* Added 2 extra to make round instead trunk */
-	*pData++ = (pDataSrc->cinrAvg + 12 + 2) / 4; 
-	*pData++ = gPLCChannel;
-	*pData++ = (uint8_t)pDataSrc->cinrMin;
-	*pData++ = (uint8_t)pDataSrc->berSoftAvg;
-	*pData++ = (uint8_t)pDataSrc->berSoftMax;
-	/* padding (reserved bytes) */
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	/* Adapt RX TIME to 10us base */
-	timeIni = pDataSrc->time;
+    *pData++ = (pDataSrc->cinrAvg + 12 + 2) / 4; 
+    *pData++ = gPLCChannel;
+    *pData++ = (uint8_t)pDataSrc->cinrMin;
+    *pData++ = (uint8_t)pDataSrc->berSoftAvg;
+    *pData++ = (uint8_t)pDataSrc->berSoftMax;
+    /* padding (reserved bytes) */
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    /* Adapt RX TIME to 10us base */
+    timeIni = pDataSrc->time;
     timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pDataSrc->frameType, gLastRxPayloadSymbols);
-	*pData++ = (uint8_t)(timeIni >> 24);
-	*pData++ = (uint8_t)(timeIni >> 16);
-	*pData++ = (uint8_t)(timeIni >> 8);
-	*pData++ = (uint8_t)(timeIni);
-	*pData++ = (uint8_t)(timeEnd >> 24);
-	*pData++ = (uint8_t)(timeEnd >> 16);
-	*pData++ = (uint8_t)(timeEnd >> 8);
-	*pData++ = (uint8_t)(timeEnd);
-	*pData++ = 0;
-	*pData++ = pDataSrc->rssiAvg;
-	/* mac_enable not supported */
-	*pData++ = 0;
+    *pData++ = (uint8_t)(timeIni >> 24);
+    *pData++ = (uint8_t)(timeIni >> 16);
+    *pData++ = (uint8_t)(timeIni >> 8);
+    *pData++ = (uint8_t)(timeIni);
+    *pData++ = (uint8_t)(timeEnd >> 24);
+    *pData++ = (uint8_t)(timeEnd >> 16);
+    *pData++ = (uint8_t)(timeEnd >> 8);
+    *pData++ = (uint8_t)(timeEnd);
+    *pData++ = 0;
+    *pData++ = pDataSrc->rssiAvg;
+    /* mac_enable not supported */
+    *pData++ = 0;
     /* Length in bytes */
     *pData++ = (uint8_t)(pDataSrc->dataLength >> 8);
     *pData++ = (uint8_t)(pDataSrc->dataLength);
@@ -237,36 +237,36 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_C
     /* Fill data */
     *pData++ = (uint8_t)pTxObj->scheme; 
     *pData++ = (uint8_t)gLastTxPayloadSymbols; 
-	*pData++ = 7;               /* fix SNR */
-	*pData++ = 60;              /* fix EX_SNR */
-	*pData++ = gPLCChannel;
-	*pData++ = 255;
-	*pData++ = 0;
-	*pData++ = 0;
-	/* padding (reserved bytes) */
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	*pData++ = 0;
-	/* Adapt RX TIME to 10us base */
-	timeIni = pDataCfm->time;
+    *pData++ = 7;               /* fix SNR */
+    *pData++ = 60;              /* fix EX_SNR */
+    *pData++ = gPLCChannel;
+    *pData++ = 255;
+    *pData++ = 0;
+    *pData++ = 0;
+    /* padding (reserved bytes) */
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    *pData++ = 0;
+    /* Adapt RX TIME to 10us base */
+    timeIni = pDataCfm->time;
     timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pDataCfm->frameType, gLastTxPayloadSymbols);
-	*pData++ = (uint8_t)(timeIni >> 24);
-	*pData++ = (uint8_t)(timeIni >> 16);
-	*pData++ = (uint8_t)(timeIni >> 8);
-	*pData++ = (uint8_t)(timeIni);
-	*pData++ = (uint8_t)(timeEnd >> 24);
-	*pData++ = (uint8_t)(timeEnd >> 16);
-	*pData++ = (uint8_t)(timeEnd >> 8);
-	*pData++ = (uint8_t)(timeEnd);
-	*pData++ = 0;
-	*pData++ = 140;             /* fix RSSI */
-	/* mac_enable not supported */
-	*pData++ = 0;
+    *pData++ = (uint8_t)(timeIni >> 24);
+    *pData++ = (uint8_t)(timeIni >> 16);
+    *pData++ = (uint8_t)(timeIni >> 8);
+    *pData++ = (uint8_t)(timeIni);
+    *pData++ = (uint8_t)(timeEnd >> 24);
+    *pData++ = (uint8_t)(timeEnd >> 16);
+    *pData++ = (uint8_t)(timeEnd >> 8);
+    *pData++ = (uint8_t)(timeEnd);
+    *pData++ = 0;
+    *pData++ = 140;             /* fix RSSI */
+    /* mac_enable not supported */
+    *pData++ = 0;
     /* Length in bytes */
     *pData++ = (uint8_t)(pTxObj->dataLength >> 8);
     *pData++ = (uint8_t)(pTxObj->dataLength);

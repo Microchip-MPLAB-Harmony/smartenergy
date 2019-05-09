@@ -79,17 +79,6 @@ extern "C" {
 // Section: System Service Configuration
 // *****************************************************************************
 // *****************************************************************************
-/* Console System Service Configuration Options */
-#define SYS_CONSOLE_DEVICE_MAX_INSTANCES   1
-#define SYS_CONSOLE_INSTANCES_NUMBER       1
-#define SYS_CONSOLE_UART_MAX_INSTANCES     1
-
-/* RX queue size has one additional element for the empty spot needed in circular queue */
-#define SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0    11
-
-/* TX queue size has one additional element for the empty spot needed in circular queue */
-#define SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0    65
-#define SYS_CONSOLE_BUFFER_DMA_READY
 
 #define SYS_DEBUG_ENABLE
 #define SYS_DEBUG_GLOBAL_ERROR_LEVEL       SYS_ERROR_DEBUG
@@ -107,6 +96,18 @@ extern "C" {
 #define SYS_TIME_CPU_CLOCK_FREQUENCY         300000000
 #define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES      (900)
 
+/* Console System Service Configuration Options */
+#define SYS_CONSOLE_DEVICE_MAX_INSTANCES   1
+#define SYS_CONSOLE_UART_MAX_INSTANCES     1
+
+
+/* RX queue size has one additional element for the empty spot needed in circular queue */
+#define SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0    11
+
+/* TX queue size has one additional element for the empty spot needed in circular queue */
+#define SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0    65
+#define SYS_CONSOLE_BUFFER_DMA_READY
+
 
 
 // *****************************************************************************
@@ -123,6 +124,8 @@ extern "C" {
 #define DRV_PL360_RESET_PIN                     SYS_PORT_PIN_PB2
 #define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
 #define DRV_PL360_PLC_PROFILE                   0
+#define DRV_PL360_SPI_CLK                       8000000
+
 #define DRV_PL360_SECURE                        false
 /* PL360 Driver Identification */
 #define DRV_PL360_HOST_PRODUCT                  0x3601
@@ -130,7 +133,7 @@ extern "C" {
 #define DRV_PL360_HOST_PHY                      0x36010103
 #define DRV_PL360_HOST_DESC                     "ATSAME70Q21B"
 #define DRV_PL360_HOST_MODEL                    3
-#define DRV_PL360_HOST_BAND                     0x0
+#define DRV_PL360_HOST_BAND                     DRV_PL360_PLC_PROFILE
 
 
 // *****************************************************************************

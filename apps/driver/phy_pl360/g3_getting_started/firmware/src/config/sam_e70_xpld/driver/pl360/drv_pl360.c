@@ -91,7 +91,7 @@ SYS_MODULE_OBJ DRV_PL360_Initialize(
     gDrvPL360Obj.pl360Hal              = pl360Init->pl360Hal;
     gDrvPL360Obj.nClientsMax           = pl360Init->numClients;
     gDrvPL360Obj.plcProfile            = pl360Init->plcProfile;
-    gDrvPL360Obj.binSize               = pl360Init->binSize;
+    gDrvPL360Obj.binSize               = pl360Init->binEndAddress - pl360Init->binStartAddress;
     gDrvPL360Obj.binStartAddress       = pl360Init->binStartAddress;
     gDrvPL360Obj.secure                = pl360Init->secure;
     
@@ -152,6 +152,7 @@ void DRV_PL360_Close( const DRV_HANDLE handle )
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvPL360Obj.nClients--;
+        gDrvPL360Obj.inUse = false;
     }
 }
 

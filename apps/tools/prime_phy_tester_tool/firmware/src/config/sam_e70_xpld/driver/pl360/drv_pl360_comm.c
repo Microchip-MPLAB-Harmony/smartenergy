@@ -234,20 +234,29 @@ static bool _check_comm(DRV_PL360_HAL_INFO *info)
         {
             /* Debugger is connected */
             drv_pl360_boot_restart(false);
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->context);
+            if (gPl360Obj->exceptionCallback)
+            {
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->context);
+            }
         }
         else
         {
             /* PL360 needs boot process to upload firmware */
             drv_pl360_boot_restart(true);
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->context);
+            if (gPl360Obj->exceptionCallback)
+            {
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->context);
+            }
         }
     }
     else
     {
         /* PL360 needs boot process to upload firmware */
         drv_pl360_boot_restart(true);
-        gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->context);
+        if (gPl360Obj->exceptionCallback)
+        {
+            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->context);
+        }
     }
     
     /* Check if there is any tx_cfm pending to be reported */
@@ -280,7 +289,10 @@ static void _spi_write_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t len
     {
         failures++;
         if (failures == 2) {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            if (gPl360Obj->exceptionCallback)
+            {
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            }
             break;
         }
         gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
@@ -311,7 +323,10 @@ static void _spi_read_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t leng
     {
         failures++;
         if (failures == 2) {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            if (gPl360Obj->exceptionCallback)
+            {
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            }
             break;
         }
         gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
@@ -342,7 +357,10 @@ static void _get_events_info(DRV_PL360_EVENTS_OBJ *eventsObj)
     {
         failures++;
         if (failures == 2) {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            if (gPl360Obj->exceptionCallback)
+            {
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+            }
             break;
         }
         gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
@@ -400,6 +418,9 @@ void drv_pl360_comm_task(void)
             
             if (gPl360Obj->evResetTxCfm)
             {
+				gPl360Obj->evResetTxCfm = false;
+            	gPl360Obj->state = DRV_PL360_STATE_IDLE;
+				
                 cfmObj.bufferId = (DRV_PL360_BUFFER_ID)idx;
                 cfmObj.rmsCalc = 0;
                 cfmObj.time = 0;
@@ -434,9 +455,6 @@ void drv_pl360_comm_task(void)
         gPl360Obj->evRxPar = false;
         gPl360Obj->evRxDat = false;
     }
-
-    /* Clear RST flag */
-    gPl360Obj->evResetTxCfm = false;
 }
 
 void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmitObj)

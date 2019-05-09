@@ -110,6 +110,8 @@ extern "C" {
 #define DRV_PL360_RESET_PIN                     SYS_PORT_PIN_PB2
 #define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
 #define DRV_PL360_PLC_PROFILE                   4
+#define DRV_PL360_SPI_CLK                       8000000
+
 #define DRV_PL360_SECURE                        false
 /* PL360 Driver Identification */
 #define DRV_PL360_HOST_PRODUCT                  0x3600
@@ -117,7 +119,7 @@ extern "C" {
 #define DRV_PL360_HOST_PHY                      0x36000003
 #define DRV_PL360_HOST_DESC                     "ATSAME70Q21B"
 #define DRV_PL360_HOST_MODEL                    3
-#define DRV_PL360_HOST_BAND                     0x4
+#define DRV_PL360_HOST_BAND                     DRV_PL360_PLC_PROFILE
 /* USI Service Instance 0 Configuration Options */
 #define SRV_USI_INDEX_0                       0
 #define SRV_USI0_RD_BUF_SIZE                  1024

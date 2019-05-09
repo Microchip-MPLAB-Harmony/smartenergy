@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
-    <logicalFolder name="HeaderFiles"
-                   displayName="Header Files"
-                   projectFiles="true">
+    <logicalFolder name="f1" displayName="Header Files" projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld_cena" projectFiles="true">
           <logicalFolder name="f3" displayName="bsp" projectFiles="true">
@@ -23,21 +21,24 @@
             <logicalFolder name="f1" displayName="clk" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/clk/plib_clk.h</itemPath>
             </logicalFolder>
+            <logicalFolder name="f5" displayName="efc" projectFiles="true">
+              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/efc/plib_efc.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="f3" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/nvic/plib_nvic.h</itemPath>
             </logicalFolder>
             <logicalFolder name="f2" displayName="pio" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/pio/plib_pio.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="spi" projectFiles="true">
+            <logicalFolder name="f7" displayName="spi" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi_common.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi0.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="tc" projectFiles="true">
+            <logicalFolder name="f6" displayName="tc" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc0.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc_common.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f7" displayName="usart" projectFiles="true">
+            <logicalFolder name="f8" displayName="usart" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart_common.h</itemPath>
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart1.h</itemPath>
             </logicalFolder>
@@ -166,13 +167,12 @@
       </logicalFolder>
       <itemPath>../src/app.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="LinkerScript"
-                   displayName="Linker Files"
-                   projectFiles="true">
+    <logicalFolder name="f4" displayName="Important Files" projectFiles="true">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
+    <logicalFolder name="f2" displayName="Linker Files" projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="f3" displayName="Source Files" projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld_cena" projectFiles="true">
           <logicalFolder name="f4" displayName="bsp" projectFiles="true">
@@ -181,7 +181,7 @@
           <logicalFolder name="f6" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="pl360" projectFiles="true">
               <logicalFolder name="f1" displayName="bin" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/PL360.bin</itemPath>
+                <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/PL360_G3_CENA.bin</itemPath>
                 <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/pl360_bin.S</itemPath>
               </logicalFolder>
               <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/drv_pl360_comm.c</itemPath>
@@ -197,19 +197,22 @@
             <logicalFolder name="f1" displayName="clk" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/clk/plib_clk.c</itemPath>
             </logicalFolder>
+            <logicalFolder name="f5" displayName="efc" projectFiles="true">
+              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/efc/plib_efc.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="f3" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/nvic/plib_nvic.c</itemPath>
             </logicalFolder>
             <logicalFolder name="f2" displayName="pio" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/pio/plib_pio.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="spi" projectFiles="true">
+            <logicalFolder name="f7" displayName="spi" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi0.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="tc" projectFiles="true">
+            <logicalFolder name="f6" displayName="tc" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc0.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f7" displayName="usart" projectFiles="true">
+            <logicalFolder name="f8" displayName="usart" projectFiles="true">
               <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart1.c</itemPath>
             </logicalFolder>
             <logicalFolder name="f4" displayName="xdmac" projectFiles="true">
@@ -257,11 +260,6 @@
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/app.c</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false">
-      <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>

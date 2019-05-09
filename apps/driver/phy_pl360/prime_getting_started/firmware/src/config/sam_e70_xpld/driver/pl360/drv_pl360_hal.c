@@ -123,7 +123,7 @@ void drv_pl360_hal_setup(bool set16Bits)
     }
     
     /* Configure SPI PLIB for Bootloader */
-    spiPlibSetup.clockFrequency = 8000000;
+    spiPlibSetup.clockFrequency = sPl360Plib->spiClockFrequency;
     spiPlibSetup.clockPhase = SPI_CLOCK_PHASE_LEADING_EDGE;
     spiPlibSetup.clockPolarity = SPI_CLOCK_POLARITY_IDLE_LOW;    
     sPl360Plib->spiPlibTransferSetup((uintptr_t)&spiPlibSetup, 0);

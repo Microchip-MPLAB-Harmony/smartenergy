@@ -33,13 +33,12 @@ ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************/
 
-	.section .rodata
-	.global pl360_bin_start
-	.global pl360_bin_end
+  .section .rodata
+  .global pl360_bin_start
+  .global pl360_bin_end
 
-	.align 8
+  .align 8
 pl360_bin_start:
-    .incbin "./PL360.bin"
-	.align 8
+  .incbin "./PL360_G3_FCC.bin"
+  .align 8
 pl360_bin_end:
-
