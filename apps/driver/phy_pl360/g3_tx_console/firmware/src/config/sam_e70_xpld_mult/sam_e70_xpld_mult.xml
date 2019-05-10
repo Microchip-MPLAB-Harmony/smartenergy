@@ -2259,14 +2259,7 @@
             <Dynamic dnOrder="0" id="drvExtPhyPl360" value="5"/>
           </Values>
         </Integer>
-        <File dnOrder="5" id="PL360_SOURCE_BIN_G3_CENA">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">true</Value>
-            </Boolean>
-          </Attributes>
-        </File>
-        <File dnOrder="6" id="PL360_SOURCE_BIN_G3_FCC">
+        <File dnOrder="5" id="PL360_SOURCE_BIN_G3_FCC">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
@@ -2810,8 +2803,7 @@
     </UniqueComponent>
   </Components>
   <UserData>
-    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="0"/>
-    <ComponentGraph dnOrder="1" id="__ROOTVIEW">
+    <ComponentGraph dnOrder="0" id="__ROOTVIEW">
       <ElementPositions dnOrder="0">
         <ElementPosition dnOrder="0" id="HarmonyCore" x="465" y="22"/>
         <ElementPosition dnOrder="1" id="cmsis" x="339" y="21"/>
@@ -2828,5 +2820,6 @@
         <ElementPosition dnOrder="12" id="usart1" x="116" y="306"/>
       </ElementPositions>
     </ComponentGraph>
+    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="1"/>
   </UserData>
 </Configuration>

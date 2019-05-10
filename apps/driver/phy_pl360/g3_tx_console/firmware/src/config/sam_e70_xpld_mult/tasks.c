@@ -76,7 +76,7 @@ void SYS_Tasks ( void )
     /* Maintain Device Drivers */
     DRV_MEMORY_Tasks(sysObj.drvMemory0);
 
-    DRV_PL360_Tasks(sysObj.drvPL360);
+	DRV_PL360_Tasks(sysObj.drvPL360);
 
 
     /* Maintain Middleware & Other Libraries */

@@ -262,7 +262,7 @@ def instantiateComponent(pl360Component):
 
     global pl360SourceBinFileG3CENA
     pl360SourceBinFileG3CENA = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENA", None)
-    pl360SourceBinFileG3CENA.setSourcePath("driver/pl360/src/bin/PL360_G3_CENA.bin")
+    pl360SourceBinFileG3CENA.setSourcePath("driver/pl360/src/bin/ATPL360B_G3_CENA.bin")
     pl360SourceBinFileG3CENA.setOutputName("PL360_G3_CENA.bin")
     pl360SourceBinFileG3CENA.setDestPath("driver/pl360/bin/")
     pl360SourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/pl360/bin/")
@@ -272,7 +272,7 @@ def instantiateComponent(pl360Component):
 
     global pl360SourceBinFileG3CENB
     pl360SourceBinFileG3CENB = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENB", None)
-    pl360SourceBinFileG3CENB.setSourcePath("driver/pl360/src/bin/PL360_G3_CENB.bin")
+    pl360SourceBinFileG3CENB.setSourcePath("driver/pl360/src/bin/ATPL360B_G3_CENB.bin")
     pl360SourceBinFileG3CENB.setOutputName("PL360_G3_CENB.bin")
     pl360SourceBinFileG3CENB.setDestPath("driver/pl360/bin/")
     pl360SourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/pl360/bin/")
@@ -282,7 +282,7 @@ def instantiateComponent(pl360Component):
 
     global pl360SourceBinFileG3FCC
     pl360SourceBinFileG3FCC = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_FCC", None)
-    pl360SourceBinFileG3FCC.setSourcePath("driver/pl360/src/bin/PL360_G3_FCC.bin")
+    pl360SourceBinFileG3FCC.setSourcePath("driver/pl360/src/bin/ATPL360B_G3_FCC.bin")
     pl360SourceBinFileG3FCC.setOutputName("PL360_G3_FCC.bin")
     pl360SourceBinFileG3FCC.setDestPath("driver/pl360/bin/")
     pl360SourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/pl360/bin/")
@@ -292,7 +292,7 @@ def instantiateComponent(pl360Component):
 
     global pl360SourceBinFilePRIME
     pl360SourceBinFilePRIME = pl360Component.createFileSymbol("PL360_SOURCE_BIN_PRIME", None)
-    pl360SourceBinFilePRIME.setSourcePath("driver/pl360/src/bin/PL360_PRIME.bin")
+    pl360SourceBinFilePRIME.setSourcePath("driver/pl360/src/bin/ATPL360B_PRIME.bin")
     pl360SourceBinFilePRIME.setOutputName("PL360_PRIME.bin")
     pl360SourceBinFilePRIME.setDestPath("driver/pl360/bin/")
     pl360SourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/pl360/bin/")
