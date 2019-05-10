@@ -109,10 +109,10 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_1,
+    .dmaChannelTx = SYS_DMA_CHANNEL_5,
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_4,
 
     /* SPI Transmit Register */
     .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
@@ -279,9 +279,7 @@ void SYS_Initialize ( void* data )
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
 
 
-    APP_CONSOLE_Initialize();
-    APP_PLC_Initialize();
-    APP_NVM_Initialize();
+    APP_Initialize();
 
 
     NVIC_Initialize();

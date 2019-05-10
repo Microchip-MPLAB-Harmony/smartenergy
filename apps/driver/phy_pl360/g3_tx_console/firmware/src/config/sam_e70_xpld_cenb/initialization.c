@@ -282,9 +282,7 @@ void SYS_Initialize ( void* data )
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
 
 
-    APP_CONSOLE_Initialize();
-    APP_PLC_Initialize();
-    APP_NVM_Initialize();
+    APP_Initialize();
 
 
     NVIC_Initialize();

@@ -25,6 +25,8 @@ if __name__ == '__main__':
 	if args.h3path is not None:
 		h3path = args.h3path
 		
+	print("Searching projects...")
+	
 	plcpath = h3path + "\\plc\\apps"
 	mhcpath = h3path + "\\mhc"	
 			
@@ -33,6 +35,7 @@ if __name__ == '__main__':
 	mplabx = []
 	projects = []
 	xml_files = []
+	counter_prj = 0;
 	
 	for curr_folder in plcfolders:
 		prjFolder = os.path.abspath(curr_folder).endswith(".X")	
@@ -44,7 +47,7 @@ if __name__ == '__main__':
 				for x in files:
 					if x.endswith(".xml"):
 						addPrj = False
-						if ((curr_folder.find('getting_started') != -1) or (curr_folder.find('prime') != -1)):
+						if (curr_folder.find('prime_getting_started') != -1):
 							mplabx.append(os.path.abspath(curr_folder))
 							xml_files.append(x)
 							addPrj = True
@@ -58,21 +61,17 @@ if __name__ == '__main__':
 						if addPrj:
 							prjFile = os.path.dirname(os.path.abspath(curr_folder)) + "\\src\\config\\" + x[:-4] + "\\harmony.prj"
 							projects.append(prjFile)
-	
+							counter_prj = counter_prj + 1
 	
 
 	
 	logGlobalFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\MH3_global_log.txt"
-	fDbg = open(logGlobalFile, 'w')
-	origin_stdout = sys.stdout
-	fOut = open(logGlobalFile, 'w')
-	sys.stdout = fOut	
 	
 	counter_error = 0
 	counter_success = 0
 	os.chdir (mhcpath)
 	
-	print("Regenerating projects...")
+	print("Found " + str(counter_prj) + " projects. Regenerating projects...")
 	for project,mplab,config in zip(projects, mplabx, xml_files):
 		cmd = "java -Xverify:none -jar mhc.jar -mode=gen -log=\"DEBUG\" -fw=../ -ide=mplabx "
 		cmd = cmd + "-mplabX=\"" + mplab  + "\" "
@@ -99,5 +98,3 @@ if __name__ == '__main__':
 	print("Successfully ran " + str(counter_success) + " of " + str(counter_success + counter_error) + " projects")
 	print("INFO - Execution finished in " + str(duration) + " seconds")
 	
-	sys.stdout = origin_stdout
-	print("Project generation is finished.")
