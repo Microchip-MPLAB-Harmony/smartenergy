@@ -71,7 +71,9 @@
 #include "system/cache/sys_cache.h"
 #include "system/dma/sys_dma.h"
 #include "osal/osal.h"
-#include "app.h"
+#include "app_console.h"
+#include "app_plc.h"
+#include "app_nvm.h"
 
 
 

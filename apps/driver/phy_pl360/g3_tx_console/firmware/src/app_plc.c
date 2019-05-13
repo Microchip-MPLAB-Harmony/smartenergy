@@ -214,62 +214,53 @@ static void APP_PLC_ApplyPlcConfiguration ( void )
     
     pibObj.id = PL360_ID_NUM_TX_LEVELS;
     pibObj.length = 1;
-    *pibObj.pData = pCfgData->numTxLevels;
+    pibObj.pData = &pCfgData->numTxLevels;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_MAX_RMS_TABLE_HI;
     pibObj.length = sizeof(pCfgData->maxRMSHigh);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->maxRMSHigh, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->maxRMSHigh;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_MAX_RMS_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->maxRMSVeryLow);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->maxRMSVeryLow, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->maxRMSVeryLow;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_THRESHOLDS_TABLE_HI;
     pibObj.length = sizeof(pCfgData->thresholdHigh);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->thresholdHigh, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->thresholdHigh;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_THRESHOLDS_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->thresholdVeryLow);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->thresholdVeryLow, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->thresholdVeryLow;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_GAIN_TABLE_HI;
     pibObj.length = sizeof(pCfgData->gainHigh);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->gainHigh, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->gainHigh;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_GAIN_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->gainVeryLow);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->gainVeryLow, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->gainVeryLow;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_DACC_TABLE_CFG;
     pibObj.length = sizeof(pCfgData->daccConfig);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->daccConfig, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->daccConfig;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_PREDIST_COEF_TABLE_HI;
     pibObj.length = sizeof(pCfgData->predistorsionHigh);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->predistorsionHigh, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->predistorsionHigh;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
 
     pibObj.id = PL360_ID_PREDIST_COEF_TABLE_VLO;
     /* Not use size of array. It depends on PHY band in use */
     pibObj.length = sizeof(pCfgData->predistorsionVeryLow);
-    memcpy(pibObj.pData, (uint8_t *)pCfgData->predistorsionVeryLow, 
-            pibObj.length);
+    pibObj.pData = (uint8_t *)&pCfgData->predistorsionVeryLow;
     DRV_PL360_PIBSet(appPlc.drvPl360Handle, &pibObj);
     
 }

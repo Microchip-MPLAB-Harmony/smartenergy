@@ -168,9 +168,8 @@
         </logicalFolder>
       </logicalFolder>
       <itemPath>../src/app_console.h</itemPath>
-      <itemPath>../src/app_nvm.h</itemPath>
       <itemPath>../src/app_plc.h</itemPath>
-      <itemPath>../src/app.h</itemPath>
+      <itemPath>../src/app_nvm.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f4" displayName="Important Files" projectFiles="true">
       <itemPath>Makefile</itemPath>
@@ -259,11 +258,10 @@
           <itemPath>../src/config/sam_e70_xpld_cenb/tasks.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/app_console.c</itemPath>
-      <itemPath>../src/app_nvm.c</itemPath>
-      <itemPath>../src/app_plc.c</itemPath>
       <itemPath>../src/main.c</itemPath>
-      <itemPath>../src/app.c</itemPath>
+      <itemPath>../src/app_console.c</itemPath>
+      <itemPath>../src/app_plc.c</itemPath>
+      <itemPath>../src/app_nvm.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>

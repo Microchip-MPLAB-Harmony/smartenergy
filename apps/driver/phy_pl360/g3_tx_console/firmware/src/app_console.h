@@ -27,10 +27,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdlib.h>
 #include "configuration.h"
 #include "definitions.h"
 
@@ -134,7 +130,7 @@ extern APP_CONSOLE_DATA appConsole;
 	"-- HOST version: "DRV_PL360_HOST_DESC " --\r\n"
 
 #define MENU_HEADER "\n\r-- Menu Configuration --------------\n\r" \
-	"0: Select TX Level\n\r" \
+	"0: Select attenuation Level\n\r" \
 	"1: Select Modulation/Scheme\n\r" \
 	"2: Select time period between messages to transmit(us.)\n\r" \
 	"3: Select Data to transmit\n\r" \

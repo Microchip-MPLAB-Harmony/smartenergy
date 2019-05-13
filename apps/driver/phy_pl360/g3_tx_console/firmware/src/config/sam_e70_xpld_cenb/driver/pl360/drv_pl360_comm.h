@@ -60,12 +60,10 @@
 #endif
 // DOM-IGNORE-END
 
-/* G3 Profile type */
-typedef enum {
-  G3_CEN_A = 0,
-  G3_CEN_B = 1,
-  G3_FCC = 2,
-}DRV_PL360_PROFILE;
+/* G3 Profiles */
+#define G3_CEN_A                                   0
+#define G3_CEN_B                                   1
+#define G3_FCC                                     2
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types

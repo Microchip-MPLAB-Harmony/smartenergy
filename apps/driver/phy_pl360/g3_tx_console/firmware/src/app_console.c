@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app.c
+    app_console.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -236,6 +236,7 @@ static bool APP_CONSOLE_SetDataMode(char *mode)
     bool res = true;
     
     length = appPlcTx.pl360Tx.dataLength;
+    appPlcTx.pl360Tx.pTransmitData = appPlcTx.pDataTx;
     pData = appPlcTx.pl360Tx.pTransmitData;
     
 	switch (*mode) 
@@ -479,7 +480,7 @@ static void APP_CONSOLE_ShowConfiguration(void)
             break;
 
         default:
-            printf("-I-  Modulation Scheme: ERROR CFG\n\r");
+            printf("-I- Modulation Scheme: ERROR CFG\n\r");
 	}
     
     printf("-I- Tone Map: ");
