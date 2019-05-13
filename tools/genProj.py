@@ -47,7 +47,7 @@ if __name__ == '__main__':
 				for x in files:
 					if x.endswith(".xml"):
 						addPrj = False
-						if (curr_folder.find('prime_getting_started') != -1):
+						if (curr_folder.find('prime') != -1):
 							mplabx.append(os.path.abspath(curr_folder))
 							xml_files.append(x)
 							addPrj = True

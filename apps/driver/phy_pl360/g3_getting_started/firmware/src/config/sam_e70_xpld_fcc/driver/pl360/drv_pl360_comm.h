@@ -61,9 +61,9 @@
 // DOM-IGNORE-END
 
 /* G3 Profiles */
-#define G3_CEN_A         0
-#define G3_CEN_B         1
-#define G3_FCC           2
+#define G3_CEN_A                                   0
+#define G3_CEN_B                                   1
+#define G3_FCC                                     2
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types
