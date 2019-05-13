@@ -5,6 +5,8 @@ import sys
 
 curr_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+mplabx_path = "C:/Program Files (x86)/Microchip/MPLABX/v5.15/"
+
 if __name__ == '__main__':
 
 	##########################################################################
@@ -63,40 +65,43 @@ if __name__ == '__main__':
 							projects.append(prjFile)
 							counter_prj = counter_prj + 1
 	
-
-	
-	logGlobalFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\MH3_global_log.txt"
-	
 	counter_error = 0
 	counter_success = 0
 	os.chdir (mhcpath)
 	
-	print("Found " + str(counter_prj) + " projects. Regenerating projects...")
-	for project,mplab,config in zip(projects, mplabx, xml_files):
-		cmd = "java -Xverify:none -jar mhc.jar -mode=gen -log=\"DEBUG\" -fw=../ -ide=mplabx "
-		cmd = cmd + "-mplabX=\"" + mplab  + "\" "
-		cmd = cmd + "-c=\"" + project + "\" "
-		cmd = cmd + "-loadstate=\"" + config + "\" "
-		cmd = cmd + "-diff=\"overwrite\" -ignorePackPaths"
-		pathSplit = os.path.split(mplab)
-		logFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\gen_" + pathSplit[1][:-2] + "_log.txt"
-		print("MPLABX: " + mplab)
-		failure = os.system (cmd + ">>" + logFile)
-		if (failure):
-			print("ERROR:" + str(failure) + " : " + cmd)
-			counter_error = counter_error + 1
-			cmd_open = "java -Xverify:none -jar mhc.jar -mode=gui -fw=../"
-			cmd_open = cmd_open + " -c=\" " + project + "\""
-			os.system (cmd_open)
+	print("Found " + str(counter_prj) + " projects. Building projects...")
+	for project,configuration in zip(mplabx,xml_files):
+		pathSplit = os.path.split(project)
+		
+		# Generate Make file
+		cmd_make = '\"' + mplabx_path + 'mplab_platform/bin/prjMakefilesGenerator.bat" '
+		cmd_make = cmd_make + project
+		print("Creating makefile: " + project)
+		failMake = os.system (cmd_make)
+		if (failMake):
+			print("MAKEFILE ERROR:" + str(failMake) + " : " + cmd_make)
 			sys.exit(-1)
 		else:
-			print("SUCCESS")
+			print("MAKEFILE SUCCESS")
+			
+		# Build project
+		os.chdir (project)
+		logBuildFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\build_" + pathSplit[1][:-2] + "_log.txt"
+		cmd_build = '\"' + mplabx_path + 'gnuBins/GnuWin32/bin/make" '
+		cmd_build = cmd_build + "-f nbproject/Makefile-"+ configuration[:-4] + ".mk SUBPROJECTS= .build-conf"		
+		print("Building project: " + project)
+		failBuild = os.system (cmd_build + ">>" + logBuildFile)
+		if (failBuild):
+			print("BUILD ERROR:" + str(failBuild) + " : " + cmd_build)
+			counter_error = counter_error + 1
+			sys.exit(-1)
+		else:
+			print("BUILD SUCCESS")
 			counter_success = counter_success + 1
-	
+		
 	duration = time.time() - time_start
 	
-	print("Project generation is finished.")
-	print("Successfully ran " + str(counter_success) + " of " + str(counter_success + counter_error) + " projects")
-	print("INFO - Execution finished in " + str(duration) + " seconds")
+	print("Compilation is finished.")
+	print("Successfully built " + str(counter_success) + " of " + str(counter_success + counter_error) + " projects")
+	print("INFO - Compilation finished in " + str(duration) + " seconds")
 	
-	sys.exit(0)
