@@ -171,8 +171,11 @@
       <itemPath>../src/app_plc.h</itemPath>
       <itemPath>../src/app_nvm.h</itemPath>
     </logicalFolder>
-    <logicalFolder displayName="Linker Files" name="f2" projectFiles="true"/>
-    <logicalFolder displayName="Source Files" name="f3" projectFiles="true">
+    <logicalFolder displayName="Important Files" name="f2" projectFiles="true">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder displayName="Linker Files" name="f3" projectFiles="true"/>
+    <logicalFolder displayName="Source Files" name="f4" projectFiles="true">
       <logicalFolder displayName="config" name="f1" projectFiles="true">
         <logicalFolder displayName="sam_e70_xpld" name="f1" projectFiles="true">
           <logicalFolder displayName="stdio" name="f1" projectFiles="true">
@@ -258,9 +261,6 @@
       <itemPath>../src/app_console.c</itemPath>
       <itemPath>../src/app_plc.c</itemPath>
       <itemPath>../src/app_nvm.c</itemPath>
-    </logicalFolder>
-    <logicalFolder displayName="Important Files" name="f4" projectFiles="true">
-      <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
