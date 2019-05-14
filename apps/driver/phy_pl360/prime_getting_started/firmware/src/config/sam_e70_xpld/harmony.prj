@@ -11,8 +11,8 @@
           <Name dnOrder="1">PL360_PRIME.bin</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld/driver/pl360/bin/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/pl360/bin/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">5E81B6CDB3D707422679D5F93A5367BF</GeneratedChecksum>
-          <UserChecksum dnOrder="5">5E81B6CDB3D707422679D5F93A5367BF</UserChecksum>
+          <GeneratedChecksum dnOrder="4">0F733648A4D6B29A29B02C2AED79F0D9</GeneratedChecksum>
+          <UserChecksum dnOrder="5">0F733648A4D6B29A29B02C2AED79F0D9</UserChecksum>
         </File>
         <File dnOrder="1">
           <Type dnOrder="0">SOURCE</Type>
@@ -36,7 +36,7 @@
           <LogicalPath dnOrder="2">config/sam_e70_xpld/driver/pl360/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/pl360/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">E2601D7F2DE7A41E6944DA714B317FD4</GeneratedChecksum>
-          <UserChecksum dnOrder="5">E2601D7F2DE7A41E6944DA714B317FD4</UserChecksum>
+          <UserChecksum dnOrder="5">A17AED7239BA2E6E812DDE8F9D4020DC</UserChecksum>
         </File>
         <File dnOrder="4">
           <Type dnOrder="0">SOURCE</Type>
