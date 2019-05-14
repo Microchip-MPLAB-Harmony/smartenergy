@@ -13,8 +13,8 @@ if __name__ == '__main__':
 	# Argument manipulation
 	##########################################################################
 	parser = argparse.ArgumentParser(description='''This script updates bin ATPL360 bin file to atpl/bin/folder''')
-	parser.add_argument('--h3path', required=False, help='Harmony 3 absolute path: [c:\\MH3]')
-	parser.add_argument('--profile', required=True, help='profiles: [G3_PHY], [G3_MAC_RT], [G3_ALL], [PRIME], [ALL]')
+	parser.add_argument('--h3path', required=True, help='Harmony 3 absolute path: [c:\\MH3]')
+	parser.add_argument('--profile', required=False, help='profiles: [G3], [PRIME], [ALL]')
 	args = parser.parse_args()
 	
 	time_start = time.time()
@@ -41,8 +41,15 @@ if __name__ == '__main__':
 	
 	for curr_folder in plcfolders:
 		prjFolder = os.path.abspath(curr_folder).endswith(".X")	
-		
 		if prjFolder:			
+			# Apply Profile Filters
+			if profile != "ALL":
+				if profile == "PRIME" and (curr_folder.find('prime') ==-1):
+					continue
+				
+				if profile == "G3" and (curr_folder.find('g3') ==-1):
+					continue
+			
 			src_path = os.path.dirname(os.path.abspath(curr_folder))
 			os.chdir (src_path + "\src\config")	
 			for (dirpath, subdirs, files) in os.walk("."):
@@ -71,12 +78,13 @@ if __name__ == '__main__':
 	
 	print("Found " + str(counter_prj) + " projects. Building projects...")
 	for project,configuration in zip(mplabx,xml_files):
+		print("PROJECT: " + project)
 		pathSplit = os.path.split(project)
 		
 		# Generate Make file
+		print("Creating makefile...")
 		cmd_make = '\"' + mplabx_path + 'mplab_platform/bin/prjMakefilesGenerator.bat" '
 		cmd_make = cmd_make + project
-		print("Creating makefile: " + project)
 		failMake = os.system (cmd_make)
 		if (failMake):
 			print("MAKEFILE ERROR:" + str(failMake) + " : " + cmd_make)
@@ -84,7 +92,19 @@ if __name__ == '__main__':
 		else:
 			print("MAKEFILE SUCCESS")
 			
+		# Make clean
+		cleanPath = project + "\\build"
+		if os.path.isdir(cleanPath):
+			shutil.rmtree(cleanPath)
+		cleanPath = project + "\\debug"
+		if os.path.isdir(cleanPath):
+			shutil.rmtree(cleanPath)
+		cleanPath = project + "\\dist"
+		if os.path.isdir(cleanPath):
+			shutil.rmtree(cleanPath)
+			
 		# Build project
+		print("Building project...")
 		os.chdir (project)
 		logBuildFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\build_" + pathSplit[1][:-2] + "_log.txt"
 		cmd_build = '\"' + mplabx_path + 'gnuBins/GnuWin32/bin/make" '
