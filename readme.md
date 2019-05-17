@@ -18,6 +18,7 @@ stacks such as G3 and PRIME, and development of standard PLC applications.
 Refer to the following links for release notes, training materials, and interface 
 reference information.
  - [Release Notes](./release_notes.md)
+ - [MPLAB Harmony License](mplab_harmony_license.md)
  - [MPLAB Harmony 3 PLC Wiki]( https://github.com/Microchip-MPLAB-Harmony/plc/wiki )
  - [MPLAB Harmony 3 PLC API Help]( https://microchip-mplab-harmony.github.io/plc )
 
