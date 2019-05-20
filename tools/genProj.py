@@ -12,18 +12,18 @@ if __name__ == '__main__':
 	##########################################################################
 	parser = argparse.ArgumentParser(description='''This script updates bin ATPL360 bin file to atpl/bin/folder''')
 	parser.add_argument('--h3path', required=False, help='Harmony 3 absolute path: [c:\\MH3]')
-	parser.add_argument('--profile', required=True, help='profiles: [G3_PHY], [G3_MAC_RT], [G3_ALL], [PRIME], [ALL]')
+	parser.add_argument('--project', required=False, help='Name of the project')
 	args = parser.parse_args()
 	
 	time_start = time.time()
 	
-	profile = 'ALL'
-	
-	if args.profile is not None:
-		profile = args.profile
+	projName = ''
 		
 	if args.h3path is not None:
 		h3path = args.h3path
+				
+	if args.project is not None:
+		projName = args.project
 		
 	print("Searching projects...")
 	
@@ -40,11 +40,21 @@ if __name__ == '__main__':
 	for curr_folder in plcfolders:
 		prjFolder = os.path.abspath(curr_folder).endswith(".X")	
 		
-		if prjFolder:			
+		if prjFolder:
+			if projName != '':
+				# Apply Profile Name filter
+				if curr_folder.find(projName) == -1:
+					continue
+			
 			src_path = os.path.dirname(os.path.abspath(curr_folder))
 			os.chdir (src_path + "\src\config")	
 			for (dirpath, subdirs, files) in os.walk("."):
 				for x in files:
+					# Remove .bin files
+					if x.endswith(".bin"):
+						binfile = dirpath + "\\" + x
+						os.remove(binfile)
+				
 					if x.endswith(".xml"):
 						addPrj = False
 						if (curr_folder.find('prime') != -1):
@@ -62,7 +72,7 @@ if __name__ == '__main__':
 							prjFile = os.path.dirname(os.path.abspath(curr_folder)) + "\\src\\config\\" + x[:-4] + "\\harmony.prj"
 							projects.append(prjFile)
 							counter_prj = counter_prj + 1
-	
+
 
 	
 	logGlobalFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\MH3_global_log.txt"

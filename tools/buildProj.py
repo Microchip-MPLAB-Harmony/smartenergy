@@ -15,17 +15,22 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='''This script updates bin ATPL360 bin file to atpl/bin/folder''')
 	parser.add_argument('--h3path', required=True, help='Harmony 3 absolute path: [c:\\MH3]')
 	parser.add_argument('--profile', required=False, help='profiles: [G3], [PRIME], [ALL]')
+	parser.add_argument('--project', required=False, help='Name of the project')
 	args = parser.parse_args()
 	
 	time_start = time.time()
 	
 	profile = 'ALL'
+	projName =''
 	
 	if args.profile is not None:
 		profile = args.profile
 		
 	if args.h3path is not None:
 		h3path = args.h3path
+		
+	if args.project is not None:
+		projName = args.project
 		
 	print("Searching projects...")
 	
@@ -41,15 +46,20 @@ if __name__ == '__main__':
 	
 	for curr_folder in plcfolders:
 		prjFolder = os.path.abspath(curr_folder).endswith(".X")	
-		if prjFolder:			
-			# Apply Profile Filters
-			if profile != "ALL":
-				if profile == "PRIME" and (curr_folder.find('prime') ==-1):
+		if prjFolder:
+			if projName != '':
+				# Apply Profile Name filter
+				if curr_folder.find(projName) == -1:
 					continue
+			else:
+				# Apply Profile Filters
+				if profile != "ALL":
+					if profile == "PRIME" and (curr_folder.find('prime') ==-1):
+						continue
+					
+					if profile == "G3" and (curr_folder.find('g3') ==-1):
+						continue
 				
-				if profile == "G3" and (curr_folder.find('g3') ==-1):
-					continue
-			
 			src_path = os.path.dirname(os.path.abspath(curr_folder))
 			os.chdir (src_path + "\src\config")	
 			for (dirpath, subdirs, files) in os.walk("."):

@@ -11,8 +11,8 @@
           <Name dnOrder="1">PL360_G3_CENA.bin</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360/bin/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/pl360/bin/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">D4DCED0B46DD145831DB0BA084F296D5</GeneratedChecksum>
-          <UserChecksum dnOrder="5">D4DCED0B46DD145831DB0BA084F296D5</UserChecksum>
+          <GeneratedChecksum dnOrder="4">09169E3C90BBF0A9DF2F47EA4E64E0A8</GeneratedChecksum>
+          <UserChecksum dnOrder="5">09169E3C90BBF0A9DF2F47EA4E64E0A8</UserChecksum>
         </File>
         <File dnOrder="1">
           <Type dnOrder="0">SOURCE</Type>
@@ -163,8 +163,8 @@
           <Name dnOrder="1">plib_pio.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/peripheral/pio/</LogicalPath>
           <PhysicalPath dnOrder="3">/peripheral/pio/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">43FD1C05D14CC9C2E84B4F9CB18C68F3</GeneratedChecksum>
-          <UserChecksum dnOrder="5">43FD1C05D14CC9C2E84B4F9CB18C68F3</UserChecksum>
+          <GeneratedChecksum dnOrder="4">6E5D5322667E922C85D095DAD343A9A0</GeneratedChecksum>
+          <UserChecksum dnOrder="5">6E5D5322667E922C85D095DAD343A9A0</UserChecksum>
         </File>
         <File dnOrder="20">
           <Type dnOrder="0">SOURCE</Type>
@@ -419,8 +419,8 @@
           <Name dnOrder="1">configuration.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">DDA5BCD9A5E1B648B4B563C58A90C10A</GeneratedChecksum>
-          <UserChecksum dnOrder="5">DDA5BCD9A5E1B648B4B563C58A90C10A</UserChecksum>
+          <GeneratedChecksum dnOrder="4">E0F49DB01F8F3DAD2E9DA06FF919F8DC</GeneratedChecksum>
+          <UserChecksum dnOrder="5">E0F49DB01F8F3DAD2E9DA06FF919F8DC</UserChecksum>
         </File>
         <File dnOrder="52">
           <Type dnOrder="0">HEADER</Type>
@@ -491,8 +491,8 @@
           <Name dnOrder="1">drv_pl360_comm.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/pl360/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">56944E8A777C0823DA7F371B05D9A451</GeneratedChecksum>
-          <UserChecksum dnOrder="5">56944E8A777C0823DA7F371B05D9A451</UserChecksum>
+          <GeneratedChecksum dnOrder="4">AB4B3EA2F712AF6F97CED532E9B48E53</GeneratedChecksum>
+          <UserChecksum dnOrder="5">AB4B3EA2F712AF6F97CED532E9B48E53</UserChecksum>
         </File>
         <File dnOrder="61">
           <Type dnOrder="0">HEADER</Type>
