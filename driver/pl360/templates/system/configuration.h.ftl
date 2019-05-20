@@ -24,22 +24,27 @@
 #define DRV_PL360_SECURE                        ${DRV_PL360_SECURE_MODE?string}
 /* PL360 Driver Identification */
 <#if DRV_PL360_PLC_PROFILE == "0">
+#define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_CENELEC_A
 #define DRV_PL360_HOST_PRODUCT                  0x3601
 #define DRV_PL360_HOST_VERSION                  0x36010300
 #define DRV_PL360_HOST_PHY                      0x36010103
 <#elseif DRV_PL360_PLC_PROFILE == "1">
+#define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_CENELEC_B
 #define DRV_PL360_HOST_PRODUCT                  0x3601
 #define DRV_PL360_HOST_VERSION                  0x36010300
 #define DRV_PL360_HOST_PHY                      0x36040103
 <#elseif DRV_PL360_PLC_PROFILE == "2">
+#define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_FCC
 #define DRV_PL360_HOST_PRODUCT                  0x3601
 #define DRV_PL360_HOST_VERSION                  0x36010300
 #define DRV_PL360_HOST_PHY                      0x36020103
 <#elseif DRV_PL360_PLC_PROFILE == "4">
+#define DRV_PL360_NUM_CARRIERS                  97
 #define DRV_PL360_HOST_PRODUCT                  0x3600
 #define DRV_PL360_HOST_VERSION                  0x36000300
 #define DRV_PL360_HOST_PHY                      0x36000003
 <#elseif DRV_PL360_PLC_PROFILE == "5">
+#define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_CENELEC_A
 #define DRV_PL360_HOST_PRODUCT                  0x3601
 #define DRV_PL360_HOST_VERSION                  0x36010300
 #define DRV_PL360_HOST_PHY                      0x36010103

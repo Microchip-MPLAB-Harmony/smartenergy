@@ -128,6 +128,7 @@ extern "C" {
 
 #define DRV_PL360_SECURE                        false
 /* PL360 Driver Identification */
+#define DRV_PL360_NUM_CARRIERS                  97
 #define DRV_PL360_HOST_PRODUCT                  0x3600
 #define DRV_PL360_HOST_VERSION                  0x36000300
 #define DRV_PL360_HOST_PHY                      0x36000003

@@ -92,8 +92,8 @@ typedef struct {
 	uint32_t thresholdHigh[16];
 	uint32_t thresholdVeryLow[16];
 	uint32_t daccConfig[17];
-	uint16_t predistorsionHigh[NUM_CARRIERS_CENELEC_A];
-	uint16_t predistorsionVeryLow[NUM_CARRIERS_CENELEC_A];
+	uint16_t predistorsionHigh[DRV_PL360_NUM_CARRIERS];
+	uint16_t predistorsionVeryLow[DRV_PL360_NUM_CARRIERS];
 	uint16_t gainHigh[3];
 	uint16_t gainVeryLow[3];
 	uint8_t numTxLevels;

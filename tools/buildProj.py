@@ -5,7 +5,7 @@ import sys
 
 curr_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-mplabx_path = "C:/Program Files (x86)/Microchip/MPLABX/v5.15/"
+mplabx_path = "C:/Program Files (x86)/Microchip/MPLABX/v5.20/"
 
 if __name__ == '__main__':
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		
 	print("Searching projects...")
 	
-	plcpath = h3path + "\\plc\\apps"
+	plcpath = h3path + "\\se\\apps"
 	mhcpath = h3path + "\\mhc"	
 			
 	plcfolders = [x[0] for x in os.walk(plcpath)]
@@ -109,7 +109,7 @@ if __name__ == '__main__':
 		logBuildFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\build_" + pathSplit[1][:-2] + "_log.txt"
 		cmd_build = '\"' + mplabx_path + 'gnuBins/GnuWin32/bin/make" '
 		cmd_build = cmd_build + "-f nbproject/Makefile-"+ configuration[:-4] + ".mk SUBPROJECTS= .build-conf"		
-		print("Building project: " + project)
+		# print("Building project: " + project)
 		failBuild = os.system (cmd_build + ">>" + logBuildFile)
 		if (failBuild):
 			print("BUILD ERROR:" + str(failBuild) + " : " + cmd_build)
