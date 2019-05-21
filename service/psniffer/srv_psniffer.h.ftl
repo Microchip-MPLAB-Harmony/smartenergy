@@ -50,8 +50,6 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/*  This section lists the other files that are included in this file.
-*/
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -68,7 +66,7 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: Macro definitions
 // *****************************************************************************
 // *****************************************************************************
 <#if SRV_PSNF_PLC_PROFILE == "0">
@@ -108,6 +106,12 @@
 #define PSNIFFER_PP_HEADER_US     (PSNIFFER_SYMBOL_US << 2)
 </#if>
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+
 /* PLC Phy Sniffer Tool command
 
   Summary:
@@ -119,11 +123,20 @@
 */
 typedef enum
 {
-  SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,        /* Receive new PLC message */
-  SRV_PSNIFFER_CMD_SET_TONE_MASK,          /* Set Tone Mask request */
-  SRV_PSNIFFER_CMD_SET_CHANNEL,            /* Set PLC Channel */
+  /* Receive new PLC message */
+  SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,       
+  /* Set Tone Mask request */ 
+  SRV_PSNIFFER_CMD_SET_TONE_MASK,      
+  /* Set PLC Channel */    
+  SRV_PSNIFFER_CMD_SET_CHANNEL,           
 } SRV_PSNIFFER_COMMAND;      
-    
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_PSNIFFER Interface Routines
+// *****************************************************************************
+// *****************************************************************************
+
 SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
 size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc);
 size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataCfm);
