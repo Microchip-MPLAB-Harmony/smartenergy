@@ -19,10 +19,10 @@ def loadModule():
 	srvUSIComponent.addDependency("drv_usi_CRC_dependency", "PCRC", "PLC CRC", True, True)
 	srvUSIComponent.setDisplayType("PLC Service")
 
-	srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/Libraries/PLC/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
-	srvUSITCPAuxComponent.addCapability("libsrvUSITCPAux", "USI_TCP_AUX")
-	srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
-	srvUSITCPAuxComponent.setDisplayType("PLC Service")
+	## srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/Libraries/PLC/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
+	## srvUSITCPAuxComponent.addCapability("libsrvUSITCPAux", "USI_TCP_AUX")
+	## srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
+	## srvUSITCPAuxComponent.setDisplayType("PLC Service")
 
 	## PCRC Service (PLC CRC service)
 	srvPCRCComponent = Module.CreateComponent("srv_pcrc", "PLC CRC", "/Libraries/PLC/Services/", "service/pcrc/config/srv_pcrc.py")

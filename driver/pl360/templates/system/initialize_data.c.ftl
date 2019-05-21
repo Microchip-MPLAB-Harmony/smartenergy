@@ -73,8 +73,8 @@ extern uint8_t pl360_bin2_end;
 
 </#if>
 /* PL360 Driver Initialization Data */
-DRV_PL360_INIT drvPL360InitData =
-{
+DRV_PL360_INIT drvPL360InitData = {
+
     /* SPI PLIB API  interface*/
     .pl360Hal = &drvPL360HalAPI,
 

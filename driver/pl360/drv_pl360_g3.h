@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_g3.h
+    drv_pl360_comm.h
 
   Summary:
     PL360 Driver G3 Definitions Header File
@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -60,15 +60,34 @@
 #endif
 // DOM-IGNORE-END
 
-/* G3 Profiles */
-#define G3_CEN_A                                   0
-#define G3_CEN_B                                   1
-#define G3_FCC                                     2
+
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
+
+// *****************************************************************************
+/* DRV_PL360 G3 Profiles
+
+ Summary:
+    Defines all G3 PHY bands supported by PL360 device.
+
+ Description:
+    None.
+
+ Remarks:
+    None.
+*/
+      
+typedef enum {
+  G3_CEN_A = 0,
+  G3_CEN_B = 1,
+  G3_FCC = 2
+}DRV_PL360_PROFILE;      
+
+/* DRV_PL360_COMM Handle Macros*/      
 #define FCH_LEN_CENELEC_A                          5
 #define FCH_LEN_FCC                                9
 #define FCH_LEN_ARIB                               9
@@ -93,38 +112,53 @@
 /* FCC Band Plan (155 - 487 Khz) */
 #define PL360_FCC                                  2
       
-/* ! Tone Map size for Cenelec bandplan */
+/* Tone Map size for Cenelec bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1
-/* ! Tone Map size for FCC and ARIB bandplans */
+/* Tone Map size for FCC and ARIB bandplans */
 #define TONE_MAP_SIZE_FCC                          3
-/* ! Maximum number of protocol carriers */
-#define PROTOCOL_CARRIERS_MAX                  NUM_CARRIERS_FCC
-/* ! Maximum number of tone map */
-#define TONE_MAP_SIZE_MAX                      TONE_MAP_SIZE_FCC     
-/* ! Maximum Length of FCH */
-#define FCH_LEN_MAX                            FCH_LEN_FCC
-/* ! Maximum number of subbands */
-#define NUM_SUBBANDS_MAX                       NUM_SUBBANDS_FCC
+/* Maximum number of protocol carriers */
+#define PROTOCOL_CARRIERS_MAX                      NUM_CARRIERS_FCC
+/* Maximum number of tone map */
+#define TONE_MAP_SIZE_MAX                          TONE_MAP_SIZE_FCC     
+/* Maximum Length of FCH */
+#define FCH_LEN_MAX                                FCH_LEN_FCC
+/* Maximum number of subbands */
+#define NUM_SUBBANDS_MAX                           NUM_SUBBANDS_FCC
 
 /* TX Mode: Forced transmission */
-#define TX_MODE_FORCED                         (1 << 0)
+#define TX_MODE_FORCED                             (1 << 0)
 /* TX Mode: Absolute transmission */          
-#define TX_MODE_ABSOLUTE                       (0 << 1)
+#define TX_MODE_ABSOLUTE                           (0 << 1)
 /* TX Mode: Delayed transmission */          
-#define TX_MODE_RELATIVE                       (1 << 1)
+#define TX_MODE_RELATIVE                           (1 << 1)
 /* TX Mode: SYNCP Continuous transmission */
-#define TX_MODE_SYNCP_CONTINUOUS               (1 << 2)
+#define TX_MODE_SYNCP_CONTINUOUS                   (1 << 2)
 /* TX Mode: Symbols Continuous transmission */
-#define TX_MODE_SYMBOLS_CONTINUOUS             (1 << 3)
+#define TX_MODE_SYMBOLS_CONTINUOUS                 (1 << 3)
 /* TX Mode: Cancel transmission */
-#define TX_MODE_CANCEL                         (1 << 4)
+#define TX_MODE_CANCEL                             (1 << 4)
 
 /* Impedance Configuration */
-#define HI_STATE                               0x00
-#define LOW_STATE                              0x01
-#define VLO_STATE                              0x02  
+#define HI_STATE                                   0x00
+#define LOW_STATE                                  0x01
+#define VLO_STATE                                  0x02  
 
-/* G3 PLC Information Base (PIBs) */
+// *****************************************************************************
+/* G3 PHY Information Base (PIBs)
+
+   Summary
+    The list of all available PIB attributes.
+
+   Description
+    The G3 FW stack supports all the mandatory attributes of the PLC Information 
+    Base (PIB) defined in the G3 specification. In addition, Microchip has added 
+    several proprietary PIB attributes to support extra functionalities. 
+    The list of all available PIB attributes can be found in this file.
+
+   Remarks:
+    None
+*/
+
 typedef enum {
   PL360_ID_HOST_DESCRIPTION_ID = 0x0100,
   PL360_ID_HOST_MODEL_ID  = 0x010A,
@@ -201,7 +235,15 @@ typedef enum {
   PL360_ID_END_ID,
 } DRV_PL360_ID;    
 
-/* G3 Modulation types */
+// *****************************************************************************
+/* G3 Modulation types
+
+   Summary
+    The list of all types of modulation supported by G3 spec.
+
+   Remarks:
+    None
+*/
 typedef enum {
   MOD_TYPE_BPSK = 0,
   MOD_TYPE_QPSK = 1,
@@ -210,13 +252,29 @@ typedef enum {
   MOD_TYPE_BPSK_ROBO = 4,
 }DRV_PL360_MOD_TYPE;
 
-/* G3 Modulation schemes */
+// *****************************************************************************
+/* G3 Modulation schemes
+
+   Summary
+    The list of all modulation schemes supported by G3 spec.
+
+   Remarks:
+    None
+*/
 typedef enum {
   MOD_SCHEME_DIFFERENTIAL = 0,
   MOD_SCHEME_COHERENT = 1,
 }DRV_PL360_MOD_SCHEME;
 
-/* G3 Frame Delimiter Types */
+// *****************************************************************************
+/* G3 Frame Delimiter Types
+
+   Summary
+    The list of all delimiter types supported by G3 spec.
+
+   Remarks:
+    None
+*/
 typedef enum {
   DT_SOF_NO_RESP = 0,
   DT_SOF_RESP = 1,
@@ -224,88 +282,198 @@ typedef enum {
   DT_NACK = 3,
 }DRV_PL360_DEL_TYPE;
 
-/* G3 TX Result values */
+// *****************************************************************************
+/* G3 Result values of a previous transmission
+
+   Summary
+    This list involves all available results from MCHP implementation
+
+   Remarks:
+    None
+*/
 typedef enum {
-  DRV_PL360_TX_RESULT_PROCESS = 0,               /* Transmission result: already in process */
-  DRV_PL360_TX_RESULT_SUCCESS = 1,               /* Transmission result: end successfully */
-  DRV_PL360_TX_RESULT_INV_LENGTH = 2,            /* Transmission result: invalid length error */
-  DRV_PL360_TX_RESULT_BUSY_CH = 3,               /* Transmission result: busy channel error */
-  DRV_PL360_TX_RESULT_BUSY_TX = 4,               /* Transmission result: busy in transmission error */
-  DRV_PL360_TX_RESULT_BUSY_RX = 5,               /* Transmission result: busy in reception error */
-  DRV_PL360_TX_RESULT_INV_SCHEME = 6,            /* Transmission result: invalid modulation scheme error */
-  DRV_PL360_TX_RESULT_TIMEOUT = 7,               /* Transmission result: timeout error */
-  DRV_PL360_TX_RESULT_INV_TONEMAP = 8,           /* Transmission result: invalid tone map error */
-  DRV_PL360_TX_RESULT_INV_MODE = 9,              /* Transmission result: invalid G3 Mode error */
-  DRV_PL360_TX_RESULT_NO_TX = 255,               /* Transmission result: No transmission ongoing */
+  /* Transmission result: already in process */
+  DRV_PL360_TX_RESULT_PROCESS = 0,   
+  /* Transmission result: end successfully */            
+  DRV_PL360_TX_RESULT_SUCCESS = 1,      
+  /* Transmission result: invalid length error */
+  DRV_PL360_TX_RESULT_INV_LENGTH = 2,            
+  /* Transmission result: busy channel error */
+  DRV_PL360_TX_RESULT_BUSY_CH = 3,               
+  /* Transmission result: busy in transmission error */
+  DRV_PL360_TX_RESULT_BUSY_TX = 4,               
+  /* Transmission result: busy in reception error */
+  DRV_PL360_TX_RESULT_BUSY_RX = 5,               
+  /* Transmission result: invalid modulation scheme error */
+  DRV_PL360_TX_RESULT_INV_SCHEME = 6,            
+  /* Transmission result: timeout error */
+  DRV_PL360_TX_RESULT_TIMEOUT = 7,               
+  /* Transmission result: invalid tone map error */
+  DRV_PL360_TX_RESULT_INV_TONEMAP = 8,           
+  /* Transmission result: invalid G3 Mode error */
+  DRV_PL360_TX_RESULT_INV_MODE = 9,              
+  /* Transmission result: No transmission ongoing */
+  DRV_PL360_TX_RESULT_NO_TX = 255,               
 }DRV_PL360_TX_RESULT;
 
-/* G3 Tone map response data */
+// *****************************************************************************
+/* G3 Tone map response data
+
+   Summary
+    This struct includes modulation type, modulation scheme and Tone Map data
+
+   Remarks:
+    For more information about Tone Map Response functionality, please refer to
+    G3 Specification
+*/
 typedef struct {
-  DRV_PL360_MOD_TYPE modType;                    /* Modulation type */
-  DRV_PL360_MOD_SCHEME modScheme;                /* Modulation scheme */
-  uint8_t toneMap[TONE_MAP_SIZE_MAX];            /* Tone Map */
+  /* Modulation type */
+  DRV_PL360_MOD_TYPE modType;       
+  /* Modulation scheme */             
+  DRV_PL360_MOD_SCHEME modScheme;   
+   /* Tone Map */             
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];           
 } DRV_PL360_TONE_MAP_RSP;
 
-/* G3 Transmission setup */
+// *****************************************************************************
+/* G3 Transmission setup data
+
+   Summary
+    This struct includes all information to describe any transmissions.
+
+   Remarks:
+    None
+*/
 typedef struct __attribute__((packed, aligned(1))) {
-  uint8_t *pTransmitData;                        /* Pointer to data buffer to transmit */
-  uint32_t time;                                 /* Instant when transmission has to start referred to 1ms PHY counter */
-  uint16_t dataLength;                           /* Length of the data to transmit */
-  uint8_t preemphasis[NUM_SUBBANDS_MAX];         /* Preemphasis for transmission */
-  uint8_t toneMap[TONE_MAP_SIZE_MAX];            /* Tone Map to use on transmission */
-  uint8_t mode;                                  /* Transmission Mode (absolute, relative, forced, continuous, cancel). Constants above */
-  uint8_t attenuation;                           /* Power to transmit */
-  uint8_t pdc;                                   /* Phase Detector Counter */
-  uint8_t rs2Blocks;                             /* Flag to indicate whether 2 RS blocks have to be used (only used for FCC) */
-  DRV_PL360_MOD_TYPE modType;                    /* Modulation type */
-  DRV_PL360_MOD_SCHEME modScheme;                /* Modulation scheme */
-  DRV_PL360_DEL_TYPE delimiterType;              /* DT field to be used in header */
+  /* Pointer to data buffer to transmit */
+  uint8_t *pTransmitData;       
+  /* Instant when transmission has to start referred to 1ms PHY counter */                 
+  uint32_t time;         
+  /* Length of the data to transmit */                        
+  uint16_t dataLength;           
+  /* Preemphasis for transmission */                
+  uint8_t preemphasis[NUM_SUBBANDS_MAX];  
+  /* Tone Map to use on transmission */       
+  uint8_t toneMap[TONE_MAP_SIZE_MAX]; 
+  /* Transmission Mode (absolute, relative, forced, continuous, cancel). Constants above */           
+  uint8_t mode;            
+  /* Power to transmit */                      
+  uint8_t attenuation;             
+  /* Phase Detector Counter */              
+  uint8_t pdc;                   
+  /* Flag to indicate whether 2 RS blocks have to be used (only used for FCC) */                
+  uint8_t rs2Blocks;         
+  /* Modulation type */                    
+  DRV_PL360_MOD_TYPE modType;             
+  /* Modulation scheme */       
+  DRV_PL360_MOD_SCHEME modScheme;            
+  /* DT field to be used in header */    
+  DRV_PL360_DEL_TYPE delimiterType;              
 } DRV_PL360_TRANSMISSION_OBJ;
 
-/* G3 Result of a transmission */
+// *****************************************************************************
+/* G3 Result of a transmission
+
+   Summary
+    This struct includes all information to describe any result of a previous 
+    transmission.
+
+   Remarks:
+    None
+*/
 typedef struct {
-  uint32_t time;                                 /* Instant when frame transmission ended referred to 1ms PHY counter */
-  uint32_t rmsCalc;                              /* RMS_CALC it allows to estimate tx power injected */
-  DRV_PL360_TX_RESULT result;                    /* Tx Result (see "TX Result values" above) */
+  /* Instant when frame transmission ended referred to 1ms PHY counter */
+  uint32_t time;    
+  /* RMS_CALC it allows to estimate tx power injected */                             
+  uint32_t rmsCalc;            
+  /* Tx Result (see "TX Result values" above) */                  
+  DRV_PL360_TX_RESULT result;                    
 } DRV_PL360_TRANSMISSION_CFM_OBJ;
 
-/* G3 Reception parameters */
+// *****************************************************************************
+/* G3 Reception parameters
+
+   Summary
+    This struct includes all information to describe any new received message.
+
+   Remarks:
+    None
+*/
 typedef struct __attribute__((packed, aligned(1))) {
-  uint8_t *pReceivedData;                        /* Pointer to received data buffer */
-  uint32_t time;                                 /* Instant when frame was received */
-  uint32_t frameDuration;                        /* Frame duration referred to 1ms PHY counter (FCH + Payload) */
-  uint16_t dataLength;                           /* Length of the received data */
-  uint16_t rssi;                                 /* Reception RSSI */
-  uint8_t zctDiff;                               /* ZCT info */
-  uint8_t rsCorrectedErrors;                     /* Errors corrected by RS */
-  DRV_PL360_MOD_TYPE modType;                    /* Modulation type */
-  DRV_PL360_MOD_SCHEME modScheme;                /* Modulation scheme */
-  DRV_PL360_DEL_TYPE delimiterType;              /* DT field coming in header */
-  uint8_t rsrv0;                                 /* Reserved */
-  uint32_t agcFactor;                            /* Test data information */
-  uint16_t agcFine;                              /* Test data information */
-  int16_t agcOffsetMeas;                         /* Test data information */
-  uint8_t agcActive;                             /* Test data information */
-  uint8_t agcPgaValue;                           /* Test data information */
-  int16_t snrFch;                                /* Test data information */
-  int16_t snrPay;                                /* Test data information */
-  uint16_t payloadCorruptedCarriers;             /* BER: Number of corrupted carriers */
-  uint16_t payloadNoisedSymbols;                 /* BER: Number of noised symbols */
-  uint8_t payloadSnrWorstCarrier;                /* BER: SNR of the worst carrier */
-  uint8_t payloadSnrWorstSymbol;                 /* BER: SNR of the worst symbol */
-  uint8_t payloadSnrImpulsive;                   /* BER: SNR on impulsive noise */
-  uint8_t payloadSnrBand;                        /* BER: Narrowband SNR */
-  uint8_t payloadSnrBackground;                  /* BER: Background SNR */
-  uint8_t lqi;                                   /* BER: Link Quality */
-  uint8_t toneMap[TONE_MAP_SIZE_MAX];            /* Reception Tone Map */
-  uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];     /* SNR per carrier */
+   /* Pointer to received data buffer */
+  uint8_t *pReceivedData;                       
+  /* Instant when frame was received */
+  uint32_t time;                                 
+  /* Frame duration referred to 1ms PHY counter (FCH + Payload) */
+  uint32_t frameDuration;                        
+  /* Length of the received data */
+  uint16_t dataLength;                           
+  /* Reception RSSI */
+  uint16_t rssi;                                 
+  /* ZCT info */
+  uint8_t zctDiff;                               
+  /* Errors corrected by RS */
+  uint8_t rsCorrectedErrors;                     
+  /* Modulation type */
+  DRV_PL360_MOD_TYPE modType;                    
+  /* Modulation scheme */
+  DRV_PL360_MOD_SCHEME modScheme;                
+  /* DT field coming in header */
+  DRV_PL360_DEL_TYPE delimiterType;              
+  /* Reserved */
+  uint8_t rsrv0;                                 
+  /* Test data information */
+  uint32_t agcFactor;          
+  /* Test data information */  
+  uint16_t agcFine;            
+  /* Test data information */  
+  int16_t agcOffsetMeas;       
+  /* Test data information */  
+  uint8_t agcActive;           
+  /* Test data information */  
+  uint8_t agcPgaValue;         
+  /* Test data information */  
+  int16_t snrFch;              
+  /* Test data information */  
+  int16_t snrPay;                          
+  /* BER: Number of corrupted carriers */
+  uint16_t payloadCorruptedCarriers;             
+  /* BER: Number of noised symbols */
+  uint16_t payloadNoisedSymbols;                 
+  /* BER: SNR of the worst carrier */
+  uint8_t payloadSnrWorstCarrier;                
+  /* BER: SNR of the worst symbol */
+  uint8_t payloadSnrWorstSymbol;                 
+  /* BER: SNR on impulsive noise */
+  uint8_t payloadSnrImpulsive;                  
+   /* BER: Narrowband SNR */ 
+  uint8_t payloadSnrBand;                       
+  /* BER: Background SNR */
+  uint8_t payloadSnrBackground;                  
+  /* BER: Link Quality */
+  uint8_t lqi;                                   
+  /* Reception Tone Map */
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];            
+  /* SNR per carrier */
+  uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];     
 } DRV_PL360_RECEPTION_OBJ;
 
-/* G3 PLC Information Base (PIB) */
+// *****************************************************************************
+/* G3 PHY Information Base (PIB)
+
+   Summary
+    This struct includes all information to access any defined PIB.
+
+   Remarks:
+    None
+*/
 typedef struct {
-  uint8_t *pData;                                /* Pointer to PIB data */
-  DRV_PL360_ID id;                               /* PLC Information base identification */
-  uint16_t length;                               /* Length in bytes of the data information */
+  /* Pointer to PIB data */
+  uint8_t *pData;                                
+  /* PLC Information base identification */
+  DRV_PL360_ID id;                               
+  /* Length in bytes of the data information */
+  uint16_t length;                               
 } DRV_PL360_PIB_OBJ;
 
 //DOM-IGNORE-BEGIN
