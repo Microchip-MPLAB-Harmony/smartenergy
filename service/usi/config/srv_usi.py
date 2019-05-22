@@ -29,17 +29,7 @@
 ################################################################################
 #### Business Logic ####
 ################################################################################
-def setDepencies(symbol, event):
-    localComponent = symbol.getComponent()
-    print ("setDependencies:" + str(event["value"]))
 
-    if event["value"] == 1:
-        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", False)
-        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", False)
-        print ("setDependencies True")
-    else:
-        localComponent.setDependencyEnabled("srv_usi_CDC_dependency", True)
-        localComponent.setDependencyEnabled("srv_usi_TCP_AUX_dependency", True)
 
 ################################################################################
 #### Component ####
@@ -179,31 +169,31 @@ def onAttachmentConnected(source, target):
         # after setting the Usart Api index symbol
         usiUsartTXDMAChannel.setVisible(True)
 
-    if connectID == "srv_usi_TCP_AUX_dependency" :
-        print("OnConnection...srv_usi_TCP_AUX_dependency")
-        
-        print("Set PLIB connection")
-        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.clearValue()
-        plibUsed.setValue(remoteID.upper(), 0)
-
-        Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", True, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX")
-        apiUsedIndex.clearValue()
-        apiUsedIndex.setValue(True, 0)
-
-    if connectID == "srv_usi_CDC_dependency" :
-        print("OnConnection...srv_usi_CDC_dependency")
-        
-        print("Set PLIB connection")
-        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.clearValue()
-        plibUsed.setValue(remoteID.upper(), 0)
-
-        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", True, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX")
-        apiUsedIndex.clearValue()
-        apiUsedIndex.setValue(True, 0)
+#    if connectID == "srv_usi_TCP_AUX_dependency" :
+#        print("OnConnection...srv_usi_TCP_AUX_dependency")
+#        
+#        print("Set PLIB connection")
+#        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+#        plibUsed.clearValue()
+#        plibUsed.setValue(remoteID.upper(), 0)
+#
+#        Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", True, 1)
+#        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX")
+#        apiUsedIndex.clearValue()
+#        apiUsedIndex.setValue(True, 0)
+#
+#    if connectID == "srv_usi_CDC_dependency" :
+#        print("OnConnection...srv_usi_CDC_dependency")
+#        
+#        print("Set PLIB connection")
+#        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+#        plibUsed.clearValue()
+#        plibUsed.setValue(remoteID.upper(), 0)
+#
+#        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", True, 1)
+#        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX")
+#        apiUsedIndex.clearValue()
+#        apiUsedIndex.setValue(True, 0)
 
 
 def onAttachmentDisconnected(source, target):
@@ -231,25 +221,25 @@ def onAttachmentDisconnected(source, target):
         plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
         plibUsed.clearValue()
 
-    if connectID == "srv_usi_TCP_AUX_dependency" :
-        print("OnDisconnection...srv_usi_TCP_AUX_dependency")
-
-        Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", False, 1)
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX").clearValue()
-
-        print("Clear PLIB connection")
-        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.clearValue()
-
-    if connectID == "srv_usi_CDC_dependency" :
-        print("OnDisconnection...srv_usi_CDC_dependency")
-
-        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", False, 1)
-        localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX").clearValue()
-
-        print("Clear PLIB connection")
-        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
-        plibUsed.clearValue()
+#    if connectID == "srv_usi_TCP_AUX_dependency" :
+#        print("OnDisconnection...srv_usi_TCP_AUX_dependency")
+#
+#        Database.setSymbolValue("srv_usi", "SRV_USI_TCP_API", False, 1)
+#        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_TCP_API_INDEX").clearValue()
+#
+#        print("Clear PLIB connection")
+#        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+#        plibUsed.clearValue()
+#
+#    if connectID == "srv_usi_CDC_dependency" :
+#        print("OnDisconnection...srv_usi_CDC_dependency")
+#
+#        Database.setSymbolValue("srv_usi", "SRV_USI_CDC_API", False, 1)
+#        localComponent.getSymbolByID("SRV_USI_CDC_API_INDEX").clearValue()
+#
+#        print("Clear PLIB connection")
+#        plibUsed = localComponent.getSymbolByID("SRV_USI_COMM_API")
+#        plibUsed.clearValue()
 
 def requestAndAssignTxDMAChannel(symbol, event):
     global srvUsiInstanceSpace

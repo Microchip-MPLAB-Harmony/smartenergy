@@ -59,11 +59,21 @@
 #include "srv_usi_usart.h"
 #include "srv_usi_definitions.h"
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data
+// *****************************************************************************
+// *****************************************************************************
 /* This is the service instance object array. */
 static USI_USART_OBJ gUsiUsartOBJ[SRV_USI_USART_CONNECTIONS] = {NULL};
 static USI_USART_MSG gUsiUsartMsgPool[SRV_USI_MSG_POOL_SIZE] = {0};
 static USI_USART_MSG_QUEUE gUsiUsartMsgQueue[SRV_USI_USART_CONNECTIONS] = {NULL};
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: File scope functions
+// *****************************************************************************
+// *****************************************************************************
 static USI_USART_MSG* _USI_USART_PUT_MSG_TO_QUEUE( USI_USART_OBJ* dObj )
 {
     USI_USART_MSG* pMsg;
@@ -289,6 +299,12 @@ static USI_USART_OBJ* _USI_USART_CheckHandler(DRV_HANDLE handle)
     return NULL;
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: USI USART Service Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
 DRV_HANDLE USI_USART_Initialize( const USI_USART_INIT* const init )
 {
     USI_USART_INIT* dObjInit;
@@ -421,8 +437,3 @@ void USI_USART_Tasks ( DRV_HANDLE handle )
         _USI_USART_GET_MSG_FROM_QUEUE(dObj);
     }
 }
-
-
-/*******************************************************************************
- End of File
-*/
