@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name
-    srv_usi.h
+    srv_usi_usart.h
 
   Summary
     USART wrapper used from USI service interface.
@@ -45,14 +45,11 @@
 #ifndef SRV_USART_USI_H    // Guards against multiple inclusion
 #define SRV_USART_USI_H
 
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/*  This section lists the other files that are included in this file.
-*/
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -123,7 +120,12 @@ typedef struct
     uintptr_t                                context;
 } USI_USART_OBJ;
         
-        
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_USI Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
 DRV_HANDLE USI_USART_Initialize(const USI_USART_INIT* const init);
 
 void USI_USART_Tasks (SYS_MODULE_OBJ object);

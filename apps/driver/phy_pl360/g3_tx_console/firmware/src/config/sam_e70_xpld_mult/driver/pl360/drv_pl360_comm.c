@@ -11,12 +11,13 @@
     PL360 Driver G3 Profile Layer
 
   Description:
-    The PL360 Library provides a G3 Profile Layer.
+    This file contains the source code for the implementation of the G3 Profile 
+    Layer.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -53,9 +54,11 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global objects
+// Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
+
+/* This is the driver instance object array. */
 static DRV_PL360_OBJ *gPl360Obj;
 
 /* Buffer definition to communicate with PL360 */
@@ -68,10 +71,11 @@ static uint8_t sDataReg[PL360_REG_PKT_SIZE];
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_COMM Local Functions
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static uint32_t _comm_get_pib_base_address(DRV_PL360_ID id)
+
+static uint32_t _DRV_PL360_COMM_GetPibBaseAddress(DRV_PL360_ID id)
 {
     uint32_t addr;
 
@@ -90,7 +94,7 @@ static uint32_t _comm_get_pib_base_address(DRV_PL360_ID id)
     return addr;
 }
 
-uint16_t _comm_get_cfg_param_delay_us(DRV_PL360_ID id)
+uint16_t _DRV_PL360_COMM_GetDelayUs(DRV_PL360_ID id)
 {
     uint16_t delay = 50;
 
@@ -120,7 +124,7 @@ uint16_t _comm_get_cfg_param_delay_us(DRV_PL360_ID id)
     return delay;
 }
 
-static size_t _comm_tx_stringify(DRV_PL360_TRANSMISSION_OBJ *pSrc)
+static size_t _DRV_PL360_COMM_TxStringify(DRV_PL360_TRANSMISSION_OBJ *pSrc)
 {
     uint8_t *pDst;
     size_t size;
@@ -151,7 +155,7 @@ static size_t _comm_tx_stringify(DRV_PL360_TRANSMISSION_OBJ *pSrc)
     
 }
 
-static void _comm_parse_tx_cfm_event(DRV_PL360_TRANSMISSION_CFM_OBJ *pCfmObj)
+static void _DRV_PL360_COMM_TxCfmEvent(DRV_PL360_TRANSMISSION_CFM_OBJ *pCfmObj)
 {
     uint8_t *pSrc;
     
@@ -170,7 +174,7 @@ static void _comm_parse_tx_cfm_event(DRV_PL360_TRANSMISSION_CFM_OBJ *pCfmObj)
     pCfmObj->result = (DRV_PL360_TX_RESULT)*pSrc;
 }
 
-static void _comm_parse_rx_event(DRV_PL360_RECEPTION_OBJ *pRxObj)
+static void _DRV_PL360_COMM_RxEvent(DRV_PL360_RECEPTION_OBJ *pRxObj)
 {
     uint8_t *pSrc;
     
@@ -237,7 +241,7 @@ static void _comm_parse_rx_event(DRV_PL360_RECEPTION_OBJ *pRxObj)
     pRxObj->pReceivedData = sDataRxDat;
 }
 
-static bool _check_comm(DRV_PL360_HAL_INFO *info)
+static bool _DRV_PL360_COMM_CheckComm(DRV_PL360_HAL_INFO *info)
 {
     if (info->key == DRV_PL360_HAL_KEY_CORTEX)
     {
@@ -250,29 +254,29 @@ static bool _check_comm(DRV_PL360_HAL_INFO *info)
         if (info->flags & DRV_PL360_HAL_FLAG_RST_WDOG)   
         {
             /* Debugger is connected */
-            drv_pl360_boot_restart(false);
+            DRV_PL360_BOOT_Restart(false);
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->contextExc);
             }
         }
         else
         {
             /* PL360 needs boot process to upload firmware */
-            drv_pl360_boot_restart(true);
+            DRV_PL360_BOOT_Restart(true);
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->contextExc);
             }
         }
     }
     else
     {
         /* PL360 needs boot process to upload firmware */
-        drv_pl360_boot_restart(true);
+        DRV_PL360_BOOT_Restart(true);
         if (gPl360Obj->exceptionCallback)
         {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->context);
+            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->contextExc);
         }
     }
     
@@ -285,7 +289,7 @@ static bool _check_comm(DRV_PL360_HAL_INFO *info)
     return false;
 }
 
-static void _spi_write_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
+static void _DRV_PL360_COMM_SpiWriteCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
 {
     DRV_PL360_HAL_CMD halCmd;
     DRV_PL360_HAL_INFO halInfo;
@@ -302,13 +306,13 @@ static void _spi_write_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t len
     gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_check_comm(&halInfo))
+    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -319,7 +323,7 @@ static void _spi_write_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t len
     gPl360Obj->pl360Hal->enableExtInt(true); 
 }
 
-static void _spi_read_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
+static void _DRV_PL360_COMM_SpiReadCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
 {
     DRV_PL360_HAL_CMD halCmd;
     DRV_PL360_HAL_INFO halInfo;
@@ -336,13 +340,13 @@ static void _spi_read_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t leng
     gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_check_comm(&halInfo))
+    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -353,7 +357,7 @@ static void _spi_read_command(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t leng
     gPl360Obj->pl360Hal->enableExtInt(true); 
 }
 
-static void _get_events_info(DRV_PL360_EVENTS_OBJ *eventsObj)
+static void _DRV_PL360_COMM_GetEventsInfo(DRV_PL360_EVENTS_OBJ *eventsObj)
 {
     uint8_t *pData;
     DRV_PL360_HAL_CMD halCmd;
@@ -370,13 +374,13 @@ static void _get_events_info(DRV_PL360_EVENTS_OBJ *eventsObj)
     gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_check_comm(&halInfo))
+    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -404,10 +408,10 @@ static void _get_events_info(DRV_PL360_EVENTS_OBJ *eventsObj)
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_COMM Global Functions
+// Section: DRV_PL360 Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
-void drv_pl360_comm_init(DRV_PL360_OBJ *pl360)
+void DRV_PL360_Init(DRV_PL360_OBJ *pl360)
 {
     gPl360Obj = pl360;
     
@@ -422,7 +426,7 @@ void drv_pl360_comm_init(DRV_PL360_OBJ *pl360)
     gPl360Obj->pl360Hal->enableExtInt(true);
 }
 
-void drv_pl360_comm_task(void)
+void DRV_PL360_Task(void)
 {
     /* Check event flags */
     if ((gPl360Obj->evTxCfm[0]) || (gPl360Obj->evResetTxCfm))
@@ -438,13 +442,13 @@ void drv_pl360_comm_task(void)
             cfmObj.time = 0;
             cfmObj.result = DRV_PL360_TX_RESULT_NO_TX;
         } else {
-            _comm_parse_tx_cfm_event(&cfmObj);            
+            _DRV_PL360_COMM_TxCfmEvent(&cfmObj);            
         }
         
         if (gPl360Obj->dataCfmCallback)
         {
             /* Report to upper layer */
-            gPl360Obj->dataCfmCallback(&cfmObj, gPl360Obj->context);
+            gPl360Obj->dataCfmCallback(&cfmObj, gPl360Obj->contextCfm);
         }
         
         /* Reset event flag */
@@ -455,11 +459,11 @@ void drv_pl360_comm_task(void)
     {
         DRV_PL360_RECEPTION_OBJ rxObj;
         
-        _comm_parse_rx_event(&rxObj);
+        _DRV_PL360_COMM_RxEvent(&rxObj);
         if (gPl360Obj->dataIndCallback)
         {
             /* Report to upper layer */
-            gPl360Obj->dataIndCallback(&rxObj, gPl360Obj->context);
+            gPl360Obj->dataIndCallback(&rxObj, gPl360Obj->contextInd);
         }
         
         /* Reset event flags */
@@ -474,7 +478,7 @@ void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmi
     {
         size_t size_params;
         
-        size_params = _comm_tx_stringify(transmitObj);
+        size_params = _DRV_PL360_COMM_TxStringify(transmitObj);
         
         if (size_params)
         {
@@ -482,7 +486,7 @@ void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmi
             gPl360Obj->state = DRV_PL360_STATE_TX;
             
             /* Send TX parameters */
-            _spi_write_command(TX_PAR_ID, sDataTxPar, size_params);
+            _DRV_PL360_COMM_SpiWriteCmd(TX_PAR_ID, sDataTxPar, size_params);
             
             /* Waiting CFM to avoid soon error responses */
             gPl360Obj->pl360Hal->delay(200);
@@ -491,7 +495,7 @@ void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmi
             if (gPl360Obj->state == DRV_PL360_STATE_TX)
             {
                 /* Send TX data content */
-                _spi_write_command(TX_DAT_ID, transmitObj->pTransmitData, transmitObj->dataLength);
+                _DRV_PL360_COMM_SpiWriteCmd(TX_DAT_ID, transmitObj->pTransmitData, transmitObj->dataLength);
             
                 /* Update PL360 state: waiting confirmation */
                 gPl360Obj->state = DRV_PL360_STATE_WAITING_TX_CFM;
@@ -507,7 +511,7 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
         if (pibObj->id == PL360_ID_TIME_REF_ID)
         {
             /* Send PIB information request */
-            _spi_read_command(STATUS_ID, pibObj->pData, pibObj->length);
+            _DRV_PL360_COMM_SpiReadCmd(STATUS_ID, pibObj->pData, pibObj->length);
             return true;
         }
         else if (pibObj->id & DRV_PL360_REG_ID_MASK)
@@ -521,7 +525,7 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             offset = (uint32_t)(pibObj->id & DRV_PL360_REG_OFFSET_MASK);
 
             /* Get address offset */
-            address = _comm_get_pib_base_address(pibObj->id);
+            address = _DRV_PL360_COMM_GetPibBaseAddress(pibObj->id);
             if (address == 0)
             {
                 return false;
@@ -542,7 +546,7 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             *pDst++ = (uint8_t)(cmdLength);
 
             /* Send PIB information request */
-            _spi_write_command(REG_INFO_ID, sDataReg, 8);
+            _DRV_PL360_COMM_SpiWriteCmd(REG_INFO_ID, sDataReg, 8);
 
             /* Wait to the response : Check length of the register response */
             secureCnt = 0xFFFF;
@@ -625,7 +629,7 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             offset = (uint32_t)(pibObj->id & DRV_PL360_REG_OFFSET_MASK);
 
             /* Get base address */
-            address = _comm_get_pib_base_address(pibObj->id);
+            address = _DRV_PL360_COMM_GetPibBaseAddress(pibObj->id);
             if (address == 0)
             {
                 return false;
@@ -660,10 +664,10 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
             }
 
             /* Send PIB information request */
-            _spi_write_command(REG_INFO_ID, sDataReg, pDst - sDataReg);
+            _DRV_PL360_COMM_SpiWriteCmd(REG_INFO_ID, sDataReg, pDst - sDataReg);
 
             /* Guard delay to ensure writing operation completion. */
-            delay = _comm_get_cfg_param_delay_us(pibObj->id);
+            delay = _DRV_PL360_COMM_GetDelayUs(pibObj->id);
             gPl360Obj->pl360Hal->delay(delay);
 
             return true;
@@ -673,61 +677,53 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
     return false;
 }
 
-static uint32_t intCounter = 0;
-static uint32_t cfmCounter = 0;
-static uint32_t parCounter = 0;
-static uint32_t datCounter = 0;
-static uint32_t regCounter = 0;
-void DRV_PL360_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context )
+void DRV_PL360_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
 {   
-    if ((gPl360Obj) && (pin == (PIO_PIN)gPl360Obj->pl360Hal->pl360Plib->extIntPin) && (gPl360Obj->context == context))
+    /* Avoid warning */
+    (void)context;
+
+    if ((gPl360Obj) && (pin == (PIO_PIN)gPl360Obj->pl360Hal->pl360Plib->extIntPin))
     {
         DRV_PL360_EVENTS_OBJ evObj;
-        
-        intCounter++;
         
         /* Time guard ?? */
         gPl360Obj->pl360Hal->delay(20);
         
         /* Get PL360 events information */
-        _get_events_info(&evObj);
+        _DRV_PL360_COMM_GetEventsInfo(&evObj);
         
         /* Check confirmation of the transmission event */
         if (evObj.evCfm)
         {
-            _spi_read_command(TX_CFM_ID, sDataTxCfm, PL360_CMF_PKT_SIZE);
+            _DRV_PL360_COMM_SpiReadCmd(TX_CFM_ID, sDataTxCfm, PL360_CMF_PKT_SIZE);
             /* update event flag */
             gPl360Obj->evTxCfm[0] = true;
             /* Update PL360 state: idle */
             gPl360Obj->state = DRV_PL360_STATE_IDLE;
-            cfmCounter++;
         }
         
         /* Check received new parameters event (First event in RX) */
         if (evObj.evRxDat)
         {        
-            _spi_read_command(RX_DAT_ID, sDataRxDat, evObj.rcvDataLength);
+            _DRV_PL360_COMM_SpiReadCmd(RX_DAT_ID, sDataRxDat, evObj.rcvDataLength);
             /* update event flag */
             gPl360Obj->evRxDat = true;
-            datCounter++;
         }
         
         /* Check received new data event (Second event in RX) */
         if (evObj.evRxPar)
         {
-            _spi_read_command(RX_PAR_ID, sDataRxPar, PL360_RX_PAR_SIZE - 4);
+            _DRV_PL360_COMM_SpiReadCmd(RX_PAR_ID, sDataRxPar, PL360_RX_PAR_SIZE - 4);
             /* update event flag */
             gPl360Obj->evRxPar = true;
-            parCounter++;
         }
         
         /* Check register info event */
         if (evObj.evReg)
         {     
-            _spi_read_command(REG_INFO_ID, sDataReg, evObj.regRspLength);
+            _DRV_PL360_COMM_SpiReadCmd(REG_INFO_ID, sDataReg, evObj.regRspLength);
             /* update event flag */
             gPl360Obj->evRegRspLength = evObj.regRspLength;
-            regCounter++;
         }
         
         /* Time guard ?? */

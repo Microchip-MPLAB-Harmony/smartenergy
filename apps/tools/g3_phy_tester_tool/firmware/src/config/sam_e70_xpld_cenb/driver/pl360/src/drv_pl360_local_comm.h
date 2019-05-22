@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_local_g3.h
+    drv_pl360_local_comm.h
 
   Summary:
     PL360 Driver Local G3 Data Structures
@@ -16,7 +16,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -39,8 +39,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_PL360_LOCAL_G3_H
-#define _DRV_PL360_LOCAL_G3_H
+#ifndef _DRV_PL360_LOCAL_COMM_H
+#define _DRV_PL360_LOCAL_COMM_H
 
 
 // *****************************************************************************
@@ -52,9 +52,9 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Type Definitions
+// Section: Macro Definitions
 // *****************************************************************************
-// *****************************************************************************
+// ***************************************************************************** 
 #define PL360_STATUS_LENGTH     8
 #define PL360_DATA_PKT_SIZE     512
 #define PL360_TX_PAR_SIZE       sizeof(DRV_PL360_TRANSMISSION_OBJ)
@@ -63,10 +63,46 @@
 #define PL360_REG_PKT_SIZE      PL360_DATA_PKT_SIZE
 
 /* Number of transmission buffers */
-#define NUM_TX_BUFFERS                      1
+#define NUM_TX_BUFFERS                           1
+
+/* FLAG MASKs for set events */
+#define DRV_PL360_EV_FLAG_TX_CFM_MASK            0x0001
+#define DRV_PL360_EV_FLAG_RX_DAT_MASK            0x0002
+#define DRV_PL360_EV_FLAG_REG_MASK               0x0008
+#define DRV_PL360_EV_FLAG_RX_PAR_MASK            0x0010
+
+/* FLAG MASKs for register events */
+#define DRV_PL360_REG_LEN_MASK                   0x1FF
+#define DRV_PL360_REG_ID_MASK                    0xF000
+#define DRV_PL360_REG_OFFSET_MASK                0x0FFF
+#define DRV_PL360_REG_ADC_MASK                   0x1000
+#define DRV_PL360_REG_DAC_MASK                   0x2000
+#define DRV_PL360_REG_MASK                       0x4000
+#define DRV_PL360_FUSES_MASK                     0x8000
+#define DRV_PL360_REG_ADC_BASE                   0x40000000
+#define DRV_PL360_REG_DAC_BASE                   0x40004000
+#define DRV_PL360_REG_BASE                       0x80000000
+#define DRV_PL360_FUSES_BASE                     0x400E1800
 
 // *****************************************************************************
-/* G3 Structure defining PLC events */
+// *****************************************************************************
+// Section: Data Type Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+// *****************************************************************************
+/* PL360 Communication Events
+
+  Summary:
+    Object used to track communications events from PL360.
+
+  Description:
+    This object is used to keep the data necessary to communicate with PL360.
+
+  Remarks:
+    None.
+*/
+
 typedef struct {
     /* HW Timer reference */
     uint32_t timerRef;
@@ -84,7 +120,19 @@ typedef struct {
     bool evReg;
 } DRV_PL360_EVENTS_OBJ;
 
-/* Internal Memory Map */
+/* PL360 Internal Memory Map
+
+  Summary:
+    Object used to refer to data regions inside PL360.
+
+  Description:
+    This object is used to refer to the data necessary to communicate with 
+    PL360.
+
+  Remarks:
+    None.
+*/
+
 typedef enum {
     STATUS_ID = 0,
     TX_PAR_ID,
@@ -96,26 +144,9 @@ typedef enum {
     IDS,
 } DRV_PL360_MEM_ID;
 
-/* ! FLAG MASKs for set events */
-#define DRV_PL360_EV_FLAG_TX_CFM_MASK            0x0001
-#define DRV_PL360_EV_FLAG_RX_DAT_MASK            0x0002
-#define DRV_PL360_EV_FLAG_REG_MASK               0x0008
-#define DRV_PL360_EV_FLAG_RX_PAR_MASK            0x0010
+/****************************** DRV_PL360 Interface ***************************/
 
-/* ! FLAG MASKs for register events */
-#define DRV_PL360_REG_LEN_MASK                   0x1FF
-#define DRV_PL360_REG_ID_MASK                    0xF000
-#define DRV_PL360_REG_OFFSET_MASK                0x0FFF
-#define DRV_PL360_REG_ADC_MASK                   0x1000
-#define DRV_PL360_REG_DAC_MASK                   0x2000
-#define DRV_PL360_REG_MASK                       0x4000
-#define DRV_PL360_FUSES_MASK                     0x8000
-#define DRV_PL360_REG_ADC_BASE                   0x40000000
-#define DRV_PL360_REG_DAC_BASE                   0x40004000
-#define DRV_PL360_REG_BASE                       0x80000000
-#define DRV_PL360_FUSES_BASE                     0x400E1800
+void DRV_PL360_Init(DRV_PL360_OBJ *pl360);
+void DRV_PL360_Task(void);
 
-void drv_pl360_comm_init(DRV_PL360_OBJ *pl360);
-void drv_pl360_comm_task(void);
-
-#endif //#ifndef _DRV_PL360_LOCAL_H
+#endif //#ifndef _DRV_PL360_LOCAL_COMM_H

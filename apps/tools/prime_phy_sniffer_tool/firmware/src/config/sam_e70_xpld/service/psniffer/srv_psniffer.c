@@ -56,12 +56,22 @@
 #include "srv_psniffer.h"
 #include "driver/pl360/drv_pl360_comm.h"
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
 static DRV_PL360_TRANSMISSION_OBJ gLastTxObj[2];
 static uint8_t gLastTxData[512][2];
 static uint16_t gLastRxPayloadSymbols;
 static uint16_t gLastTxPayloadSymbols;
 static uint8_t gPLCChannel = 1;
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_PSNIFFER Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 static uint32_t SRV_PSNIFFER_GetMessageDuration(DRV_PL360_FRAME_TYPE frameType, uint8_t symbols)
 {
     uint32_t duration;
@@ -276,7 +286,3 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_C
     
     return (pData - pDataDst);    
 }
-
-/*******************************************************************************
- End of File
-*/

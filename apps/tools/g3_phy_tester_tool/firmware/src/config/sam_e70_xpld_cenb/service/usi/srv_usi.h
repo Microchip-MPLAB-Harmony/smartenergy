@@ -55,8 +55,6 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/*  This section lists the other files that are included in this file.
-*/
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -120,6 +118,12 @@ typedef uintptr_t SRV_USI_HANDLE;
 #define SRV_USI_HANDLE_INVALID  (((SRV_USI_HANDLE) -1))
 
 // *****************************************************************************
+// *****************************************************************************
+// Section: SRV_USI Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
+// *****************************************************************************
 /* Function:
     void ( * SRV_USI_CALLBACK ) ( uintptr_t context, uint8_t *data, uint16_t length )
 
@@ -174,10 +178,6 @@ typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 // Section: Service Interface Functions
 // *****************************************************************************
 // *****************************************************************************
-/*  Service interface functions are called by system code to initialize the
-    module and maintain proper operation of it.
-*/
-
 // *****************************************************************************
 /* Function:
     SYS_MODULE_OBJ SRV_USI_Initialize ( const SYS_MODULE_INDEX index,
@@ -201,24 +201,25 @@ typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
   Example:
     <code>
+    uint8_t gSrvUSIUSART1ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {0};
+    uint8_t gSrvUSIUSART1WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {0};
 
-    const SRV_USI_USART_INTERFACE srvUSIUsartApi = {
-      .open = (SRV_USI_USART_OPEN)DRV_USART_Open,
-      .read = (SRV_USI_USART_READ)DRV_USART_ReadBufferAdd,
-      .write = (SRV_USI_USART_WRITE)DRV_USART_WriteBufferAdd,
-      .eventHandlerSet = (SRV_USI_USART_EVENT_HANDLER_SET)DRV_USART_BufferEventHandlerSet,
-      .close = (SRV_USI_USART_CLOSE)DRV_USART_Close
+    const SRV_USI_USART_INTERFACE srvUsiUSART1PlibAPI = {
+        .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)USART1_ReadCallbackRegister,
+        .read = (USI_USART_PLIB_READ)USART1_Read,
+        .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
+        .dmaChannelTx = SYS_DMA_CHANNEL_2,
+        .usartAddressTx = (void *)&(USART1_REGS->US_THR)
     };
 
     const SRV_USI_INIT srvUSI0InitData =
     {
-      .usiInterfaceApi = SRV_USI_USART_API,
-
-      .usartApi = &srvUSIUsartApi,
-
-      .cdcApi = SRV_USI_INVALID_API,
-
-      .tcpApi = SRV_USI_INVALID_API,
+        .usiInterfaceApi = SRV_USI_USART_API,
+        .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsiUSART1PlibAPI,
+        .readBuffer = (void*)gSrvUSIUSART1ReadBuffer,
+        .readSizeMax = SRV_USI0_RD_BUF_SIZE,
+        .writeBuffer = (void*)gSrvUSIUSART1WriteBuffer,
+        .writeSizeMax = SRV_USI0_WR_BUF_SIZE,
     };
 
     SYS_MODULE_OBJ  objSrvUSI;
@@ -369,12 +370,6 @@ void SRV_USI_Close( const SRV_USI_HANDLE handle );
 SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
 
 // *****************************************************************************
-// *****************************************************************************
-// Section:  USI Service Callback Interface Functions
-// *****************************************************************************
-// *****************************************************************************
-
-// *****************************************************************************
 /* Function:
   SRV_USI_HANDLE SRV_USI_CallbackRegister ( const SYS_MODULE_INDEX index, 
                     SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
@@ -393,8 +388,8 @@ SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
     function.
 
   Parameters:
-    handle - A valid open-instance handle, returned from the driver's
-    open routine
+    handle      - A valid open-instance handle, returned from the driver's
+                  open routine
     protocol    - Identifier of the protocol in which callback function will be 
                   registered.
     callback    - Pointer to the function to be called.
@@ -412,8 +407,9 @@ SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
     The following example call will register it, requesting a callback for G3 
     Sniffer application (SRV_USI_PROT_ID_SNIFF_G3).
     <code>
-    //Give a SRV_USI_CALLBACK function "MyG3SnifferCallback",
+    // Give a SRV_USI_CALLBACK function "MyG3SnifferCallback",
     // 'handle', returned from the SRV_USI_Open
+
     SRV_USI_HANDLE handle = SRV_USI_CallbackRegisterUS(handle, 
                       SRV_USI_PROT_ID_SNIFF_G3, MyG3SnifferCallback);
 
@@ -446,8 +442,10 @@ void SRV_USI_CallbackRegister(
 
   Parameters:
     index       - Index for the instance to set the callback function
+
   Returns:
     None
+
   Example:
     <code>
     
@@ -467,6 +465,50 @@ void SRV_USI_CallbackRegister(
   ***************************************************************************/
 
 void SRV_USI_Tasks( const SYS_MODULE_INDEX index );
+
+/***************************************************************************
+  Function:
+      void SRV_USI_Send_Message( 
+        const SRV_USI_HANDLE handle, 
+        SRV_USI_PROTOCOL_ID protocol, 
+        uint8_t *data, 
+        size_t length 
+      )
+    
+  Summary:
+    Send a message through serial interface (USI).
+
+  Description:
+    This function is used to send a message through USI. The message will be
+    formated depending on the specified Protocol and will be sent using the 
+    serial interface configured.
+
+  Precondition:
+    SRV_USI_Open must have been called to obtain a valid opened device handle.
+
+  Parameters:
+    handle      - A valid open-instance handle, returned from the driver's
+                  open routine
+    protocol    - Identifier of the protocol in which the message will be 
+                  formated.
+    data        - Pointer to the data to send.
+    length      - Length of the data to send.
+
+  Returns:
+    None
+
+  Example:
+    <code>
+    uint8_t pData[] = "Message to send through USI";
+
+    //srvUSIHandle is obtained from SRV_USI_Open function. 
+    
+    SRV_USI_Send_Message(srvUSIHandle, SRV_USI_PROT_ID_PHY, pData, sizeof(pData));
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
 
 void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length );

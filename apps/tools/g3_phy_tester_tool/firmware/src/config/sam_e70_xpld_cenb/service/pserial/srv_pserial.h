@@ -51,8 +51,6 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/*  This section lists the other files that are included in this file.
-*/
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -88,22 +86,42 @@
 */
 typedef enum
 {
-  SRV_PSERIAL_CMD_PHY_GET_CFG = 0,        /* Get data configuration request */
-  SRV_PSERIAL_CMD_PHY_GET_CFG_RSP,        /* Get data configuration response */
-  SRV_PSERIAL_CMD_PHY_SET_CFG,            /* Set data configuration request */
-  SRV_PSERIAL_CMD_PHY_SET_CFG_RSP,        /* Set data configuration response */
-  SRV_PSERIAL_CMD_PHY_CMD_CFG,            /* Get command request */
-  SRV_PSERIAL_CMD_PHY_CMD_CFG_RSP,        /* Get command response */
-  SRV_PSERIAL_CMD_PHY_SEND_MSG,           /* Send message data */
-  SRV_PSERIAL_CMD_PHY_SEND_MSG_RSP,       /* Send message data response */
-  SRV_PSERIAL_CMD_PHY_RECEIVE_MSG,        /* Receive message data */
-  SRV_PSERIAL_CMD_PHY_NOISE_REQ,          /* Noise capture request */
-  SRV_PSERIAL_CMD_PHY_NOISE_RSP,          /* Noise capture response */
-  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST,       /* Get parameter list */
-  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST_RSP,   /* Parameter list response */
-  SRV_PSERIAL_CMD_PHY_RESET_PHY_LAYER     /* Reset PHY layer */
+  /* Get data configuration request */
+  SRV_PSERIAL_CMD_PHY_GET_CFG = 0,        
+  /* Get data configuration response */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_RSP,        
+  /* Set data configuration request */
+  SRV_PSERIAL_CMD_PHY_SET_CFG,            
+  /* Set data configuration response */
+  SRV_PSERIAL_CMD_PHY_SET_CFG_RSP,        
+  /* Get command request */
+  SRV_PSERIAL_CMD_PHY_CMD_CFG,            
+  /* Get command response */
+  SRV_PSERIAL_CMD_PHY_CMD_CFG_RSP,        
+  /* Send message data */
+  SRV_PSERIAL_CMD_PHY_SEND_MSG,         
+  /* Send message data response */  
+  SRV_PSERIAL_CMD_PHY_SEND_MSG_RSP,      
+  /* Receive message data */ 
+  SRV_PSERIAL_CMD_PHY_RECEIVE_MSG,        
+  /* Noise capture request */
+  SRV_PSERIAL_CMD_PHY_NOISE_REQ,         
+  /* Noise capture response */ 
+  SRV_PSERIAL_CMD_PHY_NOISE_RSP,          
+  /* Get parameter list */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST,       
+  /* Parameter list response */
+  SRV_PSERIAL_CMD_PHY_GET_CFG_LIST_RSP,   
+  /* Reset PHY layer */
+  SRV_PSERIAL_CMD_PHY_RESET_PHY_LAYER     
 } SRV_PSERIAL_COMMAND;      
-    
+  
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_PSERIAL Interface Routines
+// *****************************************************************************
+// *****************************************************************************
+
 SRV_PSERIAL_COMMAND SRV_PSERIAL_GetCommand(uint8_t* pData);       
 void SRV_PSERIAL_ParseGetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
 size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc);

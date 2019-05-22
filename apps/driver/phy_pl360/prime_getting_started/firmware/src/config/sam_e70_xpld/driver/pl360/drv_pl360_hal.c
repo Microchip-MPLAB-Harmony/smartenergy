@@ -11,12 +11,13 @@
     PL360 Driver Hardware Abstraction Layer
 
   Description:
-    The PL360 Library provides a Hardware Abstraction Layer.
+    This file contains the source code for the implementation of the Hardware 
+    Abstraction Layer.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -51,23 +52,17 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global objects
+// Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: DRV_PL360_HAL Local Functions
-// *****************************************************************************
-// *****************************************************************************
-/** SPI Header size. */
+/* SPI Header size. */
 #define HAL_SPI_HEADER_SIZE      4
-/** SPI Max Msg_Data size. */
+/* SPI Max Msg_Data size. */
 #define HAL_SPI_MSG_DATA_SIZE    512
-/** SPI Max Msg_Data size. */
+/* SPI Max Msg_Data size. */
 #define HAL_SPI_MSG_PARAMS_SIZE  118   /* Worst case = 118: sizeof(rx_msg_t) [G3] */
-/** PDC buffer us_size. */
+/* PDC buffer us_size. */
 #define HAL_SPI_BUFFER_SIZE      (HAL_SPI_HEADER_SIZE + HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)
 
 /* PDC Receive buffer */
@@ -78,7 +73,13 @@ static uint8_t sTxSpiData[HAL_SPI_BUFFER_SIZE];
 /* Static pointer to PLIB interface used to handle PL360 */
 static DRV_PL360_PLIB_INTERFACE *sPl360Plib;
 
-void _delay(uint64_t n)
+// *****************************************************************************
+// *****************************************************************************
+// Section: File scope functions
+// *****************************************************************************
+// *****************************************************************************
+
+static void _delay(uint64_t n)
 {
     (void)n;
     
@@ -89,10 +90,10 @@ void _delay(uint64_t n)
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_HAL Global Functions
+// Section: DRV_PL360_HAL Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
-void drv_pl360_hal_init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
+void DRV_PL360_HAL_Init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
 {
     sPl360Plib = pl360Plib;   
     
@@ -102,7 +103,7 @@ void drv_pl360_hal_init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
     PIO_PinInterruptDisable(DRV_PL360_EXT_INT_PIN);
 }
 
-void drv_pl360_hal_setup(bool set16Bits)
+void DRV_PL360_HAL_Setup(bool set16Bits)
 {
     SPI_TRANSFER_SETUP spiPlibSetup;
     
@@ -134,7 +135,7 @@ void drv_pl360_hal_setup(bool set16Bits)
     
 }
 
-void drv_pl360_hal_reset(void)
+void DRV_PL360_HAL_Reset(void)
 {
     /* Disable LDO pin */
     SYS_PORT_PinClear(sPl360Plib->ldoPin);
@@ -142,32 +143,32 @@ void drv_pl360_hal_reset(void)
     SYS_PORT_PinClear(sPl360Plib->resetPin);
 
     /* Wait to PL360 startup (500us) */
-    drv_pl360_hal_delay(500);
+    DRV_PL360_HAL_Delay(500);
 
     /* Enable LDO pin */
     SYS_PORT_PinSet(sPl360Plib->ldoPin);
 
     /* Wait to PL360 LDO enable (500us) */
-    drv_pl360_hal_delay(500);
+    DRV_PL360_HAL_Delay(500);
 
     /* Disable Reset pin */
     SYS_PORT_PinSet(sPl360Plib->resetPin);
 
     /* Wait to PL360 startup (500us) */
-    drv_pl360_hal_delay(500);
+    DRV_PL360_HAL_Delay(500);
 }
 
-bool drv_pl360_hal_get_cd(void)
+bool DRV_PL360_HAL_GetCarrierDetect(void)
 {
     return false;
 }
 
-void drv_pl360_hal_delay(uint64_t delayUs)
+void DRV_PL360_HAL_Delay(uint64_t delayUs)
 {    
     _delay((delayUs * 300000000 + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
 }
 
-void drv_pl360_hal_enable_interrupt(bool enable)
+void DRV_PL360_HAL_EnableInterrupts(bool enable)
 {
     if (enable)
     {
@@ -180,7 +181,7 @@ void drv_pl360_hal_enable_interrupt(bool enable)
     }
 }
 
-bool drv_pl360_hal_send_boot_cmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
+bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
 {
     uint8_t *pTxData;
     size_t size;
@@ -236,7 +237,7 @@ bool drv_pl360_hal_send_boot_cmd(uint16_t cmd, uint32_t addr, uint32_t dataLengt
     return true;
 }
 
-bool drv_pl360_hal_send_wrrd_cmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo)
+bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo)
 {
     uint8_t *pTxData;
     size_t cmdSize;

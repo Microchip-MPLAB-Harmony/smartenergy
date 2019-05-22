@@ -16,7 +16,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -41,7 +41,6 @@
 
 #ifndef _DRV_PL360_LOCAL_H
 #define _DRV_PL360_LOCAL_H
-
 
 // *****************************************************************************
 // *****************************************************************************
@@ -83,6 +82,19 @@ typedef enum
 
 } DRV_PL360_CMD;
 
+// *****************************************************************************
+/* DRV_PL360 Transfer Object State
+
+  Summary:
+    Defines the status of the DRV_PL360 Transfer Object.
+
+  Description:
+    This enumeration defines the status of the DRV_PL360 Transfer Object.
+
+  Remarks:
+    None.
+*/
+
 typedef enum
 {
     DRV_PL360_STATE_IDLE,
@@ -111,8 +123,7 @@ typedef struct
 
     DRV_PL360_STATE                 state;
 
-    /* Keep track of the number of clients
-      that have opened this driver */
+    /* Keep track of the number of clients that have opened this driver */
     size_t                          nClients;
 
     /* Maximum number of clients */
@@ -145,8 +156,14 @@ typedef struct
     /* Application Exception Callback */
     DRV_PL360_EXCEPTION_CALLBACK    exceptionCallback;
 
-    /* Application context */
-    uintptr_t                       context;
+    /* Application context for Data Confirm Callback */
+    uintptr_t                       contextCfm;
+
+    /* Application context for Data Indication Callback */
+    uintptr_t                       contextInd;
+
+    /* Application context for Exception Callback */
+    uintptr_t                       contextExc;
 
     /* Event detection flag: confirmation of the previous transmission */
     volatile bool                   evTxCfm[2];

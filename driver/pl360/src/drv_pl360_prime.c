@@ -239,7 +239,7 @@ static bool _DRV_PL360_COMM_CheckComm(DRV_PL360_HAL_INFO *info)
             DRV_PL360_BOOT_Restart(false);
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->contextExc);
             }
         }
         else
@@ -248,7 +248,7 @@ static bool _DRV_PL360_COMM_CheckComm(DRV_PL360_HAL_INFO *info)
             DRV_PL360_BOOT_Restart(true);
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->contextExc);
             }
         }
     }
@@ -258,7 +258,7 @@ static bool _DRV_PL360_COMM_CheckComm(DRV_PL360_HAL_INFO *info)
         DRV_PL360_BOOT_Restart(true);
         if (gPl360Obj->exceptionCallback)
         {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->context);
+            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->contextExc);
         }
     }
     
@@ -294,7 +294,7 @@ static void _DRV_PL360_COMM_SpiWriteCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uin
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -328,7 +328,7 @@ static void _DRV_PL360_COMM_SpiReadCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uint
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -362,7 +362,7 @@ static void _DRV_PL360_COMM_GetEventsInfo(DRV_PL360_EVENTS_OBJ *eventsObj)
         if (failures == 2) {
             if (gPl360Obj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->context);
+                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
             }
             break;
         }
@@ -435,7 +435,7 @@ void DRV_PL360_Task(void)
             if (gPl360Obj->dataCfmCallback)
             {
                 /* Report to upper layer */
-                gPl360Obj->dataCfmCallback(&cfmObj, gPl360Obj->context);
+                gPl360Obj->dataCfmCallback(&cfmObj, gPl360Obj->contextCfm);
             }
             
             /* Reset event flag */
@@ -451,7 +451,7 @@ void DRV_PL360_Task(void)
         if (gPl360Obj->dataIndCallback)
         {
             /* Report to upper layer */
-            gPl360Obj->dataIndCallback(&rxObj, gPl360Obj->context);
+            gPl360Obj->dataIndCallback(&rxObj, gPl360Obj->contextInd);
         }
         
         /* Reset event flags */

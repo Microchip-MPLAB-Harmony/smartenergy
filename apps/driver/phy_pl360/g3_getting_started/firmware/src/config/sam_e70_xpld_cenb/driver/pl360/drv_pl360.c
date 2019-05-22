@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -52,7 +52,7 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global objects
+// Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
 
@@ -61,19 +61,19 @@ DRV_PL360_OBJ gDrvPL360Obj;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360 Driver Global Functions
+// Section: PL360 Driver Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
 SYS_MODULE_OBJ DRV_PL360_Initialize(
-    const SYS_MODULE_INDEX drvIndex,
+    const SYS_MODULE_INDEX index,
     const SYS_MODULE_INIT * const init
 )
 {
     DRV_PL360_INIT* pl360Init = (DRV_PL360_INIT *)init;
 
     /* Validate the request */
-    if(drvIndex >= DRV_PL360_INSTANCES_NUMBER)
+    if(index >= DRV_PL360_INSTANCES_NUMBER)
     {
         return SYS_MODULE_OBJ_INVALID;
     }
@@ -107,20 +107,20 @@ SYS_MODULE_OBJ DRV_PL360_Initialize(
     gDrvPL360Obj.status                = SYS_STATUS_BUSY;
 
     /* Return the object structure */
-    return ( (SYS_MODULE_OBJ)drvIndex );
+    return ( (SYS_MODULE_OBJ)index );
 
 }
 
-SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX drvIndex )
+SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX index )
 {
     /* Avoid warning */
-    (void)drvIndex;
+    (void)index;
     /* Return the driver status */
     return (gDrvPL360Obj.status);
 }
 
 DRV_HANDLE DRV_PL360_Open(
-    const SYS_MODULE_INDEX drvIndex,
+    const SYS_MODULE_INDEX index,
     const DRV_IO_INTENT ioIntent
 )
 {
@@ -128,7 +128,7 @@ DRV_HANDLE DRV_PL360_Open(
     (void)ioIntent;
 
     /* Validate the request */
-    if (drvIndex >= DRV_PL360_INSTANCES_NUMBER)
+    if (index >= DRV_PL360_INSTANCES_NUMBER)
     {
         return DRV_HANDLE_INVALID;
     }
@@ -140,7 +140,7 @@ DRV_HANDLE DRV_PL360_Open(
     }
     
     /* Launch boot start process */  
-    drv_pl360_boot_start(&gDrvPL360Obj);
+    DRV_PL360_BOOT_Start(&gDrvPL360Obj);
 
     gDrvPL360Obj.nClients++;
 
@@ -165,7 +165,7 @@ void DRV_PL360_DataCfmCallbackRegister(
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvPL360Obj.dataCfmCallback = callback;
-        gDrvPL360Obj.context = context;
+        gDrvPL360Obj.contextCfm = context;
     }
 }
 
@@ -178,7 +178,7 @@ void DRV_PL360_DataIndCallbackRegister(
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvPL360Obj.dataIndCallback = callback;
-        gDrvPL360Obj.context = context;
+        gDrvPL360Obj.contextInd = context;
     }
 }
 
@@ -191,7 +191,7 @@ void DRV_PL360_ExceptionCallbackRegister(
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvPL360Obj.exceptionCallback = callback;
-        gDrvPL360Obj.context = context;
+        gDrvPL360Obj.contextExc = context;
     }
 }
 
@@ -200,21 +200,21 @@ void DRV_PL360_Tasks( SYS_MODULE_OBJ hSysObj )
     if (gDrvPL360Obj.status == SYS_STATUS_READY)
     {
         /* Run PL360 communication task */
-        drv_pl360_comm_task();
+        DRV_PL360_Task();
     }
     else if (gDrvPL360Obj.status == SYS_STATUS_BUSY)
     {
         DRV_PL360_BOOT_STATUS state;
         
         /* Check bootloader process */
-        state = drv_pl360_boot_status();
+        state = DRV_PL360_BOOT_Status();
         if (state < DRV_PL360_BOOT_STATUS_READY)
         {
-            drv_pl360_boot_tasks();
+            DRV_PL360_BOOT_Tasks();
         } 
         else if (state == DRV_PL360_BOOT_STATUS_READY)
         {
-            drv_pl360_comm_init(&gDrvPL360Obj);
+            DRV_PL360_Init(&gDrvPL360Obj);
             gDrvPL360Obj.status = SYS_STATUS_READY;
             gDrvPL360Obj.state = DRV_PL360_STATE_IDLE;
         }

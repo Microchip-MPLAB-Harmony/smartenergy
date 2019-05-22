@@ -11,12 +11,13 @@
     PL360 Driver Bootloader Layer
 
   Description:
-    The PL360 Library provides a Bootloader Layer.
+    This file contains the source code for the implementation of the bootloader
+    of PL360 device.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -44,29 +45,33 @@
 // Section: Include Files
 // *****************************************************************************
 // *****************************************************************************
+#include <string.h>
 #include "driver/pl360/drv_pl360_hal.h"
 #include "driver/pl360/src/drv_pl360_boot.h"
 #include "driver/pl360/src/drv_pl360_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global objects
+// Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
 
+/* This is the pointer to refer Hardware Abstraction Layer (HAL) object. */
 static DRV_PL360_HAL_INTERFACE *sDrvPL360HalObj;
+
+/* This is the driver instance object array. */
 static DRV_PL360_BOOT_INFO sDrvPL360BootInfo = {0};
 
+/* This is the maximum size of the fragments to handle the upload task of binary
+ file to PL360 device */
 #define MAX_FRAG_SIZE      512
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_BOOT Local Functions
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-#include <string.h>
-uint8_t dbgData[MAX_FRAG_SIZE];
-static void _firmware_upload_task(void)
+static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
 {
     uint8_t *pData;
     uint32_t progAddr;
@@ -97,7 +102,7 @@ static void _firmware_upload_task(void)
 
 }
 
-static void _enable_boot_cmd(void)
+static void _DRV_PL360_BOOT_EnableBootCmd(void)
 {
     uint32_t reg_value;
     uint8_t cmd_value[4];
@@ -130,7 +135,7 @@ static void _enable_boot_cmd(void)
     sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_WRITE_WORD, PL360_MISCR, 4, cmd_value, NULL);
 }
 
-static void _disable_boot_cmd(void)
+static void _DRV_PL360_BOOT_DisableBootCmd(void)
 {
     uint32_t reg_value;
     uint8_t cmd_value[4];
@@ -153,7 +158,7 @@ static void _disable_boot_cmd(void)
     sDrvPL360HalObj->setup(true);
 }
 
-static bool _check_firmware(void)
+static bool _DRV_PL360_BOOT_CheckFirmware(void)
 {
     DRV_PL360_HAL_CMD halCmd;
     DRV_PL360_HAL_INFO halInfo;
@@ -176,11 +181,11 @@ static bool _check_firmware(void)
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_BOOT Global Functions
+// Section: DRV_PL360_BOOT Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-void drv_pl360_boot_start(void *pl360Drv)
+void DRV_PL360_BOOT_Start(void *pl360Drv)
 {
     DRV_PL360_OBJ *pl360DrvObj = (DRV_PL360_OBJ *)pl360Drv;
     
@@ -192,7 +197,7 @@ void drv_pl360_boot_start(void *pl360Drv)
     sDrvPL360BootInfo.secure = pl360DrvObj->secure;
     sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
 
-    _enable_boot_cmd();
+    _DRV_PL360_BOOT_EnableBootCmd();
     
     if (sDrvPL360BootInfo.secure) {
         /* Secure Mode : Set secure configuration and send encrypted binary file */
@@ -202,16 +207,16 @@ void drv_pl360_boot_start(void *pl360Drv)
     sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_PROCESING;
 }
 
-DRV_PL360_BOOT_STATUS drv_pl360_boot_status( void )
+DRV_PL360_BOOT_STATUS DRV_PL360_BOOT_Status( void )
 {
     return sDrvPL360BootInfo.status;
 }
 
-void drv_pl360_boot_tasks( void )
+void DRV_PL360_BOOT_Tasks( void )
 {
     if (sDrvPL360BootInfo.status == DRV_PL360_BOOT_STATUS_PROCESING)
     {
-        _firmware_upload_task();
+        _DRV_PL360_BOOT_FirmwareUploadTask();
         if (sDrvPL360BootInfo.pendingLength == 0)
         {
             /* Complete firmware upload */
@@ -220,14 +225,14 @@ void drv_pl360_boot_tasks( void )
     }
     else if (sDrvPL360BootInfo.status == DRV_PL360_BOOT_STATUS_SWITCHING)
     {
-        _disable_boot_cmd();
+        _DRV_PL360_BOOT_DisableBootCmd();
         sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_VALIDATING;
     }
     else if (sDrvPL360BootInfo.status == DRV_PL360_BOOT_STATUS_VALIDATING)
     {
         
         /* Check firmware */
-        if (_check_firmware())
+        if (_DRV_PL360_BOOT_CheckFirmware())
         {
 //            /* Configure 16 bits transfer */
 //            sDrvPL360HalObj->setup(true);
@@ -242,7 +247,7 @@ void drv_pl360_boot_tasks( void )
     }
 }
 
-void drv_pl360_boot_restart(bool update)
+void DRV_PL360_BOOT_Restart(bool update)
 {
     if (!update)
     {
@@ -265,17 +270,17 @@ void drv_pl360_boot_restart(bool update)
         sDrvPL360BootInfo.pSrc = sDrvPL360BootInfo.binStartAddress;
         sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
 
-        _enable_boot_cmd();
+        _DRV_PL360_BOOT_EnableBootCmd();
         
         while(sDrvPL360BootInfo.pendingLength)
         {
-            _firmware_upload_task();
+            _DRV_PL360_BOOT_FirmwareUploadTask();
         }
         
-        _disable_boot_cmd();
+        _DRV_PL360_BOOT_DisableBootCmd();
         
         /* Check firmware */
-        if (_check_firmware())
+        if (_DRV_PL360_BOOT_CheckFirmware())
         {
             sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_READY;
         }

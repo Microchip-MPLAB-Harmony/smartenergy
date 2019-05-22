@@ -16,7 +16,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -57,9 +57,10 @@
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
-    extern "C" {
-#endif
 
+    extern "C" {
+
+#endif
 // DOM-IGNORE-END
 
 // *****************************************************************************
@@ -67,9 +68,6 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-/*  The following data type definitions are used by the functions in this
-    interface and should be considered part it.
-*/
 
 // *****************************************************************************
 /* DRV_PL360 Transfer Status
@@ -98,6 +96,18 @@ typedef enum
 
 } DRV_PL360_TRANSFER_STATUS;     
 
+/* DRV_PL360 Transfer Errors
+
+ Summary:
+    Defines the data type for PL360 Driver transfer errors.
+
+ Description:
+    This will be used to indicate the error of the last SPI transfer.
+
+ Remarks:
+    None.
+*/
+
 typedef enum
 {
     /* SPI has detected an unexpected status, reset is recommended */
@@ -115,24 +125,247 @@ typedef enum
 } DRV_PL360_EXCEPTION; 
 
 // *****************************************************************************
+/* PL360 Driver Transmission Confirm Event Handler Function Pointer
+
+   Summary
+    Pointer to a PL360 Driver Transmission Confirm Event handler function
+
+   Description
+    This data type defines the required function signature for the PL360 driver
+    transmission confirm event handling callback function. A client must register 
+    a pointer using the callback register function whose function signature 
+    (parameter and return value types) match the types specified by this function 
+    pointer in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    cfmObj -            Pointer to the object containing any data necessary to
+                        identify the result of the last transmission.
+
+    context -           Value identifying the context of the application that
+                        registered the event handling function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyTXCfmEventHandler( DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj,
+                                   uintptr_t context )
+    {
+        MY_APP_DATA_STRUCT pAppData = (MY_APP_DATA_STRUCT) context;
+
+        switch(cfmObj->result)
+        {
+            case DRV_PL360_TX_RESULT_PROCESS:
+                // Transmission result: already in process
+                break;   
+            case DRV_PL360_TX_RESULT_SUCCESS:
+                // Transmission result: end successfully
+                break;   
+            case DRV_PL360_TX_RESULT_INV_LENGTH:
+                // Transmission result: invalid length error
+                break;
+            case DRV_PL360_TX_RESULT_BUSY_CH:
+                // Transmission result: busy channel error
+                break;    
+            case DRV_PL360_TX_RESULT_BUSY_TX:
+                // Transmission result: busy in transmission error
+                break;    
+            case DRV_PL360_TX_RESULT_BUSY_RX:
+                // Transmission result: busy in reception error
+                break;   
+            case DRV_PL360_TX_RESULT_INV_SCHEME:
+                // Transmission result: invalid modulation scheme error
+                break; 
+            case DRV_PL360_TX_RESULT_TIMEOUT:
+                // Transmission result: timeout error
+                break;   
+            case DRV_PL360_TX_RESULT_INV_TONEMAP:
+                // Transmission result: invalid tone map error
+                break;
+            case DRV_PL360_TX_RESULT_INV_MODE:
+                // Transmission result: invalid G3 Mode error
+                break;   
+            case DRV_PL360_TX_RESULT_NO_TX:
+                // Transmission result: No transmission ongoing
+                break;   
+        }
+    }
+    </code>
+
+  Remarks:
+    - If the result field is DRV_PL360_TX_RESULT_SUCCESS, it means that the data was
+      transferred successfully.
+
+    - Otherwise, it means that the data was not transferred successfully.
+
+    - The context parameter contains the a handle to the client context,
+      provided at the time the event handling function was registered using the
+      DRV_PL360_DataCfmCallbackRegister function.  This context handle value is
+      passed back to the client as the "context" parameter.  It can be any value
+      necessary to identify the client context or instance (such as a pointer to
+      the client's data) of the client that made the transfer add request.
+
+    - The event handler function executes in task context of the peripheral.
+      Hence it is recommended of the application to not perform process
+      intensive or blocking operations with in this function.
+
+*/
+
 typedef void ( *DRV_PL360_DATA_CFM_CALLBACK )( DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context );
 
+// *****************************************************************************
+/* PL360 Driver Reception Event Handler Function Pointer
+
+   Summary
+    Pointer to a PL360 Driver Reception Event handler function
+
+   Description
+    This data type defines the required function signature for the PL360 driver
+    reception event handling callback function. A client must register a pointer 
+    using the callback register function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    indObj -            Pointer to the object containing any data necessary to
+                        describe the new received message.
+
+    context -           Value identifying the context of the application that
+                        registered the event handling function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyRxEventHandler( DRV_PL360_RECEPTION_OBJ *indObj,
+                                   uintptr_t context )
+    {
+        MY_APP_DATA_STRUCT pAppData = (MY_APP_DATA_STRUCT) context;
+
+        // Check length of the new message
+        if (indObj->dataLength) {
+          // extract data from received message
+          memcpy(appData.pDataRx, indObj->pReceivedData, indObj->dataLength);
+        }
+    </code>
+
+  Remarks:
+    - Check DRV_PL360_RECEPTION_OBJ struct to identify other intereseting 
+      parameters about reception such as LQI, Tonemap, Modulation scheme, etc.
+
+    - The context parameter contains the a handle to the client context,
+      provided at the time the event handling function was registered using the
+      DRV_PL360_DataIndCallbackRegister function.  This context handle value is
+      passed back to the client as the "context" parameter.  It can be any value
+      necessary to identify the client context or instance (such as a pointer to
+      the client's data) of the client that made the transfer add request.
+
+    - The event handler function executes in task context of the peripheral.
+      Hence it is recommended of the application to not perform process
+      intensive or blocking operations with in this function.
+
+*/
+
 typedef void ( *DRV_PL360_DATA_IND_CALLBACK )( DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context );
+
+// *****************************************************************************
+/* PL360 Driver Exceptions Event Handler Function Pointer
+
+   Summary
+    Pointer to a PL360 Driver Exceptions Event handler function
+
+   Description
+    This data type defines the required function signature for the PL360 driver
+    exceptions event handling callback function. A client must register a pointer 
+    using the callback register function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    exception -         Value identifying the exception code which occurs during
+                        SPI transfer.
+
+    context -           Value identifying the context of the application that
+                        registered the event handling function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyExceptionEventHandler( DRV_PL360_EXCEPTION exception,
+                                   uintptr_t context )
+    {
+        MY_APP_DATA_STRUCT pAppData = (MY_APP_DATA_STRUCT) context;
+
+        switch (exceptionObj) 
+        {
+            case DRV_PL360_EXCEPTION_UNEXPECTED_KEY:
+                // SPI has detected an unexpected status, reset is recommended
+                break;
+
+            case DRV_PL360_EXCEPTION_CRITICAL_ERROR:
+                // SPI critical error in last transfer. Bootloader task has failured.
+                break;
+
+            case DRV_PL360_EXCEPTION_DEBUG:
+                // PL360 device has been reseted by Debugging tool
+                break;
+
+            case DRV_PL360_EXCEPTION_RESET:
+                // PL360 device has been reseted
+                break;
+
+            default:
+                // SPI has detected an unexpected status, reset is recommended
+        }
+
+        appData.pl360_exception = true;
+    }
+    </code>
+
+  Remarks:
+    - The context parameter contains the a handle to the client context,
+      provided at the time the event handling function was registered using the
+      DRV_PL360_DataIndCallbackRegister function.  This context handle value is
+      passed back to the client as the "context" parameter.  It can be any value
+      necessary to identify the client context or instance (such as a pointer to
+      the client's data) of the client that made the transfer add request.
+
+    - The event handler function executes during the last SPI transaction of the 
+      peripheral. Hence it is recommended of the application to not perform process
+      intensive or blocking operations with in this function.
+
+*/
 
 typedef void ( *DRV_PL360_EXCEPTION_CALLBACK )( DRV_PL360_EXCEPTION exception, uintptr_t context );
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360 Driver Module Interface Routines
+// Section: DRV_PL360 Driver System Interface Routines
 // *****************************************************************************
 // *****************************************************************************
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_Initialize( void );
+    SYS_MODULE_OBJ DRV_PL360_Initialize(
+        const SYS_MODULE_INDEX index,
+        const SYS_MODULE_INIT * const init
+    )
 
   Summary:
-    Initializes the PL360 device
+    Initializes the PL360 instance for the specified driver index.
 
   Description:
     This routine initializes the PL360 device driver making it ready for
@@ -144,7 +377,7 @@ typedef void ( *DRV_PL360_EXCEPTION_CALLBACK )( DRV_PL360_EXCEPTION exception, u
     None.
 
   Parameters:
-    index - Identifier for the instance to be initialized
+    index - Identifier for the instance to be initialized (single instance allowed)
 
     init  - Pointer to the init data structure containing any data necessary to
             initialize the driver.
@@ -157,27 +390,46 @@ typedef void ( *DRV_PL360_EXCEPTION_CALLBACK )( DRV_PL360_EXCEPTION exception, u
     <code>
     SYS_MODULE_OBJ   sysObjDrvPL360;
 
-    DRV_PL360_PLIB_INTERFACE drvPL360PlibAPI = {
-        .writeRead = (DRV_PL360_WRITEREAD)SPI0_WriteRead,
-        .write = (DRV_PL360_WRITE)SPI0_Write,
-        .read = (DRV_PL360_READ)SPI0_Read,
-        .isBusy = (DRV_PL360_IS_BUSY)SPI0_IsBusy,
-        .callbackRegister = (DRV_PL360_CALLBACK_REGISTER)SPI0_CallbackRegister,
-    };
+    DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
 
-    DRV_PL360_INIT drvPL360InitData =
-    {
-        .spiPlib = &drvPL360PlibAPI,
-        .numClients = 1,
-        .ldoEnablePin = DRV_PL360_LDO_EN_PIN, 
+        .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
+        .dmaChannelTx = SYS_DMA_CHANNEL_1,
+        .dmaChannelRx  = SYS_DMA_CHANNEL_0,
+        .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
+        .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
+        .spiClockFrequency = DRV_PL360_SPI_CLK,
+        .ldoPin = DRV_PL360_LDO_EN_PIN, 
         .resetPin = DRV_PL360_RESET_PIN,
         .extIntPin = DRV_PL360_EXT_INT_PIN,
+    };
+
+    DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
+        .pl360Plib = &drvPL360Plib,
+        .init = (DRV_PL360_HAL_INIT)drv_pl360_hal_init,
+        .setup = (DRV_PL360_HAL_SETUP)drv_pl360_hal_setup,
+        .reset = (DRV_PL360_HAL_RESET)drv_pl360_hal_reset,
+        .getCd = (DRV_PL360_HAL_GET_CD)drv_pl360_hal_get_cd,
+        .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)drv_pl360_hal_enable_interrupt,
+        .delay = (DRV_PL360_HAL_DELAY)drv_pl360_hal_delay,
+        .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)drv_pl360_hal_send_boot_cmd,
+        .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)drv_pl360_hal_send_wrrd_cmd,
+    };
+
+    extern uint8_t pl360_bin_start;
+    extern uint8_t pl360_bin_end;
+
+    DRV_PL360_INIT drvPL360InitData = {
+        .pl360Hal = &drvPL360HalAPI,
+        .numClients = DRV_PL360_CLIENTS_NUMBER_IDX,  
         .plcProfile = DRV_PL360_PLC_PROFILE,
-        .binSize = DRV_PL360_BIN_SIZE,
-        .binStartAddress = DRV_PL360_BIN_ADDRESS,   
+        .binStartAddress = (uint32_t)&pl360_bin_start,
+        .binEndAddress = (uint32_t)&pl360_bin_end,
+        .secure = DRV_PL360_SECURE,       
     };
 
     sysObjDrvPL3600 = DRV_PL360_Initialize(DRV_PL360_INDEX_0, (SYS_MODULE_INIT *)&drvPL3600InitData);
+    // Register Callback function is mandatory to handle PL360 interruption 
+    PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
 
     </code>
 
@@ -187,13 +439,13 @@ typedef void ( *DRV_PL360_EXCEPTION_CALLBACK )( DRV_PL360_EXCEPTION exception, u
     This routine will block for hardware access.
 */
 
-SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX drvIndex, const SYS_MODULE_INIT * const init);
+SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX index, const SYS_MODULE_INIT * const init);
 
 // *****************************************************************************
 /* Function:
     DRV_HANDLE DRV_PL360_Open
     (
-        const SYS_MODULE_INDEX drvIndex,
+        const SYS_MODULE_INDEX index,
         const DRV_IO_INTENT ioIntent
     )
 
@@ -214,10 +466,9 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX drvIndex, const SYS_
     function.
 
   Parameters:
-    drvIndex  - Identifier for the object instance to be opened
+    index  -    Identifier for the object instance to be opened
 
-    intent -    Zero or more of the values from the enumeration DRV_IO_INTENT
-                "ORed" together to indicate the intended use of the driver.
+    intent -    Unused in this version.
 
   Returns:
     If successful, the routine returns a valid open-instance handle (a number
@@ -244,11 +495,11 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX drvIndex, const SYS_
     The handle returned is valid until the DRV_PL360_Close routine is called.
     This routine will NEVER block waiting for hardware.
 */
-DRV_HANDLE DRV_PL360_Open(const SYS_MODULE_INDEX drvIndex, const DRV_IO_INTENT ioIntent);
+DRV_HANDLE DRV_PL360_Open(const SYS_MODULE_INDEX index, const DRV_IO_INTENT ioIntent);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_Close( DRV_Handle handle )
+    void DRV_PL360_Close( const DRV_Handle handle )
 
   Summary:
     Closes opened-instance of the PL360 driver.
@@ -309,6 +560,11 @@ void DRV_PL360_Close(const DRV_HANDLE handle);
     // 'handle', returned from the DRV_PL360_Open
     
     DRV_PL360_TRANSMISSION_OBJ transmitObj;
+
+    // It is mandatory to set all transmission parameters using DRV_PL360_TRANSMISSION_OBJ
+    // Those parameters depends on the PLC profile in use.
+    // Local function implemented in the user application
+    _setupTransmissionParameters();
     
     memcpy(transmitObj.data, src_buf, data_len);
     transmitObj.length = data_len;
@@ -342,7 +598,7 @@ void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmi
     handle -    A valid open-instance handle, returned from the driver's
                 open routine
 
-    pibObj - Pointer to the PIB to get.
+    pibObj -    Pointer to the PIB oobject to get.
 
   Returns:
     None.
@@ -386,7 +642,7 @@ bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj);
     handle -    A valid open-instance handle, returned from the driver's
                 open routine
 
-    pibObj - Pointer to the PIB to set.
+    pibObj -    Pointer to the PIB object to set.
 
   Returns:
     None.
@@ -461,6 +717,19 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj);
 
   Example:
     <code>
+     // Event is received when the transmission is finished
+    void APP_PL360_Data_Cfm_callback(DRV_PL360_DATA_CFM_OBJ *cfmObj, uintptr_t context)
+    {
+        // The context handle was set to an application specific
+        // object. It is now retrievable easily in the event handler.
+        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
+
+        if (cfmObj->result == DRV_PL360_TX_RESULT_PROCESS) {
+          // This means the data was transferred successfully.
+        } else {
+          // Error handling here.
+        }
+    }
       
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
@@ -474,20 +743,7 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj);
     DRV_PL360_DataCfmCallbackRegister( myHandle, APP_PL360_Data_Cfm_callback, (uintptr_t)&myAppObj );
 
     DRV_PL360_Send(myHandle, myTransmissionObj) == false);
-
-    // Event is received when the transmission is finished
-    void APP_PL360_Data_Cfm_callback(DRV_PL360_DATA_CFM_OBJ *cfmObj, uintptr_t context)
-    {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
-
-        if (cfmObj->result == DRV_PL360_TX_RESULT_PROCESS) {
-          // This means the data was transferred successfully.
-        } else {
-          // Error handling here.
-        }
-    }
+   
     </code>
 
 */
@@ -523,7 +779,7 @@ void DRV_PL360_DataCfmCallbackRegister(
     DRV_PL360_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
-    handle - A valid open-instance handle, returned from the driver's open routine.
+    handle   - A valid open-instance handle, returned from the driver's open routine.
 
     callback - Pointer to the callback function.
 
@@ -537,6 +793,16 @@ void DRV_PL360_DataCfmCallbackRegister(
 
   Example:
     <code>
+
+    void APP_PL360_Data_Ind_callback(DRV_PL360_DATA_IND_OBJ *indObj, uintptr_t context)
+    {
+        // The context handle was set to an application specific
+        // object. It is now retrievable easily in the event handler.
+        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
+
+        // Reception handling here.
+
+    }
       
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
@@ -548,16 +814,7 @@ void DRV_PL360_DataCfmCallbackRegister(
     DRV_PL360_DataIndCallbackRegister( myHandle, APP_PL360_Data_Ind_callback, (uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving.
-
-    void APP_PL360_Data_Ind_callback(DRV_PL360_DATA_IND_OBJ *indObj, uintptr_t context)
-    {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
-
-        // Reception handling here.
-
-    }
+    
     </code>
 
 */
@@ -607,6 +864,16 @@ void DRV_PL360_DataIndCallbackRegister(
 
   Example:
     <code>
+
+    void APP_PL360_Exception_callback(DRV_PL360_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
+    {
+        // The context handle was set to an application specific
+        // object. It is now retrievable easily in the event handler.
+        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
+
+        // Exception handling here.
+
+    }
       
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
@@ -618,16 +885,6 @@ void DRV_PL360_DataIndCallbackRegister(
     DRV_PL360_ExceptionCallbackRegister( myHandle, APP_PL360_Exception_callback, (uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving.
-
-    void APP_PL360_Exception_callback(DRV_PL360_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
-    {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
-
-        // Exception handling here.
-
-    }
     </code>
 
 */
@@ -641,62 +898,34 @@ void DRV_PL360_ExceptionCallbackRegister(
 // *****************************************************************************
 /* Function:
     void DRV_PL360_ExternalInterruptHandler( 
- *      const PIO_PIN pin, 
- *      const uintptr_t context 
- *  );
+        const PIO_PIN pin, 
+        const uintptr_t context 
+    );
 
   Summary:
-    Allows a client to identify a data indication event handling function for the driver
-    to call back when a data reception has finished.
+    Allows application to register callback for PL360 Interrupt pin.
 
   Description:
-    This function allows a client to register a PL360 data indication event handling 
-    function with the driver to call back when a data reception PLC event occurs.
-
-    The event handler should be set before the client submits any transmission
-    requests that could generate events. The callback once set, persists
-    until the client closes the driver or sets another callback (which
-    could be a "NULL" pointer to indicate no callback).
-
+    This function allows a client to register a callback function to handle 
+    PL360 interrupt.
+    
   Precondition:
-    DRV_PL360_Open must have been called to obtain a valid opened device handle.
-
-  Parameters:
-    handle - A valid open-instance handle, returned from the driver's open routine.
-
-    callback - Pointer to the callback function.
-
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
+    DRV_PL360_Initialize must have been called to obtain a valid system object.
 
   Returns:
     None.
 
+  Remarks:
+    See plib_pio.h for more details.
+
   Example:
     <code>
       
-    // myAppObj is an application specific state data object.
-    MY_APP_OBJ myAppObj;
+    // Initialize PL360 Driver Instance
+    sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
+    // Register Callback function to handle PL360 interruption
+    PIO_PinInterruptCallbackRegister(DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
 
-    // myHandle is the handle returned from DRV_PL360_Open API.
-
-    // Client registers a data confirm callback with driver. This is done once
-
-    DRV_PL360_DataIndCallbackRegister( myHandle, APP_PL360_Data_Ind_callback, (uintptr_t)&myAppObj );
-
-    // Event is received when PLC data is receiving.
-
-    void APP_PL360_Data_Ind_callback(DRV_PL360_DATA_IND_OBJ *indObj, uintptr_t context)
-    {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
-
-        // Reception handling here.
-
-    }
     </code>
 
 */
@@ -705,7 +934,7 @@ void DRV_PL360_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
 
 // *************************************************************************
 /* Function:
-    SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX drvIndex )
+    SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX index )
 
   Summary:
     Gets the current status of the PL360 driver module.
@@ -718,7 +947,7 @@ void DRV_PL360_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
     this function.
 
   Parameters:
-    drvIndex   -  Identifier for the instance used to initialize driver
+    index   -  Identifier for the instance used to initialize driver
 
   Returns:
     SYS_STATUS_READY - Indicates that the driver is ready and accept
@@ -741,7 +970,7 @@ void DRV_PL360_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
     None.
 */
 
-SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX drvIndex );
+SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX index );
 
 /***************************************************************************
   Function:

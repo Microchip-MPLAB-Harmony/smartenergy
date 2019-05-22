@@ -140,28 +140,28 @@ DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
     .pl360Plib = &drvPL360Plib,
 
     /* PL360 HAL init */
-    .init = (DRV_PL360_HAL_INIT)drv_pl360_hal_init,
+    .init = (DRV_PL360_HAL_INIT)DRV_PL360_HAL_Init,
 
     /* PL360 HAL setup */
-    .setup = (DRV_PL360_HAL_SETUP)drv_pl360_hal_setup,
+    .setup = (DRV_PL360_HAL_SETUP)DRV_PL360_HAL_Setup,
 
     /* PL360 PL360 reset */
-    .reset = (DRV_PL360_HAL_RESET)drv_pl360_hal_reset,
+    .reset = (DRV_PL360_HAL_RESET)DRV_PL360_HAL_Reset,
 
     /* PL360 HAL Get Carrier Detect or PLC Line Status */
-    .getCd = (DRV_PL360_HAL_GET_CD)drv_pl360_hal_get_cd,
+    .getCd = (DRV_PL360_HAL_GET_CD)DRV_PL360_HAL_GetCarrierDetect,
 
     /* PL360 HAL Enable/Disable external interrupt */
-    .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)drv_pl360_hal_enable_interrupt,
+    .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)DRV_PL360_HAL_EnableInterrupts,
 
     /* PL360 HAL delay function */
-    .delay = (DRV_PL360_HAL_DELAY)drv_pl360_hal_delay,
+    .delay = (DRV_PL360_HAL_DELAY)DRV_PL360_HAL_Delay,
 
     /* PL360 HAL Transfer Bootloader Command */
-    .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)drv_pl360_hal_send_boot_cmd,
+    .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)DRV_PL360_HAL_SendBootCmd,
 
     /* PL360 HAL Transfer Write/Read Command */
-    .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)drv_pl360_hal_send_wrrd_cmd,
+    .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)DRV_PL360_HAL_SendWrRdCmd,
 };
 
 /* PL360 Binary file addressing */
@@ -171,8 +171,8 @@ extern uint8_t pl360_bin2_start;
 extern uint8_t pl360_bin2_end;
 
 /* PL360 Driver Initialization Data */
-DRV_PL360_INIT drvPL360InitData =
-{
+DRV_PL360_INIT drvPL360InitData = {
+
     /* SPI PLIB API  interface*/
     .pl360Hal = &drvPL360HalAPI,
 

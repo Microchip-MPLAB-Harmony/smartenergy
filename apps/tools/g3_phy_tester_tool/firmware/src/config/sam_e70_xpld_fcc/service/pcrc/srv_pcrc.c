@@ -51,15 +51,21 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+
 #include "stddef.h"
 #include "string.h"
 #include "srv_pcrc.h"
 
-#define PCRC_SNA_SIZE 6
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data
+// *****************************************************************************
+// *****************************************************************************
+
+/* This is the internal SNA to use in PRIME CRC service. */
 static uint8_t pCrcSna[PCRC_SNA_SIZE] = {0};
 
-static uint32_t pCrcInitValue = 0;
-
+/* Table used to get CRC32 value */
 static const uint32_t pCrcTable32[256] = {
     0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9,
     0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005,
@@ -127,6 +133,7 @@ static const uint32_t pCrcTable32[256] = {
     0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4,
 };
 
+/* Table used to get CRC16 value */
 static const uint16_t pCrcTable16[256] = {
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
     0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef,
@@ -162,6 +169,7 @@ static const uint16_t pCrcTable16[256] = {
     0x6e17, 0x7e36, 0x4e55, 0x5e74, 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
 };
 
+/* Table used to get CRC8 value */
 static const uint8_t pCrcTable8[256] = {
     0x00, 0x07, 0x0E, 0x09, 0x1C, 0x1B, 0x12, 0x15, 0x38,
     0x3F, 0x36, 0x31, 0x24, 0x23, 0x2A, 0x2D, 0x70, 0x77,
@@ -193,6 +201,12 @@ static const uint8_t pCrcTable8[256] = {
     0xD7, 0xC2, 0xC5, 0xCC, 0xCB, 0xE6, 0xE1, 0xE8, 0xEF,
     0xFA, 0xFD, 0xF4, 0xF3
 };
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File scope functions
+// *****************************************************************************
+// *****************************************************************************
 
 static uint32_t _SRV_PCRC_get32(const uint8_t *pData, size_t length,
         uint32_t crcInitValue)
@@ -236,8 +250,14 @@ static uint16_t _SRV_PCRC_get8(const uint8_t *pData, size_t length,
     return crc;
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_PCRC Common Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
 uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
-        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType)
+        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue)
 {
     uint32_t crc32;
     
@@ -258,15 +278,15 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
         case PCRC_HT_USI:
             if (crcType == PCRC_CRC8)
             {
-                crc32 = (uint32_t)_SRV_PCRC_get8(pData, length, pCrcInitValue);
+                crc32 = (uint32_t)_SRV_PCRC_get8(pData, length, initValue);
             }
             else if (crcType == PCRC_CRC16)
             {
-                crc32 = (uint32_t)_SRV_PCRC_get16(pData, length, pCrcInitValue);
+                crc32 = (uint32_t)_SRV_PCRC_get16(pData, length, initValue);
             }
             else if (crcType == PCRC_CRC32)
             {
-                crc32 = (uint32_t)_SRV_PCRC_get32(pData, length, pCrcInitValue);
+                crc32 = (uint32_t)_SRV_PCRC_get32(pData, length, initValue);
             }
             else
             {
@@ -281,11 +301,6 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
     
     return crc32;
 
-}
-
-void SRV_PCRC_SetInitialValue(uint32_t value)
-{
-    pCrcInitValue = value;
 }
 
 void SRV_PCRC_SetSNAValue (uint8_t* sna)

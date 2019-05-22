@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -151,7 +151,7 @@ typedef bool (* DRV_PL360_HAL_SEND_WRRD_CMD)(void*, void*);
 typedef struct
 {
     /* PL360 PLIB Interface */
-    DRV_PL360_PLIB_INTERFACE               *pl360Plib;
+    DRV_PL360_PLIB_INTERFACE                   *pl360Plib;
 
     /* PL360 HAL init */
     DRV_PL360_HAL_INIT                         init;
