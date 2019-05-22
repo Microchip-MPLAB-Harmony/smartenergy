@@ -664,8 +664,11 @@ bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
 }
 
 void DRV_PL360_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context )
-{   
-    if ((gPl360Obj) && (pin == (PIO_PIN)gPl360Obj->pl360Hal->pl360Plib->extIntPin) && (gPl360Obj->context == context))
+{    
+    /* Avoid warning */
+    (void)context;
+
+    if ((gPl360Obj) && (pin == (PIO_PIN)gPl360Obj->pl360Hal->pl360Plib->extIntPin))
     {
         DRV_PL360_EVENTS_OBJ evObj;
         
