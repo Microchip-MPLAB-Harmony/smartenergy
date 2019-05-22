@@ -62,16 +62,9 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: Macro Definitions
 // *****************************************************************************
-// *****************************************************************************
-
-/* PRIME Profile type */
-typedef enum {
-  PRIME = 4,
-}DRV_PL360_PROFILE;
-
-/* DRV_PL360_COMM Handle Macros*/   
+// ***************************************************************************** 
 /* TX Mode: Absolute transmission */          
 #define TX_MODE_ABSOLUTE                       (0)
 /* TX Mode: Delayed transmission */          
@@ -83,11 +76,19 @@ typedef enum {
 /* TX Mode: Symbols Continuous transmission */
 #define TX_MODE_SYMBOLS_CONTINUOUS             (1 << 3)
 
-/* Impedance Configuration */
+/* Impedance Configuration: High mode */
 #define HI_STATE                               0x00
+/* Impedance Configuration: Low mode */      
 #define LOW_STATE                              0x01
-#define VLO_STATE                              0x02 
+/* Impedance Configuration: Very Low mode */
+#define VLO_STATE                              0x02  
   
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+
 // *****************************************************************************
 /* PRIME PHY Information Base (PIBs)
 

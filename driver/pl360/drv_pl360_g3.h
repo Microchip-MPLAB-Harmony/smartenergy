@@ -60,45 +60,31 @@
 #endif
 // DOM-IGNORE-END
 
-
-
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: Macro Definitions
 // *****************************************************************************
 // *****************************************************************************
+/* G3 Bandplan */
+#define G3_CEN_A                                   0
+#define G3_CEN_B                                   1
+#define G3_FCC                                     2
 
-// *****************************************************************************
-/* DRV_PL360 G3 Profiles
-
- Summary:
-    Defines all G3 PHY bands supported by PL360 device.
-
- Description:
-    None.
-
- Remarks:
-    None.
-*/
-      
-typedef enum {
-  G3_CEN_A = 0,
-  G3_CEN_B = 1,
-  G3_FCC = 2
-}DRV_PL360_PROFILE;      
-
-/* DRV_PL360_COMM Handle Macros*/      
+/* Header Length in symbols for Cenelec-A bandplan */
 #define FCH_LEN_CENELEC_A                          5
+/* Header Length in symbols for FCC bandplan */      
 #define FCH_LEN_FCC                                9
-#define FCH_LEN_ARIB                               9
+/* Header Length in symbols for Cenelec-B bandplan */      
 #define FCH_LEN_CENELEC_B                          5
 
+/* Number of carriers for Cenelec-A bandplan */
 #define NUM_CARRIERS_CENELEC_A                     36
+/* Number of carriers for FCC bandplan */      
 #define NUM_CARRIERS_FCC                           72
-#define NUM_CARRIERS_ARIB                          54
+/* Number of carriers for Cenelec-B bandplan */      
 #define NUM_CARRIERS_CENELEC_B                     16
 
-/* Subbands for Cenelec bandplan */
+/* Subbands for Cenelec-A bandplan */
 #define NUM_SUBBANDS_CENELEC_A                     6
 /* Subbands for FCC bandplan */
 #define NUM_SUBBANDS_FCC                           24
@@ -112,7 +98,7 @@ typedef enum {
 /* FCC Band Plan (155 - 487 Khz) */
 #define PL360_FCC                                  2
       
-/* Tone Map size for Cenelec bandplan */
+/* Tone Map size for Cenelec(A,B) bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1
 /* Tone Map size for FCC and ARIB bandplans */
 #define TONE_MAP_SIZE_FCC                          3
@@ -138,10 +124,18 @@ typedef enum {
 /* TX Mode: Cancel transmission */
 #define TX_MODE_CANCEL                             (1 << 4)
 
-/* Impedance Configuration */
+/* Impedance Configuration: High mode */
 #define HI_STATE                                   0x00
+/* Impedance Configuration: Low mode */      
 #define LOW_STATE                                  0x01
+/* Impedance Configuration: Very Low mode */
 #define VLO_STATE                                  0x02  
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************      
 
 // *****************************************************************************
 /* G3 PHY Information Base (PIBs)
