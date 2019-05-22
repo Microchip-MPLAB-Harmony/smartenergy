@@ -1,5 +1,5 @@
 # Microchip MPLAB Harmony 3 Release Notes
-## PLC Release v3.0.0
+## Smart Energy - PLC Release v3.0.0
 ### NEW FEATURES
 - **New part support** - This release introduces initial support for [PL360B](https://www.microchip.com/wwwproducts/en/PL360B) providing functionality for G3/PRIME physical layer.
 
@@ -36,10 +36,10 @@ The current known issues are as follows:
 
 ### DEVELOPMENT TOOLS
 
-* [MPLAB X IDE v5.10](https://www.microchip.com/mplab/mplab-x-ide)
+* [MPLAB X IDE v5.15](https://www.microchip.com/mplab/mplab-x-ide)
 * [MPLAB XC32 C/C++ Compiler v2.15](https://www.microchip.com/mplab/compilers)
 * MPLAB X IDE plug-ins:
- * MPLAB Harmony Configurator (MHC) v3.1.0.
+ * MPLAB Harmony Configurator (MHC) v3.3.0.1.
 
 For additional information, see the following links and release notes.
 * [Read-me File](./readme.md)

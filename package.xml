@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Package name="se">
+<Package name="smartenergy_plc">
     <Dependencies>
         <Dependency name="core" version="3.2.1"/>
         <Dependency name="csp" version="3.2.1"/>

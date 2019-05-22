@@ -1,6 +1,6 @@
 ######################  PLC LIBRARY  ######################
 def loadModule():
-	print("Load Module: Harmony PLC Stack")
+	print("Load Module: Harmony Smart Energy PLC")
 	
 	## External PHY PL360 Driver
 	drvExtPhyPl360Component = Module.CreateComponent("drvExtPhyPl360", "PL360", "/Harmony/Drivers/PLC", "driver/pl360/config/drv_pl360.py")

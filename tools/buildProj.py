@@ -34,7 +34,7 @@ if __name__ == '__main__':
 		
 	print("Searching projects...")
 	
-	plcpath = h3path + "\\se\\apps"
+	plcpath = h3path + "\\smartenergy_plc\\apps"
 	mhcpath = h3path + "\\mhc"	
 			
 	plcfolders = [x[0] for x in os.walk(plcpath)]
