@@ -235,7 +235,6 @@ static void _DRV_PL360_COMM_RxEvent(DRV_PL360_RECEPTION_OBJ *pRxObj)
     memcpy(pRxObj->toneMap, pSrc, TONE_MAP_SIZE_MAX);
     pSrc += sizeof(pRxObj->toneMap);
     memcpy(pRxObj->carrierSnr, pSrc, PROTOCOL_CARRIERS_MAX);
-    pSrc += sizeof(pRxObj->carrierSnr);
 
     /* Set data content pointer */
     pRxObj->pReceivedData = sDataRxDat;

@@ -193,7 +193,7 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 pMsg = _USI_USART_PUT_MSG_TO_QUEUE(dObj);
                 
                 /* Fill in the message */                
-                pMsg->pMessage = dObj->pRdBuffer + dObj->byteCount;
+                pMsg->pMessage = (uint8_t*)(dObj->pRdBuffer) + dObj->byteCount;
                 pMsg->pDataRd = pMsg->pMessage;
                 pMsg->length = 0;    
                 
@@ -291,7 +291,7 @@ static USI_USART_OBJ* _USI_USART_CheckHandler(DRV_HANDLE handle)
     
     for(index=0; index < SRV_USI_USART_CONNECTIONS; index++)
     {
-        if ((DRV_HANDLE)&gUsiUsartOBJ[index] == handle) {
+        if ((DRV_HANDLE)(&gUsiUsartOBJ[index]) == handle) {
             return &gUsiUsartOBJ[index];
         }
     }

@@ -184,7 +184,7 @@ static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
         /* Look for the handle */
         for (srvIndex = 0; srvIndex < SRV_USI_INSTANCES_NUMBER; srvIndex++)
         {
-            if (handle == (SRV_USI_HANDLE)&gSrvUSIOBJ[srvIndex]) {
+            if (handle == (SRV_USI_HANDLE)(&gSrvUSIOBJ[srvIndex])) {
                 return handle;
             }
         }
