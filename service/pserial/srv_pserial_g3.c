@@ -60,12 +60,12 @@
 static void _SRV_SERIAL_memcpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, size_t length)
 {
     uint8_t *pMemDst, *pMemSrc;
-    uint16_t index;
+    uint16_t indexRev;
 
     if (length <= 4) {
         pMemDst = pDataDst + length - 1;
         pMemSrc = pDataSrc;
-        for (index = 0; index < length; index++) {
+        for (indexRev = 0; indexRev < length; indexRev++) {
             *pMemDst-- = (uint8_t)*pMemSrc++;
         }
     } else {
@@ -107,7 +107,7 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
     *pData++ = (uint8_t)(pDataSrc->id);
-    *pData++ = pDataSrc->length;
+    *pData++ = (uint8_t)(pDataSrc->length);
     
     if (pDataSrc->length > 4) {
         memcpy(pData, pDataSrc->pData, pDataSrc->length);
@@ -117,7 +117,7 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     
     pData += pDataSrc->length;
     
-    return (pData - pDataDst);    
+    return (pData - pDataDst);
 }
 
 void SRV_PSERIAL_ParseSetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
@@ -143,7 +143,7 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
     *pData++ = (uint8_t)(pDataSrc->id);
-    *pData++ = pDataSrc->length;
+    *pData++ = (uint8_t)(pDataSrc->length);
     *pData++ = true;
     
     return (pData - pDataDst);    
@@ -151,7 +151,7 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
 
 void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc)
 {
-    uint8_t index;
+    uint8_t indexTM;
 
     /* Skip command */
     pDataSrc++;
@@ -163,8 +163,8 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
     pDataDst->modScheme = (DRV_PL360_MOD_SCHEME)(*pDataSrc++);
     pDataDst->pdc = *pDataSrc++;
 
-    for (index = 0; index < PSERIAL_TONEMAP_SIZE; index++) {
-        pDataDst->toneMap[PSERIAL_TONEMAP_SIZE - index - 1] = *pDataSrc++;
+    for (indexTM = 0; indexTM < PSERIAL_TONEMAP_SIZE; indexTM++) {
+        pDataDst->toneMap[PSERIAL_TONEMAP_SIZE - (indexTM + 1)] = *pDataSrc++;
     }
 
     if (PSERIAL_RS_2_BLOCKS) {
@@ -192,7 +192,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
 size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc)
 {
     uint8_t* pData;
-    uint8_t index;
+    uint8_t indexTM;
     
     pData = pDataDst;
     
@@ -203,8 +203,8 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* p
     *pData++ = (uint8_t)(pDataSrc->modType);
     *pData++ = (uint8_t)(pDataSrc->modScheme);
    
-    for (index = 0; index < PSERIAL_TONEMAP_SIZE; index++) {
-        *pData++ = pDataSrc->toneMap[PSERIAL_TONEMAP_SIZE - index - 1];
+    for (indexTM = 0; indexTM < PSERIAL_TONEMAP_SIZE; indexTM++) {
+        *pData++ = pDataSrc->toneMap[PSERIAL_TONEMAP_SIZE - (indexTM + 1)];
     }
     
     *pData++ = (uint8_t)((pDataSrc->snrFch) >> 8);

@@ -60,12 +60,12 @@
 static void _SRV_SERIAL_memcpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, size_t length)
 {
     uint8_t *pMemDst, *pMemSrc;
-    uint16_t index;
+    uint16_t indexRev;
 
     if (length <= 4) {
         pMemDst = pDataDst + length - 1;
         pMemSrc = pDataSrc;
-        for (index = 0; index < length; index++) {
+        for (indexRev = 0; indexRev < length; indexRev++) {
             *pMemDst-- = (uint8_t)*pMemSrc++;
         }
     } else {
@@ -107,7 +107,7 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
     *pData++ = (uint8_t)(pDataSrc->id);
-    *pData++ = pDataSrc->length;
+    *pData++ = (uint8_t)(pDataSrc->length);
     
     if (pDataSrc->length > 4) {
         memcpy(pData, pDataSrc->pData, pDataSrc->length);
@@ -143,7 +143,7 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     /* Serialize parameters of PIB */
     *pData++ = (uint8_t)((pDataSrc->id) >> 8);
     *pData++ = (uint8_t)(pDataSrc->id);
-    *pData++ = pDataSrc->length;
+    *pData++ = (uint8_t)(pDataSrc->length);
     *pData++ = true;
     
     return (pData - pDataDst);    
