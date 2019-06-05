@@ -123,6 +123,7 @@ static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROT
             callbackIndex = 9;
             break;
 
+        case SRV_USI_PROT_ID_INVALID:
         default:
             callbackIndex = SRV_USI_CALLBACK_INDEX_INVALID;
     }
@@ -158,6 +159,8 @@ static PCRC_CRC_TYPE _SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protoco
             break;
             
         case SRV_USI_PROT_ID_PRIME_API:
+        case SRV_USI_PROT_ID_PHY_MICROPLC:
+        case SRV_USI_PROT_ID_INVALID:
         default:
             crcType = PCRC_CRC8;
             break;
@@ -209,7 +212,7 @@ static void _SRV_USART_Callback_Handle ( uint8_t *pData, uint16_t length, uintpt
     {      
         /* New received message */
         /* Extract Protocol */
-        protocol = USI_TYPE_PROTOCOL(*(pData + 1));
+        protocol = (SRV_USI_PROTOCOL_ID)USI_TYPE_PROTOCOL(*(pData + 1));
         
         /* Get CRC type from Protocol */
         crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
@@ -226,7 +229,7 @@ static void _SRV_USART_Callback_Handle ( uint8_t *pData, uint16_t length, uintpt
         }
 
         /* Check invalid length : remove Header and CRC bytes */
-        if (dataLength != (length - 2 - (1 << crcType)))
+        if (dataLength != (length - (2 + (1 << crcType))))
         {
             /* Discard message */
             return;
@@ -303,7 +306,7 @@ static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
 
 static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj, 
                                      SRV_USI_PROTOCOL_ID protocol, 
-                                     uint8_t *pData, uint16_t length )
+                                     uint8_t *pData, size_t length )
 {
     uint8_t* pNewData;
     uint8_t* pEndData;
@@ -383,7 +386,7 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     const SYS_MODULE_INIT * const init 
 )
 {
-    SRV_USI_OBJ* dObj = NULL;
+    SRV_USI_OBJ* dObj;
     SRV_USI_INIT* usiInit = (SRV_USI_INIT *)init ;
 
     /* Validate the request */
@@ -423,7 +426,7 @@ SRV_USI_HANDLE SRV_USI_Open(
     const SYS_MODULE_INDEX index
 )
 {
-    SRV_USI_OBJ* dObj = NULL;
+    SRV_USI_OBJ* dObj;
 
     /* Validate the request */
     if (index >= SRV_USI_INSTANCES_NUMBER)
@@ -473,7 +476,7 @@ SRV_USI_HANDLE SRV_USI_Open(
 
 void SRV_USI_Close( SRV_USI_HANDLE handle )
 {
-    SRV_USI_OBJ* dObj = NULL;
+    SRV_USI_OBJ* dObj;
 
     /* Validate the driver handle */
     if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
@@ -514,7 +517,7 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
-    SRV_USI_OBJ* dObj = NULL;
+    SRV_USI_OBJ* dObj;
     SRV_USI_CALLBACK *cb;
 
     /* Validate the driver handle */
@@ -572,7 +575,7 @@ void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
 void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 {
-    SRV_USI_OBJ* dObj = NULL;
+    SRV_USI_OBJ* dObj;
     size_t writeLength;
 
     /* Validate the driver handle */

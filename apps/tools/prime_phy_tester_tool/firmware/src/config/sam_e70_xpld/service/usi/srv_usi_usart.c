@@ -182,6 +182,8 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
             /* Waiting to MSG KEY */
             if (dObj->rcvChar == USI_ESC_KEY_7E)
             {
+                uint8_t *pData; 
+                
                 /* Restart Byte Counter */
                 if (dObj->pMsgQueue->front == NULL)
                 {
@@ -192,8 +194,9 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 /* Create new message */
                 pMsg = _USI_USART_PUT_MSG_TO_QUEUE(dObj);
                 
-                /* Fill in the message */                
-                pMsg->pMessage = (uint8_t*)(dObj->pRdBuffer) + dObj->byteCount;
+                /* Fill in the message */  
+                pData = (uint8_t *)(dObj->pRdBuffer);
+                pMsg->pMessage = pData + dObj->byteCount;
                 pMsg->pDataRd = pMsg->pMessage;
                 pMsg->length = 0;    
                 
@@ -367,7 +370,7 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     while (SYS_DMA_ChannelIsBusy(dObj->plib->dmaChannelTx));
     
     /* Launch transmission */
-    if (DATA_CACHE_ENABLED == true)
+    if (DATA_CACHE_ENABLED)
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */

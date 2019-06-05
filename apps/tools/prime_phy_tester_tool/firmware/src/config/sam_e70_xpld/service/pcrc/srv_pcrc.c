@@ -212,12 +212,12 @@ static uint32_t _SRV_PCRC_get32(const uint8_t *pData, size_t length,
         uint32_t crcInitValue)
 {
     uint32_t crc;
-    uint8_t index;
+    uint8_t indexTable;
 
     crc = crcInitValue;
     while (length--) {
-        index = (uint8_t)(crc >> 24) ^ *pData++;
-        crc = (crc << 8) ^ pCrcTable32[index];
+        indexTable = (uint8_t)(crc >> 24) ^ *pData++;
+        crc = (crc << 8) ^ pCrcTable32[indexTable];
     }
 
     return crc;
@@ -228,7 +228,7 @@ static uint16_t _SRV_PCRC_get16(const uint8_t *pData, size_t length,
 {
     uint16_t crc;
 
-    crc = crcInitValue;
+    crc = (uint16_t)crcInitValue;
     while (length--) {
         crc = (uint16_t)(pCrcTable16 [(crc >> 8) & 0xff] ^
                 (crc << 8) ^ (*pData++ & 0x00ff));
@@ -237,12 +237,12 @@ static uint16_t _SRV_PCRC_get16(const uint8_t *pData, size_t length,
     return crc;
 }
 
-static uint16_t _SRV_PCRC_get8(const uint8_t *pData, size_t length,
+static uint8_t _SRV_PCRC_get8(const uint8_t *pData, size_t length,
         uint32_t crcInitValue)
 {
-    uint16_t crc;
+    uint8_t crc;
 
-    crc = crcInitValue;
+    crc = (uint8_t)crcInitValue;
     while (length--) {
         crc = pCrcTable8 [crc ^ *pData++];
     }

@@ -100,7 +100,7 @@ void DRV_PL360_HAL_Init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
     /* Enable External Interrupt Source */
     SYS_INT_SourceEnable(DRV_PL360_EXT_INT_SRC);
     /* Disable External Pin Interrupt */
-    PIO_PinInterruptDisable(DRV_PL360_EXT_INT_PIN);
+    PIO_PinInterruptDisable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
 }
 
 void DRV_PL360_HAL_Setup(bool set16Bits)
@@ -173,11 +173,11 @@ void DRV_PL360_HAL_EnableInterrupts(bool enable)
     if (enable)
     {
         SYS_INT_SourceStatusClear(DRV_PL360_EXT_INT_SRC);
-        PIO_PinInterruptEnable(DRV_PL360_EXT_INT_PIN);
+        PIO_PinInterruptEnable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
     }
     else
     {
-        PIO_PinInterruptDisable(DRV_PL360_EXT_INT_PIN);
+        PIO_PinInterruptDisable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
     }
 }
 
@@ -200,7 +200,7 @@ bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength,
     {
         if (dataLength > HAL_SPI_BUFFER_SIZE)
         {
-            dataLength = HAL_SPI_BUFFER_SIZE;
+            dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
         
         if (pDataWr) {
@@ -216,7 +216,7 @@ bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength,
     /* Get length of DMA transaction in bytes */
     size = pTxData - sTxSpiData;
        
-    if (DATA_CACHE_ENABLED == true)
+    if (DATA_CACHE_ENABLED)
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */
@@ -283,7 +283,7 @@ bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInf
         cmdSize++;
     }
        
-    if (DATA_CACHE_ENABLED == true)
+    if (DATA_CACHE_ENABLED)
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */
