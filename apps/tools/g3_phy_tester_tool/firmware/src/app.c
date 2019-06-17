@@ -210,7 +210,8 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
     (void)context;
     
     /* Send Received PLC message through USI */
-	if (indObj->dataLength) {
+    if (indObj->dataLength) 
+    {
         size_t length;
         
         /* Start Timer: LED blinking for each received message */
@@ -249,18 +250,18 @@ static void APP_PLCDataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t c
 void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 {
     /* Message received from PLC Tool - USART */
-	uint8_t command;
+    SRV_PSERIAL_COMMAND command;
 
-	/* Protection for invalid us_length */
-	if (!length) 
+    /* Protection for invalid us_length */
+    if (!length) 
     {
-		return;
-	}
+        return;
+    }
 
-	/* Process received message */
-	command = SRV_PSERIAL_GetCommand(pData);
+    /* Process received message */
+    command = SRV_PSERIAL_GetCommand(pData);
 
-	switch (command) {
+    switch (command) {
         case SRV_PSERIAL_CMD_PHY_GET_CFG:
         {
             /* Extract PIB information */
@@ -268,13 +269,13 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 
             if (DRV_PL360_PIBGet(appData.drvPl360Handle, &appData.plcPIB))
             {
-                size_t length;
+                size_t len;
                 
                 /* Serialize PIB data */
-                length = SRV_PSERIAL_SerialGetPIB(appData.pSerialData, &appData.plcPIB);
+                len = SRV_PSERIAL_SerialGetPIB(appData.pSerialData, &appData.plcPIB);
                 /* Send through USI */
                 SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-                        appData.pSerialData, length);
+                        appData.pSerialData, len);
             }
         }
         break;
@@ -286,13 +287,13 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
 
             if (DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB))
             {
-                size_t length;
+                size_t len;
                 
                 /* Serialize PIB data */
-                length = SRV_PSERIAL_SerialSetPIB(&appData.pSerialData[1], &appData.plcPIB);
+                len = SRV_PSERIAL_SerialSetPIB(&appData.pSerialData[1], &appData.plcPIB);
                 /* Send through USI */
                 SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY, 
-                        appData.pSerialData, length);
+                        appData.pSerialData, len);
             }
         }
         break;
