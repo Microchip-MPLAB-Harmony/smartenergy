@@ -124,7 +124,7 @@ if __name__ == '__main__':
 		if (failBuild):
 			print("BUILD ERROR:" + str(failBuild) + " : " + cmd_build)
 			counter_error = counter_error + 1
-			sys.exit(-1)
+			#sys.exit(-1)
 		else:
 			print("BUILD SUCCESS")
 			counter_success = counter_success + 1

@@ -549,7 +549,7 @@
         </Boolean>
         <Hex dnOrder="108" id="PIO_CCFG_SYSIO_VALUE">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="core" value="16"/>
+            <Dynamic dnOrder="0" id="core" value="3088"/>
           </Values>
         </Hex>
         <Boolean dnOrder="109" id="PIO_D_INTERRUPT_USED">
@@ -3190,15 +3190,15 @@
         <ElementPosition dnOrder="2" id="cmsis" x="340" y="20"/>
         <ElementPosition dnOrder="3" id="core" x="240" y="20"/>
         <ElementPosition dnOrder="4" id="dfp" x="20" y="20"/>
-        <ElementPosition dnOrder="5" id="drvExtPhyPl360" x="250" y="420"/>
+        <ElementPosition dnOrder="5" id="drvExtPhyPl360" x="254" y="383"/>
         <ElementPosition dnOrder="6" id="efc" x="780" y="20"/>
-        <ElementPosition dnOrder="7" id="spi0" x="97" y="452"/>
+        <ElementPosition dnOrder="7" id="spi0" x="86" y="429"/>
         <ElementPosition dnOrder="8" id="srv_pcrc" x="660" y="20"/>
         <ElementPosition dnOrder="9" id="srv_pserial" x="279" y="67"/>
-        <ElementPosition dnOrder="10" id="srv_usi" x="243" y="152"/>
+        <ElementPosition dnOrder="10" id="srv_usi" x="249" y="175"/>
         <ElementPosition dnOrder="11" id="sys_time" x="648" y="168"/>
         <ElementPosition dnOrder="12" id="tc0" x="483" y="211"/>
-        <ElementPosition dnOrder="13" id="usart1" x="82" y="285"/>
+        <ElementPosition dnOrder="13" id="usart1" x="83" y="290"/>
       </ElementPositions>
     </ComponentGraph>
     <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="1"/>

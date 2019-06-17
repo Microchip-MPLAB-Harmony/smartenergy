@@ -124,15 +124,15 @@ typedef void (* DRV_PL360_HAL_SETUP)(bool);
 
 typedef void (* DRV_PL360_HAL_RESET)(void);
 
-typedef void (* DRV_PL360_HAL_GET_CD)(void);
+typedef bool (* DRV_PL360_HAL_GET_CD)(void);
 
-typedef bool (* DRV_PL360_HAL_ENABLE_EXT_INT)(bool);
+typedef void (* DRV_PL360_HAL_ENABLE_EXT_INT)(bool);
 
-typedef bool (* DRV_PL360_HAL_DELAY)(uint64_t);
+typedef void (* DRV_PL360_HAL_DELAY)(uint64_t);
 
-typedef bool (* DRV_PL360_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
+typedef void (* DRV_PL360_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
 
-typedef bool (* DRV_PL360_HAL_SEND_WRRD_CMD)(void*, void*);
+typedef void (* DRV_PL360_HAL_SEND_WRRD_CMD)(void*, void*);
 
 // *****************************************************************************
 /* PL360 Driver HAL Interface Data

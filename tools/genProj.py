@@ -98,7 +98,7 @@ if __name__ == '__main__':
 			cmd_open = "java -Xverify:none -jar mhc.jar -mode=gui -fw=../"
 			cmd_open = cmd_open + " -c=\" " + project + "\""
 			os.system (cmd_open)
-			sys.exit(-1)
+			#sys.exit(-1)
 		else:
 			print("SUCCESS")
 			counter_success = counter_success + 1

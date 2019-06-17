@@ -149,8 +149,8 @@ void DRV_PL360_HAL_Setup(bool set16Bits);
 bool DRV_PL360_HAL_GetCarrierDetect(void);
 void DRV_PL360_HAL_EnableInterrupts(bool enable);
 void DRV_PL360_HAL_Delay(uint64_t delayUs);
-bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t address, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd);
-bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo);
+void DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t address, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd);
+void DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo);
 
 #ifdef __cplusplus
 }

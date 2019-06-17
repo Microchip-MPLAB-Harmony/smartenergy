@@ -181,7 +181,7 @@ void DRV_PL360_HAL_EnableInterrupts(bool enable)
     }
 }
 
-bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
+void DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
 {
     uint8_t *pTxData;
     size_t size;
@@ -233,11 +233,9 @@ bool DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength,
         /* Update data received */
         memcpy(pDataRd, &sRxSpiData[6], dataLength);
     }
-    
-    return true;
 }
 
-bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo)
+void DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo)
 {
     uint8_t *pTxData;
     size_t cmdSize;
@@ -253,7 +251,7 @@ bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInf
     /* Protect length */
     if ((dataLength == 0) || (dataLength > (HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)))
     {
-        return false;
+        return;
     }
     
     /* Join CMD and Length */
@@ -316,6 +314,4 @@ bool DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInf
     {
         pInfo->flags = 0;
     }
-    
-    return true;
 }
