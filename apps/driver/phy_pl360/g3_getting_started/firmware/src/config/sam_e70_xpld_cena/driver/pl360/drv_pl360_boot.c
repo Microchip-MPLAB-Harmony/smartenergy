@@ -66,6 +66,9 @@ static DRV_PL360_BOOT_INFO sDrvPL360BootInfo = {0};
  file to PL360 device */
 #define MAX_FRAG_SIZE      512
 
+static DRV_PL360_BOOT_DATA_CALLBACK sDrvPL360BootCb = NULL;
+static uintptr_t sDrvPL360BootContext; 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
@@ -78,28 +81,57 @@ static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
     uint16_t fragSize;
     uint8_t padding;
     
-    pData = (uint8_t *)sDrvPL360BootInfo.pSrc;
+    /* Get next address to be programmed */
     progAddr = sDrvPL360BootInfo.pDst;
-
-    if (sDrvPL360BootInfo.pendingLength > MAX_FRAG_SIZE) {
-        fragSize = MAX_FRAG_SIZE;
-        padding = 0;
-    } else {
-        fragSize = sDrvPL360BootInfo.pendingLength;
-        padding = fragSize % 4;
-        fragSize += padding;
+    
+    if (sDrvPL360BootCb)
+    {
+        uint32_t address;
+        
+        /* Fragmented Bootloader from external interactions */
+        /* Call function to get the next fragment of boot data */
+        sDrvPL360BootCb(&address, &fragSize, sDrvPL360BootContext);
+        pData = (uint8_t *)address;
+        
+        if (fragSize)
+        {
+            /* Write fragment data */
+            sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_WRITE_BUF, progAddr, fragSize, pData, NULL);
+            sDrvPL360BootInfo.pendingLength = 1;
+        }
+        else
+        {
+            /* Data Bootloader has finished */
+            sDrvPL360BootInfo.pendingLength = 0;
+        }
     }
+    else
+    {
+        
+        /* Bootloader from internal FLASH memory */
+        pData = (uint8_t *)sDrvPL360BootInfo.pSrc;
 
-    /* Write fragment data */
-    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_WRITE_BUF, progAddr, fragSize, pData, NULL);
+        if (sDrvPL360BootInfo.pendingLength > MAX_FRAG_SIZE) {
+            fragSize = MAX_FRAG_SIZE;
+            padding = 0;
+        } else {
+            fragSize = sDrvPL360BootInfo.pendingLength;
+            padding = fragSize % 4;
+            fragSize += padding;
+        }
 
+        /* Write fragment data */
+        sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_WRITE_BUF, progAddr, fragSize, pData, NULL);
+
+        /* Update counters */
+        sDrvPL360BootInfo.pendingLength -= (fragSize - padding);
+        pData += fragSize;
+        sDrvPL360BootInfo.pSrc = (uint32_t)pData;
+    }
+    
     /* Update counters */
-    sDrvPL360BootInfo.pendingLength -= (fragSize - padding);
-    pData += fragSize;
     progAddr += fragSize;
-    sDrvPL360BootInfo.pSrc = (uint32_t)pData;
     sDrvPL360BootInfo.pDst = progAddr;
-
 }
 
 static void _DRV_PL360_BOOT_EnableBootCmd(void)
@@ -196,6 +228,13 @@ void DRV_PL360_BOOT_Start(void *pl360Drv)
     sDrvPL360HalObj = pl360DrvObj->pl360Hal;
     sDrvPL360BootInfo.secure = pl360DrvObj->secure;
     sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
+    
+    /* Set Bootloader data callback to handle boot by external fragments */
+    if (pl360DrvObj->bootDataCallback)
+    {
+        sDrvPL360BootCb = pl360DrvObj->bootDataCallback;
+        sDrvPL360BootContext = pl360DrvObj->contextBoot;
+    }
 
     _DRV_PL360_BOOT_EnableBootCmd();
     

@@ -352,6 +352,104 @@ typedef void ( *DRV_PL360_DATA_IND_CALLBACK )( DRV_PL360_RECEPTION_OBJ *indObj, 
 typedef void ( *DRV_PL360_EXCEPTION_CALLBACK )( DRV_PL360_EXCEPTION exception, uintptr_t context );
 
 // *****************************************************************************
+/* PL360 Driver Boot Data Callback Function Pointer
+
+   Summary
+    Pointer to a PL360 Driver Boot Data Callback Function
+
+   Description
+    This data type defines the required function signature for the PL360 driver
+    boot data callback function. A client must register a pointer 
+    using the PL360 open function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to be notified when more data will be necessary while bootloader 
+    process.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    address -           Address where new block of the binary data image is 
+                        ready to be trasfered.
+
+    length -            Length of the new block to be trasnfered. Maximum size 
+                        is 634 bytes. If length is set to 0, it means that
+                        binary data image transfer has finished and PL360 device
+                        is ready to start up.
+
+    context -           Value identifying the context of the application that
+                        registered the event handling function. In this case, 
+                        this value is fixed to the SYS_MODULE_INDEX passed in
+                        open function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    #define APP_BOOT_DATA_FRAG_SIZE    512  
+
+    static uint32_t gBootDataNextAddr = 0x00450000;
+    static uint16_t gBootDataPending = 64000;
+
+    static void APP_PLCBootDataCb(uint32_t *address, uint16_t *length, uintptr_t context)
+    {   
+        // Avoid warnings
+        (void)context;
+        
+        if (gBootDataPending)
+        {
+            *address = gBootDataNextAddr;
+            
+            gBootDataNextAddr += APP_BOOT_DATA_FRAG_SIZE;
+            
+            if (gBootDataPending > APP_BOOT_DATA_FRAG_SIZE)
+            {
+                *length = APP_BOOT_DATA_FRAG_SIZE;
+                gBootDataPending -= APP_BOOT_DATA_FRAG_SIZE;
+            }
+            else
+            {
+                *length = APP_BOOT_DATA_FRAG_SIZE - gBootDataPending;
+                gBootDataPending = 0;
+            }
+        }
+        else
+        {
+            // End Boot Data Transfer 
+            *length = 0;
+        }    
+    }
+
+    DRV_HANDLE handle;
+
+    handle = DRV_PL360_Open(DRV_PL360_INDEX_0, APP_PLCBootDataCb);
+    if (handle == DRV_HANDLE_INVALID)
+    {
+        // Unable to open the driver
+        // May be the driver is not initialized
+    }
+
+    </code>
+
+  Remarks:
+    - The context parameter contains the SYS_MODULE_INDEX provided at the time 
+      the open function was called. This SYS_MODULE_INDEX value is passed back 
+      to the client as the "context" parameter.  
+
+    - Length parameter is used to notify that all binary image has been transfered
+      to PL360 dirver and it should be ready to start up. This is indicated using
+      length = 0;
+
+    - The event handler function executes in task context of the peripheral.
+      Hence it is recommended of the application to not perform process
+      intensive or blocking operations with in this function.
+
+*/
+
+typedef void ( *DRV_PL360_BOOT_DATA_CALLBACK )( uint32_t *address, uint16_t *length, uintptr_t context );
+
+// *****************************************************************************
 // *****************************************************************************
 // Section: DRV_PL360 Driver System Interface Routines
 // *****************************************************************************
@@ -446,7 +544,7 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX index, const SYS_MOD
     DRV_HANDLE DRV_PL360_Open
     (
         const SYS_MODULE_INDEX index,
-        const DRV_IO_INTENT ioIntent
+        const DRV_PL360_BOOT_DATA_CALLBACK callback
     )
 
   Summary:
@@ -468,7 +566,9 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX index, const SYS_MOD
   Parameters:
     index  -    Identifier for the object instance to be opened
 
-    intent -    Unused in this version.
+    callback -  Boot Data Callback Function Pointer. In case of use NULL, 
+                .binStartAddress and .binEndAddress fields must be configured 
+                in initialization data DRV_PL360_INIT.
 
   Returns:
     If successful, the routine returns a valid open-instance handle (a number
@@ -483,7 +583,7 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX index, const SYS_MOD
     <code>
     DRV_HANDLE handle;
 
-    handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
+    handle = DRV_PL360_Open(DRV_PL360_INDEX_0, NULL);
     if (handle == DRV_HANDLE_INVALID)
     {
         // Unable to open the driver
@@ -495,7 +595,8 @@ SYS_MODULE_OBJ DRV_PL360_Initialize( const SYS_MODULE_INDEX index, const SYS_MOD
     The handle returned is valid until the DRV_PL360_Close routine is called.
     This routine will NEVER block waiting for hardware.
 */
-DRV_HANDLE DRV_PL360_Open(const SYS_MODULE_INDEX index, const DRV_IO_INTENT ioIntent);
+DRV_HANDLE DRV_PL360_Open(const SYS_MODULE_INDEX index, 
+        const DRV_PL360_BOOT_DATA_CALLBACK callback);
 
 // *****************************************************************************
 /* Function:

@@ -421,7 +421,7 @@ void APP_PLC_Tasks ( void )
 #endif
     
             /* Open PL360 driver */
-            appPlc.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
+            appPlc.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, NULL);
             
             if (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)
             {

@@ -156,6 +156,9 @@ typedef struct
     /* Application Exception Callback */
     DRV_PL360_EXCEPTION_CALLBACK    exceptionCallback;
 
+    /* Application Bootloader Data Callback */
+    DRV_PL360_BOOT_DATA_CALLBACK    bootDataCallback;
+
     /* Application context for Data Confirm Callback */
     uintptr_t                       contextCfm;
 
@@ -164,6 +167,9 @@ typedef struct
 
     /* Application context for Exception Callback */
     uintptr_t                       contextExc;
+
+    /* Application context for Bootloader Dara Callback */
+    uintptr_t                       contextBoot;
 
     /* Event detection flag: confirmation of the previous transmission */
     volatile bool                   evTxCfm[2];

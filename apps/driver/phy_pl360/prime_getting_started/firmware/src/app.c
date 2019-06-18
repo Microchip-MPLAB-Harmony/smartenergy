@@ -252,7 +252,7 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:
         {
             /* Open PL360 driver */
-            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, DRV_IO_INTENT_READWRITE);
+            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX_0, NULL);
             
             if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
             {

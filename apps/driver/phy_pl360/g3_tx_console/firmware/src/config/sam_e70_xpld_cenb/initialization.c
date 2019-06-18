@@ -261,8 +261,6 @@ void SYS_Initialize ( void* data )
 	WDT_Initialize();
 
 
-  
-
  
     TC0_CH0_TimerInitialize(); 
      
