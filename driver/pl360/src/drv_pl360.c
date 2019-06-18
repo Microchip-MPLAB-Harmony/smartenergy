@@ -99,6 +99,7 @@ SYS_MODULE_OBJ DRV_PL360_Initialize(
     gDrvPL360Obj.dataCfmCallback       = 0;
     gDrvPL360Obj.dataIndCallback       = 0;
     gDrvPL360Obj.exceptionCallback     = 0;
+    gDrvPL360Obj.bootDataCallback      = 0;
 
     /* HAL init */
     gDrvPL360Obj.pl360Hal->init((DRV_PL360_PLIB_INTERFACE *)pl360Init->pl360Hal->pl360Plib);
@@ -121,12 +122,9 @@ SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX index )
 
 DRV_HANDLE DRV_PL360_Open(
     const SYS_MODULE_INDEX index,
-    const DRV_IO_INTENT ioIntent
+    const DRV_PL360_BOOT_DATA_CALLBACK callback
 )
 {
-    /* Avoid warning */
-    (void)ioIntent;
-
     /* Validate the request */
     if (index >= DRV_PL360_INSTANCES_NUMBER)
     {
@@ -137,6 +135,12 @@ DRV_HANDLE DRV_PL360_Open(
             || (gDrvPL360Obj.nClients >= gDrvPL360Obj.nClientsMax))
     {
         return DRV_HANDLE_INVALID;
+    }
+    
+    if(callback)
+    {
+        gDrvPL360Obj.bootDataCallback = callback;
+        gDrvPL360Obj.contextBoot = index;
     }
     
     /* Launch boot start process */  

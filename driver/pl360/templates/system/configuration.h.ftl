@@ -17,11 +17,8 @@
 #define DRV_PL360_SPI_CLK                       8000000
 </#if>
 
-<#if DRV_PL360_BIN_STATIC_ADDRESSING == true>
-#define DRV_PL360_BIN_ADDRESS                   0x${DRV_PL360_PLC_BIN_ADDRESS?string}
-#define DRV_PL360_BIN_SIZE                      0x${DRV_PL360_PLC_BIN_SIZE?string}
-</#if>
 #define DRV_PL360_SECURE                        ${DRV_PL360_SECURE_MODE?string}
+
 /* PL360 Driver Identification */
 <#if DRV_PL360_PLC_PROFILE == "0">
 #define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_CENELEC_A

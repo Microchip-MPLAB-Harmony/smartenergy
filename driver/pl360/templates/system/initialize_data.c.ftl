@@ -62,7 +62,7 @@ DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
     .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)DRV_PL360_HAL_SendWrRdCmd,
 };
 
-<#if DRV_PL360_BIN_STATIC_ADDRESSING == false> 
+<#if DRV_PL360_EXTERNAL_ADDRESSING == false> 
 /* PL360 Binary file addressing */
 extern uint8_t pl360_bin_start;
 extern uint8_t pl360_bin_end;
@@ -83,13 +83,13 @@ DRV_PL360_INIT drvPL360InitData = {
 
     /* PL360 PLC profile */
     .plcProfile = DRV_PL360_PLC_PROFILE,
- <#if DRV_PL360_BIN_STATIC_ADDRESSING == true>   
+ <#if DRV_PL360_EXTERNAL_ADDRESSING == true>   
  
     /* PLC Binary start address */
-    .binStartAddress = DRV_PL360_BIN_ADDRESS,
+    .binStartAddress = 0,
     
     /* PLC Binary end address */
-    .binEndAddress = DRV_PL360_BIN_ADDRESS + DRV_PL360_BIN_SIZE,
+    .binEndAddress = 0,
 <#else>
  
     /* PLC Binary start address */

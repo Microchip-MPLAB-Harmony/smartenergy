@@ -501,8 +501,7 @@ void APP_Tasks(void)
         case APP_STATE_INIT:
         {
             /* Open PL360 driver : Start uploading process */
-            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX, 
-                    DRV_IO_INTENT_READWRITE);
+            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX, NULL);
 
             if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
             {

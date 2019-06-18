@@ -25,11 +25,42 @@
 ################################################################################
 #### Component ####
 ################################################################################
+def externalAddressingTrigger(symbol, event):
+    global pl360SourceBinFileG3CENA
+    global pl360SourceBinFileG3CENB
+    global pl360SourceBinFileG3FCC
+    global pl360SourceBinFilePRIME
+    global pl360ExternalAddressing
+    global pl360AssemblyBinFile
+    if event["value"] == True:
+        print("externalAddressingTrigger disable BIN files")
+        pl360SourceBinFileG3CENA.setEnabled(False)
+        pl360SourceBinFileG3CENB.setEnabled(False)
+        pl360SourceBinFileG3FCC.setEnabled(False)
+        pl360SourceBinFilePRIME.setEnabled(False)
+        pl360AssemblyBinFile.setEnabled(False)
+    else:
+        pl360AssemblyBinFile.setEnabled(True)
+        prof = symbol.getValue()
+        if(prof == 0):
+            print("externalAddressingTrigger restore G3 CENA")
+            pl360SourceBinFileG3CENA.setEnabled(True)
+        elif(prof == 1):
+            print("externalAddressingTrigger restore G3 CENB")
+            pl360SourceBinFileG3CENB.setEnabled(True)
+        elif(prof == 2):
+            print("externalAddressingTrigger restore G3 FCC")
+            pl360SourceBinFileG3FCC.setEnabled(True)
+        elif(prof == 3):
+            print("externalAddressingTrigger restore PRIME")
+            pl360SourceBinFilePRIME.setEnabled(True)
+        elif(prof == 4):
+            print("externalAddressingTrigger restore G3 CENA (multi)")
+            pl360SourceBinFileG3CENA.setEnabled(True)
 
-def pl360BinAddressingMode(symbol, event):
-    symbol.setVisible(event["value"])
 
-def pl360ProfileTrigger(symbol, event):
+
+def pl360ProfileConfiguration(symbol, event):
     global pl360ProfileFile
     global pl360ProfileDefFile
     global pl360ProfileHeaderLocalFile
@@ -37,41 +68,57 @@ def pl360ProfileTrigger(symbol, event):
     global pl360SourceBinFileG3CENB
     global pl360SourceBinFileG3FCC
     global pl360SourceBinFilePRIME
+    global pl360ExternalAddressing
+    global pl360AssemblyBinFile
     if (event["symbol"].getKeyDescription(event["value"]) == "PRIME"):
-        print("pl360ProfileTrigger update PRIME files")
         pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_prime.c")
         pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_prime.h")
         pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_prime.h")
-        pl360SourceBinFilePRIME.setEnabled(True)
         pl360SourceBinFileG3CENA.setEnabled(False)
         pl360SourceBinFileG3CENB.setEnabled(False)
         pl360SourceBinFileG3FCC.setEnabled(False)
+        if (pl360ExternalAddressing.getValue() == False):
+            print("pl360ProfileConfiguration update PRIME files")
+            pl360SourceBinFilePRIME.setEnabled(True)
+            pl360AssemblyBinFile.setEnabled(True)
+        else:
+            pl360SourceBinFilePRIME.setEnabled(False)
+            pl360AssemblyBinFile.setEnabled(False)
+            print("pl360ProfileConfiguration update no bin files (PRIME)")
+
     else:
         pl360SourceBinFilePRIME.setEnabled(False)
         pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_g3.c")
         pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_g3.h")
         pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_g3.h")
-        if (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_A"):            
-            pl360SourceBinFileG3CENA.setEnabled(True)
+        if (pl360ExternalAddressing.getValue() == False):
+            pl360AssemblyBinFile.setEnabled(True)
+            if (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_A"):            
+                pl360SourceBinFileG3CENA.setEnabled(True)
+                pl360SourceBinFileG3CENB.setEnabled(False)
+                pl360SourceBinFileG3FCC.setEnabled(False)
+                print("pl360ProfileConfiguration update G3 CEN A files")
+            elif (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_B"):           
+                pl360SourceBinFileG3CENA.setEnabled(False)
+                pl360SourceBinFileG3CENB.setEnabled(True)
+                pl360SourceBinFileG3FCC.setEnabled(False)
+                print("pl360ProfileConfiguration update G3 CEN B files")
+            elif (event["symbol"].getKeyDescription(event["value"]) == "G3_FCC"):           
+                pl360SourceBinFileG3CENA.setEnabled(False)
+                pl360SourceBinFileG3CENB.setEnabled(False)
+                pl360SourceBinFileG3FCC.setEnabled(True)
+                print("pl360ProfileConfiguration update G3 FCC files")
+            else:           
+                pl360SourceBinFileG3CENA.setEnabled(True)
+                pl360SourceBinFileG3CENB.setEnabled(False)
+                pl360SourceBinFileG3FCC.setEnabled(True)
+                print("pl360ProfileConfiguration update G3 CEN A nd FCC files")
+        else:
+            print("pl360ProfileConfiguration update no bin files (G3)")
+            pl360SourceBinFileG3CENA.setEnabled(False)
             pl360SourceBinFileG3CENB.setEnabled(False)
             pl360SourceBinFileG3FCC.setEnabled(False)
-            print("pl360ProfileTrigger update G3 CEN A files")
-        elif (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_B"):           
-            pl360SourceBinFileG3CENA.setEnabled(False)
-            pl360SourceBinFileG3CENB.setEnabled(True)
-            pl360SourceBinFileG3FCC.setEnabled(False)
-            print("pl360ProfileTrigger update G3 CEN B files")
-        elif (event["symbol"].getKeyDescription(event["value"]) == "G3_FCC"):           
-            pl360SourceBinFileG3CENA.setEnabled(False)
-            pl360SourceBinFileG3CENB.setEnabled(False)
-            pl360SourceBinFileG3FCC.setEnabled(True)
-            print("pl360ProfileTrigger update G3 FCC files")
-        else:           
-            pl360SourceBinFileG3CENA.setEnabled(True)
-            pl360SourceBinFileG3CENB.setEnabled(False)
-            pl360SourceBinFileG3FCC.setEnabled(True)
-            print("pl360ProfileTrigger update G3 CEN A nd FCC files")
-
+            pl360AssemblyBinFile.setEnabled(False)
 
 def pl360ExternalInterruptTrigger(symbol, event):
     global pl360ExtIntSource
@@ -176,6 +223,12 @@ def instantiateComponent(pl360Component):
     pl360DMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.")
     pl360DMAChannelComment.setVisible(False)
 
+    global pl360ExternalAddressing
+    pl360ExternalAddressing = pl360Component.createBooleanSymbol("DRV_PL360_EXTERNAL_ADDRESSING", None)
+    pl360ExternalAddressing.setLabel("External Binary Image Block Transfer")
+    pl360ExternalAddressing.setVisible(True)
+    pl360ExternalAddressing.setDefaultValue(False)
+
     global pl360Profile
     pl360Profile = pl360Component.createKeyValueSetSymbol("DRV_PL360_PLC_PROFILE", None)
     pl360Profile.setLabel("Select PLC Profile")
@@ -187,23 +240,7 @@ def instantiateComponent(pl360Component):
     pl360Profile.setDisplayMode("Description")
     pl360Profile.setOutputMode("Value")
     pl360Profile.setDefaultValue(0)
-
-    pl360StaticAddressing = pl360Component.createBooleanSymbol("DRV_PL360_BIN_STATIC_ADDRESSING", None)
-    pl360StaticAddressing.setLabel("Static Bin file Addressing")
-    pl360StaticAddressing.setVisible(True)
-    pl360StaticAddressing.setDefaultValue(False)
-
-    pl360BinaryAddress = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_ADDRESS", pl360StaticAddressing)
-    pl360BinaryAddress.setLabel("PLC Bin Address")
-    pl360BinaryAddress.setVisible(False)
-    pl360BinaryAddress.setDefaultValue(0x004A0000)
-    pl360BinaryAddress.setDependencies(pl360BinAddressingMode, ["DRV_PL360_BIN_STATIC_ADDRESSING"])
-
-    pl360BinarySize = pl360Component.createHexSymbol("DRV_PL360_PLC_BIN_SIZE", pl360StaticAddressing)
-    pl360BinarySize.setLabel("PLC Bin Size (bytes)")
-    pl360BinarySize.setVisible(False)
-    pl360BinarySize.setDefaultValue(0x10000)
-    pl360BinarySize.setDependencies(pl360BinAddressingMode, ["DRV_PL360_BIN_STATIC_ADDRESSING"])
+    pl360Profile.setDependencies(externalAddressingTrigger, ["DRV_PL360_EXTERNAL_ADDRESSING"])
 
     pl360SecureMode = pl360Component.createBooleanSymbol("DRV_PL360_SECURE_MODE", None)
     pl360SecureMode.setLabel("PL360 Secure Mode")
@@ -243,7 +280,7 @@ def instantiateComponent(pl360Component):
     pl360ProfileFile.setDestPath("driver/pl360")
     pl360ProfileFile.setProjectPath("config/" + configName + "/driver/pl360/")
     pl360ProfileFile.setType("SOURCE")
-    pl360ProfileFile.setDependencies(pl360ProfileTrigger, ["DRV_PL360_PLC_PROFILE"])
+    pl360ProfileFile.setDependencies(pl360ProfileConfiguration, ["DRV_PL360_PLC_PROFILE"])
 
     global pl360ProfileDefFile
     pl360ProfileDefFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE_DEF", None)
@@ -300,6 +337,7 @@ def instantiateComponent(pl360Component):
     pl360SourceBinFilePRIME.setEnabled(False)
     pl360SourceBinFilePRIME.setVisible(False)
 
+    global pl360AssemblyBinFile
     pl360AssemblyBinFile = pl360Component.createFileSymbol("PL360_ASSEMBLY_BIN", None)
     pl360AssemblyBinFile.setSourcePath("driver/pl360/src/bin/pl360_bin.S.ftl")
     pl360AssemblyBinFile.setOutputName("pl360_bin.S")
