@@ -49,6 +49,7 @@
 #include "driver/pl360/drv_pl360_hal.h"
 #include "driver/pl360/src/drv_pl360_boot.h"
 #include "driver/pl360/src/drv_pl360_local_comm.h"
+#include "src/drv_pl360_boot.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -74,13 +75,27 @@ static uintptr_t sDrvPL360BootContext;
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static void _DRV_PL360_BOOT_MemCpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, uint8_t len)
+static void _DRV_PL360_BOOT_Rev(uint8_t *pDataDst, uint8_t len)
 {
-    while(len--)
-    {
-        *pDataDst++ = *(pDataSrc + len + 1);
-        pDataSrc++;
-    }
+    uint8_t pTemp[16];
+
+	for (uint8_t idx = 0; idx < len; idx++) {
+		pTemp[idx] = pDataDst[15 - idx];
+	}
+
+	memcpy(pDataDst, pTemp, len);
+}
+
+static uint32_t _DRV_PL360_BOOT_CheckStatus(void)
+{
+    uint32_t regValue;
+
+    /* Send Start Decryption */
+	regValue = 0;
+    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_READ_BOOT_STATUS, 0, 4, 
+            (uint8_t *)&regValue, (uint8_t *)&regValue);
+    
+    return regValue;
 }
 
 static void _DRV_PL360_BOOT_GetSecureInfo(uint8_t *pData)
@@ -91,11 +106,70 @@ static void _DRV_PL360_BOOT_GetSecureInfo(uint8_t *pData)
     pData +=15;
     
     /* Get Initial Vector */
-    _DRV_PL360_BOOT_MemCpyRev(sDrvPL360BootInfo.secIV, pData, 16);
+    memcpy(sDrvPL360BootInfo.secIV, pData, 16);
+    _DRV_PL360_BOOT_Rev(sDrvPL360BootInfo.secIV, 16);
     pData +=16;
     
     /* Get Signature */
-    _DRV_PL360_BOOT_MemCpyRev(sDrvPL360BootInfo.secSN, pData, 16);
+    memcpy(sDrvPL360BootInfo.secSN, pData, 16);
+    _DRV_PL360_BOOT_Rev(sDrvPL360BootInfo.secSN, 16);
+}
+
+static void _DRV_PL360_BOOT_SetSecureInfo(void)
+{
+    uint32_t regValue;
+	uint8_t pValue[4];
+
+    /* Set number of packets */
+	regValue = (uint32_t)sDrvPL360BootInfo.secNumPackets - 1;
+	pValue[3] = (uint8_t)(regValue >> 24);
+	pValue[2] = (uint8_t)(regValue >> 16);
+	pValue[1] = (uint8_t)(regValue >> 8);
+	pValue[0] = (uint8_t)(regValue);
+    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_SET_DEC_NUM_PKTS, 0, 4, pValue, 
+            NULL);
+
+    /* Set Init Vector */
+    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_SET_DEC_INIT_VECT, 0, 16, 
+            sDrvPL360BootInfo.secIV, NULL);
+
+    /* Set Signature */
+    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_SET_DEC_SIGN, 0, 16, 
+            sDrvPL360BootInfo.secSN, NULL);
+    
+}
+
+uint8_t puc_bin[512];
+uint8_t puc_tmp[512];
+static void _DRV_PL360_BOOT_SartDecryption(void)
+{
+    uint32_t regValue;
+
+    /* Send Start Decryption */
+	regValue = 0;
+    sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_START_DECRYPT, 0, 4, 
+            (uint8_t *)&regValue, NULL);
+
+    /* Test Bootloader status : wait to AES block */
+    uint32_t ul_boot_dbg = _DRV_PL360_BOOT_CheckStatus();
+	while (ul_boot_dbg & PL360_FUSES_BOOT_ST_AES_ACT) 
+    {
+		regValue = 0xFFFF;
+        while(regValue--);
+        ul_boot_dbg = _DRV_PL360_BOOT_CheckStatus();
+	}
+    
+    /* Only for debug */
+	ul_boot_dbg = _DRV_PL360_BOOT_CheckStatus();
+	if (ul_boot_dbg & PL360_FUSES_BOOT_ST_SIGN_OK) {
+		printf("SIGNATURE OK.\r\n");
+	} else {
+		printf("Error in SIGNATURE.\r\n");
+	}
+
+	/* Read fw block data */
+	sDrvPL360HalObj->sendBootCmd(PL360_DRV_BOOT_CMD_READ_BUF, 0, 512, 
+            puc_tmp, puc_bin);
 }
 
 static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
@@ -295,6 +369,12 @@ void DRV_PL360_BOOT_Tasks( void )
         _DRV_PL360_BOOT_FirmwareUploadTask();
         if (sDrvPL360BootInfo.pendingLength == 0)
         {
+            /* Check Secure Mode */
+            if (sDrvPL360BootInfo.secure)
+            {   
+                _DRV_PL360_BOOT_SetSecureInfo();
+                _DRV_PL360_BOOT_SartDecryption();
+            }
             /* Complete firmware upload */
             sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_SWITCHING;
         }

@@ -112,7 +112,7 @@ extern "C" {
 #define DRV_PL360_PLC_PROFILE                   0
 #define DRV_PL360_SPI_CLK                       8000000
 
-#define DRV_PL360_SECURE                        false
+#define DRV_PL360_SECURE                        true
 
 /* PL360 Driver Identification */
 #define DRV_PL360_NUM_CARRIERS                  NUM_CARRIERS_CENELEC_A
