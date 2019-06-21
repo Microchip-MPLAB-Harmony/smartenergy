@@ -74,6 +74,30 @@ static uintptr_t sDrvPL360BootContext;
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
+static void _DRV_PL360_BOOT_MemCpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, uint8_t len)
+{
+    while(len--)
+    {
+        *pDataDst++ = *(pDataSrc + len + 1);
+        pDataSrc++;
+    }
+}
+
+static void _DRV_PL360_BOOT_GetSecureInfo(uint8_t *pData)
+{
+    /* Get Number of packets */
+    sDrvPL360BootInfo.secNumPackets = ((uint16_t)*pData++) << 8;
+    sDrvPL360BootInfo.secNumPackets += *pData;
+    pData +=15;
+    
+    /* Get Initial Vector */
+    _DRV_PL360_BOOT_MemCpyRev(sDrvPL360BootInfo.secIV, pData, 16);
+    pData +=16;
+    
+    /* Get Signature */
+    _DRV_PL360_BOOT_MemCpyRev(sDrvPL360BootInfo.secSN, pData, 16);
+}
+
 static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
 {
     uint8_t *pData;
@@ -86,12 +110,21 @@ static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
     
     if (sDrvPL360BootCb)
     {
-        uint32_t address;
-        
         /* Fragmented Bootloader from external interactions */
+        uint32_t address;
+                
         /* Call function to get the next fragment of boot data */
         sDrvPL360BootCb(&address, &fragSize, sDrvPL360BootContext);
         pData = (uint8_t *)address;
+        
+        /* Check Secure Mode */
+        if ((sDrvPL360BootInfo.secure) && (sDrvPL360BootInfo.secNumPackets == 0))
+        {
+            /* Catch meta-data from first fragment */
+            _DRV_PL360_BOOT_GetSecureInfo(pData);
+            pData += 48;
+            fragSize -= 48;
+        }
         
         if (fragSize)
         {
@@ -107,7 +140,6 @@ static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
     }
     else
     {
-        
         /* Bootloader from internal FLASH memory */
         pData = (uint8_t *)sDrvPL360BootInfo.pSrc;
 
@@ -118,6 +150,15 @@ static void _DRV_PL360_BOOT_FirmwareUploadTask(void)
             fragSize = sDrvPL360BootInfo.pendingLength;
             padding = fragSize % 4;
             fragSize += padding;
+        }
+        
+        /* Check Secure Mode */
+        if ((sDrvPL360BootInfo.secure) && (sDrvPL360BootInfo.secNumPackets == 0))
+        {
+            /* Catch meta-data from first fragment */
+            _DRV_PL360_BOOT_GetSecureInfo(pData);
+            pData += 48;
+            fragSize -= 48;
         }
 
         /* Write fragment data */
@@ -228,6 +269,7 @@ void DRV_PL360_BOOT_Start(void *pl360Drv)
     sDrvPL360HalObj = pl360DrvObj->pl360Hal;
     sDrvPL360BootInfo.secure = pl360DrvObj->secure;
     sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
+    sDrvPL360BootInfo.secNumPackets = 0;
     
     /* Set Bootloader data callback to handle boot by external fragments */
     if (pl360DrvObj->bootDataCallback)
@@ -237,11 +279,6 @@ void DRV_PL360_BOOT_Start(void *pl360Drv)
     }
 
     _DRV_PL360_BOOT_EnableBootCmd();
-    
-    if (sDrvPL360BootInfo.secure) {
-        /* Secure Mode : Set secure configuration and send encrypted binary file */
-        /* TBD */
-    }    
     
     sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_PROCESING;
 }
@@ -273,8 +310,6 @@ void DRV_PL360_BOOT_Tasks( void )
         /* Check firmware */
         if (_DRV_PL360_BOOT_CheckFirmware())
         {
-//            /* Configure 16 bits transfer */
-//            sDrvPL360HalObj->setup(true);
             /* Update boot status */
             sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_READY;
         }
@@ -310,6 +345,8 @@ void DRV_PL360_BOOT_Restart(bool update)
         sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
 
         _DRV_PL360_BOOT_EnableBootCmd();
+        
+        ////////////////////////// Forzar a la maquina de estados del bootloader a vovler a empezar. tener en cuenta si es binario externo!!!!!!!!
         
         while(sDrvPL360BootInfo.pendingLength)
         {

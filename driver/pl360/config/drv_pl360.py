@@ -128,11 +128,17 @@ def pl360ExternalInterruptTrigger(symbol, event):
     pl360ExtIntSource.setValue(intSrc, 1)
 
         
-def pl360SetMemoryDependency(symbol, event):
+def pl360EnableEncScript(symbol, event):
+    if (event["value"] == True):
+        symbol.setEnabled(True)
+    else:
+        symbol.setEnabled(False) 
+
+def pl360VisibleEncComment(symbol, event):
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False) 
+        symbol.setVisible(False)         
 		
 def instantiateComponent(pl360Component):  
 
@@ -220,7 +226,7 @@ def instantiateComponent(pl360Component):
 
     global pl360DMAChannelComment
     pl360DMAChannelComment = pl360Component.createCommentSymbol("DRV_PL360_DMA_CH_COMMENT", None)
-    pl360DMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.")
+    pl360DMAChannelComment.setLabel("***Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.***")
     pl360DMAChannelComment.setVisible(False)
 
     global pl360ExternalAddressing
@@ -247,11 +253,26 @@ def instantiateComponent(pl360Component):
     pl360SecureMode.setVisible(True)
     pl360SecureMode.setDefaultValue(False)
 
+    pl360SecureComment = pl360Component.createCommentSymbol("DRV_PL360_SECURE_COMMENT", None)
+    pl360SecureComment.setLabel("***Run encription script to get a secure binary file and replace the current non-secure file. Check bin folder.***")
+    pl360SecureComment.setVisible(False)
+    pl360SecureComment.setDependencies(pl360VisibleEncComment, ["DRV_PL360_SECURE_MODE"])
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
 
     configName = Variables.get("__CONFIGURATION_NAME")
+
+    pl360SecureScript = pl360Component.createFileSymbol("DRV_PL360_SECURE_SCRIPT", None)
+    pl360SecureScript.setSourcePath("driver/pl360/src/bin/pl360_encfile.py")
+    pl360SecureScript.setOutputName("pl360_encfile.py")
+    pl360SecureScript.setDestPath("driver/pl360/bin/")
+    pl360SecureScript.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SecureScript.setType("SOURCE")
+    pl360SecureScript.setEnabled(False)
+    pl360SecureScript.setDependencies(pl360EnableEncScript, ["DRV_PL360_SECURE_MODE"])
+
 
     pl360AsmPathSetting = pl360Component.createSettingSymbol("DRV_PL360_ASM_PATH_SETTING", None)
     pl360AsmPathSetting.setCategory("C32-AS")
