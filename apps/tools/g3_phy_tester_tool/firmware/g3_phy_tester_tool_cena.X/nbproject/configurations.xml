@@ -181,7 +181,6 @@
           <logicalFolder name="f6" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="pl360" projectFiles="true">
               <logicalFolder name="f1" displayName="bin" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/pl360_encfile.py</itemPath>
                 <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/PL360_G3_CENA.bin</itemPath>
                 <itemPath>../src/config/sam_e70_xpld_cena/driver/pl360/bin/pl360_bin.S</itemPath>
               </logicalFolder>
