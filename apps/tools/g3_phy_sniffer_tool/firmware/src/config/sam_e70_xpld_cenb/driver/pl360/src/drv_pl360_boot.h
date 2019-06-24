@@ -177,6 +177,9 @@ typedef struct
     uint32_t                   pendingLength;
     uint32_t                   pSrc;
     uint32_t                   pDst;
+    uint16_t                   secNumPackets;
+    uint8_t                    secIV[16];
+    uint8_t                    secSN[16];    
 } DRV_PL360_BOOT_INFO;
 
 // *****************************************************************************
