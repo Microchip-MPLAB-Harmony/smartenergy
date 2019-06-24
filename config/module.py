@@ -3,11 +3,18 @@ def loadModule():
 	print("Load Module: Harmony Smart Energy PLC")
 	
 	## External PHY PL360 Driver
-	drvExtPhyPl360Component = Module.CreateComponent("drvExtPhyPl360", "PL360", "/Harmony/Drivers/PLC", "driver/pl360/config/drv_pl360.py")
-	drvExtPhyPl360Component.addCapability("libdrvExtPhyPL360", "DRV_PLC")	
+	drvExtPhyPl360Component = Module.CreateComponent("drvExtPhyPl360", "PHY_PL360", "/Harmony/Drivers/PLC", "driver/pl360/config/drv_pl360.py")
+	drvExtPhyPl360Component.addCapability("libdrvExtPhyPL360", "DRV_PHY_PLC")	
 	drvExtPhyPl360Component.addDependency("drv_pl360_SPI_dependency", "SPI", False, True)
 	drvExtPhyPl360Component.addDependency("drv_pl360_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	drvExtPhyPl360Component.setDisplayType("PLC Driver")
+	drvExtPhyPl360Component.setDisplayType("PLC PHY Driver")
+	
+	## MAC Real Time PL360 Driver
+	drvMacRTPl360Component = Module.CreateComponent("drvMacRTPl360", "MAC_RT_PL360", "/Harmony/Drivers/PLC", "driver/pl360MacRt/config/drv_pl360_macrt.py")
+	drvMacRTPl360Component.addCapability("libdrvMacRTPl360", "DRV_MAC_RT_PLC")	
+	drvMacRTPl360Component.addDependency("drv_pl360_macrt_SPI_dependency", "SPI", False, True)
+	drvMacRTPl360Component.addDependency("drv_pl360_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+	drvMacRTPl360Component.setDisplayType("PLC MAC RT Driver")
 
 	## USI Service (Universal Synchronous Interface)
 	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/Libraries/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")

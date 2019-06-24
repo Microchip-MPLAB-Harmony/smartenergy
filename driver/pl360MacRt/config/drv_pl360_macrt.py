@@ -26,37 +26,37 @@
 #### Component ####
 ################################################################################
 def externalAddressingTrigger(symbol, event):
-    global pl360SourceBinFileG3CENA
-    global pl360SourceBinFileG3CENB
-    global pl360SourceBinFileG3FCC
-    global pl360SourceBinFilePRIME
+    global pl360MacRTSourceBinFileG3CENA
+    global pl360MacRTSourceBinFileG3CENB
+    global pl360MacRTSourceBinFileG3FCC
+#    global pl360MacRTSourceBinFilePRIME
     global pl360ExternalAddressing
     global pl360AssemblyBinFile
     if event["value"] == True:
         print("externalAddressingTrigger disable BIN files")
-        pl360SourceBinFileG3CENA.setEnabled(False)
-        pl360SourceBinFileG3CENB.setEnabled(False)
-        pl360SourceBinFileG3FCC.setEnabled(False)
-        pl360SourceBinFilePRIME.setEnabled(False)
+        pl360MacRTSourceBinFileG3CENA.setEnabled(False)
+        pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+        pl360MacRTSourceBinFileG3FCC.setEnabled(False)
+#        pl360MacRTSourceBinFilePRIME.setEnabled(False)
         pl360AssemblyBinFile.setEnabled(False)
     else:
         pl360AssemblyBinFile.setEnabled(True)
         prof = symbol.getValue()
         if(prof == 0):
             print("externalAddressingTrigger restore G3 CENA")
-            pl360SourceBinFileG3CENA.setEnabled(True)
+            pl360MacRTSourceBinFileG3CENA.setEnabled(True)
         elif(prof == 1):
             print("externalAddressingTrigger restore G3 CENB")
-            pl360SourceBinFileG3CENB.setEnabled(True)
+            pl360MacRTSourceBinFileG3CENB.setEnabled(True)
         elif(prof == 2):
             print("externalAddressingTrigger restore G3 FCC")
-            pl360SourceBinFileG3FCC.setEnabled(True)
+            pl360MacRTSourceBinFileG3FCC.setEnabled(True)
         elif(prof == 3):
             print("externalAddressingTrigger restore PRIME")
-            pl360SourceBinFilePRIME.setEnabled(True)
+#            pl360MacRTSourceBinFilePRIME.setEnabled(True)
         elif(prof == 4):
             print("externalAddressingTrigger restore G3 CENA (multi)")
-            pl360SourceBinFileG3CENA.setEnabled(True)
+            pl360MacRTSourceBinFileG3CENA.setEnabled(True)
 
 
 
@@ -64,60 +64,60 @@ def pl360ProfileConfiguration(symbol, event):
     global pl360ProfileFile
     global pl360ProfileDefFile
     global pl360ProfileHeaderLocalFile
-    global pl360SourceBinFileG3CENA
-    global pl360SourceBinFileG3CENB
-    global pl360SourceBinFileG3FCC
-    global pl360SourceBinFilePRIME
+    global pl360MacRTSourceBinFileG3CENA
+    global pl360MacRTSourceBinFileG3CENB
+    global pl360MacRTSourceBinFileG3FCC
+#    global pl360MacRTSourceBinFilePRIME
     global pl360ExternalAddressing
     global pl360AssemblyBinFile
     if (event["symbol"].getKeyDescription(event["value"]) == "PRIME"):
-        pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_prime.c")
-        pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_prime.h")
-        pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_prime.h")
-        pl360SourceBinFileG3CENA.setEnabled(False)
-        pl360SourceBinFileG3CENB.setEnabled(False)
-        pl360SourceBinFileG3FCC.setEnabled(False)
+        pl360ProfileFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_prime.c")
+        pl360ProfileDefFile.setSourcePath("driver/pl360MacRt/drv_pl360_macrt_prime.h")
+        pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_local_prime.h")
+        pl360MacRTSourceBinFileG3CENA.setEnabled(False)
+        pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+        pl360MacRTSourceBinFileG3FCC.setEnabled(False)
         if (pl360ExternalAddressing.getValue() == False):
             print("pl360ProfileConfiguration update PRIME files")
-            pl360SourceBinFilePRIME.setEnabled(True)
+#            pl360MacRTSourceBinFilePRIME.setEnabled(True)
             pl360AssemblyBinFile.setEnabled(True)
         else:
-            pl360SourceBinFilePRIME.setEnabled(False)
+#            pl360MacRTSourceBinFilePRIME.setEnabled(False)
             pl360AssemblyBinFile.setEnabled(False)
             print("pl360ProfileConfiguration update no bin files (PRIME)")
 
     else:
-        pl360SourceBinFilePRIME.setEnabled(False)
-        pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_g3.c")
-        pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_g3.h")
-        pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_g3.h")
+#        pl360MacRTSourceBinFilePRIME.setEnabled(False)
+        pl360ProfileFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_g3.c")
+        pl360ProfileDefFile.setSourcePath("driver/pl360MacRt/drv_pl360_macrt_g3.h")
+        pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_local_g3.h")
         if (pl360ExternalAddressing.getValue() == False):
             pl360AssemblyBinFile.setEnabled(True)
             if (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_A"):            
-                pl360SourceBinFileG3CENA.setEnabled(True)
-                pl360SourceBinFileG3CENB.setEnabled(False)
-                pl360SourceBinFileG3FCC.setEnabled(False)
+                pl360MacRTSourceBinFileG3CENA.setEnabled(True)
+                pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+                pl360MacRTSourceBinFileG3FCC.setEnabled(False)
                 print("pl360ProfileConfiguration update G3 CEN A files")
             elif (event["symbol"].getKeyDescription(event["value"]) == "G3_CEN_B"):           
-                pl360SourceBinFileG3CENA.setEnabled(False)
-                pl360SourceBinFileG3CENB.setEnabled(True)
-                pl360SourceBinFileG3FCC.setEnabled(False)
+                pl360MacRTSourceBinFileG3CENA.setEnabled(False)
+                pl360MacRTSourceBinFileG3CENB.setEnabled(True)
+                pl360MacRTSourceBinFileG3FCC.setEnabled(False)
                 print("pl360ProfileConfiguration update G3 CEN B files")
             elif (event["symbol"].getKeyDescription(event["value"]) == "G3_FCC"):           
-                pl360SourceBinFileG3CENA.setEnabled(False)
-                pl360SourceBinFileG3CENB.setEnabled(False)
-                pl360SourceBinFileG3FCC.setEnabled(True)
+                pl360MacRTSourceBinFileG3CENA.setEnabled(False)
+                pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+                pl360MacRTSourceBinFileG3FCC.setEnabled(True)
                 print("pl360ProfileConfiguration update G3 FCC files")
             else:           
-                pl360SourceBinFileG3CENA.setEnabled(True)
-                pl360SourceBinFileG3CENB.setEnabled(False)
-                pl360SourceBinFileG3FCC.setEnabled(True)
+                pl360MacRTSourceBinFileG3CENA.setEnabled(True)
+                pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+                pl360MacRTSourceBinFileG3FCC.setEnabled(True)
                 print("pl360ProfileConfiguration update G3 CEN A nd FCC files")
         else:
             print("pl360ProfileConfiguration update no bin files (G3)")
-            pl360SourceBinFileG3CENA.setEnabled(False)
-            pl360SourceBinFileG3CENB.setEnabled(False)
-            pl360SourceBinFileG3FCC.setEnabled(False)
+            pl360MacRTSourceBinFileG3CENA.setEnabled(False)
+            pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+            pl360MacRTSourceBinFileG3FCC.setEnabled(False)
             pl360AssemblyBinFile.setEnabled(False)
 
 def pl360ExternalInterruptTrigger(symbol, event):
@@ -150,7 +150,7 @@ def instantiateComponent(pl360Component):
     # Enable "Generate Harmony System Service Common Files" option in MHC
     Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
     
-    pl360SymNumInst = pl360Component.createIntegerSymbol("DRV_PL360_NUM_INSTANCES", None)
+    pl360SymNumInst = pl360Component.createIntegerSymbol("DRV_PL360_MACRT_NUM_INSTANCES", None)
     pl360SymNumInst.setLabel("Number of Instances")
     pl360SymNumInst.setVisible(False)
     pl360SymNumInst.setDefaultValue(1)
@@ -159,7 +159,7 @@ def instantiateComponent(pl360Component):
     pl360PLIB.setLabel("PLIB Used")
     pl360PLIB.setReadOnly(True)
     
-    pl360SymNumClients = pl360Component.createIntegerSymbol("DRV_PL360_NUM_CLIENTS", None)
+    pl360SymNumClients = pl360Component.createIntegerSymbol("DRV_PL360_MACRT_NUM_CLIENTS", None)
     pl360SymNumClients.setLabel("Number of Clients")
     pl360SymNumClients.setReadOnly(True)
     pl360SymNumClients.setDefaultValue(1)
@@ -236,12 +236,12 @@ def instantiateComponent(pl360Component):
     pl360ExternalAddressing.setDefaultValue(False)
 
     global pl360Profile
-    pl360Profile = pl360Component.createKeyValueSetSymbol("DRV_PL360_PLC_PROFILE", None)
+    pl360Profile = pl360Component.createKeyValueSetSymbol("DRV_PL360_MACRT_PLC_PROFILE", None)
     pl360Profile.setLabel("Select PLC Profile")
     pl360Profile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pl360Profile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pl360Profile.addKey("G3_FCC", "2", "G3_FCC")
-    pl360Profile.addKey("PRIME", "4", "PRIME")
+#    pl360Profile.addKey("PRIME", "4", "PRIME")
     pl360Profile.addKey("G3_MULTIBAND", "5", "G3_MULTIBAND")
     pl360Profile.setDisplayMode("Description")
     pl360Profile.setOutputMode("Value")
@@ -265,10 +265,10 @@ def instantiateComponent(pl360Component):
     configName = Variables.get("__CONFIGURATION_NAME")
 
     pl360SecureScript = pl360Component.createFileSymbol("DRV_PL360_SECURE_SCRIPT", None)
-    pl360SecureScript.setSourcePath("driver/pl360/src/bin/pl360_encfile.py")
+    pl360SecureScript.setSourcePath("driver/pl360MacRt/src/bin/pl360_encfile.py")
     pl360SecureScript.setOutputName("pl360_encfile.py")
-    pl360SecureScript.setDestPath("driver/pl360/bin/")
-    pl360SecureScript.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360SecureScript.setDestPath("driver/pl360MacRt/bin/")
+    pl360SecureScript.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
     pl360SecureScript.setType("SOURCE")
     pl360SecureScript.setEnabled(False)
     pl360SecureScript.setDependencies(pl360EnableEncScript, ["DRV_PL360_SECURE_MODE"])
@@ -277,175 +277,175 @@ def instantiateComponent(pl360Component):
     pl360AsmPathSetting = pl360Component.createSettingSymbol("DRV_PL360_ASM_PATH_SETTING", None)
     pl360AsmPathSetting.setCategory("C32-AS")
     pl360AsmPathSetting.setKey("extra-include-directories-for-assembler")
-    pl360AsmPathSetting.setValue("../src/config/" + configName + "/driver/pl360/bin")
+    pl360AsmPathSetting.setValue("../src/config/" + configName + "/driver/pl360MacRt/bin")
     pl360AsmPathSetting.setAppend(True, ";")
 
     pl360HeaderFile = pl360Component.createFileSymbol("PL360_HEADER", None)
-    pl360HeaderFile.setSourcePath("driver/pl360/drv_pl360.h")
-    pl360HeaderFile.setOutputName("drv_pl360.h")
-    pl360HeaderFile.setDestPath("driver/pl360/")
-    pl360HeaderFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360HeaderFile.setSourcePath("driver/pl360MacRt/drv_pl360_macrt.h")
+    pl360HeaderFile.setOutputName("drv_pl360_macrt.h")
+    pl360HeaderFile.setDestPath("driver/pl360MacRt/")
+    pl360HeaderFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360HeaderFile.setType("HEADER")
 
-    pl360SymHeaderDefFile = pl360Component.createFileSymbol("DRV_PL360_DEF", None)
-    pl360SymHeaderDefFile.setSourcePath("driver/pl360/drv_pl360_definitions.h")
-    pl360SymHeaderDefFile.setOutputName("drv_pl360_definitions.h")
-    pl360SymHeaderDefFile.setDestPath("driver/pl360")
-    pl360SymHeaderDefFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360SymHeaderDefFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_DEF", None)
+    pl360SymHeaderDefFile.setSourcePath("driver/pl360MacRt/drv_pl360_macrt_definitions.h")
+    pl360SymHeaderDefFile.setOutputName("drv_pl360_macrt_definitions.h")
+    pl360SymHeaderDefFile.setDestPath("driver/pl360MacRt")
+    pl360SymHeaderDefFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360SymHeaderDefFile.setType("HEADER")
 
     global pl360ProfileFile
-    pl360ProfileFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE", None)
-    pl360ProfileFile.setSourcePath("driver/pl360/src/drv_pl360_g3.c")
-    pl360ProfileFile.setOutputName("drv_pl360_comm.c")
-    pl360ProfileFile.setDestPath("driver/pl360")
-    pl360ProfileFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360ProfileFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_PROFILE", None)
+    pl360ProfileFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_g3.c")
+    pl360ProfileFile.setOutputName("drv_pl360_macrt_comm.c")
+    pl360ProfileFile.setDestPath("driver/pl360MacRt")
+    pl360ProfileFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360ProfileFile.setType("SOURCE")
-    pl360ProfileFile.setDependencies(pl360ProfileConfiguration, ["DRV_PL360_PLC_PROFILE"])
+    pl360ProfileFile.setDependencies(pl360ProfileConfiguration, ["DRV_PL360_MACRT_PLC_PROFILE"])
 
     global pl360ProfileDefFile
-    pl360ProfileDefFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE_DEF", None)
-    pl360ProfileDefFile.setSourcePath("driver/pl360/drv_pl360_g3.h")
-    pl360ProfileDefFile.setOutputName("drv_pl360_comm.h")
-    pl360ProfileDefFile.setDestPath("driver/pl360")
-    pl360ProfileDefFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360ProfileDefFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_PROFILE_DEF", None)
+    pl360ProfileDefFile.setSourcePath("driver/pl360MacRt/drv_pl360_macrt_g3.h")
+    pl360ProfileDefFile.setOutputName("drv_pl360_macrt_comm.h")
+    pl360ProfileDefFile.setDestPath("driver/pl360MacRt")
+    pl360ProfileDefFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360ProfileDefFile.setType("HEADER")
 
-    pl360SourceFile = pl360Component.createFileSymbol("PL360_SOURCE", None)
-    pl360SourceFile.setSourcePath("driver/pl360/src/drv_pl360.c")
-    pl360SourceFile.setOutputName("drv_pl360.c")
-    pl360SourceFile.setDestPath("driver/pl360/")
-    pl360SourceFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360SourceFile = pl360Component.createFileSymbol("PL360_MACRT_SOURCE", None)
+    pl360SourceFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt.c")
+    pl360SourceFile.setOutputName("drv_pl360_macrt.c")
+    pl360SourceFile.setDestPath("driver/pl360MacRt/")
+    pl360SourceFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360SourceFile.setType("SOURCE")
 
-    global pl360SourceBinFileG3CENA
-    pl360SourceBinFileG3CENA = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENA", None)
-    pl360SourceBinFileG3CENA.setSourcePath("driver/pl360/src/bin/PL360_G3_CENA.bin")
-    pl360SourceBinFileG3CENA.setOutputName("PL360_G3_CENA.bin")
-    pl360SourceBinFileG3CENA.setDestPath("driver/pl360/bin/")
-    pl360SourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/pl360/bin/")
-    pl360SourceBinFileG3CENA.setType("SOURCE")
-    pl360SourceBinFileG3CENA.setEnabled(True)
-    pl360SourceBinFileG3CENA.setVisible(False)
+    global pl360MacRTSourceBinFileG3CENA
+    pl360MacRTSourceBinFileG3CENA = pl360Component.createFileSymbol("PL360_MACRT_SOURCE_BIN_G3_CENA", None)
+    pl360MacRTSourceBinFileG3CENA.setSourcePath("driver/pl360MacRt/src/bin/PL360_G3_MAC_RT_CENA.bin")
+    pl360MacRTSourceBinFileG3CENA.setOutputName("PL360_G3_MAC_RT_CENA.bin")
+    pl360MacRTSourceBinFileG3CENA.setDestPath("driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3CENA.setType("SOURCE")
+    pl360MacRTSourceBinFileG3CENA.setEnabled(True)
+    pl360MacRTSourceBinFileG3CENA.setVisible(False)
 
-    global pl360SourceBinFileG3CENB
-    pl360SourceBinFileG3CENB = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_CENB", None)
-    pl360SourceBinFileG3CENB.setSourcePath("driver/pl360/src/bin/PL360_G3_CENB.bin")
-    pl360SourceBinFileG3CENB.setOutputName("PL360_G3_CENB.bin")
-    pl360SourceBinFileG3CENB.setDestPath("driver/pl360/bin/")
-    pl360SourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/pl360/bin/")
-    pl360SourceBinFileG3CENB.setType("SOURCE")
-    pl360SourceBinFileG3CENB.setEnabled(False)
-    pl360SourceBinFileG3CENB.setVisible(False)
+    global pl360MacRTSourceBinFileG3CENB
+    pl360MacRTSourceBinFileG3CENB = pl360Component.createFileSymbol("PL360_MACRT_SOURCE_BIN_G3_CENB", None)
+    pl360MacRTSourceBinFileG3CENB.setSourcePath("driver/pl360MacRt/src/bin/PL360_G3_MAC_RT_CENB.bin")
+    pl360MacRTSourceBinFileG3CENB.setOutputName("PL360_G3_MAC_RT_CENB.bin")
+    pl360MacRTSourceBinFileG3CENB.setDestPath("driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3CENB.setType("SOURCE")
+    pl360MacRTSourceBinFileG3CENB.setEnabled(False)
+    pl360MacRTSourceBinFileG3CENB.setVisible(False)
 
-    global pl360SourceBinFileG3FCC
-    pl360SourceBinFileG3FCC = pl360Component.createFileSymbol("PL360_SOURCE_BIN_G3_FCC", None)
-    pl360SourceBinFileG3FCC.setSourcePath("driver/pl360/src/bin/PL360_G3_FCC.bin")
-    pl360SourceBinFileG3FCC.setOutputName("PL360_G3_FCC.bin")
-    pl360SourceBinFileG3FCC.setDestPath("driver/pl360/bin/")
-    pl360SourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/pl360/bin/")
-    pl360SourceBinFileG3FCC.setType("SOURCE")
-    pl360SourceBinFileG3FCC.setEnabled(False)
-    pl360SourceBinFileG3FCC.setVisible(False)
+    global pl360MacRTSourceBinFileG3FCC
+    pl360MacRTSourceBinFileG3FCC = pl360Component.createFileSymbol("PL360_MACRT_SOURCE_BIN_G3_FCC", None)
+    pl360MacRTSourceBinFileG3FCC.setSourcePath("driver/pl360MacRt/src/bin/PL360_G3_MAC_RT_FCC.bin")
+    pl360MacRTSourceBinFileG3FCC.setOutputName("PL360_G3_MAC_RT_FCC.bin")
+    pl360MacRTSourceBinFileG3FCC.setDestPath("driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
+    pl360MacRTSourceBinFileG3FCC.setType("SOURCE")
+    pl360MacRTSourceBinFileG3FCC.setEnabled(False)
+    pl360MacRTSourceBinFileG3FCC.setVisible(False)
 
-    global pl360SourceBinFilePRIME
-    pl360SourceBinFilePRIME = pl360Component.createFileSymbol("PL360_SOURCE_BIN_PRIME", None)
-    pl360SourceBinFilePRIME.setSourcePath("driver/pl360/src/bin/PL360_PRIME.bin")
-    pl360SourceBinFilePRIME.setOutputName("PL360_PRIME.bin")
-    pl360SourceBinFilePRIME.setDestPath("driver/pl360/bin/")
-    pl360SourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/pl360/bin/")
-    pl360SourceBinFilePRIME.setType("SOURCE")
-    pl360SourceBinFilePRIME.setEnabled(False)
-    pl360SourceBinFilePRIME.setVisible(False)
+    # global pl360MacRTSourceBinFilePRIME
+    # pl360MacRTSourceBinFilePRIME = pl360Component.createFileSymbol("PL360_MACRT_SOURCE_BIN_PRIME", None)
+    # pl360MacRTSourceBinFilePRIME.setSourcePath("driver/pl360MacRt/src/bin/PL360_PRIME_MAC_RT.bin")
+    # pl360MacRTSourceBinFilePRIME.setOutputName("PL360_PRIME_MAC_RT.bin")
+    # pl360MacRTSourceBinFilePRIME.setDestPath("driver/pl360MacRt/bin/")
+    # pl360MacRTSourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
+    # pl360MacRTSourceBinFilePRIME.setType("SOURCE")
+    # pl360MacRTSourceBinFilePRIME.setEnabled(False)
+    # pl360MacRTSourceBinFilePRIME.setVisible(False)
 
     global pl360AssemblyBinFile
     pl360AssemblyBinFile = pl360Component.createFileSymbol("PL360_ASSEMBLY_BIN", None)
-    pl360AssemblyBinFile.setSourcePath("driver/pl360/src/bin/pl360_bin.S.ftl")
+    pl360AssemblyBinFile.setSourcePath("driver/pl360MacRt/src/bin/pl360_macrt_bin.S.ftl")
     pl360AssemblyBinFile.setOutputName("pl360_bin.S")
-    pl360AssemblyBinFile.setDestPath("driver/pl360/bin/")
-    pl360AssemblyBinFile.setProjectPath("config/" + configName + "/driver/pl360/bin/")
+    pl360AssemblyBinFile.setDestPath("driver/pl360MacRt/bin/")
+    pl360AssemblyBinFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/bin/")
     pl360AssemblyBinFile.setType("SOURCE")
     pl360AssemblyBinFile.setMarkup(True)
 
     pl360BootFile = pl360Component.createFileSymbol("PL360_BOOT", None)
-    pl360BootFile.setSourcePath("driver/pl360/src/drv_pl360_boot.c")
+    pl360BootFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_boot.c")
     pl360BootFile.setOutputName("drv_pl360_boot.c")
-    pl360BootFile.setDestPath("driver/pl360/")
-    pl360BootFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360BootFile.setDestPath("driver/pl360MacRt/")
+    pl360BootFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360BootFile.setType("SOURCE")
 
     pl360BootHeaderFile = pl360Component.createFileSymbol("PL360_BOOT_HEADER", None)
-    pl360BootHeaderFile.setSourcePath("driver/pl360/src/drv_pl360_boot.h")
+    pl360BootHeaderFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_boot.h")
     pl360BootHeaderFile.setOutputName("drv_pl360_boot.h")
-    pl360BootHeaderFile.setDestPath("driver/pl360/src")
-    pl360BootHeaderFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360BootHeaderFile.setDestPath("driver/pl360MacRt/src")
+    pl360BootHeaderFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360BootHeaderFile.setType("SOURCE")
 
     pl360HalFile = pl360Component.createFileSymbol("PL360_HAL", None)
-    pl360HalFile.setSourcePath("driver/pl360/src/drv_pl360_hal.c")
+    pl360HalFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_hal.c")
     pl360HalFile.setOutputName("drv_pl360_hal.c")
-    pl360HalFile.setDestPath("driver/pl360/")
-    pl360HalFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360HalFile.setDestPath("driver/pl360MacRt/")
+    pl360HalFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360HalFile.setType("SOURCE")
 
     pl360HalHeaderFile = pl360Component.createFileSymbol("PL360_HAL_HEADER", None)
-    pl360HalHeaderFile.setSourcePath("driver/pl360/drv_pl360_hal.h")
+    pl360HalHeaderFile.setSourcePath("driver/pl360MacRt/drv_pl360_hal.h")
     pl360HalHeaderFile.setOutputName("drv_pl360_hal.h")
-    pl360HalHeaderFile.setDestPath("driver/pl360/")
-    pl360HalHeaderFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360HalHeaderFile.setDestPath("driver/pl360MacRt/")
+    pl360HalHeaderFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360HalHeaderFile.setType("HEADER")
 
-    pl360HeaderLocalFile = pl360Component.createFileSymbol("DRV_PL360_HEADER_LOCAL", None)
-    pl360HeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local.h")
-    pl360HeaderLocalFile.setOutputName("drv_pl360_local.h")
-    pl360HeaderLocalFile.setDestPath("driver/pl360/src")
-    pl360HeaderLocalFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360HeaderLocalFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_HEADER_LOCAL", None)
+    pl360HeaderLocalFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_local.h")
+    pl360HeaderLocalFile.setOutputName("drv_pl360_macrt_local.h")
+    pl360HeaderLocalFile.setDestPath("driver/pl360MacRt/src")
+    pl360HeaderLocalFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360HeaderLocalFile.setType("SOURCE")
     pl360HeaderLocalFile.setEnabled(True)
 
     global pl360ProfileHeaderLocalFile
-    pl360ProfileHeaderLocalFile = pl360Component.createFileSymbol("DRV_PL360_PROFILE_LOCAL", None)
-    pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360/src/drv_pl360_local_g3.h")
-    pl360ProfileHeaderLocalFile.setOutputName("drv_pl360_local_comm.h")
-    pl360ProfileHeaderLocalFile.setDestPath("driver/pl360/src")
-    pl360ProfileHeaderLocalFile.setProjectPath("config/" + configName + "/driver/pl360/")
+    pl360ProfileHeaderLocalFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_PROFILE_LOCAL", None)
+    pl360ProfileHeaderLocalFile.setSourcePath("driver/pl360MacRt/src/drv_pl360_macrt_local_g3.h")
+    pl360ProfileHeaderLocalFile.setOutputName("drv_pl360_macrt_local_comm.h")
+    pl360ProfileHeaderLocalFile.setDestPath("driver/pl360MacRt/src")
+    pl360ProfileHeaderLocalFile.setProjectPath("config/" + configName + "/driver/pl360MacRt/")
     pl360ProfileHeaderLocalFile.setType("SOURCE")
     pl360ProfileHeaderLocalFile.setEnabled(True)
 
-    pl360SystemDefFile = pl360Component.createFileSymbol("PL360_DEF", None)
+    pl360SystemDefFile = pl360Component.createFileSymbol("PL360_MACRT_DEF", None)
     pl360SystemDefFile.setType("STRING")
     pl360SystemDefFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
-    pl360SystemDefFile.setSourcePath("driver/pl360/templates/system/definitions.h.ftl")
+    pl360SystemDefFile.setSourcePath("driver/pl360MacRt/templates/system/definitions.h.ftl")
     pl360SystemDefFile.setMarkup(True)
 
-    pl360SymSystemDefObjFile = pl360Component.createFileSymbol("DRV_PL360_SYSTEM_DEF_OBJECT", None)
+    pl360SymSystemDefObjFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_SYSTEM_DEF_OBJECT", None)
     pl360SymSystemDefObjFile.setType("STRING")
     pl360SymSystemDefObjFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_OBJECTS")
-    pl360SymSystemDefObjFile.setSourcePath("driver/pl360/templates/system/definitions_objects.h.ftl")
+    pl360SymSystemDefObjFile.setSourcePath("driver/pl360MacRt/templates/system/definitions_objects.h.ftl")
     pl360SymSystemDefObjFile.setMarkup(True)
 
-    pl360SymSystemConfigFile = pl360Component.createFileSymbol("DRV_PL360_CONFIGIRUTION", None)
+    pl360SymSystemConfigFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_CONFIGIRUTION", None)
     pl360SymSystemConfigFile.setType("STRING")
     pl360SymSystemConfigFile.setOutputName("core.LIST_SYSTEM_CONFIG_H_DRIVER_CONFIGURATION")
-    pl360SymSystemConfigFile.setSourcePath("driver/pl360/templates/system/configuration.h.ftl")
+    pl360SymSystemConfigFile.setSourcePath("driver/pl360MacRt/templates/system/configuration.h.ftl")
     pl360SymSystemConfigFile.setMarkup(True)
 
-    pl360SymSystemInitDataFile = pl360Component.createFileSymbol("DRV_PL360_INIT_DATA", None)
+    pl360SymSystemInitDataFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_INIT_DATA", None)
     pl360SymSystemInitDataFile.setType("STRING")
     pl360SymSystemInitDataFile.setOutputName("core.LIST_SYSTEM_INIT_C_DRIVER_INITIALIZATION_DATA")
-    pl360SymSystemInitDataFile.setSourcePath("driver/pl360/templates/system/initialize_data.c.ftl")
+    pl360SymSystemInitDataFile.setSourcePath("driver/pl360MacRt/templates/system/initialize_data.c.ftl")
     pl360SymSystemInitDataFile.setMarkup(True)
 
-    pl360SystemInitFile = pl360Component.createFileSymbol("PL360_INIT", None)
+    pl360SystemInitFile = pl360Component.createFileSymbol("PL360_MACRT_INIT", None)
     pl360SystemInitFile.setType("STRING")
     pl360SystemInitFile.setOutputName("core.LIST_SYSTEM_INIT_C_SYS_INITIALIZE_DRIVERS")
-    pl360SystemInitFile.setSourcePath("driver/pl360/templates/system/initialize.c.ftl")
+    pl360SystemInitFile.setSourcePath("driver/pl360MacRt/templates/system/initialize.c.ftl")
     pl360SystemInitFile.setMarkup(True)
 
-    pl360SystemTasksFile = pl360Component.createFileSymbol("DRV_PL360_SYS_TASK", None)
+    pl360SystemTasksFile = pl360Component.createFileSymbol("DRV_PL360_MACRT_SYS_TASK", None)
     pl360SystemTasksFile.setType("STRING")
     pl360SystemTasksFile.setOutputName("core.LIST_SYSTEM_TASKS_C_CALL_DRIVER_TASKS")
-    pl360SystemTasksFile.setSourcePath("driver/pl360/templates/system/system_tasks.c.ftl")
+    pl360SystemTasksFile.setSourcePath("driver/pl360MacRt/templates/system/system_tasks.c.ftl")
     pl360SystemTasksFile.setMarkup(True)
 
 ################################################################################
@@ -469,8 +469,8 @@ def onAttachmentConnected(source, target):
     dmaTxChannelID = "DMA_CH_FOR_" + pl360PlibId + "_Transmit"
     dmaRxChannelID = "DMA_CH_FOR_" + pl360PlibId + "_Receive"
 
-    if connectID == "drv_pl360_SPI_dependency" :
-        print("drv_pl360_SPI_dependency")
+    if connectID == "drv_pl360_macrt_SPI_dependency" :
+        print("drv_pl360_macrt_SPI_dependency")
         plibUsed = localComponent.getSymbolByID("DRV_PL360_PLIB")
         plibUsed.clearValue()
         plibUsed.setValue(pl360PlibId, 1)
@@ -526,7 +526,7 @@ def onAttachmentDisconnected(source, target):
     dmaTxChannelID = "DMA_CH_FOR_" + pl360PlibId + "_Transmit"
     dmaRxChannelID = "DMA_CH_FOR_" + pl360PlibId + "_Receive"
 
-    if connectID == "drv_pl360_SPI_dependency":
+    if connectID == "drv_pl360_macrt_SPI_dependency":
         plibUsed = localComponent.getSymbolByID("DRV_PL360_PLIB")
         plibUsed.clearValue()
         Database.setSymbolValue(pl360PlibId, "SPI_DRIVER_CONTROLLED", False, 1)
