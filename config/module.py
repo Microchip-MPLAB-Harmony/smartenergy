@@ -9,12 +9,12 @@ def loadModule():
 	drvExtPhyPl360Component.addDependency("drv_pl360_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
 	drvExtPhyPl360Component.setDisplayType("PLC PHY Driver")
 	
-	## MAC Real Time PL360 Driver
-	drvMacRTPl360Component = Module.CreateComponent("drvMacRTPl360", "MAC_RT_PL360", "/Harmony/Drivers/PLC", "driver/pl360MacRt/config/drv_pl360_macrt.py")
-	drvMacRTPl360Component.addCapability("libdrvMacRTPl360", "DRV_MAC_RT_PLC")	
-	drvMacRTPl360Component.addDependency("drv_pl360_macrt_SPI_dependency", "SPI", False, True)
-	drvMacRTPl360Component.addDependency("drv_pl360_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	drvMacRTPl360Component.setDisplayType("PLC MAC RT Driver")
+	## G3 MAC RT Driver
+	drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3_MAC_RT", "/Harmony/Drivers/PLC", "driver/g3MacRt/config/drv_g3_macrt.py")
+	drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT")	
+	drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
+	drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+	drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
 
 	## USI Service (Universal Synchronous Interface)
 	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/Libraries/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")

@@ -1,14 +1,14 @@
 /*******************************************************************************
-  PL360 Driver Local Data Structures
+  PL360 MAC RT Driver Local Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_local.h
+    drv_pl360_macrt_local.h
 
   Summary:
-    PL360 Driver Local Data Structures
+    PL360 MAC RT Driver Local Data Structures
 
   Description:
     Driver Local Data Structures
@@ -39,8 +39,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_PL360_LOCAL_H
-#define _DRV_PL360_LOCAL_H
+#ifndef _DRV_PL360_MACRT_LOCAL_H
+#define _DRV_PL360_MACRT_LOCAL_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,13 +59,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-/* DRV_PL360 Command set
+/* DRV_PL360_MACRT Command set
 
   Summary:
-    Enumeration listing the DRV_PL360 commands.
+    Enumeration listing the DRV_PL360_MACRT commands.
 
   Description:
-    This enumeration defines the commands used to interact with the DRV_PL360
+    This enumeration defines the commands used to interact with the DRV_PL360_MACRT
     series of devices.
 
   Remarks:
@@ -75,21 +75,21 @@
 typedef enum
 {
     /* Write command */
-    DRV_PL360_CMD_WRITE              = (1 << 10),
+    DRV_PL360_MACRT_CMD_WRITE              = (1 << 10),
 
     /* Read command */
-    DRV_PL360_CMD_READ               = (0 << 10)
+    DRV_PL360_MACRT_CMD_READ               = (0 << 10)
 
-} DRV_PL360_CMD;
+} DRV_PL360_MACRT_CMD;
 
 // *****************************************************************************
-/* DRV_PL360 Transfer Object State
+/* DRV_PL360_MACRT Transfer Object State
 
   Summary:
-    Defines the status of the DRV_PL360 Transfer Object.
+    Defines the status of the DRV_PL360_MACRT Transfer Object.
 
   Description:
-    This enumeration defines the status of the DRV_PL360 Transfer Object.
+    This enumeration defines the status of the DRV_PL360_MACRT Transfer Object.
 
   Remarks:
     None.
@@ -97,11 +97,11 @@ typedef enum
 
 typedef enum
 {
-    DRV_PL360_STATE_IDLE,
-    DRV_PL360_STATE_TX,
-    DRV_PL360_STATE_WAITING_TX_CFM,
-    DRV_PL360_STATE_ERROR,
-}DRV_PL360_STATE;
+    DRV_PL360_MACRT_STATE_IDLE,
+    DRV_PL360_MACRT_STATE_TX,
+    DRV_PL360_MACRT_STATE_WAITING_TX_CFM,
+    DRV_PL360_MACRT_STATE_ERROR,
+}DRV_PL360_MACRT_STATE;
 
 // *****************************************************************************
 /* PL360 Driver Instance Object
@@ -119,74 +119,96 @@ typedef enum
 typedef struct
 {
     /* Flag to indicate this object is in use  */
-    bool                            inUse;
+    bool                                      inUse;
 
-    DRV_PL360_STATE                 state;
+    /* State of the MAC RT driver */
+    DRV_PL360_MACRT_STATE                     state;
 
     /* Keep track of the number of clients that have opened this driver */
-    size_t                          nClients;
+    size_t                                    nClients;
 
     /* Maximum number of clients */
-    size_t                          nClientsMax;
+    size_t                                    nClientsMax;
 
     /* The status of the driver */
-    SYS_STATUS                      status;
+    SYS_STATUS                                status;
 
     /* HAL API list that will be used by the driver to access the hardware */
-    DRV_PL360_HAL_INTERFACE        *pl360Hal;
+    DRV_PL360_HAL_INTERFACE                   *pl360Hal;
 
     /* PLC Profile */
-    uint8_t                         plcProfile;
+    uint8_t                                   plcProfile;
 
+    /* PLC Specification Compliance */
+    uint8_t                                   plcSpecification;
+    
     /* Size (in Bytes) of the PLC binary file */
-    uint32_t                        binSize;
+    uint32_t                                  binSize;
 
     /* Address where PLC binary file is located */
-    uint32_t                        binStartAddress;
+    uint32_t                                  binStartAddress;
 
     /* Secure mode */
-    bool                            secure;
+    bool                                      secure;
 
-    /* Application Data Confirm Callback */
-    DRV_PL360_DATA_CFM_CALLBACK     dataCfmCallback;
+    /* Application Transmission Confirm Callback */
+    DRV_PL360_MACRT_TX_CFM_CALLBACK           txCfmCallback;
 
     /* Application Data Indication Callback */
-    DRV_PL360_DATA_IND_CALLBACK     dataIndCallback;
+    DRV_PL360_MACRT_DATA_IND_CALLBACK         dataIndCallback;
+
+    /* Application MLME Get Confirm Callback */
+    DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK     mlmeGetCfmcallback;
 
     /* Application Exception Callback */
-    DRV_PL360_EXCEPTION_CALLBACK    exceptionCallback;
+    DRV_PL360_MACRT_EXCEPTION_CALLBACK        exceptionCallback;
 
     /* Application Bootloader Data Callback */
-    DRV_PL360_BOOT_DATA_CALLBACK    bootDataCallback;
+    DRV_PL360_MACRT_BOOT_DATA_CALLBACK        bootDataCallback;
 
-    /* Application context for Data Confirm Callback */
-    uintptr_t                       contextCfm;
+    /* Application PLC Sniffer Callback */
+    DRV_PL360_MACRT_SNIFFER_CALLBACK          snifferDataCallback;
+
+    /* Application context for Transmission Confirm Callback */
+    uintptr_t                                 contextTxCfm;
 
     /* Application context for Data Indication Callback */
-    uintptr_t                       contextInd;
+    uintptr_t                                 contextDataInd;
+
+    /* Application context for MLME Get Confirm Callback */
+    uintptr_t                                 contextMlmeGetCfm;
 
     /* Application context for Exception Callback */
-    uintptr_t                       contextExc;
+    uintptr_t                                 contextExc;
 
-    /* Application context for Bootloader Dara Callback */
-    uintptr_t                       contextBoot;
+    /* Application context for Bootloader Data Callback */
+    uintptr_t                                 contextBoot;
+
+    /* Application context for PLC Sniffer Data Callback */
+    uintptr_t                                 contextSniffer;
 
     /* Event detection flag: confirmation of the previous transmission */
-    volatile bool                   evTxCfm[2];
-
-    /* Event detection flag: parameters of new reception */
-    volatile bool                   evRxPar;
+    volatile bool                             evTxCfm[2];
 
     /* Event detection flag: data of new reception */
-    volatile bool                   evRxDat;
+    volatile uint16_t                         evDataIndLength;
+
+    /* Event detection flag: parameters of new reception */
+    volatile bool                             evMlmeGetCfm;
+
+    /* Event detection flag: tone map response */
+    volatile bool                             evToneMapRsp;
 
     /* Event detection flag: length of the response with register content */
-    volatile uint16_t               evRegRspLength;
+    volatile uint16_t                         evRegRspLength;
+
+    /* Event detection flag: new PLC sniffer packet */
+    volatile bool                             evSniffer;
 
     /* Event detection flag: reset waiting tx cfm */
-    volatile bool                   evResetTxCfm;
+    volatile bool                             evResetTxCfm;
 
-} DRV_PL360_OBJ;
+} DRV_PL360_MACRT_OBJ;
 
 
-#endif //#ifndef _DRV_PL360_LOCAL_H
+#endif //#ifndef _DRV_PL360_MACRT_LOCAL_H

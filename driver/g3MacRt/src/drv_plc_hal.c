@@ -123,13 +123,13 @@ void DRV_PL360_HAL_Setup(bool set16Bits)
         SYS_DMA_DataWidthSetup(sPl360Plib->dmaChannelRx, SYS_DMA_WIDTH_8_BIT);
     }
     
-    /* Configure SPI PLIB for Bootloader */
+    /* Configure SPI PLIB */
     spiPlibSetup.clockFrequency = sPl360Plib->spiClockFrequency;
     spiPlibSetup.clockPhase = SPI_CLOCK_PHASE_LEADING_EDGE;
     spiPlibSetup.clockPolarity = SPI_CLOCK_POLARITY_IDLE_LOW;    
     sPl360Plib->spiPlibTransferSetup((uintptr_t)&spiPlibSetup, 0);
     
-    /* Configure DMA for Bootloader */
+    /* Configure DMA */
     SYS_DMA_AddressingModeSetup(sPl360Plib->dmaChannelTx, SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
     SYS_DMA_AddressingModeSetup(sPl360Plib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
     

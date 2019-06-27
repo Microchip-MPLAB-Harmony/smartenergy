@@ -418,30 +418,16 @@ void DRV_PL360_BOOT_Restart(bool update)
     }
     else
     {
-        /* Update binary file */
+        /* Restore initial boot parameters */
         sDrvPL360BootInfo.pendingLength = sDrvPL360BootInfo.binSize;
         sDrvPL360BootInfo.pSrc = sDrvPL360BootInfo.binStartAddress;
-        sDrvPL360BootInfo.pDst = PL360_DRV_BOOT_PROGRAM_ADDR;
-
+        sDrvPL360BootInfo.secNumPackets = 0;
+        
+        /* Enable Boot Command Mode */
         _DRV_PL360_BOOT_EnableBootCmd();
         
-        ////////////////////////// Forzar a la maquina de estados del bootloader a vovler a empezar. tener en cuenta si es binario externo!!!!!!!!
+        sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_PROCESING;
         
-        while(sDrvPL360BootInfo.pendingLength)
-        {
-            _DRV_PL360_BOOT_FirmwareUploadTask();
-        }
-        
-        _DRV_PL360_BOOT_DisableBootCmd();
-        
-        /* Check firmware */
-        if (_DRV_PL360_BOOT_CheckFirmware())
-        {
-            sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_READY;
-        }
-        else
-        {
-            sDrvPL360BootInfo.status = DRV_PL360_BOOT_STATUS_ERROR;
-        }
+        _DRV_PL360_BOOT_FirmwareUploadTask();
     }
 }

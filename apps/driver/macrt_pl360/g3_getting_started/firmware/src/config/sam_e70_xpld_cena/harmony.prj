@@ -8,11 +8,11 @@
       <Files dnOrder="0">
         <File dnOrder="0">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">PL360_G3_MAC_RT_CENA.bin</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/bin/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/bin/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">A81511C887926C45E1FBE889315CBF92</GeneratedChecksum>
-          <UserChecksum dnOrder="5">A81511C887926C45E1FBE889315CBF92</UserChecksum>
+          <Name dnOrder="1">G3_MAC_RT_CENA.bin</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/bin/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/bin/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">65EBE3D716373EB4AC8172C7FE3FB299</GeneratedChecksum>
+          <UserChecksum dnOrder="5">65EBE3D716373EB4AC8172C7FE3FB299</UserChecksum>
         </File>
         <File dnOrder="1">
           <Type dnOrder="0">SOURCE</Type>
@@ -24,61 +24,69 @@
         </File>
         <File dnOrder="2">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_boot.c</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">261B3CEF3983320FA51CF157A58DB043</GeneratedChecksum>
-          <UserChecksum dnOrder="5">261B3CEF3983320FA51CF157A58DB043</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt.c</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">251593EA4B5372B08FB1128BCB8F6F5E</GeneratedChecksum>
+          <UserChecksum dnOrder="5">251593EA4B5372B08FB1128BCB8F6F5E</UserChecksum>
         </File>
         <File dnOrder="3">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_boot.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/src/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">1DE72486A6AB81201C05D2546BDCCC6D</GeneratedChecksum>
-          <UserChecksum dnOrder="5">1DE72486A6AB81201C05D2546BDCCC6D</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt_bin.S</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/bin/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/bin/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">4771E643823B5217C5938B627BC7C9C5</GeneratedChecksum>
+          <UserChecksum dnOrder="5">4771E643823B5217C5938B627BC7C9C5</UserChecksum>
         </File>
         <File dnOrder="4">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_hal.c</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">F389133CFC8F4CD079C9C4B7F9DE5DFD</GeneratedChecksum>
-          <UserChecksum dnOrder="5">F389133CFC8F4CD079C9C4B7F9DE5DFD</UserChecksum>
-        </File>
-        <File dnOrder="5">
-          <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_macrt.c</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">63EC41E22E050A8532996F73743767BC</GeneratedChecksum>
-          <UserChecksum dnOrder="5">63EC41E22E050A8532996F73743767BC</UserChecksum>
-        </File>
-        <File dnOrder="6">
-          <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_macrt_comm.c</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
+          <Name dnOrder="1">drv_g3_macrt_comm.c</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">A4EECA90926EE7ED4D72E774306D86FE</GeneratedChecksum>
           <UserChecksum dnOrder="5">A4EECA90926EE7ED4D72E774306D86FE</UserChecksum>
         </File>
-        <File dnOrder="7">
+        <File dnOrder="5">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_macrt_local.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/src/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">73DE61F705137B152DA987A4E0199755</GeneratedChecksum>
-          <UserChecksum dnOrder="5">73DE61F705137B152DA987A4E0199755</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt_local.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">325DE539A7E1C56C58E65CF10D2C029E</GeneratedChecksum>
+          <UserChecksum dnOrder="5">325DE539A7E1C56C58E65CF10D2C029E</UserChecksum>
         </File>
-        <File dnOrder="8">
+        <File dnOrder="6">
           <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">drv_pl360_macrt_local_comm.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/src/</PhysicalPath>
+          <Name dnOrder="1">drv_g3_macrt_local_comm.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
           <GeneratedChecksum dnOrder="4">D24EC304EB65053A2D01F4B9F7A3D089</GeneratedChecksum>
           <UserChecksum dnOrder="5">D24EC304EB65053A2D01F4B9F7A3D089</UserChecksum>
         </File>
+        <File dnOrder="7">
+          <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">drv_plc_boot.c</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">38C1CC18C5D657CC44B86A70540D2292</GeneratedChecksum>
+          <UserChecksum dnOrder="5">38C1CC18C5D657CC44B86A70540D2292</UserChecksum>
+        </File>
+        <File dnOrder="8">
+          <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">drv_plc_boot.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">1DE72486A6AB81201C05D2546BDCCC6D</GeneratedChecksum>
+          <UserChecksum dnOrder="5">1DE72486A6AB81201C05D2546BDCCC6D</UserChecksum>
+        </File>
         <File dnOrder="9">
+          <Type dnOrder="0">SOURCE</Type>
+          <Name dnOrder="1">drv_plc_hal.c</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">8FA182E7E307A01EA5E7A4E57AEBE04C</GeneratedChecksum>
+          <UserChecksum dnOrder="5">8FA182E7E307A01EA5E7A4E57AEBE04C</UserChecksum>
+        </File>
+        <File dnOrder="10">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">exceptions.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
@@ -86,15 +94,15 @@
           <GeneratedChecksum dnOrder="4">AC89AA0F2AF07C0733678D30AE1A5E02</GeneratedChecksum>
           <UserChecksum dnOrder="5">AC89AA0F2AF07C0733678D30AE1A5E02</UserChecksum>
         </File>
-        <File dnOrder="10">
+        <File dnOrder="11">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">initialization.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">CAF4647C4127684F1495506EAF003949</GeneratedChecksum>
-          <UserChecksum dnOrder="5">CAF4647C4127684F1495506EAF003949</UserChecksum>
+          <GeneratedChecksum dnOrder="4">43CC052F4BF80F00ABF4995A89F16F66</GeneratedChecksum>
+          <UserChecksum dnOrder="5">43CC052F4BF80F00ABF4995A89F16F66</UserChecksum>
         </File>
-        <File dnOrder="11">
+        <File dnOrder="12">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">interrupts.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
@@ -102,7 +110,7 @@
           <GeneratedChecksum dnOrder="4">2230512E0CCE5EF0093726C31EC27EEF</GeneratedChecksum>
           <UserChecksum dnOrder="5">2230512E0CCE5EF0093726C31EC27EEF</UserChecksum>
         </File>
-        <File dnOrder="12">
+        <File dnOrder="13">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">libc_syscalls.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
@@ -110,21 +118,13 @@
           <GeneratedChecksum dnOrder="4">0D061464696B9E5D276A90A352736879</GeneratedChecksum>
           <UserChecksum dnOrder="5">0D061464696B9E5D276A90A352736879</UserChecksum>
         </File>
-        <File dnOrder="13">
+        <File dnOrder="14">
           <Type dnOrder="0">SOURCE</Type>
           <Name dnOrder="1">main.c</Name>
           <LogicalPath dnOrder="2"/>
           <PhysicalPath dnOrder="3">/../../</PhysicalPath>
           <GeneratedChecksum dnOrder="4"/>
           <UserChecksum dnOrder="5"/>
-        </File>
-        <File dnOrder="14">
-          <Type dnOrder="0">SOURCE</Type>
-          <Name dnOrder="1">pl360_bin.S</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/bin/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/bin/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">0F57E37F1FD0F80914D798D304177D4F</GeneratedChecksum>
-          <UserChecksum dnOrder="5">0F57E37F1FD0F80914D798D304177D4F</UserChecksum>
         </File>
         <File dnOrder="15">
           <Type dnOrder="0">SOURCE</Type>
@@ -291,8 +291,8 @@
           <Name dnOrder="1">tasks.c</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">C7A652386FA4739744540E5AB1684320</GeneratedChecksum>
-          <UserChecksum dnOrder="5">C7A652386FA4739744540E5AB1684320</UserChecksum>
+          <GeneratedChecksum dnOrder="4">E85B2E768472034C1670A6C6427EDD0D</GeneratedChecksum>
+          <UserChecksum dnOrder="5">E85B2E768472034C1670A6C6427EDD0D</UserChecksum>
         </File>
         <File dnOrder="36">
           <Type dnOrder="0">SOURCE</Type>
@@ -411,8 +411,8 @@
           <Name dnOrder="1">configuration.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">DA3A90391963A3A0BFD1143D67766E01</GeneratedChecksum>
-          <UserChecksum dnOrder="5">DA3A90391963A3A0BFD1143D67766E01</UserChecksum>
+          <GeneratedChecksum dnOrder="4">D17E78801B19252E1ABF858BEFA91CD1</GeneratedChecksum>
+          <UserChecksum dnOrder="5">D17E78801B19252E1ABF858BEFA91CD1</UserChecksum>
         </File>
         <File dnOrder="51">
           <Type dnOrder="0">HEADER</Type>
@@ -435,8 +435,8 @@
           <Name dnOrder="1">definitions.h</Name>
           <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">BBA52056F489CBC874C9D88DE1F448DF</GeneratedChecksum>
-          <UserChecksum dnOrder="5">BBA52056F489CBC874C9D88DE1F448DF</UserChecksum>
+          <GeneratedChecksum dnOrder="4">74C011B7A94611F30A02E1A7FD1FC235</GeneratedChecksum>
+          <UserChecksum dnOrder="5">74C011B7A94611F30A02E1A7FD1FC235</UserChecksum>
         </File>
         <File dnOrder="54">
           <Type dnOrder="0">HEADER</Type>
@@ -472,35 +472,35 @@
         </File>
         <File dnOrder="58">
           <Type dnOrder="0">HEADER</Type>
-          <Name dnOrder="1">drv_pl360_hal.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">A90CF616A358C70D6DCDC283CAA8FAC5</GeneratedChecksum>
-          <UserChecksum dnOrder="5">A90CF616A358C70D6DCDC283CAA8FAC5</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">724D3A2139C82B329F4FABB08D7590B7</GeneratedChecksum>
+          <UserChecksum dnOrder="5">724D3A2139C82B329F4FABB08D7590B7</UserChecksum>
         </File>
         <File dnOrder="59">
           <Type dnOrder="0">HEADER</Type>
-          <Name dnOrder="1">drv_pl360_macrt.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">01A40A6E841189BE6CF9033FD00BAE85</GeneratedChecksum>
-          <UserChecksum dnOrder="5">01A40A6E841189BE6CF9033FD00BAE85</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt_comm.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">4EDE6A39D675D30B4CCD052BA9334131</GeneratedChecksum>
+          <UserChecksum dnOrder="5">4EDE6A39D675D30B4CCD052BA9334131</UserChecksum>
         </File>
         <File dnOrder="60">
           <Type dnOrder="0">HEADER</Type>
-          <Name dnOrder="1">drv_pl360_macrt_comm.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">D2F8F29CFC66AE99F63EBCE1D711D55E</GeneratedChecksum>
-          <UserChecksum dnOrder="5">D2F8F29CFC66AE99F63EBCE1D711D55E</UserChecksum>
+          <Name dnOrder="1">drv_g3_macrt_definitions.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">D711554FF4D2CA2713F32DC45346C079</GeneratedChecksum>
+          <UserChecksum dnOrder="5">D711554FF4D2CA2713F32DC45346C079</UserChecksum>
         </File>
         <File dnOrder="61">
           <Type dnOrder="0">HEADER</Type>
-          <Name dnOrder="1">drv_pl360_macrt_definitions.h</Name>
-          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/pl360MacRt/</LogicalPath>
-          <PhysicalPath dnOrder="3">/driver/pl360MacRt/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">252CB54B3D0167BAFC500419CC9E0CAB</GeneratedChecksum>
-          <UserChecksum dnOrder="5">252CB54B3D0167BAFC500419CC9E0CAB</UserChecksum>
+          <Name dnOrder="1">drv_plc_hal.h</Name>
+          <LogicalPath dnOrder="2">config/sam_e70_xpld_cena/driver/g3MacRt/</LogicalPath>
+          <PhysicalPath dnOrder="3">/driver/g3MacRt/</PhysicalPath>
+          <GeneratedChecksum dnOrder="4">A90CF616A358C70D6DCDC283CAA8FAC5</GeneratedChecksum>
+          <UserChecksum dnOrder="5">A90CF616A358C70D6DCDC283CAA8FAC5</UserChecksum>
         </File>
         <File dnOrder="62">
           <Type dnOrder="0">HEADER</Type>
@@ -1033,7 +1033,7 @@
       </Files>
       <Settings dnOrder="1">
         <Setting append="true" category="C32" delimiter=";" dnOrder="0" key="extra-include-directories" value="../src;../src/config/sam_e70_xpld_cena;../src/packs/ATSAME70Q21B_DFP;../src/packs/CMSIS/CMSIS/Core/Include;../src/packs/CMSIS/;../src/arm"/>
-        <Setting append="true" category="C32-AS" delimiter=";" dnOrder="1" key="extra-include-directories-for-assembler" value="../src/config/sam_e70_xpld_cena/driver/pl360MacRt/bin"/>
+        <Setting append="true" category="C32-AS" delimiter=";" dnOrder="1" key="extra-include-directories-for-assembler" value="../src/config/sam_e70_xpld_cena/driver/g3MacRt/bin"/>
         <Setting category="C32-LD" dnOrder="2" key="heap-size" value="0"/>
         <Setting category="C32-LD" dnOrder="3" key="no-device-startup-code" value="true"/>
         <Setting category="C32-LD" dnOrder="4" key="preprocessor-macros" value=""/>

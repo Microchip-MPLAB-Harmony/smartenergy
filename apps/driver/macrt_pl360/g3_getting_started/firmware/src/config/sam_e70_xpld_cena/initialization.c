@@ -68,11 +68,11 @@
 // *****************************************************************************
 // <editor-fold defaultstate="collapsed" desc="DRV_PL360_MACRT Initialization Data">
 
-/* HAL Interface Initialization for PL360 device */
-DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
+/* HAL Interface Initialization for PLC device */
+DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    /* PL360 SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
+    /* PLC SPI PLIB */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
     .dmaChannelTx = SYS_DMA_CHANNEL_1,
@@ -87,73 +87,76 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
     
     /* SPI clock frequency */
-    .spiClockFrequency = DRV_PL360_SPI_CLK,
+    .spiClockFrequency = DRV_PLC_SPI_CLK,
     
     /* PL360 LDO Enable Pin */
-    .ldoPin = DRV_PL360_LDO_EN_PIN, 
+    .ldoPin = DRV_PLC_LDO_EN_PIN, 
     
     /* PL360 Reset Pin */
-    .resetPin = DRV_PL360_RESET_PIN,
+    .resetPin = DRV_PLC_RESET_PIN,
        
     /* PL360 External Interrupt Pin */
-    .extIntPin = DRV_PL360_EXT_INT_PIN,
+    .extIntPin = DRV_PLC_EXT_INT_PIN,
 };
 
 /* HAL Interface Initialization for PL360 device */
-DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
+DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
-    /* PL360 PLIB */
-    .pl360Plib = &drvPL360Plib,
+    /* PLC PLIB */
+    .plcPlib = &drvPLCPlib,
 
-    /* PL360 HAL init */
-    .init = (DRV_PL360_HAL_INIT)DRV_PL360_HAL_Init,
+    /* PLC HAL init */
+    .init = (DRV_PLC_HAL_INIT)DRV_PLC_HAL_Init,
 
-    /* PL360 HAL setup */
-    .setup = (DRV_PL360_HAL_SETUP)DRV_PL360_HAL_Setup,
+    /* PLC HAL setup */
+    .setup = (DRV_PLC_HAL_SETUP)DRV_PLC_HAL_Setup,
 
-    /* PL360 PL360 reset */
-    .reset = (DRV_PL360_HAL_RESET)DRV_PL360_HAL_Reset,
+    /* PLC device reset */
+    .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
-    /* PL360 HAL Get Carrier Detect or PLC Line Status */
-    .getCd = (DRV_PL360_HAL_GET_CD)DRV_PL360_HAL_GetCarrierDetect,
+    /* PLC Carrier Detect Status */
+    .getCd = (DRV_PLC_HAL_GET_CD)DRV_PLC_HAL_GetCarrierDetect,
 
-    /* PL360 HAL Enable/Disable external interrupt */
-    .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)DRV_PL360_HAL_EnableInterrupts,
+    /* PLC HAL Enable/Disable external interrupt */
+    .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)DRV_PLC_HAL_EnableInterrupts,
 
-    /* PL360 HAL delay function */
-    .delay = (DRV_PL360_HAL_DELAY)DRV_PL360_HAL_Delay,
+    /* PLC HAL delay function */
+    .delay = (DRV_PLC_HAL_DELAY)DRV_PLC_HAL_Delay,
 
-    /* PL360 HAL Transfer Bootloader Command */
-    .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)DRV_PL360_HAL_SendBootCmd,
+    /* PLC HAL Transfer Bootloader Command */
+    .sendBootCmd = (DRV_PLC_HAL_SEND_BOOT_CMD)DRV_PLC_HAL_SendBootCmd,
 
-    /* PL360 HAL Transfer Write/Read Command */
-    .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)DRV_PL360_HAL_SendWrRdCmd,
+    /* PLC HAL Transfer Write/Read Command */
+    .sendWrRdCmd = (DRV_PLC_HAL_SEND_WRRD_CMD)DRV_PLC_HAL_SendWrRdCmd,
 };
 
 /* PL360 Binary file addressing */
-extern uint8_t pl360_mac_rt_bin_start;
-extern uint8_t pl360_mac_rt_bin_start;
+extern uint8_t g3_mac_rt_bin_start;
+extern uint8_t g3_mac_rt_bin_end;
 
-/* PL360 MAC RT Driver Initialization Data */
-DRV_PL360_MACRT_INIT drvPL360MacRtInitData = {
+/* G3 MAC RT Driver Initialization Data */
+DRV_G3_MACRT_INIT drvG3MacRtInitData = {
 
-    /* SPI PLIB API  interface*/
-    .pl360Hal = &drvPL360HalAPI,
+    /* SPI PLIB API interface*/
+    .plcHal = &drvPLCHalAPI,
 
-    /* PL360 Number of clients */
+    /* G3 MAC RT Number of clients */
     .numClients = DRV_PL360_MACRT_CLIENTS_NUMBER_IDX,  
 
-    /* PL360 MAC RT PLC profile */
+    /* G3 MAC RT PLC profile */
     .plcProfile = DRV_PL360_MACRT_PLC_PROFILE,
+
+    /* G3 MAC RT Specification Compliance */
+    .plcSpecification = DRV_G3_MACRT_SPEC_COMPLIANCE,
  
     /* PLC Binary start address */
-    .binStartAddress = (uint32_t)&pl360_mac_rt_bin_start,
+    .binStartAddress = (uint32_t)&g3_mac_rt_bin_start,
     
     /* PLC Binary end address */
-    .binEndAddress = (uint32_t)&pl360_mac_rt_bin_start,
+    .binEndAddress = (uint32_t)&g3_mac_rt_bin_start,
 
     /* Secure Mode */
-    .secure = DRV_PL360_SECURE,
+    .secure = DRV_PLC_SECURE,
     
 };
 
@@ -291,10 +294,10 @@ void SYS_Initialize ( void* data )
 
 
  
-    /* Initialize PL360 MAC RT Driver Instance */
-    sysObj.drvPL360MacRt = DRV_PL360_Initialize(DRV_PL360_MACRT_INDEX, (SYS_MODULE_INIT *)&drvPL360MacRtInitData);
-    /* Register Callback function to handle PL360 interruption */
-    PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360MacRt);
+    /* Initialize G3 MAC RT Driver Instance */
+    sysObj.drvG3MacRt = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX, (SYS_MODULE_INIT *)&drvG3MacRtInitData);
+    /* Register Callback function to handle G3 MAC RT interruption */
+    PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObj.drvG3MacRt);
    
 
     sysObj.sysDebug = SYS_DEBUG_Initialize(SYS_DEBUG_INDEX_0, (SYS_MODULE_INIT*)&debugInit);

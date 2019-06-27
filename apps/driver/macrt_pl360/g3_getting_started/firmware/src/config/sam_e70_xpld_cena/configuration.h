@@ -116,17 +116,17 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 /* PL360 MAC RT Driver Configuration Options */
-#define DRV_PL360_MACRT_INSTANCES_NUMBER        1
-#define DRV_PL360_MACRT_INDEX                   0
-#define DRV_PL360_MACRT_CLIENTS_NUMBER_IDX      1
-#define DRV_PL360_EXT_INT_SRC                   PIOD_IRQn
-#define DRV_PL360_EXT_INT_PIN                   SYS_PORT_PIN_PD28
-#define DRV_PL360_RESET_PIN                     SYS_PORT_PIN_PB2
-#define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
-#define DRV_PL360_MACRT_PLC_PROFILE             0
-#define DRV_PL360_SPI_CLK                       8000000
-
-#define DRV_PL360_SECURE                        false
+#define DRV_PLC_EXT_INT_SRC                  PIOD_IRQn
+#define DRV_PLC_EXT_INT_PIN                  SYS_PORT_PIN_PD28
+#define DRV_PLC_RESET_PIN                    SYS_PORT_PIN_PB2
+#define DRV_PLC_LDO_EN_PIN                   SYS_PORT_PIN_PB3
+#define DRV_G3_MACRT_INSTANCES_NUMBER        1
+#define DRV_G3_MACRT_INDEX                   0
+#define DRV_G3_MACRT_CLIENTS_NUMBER_IDX      1
+#define DRV_G3_MACRT_SPEC_COMPLIANCE         0
+#define DRV_PLC_SPI_CLK                      8000000
+#define DRV_G3_MACRT_PLC_PROFILE             0
+#define DRV_PLC_SECURE                       false
 
 
 

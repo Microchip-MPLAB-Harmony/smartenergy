@@ -75,8 +75,8 @@ void SYS_Tasks ( void )
 
     /* Maintain Device Drivers */
     
-    /* Maintain PL360 Mac RT Driver */
-    DRV_PL360_Tasks(sysObj.drvPL360MacRt);
+    /* Maintain G3 MAC RT Driver */
+    DRV_G3_MACRT_Tasks(sysObj.drvG3MacRt);
 
 
     /* Maintain Middleware & Other Libraries */

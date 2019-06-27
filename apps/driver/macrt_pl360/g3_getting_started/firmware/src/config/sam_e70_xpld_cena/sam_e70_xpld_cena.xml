@@ -1388,12 +1388,58 @@
             </Boolean>
           </Attributes>
         </Comment>
-        <String dnOrder="1" id="DRV_PL360_PLIB">
+        <KeyValueSet dnOrder="1" id="DRV_PL360_MACRT_G3_SPEC_COMPLIANCE">
+          <Attributes dnOrder="0">
+            <Boolean dnOrder="0" id="visible">
+              <Value dnOrder="0">true</Value>
+            </Boolean>
+          </Attributes>
+          <Values dnOrder="1">
+            <User dnOrder="0" value="0"/>
+          </Values>
+        </KeyValueSet>
+        <KeyValueSet dnOrder="2" id="DRV_PL360_MACRT_PLC_PROFILE">
+          <Values dnOrder="0">
+            <User dnOrder="0" value="0"/>
+          </Values>
+        </KeyValueSet>
+        <KeyValueSet dnOrder="3" id="DRV_PL360_MACRT_PRIME_SPEC_COMPLIANCE">
+          <Attributes dnOrder="0">
+            <Boolean dnOrder="0" id="visible">
+              <Value dnOrder="0">false</Value>
+            </Boolean>
+          </Attributes>
+          <Values dnOrder="1">
+            <User dnOrder="0" value="0"/>
+          </Values>
+        </KeyValueSet>
+        <File dnOrder="4" id="DRV_PL360_MACRT_PROFILE">
+          <Attributes dnOrder="0">
+            <String dnOrder="0" id="source">
+              <Value dnOrder="0">driver/pl360MacRt/src/drv_pl360_macrt_g3.c</Value>
+            </String>
+          </Attributes>
+        </File>
+        <File dnOrder="5" id="DRV_PL360_MACRT_PROFILE_DEF">
+          <Attributes dnOrder="0">
+            <String dnOrder="0" id="source">
+              <Value dnOrder="0">driver/pl360MacRt/drv_pl360_macrt_g3.h</Value>
+            </String>
+          </Attributes>
+        </File>
+        <File dnOrder="6" id="DRV_PL360_MACRT_PROFILE_LOCAL">
+          <Attributes dnOrder="0">
+            <String dnOrder="0" id="source">
+              <Value dnOrder="0">driver/pl360MacRt/src/drv_pl360_macrt_local_g3.h</Value>
+            </String>
+          </Attributes>
+        </File>
+        <String dnOrder="7" id="DRV_PL360_PLIB">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="drvMacRTPl360" value="SPI0"/>
           </Values>
         </String>
-        <Integer dnOrder="2" id="DRV_PL360_RX_DMA_CHANNEL">
+        <Integer dnOrder="8" id="DRV_PL360_RX_DMA_CHANNEL">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="visible">
               <Value dnOrder="0">true</Value>
@@ -1403,7 +1449,7 @@
             <Dynamic dnOrder="0" id="drvMacRTPl360" value="0"/>
           </Values>
         </Integer>
-        <Integer dnOrder="3" id="DRV_PL360_TX_DMA_CHANNEL">
+        <Integer dnOrder="9" id="DRV_PL360_TX_DMA_CHANNEL">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="visible">
               <Value dnOrder="0">true</Value>
@@ -1413,6 +1459,27 @@
             <Dynamic dnOrder="0" id="drvMacRTPl360" value="1"/>
           </Values>
         </Integer>
+        <File dnOrder="10" id="PL360_MACRT_SOURCE_BIN_G3_CENA">
+          <Attributes dnOrder="0">
+            <Boolean dnOrder="0" id="enabled">
+              <Value dnOrder="0">true</Value>
+            </Boolean>
+          </Attributes>
+        </File>
+        <File dnOrder="11" id="PL360_MACRT_SOURCE_BIN_G3_CENB">
+          <Attributes dnOrder="0">
+            <Boolean dnOrder="0" id="enabled">
+              <Value dnOrder="0">false</Value>
+            </Boolean>
+          </Attributes>
+        </File>
+        <File dnOrder="12" id="PL360_MACRT_SOURCE_BIN_G3_FCC">
+          <Attributes dnOrder="0">
+            <Boolean dnOrder="0" id="enabled">
+              <Value dnOrder="0">false</Value>
+            </Boolean>
+          </Attributes>
+        </File>
       </Symbols>
       <Attachments dnOrder="1">
         <DirectDependency dnOrder="0" id="drv_pl360_macrt_SPI_dependency">
@@ -1452,144 +1519,123 @@
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="2" id="APP1_C">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">false</Value>
-            </Boolean>
-          </Attributes>
-        </File>
-        <File dnOrder="3" id="APP1_H">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">false</Value>
-            </Boolean>
-          </Attributes>
-        </File>
-        <File dnOrder="4" id="DMA_DEF">
+        <File dnOrder="2" id="DMA_DEF">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="5" id="DMA_HEADER">
+        <File dnOrder="3" id="DMA_HEADER">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="6" id="DMA_MAPPING">
+        <File dnOrder="4" id="DMA_MAPPING">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="7" id="DMA_SOURCE">
+        <File dnOrder="5" id="DMA_SOURCE">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="8" id="DRIVER_COMMON">
+        <File dnOrder="6" id="DRIVER_COMMON">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="9" id="DRIVER_ROOT">
+        <File dnOrder="7" id="DRIVER_ROOT">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <Boolean dnOrder="10" id="ENABLE_APP_FILE">
+        <Boolean dnOrder="8" id="ENABLE_APP_FILE">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="11" id="ENABLE_DRV_COMMON">
+        <Boolean dnOrder="9" id="ENABLE_DRV_COMMON">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="sys_console" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="12" id="ENABLE_OSAL">
+        <Boolean dnOrder="10" id="ENABLE_OSAL">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="13" id="ENABLE_SYS_CACHE">
+        <Boolean dnOrder="11" id="ENABLE_SYS_CACHE">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="true"/>
             <User dnOrder="1" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="14" id="ENABLE_SYS_COMMON">
+        <Boolean dnOrder="12" id="ENABLE_SYS_COMMON">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="15" id="ENABLE_SYS_DMA">
+        <Boolean dnOrder="13" id="ENABLE_SYS_DMA">
           <Values dnOrder="0">
             <User dnOrder="0" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="16" id="ENABLE_SYS_INT">
+        <Boolean dnOrder="14" id="ENABLE_SYS_INT">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="true"/>
           </Values>
         </Boolean>
-        <Boolean dnOrder="17" id="ENABLE_SYS_PORTS">
+        <Boolean dnOrder="15" id="ENABLE_SYS_PORTS">
           <Values dnOrder="0">
             <User dnOrder="0" value="true"/>
           </Values>
         </Boolean>
-        <Menu dnOrder="18" id="GEN_APP_TASK_CONF_MENU0">
+        <Menu dnOrder="16" id="GEN_APP_TASK_CONF_MENU0">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="visible">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </Menu>
-        <Menu dnOrder="19" id="GEN_APP_TASK_CONF_MENU1">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="visible">
-              <Value dnOrder="0">false</Value>
-            </Boolean>
-          </Attributes>
-        </Menu>
-        <Integer dnOrder="20" id="GEN_APP_TASK_COUNT">
+        <Integer dnOrder="17" id="GEN_APP_TASK_COUNT">
           <Values dnOrder="0">
             <User dnOrder="0" value="1"/>
           </Values>
         </Integer>
-        <File dnOrder="21" id="PORTS_DEF">
+        <File dnOrder="18" id="PORTS_DEF">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="22" id="PORTS_HEADER">
+        <File dnOrder="19" id="PORTS_HEADER">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <File dnOrder="23" id="PORTS_MAPPING">
+        <File dnOrder="20" id="PORTS_MAPPING">
           <Attributes dnOrder="0">
             <Boolean dnOrder="0" id="enabled">
               <Value dnOrder="0">true</Value>
             </Boolean>
           </Attributes>
         </File>
-        <Combo dnOrder="24" id="SELECT_RTOS">
+        <Combo dnOrder="21" id="SELECT_RTOS">
           <Values dnOrder="0">
             <Dynamic dnOrder="0" id="HarmonyCore" value="BareMetal"/>
           </Values>
@@ -1976,7 +2022,7 @@
         <ElementPosition dnOrder="1" id="cmsis" x="339" y="21"/>
         <ElementPosition dnOrder="2" id="core" x="235" y="27"/>
         <ElementPosition dnOrder="3" id="dfp" x="21" y="20"/>
-        <ElementPosition dnOrder="4" id="drvMacRTPl360" x="324" y="479"/>
+        <ElementPosition dnOrder="4" id="drvMacRTPl360" x="305" y="472"/>
         <ElementPosition dnOrder="5" id="efc" x="640" y="20"/>
         <ElementPosition dnOrder="6" id="spi0" x="118" y="492"/>
         <ElementPosition dnOrder="7" id="sys_console" x="325" y="289"/>

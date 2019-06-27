@@ -1,11 +1,11 @@
 /*******************************************************************************
-  PL360 MAC Real Time Binary file Assembler
+  G3 MAC Real Time Binary file Assembler
 
   Summary:
     Library for Microchip PLC Stack
     
   Description:
-    - Join PL360 MAC Real Time binary file together PLC application
+    - Join G3 MAC Real Time binary file together PLC application
 *******************************************************************************/
 
 /*****************************************************************************
@@ -34,29 +34,29 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************/
 
   .section .rodata
-  .global pl360_mac_rt_bin_start
-  .global pl360_mac_rt_bin_end
-<#if DRV_PL360_MACRT_PLC_PROFILE == "5">
-  .global pl360_mac_rt_bin2_start
-  .global pl360_mac_rt_bin2_end
+  .global g3_mac_rt_bin_start
+  .global g3_mac_rt_bin_end
+<#if DRV_G3_MACRT_PLC_PROFILE == "4">
+  .global g3_mac_rt_bin2_start
+  .global g3_mac_rt_bin2_end
 </#if>
 
   .align 8
-pl360_mac_rt_bin_start:
-<#if (DRV_PL360_MACRT_PLC_PROFILE == "0") || (DRV_PL360_MACRT_PLC_PROFILE == "5")>
-  .incbin "./PL360_G3_MAC_RT_CENA.bin"
-<#elseif DRV_PL360_MACRT_PLC_PROFILE == "1">
-  .incbin "./PL360_G3_MAC_RT_CENB.bin"
-<#elseif DRV_PL360_MACRT_PLC_PROFILE == "2">
-  .incbin "./PL360_G3_MAC_RT_FCC.bin"
-<#elseif DRV_PL360_MACRT_PLC_PROFILE == "4">
-  
+g3_mac_rt_bin_start:
+<#if (DRV_G3_MACRT_PLC_PROFILE == "0") || (DRV_G3_MACRT_PLC_PROFILE == "4")>
+  .incbin "./G3_MAC_RT_CENA.bin"
+<#elseif DRV_G3_MACRT_PLC_PROFILE == "1">
+  .incbin "./G3_MAC_RT_CENB.bin"
+<#elseif DRV_G3_MACRT_PLC_PROFILE == "2">
+  .incbin "./G3_MAC_RT_FCC.bin"
+<#elseif DRV_G3_MACRT_PLC_PROFILE == "3">
+  .incbin "./G3_MAC_RT_ARIB.bin"  
 </#if>
   .align 8
-pl360_mac_rt_bin_end:
-<#if DRV_PL360_MACRT_PLC_PROFILE == "5">
-pl360_mac_rt_bin2_start:
-  .incbin "./PL360_G3_MAC_RT_FCC.bin"
+g3_mac_rt_bin_end:
+<#if DRV_G3_MACRT_PLC_PROFILE == "4">
+g3_mac_rt_bin2_start:
+  .incbin "./G3_MAC_RT_FCC.bin"
   .align 8
-pl360_mac_rt_bin2_end:
+g3_mac_rt_bin2_end:
 </#if>

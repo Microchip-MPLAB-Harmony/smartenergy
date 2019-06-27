@@ -52,12 +52,12 @@
 #include "peripheral/pio/plib_pio.h"
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/xdmac/plib_xdmac.h"
+#include "driver/g3MacRt/drv_plc_hal.h"
+#include "driver/g3MacRt/drv_g3_macrt.h"
+#include "driver/g3MacRt/drv_g3_macrt_definitions.h"
+#include "driver/g3MacRt/drv_g3_macrt_comm.h"
 #include "peripheral/efc/plib_efc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "driver/pl360MacRt/drv_pl360_macrt.h"
-#include "driver/pl360MacRt/drv_pl360_macrt_definitions.h"
-#include "driver/pl360MacRt/drv_pl360_macrt_comm.h"
-#include "driver/pl360MacRt/drv_pl360_hal.h"
 #include "system/debug/sys_debug.h"
 #include "system/time/sys_time.h"
 #include "peripheral/spi/plib_spi0.h"
@@ -191,8 +191,8 @@ void SYS_Tasks ( void );
 
 typedef struct
 {
-    /* PL360 MAC RT Driver Object */
-    SYS_MODULE_OBJ drvPL360MacRt;
+    /* G3 MAC RT Driver Object */
+    SYS_MODULE_OBJ drvG3MacRt;
 
     SYS_MODULE_OBJ  sysDebug;
 

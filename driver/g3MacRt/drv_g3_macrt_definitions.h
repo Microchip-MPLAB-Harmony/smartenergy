@@ -204,6 +204,9 @@ typedef struct
     /* PLC Profile */
     uint8_t                         plcProfile;
 
+    /* Specification Compliance */
+    uint8_t                         plcSpecification;
+
     /* Start Address where PLC binary file is located */
     uint32_t                        binStartAddress;
 
