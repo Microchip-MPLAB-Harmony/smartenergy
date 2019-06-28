@@ -1,17 +1,17 @@
 /*******************************************************************************
-  PL360 MAC RT Driver Local Data Structures
+  G3 MAC RT Driver Local Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_macrt_local.h
+    drv_g3_macrt_local.h
 
   Summary:
-    PL360 MAC RT Driver Local Data Structures
+    G3 MAC RT Driver Local Data Structures
 
   Description:
-    Driver Local Data Structures
+    G3 MAC Real Time Driver Local Data Structures
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -39,8 +39,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_PL360_MACRT_LOCAL_H
-#define _DRV_PL360_MACRT_LOCAL_H
+#ifndef _DRV_G3_MACRT_LOCAL_H
+#define _DRV_G3_MACRT_LOCAL_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -48,9 +48,9 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "system/system.h"
-#include "driver/pl360MacRt/drv_pl360_macrt.h"
-#include "driver/pl360MacRt/drv_pl360_macrt_definitions.h"
-#include "driver/pl360MacRt/drv_pl360_macrt_comm.h"
+#include "driver/g3MacRt/drv_g3_macrt.h"
+#include "driver/g3MacRt/drv_g3_macrt_definitions.h"
+#include "driver/g3MacRt/drv_g3_macrt_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,13 +59,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-/* DRV_PL360_MACRT Command set
+/* DRV_G3_MACRT Command set
 
   Summary:
-    Enumeration listing the DRV_PL360_MACRT commands.
+    Enumeration listing the DRV_G3_MACRT commands.
 
   Description:
-    This enumeration defines the commands used to interact with the DRV_PL360_MACRT
+    This enumeration defines the commands used to interact with the DRV_G3_MACRT
     series of devices.
 
   Remarks:
@@ -75,21 +75,21 @@
 typedef enum
 {
     /* Write command */
-    DRV_PL360_MACRT_CMD_WRITE              = (1 << 10),
+    DRV_G3_MACRT_CMD_WRITE              = (1 << 10),
 
     /* Read command */
-    DRV_PL360_MACRT_CMD_READ               = (0 << 10)
+    DRV_G3_MACRT_CMD_READ               = (0 << 10)
 
-} DRV_PL360_MACRT_CMD;
+} DRV_G3_MACRT_CMD;
 
 // *****************************************************************************
-/* DRV_PL360_MACRT Transfer Object State
+/* DRV_G3_MACRT Transfer Object State
 
   Summary:
-    Defines the status of the DRV_PL360_MACRT Transfer Object.
+    Defines the status of the DRV_G3_MACRT Transfer Object.
 
   Description:
-    This enumeration defines the status of the DRV_PL360_MACRT Transfer Object.
+    This enumeration defines the status of the DRV_G3_MACRT Transfer Object.
 
   Remarks:
     None.
@@ -97,17 +97,17 @@ typedef enum
 
 typedef enum
 {
-    DRV_PL360_MACRT_STATE_IDLE,
-    DRV_PL360_MACRT_STATE_TX,
-    DRV_PL360_MACRT_STATE_WAITING_TX_CFM,
-    DRV_PL360_MACRT_STATE_ERROR,
-}DRV_PL360_MACRT_STATE;
+    DRV_G3_MACRT_STATE_IDLE,
+    DRV_G3_MACRT_STATE_TX,
+    DRV_G3_MACRT_STATE_WAITING_TX_CFM,
+    DRV_G3_MACRT_STATE_ERROR,
+}DRV_G3_MACRT_STATE;
 
 // *****************************************************************************
-/* PL360 Driver Instance Object
+/* PLC Driver Instance Object
 
   Summary:
-    Object used to keep any data required for an instance of the PL360 driver.
+    Object used to keep any data required for an instance of the PLC driver.
 
   Description:
     None.
@@ -122,7 +122,7 @@ typedef struct
     bool                                      inUse;
 
     /* State of the MAC RT driver */
-    DRV_PL360_MACRT_STATE                     state;
+    DRV_G3_MACRT_STATE                       state;
 
     /* Keep track of the number of clients that have opened this driver */
     size_t                                    nClients;
@@ -134,7 +134,7 @@ typedef struct
     SYS_STATUS                                status;
 
     /* HAL API list that will be used by the driver to access the hardware */
-    DRV_PL360_HAL_INTERFACE                   *pl360Hal;
+    DRV_PLC_HAL_INTERFACE                     *plcHal;
 
     /* PLC Profile */
     uint8_t                                   plcProfile;
@@ -151,23 +151,23 @@ typedef struct
     /* Secure mode */
     bool                                      secure;
 
+    /* Application Bootloader Data Callback */
+    DRV_PLC_BOOT_DATA_CALLBACK                bootDataCallback;
+
     /* Application Transmission Confirm Callback */
-    DRV_PL360_MACRT_TX_CFM_CALLBACK           txCfmCallback;
+    DRV_G3_MACRT_TX_CFM_CALLBACK             txCfmCallback;
 
     /* Application Data Indication Callback */
-    DRV_PL360_MACRT_DATA_IND_CALLBACK         dataIndCallback;
+    DRV_G3_MACRT_DATA_IND_CALLBACK           dataIndCallback;
 
     /* Application MLME Get Confirm Callback */
-    DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK     mlmeGetCfmcallback;
+    DRV_G3_MACRT_MLME_GET_CFM_CALLBACK       mlmeGetCfmcallback;
 
     /* Application Exception Callback */
-    DRV_PL360_MACRT_EXCEPTION_CALLBACK        exceptionCallback;
-
-    /* Application Bootloader Data Callback */
-    DRV_PL360_MACRT_BOOT_DATA_CALLBACK        bootDataCallback;
+    DRV_G3_MACRT_EXCEPTION_CALLBACK          exceptionCallback;
 
     /* Application PLC Sniffer Callback */
-    DRV_PL360_MACRT_SNIFFER_CALLBACK          snifferDataCallback;
+    DRV_G3_MACRT_SNIFFER_CALLBACK            snifferDataCallback;
 
     /* Application context for Transmission Confirm Callback */
     uintptr_t                                 contextTxCfm;
@@ -188,7 +188,7 @@ typedef struct
     uintptr_t                                 contextSniffer;
 
     /* Event detection flag: confirmation of the previous transmission */
-    volatile bool                             evTxCfm[2];
+    volatile bool                             evTxCfm;
 
     /* Event detection flag: data of new reception */
     volatile uint16_t                         evDataIndLength;
@@ -207,8 +207,11 @@ typedef struct
 
     /* Event detection flag: reset waiting tx cfm */
     volatile bool                             evResetTxCfm;
+    
+    /* Pointer to Sniffer Data Buffer */
+    uint8_t                                   *pDataSniffer;
 
-} DRV_PL360_MACRT_OBJ;
+} DRV_G3_MACRT_OBJ;
 
 
-#endif //#ifndef _DRV_PL360_MACRT_LOCAL_H
+#endif //#ifndef _DRV_G3_MACRT_LOCAL_H

@@ -1,14 +1,14 @@
 /******************************************************************************
-  DRV_PL360 Hardware Abstraction Layer
+  DRV_PLC Hardware Abstraction Layer
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_hal.c
+    drv_plc_hal.c
 
   Summary:
-    PL360 Driver Hardware Abstraction Layer
+    PLC Driver Hardware Abstraction Layer
 
   Description:
     This file contains the source code for the implementation of the Hardware 
@@ -70,8 +70,8 @@ static uint8_t sRxSpiData[HAL_SPI_BUFFER_SIZE];
 /* PDC Transmission buffer */
 static uint8_t sTxSpiData[HAL_SPI_BUFFER_SIZE];
 
-/* Static pointer to PLIB interface used to handle PL360 */
-static DRV_PL360_PLIB_INTERFACE *sPl360Plib;
+/* Static pointer to PLIB interface used to handle PLC */
+static DRV_PLC_PLIB_INTERFACE *sPlcPlib;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -90,104 +90,104 @@ static void _delay(uint64_t n)
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360_HAL Common Interface Implementation
+// Section: DRV_PLC_HAL Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
-void DRV_PL360_HAL_Init(DRV_PL360_PLIB_INTERFACE *pl360Plib)
+void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
 {
-    sPl360Plib = pl360Plib;   
+    sPlcPlib = plcPlib;   
     
     /* Enable External Interrupt Source */
-    SYS_INT_SourceEnable(DRV_PL360_EXT_INT_SRC);
+    SYS_INT_SourceEnable(DRV_PLC_EXT_INT_SRC);
     /* Disable External Pin Interrupt */
-    PIO_PinInterruptDisable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
+    PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
 }
 
-void DRV_PL360_HAL_Setup(bool set16Bits)
+void DRV_PLC_HAL_Setup(bool set16Bits)
 {
     SPI_TRANSFER_SETUP spiPlibSetup;
     
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelTx));
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
     if (set16Bits) 
     {
         spiPlibSetup.dataBits = SPI_DATA_BITS_16;
-        SYS_DMA_DataWidthSetup(sPl360Plib->dmaChannelTx, SYS_DMA_WIDTH_16_BIT);
-        SYS_DMA_DataWidthSetup(sPl360Plib->dmaChannelRx, SYS_DMA_WIDTH_16_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelTx, SYS_DMA_WIDTH_16_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelRx, SYS_DMA_WIDTH_16_BIT);
     }
     else
     {
         spiPlibSetup.dataBits = SPI_DATA_BITS_8;
-        SYS_DMA_DataWidthSetup(sPl360Plib->dmaChannelTx, SYS_DMA_WIDTH_8_BIT);
-        SYS_DMA_DataWidthSetup(sPl360Plib->dmaChannelRx, SYS_DMA_WIDTH_8_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelTx, SYS_DMA_WIDTH_8_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelRx, SYS_DMA_WIDTH_8_BIT);
     }
     
     /* Configure SPI PLIB */
-    spiPlibSetup.clockFrequency = sPl360Plib->spiClockFrequency;
+    spiPlibSetup.clockFrequency = sPlcPlib->spiClockFrequency;
     spiPlibSetup.clockPhase = SPI_CLOCK_PHASE_LEADING_EDGE;
     spiPlibSetup.clockPolarity = SPI_CLOCK_POLARITY_IDLE_LOW;    
-    sPl360Plib->spiPlibTransferSetup((uintptr_t)&spiPlibSetup, 0);
+    sPlcPlib->spiPlibTransferSetup((uintptr_t)&spiPlibSetup, 0);
     
     /* Configure DMA */
-    SYS_DMA_AddressingModeSetup(sPl360Plib->dmaChannelTx, SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
-    SYS_DMA_AddressingModeSetup(sPl360Plib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
+    SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelTx, SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
+    SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
     
 }
 
-void DRV_PL360_HAL_Reset(void)
+void DRV_PLC_HAL_Reset(void)
 {
     /* Disable LDO pin */
-    SYS_PORT_PinClear(sPl360Plib->ldoPin);
+    SYS_PORT_PinClear(sPlcPlib->ldoPin);
     /* Enable Reset Pin */
-    SYS_PORT_PinClear(sPl360Plib->resetPin);
+    SYS_PORT_PinClear(sPlcPlib->resetPin);
 
-    /* Wait to PL360 startup (500us) */
-    DRV_PL360_HAL_Delay(500);
+    /* Wait to PLC startup (500us) */
+    DRV_PLC_HAL_Delay(500);
 
     /* Enable LDO pin */
-    SYS_PORT_PinSet(sPl360Plib->ldoPin);
+    SYS_PORT_PinSet(sPlcPlib->ldoPin);
 
-    /* Wait to PL360 LDO enable (500us) */
-    DRV_PL360_HAL_Delay(500);
+    /* Wait to PLC LDO enable (500us) */
+    DRV_PLC_HAL_Delay(500);
 
     /* Disable Reset pin */
-    SYS_PORT_PinSet(sPl360Plib->resetPin);
+    SYS_PORT_PinSet(sPlcPlib->resetPin);
 
-    /* Wait to PL360 startup (500us) */
-    DRV_PL360_HAL_Delay(500);
+    /* Wait to PLC startup (500us) */
+    DRV_PLC_HAL_Delay(500);
 }
 
-bool DRV_PL360_HAL_GetCarrierDetect(void)
+bool DRV_PLC_HAL_GetCarrierDetect(void)
 {
     return false;
 }
 
-void DRV_PL360_HAL_Delay(uint64_t delayUs)
+void DRV_PLC_HAL_Delay(uint64_t delayUs)
 {    
     _delay((delayUs * 300000000 + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
 }
 
-void DRV_PL360_HAL_EnableInterrupts(bool enable)
+void DRV_PLC_HAL_EnableInterrupts(bool enable)
 {
     if (enable)
     {
-        SYS_INT_SourceStatusClear(DRV_PL360_EXT_INT_SRC);
-        PIO_PinInterruptEnable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
+        SYS_INT_SourceStatusClear(DRV_PLC_EXT_INT_SRC);
+        PIO_PinInterruptEnable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
     }
     else
     {
-        PIO_PinInterruptDisable((PIO_PIN)DRV_PL360_EXT_INT_PIN);
+        PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
     }
 }
 
-void DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
+void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd)
 {
     uint8_t *pTxData;
     size_t size;
     
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelTx));
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
     
     pTxData = sTxSpiData;
     
@@ -224,25 +224,25 @@ void DRV_PL360_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength,
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
     
-    SYS_DMA_ChannelTransfer (sPl360Plib->dmaChannelRx, (const void *)sPl360Plib->spiAddressRx, (const void *)sRxSpiData, size);
-    SYS_DMA_ChannelTransfer (sPl360Plib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPl360Plib->spiAddressTx, size);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelRx, (const void *)sPlcPlib->spiAddressRx, (const void *)sRxSpiData, size);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPlcPlib->spiAddressTx, size);
     
     if (pDataRd) {
-        while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
         /* Update data received */
         memcpy(pDataRd, &sRxSpiData[6], dataLength);
     }
 }
 
-void DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInfo)
+void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 {
     uint8_t *pTxData;
     size_t cmdSize;
     size_t dataLength;
     
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelTx));
-    while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
     
     pTxData = sTxSpiData;
     
@@ -264,7 +264,7 @@ void DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInf
     *pTxData++ = (uint8_t)(dataLength);
     *pTxData++ = (uint8_t)(dataLength >> 8);
 
-    if (pCmd->cmd == DRV_PL360_HAL_CMD_WR) {
+    if (pCmd->cmd == DRV_PLC_HAL_CMD_WR) {
         /* Fill with transmission data */
         memcpy(pTxData, pCmd->pData, pCmd->length);
     } else {
@@ -289,26 +289,26 @@ void DRV_PL360_HAL_SendWrRdCmd(DRV_PL360_HAL_CMD *pCmd, DRV_PL360_HAL_INFO *pInf
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
     
-    SYS_DMA_ChannelTransfer (sPl360Plib->dmaChannelRx, (const void *)sPl360Plib->spiAddressRx, (const void *)sRxSpiData, cmdSize >> 1);
-    SYS_DMA_ChannelTransfer (sPl360Plib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPl360Plib->spiAddressTx, cmdSize >> 1);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelRx, (const void *)sPlcPlib->spiAddressRx, (const void *)sRxSpiData, cmdSize >> 1);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPlcPlib->spiAddressTx, cmdSize >> 1);
     
-    if (pCmd->cmd == DRV_PL360_HAL_CMD_RD) {
-        while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelTx));
-        while(SYS_DMA_ChannelIsBusy(sPl360Plib->dmaChannelRx));
+    if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
         /* Update data received */
         memcpy(pCmd->pData, &sRxSpiData[4], pCmd->length);
     }
     
     /* Get HAL info */
-    pInfo->key = DRV_PL360_HAL_KEY(sRxSpiData[0], sRxSpiData[1]);
-    if (pInfo->key == DRV_PL360_HAL_KEY_CORTEX)
+    pInfo->key = DRV_PLC_HAL_KEY(sRxSpiData[0], sRxSpiData[1]);
+    if (pInfo->key == DRV_PLC_HAL_KEY_CORTEX)
     {
-        pInfo->flags = DRV_PL360_HAL_FLAGS_CORTEX(sRxSpiData[2], sRxSpiData[3]);
+        pInfo->flags = DRV_PLC_HAL_FLAGS_CORTEX(sRxSpiData[2], sRxSpiData[3]);
     } 
-    else if (pInfo->key == DRV_PL360_HAL_KEY_BOOT)
+    else if (pInfo->key == DRV_PLC_HAL_KEY_BOOT)
     {
-        pInfo->flags = DRV_PL360_HAL_FLAGS_BOOT(sRxSpiData[0], sRxSpiData[2], sRxSpiData[3]);
+        pInfo->flags = DRV_PLC_HAL_FLAGS_BOOT(sRxSpiData[0], sRxSpiData[2], sRxSpiData[3]);
     } 
     else 
     {

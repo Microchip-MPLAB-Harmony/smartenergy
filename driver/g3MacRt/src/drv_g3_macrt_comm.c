@@ -1,14 +1,14 @@
 /******************************************************************************
-  DRV_PL360 G3 Profile Layer
+  DRV_G3_MACRT_COMM Profile Layer
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_comm.c
+    drv_g3_macrt_comm.c
 
   Summary:
-    PL360 Driver G3 Profile Layer
+    G3 MAC RT Driver Communication Profile Layer
 
   Description:
     This file contains the source code for the implementation of the G3 Profile 
@@ -46,11 +46,13 @@
 // *****************************************************************************
 // *****************************************************************************
 #include <string.h>
+#include <stdbool.h>
 #include "configuration.h"
-#include "driver/pl360MacRt/drv_pl360_macrt.h"
-#include "driver/pl360MacRt/drv_pl360_hal.h"
-#include "driver/pl360MacRt/src/drv_pl360_macrt_local_comm.h"
-#include "driver/pl360MacRt/src/drv_pl360_boot.h"
+#include "driver/g3MacRt/drv_plc_hal.h"
+#include "driver/g3MacRt/drv_plc_boot.h"
+#include "driver/g3MacRt/drv_g3_macrt.h"
+#include "driver/g3MacRt/drv_g3_macrt_local.h"
+#include "driver/g3MacRt/drv_g3_macrt_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,15 +61,20 @@
 // *****************************************************************************
 
 /* This is the driver instance object array. */
-static DRV_PL360_OBJ *gPl360Obj;
+static DRV_G3_MACRT_OBJ *gG3MacRtObj = NULL;
 
-/* Buffer definition to communicate with PL360 */
-static uint8_t sDataInfo[PL360_STATUS_LENGTH];
-static uint8_t sDataTxPar[PL360_TX_PAR_SIZE];
-static uint8_t sDataRxPar[PL360_RX_PAR_SIZE];
-static uint8_t sDataRxDat[PL360_DATA_PKT_SIZE];
-static uint8_t sDataTxCfm[PL360_CMF_PKT_SIZE];
-static uint8_t sDataReg[PL360_REG_PKT_SIZE];
+/* Buffer definition to communicate with G3 MACRT device */
+static uint8_t gG3Info[DRV_G3_MACRT_STATUS_LENGTH];
+static uint8_t gG3TxData[DRV_G3_MACRT_DATA_MAX_SIZE];
+static uint8_t gG3MlmeSetData[DRV_G3_MACRT_MLME_SET_SIZE];
+static uint8_t gG3MlmeGetData[DRV_G3_MACRT_MLME_GET_SIZE];
+static uint8_t gG3RxData[DRV_G3_MACRT_DATA_MAX_SIZE];
+static uint8_t gG3TxCfmData[DRV_G3_MACRT_TX_CFM_SIZE];
+static uint8_t gG3ToneMapData[DRV_G3_MACRT_TONEMAP_RSP_SIZE];
+static uint8_t gG3RegData[DRV_G3_MACRT_REG_PKT_SIZE];
+
+/* Local vars */
+static MAC_RT_MOD_TYPE gG3LastModType;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -75,322 +82,203 @@ static uint8_t sDataReg[PL360_REG_PKT_SIZE];
 // *****************************************************************************
 // *****************************************************************************
 
-static uint32_t _DRV_PL360_COMM_GetPibBaseAddress(DRV_PL360_ID id)
-{
-    uint32_t addr;
-
-    addr = 0;
-
-    if (id & DRV_PL360_REG_ADC_MASK) {
-        addr = (uint32_t)DRV_PL360_REG_ADC_BASE;
-    } else if (id & DRV_PL360_REG_DAC_MASK) {
-        addr = (uint32_t)DRV_PL360_REG_DAC_BASE;
-    } else if (id & DRV_PL360_FUSES_MASK) {
-        addr = (uint32_t)DRV_PL360_FUSES_BASE;
-    } else if ((id & DRV_PL360_REG_MASK) && (id < PL360_ID_END_ID)) {
-        addr = (uint32_t)DRV_PL360_REG_BASE;
-    }
-
-    return addr;
-}
-
-uint16_t _DRV_PL360_COMM_GetDelayUs(DRV_PL360_ID id)
+uint16_t _DRV_G3_MACRT_COMM_GetDelayUs(MAC_RT_PHY_PIB id)
 {
     uint16_t delay = 50;
 
-    if ((id & DRV_PL360_REG_MASK) && (id < PL360_ID_END_ID)) 
+    switch (id) 
     {
-        switch (id) 
-        {
-            case PL360_ID_TONE_MASK:
-            delay = 600;
-            break;
+        case PHY_PARAM_TONE_MASK:
+        delay = 600;
+        break;
 
-            case PL360_ID_PREDIST_COEF_TABLE_HI:
-            case PL360_ID_PREDIST_COEF_TABLE_LO:
-            delay = 250;
-            break;
+        case PHY_PARAM_PREDIST_COEF_TABLE_HI:
+        case PHY_PARAM_PREDIST_COEF_TABLE_LO:
+        delay = 250;
+        break;
 
-            case PL360_ID_PREDIST_COEF_TABLE_VLO:
-            delay = 350;
-            break;
+        case PHY_PARAM_PREDIST_COEF_TABLE_VLO:
+        delay = 350;
+        break;
 
-            default:
-            delay = 50;
-            break;
-        }
+        default:
+        delay = 50;
+        break;
     }
 
     return delay;
 }
 
-static size_t _DRV_PL360_COMM_TxStringify(DRV_PL360_TRANSMISSION_OBJ *pSrc)
+static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
 {
-    uint8_t *pDst;
-    size_t size;
-    
-    pDst = sDataTxPar;
-    
-    *pDst++ = (uint8_t)pSrc->time;
-    *pDst++ = (uint8_t)(pSrc->time >> 8);
-    *pDst++ = (uint8_t)(pSrc->time >> 16);
-    *pDst++ = (uint8_t)(pSrc->time >> 24);
-    *pDst++ = (uint8_t)pSrc->dataLength;
-    *pDst++ = (uint8_t)(pSrc->dataLength >> 8);
-    memcpy(pDst, pSrc->preemphasis, sizeof(pSrc->preemphasis));
-    pDst += sizeof(pSrc->preemphasis);
-    memcpy(pDst, pSrc->toneMap, sizeof(pSrc->toneMap));
-    pDst += sizeof(pSrc->toneMap);
-    *pDst++ = pSrc->mode;
-    *pDst++ = pSrc->attenuation;
-    *pDst++ = pSrc->modType;
-    *pDst++ = pSrc->modScheme;
-    *pDst++ = pSrc->pdc;
-    *pDst++ = pSrc->rs2Blocks;
-    *pDst++ = pSrc->delimiterType;
-
-    size = (uint16_t)(pDst - sDataTxPar);
-    
-    return size;
-    
-}
-
-static void _DRV_PL360_COMM_TxCfmEvent(DRV_PL360_TRANSMISSION_CFM_OBJ *pCfmObj)
-{
-    uint8_t *pSrc;
-    
-    pSrc = sDataTxCfm;
-    
-    pCfmObj->rmsCalc = (uint32_t)*pSrc++;
-    pCfmObj->rmsCalc += (uint32_t)*pSrc++ << 8;
-    pCfmObj->rmsCalc += (uint32_t)*pSrc++ << 16;
-    pCfmObj->rmsCalc += (uint32_t)*pSrc++ << 24;
-
-    pCfmObj->time = (uint32_t)*pSrc++;
-    pCfmObj->time += (uint32_t)*pSrc++ << 8;
-    pCfmObj->time += (uint32_t)*pSrc++ << 16;
-    pCfmObj->time += (uint32_t)*pSrc++ << 24;
-
-    pCfmObj->result = (DRV_PL360_TX_RESULT)*pSrc;
-}
-
-static void _DRV_PL360_COMM_RxEvent(DRV_PL360_RECEPTION_OBJ *pRxObj)
-{
-    uint8_t *pSrc;
-    
-    pSrc = sDataRxPar;
-    
-    /* Parse parameters of reception event */
-    pRxObj->time = (uint32_t)*pSrc++;
-    pRxObj->time += (uint32_t)*pSrc++ << 8;
-    pRxObj->time += (uint32_t)*pSrc++ << 16;
-    pRxObj->time += (uint32_t)*pSrc++ << 24;
-
-    pRxObj->frameDuration = (uint32_t)*pSrc++;
-    pRxObj->frameDuration += (uint32_t)*pSrc++ << 8;
-    pRxObj->frameDuration += (uint32_t)*pSrc++ << 16;
-    pRxObj->frameDuration += (uint32_t)*pSrc++ << 24;
-
-    pRxObj->rssi = (uint16_t)*pSrc++;
-    pRxObj->rssi += (uint16_t)*pSrc++ << 8;
-    
-    pRxObj->dataLength = (uint16_t)*pSrc++;
-    pRxObj->dataLength += (uint16_t)*pSrc++ << 8;
-    if (pRxObj->dataLength > PL360_DATA_PKT_SIZE) {
-        pRxObj->dataLength = PL360_DATA_PKT_SIZE;
-    }
-
-    pRxObj->zctDiff = *pSrc++;
-    pRxObj->rsCorrectedErrors = *pSrc++;
-    pRxObj->modType = (DRV_PL360_MOD_TYPE)*pSrc++;
-    pRxObj->modScheme = (DRV_PL360_MOD_SCHEME)*pSrc++;
-
-    pRxObj->agcFactor = (uint32_t)*pSrc++;
-    pRxObj->agcFactor += (uint32_t)*pSrc++ << 8;
-    pRxObj->agcFactor += (uint32_t)*pSrc++ << 16;
-    pRxObj->agcFactor += (uint32_t)*pSrc++ << 24;
-    pRxObj->agcFine = (uint16_t)*pSrc++;
-    pRxObj->agcFine += (uint16_t)*pSrc++ << 8;
-    pRxObj->agcOffsetMeas = (uint16_t)*pSrc++;
-    pRxObj->agcOffsetMeas += (uint16_t)*pSrc++ << 8;
-    pRxObj->agcActive = *pSrc++;
-    pRxObj->agcActive = *pSrc++;
-    pRxObj->snrFch = (uint16_t)*pSrc++;
-    pRxObj->snrFch += (uint16_t)*pSrc++ << 8;
-    pRxObj->snrPay = (uint16_t)*pSrc++;
-    pRxObj->snrPay += (uint16_t)*pSrc++ << 8;
-    pRxObj->payloadCorruptedCarriers = (uint16_t)*pSrc++;
-    pRxObj->payloadCorruptedCarriers += (uint16_t)*pSrc++ << 8;
-    pRxObj->payloadNoisedSymbols = (uint16_t)*pSrc++;
-    pRxObj->payloadNoisedSymbols += (uint16_t)*pSrc++ << 8;
-    pRxObj->payloadSnrWorstCarrier = *pSrc++;
-    pRxObj->payloadSnrWorstCarrier = *pSrc++;
-    pRxObj->payloadSnrImpulsive = *pSrc++;
-    pRxObj->payloadSnrBand = *pSrc++;
-    pRxObj->payloadSnrBackground = *pSrc++;
-    pRxObj->lqi = *pSrc++;
-
-    pRxObj->delimiterType = (DRV_PL360_DEL_TYPE)*pSrc++;
-    pRxObj->rsrv0 = *pSrc++;
-    memcpy(pRxObj->toneMap, pSrc, TONE_MAP_SIZE_MAX);
-    pSrc += sizeof(pRxObj->toneMap);
-    memcpy(pRxObj->carrierSnr, pSrc, PROTOCOL_CARRIERS_MAX);
-
-    /* Set data content pointer */
-    pRxObj->pReceivedData = sDataRxDat;
-}
-
-static bool _DRV_PL360_COMM_CheckComm(DRV_PL360_HAL_INFO *info)
-{
-    if (info->key == DRV_PL360_HAL_KEY_CORTEX)
+    if (info->key == DRV_PLC_HAL_KEY_CORTEX)
     {
         /* Communication correct */
         return true;
     }
-    else if (info->key == DRV_PL360_HAL_KEY_BOOT)
+    else if (info->key == DRV_PLC_HAL_KEY_BOOT)
     {
         /* Communication Error : Check reset value */
-        if (info->flags & DRV_PL360_HAL_FLAG_RST_WDOG)   
+        if (info->flags & DRV_PLC_HAL_FLAG_RST_WDOG)   
         {
             /* Debugger is connected */
-            DRV_PL360_BOOT_Restart(false);
-            if (gPl360Obj->exceptionCallback)
+            DRV_PLC_BOOT_Restart(false);
+            if (gG3MacRtObj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_DEBUG, gPl360Obj->contextExc);
+                gG3MacRtObj->exceptionCallback(DRV_G3_MACRT_EXCEPTION_DEBUG, 
+                        gG3MacRtObj->contextExc);
             }
         }
         else
         {
-            /* PL360 needs boot process to upload firmware */
-            DRV_PL360_BOOT_Restart(true);
-            if (gPl360Obj->exceptionCallback)
+            /* PLC needs boot process to upload firmware */
+            DRV_PLC_BOOT_Restart(true);
+            if (gG3MacRtObj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_RESET, gPl360Obj->contextExc);
+                gG3MacRtObj->exceptionCallback(DRV_G3_MACRT_EXCEPTION_RESET, 
+                        gG3MacRtObj->contextExc);
             }
         }
     }
     else
     {
-        /* PL360 needs boot process to upload firmware */
-        DRV_PL360_BOOT_Restart(true);
-        if (gPl360Obj->exceptionCallback)
+        /* PLC needs boot process to upload firmware */
+        DRV_PLC_BOOT_Restart(true);
+        if (gG3MacRtObj->exceptionCallback)
         {
-            gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_UNEXPECTED_KEY, gPl360Obj->contextExc);
+            gG3MacRtObj->exceptionCallback(
+                    DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY, 
+                    gG3MacRtObj->contextExc
+            );
         }
     }
     
     /* Check if there is any tx_cfm pending to be reported */
-    if (gPl360Obj->state == DRV_PL360_STATE_WAITING_TX_CFM)
+    if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
     {
-        gPl360Obj->evResetTxCfm = true;
+        gG3MacRtObj->evResetTxCfm = true;
     }
     
     return false;
 }
 
-static void _DRV_PL360_COMM_SpiWriteCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
+static void _DRV_G3_MACRT_COMM_SpiWriteCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pData, 
+        uint16_t length)
 {
-    DRV_PL360_HAL_CMD halCmd;
-    DRV_PL360_HAL_INFO halInfo;
+    DRV_PLC_HAL_CMD halCmd;
+    DRV_PLC_HAL_INFO halInfo;
     uint8_t failures = 0;
     
-    /* Disable external interrupt from PL360 */
-    gPl360Obj->pl360Hal->enableExtInt(false);
+    /* Disable external interrupt from PLC */
+    gG3MacRtObj->plcHal->enableExtInt(false);
     
-    halCmd.cmd = DRV_PL360_HAL_CMD_WR;
+    halCmd.cmd = DRV_PLC_HAL_CMD_WR;
     halCmd.memId = id;
     halCmd.length = length;
     halCmd.pData = pData;
     
-    gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+    gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
+    while(!_DRV_G3_MACRT_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
-            if (gPl360Obj->exceptionCallback)
+            if (gG3MacRtObj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
+                gG3MacRtObj->exceptionCallback(
+                        DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR, 
+                        gG3MacRtObj->contextExc
+                );
             }
             break;
         }
-        gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+        gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }  
     
-    /* Enable external interrupt from PL360 */
-    gPl360Obj->pl360Hal->enableExtInt(true); 
+    /* Enable external interrupt from PLC */
+    gG3MacRtObj->plcHal->enableExtInt(true); 
 }
 
-static void _DRV_PL360_COMM_SpiReadCmd(DRV_PL360_MEM_ID id, uint8_t *pData, uint16_t length)
+static void _DRV_G3_MACRT_COMM_SpiReadCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pData, 
+        uint16_t length)
 {
-    DRV_PL360_HAL_CMD halCmd;
-    DRV_PL360_HAL_INFO halInfo;
+    DRV_PLC_HAL_CMD halCmd;
+    DRV_PLC_HAL_INFO halInfo;
     uint8_t failures = 0;
     
-    /* Disable external interrupt from PL360 */
-    gPl360Obj->pl360Hal->enableExtInt(false);
+    /* Disable external interrupt from PLC */
+    gG3MacRtObj->plcHal->enableExtInt(false);
     
-    halCmd.cmd = DRV_PL360_HAL_CMD_RD;
+    halCmd.cmd = DRV_PLC_HAL_CMD_RD;
     halCmd.memId = id;
     halCmd.length = length;
     halCmd.pData = pData;
     
-    gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+    gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
+    while(!_DRV_G3_MACRT_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
-            if (gPl360Obj->exceptionCallback)
+            if (gG3MacRtObj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
+                gG3MacRtObj->exceptionCallback(
+                        DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR, 
+                        gG3MacRtObj->contextExc
+                );
             }
             break;
         }
-        gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+        gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }    
     
-    /* Enable external interrupt from PL360 */
-    gPl360Obj->pl360Hal->enableExtInt(true); 
+    /* Enable external interrupt from PLC */
+    gG3MacRtObj->plcHal->enableExtInt(true); 
 }
 
-static void _DRV_PL360_COMM_GetEventsInfo(DRV_PL360_EVENTS_OBJ *eventsObj)
+static void _DRV_G3_MACRT_COMM_GetEventsInfo(DRV_G3_MACRT_EVENTS_OBJ *eventsObj)
 {
     uint8_t *pData;
-    DRV_PL360_HAL_CMD halCmd;
-    DRV_PL360_HAL_INFO halInfo;
+    DRV_PLC_HAL_CMD halCmd;
+    DRV_PLC_HAL_INFO halInfo;
     uint8_t failures = 0;
     
-    pData = sDataInfo;    
+    pData = gG3Info;    
     
-    halCmd.cmd = DRV_PL360_HAL_CMD_RD;
+    halCmd.cmd = DRV_PLC_HAL_CMD_RD;
     halCmd.memId = STATUS_ID;
-    halCmd.length = PL360_STATUS_LENGTH;
+    halCmd.length = DRV_G3_MACRT_STATUS_LENGTH;
     halCmd.pData = pData;
     
-    gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+    gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     
     /* Check communication integrity */
-    while(!_DRV_PL360_COMM_CheckComm(&halInfo))
+    while(!_DRV_G3_MACRT_COMM_CheckComm(&halInfo))
     {
         failures++;
         if (failures == 2) {
-            if (gPl360Obj->exceptionCallback)
+            if (gG3MacRtObj->exceptionCallback)
             {
-                gPl360Obj->exceptionCallback(DRV_PL360_EXCEPTION_CRITICAL_ERROR, gPl360Obj->contextExc);
+                gG3MacRtObj->exceptionCallback(
+                        DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR, 
+                        gG3MacRtObj->contextExc
+                );
             }
             break;
         }
-        gPl360Obj->pl360Hal->sendWrRdCmd(&halCmd, &halInfo);
+        gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }    
     
     /* Extract Events information */
-    eventsObj->evCfm = (halInfo.flags & DRV_PL360_EV_FLAG_TX_CFM_MASK)? 1:0;
-    eventsObj->evRxDat = (halInfo.flags & DRV_PL360_EV_FLAG_RX_DAT_MASK)? 1:0;
-    eventsObj->evRxPar = (halInfo.flags & DRV_PL360_EV_FLAG_RX_PAR_MASK)? 1:0;
-    eventsObj->evReg = (halInfo.flags & DRV_PL360_EV_FLAG_REG_MASK)? 1:0;
+    eventsObj->evTxCfm = (halInfo.flags & DRV_G3_MACRT_EV_TX_CFM_MASK)? 1:0;
+    eventsObj->evDataInd = (halInfo.flags & DRV_G3_MACRT_EV_DATA_IND_MASK)? 1:0;
+    eventsObj->evMlmeSetCfm = (halInfo.flags & DRV_G3_MACRT_EV_MLME_SET_CFM_MASK)? 1:0;
+    eventsObj->evMlmeGetCfm = (halInfo.flags & DRV_G3_MACRT_EV_MLME_GET_CFM_MASK)? 1:0;
+    eventsObj->evReg = (halInfo.flags & DRV_G3_MACRT_EV_REG_RSP_MASK)? 1:0;
+    eventsObj->evToneMapRsp = (halInfo.flags & DRV_G3_MACRT_EV_TONMAP_RSP_MASK)? 1:0;
+    eventsObj->evSniffer = (halInfo.flags & DRV_G3_MACRT_EV_SNIFFER_MASK)? 1:0;
     
     /* Extract Timer info */
     eventsObj->timerRef = ((uint32_t)*pData++);
@@ -407,288 +295,410 @@ static void _DRV_PL360_COMM_GetEventsInfo(DRV_PL360_EVENTS_OBJ *eventsObj)
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360 Common Interface Implementation
+// Section: DRV_PLC Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
-void DRV_PL360_Init(DRV_PL360_OBJ *pl360)
+void DRV_G3_MACRT_Init(DRV_G3_MACRT_OBJ *g3MacRt)
 {
-    gPl360Obj = pl360;
+    gG3MacRtObj = g3MacRt;
     
-    /* Clear information about PL360 events */
-    gPl360Obj->evTxCfm[0] = false;
-    gPl360Obj->evRxPar = false;
-    gPl360Obj->evRxDat = false;
-    gPl360Obj->evRegRspLength = 0;
-    gPl360Obj->evResetTxCfm = false;
+    /* Clear information about PLC events */
+    gG3MacRtObj->evDataIndLength = 0;
+    gG3MacRtObj->evMlmeGetCfm = false;
+    gG3MacRtObj->evRegRspLength = 0;
+    gG3MacRtObj->evResetTxCfm = false;
+    gG3MacRtObj->evToneMapRsp = false;
+    gG3MacRtObj->evTxCfm = false;
     
-    /* Enable external interrupt from PL360 */
-    gPl360Obj->pl360Hal->enableExtInt(true);
+    /* Enable external interrupt from PLC */
+    gG3MacRtObj->plcHal->enableExtInt(true);
 }
 
-void DRV_PL360_Task(void)
+void DRV_G3_MACRT_Task(void)
 {
+    MAC_RT_TX_CFM_OBJ *pTxCfmObj;
+    
     /* Check event flags */
-    if ((gPl360Obj->evTxCfm[0]) || (gPl360Obj->evResetTxCfm))
+    if ((gG3MacRtObj->evTxCfm) || (gG3MacRtObj->evResetTxCfm))
     {
-        DRV_PL360_TRANSMISSION_CFM_OBJ cfmObj;
-        
-        if (gPl360Obj->evResetTxCfm)
+        if (gG3MacRtObj->evResetTxCfm)
         {
-            gPl360Obj->evResetTxCfm = false;
-            gPl360Obj->state = DRV_PL360_STATE_IDLE;
+            MAC_RT_TX_CFM_OBJ txCfmObj;
             
-            cfmObj.rmsCalc = 0;
-            cfmObj.time = 0;
-            cfmObj.result = DRV_PL360_TX_RESULT_NO_TX;
+            /* Reset event flag */
+            gG3MacRtObj->evResetTxCfm = false;
+            
+            /* Fill Tx Cfm object in case of reset while transmission */
+            pTxCfmObj = &txCfmObj;
+            txCfmObj.status = MAC_RT_STATUS_DENIED;
+            txCfmObj.modType = gG3LastModType;
+            txCfmObj.updateTimestamp = false;
         } else {
-            _DRV_PL360_COMM_TxCfmEvent(&cfmObj);            
+            pTxCfmObj = (MAC_RT_TX_CFM_OBJ *)gG3TxCfmData;
         }
         
-        if (gPl360Obj->dataCfmCallback)
+        /* Report to upper layer */
+        if (gG3MacRtObj->txCfmCallback)
+        {
+            gG3MacRtObj->txCfmCallback(&txCfmObj, gG3MacRtObj->contextTxCfm);
+        }
+        
+        /* Update MAC RT state */
+        gG3MacRtObj->state = DRV_G3_MACRT_STATE_IDLE;
+        /* Reset event flag */
+        gG3MacRtObj->evTxCfm = false;
+    }
+    
+    if (gG3MacRtObj->evMlmeGetCfm)
+    {
+        MAC_RT_RX_PARAMETERS_OBJ *pRxParams;
+        
+        if (gG3MacRtObj->mlmeGetCfmcallback)
         {
             /* Report to upper layer */
-            gPl360Obj->dataCfmCallback(&cfmObj, gPl360Obj->contextCfm);
+            pRxParams = (MAC_RT_RX_PARAMETERS_OBJ *)gG3MlmeGetData;
+            gG3MacRtObj->mlmeGetCfmcallback(pRxParams, gG3MacRtObj->contextMlmeGetCfm);
         }
         
         /* Reset event flag */
-        gPl360Obj->evTxCfm[0] = false;
+        gG3MacRtObj->evMlmeGetCfm = false;
     }
     
-    if (gPl360Obj->evRxPar && gPl360Obj->evRxDat)
-    {
-        DRV_PL360_RECEPTION_OBJ rxObj;
-        
-        _DRV_PL360_COMM_RxEvent(&rxObj);
-        if (gPl360Obj->dataIndCallback)
+    if (gG3MacRtObj->evDataIndLength)
+    {   
+        if (gG3MacRtObj->dataIndCallback)
         {
             /* Report to upper layer */
-            gPl360Obj->dataIndCallback(&rxObj, gPl360Obj->contextInd);
+            gG3MacRtObj->dataIndCallback(gG3RxData, gG3MacRtObj->evDataIndLength,
+                    gG3MacRtObj->contextDataInd);
         }
         
-        /* Reset event flags */
-        gPl360Obj->evRxPar = false;
-        gPl360Obj->evRxDat = false;
-    }
-}
-
-void DRV_PL360_Send(const DRV_HANDLE handle, DRV_PL360_TRANSMISSION_OBJ *transmitObj)
-{    
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0) && (gPl360Obj->state == DRV_PL360_STATE_IDLE))
-    {
-        size_t size_params;
-        
-        size_params = _DRV_PL360_COMM_TxStringify(transmitObj);
-        
-        if (size_params)
-        {
-            /* Update PL360 state: transmitting */
-            gPl360Obj->state = DRV_PL360_STATE_TX;
-            
-            /* Send TX parameters */
-            _DRV_PL360_COMM_SpiWriteCmd(TX_PAR_ID, sDataTxPar, size_params);
-            
-            /* Waiting CFM to avoid soon error responses */
-            gPl360Obj->pl360Hal->delay(200);
-            
-            /* Send TX data */
-            if (gPl360Obj->state == DRV_PL360_STATE_TX)
-            {
-                /* Send TX data content */
-                _DRV_PL360_COMM_SpiWriteCmd(TX_DAT_ID, transmitObj->pTransmitData, transmitObj->dataLength);
-            
-                /* Update PL360 state: waiting confirmation */
-                gPl360Obj->state = DRV_PL360_STATE_WAITING_TX_CFM;
-            }
-        }
-    }
-}
-
-bool DRV_PL360_PIBGet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
-{    
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
-    {
-        if (pibObj->id == PL360_ID_TIME_REF_ID)
-        {
-            /* Send PIB information request */
-            _DRV_PL360_COMM_SpiReadCmd(STATUS_ID, pibObj->pData, pibObj->length);
-            return true;
-        }
-        else if (pibObj->id & DRV_PL360_REG_ID_MASK)
-        {
-            uint8_t *pDst;
-            uint32_t address;
-            uint32_t offset;
-            uint16_t secureCnt;
-            uint16_t cmdLength;
-
-            offset = (uint32_t)(pibObj->id & DRV_PL360_REG_OFFSET_MASK);
-
-            /* Get address offset */
-            address = _DRV_PL360_COMM_GetPibBaseAddress(pibObj->id);
-            if (address == 0)
-            {
-                return false;
-            }
-            address += offset;
-            
-            /* Set CMD and length */
-            cmdLength = DRV_PL360_CMD_READ | (pibObj->length & DRV_PL360_REG_LEN_MASK);
-
-            /* Build command */
-            pDst = sDataReg;
-
-            *pDst++ = (uint8_t)(address >> 24);
-            *pDst++ = (uint8_t)(address >> 16);
-            *pDst++ = (uint8_t)(address >> 8);
-            *pDst++ = (uint8_t)(address);
-            *pDst++ = (uint8_t)(cmdLength >> 8);
-            *pDst++ = (uint8_t)(cmdLength);
-
-            /* Send PIB information request */
-            _DRV_PL360_COMM_SpiWriteCmd(REG_INFO_ID, sDataReg, 8);
-
-            /* Wait to the response : Check length of the register response */
-            secureCnt = 0xFFFF;
-            while (!gPl360Obj->evRegRspLength) {
-                if (!secureCnt--) {
-                    /* Didn't came the expected response */
-                    return false;
-                }
-            }
-
-            /* copy Register info in data pointer */
-            memcpy(pibObj->pData, sDataReg, pibObj->length);
-            /* Reset length of the register response */
-            gPl360Obj->evRegRspLength = 0;
-
-            return true;
-        } 
-        else 
-        {
-            return false;
-        }
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool DRV_PL360_PIBSet(const DRV_HANDLE handle, DRV_PL360_PIB_OBJ *pibObj)
-{    
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
-    {
-        if (pibObj->id & DRV_PL360_REG_ID_MASK)
-        {
-            uint8_t *pDst;
-            uint8_t *pSrc;
-            uint32_t address;
-            uint32_t offset;
-            uint16_t delay;
-            uint16_t cmdLength;
-
-            offset = (uint32_t)(pibObj->id & DRV_PL360_REG_OFFSET_MASK);
-
-            /* Get base address */
-            address = _DRV_PL360_COMM_GetPibBaseAddress(pibObj->id);
-            if (address == 0)
-            {
-                return false;
-            }
-            address += offset;
-            
-            /* Set CMD and length */
-            cmdLength = DRV_PL360_CMD_WRITE | (pibObj->length & DRV_PL360_REG_LEN_MASK);
-
-            /* Build command */
-            pDst = sDataReg;
-
-            *pDst++ = (uint8_t)(address >> 24);
-            *pDst++ = (uint8_t)(address >> 16);
-            *pDst++ = (uint8_t)(address >> 8);
-            *pDst++ = (uint8_t)(address);
-            *pDst++ = (uint8_t)(cmdLength >> 8);
-            *pDst++ = (uint8_t)(cmdLength);
-            
-            pSrc = pibObj->pData;
-            if (pibObj->length == 4) {
-                *pDst++ = *pSrc++;
-                *pDst++ = *pSrc++;
-                *pDst++ = *pSrc++;
-                *pDst++ = *pSrc++;
-            } else if (pibObj->length == 2) {
-                *pDst++ = *pSrc++;
-                *pDst++ = *pSrc++;
-            } else {
-                memcpy(pDst, pSrc, pibObj->length);
-                pDst += pibObj->length;
-            }
-
-            /* Send PIB information request */
-            _DRV_PL360_COMM_SpiWriteCmd(REG_INFO_ID, sDataReg, pDst - sDataReg);
-
-            /* Guard delay to ensure writing operation completion. */
-            delay = _DRV_PL360_COMM_GetDelayUs(pibObj->id);
-            gPl360Obj->pl360Hal->delay(delay);
-
-            return true;
-        }
+        /* Reset event flag */
+        gG3MacRtObj->evDataIndLength = 0;
     }
     
-    return false;
+    if (gG3MacRtObj->evSniffer)
+    {   
+        if (gG3MacRtObj->snifferDataCallback)
+        {
+            /* Report to upper layer */
+            gG3MacRtObj->snifferDataCallback(gG3MacRtObj->contextSniffer);
+        }
+        
+        /* Reset event flag */
+        gG3MacRtObj->evSniffer = false;
+    }
 }
 
-void DRV_PL360_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
+void DRV_G3_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t length)
+{    
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0) && 
+       (gG3MacRtObj->state == DRV_G3_MACRT_STATE_IDLE))
+    {
+        /* Check Length */
+		if ((length > 0) && (length <= (MAC_RT_MAX_PAYLOAD_SIZE - 2))) {
+            uint8_t *pTxData;
+            
+			/* Update PLC state: transmitting */
+            gG3MacRtObj->state = DRV_G3_MACRT_STATE_TX;
+
+            /* Build and Send TX data */
+            pTxData = gG3TxData;
+            *pTxData++= (uint8_t)(length >> 8);
+            *pTxData++= (uint8_t)length;
+            memcpy(pTxData, pData, length);
+            _DRV_G3_MACRT_COMM_SpiWriteCmd(TX_REQ_ID, gG3TxData, length + 2);
+		}
+    }
+}
+
+void DRV_G3_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters)
+{    
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0) && 
+       (gG3MacRtObj->state == DRV_G3_MACRT_STATE_IDLE))
+    {
+        /* Send TX parameters */
+        memcpy(gG3MlmeSetData, (uint8_t *)pParameters, sizeof(gG3MlmeSetData));
+        
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(MLME_SET_ID, gG3MlmeSetData, 
+                sizeof(gG3MlmeSetData));
+    }
+}
+
+MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj)
+{    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        uint8_t *pDst;
+        uint16_t waitCounter;
+        uint16_t dummyValue;
+        
+        /* Check Length */
+		if (pibObj->length > MAC_RT_PIB_MAX_VALUE_LENGTH) {
+			/* Length error */
+			return MAC_RT_STATUS_INVALID_PARAMETER;
+		}
+        
+        /* Build command */
+        pDst = gG3RegData;
+
+        *pDst++ = MAC_RT_REG_CMD_RD;
+        *pDst++ = (uint8_t)(pibObj->pib >> 24);
+        *pDst++ = (uint8_t)(pibObj->pib >> 16);
+        *pDst++ = (uint8_t)(pibObj->pib >> 8);
+        *pDst++ = (uint8_t)(pibObj->pib);
+        *pDst++ = (uint8_t)(pibObj->index >> 8);
+        *pDst++ = (uint8_t)(pibObj->index);
+        *pDst++ = (uint8_t)(pibObj->length);
+        memcpy(pDst, pibObj->value, pibObj->length);
+        pDst += pibObj->length;
+
+        /* Send PIB information request */
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(REG_INFO_ID, gG3RegData, pDst - gG3RegData);
+        
+        /* Sync function: Wait to response from interrupt */
+		waitCounter = 100;
+		dummyValue = gG3MacRtObj->evRegRspLength;
+		while (!dummyValue) {
+			/* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
+			__asm("WFI");
+			if (!waitCounter--) {
+				/* Error in get cmd */
+				return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
+			}
+
+			dummyValue = gG3MacRtObj->evRegRspLength;
+		}
+
+		/* Check Response Content */
+		if (*gG3RegData != MAC_RT_STATUS_SUCCESS) {
+			/* Not success process */
+			return (MAC_RT_STATUS)*gG3RegData;
+		}
+
+        /* Copy Reg data in PIB object */
+		memcpy(pibObj->value, gG3RegData + 8, gG3MacRtObj->evRegRspLength);
+		pibObj->length = gG3MacRtObj->evRegRspLength;
+
+		/* Reset event flag */
+		gG3MacRtObj->evRegRspLength = 0;
+
+        return MAC_RT_STATUS_SUCCESS;
+    }
+    
+    return MAC_RT_STATUS_DENIED;
+}
+
+MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj)
+{    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        uint8_t *pDst;
+        uint16_t waitCounter;
+        uint16_t dummyValue;
+        
+        /* Check Length */
+		if (pibObj->length > MAC_RT_PIB_MAX_VALUE_LENGTH) {
+			/* Length error */
+			return MAC_RT_STATUS_INVALID_PARAMETER;
+		}
+        
+        /* Build command */
+        pDst = gG3RegData;
+
+        *pDst++ = MAC_RT_REG_CMD_WR;
+        *pDst++ = (uint8_t)(pibObj->pib >> 24);
+        *pDst++ = (uint8_t)(pibObj->pib >> 16);
+        *pDst++ = (uint8_t)(pibObj->pib >> 8);
+        *pDst++ = (uint8_t)(pibObj->pib);
+        *pDst++ = (uint8_t)(pibObj->index >> 8);
+        *pDst++ = (uint8_t)(pibObj->index);
+        *pDst++ = (uint8_t)(pibObj->length);
+        memcpy(pDst, pibObj->value, pibObj->length);
+        pDst += pibObj->length;
+
+        /* Send PIB information request */
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(REG_INFO_ID, gG3RegData, pDst - gG3RegData);
+        
+        /* Sync function: Wait to response from interrupt */
+		waitCounter = 100;
+		dummyValue = gG3MacRtObj->evRegRspLength;
+		while (!dummyValue) {
+			/* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
+			__asm("WFI");
+			if (!waitCounter--) {
+				/* Error in get cmd */
+				return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
+			}
+
+			dummyValue = gG3MacRtObj->evRegRspLength;
+		}
+
+        /* Additional delay to ensure writing operation completion. */
+        dummyValue = _DRV_G3_MACRT_COMM_GetDelayUs(pibObj->id);
+        gG3MacRtObj->plcHal->delay(dummyValue);
+
+        return MAC_RT_STATUS_SUCCESS;
+    }
+    
+    return MAC_RT_STATUS_DENIED;
+}
+
+void DRV_G3_MACRT_GetToneMapResponse(const DRV_HANDLE handle, 
+        MAC_RT_TONE_MAP_RSP *pParameters)
+{    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        uint16_t waitCounter;
+        uint16_t dummyValue;
+        
+        /* Send Tone Map response request */
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(TONE_MAP_REQ_ID, gG3ToneMapData, 
+                sizeof(gG3ToneMapData));
+        
+        /* Sync function: Wait to response from interrupt */
+		waitCounter = 100;
+		dummyValue = gG3MacRtObj->evToneMapRsp;
+		while (!dummyValue) {
+			/* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
+			__asm("WFI");
+			if (!waitCounter--) {
+				/* Error in get cmd */
+				return;
+			}
+
+			dummyValue = gG3MacRtObj->evToneMapRsp;
+		}
+
+        /* Copy Tone Map Response data in pParameters */
+		memcpy(pParameters, gG3ToneMapData, sizeof(gG3ToneMapData));
+    }
+}
+
+void DRV_G3_MACRT_SetCoordinator(const DRV_HANDLE handle)
+{    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        uint8_t coordinator;
+        
+        coordinator = 1;
+        /* Send Coordinator Capabilities Request */
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(SET_COORD_ID, &coordinator, 1);
+    }
+}
+
+void DRV_G3_MACRT_SetSpec15Compliance(const DRV_HANDLE handle)
+{    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        uint8_t spec15;
+        
+        spec15 = 1;
+        /* Send G3 Specification 15 Request */
+        _DRV_G3_MACRT_COMM_SpiWriteCmd(SET_SPEC15_ID, &spec15, 1);
+    }
+}
+
+uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle)
+{    
+    uint32_t timerReference = 0;
+    
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {        
+        /* Read G3 Internal Timer Reference */
+        _DRV_G3_MACRT_COMM_SpiReadCmd(STATUS_ID, &timerReference, 4);
+    }
+    
+    return timerReference;
+}
+
+void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
 {   
     /* Avoid warning */
     (void)context;
 
-    if ((gPl360Obj) && (pin == (PIO_PIN)gPl360Obj->pl360Hal->pl360Plib->extIntPin))
+    if ((gG3MacRtObj) && (pin == (PIO_PIN)gG3MacRtObj->plcHal->plcPlib->extIntPin))
     {
-        DRV_PL360_EVENTS_OBJ evObj;
+        DRV_G3_MACRT_EVENTS_OBJ evObj;
         
-        /* Time guard ?? */
-        gPl360Obj->pl360Hal->delay(20);
+        /* Time guard */
+        gG3MacRtObj->plcHal->delay(20);
         
-        /* Get PL360 events information */
-        _DRV_PL360_COMM_GetEventsInfo(&evObj);
+        /* Get PLC events information */
+        _DRV_G3_MACRT_COMM_GetEventsInfo(&evObj);
         
         /* Check confirmation of the transmission event */
-        if (evObj.evCfm)
+        if (evObj.evTxCfm)
         {
-            _DRV_PL360_COMM_SpiReadCmd(TX_CFM_ID, sDataTxCfm, PL360_CMF_PKT_SIZE);
+            _DRV_G3_MACRT_COMM_SpiReadCmd(TX_CFM_ID, gG3TxCfmData, 
+                    DRV_G3_MACRT_TX_CFM_SIZE);
             /* update event flag */
-            gPl360Obj->evTxCfm[0] = true;
-            /* Update PL360 state: idle */
-            gPl360Obj->state = DRV_PL360_STATE_IDLE;
+            gG3MacRtObj->evTxCfm = true;
+            /* Update PLC state: idle */
+            gG3MacRtObj->state = DRV_G3_MACRT_STATE_IDLE;
         }
         
-        /* Check received new parameters event (First event in RX) */
-        if (evObj.evRxDat)
+        /* Check received new parameters event */
+        if (evObj.evMlmeGetCfm)
         {        
-            _DRV_PL360_COMM_SpiReadCmd(RX_DAT_ID, sDataRxDat, evObj.rcvDataLength);
+            _DRV_G3_MACRT_COMM_SpiReadCmd(MLME_SET_CMF_ID, gG3MlmeGetData, 
+                    DRV_G3_MACRT_MLME_GET_SIZE);
             /* update event flag */
-            gPl360Obj->evRxDat = true;
+            gG3MacRtObj->evMlmeGetCfm = true;
         }
         
-        /* Check received new data event (Second event in RX) */
-        if (evObj.evRxPar)
-        {
-            _DRV_PL360_COMM_SpiReadCmd(RX_PAR_ID, sDataRxPar, PL360_RX_PAR_SIZE - 4);
+        /* Check received new data event */
+        if (evObj.evDataInd)
+        {       
+            if ((evObj.rcvDataLength == 0) || 
+                (evObj.rcvDataLength > DRV_G3_MACRT_DATA_MAX_SIZE))
+            {
+                evObj.rcvDataLength = 1;
+            }
+            _DRV_G3_MACRT_COMM_SpiReadCmd(DATA_IND_ID, gG3RxData, 
+                    evObj.rcvDataLength);
             /* update event flag */
-            gPl360Obj->evRxPar = true;
+            gG3MacRtObj->evDataIndLength = evObj.rcvDataLength;
         }
         
-        /* Check register info event */
+        /* Check Tone Map Response event */
+        if (evObj.evToneMapRsp)
+        {        
+            _DRV_G3_MACRT_COMM_SpiReadCmd(TONE_MAP_REQ_ID, gG3ToneMapData, 
+                    DRV_G3_MACRT_TONEMAP_RSP_SIZE);
+            /* update event flag */
+            gG3MacRtObj->evToneMapRsp = true;
+        }
+        
+        /* Check Register info event */
         if (evObj.evReg)
-        {     
-            _DRV_PL360_COMM_SpiReadCmd(REG_INFO_ID, sDataReg, evObj.regRspLength);
+        {          
+            if ((evObj.regRspLength == 0) || 
+                (evObj.regRspLength > DRV_G3_MACRT_REG_PKT_SIZE))
+            {
+                evObj.regRspLength = 1;
+            }
+            _DRV_G3_MACRT_COMM_SpiReadCmd(REG_INFO_ID, gG3RegData, 
+                    evObj.regRspLength);
             /* update event flag */
-            gPl360Obj->evRegRspLength = evObj.regRspLength;
+            gG3MacRtObj->evRegRspLength = evObj.regRspLength;
         }
         
-        /* Time guard ?? */
-        gPl360Obj->pl360Hal->delay(50);
+        /* Check Sniffer event */
+        if (evObj.evSniffer)
+        {        
+            uint16_t snfLength;
+            
+            snfLength = sizeof(MAC_RT_SNIFFER_HEADER) + evObj.regRspLength;
+            
+            _DRV_G3_MACRT_COMM_SpiReadCmd(SNIFFER_ID, gG3MacRtObj->pDataSniffer, 
+                    snfLength);
+            /* update event flag */
+            gG3MacRtObj->evSniffer = true;
+        }
+        
+        /* Time guard */
+        gG3MacRtObj->plcHal->delay(50);
     }
     
     /* PORTD Interrupt Status Clear */

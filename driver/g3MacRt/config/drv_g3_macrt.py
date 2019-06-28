@@ -260,6 +260,40 @@ def instantiateComponent(g3MacRtComponent):
 
     configName = Variables.get("__CONFIGURATION_NAME")
 
+    g3MacRtHalHeaderFile = g3MacRtComponent.createFileSymbol("PLC_HAL_HEADER", None)
+    g3MacRtHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal.h")
+    g3MacRtHalHeaderFile.setOutputName("drv_plc_hal.h")
+    g3MacRtHalHeaderFile.setDestPath("driver/g3MacRt/")
+    g3MacRtHalHeaderFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
+    g3MacRtHalHeaderFile.setType("HEADER")
+
+    g3MacRtHalFile = g3MacRtComponent.createFileSymbol("PLC_HAL", None)
+    g3MacRtHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c")
+    g3MacRtHalFile.setOutputName("drv_plc_hal.c")
+    g3MacRtHalFile.setDestPath("driver/g3MacRt/")
+    g3MacRtHalFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
+    g3MacRtHalFile.setType("SOURCE")
+
+    g3MacRtHALInitDataFile = g3MacRtComponent.createFileSymbol("DRV_HAL_INIT_DATA", None)
+    g3MacRtHALInitDataFile.setType("STRING")
+    g3MacRtHALInitDataFile.setOutputName("core.LIST_SYSTEM_INIT_C_DRIVER_INITIALIZATION_DATA")
+    g3MacRtHALInitDataFile.setSourcePath("driver/common/plcHal/drv_plc_hal_definitions.c.ftl")
+    g3MacRtHALInitDataFile.setMarkup(True)
+
+    g3MacRtBootFile = g3MacRtComponent.createFileSymbol("PLC_BOOT", None)
+    g3MacRtBootFile.setSourcePath("driver/common/plcBoot/drv_plc_boot.c")
+    g3MacRtBootFile.setOutputName("drv_plc_boot.c")
+    g3MacRtBootFile.setDestPath("driver/g3MacRt/")
+    g3MacRtBootFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
+    g3MacRtBootFile.setType("SOURCE")
+
+    g3MacRtBootHeaderFile = g3MacRtComponent.createFileSymbol("PLC_BOOT_HEADER", None)
+    g3MacRtBootHeaderFile.setSourcePath("driver/common/plcBoot/drv_plc_boot.h")
+    g3MacRtBootHeaderFile.setOutputName("drv_plc_boot.h")
+    g3MacRtBootHeaderFile.setDestPath("driver/g3MacRt")
+    g3MacRtBootHeaderFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
+    g3MacRtBootHeaderFile.setType("SOURCE")
+
     g3MacRtSecureScript = g3MacRtComponent.createFileSymbol("DRV_G3_MACRT_SECURE_SCRIPT", None)
     g3MacRtSecureScript.setSourcePath("driver/g3MacRt/src/bin/plc_encfile.py")
     g3MacRtSecureScript.setOutputName("plc_encfile.py")
@@ -283,13 +317,6 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtAsmPathSetting.setKey("extra-include-directories-for-assembler")
     g3MacRtAsmPathSetting.setValue("../src/config/" + configName + "/driver/g3MacRt/bin")
     g3MacRtAsmPathSetting.setAppend(True, ";")
-
-    g3MacRtHalHeaderFile = g3MacRtComponent.createFileSymbol("PLC_HAL_HEADER", None)
-    g3MacRtHalHeaderFile.setSourcePath("driver/g3MacRt/drv_plc_hal.h")
-    g3MacRtHalHeaderFile.setOutputName("drv_plc_hal.h")
-    g3MacRtHalHeaderFile.setDestPath("driver/g3MacRt/")
-    g3MacRtHalHeaderFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
-    g3MacRtHalHeaderFile.setType("HEADER")
 
     g3MacRtHeaderFile = g3MacRtComponent.createFileSymbol("DRV_G3_MACRT_HEADER", None)
     g3MacRtHeaderFile.setSourcePath("driver/g3MacRt/drv_g3_macrt.h")
@@ -366,27 +393,6 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRTSourceBinFileARIB.setType("SOURCE")
     g3MacRTSourceBinFileARIB.setEnabled(False)
     g3MacRTSourceBinFileARIB.setVisible(False)
-
-    g3MacRtHalFile = g3MacRtComponent.createFileSymbol("PL360_HAL", None)
-    g3MacRtHalFile.setSourcePath("driver/g3MacRt/src/drv_plc_hal.c")
-    g3MacRtHalFile.setOutputName("drv_plc_hal.c")
-    g3MacRtHalFile.setDestPath("driver/g3MacRt/")
-    g3MacRtHalFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
-    g3MacRtHalFile.setType("SOURCE")
-
-    g3MacRtBootFile = g3MacRtComponent.createFileSymbol("PLC_BOOT", None)
-    g3MacRtBootFile.setSourcePath("driver/g3MacRt/src/drv_plc_boot.c")
-    g3MacRtBootFile.setOutputName("drv_plc_boot.c")
-    g3MacRtBootFile.setDestPath("driver/g3MacRt/")
-    g3MacRtBootFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
-    g3MacRtBootFile.setType("SOURCE")
-
-    g3MacRtBootHeaderFile = g3MacRtComponent.createFileSymbol("PL360_BOOT_HEADER", None)
-    g3MacRtBootHeaderFile.setSourcePath("driver/g3MacRt/src/drv_plc_boot.h")
-    g3MacRtBootHeaderFile.setOutputName("drv_plc_boot.h")
-    g3MacRtBootHeaderFile.setDestPath("driver/g3MacRt")
-    g3MacRtBootHeaderFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
-    g3MacRtBootHeaderFile.setType("SOURCE")
 
     g3MacRtHeaderLocalFile = g3MacRtComponent.createFileSymbol("DRV_G3_MACRT_HEADER_LOCAL", None)
     g3MacRtHeaderLocalFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_local.h")

@@ -1,18 +1,18 @@
 /******************************************************************************
-  DRV_PL360 Library Interface Implementation
+  DRV_G3_MACRT Library Interface Implementation
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360.c
+    drv_g3_macrt.c
 
   Summary:
-    PL360 Driver Library Interface implementation
+    G3 MAC RT Driver Library Interface implementation
 
   Description:
-    The PL360 Library provides a interface to access the PL360 external device.
-    This file implements the PL360 Library interface.
+    The G3 MAC RT Library provides a interface to access the PLC external device.
+    This file implements the G3 Mac Real Time Library interface.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -46,9 +46,10 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "configuration.h"
-#include "driver/pl360MacRt/drv_pl360_macrt.h"
-#include "driver/pl360MacRt/src/drv_pl360_boot.h"
-#include "driver/pl360MacRt/src/drv_pl360_macrt_local_comm.h"
+#include "driver/g3MacRt/drv_g3_macrt.h"
+#include "driver/g3MacRt/drv_plc_boot.h"
+#include "driver/g3MacRt/drv_g3_macrt_local_comm.h"
+#include "drv_g3_macrt_local.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -57,175 +58,213 @@
 // *****************************************************************************
 
 /* This is the driver instance object array. */
-DRV_PL360_MACRT_OBJ gDrvPL360Obj;
+DRV_G3_MACRT_OBJ gDrvG3MacRtObj;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: PL360 Driver Common Interface Implementation
+// Section: PLC Driver Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-SYS_MODULE_OBJ DRV_PL360_Initialize(
+SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     const SYS_MODULE_INDEX index,
     const SYS_MODULE_INIT * const init
 )
 {
-    DRV_PL360_MACRT_INIT* pl360Init = (DRV_PL360_MACRT_INIT *)init;
+    DRV_G3_MACRT_INIT* g3MacRtInit = (DRV_G3_MACRT_INIT *)init;
 
     /* Validate the request */
-    if(index >= DRV_PL360_MACRT_INSTANCES_NUMBER)
+    if (index >= DRV_G3_MACRT_INSTANCES_NUMBER)
     {
         return SYS_MODULE_OBJ_INVALID;
     }
 
-    if(gDrvPL360Obj.inUse == true)
+    if (gDrvG3MacRtObj.inUse == true)
     {
         return SYS_MODULE_OBJ_INVALID;
     }
 
-    gDrvPL360Obj.status                = SYS_STATUS_UNINITIALIZED;
+    gDrvG3MacRtObj.status                = SYS_STATUS_UNINITIALIZED;
 
-    gDrvPL360Obj.inUse                 = true;
-    gDrvPL360Obj.nClients              = 0;
+    gDrvG3MacRtObj.inUse                 = true;
+    gDrvG3MacRtObj.nClients              = 0;
 
-    gDrvPL360Obj.pl360Hal              = pl360Init->pl360Hal;
-    gDrvPL360Obj.nClientsMax           = pl360Init->numClients;
-    gDrvPL360Obj.plcProfile            = pl360Init->plcProfile;
-    gDrvPL360Obj.binSize               = pl360Init->binEndAddress - pl360Init->binStartAddress;
-    gDrvPL360Obj.binStartAddress       = pl360Init->binStartAddress;
-    gDrvPL360Obj.secure                = pl360Init->secure;
+    gDrvG3MacRtObj.plcHal                = g3MacRtInit->plcHal;
+    gDrvG3MacRtObj.nClientsMax           = g3MacRtInit->numClients;
+    gDrvG3MacRtObj.plcProfile            = g3MacRtInit->plcProfile;
+    gDrvG3MacRtObj.binSize               = g3MacRtInit->binEndAddress - g3MacRtInit->binStartAddress;
+    gDrvG3MacRtObj.binStartAddress       = g3MacRtInit->binStartAddress;
+    gDrvG3MacRtObj.secure                = g3MacRtInit->secure;
     
     /* Callbacks initialization */
-    gDrvPL360Obj.dataCfmCallback       = 0;
-    gDrvPL360Obj.dataIndCallback       = 0;
-    gDrvPL360Obj.exceptionCallback     = 0;
-    gDrvPL360Obj.bootDataCallback      = 0;
+    gDrvG3MacRtObj.bootDataCallback      = 0;
+    gDrvG3MacRtObj.txCfmCallback         = 0;
+    gDrvG3MacRtObj.dataIndCallback       = 0;
+    gDrvG3MacRtObj.mlmeGetCfmcallback    = 0;
+    gDrvG3MacRtObj.exceptionCallback     = 0;
+    gDrvG3MacRtObj.snifferDataCallback   = 0;
 
     /* HAL init */
-    gDrvPL360Obj.pl360Hal->init((DRV_PL360_PLIB_INTERFACE *)pl360Init->pl360Hal->pl360Plib);
+    gDrvG3MacRtObj.plcHal->init((DRV_PLC_PLIB_INTERFACE *)g3MacRtInit->plcHal->plcPlib);
 
     /* Update status */
-    gDrvPL360Obj.status                = SYS_STATUS_BUSY;
+    gDrvG3MacRtObj.status                = SYS_STATUS_BUSY;
 
     /* Return the object structure */
     return ( (SYS_MODULE_OBJ)index );
 
 }
 
-SYS_STATUS DRV_PL360_Status( const SYS_MODULE_INDEX index )
+SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index )
 {
-    /* Avoid warning */
-    (void)index;
+    /* Validate the request */
+    if (index >= DRV_G3_MACRT_INSTANCES_NUMBER)
+    {
+        return DRV_HANDLE_INVALID;
+    }
+    
     /* Return the driver status */
-    return (gDrvPL360Obj.status);
+    return (gDrvG3MacRtObj.status);
 }
 
-DRV_HANDLE DRV_PL360_Open(
+DRV_HANDLE DRV_G3_MACRT_Open(
     const SYS_MODULE_INDEX index,
-    const DRV_PL360_BOOT_DATA_CALLBACK callback
+    const DRV_PLC_BOOT_DATA_CALLBACK callback
 )
 {
     /* Validate the request */
-    if (index >= DRV_PL360_MACRT_INSTANCES_NUMBER)
+    if (index >= DRV_G3_MACRT_INSTANCES_NUMBER)
     {
         return DRV_HANDLE_INVALID;
     }
 
-    if((gDrvPL360Obj.status != SYS_STATUS_BUSY) || (gDrvPL360Obj.inUse == false) \
-            || (gDrvPL360Obj.nClients >= gDrvPL360Obj.nClientsMax))
+    if ((gDrvG3MacRtObj.status != SYS_STATUS_BUSY) || (gDrvG3MacRtObj.inUse == false) \
+            || (gDrvG3MacRtObj.nClients >= gDrvG3MacRtObj.nClientsMax))
     {
         return DRV_HANDLE_INVALID;
     }
     
-    if(callback)
+    if (callback)
     {
-        gDrvPL360Obj.bootDataCallback = callback;
-        gDrvPL360Obj.contextBoot = index;
+        gDrvG3MacRtObj.bootDataCallback = callback;
+        gDrvG3MacRtObj.contextBoot = index;
     }
     
     /* Launch boot start process */  
-    DRV_PL360_BOOT_Start(&gDrvPL360Obj);
+    DRV_PLC_BOOT_Start(&gDrvG3MacRtObj);
 
-    gDrvPL360Obj.nClients++;
+    gDrvG3MacRtObj.nClients++;
 
     return ((DRV_HANDLE)0);
 }
 
-void DRV_PL360_Close( const DRV_HANDLE handle )
+void DRV_G3_MACRT_Close( const DRV_HANDLE handle )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvPL360Obj.nClients--;
-        gDrvPL360Obj.inUse = false;
+        gDrvG3MacRtObj.nClients--;
+        gDrvG3MacRtObj.inUse = false;
     }
 }
 
-void DRV_PL360_DataCfmCallbackRegister( 
+void DRV_G3_MACRT_TxCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_DATA_CFM_CALLBACK callback, 
+    const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvPL360Obj.dataCfmCallback = callback;
-        gDrvPL360Obj.contextCfm = context;
+        gDrvG3MacRtObj.txCfmCallback = callback;
+        gDrvG3MacRtObj.contextTxCfm = context;
     }
 }
 
-void DRV_PL360_DataIndCallbackRegister( 
+void DRV_G3_MACRT_DataIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_DATA_IND_CALLBACK callback, 
+    const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvPL360Obj.dataIndCallback = callback;
-        gDrvPL360Obj.contextInd = context;
+        gDrvG3MacRtObj.dataIndCallback = callback;
+        gDrvG3MacRtObj.contextDataInd = context;
     }
 }
 
-void DRV_PL360_ExceptionCallbackRegister( 
+void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_EXCEPTION_CALLBACK callback, 
+    const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvPL360Obj.exceptionCallback = callback;
-        gDrvPL360Obj.contextExc = context;
+        gDrvG3MacRtObj.mlmeGetCfmcallback = callback;
+        gDrvG3MacRtObj.contextMlmeGetCfm = context;
     }
 }
 
-void DRV_PL360_Tasks( SYS_MODULE_OBJ hSysObj )
+void DRV_G3_MACRT_ExceptionCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
+    const uintptr_t context 
+)
 {
-    if (gDrvPL360Obj.status == SYS_STATUS_READY)
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        /* Run PL360 communication task */
-        DRV_PL360_Task();
+        gDrvG3MacRtObj.exceptionCallback = callback;
+        gDrvG3MacRtObj.contextExc = context;
     }
-    else if (gDrvPL360Obj.status == SYS_STATUS_BUSY)
+}
+
+void DRV_G3_MACRT_SnifferCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
+    const uintptr_t context 
+)
+{
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        DRV_PL360_BOOT_STATUS state;
+        gDrvG3MacRtObj.snifferDataCallback = callback;
+        gDrvG3MacRtObj.contextSniffer = context;
+    }
+}
+
+void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ hSysObj )
+{
+    /* Validate the request */
+    if (hSysObj >= DRV_G3_MACRT_INSTANCES_NUMBER)
+    {
+        return; // SYS_MODULE_OBJ_INVALID
+    }
+    
+    if (gDrvG3MacRtObj.status == SYS_STATUS_READY)
+    {
+        /* Run G3 MAC RT communication task */
+        DRV_G3_MACRT_Task();
+    }
+    else if (gDrvG3MacRtObj.status == SYS_STATUS_BUSY)
+    {
+        DRV_PLC_BOOT_STATUS state;
         
         /* Check bootloader process */
-        state = DRV_PL360_BOOT_Status();
-        if (state < DRV_PL360_BOOT_STATUS_READY)
+        state = DRV_PLC_BOOT_Status();
+        if (state < DRV_PLC_BOOT_STATUS_READY)
         {
-            DRV_PL360_BOOT_Tasks();
+            DRV_PLC_BOOT_Tasks();
         } 
-        else if (state == DRV_PL360_BOOT_STATUS_READY)
+        else if (state == DRV_PLC_BOOT_STATUS_READY)
         {
-            DRV_PL360_Init(&gDrvPL360Obj);
-            gDrvPL360Obj.status = SYS_STATUS_READY;
-            gDrvPL360Obj.state = DRV_PL360_STATE_IDLE;
+            DRV_G3_MACRT_Init(&gDrvG3MacRtObj);
+            gDrvG3MacRtObj.status = SYS_STATUS_READY;
+            gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_IDLE;
         }
         else
         {
-            gDrvPL360Obj.status = SYS_STATUS_ERROR;
-            gDrvPL360Obj.state = DRV_PL360_STATE_ERROR;
+            gDrvG3MacRtObj.status = SYS_STATUS_ERROR;
+            gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_ERROR;
         }
     } 
     else

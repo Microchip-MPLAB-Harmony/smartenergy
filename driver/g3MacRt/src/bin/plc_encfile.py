@@ -20,7 +20,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 DECRYPT_PKT_SIZE = 16
 NULL = '' + chr(0x00)
 PAD_INIT = '' + chr(0x80)
-FOLDER_SEC = 'PL360_ENCFILE/'
+FOLDER_SEC = 'PLC_ENCFILE/'
 
 ##################### LOAD PARAMETERS  ##################################
 parser = argparse.ArgumentParser()

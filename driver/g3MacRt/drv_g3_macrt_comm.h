@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_macrt_comm.h
+    drv_g3_macrt_comm.h
 
   Summary:
     MAC RT Driver Communication Definitions Header File
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef DRV_PL360_MACRT_COMM_H
-#define DRV_PL360_MACRT_COMM_H
+#ifndef DRV_G3_MACRT_COMM_H
+#define DRV_G3_MACRT_COMM_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -62,6 +62,9 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // *****************************************************************************
+#define MAC_RT_REG_CMD_RD               (0)
+#define MAC_RT_REG_CMD_WR               (1)
+
 #define MAC_RT_SPEC_COMPLIANCE_17       (0)
 #define MAC_RT_SPEC_COMPLIANCE_15       (1)
 
@@ -147,66 +150,161 @@ typedef enum {
     None
 */
 typedef enum {
-    /* Phy layer version number. 32 bits. */
-    PHY_PARAM_VERSION = 0x010c,
-    /* Correctly transmitted frame count. 32 bits. */
-    PHY_PARAM_TX_TOTAL = 0x0110,
-    /* Transmitted bytes count. 32 bits. */
-    PHY_PARAM_TX_TOTAL_BYTES = 0x0114,
-    /* Transmission errors count. 32 bits. */
-    PHY_PARAM_TX_TOTAL_ERRORS = 0x0118,
-    /* Transmission failure due to already in transmission. 32 bits. */
-    PHY_PARAM_BAD_BUSY_TX = 0x011C,
-    /* Transmission failure due to busy channel. 32 bits. */
-    PHY_PARAM_TX_BAD_BUSY_CHANNEL = 0x0120,
-    /* Bad len in message (too short - too long). 32 bits. */
-    PHY_PARAM_TX_BAD_LEN = 0x0124,
-    /* Message to transmit in bad format. 32 bits. */
-    PHY_PARAM_TX_BAD_FORMAT = 0x0128,
-    /* Timeout error in transmission. 32 bits. */
-    PHY_PARAM_TX_TIMEOUT = 0x012C,
-    /* Received correctly messages count. 32 bits. */
-    PHY_PARAM_RX_TOTAL = 0x0130,
-    /* Received bytes count. 32 bits. */
-    PHY_PARAM_RX_TOTAL_BYTES = 0x0134,
-    /* Reception RS errors count. 32 bits. */
-    PHY_PARAM_RX_RS_ERRORS = 0x0138,
-    /* Reception Exceptions count. 32 bits. */
-    PHY_PARAM_RX_EXCEPTIONS = 0x013C,
-    /* Bad len in message (too short - too long). 32 bits. */
-    PHY_PARAM_RX_BAD_LEN = 0x0140,
-    /* Bad CRC in received FCH. 32 bits. */
-    PHY_PARAM_RX_BAD_CRC_FCH = 0x0144,
-    /* CRC correct but invalid protocol. 32 bits. */
-    PHY_PARAM_RX_FALSE_POSITIVE = 0x0148,
-    /* Received message in bad format. 32 bits. */
-    PHY_PARAM_RX_BAD_FORMAT = 0x014C,
-    /* Time between noise captures (in ms). 32 bits. */
-    PHY_PARAM_TIME_BETWEEN_NOISE_CAPTURES = 0x0158,
-    /* Auto detect impedance */
-    PHY_PARAM_CFG_AUTODETECT_BRANCH = 0x0161,
-    /* Manual impedance configuration */
-    PHY_PARAM_CFG_IMPEDANCE = 0x0162,
-    /* Indicate if notch filter is active or not. 8 bits. */
-    PHY_PARAM_RRC_NOTCH_ACTIVE = 0x0163,
+    /* Product Identifier of firmware embedded */
+    PHY_PARAM_PRODID = 0,
+    /* Model Identifier of firmware embedded */
+	PHY_PARAM_MODEL,
+    /* Version number of embedded firmware in string format */
+	PHY_PARAM_VERSION_STR,
+    /* Version number of embedded firmware in hexadecimal format */
+	PHY_PARAM_VERSION_NUM,
+    /* Tone mask for static notching */
+	PHY_PARAM_TONE_MASK,
+    /* Tone Map response data */
+	PHY_PARAM_TONE_MAP_RSP_DATA,
+    /* Number of successfully transmitted PDUs */
+	PHY_PARAM_TX_TOTAL,
+    /* Number of bytes in successfully transmitted PDUs */
+	PHY_PARAM_TX_TOTAL_BYTES,
+    /* Number of unsuccessfully transmitted PDUs */
+	PHY_PARAM_TX_TOTAL_ERRORS,
+    /* Number of times when the device received new data to transmit (send_data)
+     * and there is already data in the TX chain. */
+	PHY_PARAM_TX_BAD_BUSY_TX,
+    /* Number of times when the device received new data to transmit (send_data) 
+     * and the PLC channel is busy */
+	PHY_PARAM_TX_BAD_BUSY_CHANNEL,
+    /* Number of times when the device received new data to transmit (send_data)
+     * and the specified length in transmission parameters is invalid */
+	PHY_PARAM_TX_BAD_LEN,
+    /* Number of times when the device received new data to transmit (send_data) 
+     * and the transmission parameters are not valid */
+	PHY_PARAM_TX_BAD_FORMAT,
+    /* Number of times when the PL360 device received new data to transmit 
+     * (send_data) and it cannot transmit data in the specified time provided 
+     * by the transmission parameters */
+	PHY_PARAM_TX_TIMEOUT,
+    /* Number of successfully received PDUs */
+	PHY_PARAM_RX_TOTAL,
+    /* Number of bytes in successfully received PDUs */
+	PHY_PARAM_RX_TOTAL_BYTES,
+    /* Number of corrected errors by RS block in received PDUs */
+	PHY_PARAM_RX_RS_ERRORS,
+    /* Number of time-out errors in received PDUs */
+	PHY_PARAM_RX_EXCEPTIONS,
+    /* Number of errors in FCH length in received PDUs */
+	PHY_PARAM_RX_BAD_LEN,
+    /* Number of errors in FCH CRC in received PDUs */
+	PHY_PARAM_RX_BAD_CRC_FCH,
+    /* Number of errors in PDU synchronization phase */
+	PHY_PARAM_RX_FALSE_POSITIVE,
+    /* Number of errors in modulation type field included in FCH of received 
+     * PDUs */
+	PHY_PARAM_RX_BAD_FORMAT,
+    /* Enable periodic noise auto-detect and adaptation */       
+	PHY_PARAM_ENABLE_AUTO_NOISE_CAPTURE,
+    /* Time in milliseconds between noise captures */
+	PHY_PARAM_TIME_BETWEEN_NOISE_CAPTURES,
+    /* Noise detection timer reloaded after a correct reception */
+	PHY_PARAM_DELAY_NOISE_CAPTURE_AFTER_RX,
+    /* Number of notched frequencies with RRC notch filter */
+	PHY_PARAM_RRC_NOTCH_ACTIVE,
+    /* Array of RRC notch filter index values in format unsigned Q7.8 */
+	PHY_PARAM_RRC_NOTCH_INDEX,
+    /* Indicate noise power in dBuV for the noisier carrier */
+	PHY_PARAM_NOISE_PEAK_POWER,
+    /* Reserved for future uses */
+	PHY_PARAM_RSV0,
+    /* Reserved for future uses */
+	PHY_PARAM_RSV1,
+    /* Auto-Detect Impedance Mode */
+	PHY_PARAM_CFG_AUTODETECT_IMPEDANCE,
+    /* Transmission Mode (HIGH, LOW, VERY_LOW) */
+	PHY_PARAM_CFG_IMPEDANCE,
+    /* Estimated last Zero Cross period in microseconds */
+	PHY_PARAM_ZC_PERIOD,
+    /* Number of symbols in Frame Control Header */
+	PHY_PARAM_FCH_SYMBOLS,
+    /* Number of payload symbols in last transmitted message */
+	PHY_PARAM_PAY_SYMBOLS_TX,
+    /* Number of payload symbols in last received message */
+	PHY_PARAM_PAY_SYMBOLS_RX,
+    /* Trigger to start noise analysis */
+	PHY_PARAM_RRC_NOTCH_AUTODETECT,
+    /* Target RMS_CALC in HIGH Tx Mode */
+	PHY_PARAM_MAX_RMS_TABLE_HI,
+    /* Target RMS_CALC in VERY_LOW Tx Mode */
+	PHY_PARAM_MAX_RMS_TABLE_VLO,
+    /* Thresholds table to automatically update Tx Mode */
+	PHY_PARAM_THRESHOLDS_TABLE_HI,
+    /* Thresholds table to automatically update Tx Mode */
+	PHY_PARAM_THRESHOLDS_TABLE_LO,
+    /* Thresholds table to automatically update Tx Mode */
+	PHY_PARAM_THRESHOLDS_TABLE_VLO,
+    /* Equalization Coefficients table in HIGH Tx mode */
+	PHY_PARAM_PREDIST_COEF_TABLE_HI,
+    /* Equalization Coefficients table in LOW Tx mode */
+	PHY_PARAM_PREDIST_COEF_TABLE_LO,
+    /* Equalization Coefficients table in VERY_LOW Tx mode */
+	PHY_PARAM_PREDIST_COEF_TABLE_VLO,
+    /* Gain values table for HIGH Tx Mode */
+	PHY_PARAM_GAIN_TABLE_HI,
+    /* Gain values table for LOW Tx Mode */
+	PHY_PARAM_GAIN_TABLE_LO,
+    /* Gain values table for VERY_LOW Tx Mode */
+	PHY_PARAM_GAIN_TABLE_VLO,
+    /* Configuration values of DACC peripheral according to hardware 
+     * configuration */
+	PHY_PARAM_DACC_TABLE_CFG,
+    /* Reserved for future uses */
+	PHY_PARAM_RSV2,
+    /* Number of Tx attenuation levels (3 dB steps) for normal transmission
+     * behavior */
+	PHY_PARAM_NUM_TX_LEVELS,
+    /* RMS_CALC value obtained in the last transmitted message */
+	PHY_PARAM_CORRECTED_RMS_CALC,
+    /* Activation threshold for narrow band noise */
+	PHY_PARAM_RRC_NOTCH_THR_ON,
+    /* Deactivation threshold for narrow band noise */
+	PHY_PARAM_RRC_NOTCH_THR_OFF,
+    /* Transmission Gain which will be used in the next transmitted message */
+	PHY_PARAM_CURRENT_GAIN,
+    /* Inverted output of Zero-Crossing Detector */
+	PHY_PARAM_ZC_CONF_INV,
+    /* Initial frequency in Hz for Zero-Crossing Detector */
+	PHY_PARAM_ZC_CONF_FREQ,
+    /* Time Delay in microseconds of external Zero-Crossing Detection circuit */
+	PHY_PARAM_ZC_CONF_DELAY,
+    /* Estimation of noise (in dB?V) in each carrier belonging to the 
+     * corresponding band */
+	PHY_PARAM_NOISE_PER_CARRIER,
+    /* Correlation threshold for synchronization (preamble detection) */
+	PHY_PARAM_SYNC_XCORR_THRESHOLD,
+    /* Correlation value in last received PDU */
+	PHY_PARAM_SYNC_XCORR_PEAK_VALUE,
+    /* Threshold for SYNCM detection (once preamble is detected with 
+     * correlation) */
+	PHY_PARAM_SYNC_SYNCM_THRESHOLD,
+    /* Bit-mask to enable/disable modulations for modulation and Tone Map 
+     * selection algorithm */
+	PHY_PARAM_TONE_MAP_RSP_ENABLED_MODS,
+    /* Enable the oscillator clock signal to go out through TXRX1 pad */
+	PHY_PARAM_PPM_CALIB_ON,
+    /* Estimation of clock frequency deviation on last received PDU */
+	PHY_PARAM_SFO_ESTIMATION_LAST_RX,
+    /* PDC value (field in G3 Frame Control Header) corresponding to last 
+     * received PDU */
+	PHY_PARAM_PDC_LAST_RX,
     /* Index of the notch filter. 8 bits. */
     PHY_PARAM_RRC_NOTCH_INDEX = 0x0164,
-    /* Enable periodic noise autodetect and adaptation. 8 bits. */
-    PHY_PARAM_ENABLE_AUTO_NOISE_CAPTURE = 0x0166,
-    /* Noise detection timer reloaded after a correct reception. 8 bits. */
-    PHY_PARAM_DELAY_NOISE_CAPTURE_AFTER_RX = 0x0167,
     /* Disable PLC Tx/Rx. 8 bits. */
     PHY_PARAM_PLC_DISABLE = 0x016A,
-    /* Indicate noise power in dBuV for the noisier carrier */
-    PHY_PARAM_NOISE_PEAK_POWER = 0x016B,
     /* LQI value of the last received message */
     PHY_PARAM_LAST_MSG_LQI = 0x016C,
     /* LQI value of the last received message */
     PHY_PARAM_LAST_MSG_RSSI = 0x016D,
     /* Success transmission of ACK packets */
     PHY_PARAM_ACK_TX_CFM = 0x016E,
-    /* Inform PHY layer about enabled modulations on TMR */
-    PHY_PARAM_TONE_MAP_RSP_ENABLED_MODS = 0x0174
 }MAC_RT_PHY_PIB;
 
 // *****************************************************************************
@@ -633,11 +731,49 @@ typedef struct __attribute__((packed, aligned(1))) {
 typedef struct {
     /* MAC RT Status */
     MAC_RT_STATUS status;
-    /* Modulation Type */
-    MAC_RT_MOD_TYPE modType;
     /* Flag to indicate Timestamp should be updated */
     bool updateTimestamp;
+    /* Modulation Type */
+    MAC_RT_MOD_TYPE modType;
 } MAC_RT_TX_CFM_OBJ;
+
+// *****************************************************************************
+/* G3 PHY sniffer parameters
+
+   Summary
+    This struct includes information about G3 PHY Sniffer packet.
+
+   Remarks:
+    None
+*/
+typedef struct {
+    /* SNIFFER_IF_PHY_COMMAND_G3_VERSION */
+    uint8_t commandVersion;    
+    /* SNIFFER_VERSION */
+	uint8_t snifferVersion;     
+    /* SNIFFER_PL360_G3 */
+	uint8_t deviceVersion;  
+    /* ModType (high) + ModScheme (low) */
+	uint8_t modTypeScheme;      
+    /* Tone Map */
+	uint8_t toneMap[3];     
+    /* Number of symbols */
+	uint16_t symbols;  
+    /* Link Quality Indicator */
+	uint8_t lqi;      
+    /* Delimiter Type */
+	uint8_t dt;       
+    /* Init time */
+	uint32_t timeIni;            
+    /* End time */
+	uint32_t timeEnd;     
+    /* RSSI */
+	uint16_t rssi;      
+    /* AGC factor */
+	uint16_t agcFactor;       
+    /* Data length */
+	uint16_t dataLength;                       
+} MAC_RT_SNIFFER_HEADER;
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
@@ -645,7 +781,7 @@ typedef struct {
 #endif
 //DOM-IGNORE-END
 
-#endif // #ifndef DRV_PL360_MACRT_COMM_H
+#endif // #ifndef DRV_G3_MACRT_COMM_H
 
 /*******************************************************************************
  End of File

@@ -1,17 +1,17 @@
 /*******************************************************************************
-  PL360 Driver Local G3 Data Structures
+  PLC Driver Local G3 Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_local_comm.h
+    drv_g3_macrt_local_comm.h
 
   Summary:
-    PL360 Driver Local G3 Data Structures
+    G3 MAC RT Driver Local G3 MAC RT Data Structures
 
   Description:
-    Driver Local G3 Data Structures
+    Driver Local G3 MAC RT Data Structures
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -39,8 +39,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_PL360_LOCAL_COMM_H
-#define _DRV_PL360_LOCAL_COMM_H
+#ifndef _DRV_G3_MACRT_LOCAL_COMM_H
+#define _DRV_G3_MACRT_LOCAL_COMM_H
 
 
 // *****************************************************************************
@@ -48,41 +48,29 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "driver/pl360MacRt/drv_pl360_macrt_comm.h"
+#include "driver/g3MacRt/drv_g3_macrt_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
-#define PL360_STATUS_LENGTH     8
-#define PL360_DATA_PKT_SIZE     512
-#define PL360_TX_PAR_SIZE       sizeof(DRV_PL360_TRANSMISSION_OBJ)
-#define PL360_RX_PAR_SIZE       sizeof(DRV_PL360_RECEPTION_OBJ)
-#define PL360_CMF_PKT_SIZE      sizeof(DRV_PL360_TRANSMISSION_CFM_OBJ)
-#define PL360_REG_PKT_SIZE      PL360_DATA_PKT_SIZE
-
-/* Number of transmission buffers */
-#define NUM_TX_BUFFERS                           1
+#define DRV_G3_MACRT_STATUS_LENGTH         8
+#define DRV_G3_MACRT_DATA_MAX_SIZE         512
+#define DRV_G3_MACRT_MLME_SET_SIZE         sizeof(MAC_RT_TX_PARAMETERS_OBJ)
+#define DRV_G3_MACRT_MLME_GET_SIZE         sizeof(MAC_RT_RX_PARAMETERS_OBJ)
+#define DRV_G3_MACRT_TX_CFM_SIZE           sizeof(MAC_RT_TX_CFM_OBJ)
+#define DRV_G3_MACRT_TONEMAP_RSP_SIZE      sizeof(MAC_RT_TONE_MAP_RSP)
+#define DRV_G3_MACRT_REG_PKT_SIZE          156
 
 /* FLAG MASKs for set events */
-#define DRV_PL360_EV_FLAG_TX_CFM_MASK            0x0001
-#define DRV_PL360_EV_FLAG_RX_DAT_MASK            0x0002
-#define DRV_PL360_EV_FLAG_REG_MASK               0x0008
-#define DRV_PL360_EV_FLAG_RX_PAR_MASK            0x0010
-
-/* FLAG MASKs for register events */
-#define DRV_PL360_REG_LEN_MASK                   0x1FF
-#define DRV_PL360_REG_ID_MASK                    0xF000
-#define DRV_PL360_REG_OFFSET_MASK                0x0FFF
-#define DRV_PL360_REG_ADC_MASK                   0x1000
-#define DRV_PL360_REG_DAC_MASK                   0x2000
-#define DRV_PL360_REG_MASK                       0x4000
-#define DRV_PL360_FUSES_MASK                     0x8000
-#define DRV_PL360_REG_ADC_BASE                   0x40000000
-#define DRV_PL360_REG_DAC_BASE                   0x40004000
-#define DRV_PL360_REG_BASE                       0x80000000
-#define DRV_PL360_FUSES_BASE                     0x400E1800
+#define DRV_G3_MACRT_EV_TX_CFM_MASK            0x0001
+#define DRV_G3_MACRT_EV_MLME_SET_CFM_MASK      0x0002
+#define DRV_G3_MACRT_EV_DATA_IND_MASK          0x0004
+#define DRV_G3_MACRT_EV_MLME_GET_CFM_MASK      0x0008
+#define DRV_G3_MACRT_EV_REG_RSP_MASK           0x0010
+#define DRV_G3_MACRT_EV_TONMAP_RSP_MASK        0x0020
+#define DRV_G3_MACRT_EV_SNIFFER_MASK           0x0040
 
 // *****************************************************************************
 // *****************************************************************************
@@ -91,13 +79,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-/* PL360 Communication Events
+/* G3 MACRT Communication Events
 
   Summary:
-    Object used to track communications events from PL360.
+    Object used to track communications events from G3 MACRT.
 
   Description:
-    This object is used to keep the data necessary to communicate with PL360.
+    This object is used to keep the data necessary to communicate with G3 MACRT.
 
   Remarks:
     None.
@@ -110,24 +98,30 @@ typedef struct {
     uint16_t rcvDataLength;
     /* Received Register Response length */
     uint16_t regRspLength;
-    /* Flag to indicate if CONFIRMATION MSG event is enable */
-    bool evCfm;
+    /* Flag to indicate if TX CONFIRMATION MSG event is enable */
+    bool evTxCfm;
     /* Flag to indicate if DATA INDICATION MSG event is enable */
-    bool evRxDat;
-    /* Flag to indicate if QPAR INDICATION MSG event is enable */
-    bool evRxPar;
+    bool evDataInd;
+    /* Flag to indicate if MLME SET CONFIRM MSG event is enable */
+    bool evMlmeSetCfm;
+    /* Flag to indicate if MLME GET CONFIRM MSG event is enable */
+    bool evMlmeGetCfm;
+    /* Flag to indicate if TONE MAP RESPONSE MSG event is enable */
+    bool evToneMapRsp;
     /* Flag to indicate if REGISTER DATA RESPONSE event is enable */
     bool evReg;
-} DRV_PL360_EVENTS_OBJ;
+    /* Flag to indicate if SNIFFER MSG event is enable */
+    bool evSniffer;
+} DRV_G3_MACRT_EVENTS_OBJ;
 
-/* PL360 Internal Memory Map
+/* G3 MACRT Internal Memory Map
 
   Summary:
-    Object used to refer to data regions inside PL360.
+    Object used to refer to data regions inside G3 MACRT.
 
   Description:
     This object is used to refer to the data necessary to communicate with 
-    PL360.
+    G3 MACRT.
 
   Remarks:
     None.
@@ -135,18 +129,23 @@ typedef struct {
 
 typedef enum {
     STATUS_ID = 0,
-    TX_PAR_ID,
-    TX_DAT_ID,
+    SET_COORD_ID,
+    SET_SPEC15_ID,
+    TONE_MAP_REQ_ID,
+    TX_REQ_ID,
     TX_CFM_ID,
-    RX_PAR_ID,
-    RX_DAT_ID,
+    MLME_SET_ID,
+    MLME_SET_CMF_ID,
+    DATA_IND_ID,
+    MLME_GET_CFM_ID,
     REG_INFO_ID,
+    SNIFFER_ID,
     IDS,
-} DRV_PL360_MEM_ID;
+} DRV_G3_MACRT_MEM_ID;
 
-/****************************** DRV_PL360 Interface ***************************/
+/****************************** DRV_PLC Interface ***************************/
 
-void DRV_PL360_Init(DRV_PL360_OBJ *pl360);
-void DRV_PL360_Task(void);
+void DRV_G3_MACRT_Init(DRV_G3_MACRT_OBJ *g3MacRt);
+void DRV_G3_MACRT_Task(void);
 
-#endif //#ifndef _DRV_PL360_LOCAL_COMM_H
+#endif //#ifndef _DRV_G3_MACRT_LOCAL_COMM_H

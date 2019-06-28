@@ -1,17 +1,17 @@
 /*******************************************************************************
-  PL360 Driver Definitions Header File
+  PLC Driver Definitions Header File
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_definitions.h
+    drv_g3_definitions.h
 
   Summary:
-    PL360 Driver Definitions Header File
+    PLC Driver Definitions Header File
 
   Description:
-    This file provides implementation-specific definitions for the PL360
+    This file provides implementation-specific definitions for the PLC
     driver's system interface.
 *******************************************************************************/
 
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef DRV_PL360_DEFINITIONS_H
-#define DRV_PL360_DEFINITIONS_H
+#ifndef DRV_PLC_DEFINITIONS_H
+#define DRV_PLC_DEFINITIONS_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -69,16 +69,16 @@
 // *****************************************************************************
 // *****************************************************************************
 
-typedef bool (* DRV_PL360_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
+typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
 
 // *****************************************************************************
-/* PL360 Driver PLIB Interface Data
+/* PLC Driver PLIB Interface Data
 
   Summary:
-    Defines the data required to initialize the PL360 driver PLIB Interface.
+    Defines the data required to initialize the PLC driver PLIB Interface.
 
   Description:
-    This data type defines the data required to initialize the PL360 driver
+    This data type defines the data required to initialize the PLC driver
     PLIB Interface.
 
   Remarks:
@@ -87,8 +87,8 @@ typedef bool (* DRV_PL360_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
 
 typedef struct
 {
-    /* PL360 SPI PLIB Transfer Setup */
-    DRV_PL360_SPI_PLIB_TRANSFER_SETUP      spiPlibTransferSetup;
+    /* PLC SPI PLIB Transfer Setup */
+    DRV_PLC_SPI_PLIB_TRANSFER_SETUP      spiPlibTransferSetup;
 
     /* SPI transmit DMA channel. */
     SYS_DMA_CHANNEL                        dmaChannelTx;
@@ -105,43 +105,43 @@ typedef struct
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;
 
-    /* PL360 LDO enable pin */
+    /* PLC LDO enable pin */
     SYS_PORT_PIN                           ldoPin;
 
-    /* PL360 reset pin */
+    /* PLC reset pin */
     SYS_PORT_PIN                           resetPin;
 
-    /* PL360 external interrupt pin */
+    /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
 
-} DRV_PL360_PLIB_INTERFACE;
+} DRV_PLC_PLIB_INTERFACE;
 
 // *****************************************************************************
 
-typedef void (* DRV_PL360_HAL_INIT)(DRV_PL360_PLIB_INTERFACE*);
+typedef void (* DRV_PLC_HAL_INIT)(DRV_PLC_PLIB_INTERFACE*);
 
-typedef void (* DRV_PL360_HAL_SETUP)(bool);
+typedef void (* DRV_PLC_HAL_SETUP)(bool);
 
-typedef void (* DRV_PL360_HAL_RESET)(void);
+typedef void (* DRV_PLC_HAL_RESET)(void);
 
-typedef bool (* DRV_PL360_HAL_GET_CD)(void);
+typedef bool (* DRV_PLC_HAL_GET_CD)(void);
 
-typedef void (* DRV_PL360_HAL_ENABLE_EXT_INT)(bool);
+typedef void (* DRV_PLC_HAL_ENABLE_EXT_INT)(bool);
 
-typedef void (* DRV_PL360_HAL_DELAY)(uint64_t);
+typedef void (* DRV_PLC_HAL_DELAY)(uint64_t);
 
-typedef void (* DRV_PL360_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
+typedef void (* DRV_PLC_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
 
-typedef void (* DRV_PL360_HAL_SEND_WRRD_CMD)(void*, void*);
+typedef void (* DRV_PLC_HAL_SEND_WRRD_CMD)(void*, void*);
 
 // *****************************************************************************
-/* PL360 Driver HAL Interface Data
+/* PLC Driver HAL Interface Data
 
   Summary:
-    Defines the data required to initialize the PL360 driver HAL Interface.
+    Defines the data required to initialize the PLC driver HAL Interface.
 
   Description:
-    This data type defines the data required to initialize the PL360 driver
+    This data type defines the data required to initialize the PLC driver
     HAL Interface.
 
   Remarks:
@@ -150,43 +150,43 @@ typedef void (* DRV_PL360_HAL_SEND_WRRD_CMD)(void*, void*);
 
 typedef struct
 {
-    /* PL360 PLIB Interface */
-    DRV_PL360_PLIB_INTERFACE                   *pl360Plib;
+    /* PLC PLIB Interface */
+    DRV_PLC_PLIB_INTERFACE                   *plcPlib;
 
-    /* PL360 HAL init */
-    DRV_PL360_HAL_INIT                         init;
+    /* PLC HAL init */
+    DRV_PLC_HAL_INIT                         init;
 
-    /* PL360 HAL setup */
-    DRV_PL360_HAL_SETUP                        setup;
+    /* PLC HAL setup */
+    DRV_PLC_HAL_SETUP                        setup;
 
-    /* PL360 HAL reset device */
-    DRV_PL360_HAL_RESET                        reset;
+    /* PLC HAL reset device */
+    DRV_PLC_HAL_RESET                        reset;
 
-    /* PL360 HAL Get Carrier Detect or PLC Line Status */
-    DRV_PL360_HAL_GET_CD                       getCd;
+    /* PLC HAL Get Carrier Detect or PLC Line Status */
+    DRV_PLC_HAL_GET_CD                       getCd;
 
-    /* PL360 HAL Enable/Disable external interrupt */
-    DRV_PL360_HAL_ENABLE_EXT_INT               enableExtInt;
+    /* PLC HAL Enable/Disable external interrupt */
+    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;
 
-    /* PL360 HAL delay function */
-    DRV_PL360_HAL_DELAY                        delay;
+    /* PLC HAL delay function */
+    DRV_PLC_HAL_DELAY                        delay;
 
-    /* PL360 HAL Transfer Bootloader Command */
-    DRV_PL360_HAL_SEND_BOOT_CMD                sendBootCmd;
+    /* PLC HAL Transfer Bootloader Command */
+    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd;
 
-    /* PL360 HAL Transfer Write/Read Command */
-    DRV_PL360_HAL_SEND_WRRD_CMD                sendWrRdCmd;
+    /* PLC HAL Transfer Write/Read Command */
+    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd;
 
-} DRV_PL360_HAL_INTERFACE;
+} DRV_PLC_HAL_INTERFACE;
 
 // *****************************************************************************
-/* PL360 Driver Initialization Data
+/* PLC Driver Initialization Data
 
   Summary:
-    Defines the data required to initialize the PL360 driver
+    Defines the data required to initialize the PLC driver
 
   Description:
-    This data type defines the data required to initialize or the PL360 driver.
+    This data type defines the data required to initialize or the PLC driver.
 
   Remarks:
     None.
@@ -196,7 +196,7 @@ typedef struct
 {
     /* Identifies the HAL API set to be used by the driver to access
      * peripherals. */
-    DRV_PL360_HAL_INTERFACE        *pl360Hal;
+    DRV_PLC_HAL_INTERFACE           *plcHal;
 
     /* Number of clients */
     size_t                          numClients;
@@ -216,7 +216,7 @@ typedef struct
     /* Secure mode */
     bool                            secure;
 
-} DRV_PL360_MACRT_INIT;
+} DRV_G3_MACRT_INIT;
 
 
 //DOM-IGNORE-BEGIN
@@ -225,7 +225,7 @@ typedef struct
 #endif
 //DOM-IGNORE-END
 
-#endif // #ifndef DRV_PL360_DEFINITIONS_H
+#endif // #ifndef DRV_PLC_DEFINITIONS_H
 
 /*******************************************************************************
  End of File

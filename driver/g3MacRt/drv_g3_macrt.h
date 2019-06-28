@@ -1,18 +1,18 @@
 /*******************************************************************************
-  DRV_PL360_MACRT_MACRT Driver Interface Definition
+  DRV_G3_MACRT_MACRT Driver Interface Definition
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_pl360_macrt.h
+    drv_g3_macrt.h
 
   Summary:
-    MAC RT PL360 Library Interface header.
+    MAC RT PLC Library Interface header.
 
   Description:
-    The PL360 MAC RT Driver Library provides a interface to access the 
-    PL360 device.
+    The PLC MAC RT Driver Library provides a interface to access the 
+    PLC device.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_PL360_MACRT_H
-#define _DRV_PL360_MACRT_H
+#ifndef _DRV_G3_MACRT_H
+#define _DRV_G3_MACRT_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -53,9 +53,9 @@
 #include <stdbool.h>
 #include "driver/driver.h"
 #include "system/system.h"
-#include "drv_pl360_macrt_comm.h"
-#include "drv_pl360_macrt_definitions.h"
-#include "driver/pl360MacRt/src/drv_pl360_macrt_local.h"
+#include "drv_g3_macrt_comm.h"
+#include "drv_g3_macrt_definitions.h"
+#include "driver/g3MacRt/src/drv_g3_macrt_local.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -71,10 +71,10 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* DRV_PL360 Transfer Errors
+/* DRV_PLC Transfer Errors
 
  Summary:
-    Defines the data type for PL360 MAC RT Driver transfer errors.
+    Defines the data type for PLC MAC RT Driver transfer errors.
 
  Description:
     This will be used to indicate the error of the last SPI transfer.
@@ -86,21 +86,21 @@
 typedef enum
 {
     /* SPI has detected an unexpected status, reset is recommended */
-    DRV_PL360_MACRT_EXCEPTION_UNEXPECTED_KEY,
+    DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY,
 
     /* SPI critical error */
-    DRV_PL360_MACRT_EXCEPTION_CRITICAL_ERROR,
+    DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR,
 
     /* Device has been reseted by Debugging tool */
-    DRV_PL360_MACRT_EXCEPTION_DEBUG,
+    DRV_G3_MACRT_EXCEPTION_DEBUG,
 
     /* Device has been reseted */
-    DRV_PL360_MACRT_EXCEPTION_RESET
+    DRV_G3_MACRT_EXCEPTION_RESET
 
-} DRV_PL360_MACRT_EXCEPTION; 
+} DRV_G3_MACRT_EXCEPTION; 
 
 // *****************************************************************************
-/* PL360 MAC RT Driver Transmission Confirm Event Handler Function Pointer
+/* PLC MAC RT Driver Transmission Confirm Event Handler Function Pointer
 
    Summary
     Pointer to a MAC RT Driver Transmission Confirm Event handler function
@@ -154,7 +154,7 @@ typedef enum
 
     - The context parameter contains the a handle to the client context,
       provided at the time the event handling function was registered using the
-      DRV_PL360_MACRT_TxCfmCallbackRegister function.  This context handle value is
+      DRV_G3_MACRT_TxCfmCallbackRegister function.  This context handle value is
       passed back to the client as the "context" parameter.  It can be any value
       necessary to identify the client context or instance (such as a pointer to
       the client's data) of the client that made the transfer add request.
@@ -165,14 +165,14 @@ typedef enum
 
 */
 
-typedef void ( *DRV_PL360_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj, 
+typedef void ( *DRV_G3_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj, 
         uintptr_t context );
 
 // *****************************************************************************
-/* PL360 MAC RT Driver Reception Event Handler Function Pointer
+/* PLC MAC RT Driver Reception Event Handler Function Pointer
 
    Summary
-    Pointer to a PL360 MAC RT Driver Reception Event handler function
+    Pointer to a PLC MAC RT Driver Reception Event handler function
 
    Description
     This data type defines the required function signature for the MAC RT driver
@@ -211,7 +211,7 @@ typedef void ( *DRV_PL360_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj,
   Remarks:
     - The context parameter contains the a handle to the client context,
       provided at the time the event handling function was registered using the
-      DRV_PL360_MACRT_DataIndCallbackRegister function.  This context handle value is
+      DRV_G3_MACRT_DataIndCallbackRegister function.  This context handle value is
       passed back to the client as the "context" parameter.  It can be any value
       necessary to identify the client context or instance (such as a pointer to
       the client's data) of the client that made the transfer add request.
@@ -222,15 +222,15 @@ typedef void ( *DRV_PL360_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj,
 
 */
 
-typedef void ( *DRV_PL360_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t length, 
+typedef void ( *DRV_G3_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t length, 
         uintptr_t context );
 
 // *****************************************************************************
-/* PL360 MAC RT Driver Event Handler Function Pointer to get parameters from the
+/* PLC MAC RT Driver Event Handler Function Pointer to get parameters from the
    last received message
 
    Summary
-    Pointer to a PL360 MAC RT Driver Event handler function to get parameters 
+    Pointer to a PLC MAC RT Driver Event handler function to get parameters 
     from the last received message
 
    Description
@@ -267,7 +267,7 @@ typedef void ( *DRV_PL360_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t le
   Remarks:
     - The context parameter contains the a handle to the client context,
       provided at the time the event handling function was registered using the
-      DRV_PL360_MACRT_MlmeGetCfmCallbackRegister function.  This context handle value is
+      DRV_G3_MACRT_MlmeGetCfmCallbackRegister function.  This context handle value is
       passed back to the client as the "context" parameter.  It can be any value
       necessary to identify the client context or instance (such as a pointer to
       the client's data) of the client that made the transfer add request.
@@ -278,17 +278,17 @@ typedef void ( *DRV_PL360_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t le
 
 */
 
-typedef void ( *DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *pParameters, 
+typedef void ( *DRV_G3_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *pParameters, 
         uintptr_t context );
 
 // *****************************************************************************
-/* PL360 MAC RT Driver Exceptions Event Handler Function Pointer
+/* PLC MAC RT Driver Exceptions Event Handler Function Pointer
 
    Summary
-    Pointer to a PL360 MAC RT Driver Exceptions Event handler function
+    Pointer to a PLC MAC RT Driver Exceptions Event handler function
 
    Description
-    This data type defines the required function signature for the PL360 driver
+    This data type defines the required function signature for the PLC driver
     exceptions event handling callback function. A client must register a pointer 
     using the callback register function whose function signature (parameter 
     and return value types) match the types specified by this function pointer 
@@ -309,27 +309,27 @@ typedef void ( *DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OB
 
   Example:
     <code>
-    void APP_MyExceptionEventHandler( DRV_PL360_MACRT_EXCEPTION exception,
+    void APP_MyExceptionEventHandler( DRV_G3_MACRT_EXCEPTION exception,
                                    uintptr_t context )
     {
         MY_APP_DATA_STRUCT *pAppData = (MY_APP_DATA_STRUCT *) context;
 
         switch (exceptionObj) 
         {
-            case DRV_PL360_MACRT_EXCEPTION_UNEXPECTED_KEY:
+            case DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY:
                 // SPI has detected an unexpected status, reset is recommended
                 break;
 
-            case DRV_PL360_MACRT_EXCEPTION_CRITICAL_ERROR:
+            case DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR:
                 // SPI critical error in last transfer. Bootloader task has failured.
                 break;
 
-            case DRV_PL360_MACRT_EXCEPTION_DEBUG:
-                // PL360 device has been reseted by Debugging tool
+            case DRV_G3_MACRT_EXCEPTION_DEBUG:
+                // PLC device has been reseted by Debugging tool
                 break;
 
-            case DRV_PL360_MACRT_EXCEPTION_RESET:
-                // PL360 device has been reseted
+            case DRV_G3_MACRT_EXCEPTION_RESET:
+                // PLC device has been reseted
                 break;
 
             default:
@@ -343,7 +343,7 @@ typedef void ( *DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OB
   Remarks:
     - The context parameter contains the a handle to the client context,
       provided at the time the event handling function was registered using the
-      DRV_PL360_MACRT_ExceptionCallbackRegister function.  This context handle 
+      DRV_G3_MACRT_ExceptionCallbackRegister function.  This context handle 
       value is passed back to the client as the "context" parameter.  It can be 
       any value necessary to identify the client context or instance (such as 
       a pointer to the client's data) of the client that made the transfer add 
@@ -355,14 +355,14 @@ typedef void ( *DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OB
 
 */
 
-typedef void ( *DRV_PL360_MACRT_EXCEPTION_CALLBACK )( DRV_PL360_MACRT_EXCEPTION exception, 
+typedef void ( *DRV_G3_MACRT_EXCEPTION_CALLBACK )( DRV_G3_MACRT_EXCEPTION exception, 
         uintptr_t context );
 
 // *****************************************************************************
-/* PL360 MAC RT PLC Sniffer Event Handler Function Pointer
+/* PLC MAC RT PLC Sniffer Event Handler Function Pointer
 
    Summary
-    Pointer to a PL360 MAC RT Sniffer Reception Event handler function
+    Pointer to a PLC MAC RT Sniffer Reception Event handler function
 
    Description
     This data type defines the required function signature for the MAC RT driver
@@ -388,7 +388,7 @@ typedef void ( *DRV_PL360_MACRT_EXCEPTION_CALLBACK )( DRV_PL360_MACRT_EXCEPTION 
         MY_APP_DATA_STRUCT *appData = (MY_APP_DATA_STRUCT *) context;
 
         // Sniffer Data packet is stored in the data buffer configured when
-        // DRV_PL360_MACRT_SinfferCallbackRegister has been called
+        // DRV_G3_MACRT_SinfferCallbackRegister has been called
         appData->snifferBuffer;
     }
     </code>
@@ -396,7 +396,7 @@ typedef void ( *DRV_PL360_MACRT_EXCEPTION_CALLBACK )( DRV_PL360_MACRT_EXCEPTION 
   Remarks:
     - The context parameter contains the a handle to the client context,
       provided at the time the event handling function was registered using the
-      DRV_PL360_MACRT_SinfferCallbackRegister function.  This context handle value is
+      DRV_G3_MACRT_SinfferCallbackRegister function.  This context handle value is
       passed back to the client as the "context" parameter.  It can be any value
       necessary to identify the client context or instance (such as a pointer to
       the client's data) of the client that made the transfer add request.
@@ -407,116 +407,17 @@ typedef void ( *DRV_PL360_MACRT_EXCEPTION_CALLBACK )( DRV_PL360_MACRT_EXCEPTION 
 
 */
 
-typedef void ( *DRV_PL360_MACRT_SNIFFER_CALLBACK )( uintptr_t context );
-
-// *****************************************************************************
-/* PL360 MAC RT Driver Boot Data Callback Function Pointer
-
-   Summary
-    Pointer to a PL360 MAC RT Driver Boot Data Callback Function
-
-   Description
-    This data type defines the required function signature for the PL360 driver
-    boot data callback function. A client must register a pointer 
-    using the PL360 open function whose function signature (parameter 
-    and return value types) match the types specified by this function pointer 
-    in order to be notified when more data will be necessary while bootloader 
-    process.
-
-    The parameters and return values are described here and a partial example
-    implementation is provided.
-
-  Parameters:
-    address -           Address where new block of the binary data image is 
-                        ready to be transfered.
-
-    length -            Length of the new block to be transfered. Maximum size 
-                        is 634 bytes. If length is set to 0, it means that
-                        binary data image transfer has finished and PL360 device
-                        is ready to start up.
-
-    context -           Value identifying the context of the application that
-                        registered the event handling function. In this case, 
-                        this value is fixed to the SYS_MODULE_INDEX passed in
-                        open function.
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    #define APP_BOOT_DATA_FRAG_SIZE    512  
-
-    static uint32_t gBootDataNextAddr = 0x00450000;
-    static uint16_t gBootDataPending = 64000;
-
-    static void APP_PLCBootDataCb(uint32_t *address, uint16_t *length, uintptr_t context)
-    {   
-        // Avoid warnings
-        (void)context;
-        
-        if (gBootDataPending)
-        {
-            *address = gBootDataNextAddr;
-            
-            gBootDataNextAddr += APP_BOOT_DATA_FRAG_SIZE;
-            
-            if (gBootDataPending > APP_BOOT_DATA_FRAG_SIZE)
-            {
-                *length = APP_BOOT_DATA_FRAG_SIZE;
-                gBootDataPending -= APP_BOOT_DATA_FRAG_SIZE;
-            }
-            else
-            {
-                *length = APP_BOOT_DATA_FRAG_SIZE - gBootDataPending;
-                gBootDataPending = 0;
-            }
-        }
-        else
-        {
-            // End Boot Data Transfer 
-            *length = 0;
-        }    
-    }
-
-    DRV_HANDLE handle;
-
-    handle = DRV_PL360_MACRT_Open(DRV_PL360_MACRT_INDEX_0, APP_PLCBootDataCb);
-    if (handle == DRV_HANDLE_INVALID)
-    {
-        // Unable to open the driver
-        // May be the driver is not initialized
-    }
-
-    </code>
-
-  Remarks:
-    - The context parameter contains the SYS_MODULE_INDEX provided at the time 
-      the open function was called. This SYS_MODULE_INDEX value is passed back 
-      to the client as the "context" parameter.  
-
-    - Length parameter is used to notify that all binary image has been transfered
-      to MAC RT Driver and it should be ready to start up. This is indicated using
-      length = 0;
-
-    - The event handler function executes in task context of the peripheral.
-      Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
-
-*/
-
-typedef void ( *DRV_PL360_MACRT_BOOT_DATA_CALLBACK )( uint32_t *address, 
-        uint16_t *length, uintptr_t context );
+typedef void ( *DRV_G3_MACRT_SNIFFER_CALLBACK )( uintptr_t context );
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PL360 MAC RT Driver System Interface Routines
+// Section: DRV_PLC MAC RT Driver System Interface Routines
 // *****************************************************************************
 // *****************************************************************************
 
 // *****************************************************************************
 /* Function:
-    SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize(
+    SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
         const SYS_MODULE_INDEX index,
         const SYS_MODULE_INIT * const init
     )
@@ -525,7 +426,7 @@ typedef void ( *DRV_PL360_MACRT_BOOT_DATA_CALLBACK )( uint32_t *address,
     Initializes the MAC RT instance for the specified driver index.
 
   Description:
-    This routine initializes the PL360 MAC RT driver making it ready for
+    This routine initializes the PLC MAC RT driver making it ready for
     clients to open and use. The initialization data is specified by the init
     parameter. It is a single instance driver, so this API should be called
     only once.
@@ -547,63 +448,63 @@ typedef void ( *DRV_PL360_MACRT_BOOT_DATA_CALLBACK )( uint32_t *address,
     <code>
     SYS_MODULE_OBJ   sysObjDrvMACRT;
 
-    DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
+    DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-        .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
+        .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
         .dmaChannelTx = SYS_DMA_CHANNEL_1,
         .dmaChannelRx  = SYS_DMA_CHANNEL_0,
         .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
         .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
-        .spiClockFrequency = DRV_PL360_SPI_CLK,
-        .ldoPin = DRV_PL360_LDO_EN_PIN, 
-        .resetPin = DRV_PL360_RESET_PIN,
-        .extIntPin = DRV_PL360_EXT_INT_PIN,
+        .spiClockFrequency = DRV_PLC_SPI_CLK,
+        .ldoPin = DRV_PLC_LDO_EN_PIN, 
+        .resetPin = DRV_PLC_RESET_PIN,
+        .extIntPin = DRV_PLC_EXT_INT_PIN,
     };
 
-    DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
-        .pl360Plib = &drvPL360Plib,
-        .init = (DRV_PL360_HAL_INIT)drv_pl360_hal_init,
-        .setup = (DRV_PL360_HAL_SETUP)drv_pl360_hal_setup,
-        .reset = (DRV_PL360_HAL_RESET)drv_pl360_hal_reset,
-        .getCd = (DRV_PL360_HAL_GET_CD)drv_pl360_hal_get_cd,
-        .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)drv_pl360_hal_enable_interrupt,
-        .delay = (DRV_PL360_HAL_DELAY)drv_pl360_hal_delay,
-        .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)drv_pl360_hal_send_boot_cmd,
-        .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)drv_pl360_hal_send_wrrd_cmd,
+    DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
+        .plcPlib = &drvPLCPlib,
+        .init = (DRV_PLC_HAL_INIT)drv_plc_hal_init,
+        .setup = (DRV_PLC_HAL_SETUP)drv_plc_hal_setup,
+        .reset = (DRV_PLC_HAL_RESET)drv_plc_hal_reset,
+        .getCd = (DRV_PLC_HAL_GET_CD)drv_plc_hal_get_cd,
+        .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)drv_plc_hal_enable_interrupt,
+        .delay = (DRV_PLC_HAL_DELAY)drv_plc_hal_delay,
+        .sendBootCmd = (DRV_PLC_HAL_SEND_BOOT_CMD)drv_plc_hal_send_boot_cmd,
+        .sendWrRdCmd = (DRV_PLC_HAL_SEND_WRRD_CMD)drv_plc_hal_send_wrrd_cmd,
     };
 
-    extern uint8_t pl360_macrt_bin_start;
-    extern uint8_t pl360_macrt_bin_end;
+    extern uint8_t g3_macrt_bin_start;
+    extern uint8_t g3_macrt_bin_end;
 
-    DRV_PL360_MACRT_INIT drvPL360MacRtInitData = {
-        .pl360Hal = &drvPL360HalAPI,
-        .numClients = DRV_PL360_MACRT_CLIENTS_NUMBER_IDX,  
-        .plcProfile = DRV_PL360_MACRT_PLC_PROFILE,
-        .binStartAddress = (uint32_t)&pl360_macrt_bin_start,
-        .binEndAddress = (uint32_t)&pl360_macrt_bin_end,
-        .secure = DRV_PL360_MACRT_SECURE,       
+    DRV_G3_MACRT_INIT drvPLCMacRtInitData = {
+        .plcHal = &drvPLCHalAPI,
+        .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  
+        .plcProfile = DRV_G3_MACRT_PLC_PROFILE,
+        .binStartAddress = (uint32_t)&g3_macrt_bin_start,
+        .binEndAddress = (uint32_t)&g3_macrt_bin_end,
+        .secure = DRV_G3_MACRT_SECURE,       
     };
 
-    sysObjDrvMACRT = DRV_PL360_MACRT_Initialize(DRV_PL360_MACRT_INDEX_0, (SYS_MODULE_INIT *)&drvPL360MacRtInitData);
-    // Register Callback function is mandatory to handle PL360 interruption 
-    PIO_PinInterruptCallbackRegister(DRV_PL360_MACRT_EXT_INT_PIN, DRV_PL360_MACRT_ExternalInterruptHandler, sysObjDrvMACRT);
+    sysObjDrvMACRT = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX_0, (SYS_MODULE_INIT *)&drvPLCMacRtInitData);
+    // Register Callback function is mandatory to handle PLC interruption 
+    PIO_PinInterruptCallbackRegister(DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObjDrvMACRT);
 
     </code>
 
   Remarks:
-    This routine must be called before any other DRV_PL360_MACRT routine is called.
+    This routine must be called before any other DRV_PLC_MACRT routine is called.
     This routine should only be called once during system initialization.
     This routine will block for hardware access.
 */
 
-SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize( const SYS_MODULE_INDEX index, const SYS_MODULE_INIT * const init);
+SYS_MODULE_OBJ DRV_G3_MACRT_Initialize( const SYS_MODULE_INDEX index, const SYS_MODULE_INIT * const init);
 
 // *****************************************************************************
 /* Function:
-    DRV_HANDLE DRV_PL360_MACRT_Open
+    DRV_HANDLE DRV_G3_MACRT_Open
     (
         const SYS_MODULE_INDEX index,
-        const DRV_PL360_MACRT_BOOT_DATA_CALLBACK callback
+        const DRV_PLC_BOOT_DATA_CALLBACK callback
     )
 
   Summary:
@@ -614,11 +515,11 @@ SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize( const SYS_MODULE_INDEX index, const S
     handle that must be provided to all other client-level operations to
     identify the caller and the instance of the driver. 
 
-    This driver is a single client driver, so DRV_PL360_MACRT_Open API should be
+    This driver is a single client driver, so DRV_G3_MACRT_Open API should be
     called only once until driver is closed.
 
   Precondition:
-    Function DRV_PL360_MACRT_Initialize must have been called before calling this
+    Function DRV_G3_MACRT_Initialize must have been called before calling this
     function.
 
   Parameters:
@@ -626,7 +527,7 @@ SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize( const SYS_MODULE_INDEX index, const S
 
     callback -  Boot Data Callback Function Pointer. In case of use NULL, 
                 .binStartAddress and .binEndAddress fields must be configured 
-                in initialization data DRV_PL360_MACRT_INIT.
+                in initialization data DRV_G3_MACRT_INIT.
 
   Returns:
     If successful, the routine returns a valid open-instance handle (a number
@@ -641,7 +542,7 @@ SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize( const SYS_MODULE_INDEX index, const S
     <code>
     DRV_HANDLE handle;
 
-    handle = DRV_PL360_MACRT_Open(DRV_PL360_MACRT_INDEX_0, NULL);
+    handle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL);
     if (handle == DRV_HANDLE_INVALID)
     {
         // Unable to open the driver
@@ -650,26 +551,26 @@ SYS_MODULE_OBJ DRV_PL360_MACRT_Initialize( const SYS_MODULE_INDEX index, const S
     </code>
 
   Remarks:
-    The handle returned is valid until the DRV_PL360_MACRT_Close routine is called.
+    The handle returned is valid until the DRV_G3_MACRT_Close routine is called.
     This routine will NEVER block waiting for hardware.
 */
-DRV_HANDLE DRV_PL360_MACRT_Open(const SYS_MODULE_INDEX index, 
-        const DRV_PL360_MACRT_BOOT_DATA_CALLBACK callback);
+DRV_HANDLE DRV_G3_MACRT_Open(const SYS_MODULE_INDEX index, 
+        const DRV_PLC_BOOT_DATA_CALLBACK callback);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_Close( const DRV_HANDLE handle )
+    void DRV_G3_MACRT_Close( const DRV_HANDLE handle )
 
   Summary:
     Closes opened-instance of the MAC RT driver.
 
   Description:
     This routine closes opened-instance of the MAC RT driver, invalidating the
-    handle. A new handle must be obtained by calling DRV_PL360_MACRT_Open
+    handle. A new handle must be obtained by calling DRV_G3_MACRT_Open
     before the caller may use the driver again.
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle -    A valid open-instance handle, returned from the driver's
@@ -680,20 +581,20 @@ DRV_HANDLE DRV_PL360_MACRT_Open(const SYS_MODULE_INDEX index,
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
 
-    DRV_PL360_MACRT_Close(handle);
+    DRV_G3_MACRT_Close(handle);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_Close(const DRV_HANDLE handle);
+void DRV_G3_MACRT_Close(const DRV_HANDLE handle);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_MlmeSet( const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters )
+    void DRV_G3_MACRT_MlmeSet( const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters )
 
   Summary:
     Allows set all parameters and characterize the message to be transmitted.
@@ -702,7 +603,7 @@ void DRV_PL360_MACRT_Close(const DRV_HANDLE handle);
     This routine sends all TX parameters to MAC RT driver to apply in next transmission.
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle -      A valid open-instance handle, returned from the driver's
@@ -715,7 +616,7 @@ void DRV_PL360_MACRT_Close(const DRV_HANDLE handle);
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     
     MAC_RT_TX_PARAMETERS_OBJ txParamObj;
 
@@ -726,18 +627,18 @@ void DRV_PL360_MACRT_Close(const DRV_HANDLE handle);
  
     // Set the rest of parameters to be applied
  
-    DRV_PL360_MACRT_MlmeSet(handle, &txParamObj);
+    DRV_G3_MACRT_MlmeSet(handle, &txParamObj);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters);
+void DRV_G3_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_Send( const DRV_HANDLE handle, uint8_t *pData, uint16_t length )
+    void DRV_G3_MACRT_Send( const DRV_HANDLE handle, uint8_t *pData, uint16_t length )
 
   Summary:
     Allows a client to transmit MAC RT data through Power Line (PLC).
@@ -746,8 +647,8 @@ void DRV_PL360_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *
     This routine sends a new data message through PLC using the MAC RT driver.
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
-    DRV_PL360_MACRT_MlmeSet must have been called before to send any data message.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_MlmeSet must have been called before to send any data message.
 
   Parameters:
     handle -    A valid open-instance handle, returned from the driver's
@@ -763,35 +664,35 @@ void DRV_PL360_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     
-    // It is mandatory to set all transmission parameters using DRV_PL360_MACRT_MlmeSet
+    // It is mandatory to set all transmission parameters using DRV_G3_MACRT_MlmeSet
     // Those parameters depends on the PLC profile in use.
     // Local function implemented in the user application
     _setupTransmissionParameters();
 
-    DRV_PL360_MACRT_Send(handle, appData.pData, appData.length);
+    DRV_G3_MACRT_Send(handle, appData.pData, appData.length);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t length);
+void DRV_G3_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t length);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_PIBGet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
+    void DRV_G3_MACRT_PIBGet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
 
   Summary:
-    Allows a client to get information from PL360 device about MAC RT and PHY
+    Allows a client to get information from PLC device about MAC RT and PHY
     information base (PIB).
 
   Description:
-    This routine get MAC RT and PHY data information from the PL360 device.
+    This routine get MAC RT and PHY data information from the PLC device.
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
     MAC_RT_PIB_OBJ must be configured before to get information.
 
   Parameters:
@@ -805,7 +706,7 @@ void DRV_PL360_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t leng
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     
     MAC_RT_PIB_OBJ pibObj;
     uint32_t phyVersion;
@@ -816,35 +717,35 @@ void DRV_PL360_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t leng
     pibObj.pData = &phyVersion;
     pibObj.length = 4;
 
-    DRV_PL360_MACRT_PIBGet(handle, &pibObj);
+    DRV_G3_MACRT_PIBGet(handle, &pibObj);
     
     pibObj.pib = MAC_RT_PIB_MANUF_MAC_RT_INTERNAL_VERSION;
     pibObj.index = 0;
     pibObj.pData = &macRtVersion;
     pibObj.length = 6;
 
-    DRV_PL360_MACRT_PIBGet(handle, &pibObj);
+    DRV_G3_MACRT_PIBGet(handle, &pibObj);
 
     </code>
 
   Remarks:
     None.
 */
-bool DRV_PL360_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
+MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_PIBSet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
+    void DRV_G3_MACRT_PIBSet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
 
   Summary:
-    Allows a client to set information to PL360 device about MAC RT and PHY 
+    Allows a client to set information to PLC device about MAC RT and PHY 
     information base (PIB).
 
   Description:
-    This routine set MAC RT and PHY data information to the PL360 device.
+    This routine set MAC RT and PHY data information to the PLC device.
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
     MAC_RT_PIB_OBJ must be configured before to set information.
 
   Parameters:
@@ -854,11 +755,11 @@ bool DRV_PL360_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
     pibObj -    Pointer to the PIB object to set.
 
   Returns:
-    None.
+    Mac Rt Status.
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     
     MAC_RT_PIB_OBJ pibObj;
     uint8_t autoMode
@@ -875,13 +776,13 @@ bool DRV_PL360_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
     pibObj.index = PHY_PARAM_CFG_AUTODETECT_BRANCH; 
     pibObj.pData = &autoMode;
     pibObj.length = 1;
-    DRV_PL360_MACRT_PIBSet(handle, &pibObj);
+    DRV_G3_MACRT_PIBSet(handle, &pibObj);
  
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_CFG_IMPEDANCE; 
     pibObj.pData = &impedance;
     pibObj.length = 1;
-    DRV_PL360_MACRT_PIBSet(handle, &pibObj);
+    DRV_G3_MACRT_PIBSet(handle, &pibObj);
  
     // Forces Modulation Type in every transmitted frame (1 - Force BPSK_ROBO)
     forcedRobo = 1; 
@@ -890,18 +791,18 @@ bool DRV_PL360_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
     pibObj.index = 0; 
     pibObj.pData = &forcedRobo;
     pibObj.length = 1;
-    DRV_PL360_MACRT_PIBSet(handle, &pibObj);
+    DRV_G3_MACRT_PIBSet(handle, &pibObj);
 
     </code>
 
   Remarks:
     None.
 */
-bool DRV_PL360_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
+MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_GetToneMapResponse( const DRV_HANDLE handle,
+    void DRV_G3_MACRT_GetToneMapResponse( const DRV_HANDLE handle,
     MAC_RT_TONE_MAP_RSP *pParameters )
 
   Summary:
@@ -911,7 +812,7 @@ bool DRV_PL360_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
     For further information about Tone Map Response, please see G3 specification
   
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device 
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
     handle.
 
   Parameters:
@@ -925,22 +826,22 @@ bool DRV_PL360_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj);
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     MAC_RT_TONE_MAP_RSP toneMapResponse;
 
-    DRV_PL360_MACRT_GetToneMapResponse(handle, &toneMapResponse);
+    DRV_G3_MACRT_GetToneMapResponse(handle, &toneMapResponse);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_GetToneMapResponse(const DRV_HANDLE handle, 
+void DRV_G3_MACRT_GetToneMapResponse(const DRV_HANDLE handle, 
         MAC_RT_TONE_MAP_RSP *pParameters);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_SetCoordinator( const DRV_HANDLE handle )
+    void DRV_G3_MACRT_SetCoordinator( const DRV_HANDLE handle )
 
   Summary:
     Configure MAC RT driver as G3 coordinator profile
@@ -949,7 +850,7 @@ void DRV_PL360_MACRT_GetToneMapResponse(const DRV_HANDLE handle,
     Enable coordinator capabilities.
     
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device 
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
     handle.
 
   Parameters:
@@ -961,20 +862,20 @@ void DRV_PL360_MACRT_GetToneMapResponse(const DRV_HANDLE handle,
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
 
-    DRV_PL360_MACRT_SetCoordinator(handle);
+    DRV_G3_MACRT_SetCoordinator(handle);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_SetCoordinator(const DRV_HANDLE handle);
+void DRV_G3_MACRT_SetCoordinator(const DRV_HANDLE handle);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_SetSpec15Compliance( const DRV_HANDLE handle )
+    void DRV_G3_MACRT_SetSpec15Compliance( const DRV_HANDLE handle )
 
   Summary:
     Configure MAC RT driver to comply with G3 Specification 15.
@@ -984,7 +885,7 @@ void DRV_PL360_MACRT_SetCoordinator(const DRV_HANDLE handle);
     This function must only be called to be compliant with G3 specification 15.
  
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device 
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
     handle.
 
   Parameters:
@@ -996,32 +897,32 @@ void DRV_PL360_MACRT_SetCoordinator(const DRV_HANDLE handle);
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
 
-    DRV_PL360_MACRT_SetSpec15Compliance(handle);
+    DRV_G3_MACRT_SetSpec15Compliance(handle);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_PL360_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
+void DRV_G3_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
 
 // *****************************************************************************
 /* Function:
-    uint32_t DRV_PL360_MACRT_GetTimerReference( const DRV_HANDLE handle )
+    uint32_t DRV_G3_MACRT_GetTimerReference( const DRV_HANDLE handle )
 
   Summary:
-    Get the internal timer reference from PL360 device in microseconds
+    Get the internal timer reference from PLC device in microseconds
 
   Description:
-    PL360 device has an internal 32 bits counter which is used as internal
+    PLC device has an internal 32 bits counter which is used as internal
     time reference for all time calculations in PHY layer. This counter is 
     internally configured to be increased each microsecond. This function let 
     use this counter as accurate time reference to upper layers.
     
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device 
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
     handle.
 
   Parameters:
@@ -1029,27 +930,27 @@ void DRV_PL360_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
                 open routine
 
   Returns:
-    Internal timer reference from PL360 device in microseconds.
+    Internal timer reference from PLC device in microseconds.
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PL360_MACRT_Open
+    // 'handle', returned from the DRV_G3_MACRT_Open
     uint32_t macRtTimerRef;
 
-    macRtTimerRef = DRV_PL360_MACRT_GetTimerReference(handle);
+    macRtTimerRef = DRV_G3_MACRT_GetTimerReference(handle);
 
     </code>
 
   Remarks:
     None.
 */
-uint32_t DRV_PL360_MACRT_GetTimerReference(const DRV_HANDLE handle);
+uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle);
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_DataCfmCallbackRegister( 
+    void DRV_G3_MACRT_DataCfmCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_PL360_MACRT_TX_CFM_CALLBACK callback, 
+        const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
         const uintptr_t context 
     );
 
@@ -1058,7 +959,7 @@ uint32_t DRV_PL360_MACRT_GetTimerReference(const DRV_HANDLE handle);
     to call back when the requested transmission has finished.
 
   Description:
-    This function allows a client to register a PL360 data confirm event handling 
+    This function allows a client to register a PLC data confirm event handling 
     function with the driver to call back when a data confirmation PLC event occurs.
 
     The event handler should be set before the client submits any transmission
@@ -1067,7 +968,7 @@ uint32_t DRV_PL360_MACRT_GetTimerReference(const DRV_HANDLE handle);
     could be a "NULL" pointer to indicate no callback).
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle - A valid open-instance handle, returned from the driver's open routine.
@@ -1085,7 +986,7 @@ uint32_t DRV_PL360_MACRT_GetTimerReference(const DRV_HANDLE handle);
   Example:
     <code>
      // Event is received when the transmission is finished
-    void APP_PL360_Tx_Cfm_callback(MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context)
+    void APP_PLC_Tx_Cfm_callback(MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context)
     {
         // The context handle was set to an application specific
         // object. It is now retrievable easily in the event handler.
@@ -1101,29 +1002,29 @@ uint32_t DRV_PL360_MACRT_GetTimerReference(const DRV_HANDLE handle);
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
 
-    // myHandle is the handle returned from DRV_PL360_MACRT_Open API.
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
 
     // Client registers a TX confirm callback with driver. This is done once
 
-    DRV_PL360_MACRT_TxCfmCallbackRegister( myHandle, APP_PL360_Tx_Cfm_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_TxCfmCallbackRegister( myHandle, APP_PLC_Tx_Cfm_callback, (uintptr_t)&myAppObj );
 
-    DRV_PL360_MACRT_Send(myHandle, myAppObj.pData, myAppObj.dataLength);
+    DRV_G3_MACRT_Send(myHandle, myAppObj.pData, myAppObj.dataLength);
    
     </code>
 
 */
 
-void DRV_PL360_MACRT_TxCfmCallbackRegister( 
+void DRV_G3_MACRT_TxCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_MACRT_TX_CFM_CALLBACK callback, 
+    const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
     const uintptr_t context 
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_DataIndCallbackRegister( 
+    void DRV_G3_MACRT_DataIndCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_PL360_MACRT_DATA_IND_CALLBACK callback, 
+        const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
         const uintptr_t context 
     );
 
@@ -1141,7 +1042,7 @@ void DRV_PL360_MACRT_TxCfmCallbackRegister(
     could be a "NULL" pointer to indicate no callback).
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle   - A valid open-instance handle, returned from the driver's open routine.
@@ -1159,7 +1060,7 @@ void DRV_PL360_MACRT_TxCfmCallbackRegister(
   Example:
     <code>
 
-    void APP_PL360_Data_Ind_callback(uint8_t *pData, uint16_t length, uintptr_t context)
+    void APP_PLC_Data_Ind_callback(uint8_t *pData, uint16_t length, uintptr_t context)
     {
         // The context handle was set to an application specific
         // object. It is now retrievable easily in the event handler.
@@ -1177,11 +1078,11 @@ void DRV_PL360_MACRT_TxCfmCallbackRegister(
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
 
-    // myHandle is the handle returned from DRV_PL360_MACRT_Open API.
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_PL360_MACRT_DataIndCallbackRegister( myHandle, APP_PL360_Data_Ind_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_DataIndCallbackRegister( myHandle, APP_PLC_Data_Ind_callback, (uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving.
     
@@ -1189,17 +1090,17 @@ void DRV_PL360_MACRT_TxCfmCallbackRegister(
 
 */
 
-void DRV_PL360_MACRT_DataIndCallbackRegister( 
+void DRV_G3_MACRT_DataIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_MACRT_DATA_IND_CALLBACK callback, 
+    const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
     const uintptr_t context 
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister( 
+    void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK callback, 
+        const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
         const uintptr_t context 
     );
 
@@ -1218,7 +1119,7 @@ void DRV_PL360_MACRT_DataIndCallbackRegister(
     could be a "NULL" pointer to indicate no callback).
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle   - A valid open-instance handle, returned from the driver's open routine.
@@ -1236,7 +1137,7 @@ void DRV_PL360_MACRT_DataIndCallbackRegister(
   Example:
     <code>
 
-    void APP_PL360_Params_Ind_callback(MAC_RT_RX_PARAMETERS_OBJ *pParameters, uintptr_t context)
+    void APP_PLC_Params_Ind_callback(MAC_RT_RX_PARAMETERS_OBJ *pParameters, uintptr_t context)
     {
         // The context handle was set to an application specific
         // object. It is now retrievable easily in the event handler.
@@ -1250,11 +1151,11 @@ void DRV_PL360_MACRT_DataIndCallbackRegister(
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
 
-    // myHandle is the handle returned from DRV_PL360_MACRT_Open API.
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_PL360_MACRT_MlmeGetCfmCallbackRegister( myHandle, APP_PL360_Params_Ind_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_MlmeGetCfmCallbackRegister( myHandle, APP_PLC_Params_Ind_callback, (uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving.
     
@@ -1262,17 +1163,17 @@ void DRV_PL360_MACRT_DataIndCallbackRegister(
 
 */
 
-void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister( 
+void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_MACRT_MLME_GET_CFM_CALLBACK callback, 
+    const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
     const uintptr_t context 
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_SnifferCallbackRegister( 
+    void DRV_G3_MACRT_SnifferCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_PL360_MACRT_SNIFFER_CALLBACK callback, 
+        const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
         const uint8_t *pSnifferData,
         const uintptr_t context 
     );
@@ -1293,7 +1194,7 @@ void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister(
     another callback (which could be a "NULL" pointer to indicate no callback).
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle   - A valid open-instance handle, returned from the driver's open routine.
@@ -1313,7 +1214,7 @@ void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister(
   Example:
     <code>
 
-    void APP_PL360_Sniffer_callback(uintptr_t context)
+    void APP_PLC_Sniffer_callback(uintptr_t context)
     {
         // The context handle was set to an application specific
         // object. It is now retrievable easily in the event handler.
@@ -1326,11 +1227,11 @@ void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister(
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
 
-    // myHandle is the handle returned from DRV_PL360_MACRT_Open API.
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
 
     // Client registers a sniffer callback with MAC RT driver.
 
-    DRV_PL360_MACRT_SnifferCallbackRegister( myHandle, APP_PL360_Sniffer_callback, 
+    DRV_G3_MACRT_SnifferCallbackRegister( myHandle, APP_PLC_Sniffer_callback, 
     myAppObj.pSnifferBuff, *(uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving or PLC transmission is completed.
@@ -1339,27 +1240,27 @@ void DRV_PL360_MACRT_MlmeGetCfmCallbackRegister(
 
 */
 
-void DRV_PL360_MACRT_SnifferCallbackRegister( 
+void DRV_G3_MACRT_SnifferCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_MACRT_SNIFFER_CALLBACK callback, 
+    const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
     const uint8_t *pSnifferData,
     const uintptr_t context 
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_ExceptionCallbackRegister( 
+    void DRV_G3_MACRT_ExceptionCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_PL360_MACRT_EXCEPTION_CALLBACK callback, 
+        const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
         const uintptr_t context 
     );
 
   Summary:
     Allows a client to identify an exception event handling function for the driver
-    to call back when some error occurs through PL360 device communication.
+    to call back when some error occurs through PLC device communication.
 
   Description:
-    This function allows a client to register a PL360 exception event handling 
+    This function allows a client to register a PLC exception event handling 
     function with the driver to call back when a communication SPI error occurs.
 
     The event handler should be set before the client submits any transmission
@@ -1368,7 +1269,7 @@ void DRV_PL360_MACRT_SnifferCallbackRegister(
     could be a "NULL" pointer to indicate no callback).
 
   Precondition:
-    DRV_PL360_MACRT_Open must have been called to obtain a valid opened device handle.
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
 
   Parameters:
     handle - A valid open-instance handle, returned from the driver's open routine.
@@ -1386,7 +1287,7 @@ void DRV_PL360_MACRT_SnifferCallbackRegister(
   Example:
     <code>
 
-    void APP_PL360_Exception_callback(DRV_PL360_MACRT_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
+    void APP_PLC_Exception_callback(DRV_G3_MACRT_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
     {
         // The context handle was set to an application specific
         // object. It is now retrievable easily in the event handler.
@@ -1399,39 +1300,39 @@ void DRV_PL360_MACRT_SnifferCallbackRegister(
     // myAppObj is an application specific state data object.
     MY_APP_OBJ myAppObj;
 
-    // myHandle is the handle returned from DRV_PL360_MACRT_Open API.
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_PL360_MACRT_ExceptionCallbackRegister( myHandle, APP_PL360_Exception_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_ExceptionCallbackRegister( myHandle, APP_PLC_Exception_callback, (uintptr_t)&myAppObj );
 
     // Event is received when PLC data is receiving.
     </code>
 
 */
 
-void DRV_PL360_MACRT_ExceptionCallbackRegister( 
+void DRV_G3_MACRT_ExceptionCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PL360_MACRT_EXCEPTION_CALLBACK callback, 
+    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
     const uintptr_t context 
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_PL360_MACRT_ExternalInterruptHandler( 
+    void DRV_G3_MACRT_ExternalInterruptHandler( 
         const PIO_PIN pin, 
         const uintptr_t context 
     );
 
   Summary:
-    Allows application to register callback for PL360 Interrupt pin.
+    Allows application to register callback for PLC Interrupt pin.
 
   Description:
     This function allows a client to register a callback function to handle 
     MAC RT interrupt.
     
   Precondition:
-    DRV_PL360_MACRT_Initialize must have been called to obtain a valid system object.
+    DRV_G3_MACRT_Initialize must have been called to obtain a valid system object.
 
   Returns:
     None.
@@ -1442,29 +1343,29 @@ void DRV_PL360_MACRT_ExceptionCallbackRegister(
   Example:
     <code>
       
-    // Initialize PL360 MAC RT Driver Instance
-    sysObj.drvPL360MacRt = DRV_PL360_MACRT_Initialize(DRV_PL360_MACRT_INDEX, (SYS_MODULE_INIT *)&drvPL360MacRtInitData);
-    // Register Callback function to handle PL360 interruption
-    PIO_PinInterruptCallbackRegister(DRV_PL360_MACRT_EXT_INT_PIN, DRV_PL360_MACRT_ExternalInterruptHandler, sysObj.drvPL360MacRt);
+    // Initialize PLC MAC RT Driver Instance
+    sysObj.drvPLCMacRt = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX, (SYS_MODULE_INIT *)&drvPLCMacRtInitData);
+    // Register Callback function to handle PLC interruption
+    PIO_PinInterruptCallbackRegister(DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObj.drvPLCMacRt);
 
     </code>
 
 */
 
-void DRV_PL360_MACRT_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
+void DRV_G3_MACRT_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
 
 // *************************************************************************
 /* Function:
-    SYS_STATUS DRV_PL360_MACRT_Status( const SYS_MODULE_INDEX index )
+    SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index )
 
   Summary:
-    Gets the current status of the PL360 driver module.
+    Gets the current status of the PLC driver module.
 
   Description:
-    This routine provides the current status of the PL360 driver module.
+    This routine provides the current status of the PLC driver module.
 
   Preconditions:
-    Function DRV_PL360_MACRT_Initialize should have been called before calling
+    Function DRV_G3_MACRT_Initialize should have been called before calling
     this function.
 
   Parameters:
@@ -1484,18 +1385,18 @@ void DRV_PL360_MACRT_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
     <code>
     SYS_STATUS status;
 
-    status = DRV_PL360_MACRT_Status(DRV_PL360_MACRT_INDEX);
+    status = DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX);
     </code>
 
   Remarks:
     None.
 */
 
-SYS_STATUS DRV_PL360_MACRT_Status( const SYS_MODULE_INDEX index );
+SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index );
 
 /***************************************************************************
   Function:
-       void DRV_PL360_MACRT_Tasks( SYS_MODULE_OBJ object )
+       void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object )
     
   Summary:
     Maintains the driver's state machine.
@@ -1504,21 +1405,21 @@ SYS_STATUS DRV_PL360_MACRT_Status( const SYS_MODULE_INDEX index );
     This function is used to maintain the driver's internal state machine.
 
   Precondition:
-    The DRV_PL360_MACRT_Initialize routine must have been called for the
-    specified PL360 driver instance.
+    The DRV_G3_MACRT_Initialize routine must have been called for the
+    specified PLC driver instance.
 
   Parameters:
     - object -  Object handle for the specified driver instance (returned from
-                DRV_PL360_MACRT_Initialize)
+                DRV_G3_MACRT_Initialize)
   Returns:
     None
   Example:
     <code>
-    SYS_MODULE_OBJ      object;     // Returned from DRV_PL360_MACRT_Initialize
+    SYS_MODULE_OBJ      object;     // Returned from DRV_G3_MACRT_Initialize
     
     while (true)
     {
-        DRV_PL360_MACRT_Tasks (object);
+        DRV_G3_MACRT_Tasks (object);
     
         // Do other tasks
     }
@@ -1531,13 +1432,13 @@ SYS_STATUS DRV_PL360_MACRT_Status( const SYS_MODULE_INDEX index );
       it to block.                        
   ***************************************************************************/
 
-void DRV_PL360_MACRT_Tasks( SYS_MODULE_OBJ object );
+void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object );
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // #ifndef _DRV_PL360_MACRT_H
+#endif // #ifndef _DRV_G3_MACRT_H
 /*******************************************************************************
  End of File
 */
