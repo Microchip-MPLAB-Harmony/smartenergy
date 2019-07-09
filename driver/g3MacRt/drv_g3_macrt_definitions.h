@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef DRV_PLC_DEFINITIONS_H
-#define DRV_PLC_DEFINITIONS_H
+#ifndef DRV_G3_MAC_RT_DEFINITIONS_H
+#define DRV_G3_MAC_RT_DEFINITIONS_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -225,7 +225,7 @@ typedef struct
 #endif
 //DOM-IGNORE-END
 
-#endif // #ifndef DRV_PLC_DEFINITIONS_H
+#endif // #ifndef DRV_G3_MAC_RT_DEFINITIONS_H
 
 /*******************************************************************************
  End of File

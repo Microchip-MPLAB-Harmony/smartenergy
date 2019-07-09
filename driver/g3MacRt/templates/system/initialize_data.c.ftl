@@ -37,7 +37,7 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
     .binStartAddress = (uint32_t)&g3_mac_rt_bin_start,
     
     /* PLC Binary end address */
-    .binEndAddress = (uint32_t)&g3_mac_rt_bin_start,
+    .binEndAddress = (uint32_t)&g3_mac_rt_bin_end,
 </#if>  
 
     /* Secure Mode */

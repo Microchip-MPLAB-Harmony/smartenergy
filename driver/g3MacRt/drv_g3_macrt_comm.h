@@ -296,7 +296,7 @@ typedef enum {
      * received PDU */
 	PHY_PARAM_PDC_LAST_RX,
     /* Index of the notch filter. 8 bits. */
-    PHY_PARAM_RRC_NOTCH_INDEX = 0x0164,
+    PHY_PARAM_RRC_NOTCH_INDEX_LEGACY = 0x0164,
     /* Disable PLC Tx/Rx. 8 bits. */
     PHY_PARAM_PLC_DISABLE = 0x016A,
     /* LQI value of the last received message */
@@ -318,9 +318,9 @@ typedef enum {
 */
 typedef enum {
     MAC_RT_MOD_ROBUST = 0x00,
-    MAC_RT_MOD_DBPSK_BPSK = 0x01,
-    MAC_RT_MOD_DQPSK_QPSK = 0x02,
-    MAC_RT_MOD_D8PSK_8PSK = 0x03,
+    MAC_RT_MOD_BPSK = 0x01,
+    MAC_RT_MOD_QPSK = 0x02,
+    MAC_RT_MOD_8PSK = 0x03,
     MAC_RT_MOD_16_QAM = 0x04
 }MAC_RT_MOD_TYPE;
 
@@ -712,9 +712,9 @@ typedef struct __attribute__((packed, aligned(1))) {
     /* Phase Differential */
     uint8_t phaseDifferential;
     /* Modulation Type */
-    MAC_RT_MODE_TYPE modType;
+    MAC_RT_MOD_TYPE modType;
     /* Modulation Scheme */
-    MAC_RT_MODE_SCHEME modScheme;
+    MAC_RT_MOD_SCHEME modScheme;
     /* Tone map */
     uint8_t toneMap[3];
 } MAC_RT_RX_PARAMETERS_OBJ;

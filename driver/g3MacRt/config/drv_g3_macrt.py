@@ -133,10 +133,10 @@ def instantiateComponent(g3MacRtComponent):
     res = Database.activateComponents(["HarmonyCore"])
 
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    # Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    # Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
     
     g3MacRtSymNumInst = g3MacRtComponent.createIntegerSymbol("DRV_G3_MACRT_NUM_INSTANCES", None)
     g3MacRtSymNumInst.setLabel("Number of Instances")
@@ -229,7 +229,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtProfile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     g3MacRtProfile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     g3MacRtProfile.addKey("G3_FCC", "2", "G3_FCC")
-    g3MacRtProfile.addKey("G3_ARIB", "3", "G3_ARIB")
+    #g3MacRtProfile.addKey("G3_ARIB", "3", "G3_ARIB")
     g3MacRtProfile.addKey("G3_MULTIBAND", "4", "G3_MULTIBAND")
     g3MacRtProfile.setDisplayMode("Description")
     g3MacRtProfile.setOutputMode("Value")
@@ -261,11 +261,12 @@ def instantiateComponent(g3MacRtComponent):
     configName = Variables.get("__CONFIGURATION_NAME")
 
     g3MacRtHalHeaderFile = g3MacRtComponent.createFileSymbol("PLC_HAL_HEADER", None)
-    g3MacRtHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal.h")
+    g3MacRtHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal_g3macrt.h")
     g3MacRtHalHeaderFile.setOutputName("drv_plc_hal.h")
     g3MacRtHalHeaderFile.setDestPath("driver/g3MacRt/")
     g3MacRtHalHeaderFile.setProjectPath("config/" + configName + "/driver/g3MacRt/")
     g3MacRtHalHeaderFile.setType("HEADER")
+    g3MacRtHalHeaderFile.setMarkup(True)
 
     g3MacRtHalFile = g3MacRtComponent.createFileSymbol("PLC_HAL", None)
     g3MacRtHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c")

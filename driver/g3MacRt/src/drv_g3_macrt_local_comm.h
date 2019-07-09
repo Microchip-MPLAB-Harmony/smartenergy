@@ -48,6 +48,7 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+#include "driver/g3MacRt/drv_g3_macrt_local.h"
 #include "driver/g3MacRt/drv_g3_macrt_comm.h"
 
 // *****************************************************************************
@@ -55,7 +56,7 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
-#define DRV_G3_MACRT_STATUS_LENGTH         8
+#define PLC_STATUS_LENGTH                  8
 #define DRV_G3_MACRT_DATA_MAX_SIZE         512
 #define DRV_G3_MACRT_MLME_SET_SIZE         sizeof(MAC_RT_TX_PARAMETERS_OBJ)
 #define DRV_G3_MACRT_MLME_GET_SIZE         sizeof(MAC_RT_RX_PARAMETERS_OBJ)

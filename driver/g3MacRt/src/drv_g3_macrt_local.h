@@ -51,6 +51,7 @@
 #include "driver/g3MacRt/drv_g3_macrt.h"
 #include "driver/g3MacRt/drv_g3_macrt_definitions.h"
 #include "driver/g3MacRt/drv_g3_macrt_comm.h"
+#include "driver/g3MacRt/drv_plc_boot.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -122,7 +123,7 @@ typedef struct
     bool                                      inUse;
 
     /* State of the MAC RT driver */
-    DRV_G3_MACRT_STATE                       state;
+    DRV_G3_MACRT_STATE                        state;
 
     /* Keep track of the number of clients that have opened this driver */
     size_t                                    nClients;
@@ -155,19 +156,19 @@ typedef struct
     DRV_PLC_BOOT_DATA_CALLBACK                bootDataCallback;
 
     /* Application Transmission Confirm Callback */
-    DRV_G3_MACRT_TX_CFM_CALLBACK             txCfmCallback;
+    DRV_G3_MACRT_TX_CFM_CALLBACK              txCfmCallback;
 
     /* Application Data Indication Callback */
-    DRV_G3_MACRT_DATA_IND_CALLBACK           dataIndCallback;
+    DRV_G3_MACRT_DATA_IND_CALLBACK            dataIndCallback;
 
     /* Application MLME Get Confirm Callback */
-    DRV_G3_MACRT_MLME_GET_CFM_CALLBACK       mlmeGetCfmcallback;
+    DRV_G3_MACRT_MLME_GET_CFM_CALLBACK        mlmeGetCfmcallback;
 
     /* Application Exception Callback */
-    DRV_G3_MACRT_EXCEPTION_CALLBACK          exceptionCallback;
+    DRV_G3_MACRT_EXCEPTION_CALLBACK           exceptionCallback;
 
     /* Application PLC Sniffer Callback */
-    DRV_G3_MACRT_SNIFFER_CALLBACK            snifferDataCallback;
+    DRV_G3_MACRT_SNIFFER_CALLBACK             snifferDataCallback;
 
     /* Application context for Transmission Confirm Callback */
     uintptr_t                                 contextTxCfm;

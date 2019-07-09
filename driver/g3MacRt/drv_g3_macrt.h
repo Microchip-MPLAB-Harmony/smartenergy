@@ -55,7 +55,7 @@
 #include "system/system.h"
 #include "drv_g3_macrt_comm.h"
 #include "drv_g3_macrt_definitions.h"
-#include "driver/g3MacRt/src/drv_g3_macrt_local.h"
+#include "driver/g3MacRt/drv_plc_boot.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

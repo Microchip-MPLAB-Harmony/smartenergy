@@ -51,7 +51,6 @@
 // *****************************************************************************
 #include <stdio.h>
 #include <stdbool.h>
-#include "driver/g3MacRt/src/drv_g3_macrt_local.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -272,13 +271,15 @@ typedef struct
     uint32_t                   binSize;
     uint32_t                   binStartAddress;
     bool                       secure;   
-    DRV_PLC_BOOT_STATUS      status;
+    DRV_PLC_BOOT_STATUS        status;
     uint32_t                   pendingLength;
     uint32_t                   pSrc;
     uint32_t                   pDst;
     uint16_t                   secNumPackets;
     uint8_t                    secIV[16];
-    uint8_t                    secSN[16];    
+    uint8_t                    secSN[16]; 
+    DRV_PLC_BOOT_DATA_CALLBACK bootDataCallback;
+    uintptr_t                  contextBoot;
 } DRV_PLC_BOOT_INFO;
 
 // *****************************************************************************
@@ -338,7 +339,7 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_PLC_BOOT_Start(void *plcDrv);
+void DRV_PLC_BOOT_Start( DRV_PLC_BOOT_INFO *pBootInfo, DRV_PLC_HAL_INTERFACE *pHal );
 void DRV_PLC_BOOT_Tasks( void );
 DRV_PLC_BOOT_STATUS DRV_PLC_BOOT_Status( void );
 void DRV_PLC_BOOT_Restart(bool update);

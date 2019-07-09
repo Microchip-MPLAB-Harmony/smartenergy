@@ -47,8 +47,8 @@
 // *****************************************************************************
 #include <string.h>
 #include "driver/g3MacRt/drv_plc_hal.h"
-#include "driver/g3MacRt/src/drv_plc_boot.h"
-#include "driver/g3MacRt/src/drv_g3_macrt_local_comm.h"
+#include "driver/g3MacRt/drv_plc_boot.h"
+#include "driver/g3MacRt/drv_g3_macrt_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -325,24 +325,23 @@ static bool _DRV_PLC_BOOT_CheckFirmware(void)
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_PLC_BOOT_Start(void *plcDrv)
-{
-    DRV_PLC_OBJ *plcDrvObj = (DRV_PLC_OBJ *)plcDrv;
+void DRV_PLC_BOOT_Start(DRV_PLC_BOOT_INFO *pBootInfo, DRV_PLC_HAL_INTERFACE *pHal)
+{  
+    sDrvPlcHalObj = pHal;
     
-    sDrvPlcBootInfo.binSize = plcDrvObj->binSize;
-    sDrvPlcBootInfo.binStartAddress = plcDrvObj->binStartAddress;
-    sDrvPlcBootInfo.pendingLength = plcDrvObj->binSize;
-    sDrvPlcBootInfo.pSrc = plcDrvObj->binStartAddress;    
-    sDrvPlcHalObj = plcDrvObj->plcHal;
-    sDrvPlcBootInfo.secure = plcDrvObj->secure;
+    sDrvPlcBootInfo.binSize = pBootInfo->binSize;
+    sDrvPlcBootInfo.binStartAddress = pBootInfo->binStartAddress;
+    sDrvPlcBootInfo.pendingLength = pBootInfo->binSize;
+    sDrvPlcBootInfo.pSrc = pBootInfo->binStartAddress;  
+    sDrvPlcBootInfo.secure = pBootInfo->secure;
     sDrvPlcBootInfo.pDst = DRV_PLC_BOOT_PROGRAM_ADDR;
     sDrvPlcBootInfo.secNumPackets = 0;
     
     /* Set Bootloader data callback to handle boot by external fragments */
-    if (plcDrvObj->bootDataCallback)
+    if (pBootInfo->bootDataCallback)
     {
-        sDrvPlcBootCb = plcDrvObj->bootDataCallback;
-        sDrvPlcBootContext = plcDrvObj->contextBoot;
+        sDrvPlcBootInfo.bootDataCallback = pBootInfo->bootDataCallback;
+        sDrvPlcBootInfo.contextBoot = pBootInfo->contextBoot;
     }
 
     _DRV_PLC_BOOT_EnableBootCmd();

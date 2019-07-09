@@ -120,7 +120,7 @@ SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index )
     /* Validate the request */
     if (index >= DRV_G3_MACRT_INSTANCES_NUMBER)
     {
-        return DRV_HANDLE_INVALID;
+        return SYS_STATUS_ERROR;
     }
     
     /* Return the driver status */
@@ -132,6 +132,8 @@ DRV_HANDLE DRV_G3_MACRT_Open(
     const DRV_PLC_BOOT_DATA_CALLBACK callback
 )
 {
+    DRV_PLC_BOOT_INFO bootInfo;
+    
     /* Validate the request */
     if (index >= DRV_G3_MACRT_INSTANCES_NUMBER)
     {
@@ -144,14 +146,19 @@ DRV_HANDLE DRV_G3_MACRT_Open(
         return DRV_HANDLE_INVALID;
     }
     
+    /* Launch boot start process */  
+    bootInfo.binSize = gDrvG3MacRtObj.binSize;
+    bootInfo.binStartAddress = gDrvG3MacRtObj.binStartAddress;
+    bootInfo.pendingLength = gDrvG3MacRtObj.binSize;
+    bootInfo.pSrc = gDrvG3MacRtObj.binStartAddress;    
+    bootInfo.secure = gDrvG3MacRtObj.secure;
     if (callback)
     {
-        gDrvG3MacRtObj.bootDataCallback = callback;
-        gDrvG3MacRtObj.contextBoot = index;
+        bootInfo.bootDataCallback = callback;
+        bootInfo.contextBoot = index;
     }
     
-    /* Launch boot start process */  
-    DRV_PLC_BOOT_Start(&gDrvG3MacRtObj);
+    DRV_PLC_BOOT_Start(&bootInfo, gDrvG3MacRtObj.plcHal);
 
     gDrvG3MacRtObj.nClients++;
 
@@ -221,7 +228,8 @@ void DRV_G3_MACRT_ExceptionCallbackRegister(
 
 void DRV_G3_MACRT_SnifferCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
+    const DRV_G3_MACRT_SNIFFER_CALLBACK callback,
+    const uint8_t *pSnifferData, 
     const uintptr_t context 
 )
 {
@@ -229,6 +237,7 @@ void DRV_G3_MACRT_SnifferCallbackRegister(
     {
         gDrvG3MacRtObj.snifferDataCallback = callback;
         gDrvG3MacRtObj.contextSniffer = context;
+        gDrvG3MacRtObj.pDataSniffer = (uint8_t *)pSnifferData;
     }
 }
 
