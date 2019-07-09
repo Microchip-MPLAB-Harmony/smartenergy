@@ -473,6 +473,10 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </PICkit3PlatformTool>
+      <Simulator>
+        <property key="W0030_CORE_UNIMPLEMENTED_MEMORY_ACCESS" value="report"/>
+        <property key="W0111_SIM_UNSUPPORTED_SELECTION" value="report"/>
+      </Simulator>
     </conf>
   </confs>
 </configurationDescriptor>
