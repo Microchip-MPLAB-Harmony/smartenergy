@@ -3,7 +3,7 @@
 ### NEW FEATURES
 - **New part support** - This release introduces initial support for [PL360B](https://www.microchip.com/wwwproducts/en/PL360B) providing functionality for G3/PRIME physical layer.
 
-- **USB Library** - The following table provides the list of PLC Library components and Applications. 
+- **PLC Library** - The following table provides the list of PLC Library components and Applications. 
 
 | Type | Module Name |  Module Caption |
 | --- | --- | --- |
@@ -28,7 +28,7 @@
 
 | Development Kits | Number of applications |
 | --- | --- |
-| [SAM E70 Xplained Evaluation Kit](https://www.microchip.com/developmenttools/ProductDetails/atsame70-xpld) | 15 |
+| [SAM E70 Xplained Evaluation Kit](https://www.microchip.com/developmenttools/ProductDetails/atsame70-xpld) | 18 |
 
 ### KNOWN ISSUES
 
@@ -42,6 +42,11 @@ The current known issues are as follows:
 * [MPLAB XC32 C/C++ Compiler v2.20](https://www.microchip.com/mplab/compilers)
 * MPLAB X IDE plug-ins:
     * MPLAB Harmony Configurator (MHC) v3.3.0.1.
+* Harmony 3 repositories:
+    * CSP v3.3.0
+    * Core v3.3.0
+    * BSP v3.3.0
+    * Dev Packs v3.3.0
 
 For additional information, see the following links and release notes.
 * [Read-me File](./readme.md)
