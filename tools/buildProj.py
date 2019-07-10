@@ -12,7 +12,7 @@ if __name__ == '__main__':
 	##########################################################################
 	# Argument manipulation
 	##########################################################################
-	parser = argparse.ArgumentParser(description='''This script updates bin ATPLC bin file to atpl/bin/folder''')
+	parser = argparse.ArgumentParser(description='''This script updates bin ATPL360B bin file to atpl/bin/folder''')
 	parser.add_argument('--h3path', required=True, help='Harmony 3 absolute path: [c:\\MH3]')
 	parser.add_argument('--profile', required=False, help='profiles: [G3], [PRIME], [ALL]')
 	parser.add_argument('--project', required=False, help='Name of the project')
