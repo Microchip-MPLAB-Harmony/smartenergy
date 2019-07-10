@@ -109,9 +109,9 @@ typedef struct
     
     uint8_t pSerialData[APP_SERIAL_DATA_BUFFER_SIZE];
     
-    DRV_PL360_RECEPTION_OBJ plcRxObj;
+    DRV_PLC_PHY_RECEPTION_OBJ plcRxObj;
     
-    DRV_PL360_PIB_OBJ plcPIB;
+    DRV_PLC_PHY_PIB_OBJ plcPIB;
 
 } APP_DATA;
 

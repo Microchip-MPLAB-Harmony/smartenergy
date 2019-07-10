@@ -101,27 +101,26 @@ extern "C" {
 #define SRV_USI_CDC_CONNECTIONS               0
 #define SRV_USI_TCP_CONNECTIONS               0
 #define SRV_USI_MSG_POOL_SIZE                 5
-/* PL360 Driver Configuration Options */
-#define DRV_PL360_INSTANCES_NUMBER              1
-#define DRV_PL360_INDEX                         0
-#define DRV_PL360_CLIENTS_NUMBER_IDX            1
-#define DRV_PL360_EXT_INT_SRC                   PIOD_IRQn
-#define DRV_PL360_EXT_INT_PIN                   SYS_PORT_PIN_PD28
-#define DRV_PL360_RESET_PIN                     SYS_PORT_PIN_PB2
-#define DRV_PL360_LDO_EN_PIN                    SYS_PORT_PIN_PB3
-#define DRV_PL360_PLC_PROFILE                   4
-#define DRV_PL360_SPI_CLK                       8000000
+/* PLC PHY Driver Configuration Options */
+#define DRV_PLC_SECURE                        false
+#define DRV_PLC_EXT_INT_SRC                   PIOD_IRQn
+#define DRV_PLC_EXT_INT_PIN                   SYS_PORT_PIN_PD28
+#define DRV_PLC_RESET_PIN                     SYS_PORT_PIN_PB2
+#define DRV_PLC_LDO_EN_PIN                    SYS_PORT_PIN_PB3
+#define DRV_PLC_SPI_CLK                       8000000
+#define DRV_PLC_PHY_PROFILE                   4
+#define DRV_PLC_PHY_INSTANCES_NUMBER          1
+#define DRV_PLC_PHY_INDEX                     0
+#define DRV_PLC_PHY_CLIENTS_NUMBER_IDX        1
 
-#define DRV_PL360_SECURE                        false
-
-/* PL360 Driver Identification */
-#define DRV_PL360_NUM_CARRIERS                  97
-#define DRV_PL360_HOST_PRODUCT                  0x3600
-#define DRV_PL360_HOST_VERSION                  0x36000300
-#define DRV_PL360_HOST_PHY                      0x36000003
-#define DRV_PL360_HOST_DESC                     "ATSAME70Q21B"
-#define DRV_PL360_HOST_MODEL                    3
-#define DRV_PL360_HOST_BAND                     DRV_PL360_PLC_PROFILE
+/* PLC Driver Identification */
+#define DRV_PLC_PHY_NUM_CARRIERS              97
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3600
+#define DRV_PLC_PHY_HOST_VERSION              0x36000300
+#define DRV_PLC_PHY_HOST_PHY                  0x36000003
+#define DRV_PLC_PHY_HOST_DESC                 "ATSAME70Q21B"
+#define DRV_PLC_PHY_HOST_MODEL                3
+#define DRV_PLC_PHY_HOST_BAND                 DRV_PLC_PHY_PROFILE
 /* USI Service Instance 0 Configuration Options */
 #define SRV_USI_INDEX_0                       0
 #define SRV_USI0_RD_BUF_SIZE                  1024

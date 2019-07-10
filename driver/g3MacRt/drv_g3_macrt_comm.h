@@ -180,7 +180,7 @@ typedef enum {
     /* Number of times when the device received new data to transmit (send_data) 
      * and the transmission parameters are not valid */
 	PHY_PARAM_TX_BAD_FORMAT,
-    /* Number of times when the PL360 device received new data to transmit 
+    /* Number of times when the PLC transceiver received new data to transmit 
      * (send_data) and it cannot transmit data in the specified time provided 
      * by the transmission parameters */
 	PHY_PARAM_TX_TIMEOUT,
@@ -751,7 +751,7 @@ typedef struct {
     uint8_t commandVersion;    
     /* SNIFFER_VERSION */
 	uint8_t snifferVersion;     
-    /* SNIFFER_PL360_G3 */
+    /* SNIFFER_PLC_G3 */
 	uint8_t deviceVersion;  
     /* ModType (high) + ModScheme (low) */
 	uint8_t modTypeScheme;      

@@ -49,14 +49,14 @@
 #include "stddef.h"
 #include "string.h"
 #include "srv_psniffer.h"
-#include "driver/pl360/drv_pl360_comm.h"
+#include "driver/plc/phy/drv_plc_phy_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-static DRV_PL360_TRANSMISSION_OBJ gLastTxObj;
+static DRV_PLC_PHY_TRANSMISSION_OBJ gLastTxObj;
 static uint8_t gLastTxData[512];
 static uint16_t gLastRxPayloadSymbols;
 static uint16_t gLastTxPayloadSymbols;
@@ -72,11 +72,11 @@ SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData)
     return (SRV_PSNIFFER_COMMAND)*pData;
 }
 
-void SRV_PSNIFFER_SetTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst)
+void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst)
 {
     /* Use internal buffer to report TX messages as a received message when TX_CFM arrives */
     gLastTxObj.pTransmitData = gLastTxData;
-    memcpy((uint8_t *)&gLastTxObj, (uint8_t *)pDataDst, sizeof(DRV_PL360_TRANSMISSION_OBJ));
+    memcpy((uint8_t *)&gLastTxObj, (uint8_t *)pDataDst, sizeof(DRV_PLC_PHY_TRANSMISSION_OBJ));
     memcpy(gLastTxData, pDataDst->pTransmitData, pDataDst->dataLength);
 }
 
@@ -90,7 +90,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym)
     gLastTxPayloadSymbols = payloadSym;
 }
 
-size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc)
+size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc)
 {
     uint8_t* pData;
     uint32_t timeIni, timeEnd;
@@ -175,12 +175,12 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* 
     return (pData - pDataDst);    
 }
 
-size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataCfm)
+size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pDataCfm)
 {
     uint8_t* pData;
     uint32_t timeIni, timeEnd;
     
-    if (pDataCfm->result != DRV_PL360_TX_RESULT_SUCCESS)
+    if (pDataCfm->result != DRV_PLC_PHY_TX_RESULT_SUCCESS)
     {
         /* Error in transmission: No report */
         return 0;

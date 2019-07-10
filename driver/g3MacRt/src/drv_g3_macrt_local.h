@@ -48,10 +48,10 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "system/system.h"
-#include "driver/g3MacRt/drv_g3_macrt.h"
-#include "driver/g3MacRt/drv_g3_macrt_definitions.h"
-#include "driver/g3MacRt/drv_g3_macrt_comm.h"
-#include "driver/g3MacRt/drv_plc_boot.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt_definitions.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt_comm.h"
+#include "driver/plc/common/drv_plc_boot.h"
 
 // *****************************************************************************
 // *****************************************************************************

@@ -338,7 +338,7 @@
         </String>
         <String dnOrder="66" id="PIN_26_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_LDO"/>
+            <User dnOrder="0" value="PLC_LDO"/>
           </Values>
         </String>
         <String dnOrder="67" id="PIN_26_FUNCTION_TYPE">
@@ -358,7 +358,7 @@
         </String>
         <String dnOrder="70" id="PIN_31_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_RST"/>
+            <User dnOrder="0" value="PLC_RST"/>
           </Values>
         </String>
         <String dnOrder="71" id="PIN_31_FUNCTION_TYPE">
@@ -423,7 +423,7 @@
         </String>
         <String dnOrder="83" id="PIN_71_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_INT"/>
+            <User dnOrder="0" value="PLC_INT"/>
           </Values>
         </String>
         <String dnOrder="84" id="PIN_71_FUNCTION_TYPE">

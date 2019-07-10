@@ -48,11 +48,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include "configuration.h"
-#include "driver/g3MacRt/drv_plc_hal.h"
-#include "driver/g3MacRt/drv_plc_boot.h"
-#include "driver/g3MacRt/drv_g3_macrt.h"
-#include "driver/g3MacRt/drv_g3_macrt_local.h"
-#include "driver/g3MacRt/drv_g3_macrt_local_comm.h"
+#include "driver/plc/common/drv_plc_hal.h"
+#include "driver/plc/common/drv_plc_boot.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt.h"
+#include "driver/plc/g3MacRt/src/drv_g3_macrt_local.h"
+#include "driver/plc/g3MacRt/src/drv_g3_macrt_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************

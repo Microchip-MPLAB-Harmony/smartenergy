@@ -55,7 +55,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "system/system.h"
-#include "driver/pl360/drv_pl360_comm.h"
+#include "driver/plc/phy/drv_plc_phy_comm.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -137,12 +137,12 @@ typedef enum
 // *****************************************************************************
 
 SRV_PSERIAL_COMMAND SRV_PSERIAL_GetCommand(uint8_t* pData);       
-void SRV_PSERIAL_ParseGetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
-size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc);
-void SRV_PSERIAL_ParseSetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
-size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc);
-void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc);
-size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc);
-size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataSrc);
+void SRV_PSERIAL_ParseGetPIB(DRV_PLC_PHY_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
+size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PLC_PHY_PIB_OBJ* pDataSrc);
+void SRV_PSERIAL_ParseSetPIB(DRV_PLC_PHY_PIB_OBJ* pDataDst, uint8_t* pDataSrc);
+size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PLC_PHY_PIB_OBJ* pDataSrc);
+void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc);
+size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc);
+size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pDataSrc);
 
 #endif //SRV_PSERIAL_H

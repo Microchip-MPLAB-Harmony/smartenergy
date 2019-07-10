@@ -54,12 +54,12 @@
         </Integer>
         <Boolean dnOrder="9" id="DMA_CH_NEEDED_FOR_SPI0_Receive">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="true"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="true"/>
           </Values>
         </Boolean>
         <Boolean dnOrder="10" id="DMA_CH_NEEDED_FOR_SPI0_Transmit">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="true"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="true"/>
           </Values>
         </Boolean>
         <Boolean dnOrder="11" id="DMA_CH_NEEDED_FOR_USART1_Transmit">
@@ -244,7 +244,7 @@
         </String>
         <String dnOrder="47" id="PIN_26_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_LDO"/>
+            <User dnOrder="0" value="PLC_LDO"/>
           </Values>
         </String>
         <String dnOrder="48" id="PIN_26_FUNCTION_TYPE">
@@ -264,7 +264,7 @@
         </String>
         <String dnOrder="51" id="PIN_31_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_RST"/>
+            <User dnOrder="0" value="PLC_RST"/>
           </Values>
         </String>
         <String dnOrder="52" id="PIN_31_FUNCTION_TYPE">
@@ -349,7 +349,7 @@
         </String>
         <String dnOrder="68" id="PIN_71_FUNCTION_NAME">
           <Values dnOrder="0">
-            <User dnOrder="0" value="PL360_INT"/>
+            <User dnOrder="0" value="PLC_INT"/>
           </Values>
         </String>
         <String dnOrder="69" id="PIN_71_FUNCTION_TYPE">
@@ -2525,64 +2525,26 @@
       </Symbols>
     </UniqueComponent>
     <UniqueComponent dnOrder="3" id="dfp"/>
-    <UniqueComponent dnOrder="4" id="drvExtPhyPl360">
+    <UniqueComponent dnOrder="4" id="drvPlcPhy">
       <Symbols dnOrder="0">
-        <Boolean dnOrder="0" id="DRV_PL360_EXTERNAL_ADDRESSING">
+        <String dnOrder="0" id="DRV_PLC_PLIB">
           <Values dnOrder="0">
-            <User dnOrder="0" value="false"/>
-          </Values>
-        </Boolean>
-        <String dnOrder="1" id="DRV_PL360_PLIB">
-          <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="SPI0"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="SPI0"/>
           </Values>
         </String>
-        <Integer dnOrder="2" id="DRV_PL360_RX_DMA_CHANNEL">
+        <Integer dnOrder="1" id="DRV_PLC_RX_DMA_CHANNEL">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="0"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="0"/>
           </Values>
         </Integer>
-        <Comment dnOrder="3" id="DRV_PL360_SECURE_COMMENT">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="visible">
-              <Value dnOrder="0">false</Value>
-            </Boolean>
-          </Attributes>
-        </Comment>
-        <Boolean dnOrder="4" id="DRV_PL360_SECURE_MODE">
+        <Integer dnOrder="2" id="DRV_PLC_TX_DMA_CHANNEL">
           <Values dnOrder="0">
-            <User dnOrder="0" value="false"/>
-          </Values>
-        </Boolean>
-        <File dnOrder="5" id="DRV_PL360_SECURE_SCRIPT">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">false</Value>
-            </Boolean>
-          </Attributes>
-        </File>
-        <Integer dnOrder="6" id="DRV_PL360_TX_DMA_CHANNEL">
-          <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="1"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="1"/>
           </Values>
         </Integer>
-        <File dnOrder="7" id="PL360_ASSEMBLY_BIN">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">true</Value>
-            </Boolean>
-          </Attributes>
-        </File>
-        <File dnOrder="8" id="PL360_SOURCE_BIN_G3_CENA">
-          <Attributes dnOrder="0">
-            <Boolean dnOrder="0" id="enabled">
-              <Value dnOrder="0">true</Value>
-            </Boolean>
-          </Attributes>
-        </File>
       </Symbols>
       <Attachments dnOrder="1">
-        <DirectDependency dnOrder="0" id="drv_pl360_SPI_dependency">
+        <DirectDependency dnOrder="0" id="drv_plc_phy_SPI_dependency">
           <Attributes dnOrder="0">
             <String dnOrder="0" id="targetComponentID">
               <Value dnOrder="0">spi0</Value>
@@ -2826,7 +2788,7 @@
       <Symbols dnOrder="0">
         <Integer dnOrder="0" id="SPI_BAUD_RATE">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="8000000"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="8000000"/>
             <User dnOrder="1" value="8000000"/>
           </Values>
         </Integer>
@@ -2842,7 +2804,7 @@
         </Integer>
         <Boolean dnOrder="3" id="SPI_INTERRUPT_MODE">
           <Values dnOrder="0">
-            <Dynamic dnOrder="0" id="drvExtPhyPl360" value="false"/>
+            <Dynamic dnOrder="0" id="drvPlcPhy" value="false"/>
           </Values>
         </Boolean>
         <KeyValueSet dnOrder="4" id="SPI_MR_PCS">
@@ -2855,10 +2817,10 @@
         <DirectCapability dnOrder="0" id="SPI0_SPI">
           <Attributes dnOrder="0">
             <String dnOrder="0" id="targetComponentID">
-              <Value dnOrder="0">drvExtPhyPl360</Value>
+              <Value dnOrder="0">drvPlcPhy</Value>
             </String>
             <String dnOrder="1" id="targetAttachmentID">
-              <Value dnOrder="0">drv_pl360_SPI_dependency</Value>
+              <Value dnOrder="0">drv_plc_phy_SPI_dependency</Value>
             </String>
           </Attributes>
         </DirectCapability>
@@ -3185,16 +3147,17 @@
     </UniqueComponent>
   </Components>
   <UserData>
-    <ComponentGraph dnOrder="0" id="__ROOTVIEW">
+    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="0"/>
+    <ComponentGraph dnOrder="1" id="__ROOTVIEW">
       <ElementPositions dnOrder="0">
         <ElementPosition dnOrder="0" id="BSP_SAM_E70_Xplained" x="30" y="60"/>
         <ElementPosition dnOrder="1" id="HarmonyCore" x="480" y="21"/>
         <ElementPosition dnOrder="2" id="cmsis" x="340" y="20"/>
         <ElementPosition dnOrder="3" id="core" x="240" y="20"/>
         <ElementPosition dnOrder="4" id="dfp" x="20" y="20"/>
-        <ElementPosition dnOrder="5" id="drvExtPhyPl360" x="256" y="418"/>
+        <ElementPosition dnOrder="5" id="drvPlcPhy" x="254" y="423"/>
         <ElementPosition dnOrder="6" id="efc" x="30" y="100"/>
-        <ElementPosition dnOrder="7" id="spi0" x="90" y="442"/>
+        <ElementPosition dnOrder="7" id="spi0" x="82" y="446"/>
         <ElementPosition dnOrder="8" id="srv_pcrc" x="660" y="20"/>
         <ElementPosition dnOrder="9" id="srv_pserial" x="279" y="67"/>
         <ElementPosition dnOrder="10" id="srv_usi" x="252" y="189"/>
@@ -3203,6 +3166,5 @@
         <ElementPosition dnOrder="13" id="usart1" x="83" y="275"/>
       </ElementPositions>
     </ComponentGraph>
-    <GraphSettings canvasHeight="400" canvasWidth="400" dnOrder="1"/>
   </UserData>
 </Configuration>

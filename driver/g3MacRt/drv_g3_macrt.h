@@ -12,7 +12,7 @@
 
   Description:
     The PLC MAC RT Driver Library provides a interface to access the 
-    PLC device.
+    PLC transceiver.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -55,7 +55,7 @@
 #include "system/system.h"
 #include "drv_g3_macrt_comm.h"
 #include "drv_g3_macrt_definitions.h"
-#include "driver/g3MacRt/drv_plc_boot.h"
+#include "driver/plc/common/drv_plc_boot.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -325,11 +325,11 @@ typedef void ( *DRV_G3_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *
                 break;
 
             case DRV_G3_MACRT_EXCEPTION_DEBUG:
-                // PLC device has been reseted by Debugging tool
+                // PLC transceiver has been reseted by Debugging tool
                 break;
 
             case DRV_G3_MACRT_EXCEPTION_RESET:
-                // PLC device has been reseted
+                // PLC transceiver has been reseted
                 break;
 
             default:
@@ -685,11 +685,11 @@ void DRV_G3_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t length)
     void DRV_G3_MACRT_PIBGet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
 
   Summary:
-    Allows a client to get information from PLC device about MAC RT and PHY
+    Allows a client to get information from PLC transceiver about MAC RT and PHY
     information base (PIB).
 
   Description:
-    This routine get MAC RT and PHY data information from the PLC device.
+    This routine get MAC RT and PHY data information from the PLC transceiver.
 
   Precondition:
     DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
@@ -738,11 +738,11 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
     void DRV_G3_MACRT_PIBSet( const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibObj )
 
   Summary:
-    Allows a client to set information to PLC device about MAC RT and PHY 
+    Allows a client to set information to PLC transceiver about MAC RT and PHY 
     information base (PIB).
 
   Description:
-    This routine set MAC RT and PHY data information to the PLC device.
+    This routine set MAC RT and PHY data information to the PLC transceiver.
 
   Precondition:
     DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
@@ -913,10 +913,10 @@ void DRV_G3_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
     uint32_t DRV_G3_MACRT_GetTimerReference( const DRV_HANDLE handle )
 
   Summary:
-    Get the internal timer reference from PLC device in microseconds
+    Get the internal timer reference from PLC transceiver in microseconds
 
   Description:
-    PLC device has an internal 32 bits counter which is used as internal
+    PLC transceiver has an internal 32 bits counter which is used as internal
     time reference for all time calculations in PHY layer. This counter is 
     internally configured to be increased each microsecond. This function let 
     use this counter as accurate time reference to upper layers.
@@ -930,7 +930,7 @@ void DRV_G3_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
                 open routine
 
   Returns:
-    Internal timer reference from PLC device in microseconds.
+    Internal timer reference from PLC transceiver in microseconds.
 
   Example:
     <code>
@@ -1257,7 +1257,7 @@ void DRV_G3_MACRT_SnifferCallbackRegister(
 
   Summary:
     Allows a client to identify an exception event handling function for the driver
-    to call back when some error occurs through PLC device communication.
+    to call back when some error occurs through PLC transceiver communication.
 
   Description:
     This function allows a client to register a PLC exception event handling 

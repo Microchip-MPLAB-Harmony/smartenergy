@@ -466,7 +466,7 @@ void APP_PLC_Tasks ( void )
     {
         case APP_PLC_STATE_INIT:
         {
-            /* Open PL360 driver */
+            /* Open PLC driver */
             appPlc.drvG3MacRtHandle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL);
             
             if (appPlc.drvG3MacRtHandle != DRV_HANDLE_INVALID)
@@ -482,7 +482,7 @@ void APP_PLC_Tasks ( void )
             
         case APP_PLC_STATE_OPEN:
         {
-            /* Check PL360 device */
+            /* Check PLC transceiver */
             if (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_0) == SYS_STATUS_READY)
             { 
                 MAC_RT_PIB_OBJ pibObj;

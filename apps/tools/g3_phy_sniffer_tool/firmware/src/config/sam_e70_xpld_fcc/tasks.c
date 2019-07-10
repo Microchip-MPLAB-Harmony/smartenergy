@@ -75,8 +75,8 @@ void SYS_Tasks ( void )
 
     /* Maintain Device Drivers */
     
-    /* Maintain PL360 Driver */
-    DRV_PL360_Tasks(sysObj.drvPL360);
+    /* Maintain PLC PHY Driver */
+    DRV_PLC_PHY_Tasks(sysObj.drvPlcPhy);
 
 
     /* Maintain Middleware & Other Libraries */

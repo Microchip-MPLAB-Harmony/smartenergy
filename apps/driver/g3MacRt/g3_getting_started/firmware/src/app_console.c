@@ -249,7 +249,7 @@ void APP_CONSOLE_Tasks ( void )
             
         case APP_CONSOLE_STATE_WAIT_PLC:
         {
-            /* Wait for PL360 device initialization */
+            /* Wait for PLC transceiver initialization */
             if (appPlc.state == APP_PLC_STATE_WAITING)
             {     
                 /* Waiting Console type */
@@ -267,7 +267,7 @@ void APP_CONSOLE_Tasks ( void )
             
         case APP_CONSOLE_STATE_PLC_SEND:
         {
-            /* Wait for PL360 device initialization */
+            /* Wait for PLC transceiver initialization */
             if (appPlc.state == APP_PLC_STATE_WAITING)
             {     
                 /* Waiting Console type */

@@ -102,82 +102,82 @@ static void APP_PLC360SetConfiguration(void)
 {    
     /* Disable AUTO mode and set VLO behavior by default in order to 
      * maximize signal level in any case */
-    appData.plcPIB.id = PL360_ID_CFG_AUTODETECT_IMPEDANCE;
+    appData.plcPIB.id = PLC_ID_CFG_AUTODETECT_IMPEDANCE;
     appData.plcPIB.length = 1;
     *appData.plcPIB.pData = 0;
-    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
     
-    appData.plcPIB.id = PL360_ID_CFG_IMPEDANCE;
+    appData.plcPIB.id = PLC_ID_CFG_IMPEDANCE;
     appData.plcPIB.length = 1;
     *appData.plcPIB.pData = 2;
-    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
     
     if (appData.plcConfigureCoupling)
     {
-        appData.plcPIB.id = PL360_ID_NUM_TX_LEVELS;
+        appData.plcPIB.id = PLC_ID_NUM_TX_LEVELS;
         appData.plcPIB.length = 1;
         *appData.plcPIB.pData = appPLCCoupConfig.numTxLevels;
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
     
-        appData.plcPIB.id = PL360_ID_MAX_RMS_TABLE_HI;
+        appData.plcPIB.id = PLC_ID_MAX_RMS_TABLE_HI;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.maxRMSHigh);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.maxRMSHigh, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_MAX_RMS_TABLE_VLO;
+        appData.plcPIB.id = PLC_ID_MAX_RMS_TABLE_VLO;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.maxRMSVeryLow);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.maxRMSVeryLow, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_THRESHOLDS_TABLE_HI;
+        appData.plcPIB.id = PLC_ID_THRESHOLDS_TABLE_HI;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.thresholdHigh);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.thresholdHigh, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_THRESHOLDS_TABLE_VLO;
+        appData.plcPIB.id = PLC_ID_THRESHOLDS_TABLE_VLO;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.thresholdVeryLow);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.thresholdVeryLow, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_GAIN_TABLE_HI;
+        appData.plcPIB.id = PLC_ID_GAIN_TABLE_HI;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.gainHigh);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.gainHigh, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_GAIN_TABLE_VLO;
+        appData.plcPIB.id = PLC_ID_GAIN_TABLE_VLO;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.gainVeryLow);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.gainVeryLow, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_DACC_TABLE_CFG;
+        appData.plcPIB.id = PLC_ID_DACC_TABLE_CFG;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.daccConfig);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.daccConfig, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_PREDIST_COEF_TABLE_HI;
+        appData.plcPIB.id = PLC_ID_PREDIST_COEF_TABLE_HI;
         appData.plcPIB.length = sizeof(appPLCCoupConfig.predistorsionHigh);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.predistorsionHigh, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
-        appData.plcPIB.id = PL360_ID_PREDIST_COEF_TABLE_VLO;
+        appData.plcPIB.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
         /* Not use size of array. It depends on PHY band in use */
         appData.plcPIB.length = sizeof(appPLCCoupConfig.predistorsionVeryLow);
         memcpy(appData.plcPIB.pData, (uint8_t *)appPLCCoupConfig.predistorsionVeryLow, 
                 appData.plcPIB.length);
-        DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         
     }
 }
 
-static void APP_PLCExceptionCb(DRV_PL360_EXCEPTION exceptionObj, 
+static void APP_PLCExceptionCb(DRV_PLC_PHY_EXCEPTION exceptionObj, 
         uintptr_t context)
 {
     /* Avoid warning */
@@ -185,26 +185,26 @@ static void APP_PLCExceptionCb(DRV_PL360_EXCEPTION exceptionObj,
     
     switch (exceptionObj) 
     {
-        case DRV_PL360_EXCEPTION_UNEXPECTED_KEY:
-            appData.pl360_err_unexpected++;
+        case DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY:
+            appData.plc_phy_err_unexpected++;
             break;
 
-        case DRV_PL360_EXCEPTION_CRITICAL_ERROR:
-            appData.pl360_err_critical++;
+        case DRV_PLC_PHY_EXCEPTION_CRITICAL_ERROR:
+            appData.plc_phy_err_critical++;
             break;
 
-        case DRV_PL360_EXCEPTION_RESET:
-            appData.pl360_err_reset++;
+        case DRV_PLC_PHY_EXCEPTION_RESET:
+            appData.plc_phy_err_reset++;
             break;
 
         default:
-            appData.pl360_err_unknow++;
+            appData.plc_phy_err_unknow++;
 	}
 
-	appData.pl360_exception = true;
+	appData.plc_phy_exception = true;
 }
 
-static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
+static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
 {   
     /* Avoid warning */
     (void)context;
@@ -227,7 +227,7 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
     }
 }
 
-static void APP_PLCDataCfmCb(DRV_PL360_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)
+static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)
 {   
     size_t length;
     
@@ -267,7 +267,7 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
             /* Extract PIB information */
             SRV_PSERIAL_ParseGetPIB(&appData.plcPIB, pData);
 
-            if (DRV_PL360_PIBGet(appData.drvPl360Handle, &appData.plcPIB))
+            if (DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB))
             {
                 size_t len;
                 
@@ -285,7 +285,7 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
             /* Extract PIB information */
             SRV_PSERIAL_ParseSetPIB(&appData.plcPIB, pData);
 
-            if (DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB))
+            if (DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB))
             {
                 size_t len;
                 
@@ -304,7 +304,7 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
             SRV_PSERIAL_ParseTxMessage(&appData.plcTxObj, pData);
             
             /* Send Message through PLC */
-            DRV_PL360_Send(appData.drvPl360Handle, &appData.plcTxObj);
+            DRV_PLC_PHY_Send(appData.drvPl360Handle, &appData.plcTxObj);
         }
         break;
 
@@ -337,11 +337,11 @@ void APP_Initialize(void)
     appData.tmr1Handle = SYS_TIME_HANDLE_INVALID;
     appData.tmr2Handle = SYS_TIME_HANDLE_INVALID;
     
-    /* Reset PL360 exceptions statistics */
-    appData.pl360_err_unexpected = 0;
-    appData.pl360_err_critical = 0;
-    appData.pl360_err_reset = 0;
-    appData.pl360_err_unknow = 0;
+    /* Reset PLC exceptions statistics */
+    appData.plc_phy_err_unexpected = 0;
+    appData.plc_phy_err_critical = 0;
+    appData.plc_phy_err_reset = 0;
+    appData.plc_phy_err_unknow = 0;
     
     appData.state = APP_STATE_INIT;
     
@@ -372,8 +372,8 @@ void APP_Tasks(void)
         /* Application's initial state. */
         case APP_STATE_INIT:
         {
-            /* Open PL360 driver : Start uploading process */
-            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX, NULL);
+            /* Open PLC driver : Start uploading process */
+            appData.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);
 
             if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
             {
@@ -388,19 +388,19 @@ void APP_Tasks(void)
             break;
         }
             
-        /* Waiting to PL360 device be opened and register callback functions */
+        /* Waiting to PLC transceiver be opened and register callback functions */
         case APP_STATE_REGISTER:
         {
-            /* Check PL360 device */
-            if (DRV_PL360_Status(DRV_PL360_INDEX) == SYS_STATUS_READY)
+            /* Check PLC transceiver */
+            if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)
             {
-                /* Register PL360 callback */
-                DRV_PL360_ExceptionCallbackRegister(appData.drvPl360Handle, 
-                        APP_PLCExceptionCb, DRV_PL360_INDEX);
-                DRV_PL360_DataIndCallbackRegister(appData.drvPl360Handle, 
-                        APP_PLCDataIndCb, DRV_PL360_INDEX);
-                DRV_PL360_DataCfmCallbackRegister(appData.drvPl360Handle, 
-                        APP_PLCDataCfmCb, DRV_PL360_INDEX);
+                /* Register PLC callback */
+                DRV_PLC_PHY_ExceptionCallbackRegister(appData.drvPl360Handle, 
+                        APP_PLCExceptionCb, DRV_PLC_PHY_INDEX);
+                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPl360Handle, 
+                        APP_PLCDataIndCb, DRV_PLC_PHY_INDEX);
+                DRV_PLC_PHY_DataCfmCallbackRegister(appData.drvPl360Handle, 
+                        APP_PLCDataCfmCb, DRV_PLC_PHY_INDEX);
                 
                 /* Open USI Service */
                 appData.srvUSIHandle = SRV_USI_Open(SRV_USI_INDEX_0);
@@ -420,7 +420,7 @@ void APP_Tasks(void)
                     LED_On();
 
                     /* Set Application to next state */
-                    appData.state = APP_STATE_CONFIG_PL360;
+                    appData.state = APP_STATE_CONFIG_PLC;
                 }
                 else
                 {
@@ -431,9 +431,9 @@ void APP_Tasks(void)
             break;
         }
 
-        case APP_STATE_CONFIG_PL360:
+        case APP_STATE_CONFIG_PLC:
         {
-            /* Set configuration fro PL360 */
+            /* Set configuration fro PLC */
             APP_PLC360SetConfiguration();
             /* Set Application to next state */
             appData.state = APP_STATE_READY;

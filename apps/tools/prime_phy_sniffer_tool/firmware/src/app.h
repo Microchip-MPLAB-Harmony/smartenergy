@@ -71,7 +71,7 @@ typedef enum
     APP_STATE_IDLE=0,
     APP_STATE_INIT,
     APP_STATE_REGISTER,
-    APP_STATE_CONFIG_PL360,
+    APP_STATE_CONFIG_PLC,
     APP_STATE_READY,
     APP_STATE_ERROR
 
@@ -110,9 +110,9 @@ typedef struct
     
     uint8_t pSerialData[APP_SERIAL_DATA_BUFFER_SIZE];
     
-    DRV_PL360_RECEPTION_OBJ plcRxObj;
+    DRV_PLC_PHY_RECEPTION_OBJ plcRxObj;
     
-    DRV_PL360_PIB_OBJ plcPIB;
+    DRV_PLC_PHY_PIB_OBJ plcPIB;
     
     uint8_t plcChannel;
 

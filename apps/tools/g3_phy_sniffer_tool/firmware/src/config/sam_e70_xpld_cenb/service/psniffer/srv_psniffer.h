@@ -54,7 +54,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "system/system.h"
-#include "driver/pl360/drv_pl360_comm.h"
+#include "driver/plc/phy/drv_plc_phy_comm.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -108,9 +108,9 @@ typedef enum
 // *****************************************************************************
 
 SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
-size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc);
-size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataCfm);
-void SRV_PSNIFFER_SetTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst);
+size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc);
+size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pDataCfm);
+void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst);
 void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_ConvertToneMask(uint8_t* pToneMaskDst, uint8_t* pToneMaskSrc);

@@ -71,7 +71,7 @@ typedef enum
     APP_STATE_IDLE=0,
     APP_STATE_INIT,
     APP_STATE_REGISTER,
-    APP_STATE_CONFIG_PL360,
+    APP_STATE_CONFIG_PLC,
     APP_STATE_SEND_PLC_MSG,
     APP_STATE_SEND_USI_MSG,
     APP_STATE_READY,
@@ -106,15 +106,15 @@ typedef struct
     
     SRV_USI_HANDLE srvUSIHandle;
     
-    bool pl360_exception;
+    bool plc_phy_exception;
     
-    uint32_t pl360_err_unexpected;
+    uint32_t plc_phy_err_unexpected;
     
-    uint32_t pl360_err_critical;
+    uint32_t plc_phy_err_critical;
     
-    uint32_t pl360_err_reset;
+    uint32_t plc_phy_err_reset;
     
-    uint32_t pl360_err_unknow;
+    uint32_t plc_phy_err_unknow;
     
     uint8_t pPLCDataTx[APP_PLC_DATA_BUFFER_SIZE];
     
@@ -124,13 +124,13 @@ typedef struct
     
     uint8_t pSerialData[APP_SERIAL_DATA_BUFFER_SIZE];
     
-    DRV_PL360_TRANSMISSION_OBJ plcTxObj;
+    DRV_PLC_PHY_TRANSMISSION_OBJ plcTxObj;
     
-    DRV_PL360_TRANSMISSION_CFM_OBJ plcTxCfmObj;
+    DRV_PLC_PHY_TRANSMISSION_CFM_OBJ plcTxCfmObj;
     
-    DRV_PL360_RECEPTION_OBJ plcRxObj;
+    DRV_PLC_PHY_RECEPTION_OBJ plcRxObj;
     
-    DRV_PL360_PIB_OBJ plcPIB;
+    DRV_PLC_PHY_PIB_OBJ plcPIB;
     
     uint8_t plcChannel;
 

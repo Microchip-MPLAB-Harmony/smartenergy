@@ -1,7 +1,7 @@
 # Microchip MPLAB Harmony 3 Release Notes
 ## Smart Energy - PLC Release v3.0.0
 ### NEW FEATURES
-- **New part support** - This release introduces initial support for [PL360B](https://www.microchip.com/wwwproducts/en/PL360B) providing functionality for G3/PRIME physical layer.
+- **New part support** - This release introduces initial support for [PLCB](https://www.microchip.com/wwwproducts/en/PLCB) providing functionality for G3/PRIME physical layer.
 
 - **USB Library** - The following table provides the list of PLC Library components and Applications. 
 

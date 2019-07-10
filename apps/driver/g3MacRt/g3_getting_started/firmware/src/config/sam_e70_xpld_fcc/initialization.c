@@ -68,7 +68,7 @@
 // *****************************************************************************
 // <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 
-/* HAL Interface Initialization for PLC device */
+/* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
     /* PLC SPI PLIB */
@@ -99,7 +99,7 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .extIntPin = DRV_PLC_EXT_INT_PIN,
 };
 
-/* HAL Interface Initialization for PLC device */
+/* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
     /* PLC PLIB */
@@ -111,7 +111,7 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
     /* PLC HAL setup */
     .setup = (DRV_PLC_HAL_SETUP)DRV_PLC_HAL_Setup,
 
-    /* PLC device reset */
+    /* PLC transceiver reset */
     .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
     /* PLC Carrier Detect Status */

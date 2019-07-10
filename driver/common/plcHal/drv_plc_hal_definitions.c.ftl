@@ -1,22 +1,22 @@
 // <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 
-/* HAL Interface Initialization for PLC device */
+/* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
     /* PLC SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_G3_MACRT_PLIB}_TransferSetup,
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_PLC_PLIB}_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_${DRV_G3_MACRT_TX_DMA_CHANNEL?string},
+    .dmaChannelTx = SYS_DMA_CHANNEL_${DRV_PLC_TX_DMA_CHANNEL?string},
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_${DRV_G3_MACRT_RX_DMA_CHANNEL?string},
+    .dmaChannelRx  = SYS_DMA_CHANNEL_${DRV_PLC_RX_DMA_CHANNEL?string},
 
     /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(${DRV_G3_MACRT_PLIB?string}_REGS->SPI_TDR),
+    .spiAddressTx =  (void *)&(${DRV_PLC_PLIB?string}_REGS->SPI_TDR),
 
     /* SPI Receive Register */
-    .spiAddressRx  = (void *)&(${DRV_G3_MACRT_PLIB?string}_REGS->SPI_RDR),
+    .spiAddressRx  = (void *)&(${DRV_PLC_PLIB?string}_REGS->SPI_RDR),
     
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
@@ -31,7 +31,7 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .extIntPin = DRV_PLC_EXT_INT_PIN,
 };
 
-/* HAL Interface Initialization for PLC device */
+/* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
     /* PLC PLIB */
@@ -43,7 +43,7 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
     /* PLC HAL setup */
     .setup = (DRV_PLC_HAL_SETUP)DRV_PLC_HAL_Setup,
 
-    /* PLC device reset */
+    /* PLC transceiver reset */
     .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
     /* PLC Carrier Detect Status */

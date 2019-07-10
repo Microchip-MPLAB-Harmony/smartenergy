@@ -2,12 +2,12 @@
 def loadModule():
 	print("Load Module: Harmony Smart Energy PLC")
 	
-	## External PHY PL360 Driver
-	drvExtPhyPl360Component = Module.CreateComponent("drvExtPhyPl360", "PHY_PL360", "/Harmony/Drivers/PLC", "driver/pl360/config/drv_pl360.py")
-	drvExtPhyPl360Component.addCapability("libdrvExtPhyPL360", "DRV_PHY_PLC")	
-	drvExtPhyPl360Component.addDependency("drv_pl360_SPI_dependency", "SPI", False, True)
-	drvExtPhyPl360Component.addDependency("drv_pl360_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	drvExtPhyPl360Component.setDisplayType("PLC PHY Driver")
+	## PLC PHY Driver (G3, PRIME)
+	drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC_PHY", "/Harmony/Drivers/PLC", "driver/plcPhy/config/drv_plc_phy.py")
+	drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY")	
+	drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
+	drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+	drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
 	
 	## G3 MAC RT Driver
 	drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3_MAC_RT", "/Harmony/Drivers/PLC", "driver/g3MacRt/config/drv_g3_macrt.py")

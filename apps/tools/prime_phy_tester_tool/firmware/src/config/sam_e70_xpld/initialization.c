@@ -66,19 +66,19 @@
 // Section: Driver Initialization Data
 // *****************************************************************************
 // *****************************************************************************
-// <editor-fold defaultstate="collapsed" desc="DRV_PL360 Initialization Data">
+// <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 
-/* HAL Interface Initialization for PL360 Driver */
-DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
+/* HAL Interface Initialization for PLC transceiver */
+DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    /* PL360 SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PL360_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
+    /* PLC SPI PLIB */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_1,
+    .dmaChannelTx = SYS_DMA_CHANNEL_8,
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_7,
 
     /* SPI Transmit Register */
     .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
@@ -87,73 +87,76 @@ DRV_PL360_PLIB_INTERFACE drvPL360Plib = {
     .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
     
     /* SPI clock frequency */
-    .spiClockFrequency = DRV_PL360_SPI_CLK,
+    .spiClockFrequency = DRV_PLC_SPI_CLK,
     
-    /* PL360 LDO Enable Pin */
-    .ldoPin = DRV_PL360_LDO_EN_PIN, 
+    /* PLC LDO Enable Pin */
+    .ldoPin = DRV_PLC_LDO_EN_PIN, 
     
-    /* PL360 Reset Pin */
-    .resetPin = DRV_PL360_RESET_PIN,
+    /* PLC Reset Pin */
+    .resetPin = DRV_PLC_RESET_PIN,
        
-    /* PL360 External Interrupt Pin */
-    .extIntPin = DRV_PL360_EXT_INT_PIN,
+    /* PLC External Interrupt Pin */
+    .extIntPin = DRV_PLC_EXT_INT_PIN,
 };
 
-/* HAL Interface Initialization for PL360 Driver */
-DRV_PL360_HAL_INTERFACE drvPL360HalAPI = {
+/* HAL Interface Initialization for PLC transceiver */
+DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
-    /* PL360 PLIB */
-    .pl360Plib = &drvPL360Plib,
+    /* PLC PLIB */
+    .plcPlib = &drvPLCPlib,
 
-    /* PL360 HAL init */
-    .init = (DRV_PL360_HAL_INIT)DRV_PL360_HAL_Init,
+    /* PLC HAL init */
+    .init = (DRV_PLC_HAL_INIT)DRV_PLC_HAL_Init,
 
-    /* PL360 HAL setup */
-    .setup = (DRV_PL360_HAL_SETUP)DRV_PL360_HAL_Setup,
+    /* PLC HAL setup */
+    .setup = (DRV_PLC_HAL_SETUP)DRV_PLC_HAL_Setup,
 
-    /* PL360 PL360 reset */
-    .reset = (DRV_PL360_HAL_RESET)DRV_PL360_HAL_Reset,
+    /* PLC transceiver reset */
+    .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
-    /* PL360 HAL Get Carrier Detect or PLC Line Status */
-    .getCd = (DRV_PL360_HAL_GET_CD)DRV_PL360_HAL_GetCarrierDetect,
+    /* PLC Carrier Detect Status */
+    .getCd = (DRV_PLC_HAL_GET_CD)DRV_PLC_HAL_GetCarrierDetect,
 
-    /* PL360 HAL Enable/Disable external interrupt */
-    .enableExtInt = (DRV_PL360_HAL_ENABLE_EXT_INT)DRV_PL360_HAL_EnableInterrupts,
+    /* PLC HAL Enable/Disable external interrupt */
+    .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)DRV_PLC_HAL_EnableInterrupts,
 
-    /* PL360 HAL delay function */
-    .delay = (DRV_PL360_HAL_DELAY)DRV_PL360_HAL_Delay,
+    /* PLC HAL delay function */
+    .delay = (DRV_PLC_HAL_DELAY)DRV_PLC_HAL_Delay,
 
-    /* PL360 HAL Transfer Bootloader Command */
-    .sendBootCmd = (DRV_PL360_HAL_SEND_BOOT_CMD)DRV_PL360_HAL_SendBootCmd,
+    /* PLC HAL Transfer Bootloader Command */
+    .sendBootCmd = (DRV_PLC_HAL_SEND_BOOT_CMD)DRV_PLC_HAL_SendBootCmd,
 
-    /* PL360 HAL Transfer Write/Read Command */
-    .sendWrRdCmd = (DRV_PL360_HAL_SEND_WRRD_CMD)DRV_PL360_HAL_SendWrRdCmd,
+    /* PLC HAL Transfer Write/Read Command */
+    .sendWrRdCmd = (DRV_PLC_HAL_SEND_WRRD_CMD)DRV_PLC_HAL_SendWrRdCmd,
 };
 
-/* PL360 Binary file addressing */
-extern uint8_t pl360_bin_start;
-extern uint8_t pl360_bin_end;
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="DRV_PLC_PHY Initialization Data">
 
-/* PL360 Driver Initialization Data */
-DRV_PL360_INIT drvPL360InitData = {
+/* PLC Binary file addressing */
+extern uint8_t plc_phy_bin_start;
+extern uint8_t plc_phy_bin_end;
+
+/* PLC Driver Initialization Data */
+DRV_PLC_PHY_INIT drvPlcPhyInitData = {
 
     /* SPI PLIB API  interface*/
-    .pl360Hal = &drvPL360HalAPI,
+    .plcHal = &drvPLCHalAPI,
 
-    /* PL360 Number of clients */
-    .numClients = DRV_PL360_CLIENTS_NUMBER_IDX,  
+    /* PLC PHY Number of clients */
+    .numClients = DRV_PLC_PHY_CLIENTS_NUMBER_IDX,  
 
-    /* PL360 PLC profile */
-    .plcProfile = DRV_PL360_PLC_PROFILE,
+    /* PLC PHY profile */
+    .plcProfile = DRV_PLC_PHY_PROFILE,
  
     /* PLC Binary start address */
-    .binStartAddress = (uint32_t)&pl360_bin_start,
+    .binStartAddress = (uint32_t)&plc_phy_bin_start,
     
     /* PLC Binary end address */
-    .binEndAddress = (uint32_t)&pl360_bin_end,
+    .binEndAddress = (uint32_t)&plc_phy_bin_end,
 
     /* Secure Mode */
-    .secure = DRV_PL360_SECURE,
+    .secure = DRV_PLC_SECURE,
     
 };
 
@@ -267,10 +270,10 @@ void SYS_Initialize ( void* data )
 
 
  
-    /* Initialize PL360 Driver Instance */
-    sysObj.drvPL360 = DRV_PL360_Initialize(DRV_PL360_INDEX, (SYS_MODULE_INIT *)&drvPL360InitData);
-    /* Register Callback function to handle PL360 interruption */
-    PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_PL360_EXT_INT_PIN, DRV_PL360_ExternalInterruptHandler, sysObj.drvPL360);
+    /* Initialize PLC Phy Driver Instance */
+    sysObj.drvPlcPhy = DRV_PLC_PHY_Initialize(DRV_PLC_PHY_INDEX, (SYS_MODULE_INIT *)&drvPlcPhyInitData);
+    /* Register Callback function to handle PLC interruption */
+    PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_PLC_EXT_INT_PIN, DRV_PLC_PHY_ExternalInterruptHandler, sysObj.drvPlcPhy);
    
     /* Initialize USI Service Instance 0 */
     sysObj.srvUSI0 = SRV_USI_Initialize(SRV_USI_INDEX_0, (SYS_MODULE_INIT *)&srvUSI0InitData);

@@ -49,7 +49,7 @@
 #include "stddef.h"
 #include "string.h"
 #include "srv_pserial.h"
-#include "driver/pl360/drv_pl360_comm.h"
+#include "driver/plc/phy/drv_plc_phy_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -85,17 +85,17 @@ SRV_PSERIAL_COMMAND SRV_PSERIAL_GetCommand(uint8_t* pData)
     return (SRV_PSERIAL_COMMAND)*pData;
 }
 
-void SRV_PSERIAL_ParseGetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
+void SRV_PSERIAL_ParseGetPIB(DRV_PLC_PHY_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
 {
     /* Skip command */
     pDataSrc++;
     /* Extract parameters of PIB */
-    pDataDst->id = (DRV_PL360_ID)(((uint16_t)*pDataSrc++) << 8);
-    pDataDst->id += (DRV_PL360_ID)((uint16_t)*pDataSrc++);
+    pDataDst->id = (DRV_PLC_PHY_ID)(((uint16_t)*pDataSrc++) << 8);
+    pDataDst->id += (DRV_PLC_PHY_ID)((uint16_t)*pDataSrc++);
     pDataDst->length = *pDataSrc;    
 }
 
-size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
+size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PLC_PHY_PIB_OBJ* pDataSrc)
 {
     uint8_t* pData;
     
@@ -120,18 +120,18 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     return (pData - pDataDst);
 }
 
-void SRV_PSERIAL_ParseSetPIB(DRV_PL360_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
+void SRV_PSERIAL_ParseSetPIB(DRV_PLC_PHY_PIB_OBJ* pDataDst, uint8_t* pDataSrc)
 {
     /* Skip command */
     pDataSrc++;
     /* Extract parameters of PIB */
-    pDataDst->id = (DRV_PL360_ID)(((uint16_t)*pDataSrc++) << 8);
-    pDataDst->id += (DRV_PL360_ID)((uint16_t)*pDataSrc++);
+    pDataDst->id = (DRV_PLC_PHY_ID)(((uint16_t)*pDataSrc++) << 8);
+    pDataDst->id += (DRV_PLC_PHY_ID)((uint16_t)*pDataSrc++);
     pDataDst->length = *pDataSrc++;    
     _SRV_SERIAL_memcpyRev(pDataDst->pData, pDataSrc, pDataDst->length);
 }
 
-size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
+size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PLC_PHY_PIB_OBJ* pDataSrc)
 {
     uint8_t* pData;
     
@@ -149,7 +149,7 @@ size_t SRV_PSERIAL_SerialSetPIB(uint8_t* pDataDst, DRV_PL360_PIB_OBJ* pDataSrc)
     return (pData - pDataDst);    
 }
 
-void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc)
+void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t* pDataSrc)
 {
     uint8_t indexTM;
 
@@ -159,8 +159,8 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
     /* Extract parameters of transmission */
     pDataDst->mode = *pDataSrc++;
     pDataDst->attenuation = *pDataSrc++;
-    pDataDst->modType = (DRV_PL360_MOD_TYPE)(*pDataSrc++);
-    pDataDst->modScheme = (DRV_PL360_MOD_SCHEME)(*pDataSrc++);
+    pDataDst->modType = (DRV_PLC_PHY_MOD_TYPE)(*pDataSrc++);
+    pDataDst->modScheme = (DRV_PLC_PHY_MOD_SCHEME)(*pDataSrc++);
     pDataDst->pdc = *pDataSrc++;
 
     for (indexTM = 0; indexTM < PSERIAL_TONEMAP_SIZE; indexTM++) {
@@ -176,7 +176,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
     memcpy(pDataDst->preemphasis, pDataSrc, PSERIAL_SUBBANDS_SIZE);
     pDataSrc += PSERIAL_SUBBANDS_SIZE;
 
-    pDataDst->delimiterType = (DRV_PL360_DEL_TYPE)(*pDataSrc++);
+    pDataDst->delimiterType = (DRV_PLC_PHY_DEL_TYPE)(*pDataSrc++);
     pDataDst->time = ((uint32_t)*pDataSrc++) << 24;
     pDataDst->time += ((uint32_t)*pDataSrc++) << 16;
     pDataDst->time += ((uint32_t)*pDataSrc++) << 8;
@@ -189,7 +189,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PL360_TRANSMISSION_OBJ* pDataDst, uint8_t* p
     
 }
 
-size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* pDataSrc)
+size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc)
 {
     uint8_t* pData;
     uint8_t indexTM;
@@ -251,7 +251,7 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PL360_RECEPTION_OBJ* p
     return (pData - pDataDst);    
 }
 
-size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PL360_TRANSMISSION_CFM_OBJ* pDataSrc)
+size_t SRV_PSERIAL_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pDataSrc)
 {
     uint8_t* pData;
     

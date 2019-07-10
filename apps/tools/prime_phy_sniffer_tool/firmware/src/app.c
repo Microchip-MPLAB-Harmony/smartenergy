@@ -117,19 +117,19 @@ static void APP_PLC360SetConfiguration(void)
 		pDaccTbl = (uint32_t*)plcDaccConfiguration1;
 	}
     
-    appData.plcPIB.id = PL360_ID_CHANNEL_CFG;
+    appData.plcPIB.id = PLC_ID_CHANNEL_CFG;
     appData.plcPIB.length = 1;
     *appData.plcPIB.pData = appData.plcChannel;
-    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
     
-    appData.plcPIB.id = PL360_ID_DACC_TABLE_CFG;
+    appData.plcPIB.id = PLC_ID_DACC_TABLE_CFG;
     appData.plcPIB.length = 17 << 2;
     memcpy(appData.plcPIB.pData, (uint8_t *)pDaccTbl, appData.plcPIB.length);
-    DRV_PL360_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+    DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
     
 }
 
-static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
+static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
 {   
     /* Avoid warning */
     (void)context;
@@ -144,9 +144,9 @@ static void APP_PLCDataIndCb(DRV_PL360_RECEPTION_OBJ *indObj, uintptr_t context)
                 LED_BLINK_PLC_MSG_MS, SYS_TIME_SINGLE);
         
         /* Report RX Symbols */
-        appData.plcPIB.id = PL360_ID_RX_PAY_SYMBOLS;
+        appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
         appData.plcPIB.length = 2;        
-        DRV_PL360_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
+        DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
         
         SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
         
@@ -191,8 +191,8 @@ void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)
                 /* Modify Channel in Application data */
                 appData.plcChannel = channel;
                 
-                /* Set Application to PL360 configuration state */
-                appData.state = APP_STATE_CONFIG_PL360;
+                /* Set Application to PLC configuration state */
+                appData.state = APP_STATE_CONFIG_PLC;
             }            
         }
         break;
@@ -252,8 +252,8 @@ void APP_Tasks(void)
         /* Application's initial state. */
         case APP_STATE_INIT:
         {
-            /* Open PL360 driver : Start uploading process */
-            appData.drvPl360Handle = DRV_PL360_Open(DRV_PL360_INDEX, NULL);
+            /* Open PLC driver : Start uploading process */
+            appData.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);
 
             if (appData.drvPl360Handle != DRV_HANDLE_INVALID)
             {
@@ -268,15 +268,15 @@ void APP_Tasks(void)
             break;
         }
             
-        /* Waiting to PL360 device be opened and register callback functions */
+        /* Waiting to PLC transceiver be opened and register callback functions */
         case APP_STATE_REGISTER:
         {
-            /* Check PL360 device */
-            if (DRV_PL360_Status(DRV_PL360_INDEX) == SYS_STATUS_READY)
+            /* Check PLC transceiver */
+            if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)
             {
-                /* Register PL360 callback */
-                DRV_PL360_DataIndCallbackRegister(appData.drvPl360Handle, 
-                        APP_PLCDataIndCb, DRV_PL360_INDEX);
+                /* Register PLC callback */
+                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPl360Handle, 
+                        APP_PLCDataIndCb, DRV_PLC_PHY_INDEX);
                 
                 /* Open USI Service */
                 appData.srvUSIHandle = SRV_USI_Open(SRV_USI_INDEX_0);
@@ -299,7 +299,7 @@ void APP_Tasks(void)
                     SRV_PSNIFFER_SetPLCChannel(appData.plcChannel);
 
                     /* Set Application to next state */
-                    appData.state = APP_STATE_CONFIG_PL360;
+                    appData.state = APP_STATE_CONFIG_PLC;
                 }
                 else
                 {
@@ -310,9 +310,9 @@ void APP_Tasks(void)
             break;
         }
 
-        case APP_STATE_CONFIG_PL360:
+        case APP_STATE_CONFIG_PLC:
         {
-            /* Set configuration fro PL360 */
+            /* Set configuration fro PLC */
             APP_PLC360SetConfiguration();
             /* Set Application to next state */
             appData.state = APP_STATE_READY;

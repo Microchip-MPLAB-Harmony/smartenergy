@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
-    <logicalFolder name="HeaderFiles"
-                   displayName="Header Files"
-                   projectFiles="true">
+    <logicalFolder name="f1" displayName="Header Files" projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld_cenb" projectFiles="true">
           <logicalFolder name="f2" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="g3MacRt" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_plc_hal.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt_definitions.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt_comm.h</itemPath>
+            <logicalFolder name="f1" displayName="plc" projectFiles="true">
+              <logicalFolder name="f1" displayName="common" projectFiles="true">
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/common/drv_plc_hal.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/common/drv_plc_boot.h</itemPath>
+              </logicalFolder>
+              <logicalFolder name="f2" displayName="g3MacRt" projectFiles="true">
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/drv_g3_macrt.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/drv_g3_macrt_definitions.h</itemPath>
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/drv_g3_macrt_comm.h</itemPath>
+              </logicalFolder>
             </logicalFolder>
             <itemPath>../src/config/sam_e70_xpld_cenb/driver/driver.h</itemPath>
             <itemPath>../src/config/sam_e70_xpld_cenb/driver/driver_common.h</itemPath>
@@ -158,28 +161,32 @@
       <itemPath>../src/app_plc.h</itemPath>
       <itemPath>../src/app_console.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="LinkerScript"
-                   displayName="Linker Files"
-                   projectFiles="true">
+    <logicalFolder name="f4" displayName="Important Files" projectFiles="true">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <logicalFolder name="SourceFiles"
-                   displayName="Source Files"
-                   projectFiles="true">
+    <logicalFolder name="f2" displayName="Linker Files" projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="f3" displayName="Source Files" projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="sam_e70_xpld_cenb" projectFiles="true">
           <logicalFolder name="f3" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="g3MacRt" projectFiles="true">
-              <logicalFolder name="f1" displayName="bin" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/bin/drv_g3_macrt_bin.S</itemPath>
-                <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/bin/G3_MAC_RT_CENB.bin</itemPath>
+            <logicalFolder name="f1" displayName="plc" projectFiles="true">
+              <logicalFolder name="f1" displayName="common" projectFiles="true">
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/common/drv_plc_hal.c</itemPath>
+                <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/common/drv_plc_boot.c</itemPath>
               </logicalFolder>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_plc_hal.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_plc_boot.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_plc_boot.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt_comm.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt_local.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cenb/driver/g3MacRt/drv_g3_macrt_local_comm.h</itemPath>
+              <logicalFolder name="f2" displayName="g3MacRt" projectFiles="true">
+                <logicalFolder name="f1" displayName="bin" projectFiles="true">
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/bin/drv_g3_macrt_bin.S</itemPath>
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/bin/G3_MAC_RT_CENB.bin</itemPath>
+                </logicalFolder>
+                <logicalFolder name="f2" displayName="src" projectFiles="true">
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/src/drv_g3_macrt_comm.c</itemPath>
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/src/drv_g3_macrt.c</itemPath>
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/src/drv_g3_macrt_local.h</itemPath>
+                  <itemPath>../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/src/drv_g3_macrt_local_comm.h</itemPath>
+                </logicalFolder>
+              </logicalFolder>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
@@ -239,11 +246,6 @@
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/app_plc.c</itemPath>
       <itemPath>../src/app_console.c</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false">
-      <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -345,25 +347,8 @@
         <property key="additional-options-chop-files" value="false"/>
       </C32-AR>
       <C32-AS>
-        <property key="assembler-symbols" value=""/>
-        <property key="enable-symbols" value="true"/>
-        <property key="exclude-floating-point-library" value="false"/>
-        <property key="expand-macros" value="false"/>
         <property key="extra-include-directories-for-assembler"
-                  value="../src/config/sam_e70_xpld_cenb/driver/g3MacRt/bin"/>
-        <property key="extra-include-directories-for-preprocessor" value=""/>
-        <property key="false-conditionals" value="false"/>
-        <property key="generate-16-bit-code" value="false"/>
-        <property key="generate-micro-compressed-code" value="false"/>
-        <property key="keep-locals" value="false"/>
-        <property key="list-assembly" value="false"/>
-        <property key="list-source" value="false"/>
-        <property key="list-symbols" value="false"/>
-        <property key="oXC32asm-list-to-file" value="false"/>
-        <property key="omit-debug-dirs" value="false"/>
-        <property key="omit-forms" value="false"/>
-        <property key="preprocessor-macros" value=""/>
-        <property key="warning-level" value=""/>
+                  value="../src/config/sam_e70_xpld_cenb/driver/plc/g3MacRt/bin"/>
       </C32-AS>
       <C32-LD>
         <property key="additional-options-use-response-files" value="false"/>

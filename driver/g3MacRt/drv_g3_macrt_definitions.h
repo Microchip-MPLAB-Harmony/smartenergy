@@ -50,8 +50,7 @@
 // *****************************************************************************
 
 #include <device.h>
-#include "system/ports/sys_ports.h"
-#include "system/dma/sys_dma.h"
+#include "driver/plc/common/drv_plc_hal.h"
 
 
 // DOM-IGNORE-BEGIN
@@ -68,116 +67,6 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-
-typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
-
-// *****************************************************************************
-/* PLC Driver PLIB Interface Data
-
-  Summary:
-    Defines the data required to initialize the PLC driver PLIB Interface.
-
-  Description:
-    This data type defines the data required to initialize the PLC driver
-    PLIB Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* PLC SPI PLIB Transfer Setup */
-    DRV_PLC_SPI_PLIB_TRANSFER_SETUP      spiPlibTransferSetup;
-
-    /* SPI transmit DMA channel. */
-    SYS_DMA_CHANNEL                        dmaChannelTx;
-
-    /* SPI receive DMA channel. */
-    SYS_DMA_CHANNEL                        dmaChannelRx;
-
-    /* SPI transmit register address used for DMA operation. */
-    void                                   *spiAddressTx;
-
-    /* SPI receive register address used for DMA operation. */
-    void                                   *spiAddressRx;
-
-    /* SPI clock frequency */
-    uint32_t                               spiClockFrequency;
-
-    /* PLC LDO enable pin */
-    SYS_PORT_PIN                           ldoPin;
-
-    /* PLC reset pin */
-    SYS_PORT_PIN                           resetPin;
-
-    /* PLC external interrupt pin */
-    SYS_PORT_PIN                           extIntPin;
-
-} DRV_PLC_PLIB_INTERFACE;
-
-// *****************************************************************************
-
-typedef void (* DRV_PLC_HAL_INIT)(DRV_PLC_PLIB_INTERFACE*);
-
-typedef void (* DRV_PLC_HAL_SETUP)(bool);
-
-typedef void (* DRV_PLC_HAL_RESET)(void);
-
-typedef bool (* DRV_PLC_HAL_GET_CD)(void);
-
-typedef void (* DRV_PLC_HAL_ENABLE_EXT_INT)(bool);
-
-typedef void (* DRV_PLC_HAL_DELAY)(uint64_t);
-
-typedef void (* DRV_PLC_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
-
-typedef void (* DRV_PLC_HAL_SEND_WRRD_CMD)(void*, void*);
-
-// *****************************************************************************
-/* PLC Driver HAL Interface Data
-
-  Summary:
-    Defines the data required to initialize the PLC driver HAL Interface.
-
-  Description:
-    This data type defines the data required to initialize the PLC driver
-    HAL Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* PLC PLIB Interface */
-    DRV_PLC_PLIB_INTERFACE                   *plcPlib;
-
-    /* PLC HAL init */
-    DRV_PLC_HAL_INIT                         init;
-
-    /* PLC HAL setup */
-    DRV_PLC_HAL_SETUP                        setup;
-
-    /* PLC HAL reset device */
-    DRV_PLC_HAL_RESET                        reset;
-
-    /* PLC HAL Get Carrier Detect or PLC Line Status */
-    DRV_PLC_HAL_GET_CD                       getCd;
-
-    /* PLC HAL Enable/Disable external interrupt */
-    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;
-
-    /* PLC HAL delay function */
-    DRV_PLC_HAL_DELAY                        delay;
-
-    /* PLC HAL Transfer Bootloader Command */
-    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd;
-
-    /* PLC HAL Transfer Write/Read Command */
-    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd;
-
-} DRV_PLC_HAL_INTERFACE;
 
 // *****************************************************************************
 /* PLC Driver Initialization Data
