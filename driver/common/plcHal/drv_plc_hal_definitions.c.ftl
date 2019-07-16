@@ -2,7 +2,7 @@
 
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
-
+ <#if DRV_PLC_TX_RX_DMA == true> 
     /* PLC SPI PLIB */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_PLC_PLIB}_TransferSetup,
 
@@ -17,6 +17,10 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(${DRV_PLC_PLIB?string}_REGS->SPI_RDR),
+<#else>
+    /* PLC FLEXCOM SPI PLIB */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_PLC_PLIB}_SPI_TransferSetup,
+<#endif>
     
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,

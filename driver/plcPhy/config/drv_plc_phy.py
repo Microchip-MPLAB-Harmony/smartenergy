@@ -25,6 +25,14 @@
 ################################################################################
 #### Component ####
 ################################################################################
+global sort_alphanumeric
+
+def sort_alphanumeric(l):
+    import re
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
+    return sorted(l, key = alphanum_key)
+
 def externalAddressingTrigger(symbol, event):
     global plcPhySourceBinFileG3CENA
     global plcPhySourceBinFileG3CENB
@@ -125,7 +133,7 @@ def plcPhyExternalInterruptTrigger(symbol, event):
 
     key = event["symbol"].getKeyDescription(event["value"])
     intSrc = "PIO" + key[1] + "_IRQn"
-    plcPhyExtIntSource.setValue(intSrc, 1)
+    plcPhyExtIntSource.setValue(intSrc)
 
         
 def plcPhyEnableEncScript(symbol, event):
@@ -141,14 +149,34 @@ def plcPhyVisibleEncComment(symbol, event):
         symbol.setVisible(False)         
 		
 def instantiateComponent(plcPhyComponent):  
+    global drvPlcPhyInstanceSpace
+    global isDMAPresent
 
-    res = Database.activateComponents(["HarmonyCore"])
+    drvPlcPhyInstanceSpace = "drvPlcPhy"
 
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True)
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True)
+
+    # Enable "Enable System Ports" option in MHC
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True)
+
+    # Enable "ENABLE_SYS_DMA" option in MHC
+    if Database.getSymbolValue("core", "DMA_ENABLE") == None:
+        isDMAPresent = False
+        print("isDMAPresent = False")
+    else:
+        isDMAPresent = True
+        print("isDMAPresent = False")
+
+        # Enable "Enable System DMA" option in MHC
+        if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA") == False):
+            Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True)
     
     plcPhySymNumInst = plcPhyComponent.createIntegerSymbol("DRV_PLC_PHY_NUM_INSTANCES", None)
     plcPhySymNumInst.setLabel("Number of Instances")
@@ -167,67 +195,49 @@ def instantiateComponent(plcPhyComponent):
     global plcPhyExtIntPin
     plcPhyExtIntPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcPhyExtIntPin.setLabel("External Interrupt Pin")
-    plcPhyExtIntPin.setDefaultValue(104) #PD28
     plcPhyExtIntPin.setOutputMode("Key")
     plcPhyExtIntPin.setDisplayMode("Description")
 
     global plcPhyExtIntSource
     plcPhyExtIntSource = plcPhyComponent.createStringSymbol("DRV_PLC_PHY_EXT_INT_SRC", None)
     plcPhyExtIntSource.setLabel("External Interrupt Source")
-    plcPhyExtIntSource.setDefaultValue("PIOD_IRQn") #PIOD_IRQn
+    plcPhyExtIntSource.setDefaultValue("PIOA_IRQn")
     plcPhyExtIntSource.setVisible(True)
     plcPhyExtIntSource.setReadOnly(True)
     plcPhyExtIntSource.setDependencies(plcPhyExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
 
     plcPhyResetPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     plcPhyResetPin.setLabel("Reset Pin")
-    plcPhyResetPin.setDefaultValue(34) #PB2
     plcPhyResetPin.setOutputMode("Key")
     plcPhyResetPin.setDisplayMode("Description")
 
     plcPhyLDOEnPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
     plcPhyLDOEnPin.setLabel("LDO Enable Pin")
-    plcPhyLDOEnPin.setDefaultValue(35) #PB3
     plcPhyLDOEnPin.setOutputMode("Key")
-    plcPhyLDOEnPin.setDisplayMode("Description")    
+    plcPhyLDOEnPin.setDisplayMode("Description")  
 
-    myVariableValue = Database.getSymbolValue("core", "COMPONENT_PACKAGE")
-    pinOutNode = ATDF.getNode('/avr-tools-device-file/pinouts/pinout@[name= "' + str(myVariableValue) + '"]')
-    # pinOutNode = ATDF.getNode("/avr-tools-device-file/pinouts/pinout")
-    pinOut = pinOutNode.getChildren()
-    
-    for pad in range(0, len(pinOut)):
-        pin = pinOut[pad].getAttribute("pad")
-        if (pin[0] == "P") and (pin[-1].isdigit()):
-            key = "SYS_PORT_PIN_" + pin
-            value = pinOut[pad].getAttribute("position")
-            description = pinOut[pad].getAttribute("pad")
-            plcPhyExtIntPin.addKey(key, value, description)
-            plcPhyResetPin.addKey(key, value, description)
-            plcPhyLDOEnPin.addKey(key, value, description)
+    plcPhyCDPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
+    plcPhyCDPin.setLabel("Carrier Detect Pin")
+    plcPhyCDPin.setOutputMode("Key")
+    plcPhyCDPin.setDisplayMode("Description")  
+
+    availablePinDictionary = {}
+
+    # Send message to core to get available pins
+    availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
+
+    for pad in sort_alphanumeric(availablePinDictionary.values()):
+        key = "SYS_PORT_PIN_" + pad
+        value = list(availablePinDictionary.keys())[list(availablePinDictionary.values()).index(pad)]
+        description = pad
+        plcPhyExtIntPin.addKey(key, value, description)
+        plcPhyResetPin.addKey(key, value, description)
+        plcPhyLDOEnPin.addKey(key, value, description)
+        plcPhyCDPin.addKey(key, value, description)
 
     plcPhySymPinConfigComment = plcPhyComponent.createCommentSymbol("DRV_PLC_PHY_PINS_CONFIG_COMMENT", None)
     plcPhySymPinConfigComment.setVisible(True)
-    plcPhySymPinConfigComment.setLabel("***Above selected pins must be configured as GPIO Output in Pin Manager***")
-    
-    global plcPhyTXDMAChannel
-    plcPhyTXDMAChannel = plcPhyComponent.createIntegerSymbol("DRV_PLC_TX_DMA_CHANNEL", None)
-    plcPhyTXDMAChannel.setLabel("DMA Channel For Transmit")
-    plcPhyTXDMAChannel.setDefaultValue(0)
-    plcPhyTXDMAChannel.setVisible(False)
-    plcPhyTXDMAChannel.setReadOnly(True)
-
-    global plcPhyRXDMAChannel
-    plcPhyRXDMAChannel = plcPhyComponent.createIntegerSymbol("DRV_PLC_RX_DMA_CHANNEL", None)
-    plcPhyRXDMAChannel.setLabel("DMA Channel For Receive")
-    plcPhyRXDMAChannel.setDefaultValue(1)
-    plcPhyRXDMAChannel.setVisible(False)
-    plcPhyRXDMAChannel.setReadOnly(True)
-
-    global plcPhyDMAChannelComment
-    plcPhyDMAChannelComment = plcPhyComponent.createCommentSymbol("DRV_PLC_PHY_DMA_CH_COMMENT", None)
-    plcPhyDMAChannelComment.setLabel("***Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.***")
-    plcPhyDMAChannelComment.setVisible(False)
+    plcPhySymPinConfigComment.setLabel("***The pins selected above must be the same as those for the GPIO output in Pin Manager***")
 
     global plcPhyExternalAddressing
     plcPhyExternalAddressing = plcPhyComponent.createBooleanSymbol("DRV_PLC_PHY_EXTERNAL_ADDRESSING", None)
@@ -258,6 +268,44 @@ def instantiateComponent(plcPhyComponent):
     plcPhySecureComment.setLabel("***Run encription script to get a secure binary file and replace the current non-secure file. Check bin folder.***")
     plcPhySecureComment.setVisible(False)
     plcPhySecureComment.setDependencies(plcPhyVisibleEncComment, ["DRV_PLC_SECURE_MODE"])
+    
+    global plcPhyTXRXDMA
+    plcPhyTXRXDMA = plcPhyComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
+    plcPhyTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
+    plcPhyTXRXDMA.setVisible(isDMAPresent)
+    plcPhyTXRXDMA.setReadOnly(True)
+
+    global plcPhyTXDMAChannel
+    plcPhyTXDMAChannel = plcPhyComponent.createIntegerSymbol("DRV_PLC_TX_DMA_CHANNEL", None)
+    plcPhyTXDMAChannel.setLabel("DMA Channel For Transmit")
+    plcPhyTXDMAChannel.setDefaultValue(0)
+    plcPhyTXDMAChannel.setVisible(False)
+    plcPhyTXDMAChannel.setReadOnly(True)
+    plcPhyTXDMAChannel.setDependencies(requestAndAssignTxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+
+    global plcPhyTXDMAChannelComment
+    plcPhyTXDMAChannelComment = plcPhyComponent.createCommentSymbol("DRV_PLC_TX_DMA_CH_COMMENT", None)
+    plcPhyTXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit. Check DMA Manager. !!!")
+    plcPhyTXDMAChannelComment.setVisible(False)
+    plcPhyTXDMAChannelComment.setDependencies(requestDMAComment, ["DRV_PLC_TX_DMA_CHANNEL"])
+
+    global plcPhyRXDMAChannel
+    plcPhyRXDMAChannel = plcPhyComponent.createIntegerSymbol("DRV_PLC_RX_DMA_CHANNEL", None)
+    plcPhyRXDMAChannel.setLabel("DMA Channel For Receive")
+    plcPhyRXDMAChannel.setDefaultValue(1)
+    plcPhyRXDMAChannel.setVisible(False)
+    plcPhyRXDMAChannel.setReadOnly(True)
+    plcPhyRXDMAChannel.setDependencies(requestAndAssignRxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+
+    global plcPhyRXDMAChannelComment
+    plcPhyRXDMAChannelComment = plcPhyComponent.createCommentSymbol("DRV_PLC_RX_DMA_CH_COMMENT", None)
+    plcPhyRXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Receive. Check DMA Manager. !!!")
+    plcPhyRXDMAChannelComment.setVisible(False)
+    plcPhyRXDMAChannelComment.setDependencies(requestDMAComment, ["DRV_PLC_RX_DMA_CHANNEL"])
+
+    plcPhyDependencyDMAComment = plcPhyComponent.createCommentSymbol("DRV_PLC_DEPENDENCY_DMA_COMMENT", None)
+    plcPhyDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
+    plcPhyDependencyDMAComment.setVisible(isDMAPresent)
 
     ############################################################################
     #### Code Generation ####
@@ -468,100 +516,114 @@ def instantiateComponent(plcPhyComponent):
 #### Business Logic ####
 ################################################################################  
 def onAttachmentConnected(source, target):
-    global plcPhyTXDMAChannel
-    global plcPhyRXDMAChannel
-    global plcPhyDMAChannelComment
-    global plcPhyProfile
-
-    print("onAttachmentConnected event")
+    global isDMAPresent
 
     localComponent = source["component"]
     remoteComponent = target["component"]
-    plcPhyPlibId = remoteComponent.getID().upper()
+    remoteID = remoteComponent.getID()
     connectID = source["id"]
-
-    dmaRxRequestID = "DMA_CH_NEEDED_FOR_" + plcPhyPlibId + "_Receive"
-    dmaTxRequestID = "DMA_CH_NEEDED_FOR_" + plcPhyPlibId + "_Transmit"
-    dmaTxChannelID = "DMA_CH_FOR_" + plcPhyPlibId + "_Transmit"
-    dmaRxChannelID = "DMA_CH_FOR_" + plcPhyPlibId + "_Receive"
-
-    if connectID == "drv_plc_phy_SPI_dependency" :
-        print("DRV_PLC_PHY_SPI_dependency")
-        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
-        plibUsed.clearValue()
-        plibUsed.setValue(plcPhyPlibId, 1)
-        Database.setSymbolValue(plcPhyPlibId, "SPI_DRIVER_CONTROLLED", True, 1)
-
-        # Set DMA in database
-        Database.setSymbolValue("core", dmaRxRequestID, True, 2)
-        Database.setSymbolValue("core", dmaTxRequestID, True, 2)
-
-        # Get the allocated channel and assign it
-        txChannel = Database.getSymbolValue("core", dmaTxChannelID)
-        localComponent.setSymbolValue("DRV_PLC_TX_DMA_CHANNEL", txChannel, 2)
-        rxChannel = Database.getSymbolValue("core", dmaRxChannelID)
-        localComponent.setSymbolValue("DRV_PLC_RX_DMA_CHANNEL", rxChannel, 2)
-    
-        # Get the allocated channel and assign it
-        plcPhyTXDMAChannel.setValue(txChannel, 2)
-        plcPhyTXDMAChannel.setVisible(True)
-        plcPhyRXDMAChannel.setValue(rxChannel, 2)
-        plcPhyRXDMAChannel.setVisible(True)
-        plcPhyDMAChannelComment.setVisible(True)
-
-        # Disable SPI interrupts
-        plibIntUsed = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
-        plibIntUsed.clearValue()
-        plibIntUsed.setValue(False, 1)
-
-        # Set SPI baudrate
-        plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
-        plibBaudrate.clearValue()
-        if (plcPhyProfile.getSelectedValue() == "2"): 
-            plibBaudrate.setValue(12000000, 1)
-            print("Set SPI baudrate: 12000000 - " + plcPhyProfile.getSelectedValue())
-        else:
-            plibBaudrate.setValue(8000000, 1)
-            print("Set SPI baudrate: 8000000 - " + plcPhyProfile.getSelectedValue())
-
-  
-def onAttachmentDisconnected(source, target):
-    global plcPhyTXDMAChannel
-    global plcPhyRXDMAChannel
-    global plcPhyDMAChannelComment
-
-    print("onDependencyDisconnected event")
-
-    localComponent = source["component"]
-    remoteComponent = target["component"]
-    plcPhyPlibId = remoteComponent.getID().upper()
-    connectID = source["id"]
-
-    dmaRxRequestID = "DMA_CH_NEEDED_FOR_" + plcPhyPlibId + "_Receive"
-    dmaTxRequestID = "DMA_CH_NEEDED_FOR_" + plcPhyPlibId + "_Transmit"
-    dmaTxChannelID = "DMA_CH_FOR_" + plcPhyPlibId + "_Transmit"
-    dmaRxChannelID = "DMA_CH_FOR_" + plcPhyPlibId + "_Receive"
+    targetID = target["id"]
 
     if connectID == "drv_plc_phy_SPI_dependency":
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValue()
-        Database.setSymbolValue(plcPhyPlibId, "SPI_DRIVER_CONTROLLED", False, 1)
+        plibUsed.setValue(remoteID.upper())
 
-        # Set DMA in database
-        Database.setSymbolValue("core", dmaRxRequestID, False, 2)
-        Database.setSymbolValue("core", dmaTxRequestID, False, 2)
-        print("DBG -> dmaTxRequestID: " + dmaTxRequestID)
-        print("DBG -> dmaRxRequestID: " + dmaRxRequestID)
-   
-        # Get the allocated channel and assign it
-        plcPhyTXDMAChannel.setVisible(False)
-        plcPhyRXDMAChannel.setVisible(False)
-        plcPhyDMAChannelComment.setVisible(False)
+        Database.setSymbolValue(remoteID, "SPI_DRIVER_CONTROLLED", True)
+        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
 
+        # Do not change the order as DMA Channels needs to be allocated
+        # after setting the plibUsed symbol
+        # Both device and connected plib should support DMA
+        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
+            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setReadOnly(False)
+
+def onAttachmentDisconnected(source, target):
+    global isDMAPresent
+
+    localComponent = source["component"]
+    remoteComponent = target["component"]
+    remoteID = remoteComponent.getID()
+    connectID = source["id"]
+
+    if connectID == "drv_plc_phy_SPI_dependency":
+
+        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+
+        # Do not change the order as DMA Channels needs to be cleared
+        # before clearing the plibUsed symbol
+        # Both device and connected plib should support DMA
+        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").clearValue()
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setReadOnly(True)
+            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
+
+        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
+        plibUsed.clearValue()
+        Database.setSymbolValue(remoteID, "SPI_DRIVER_CONTROLLED", False)
+
+def requestAndAssignTxDMAChannel(symbol, event):
+    global drvPlcPhyInstanceSpace
+    global plcPhyTXDMAChannelComment
+
+    spiPeripheral = Database.getSymbolValue(drvPlcPhyInstanceSpace, "DRV_PLC_PLIB")
+
+    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+
+    if event["value"] == False:
+        Database.setSymbolValue("core", dmaRequestID, False)
+        plcPhyTXDMAChannelComment.setVisible(False)
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+        Database.setSymbolValue("core", dmaRequestID, True)
+
+    # Get the allocated channel and assign it
+    channel = Database.getSymbolValue("core", dmaChannelID)
+    symbol.setValue(channel)
+
+def requestAndAssignRxDMAChannel(symbol, event):
+    global drvPlcPhyInstanceSpace
+    global plcPhyRXDMAChannelComment
+
+    spiPeripheral = Database.getSymbolValue(drvPlcPhyInstanceSpace, "DRV_PLC_PLIB")
+
+    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
+
+    if event["value"] == False:
+        Database.setSymbolValue("core", dmaRequestID, False)
+        plcPhyRXDMAChannelComment.setVisible(False)
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+        Database.setSymbolValue("core", dmaRequestID, True)
+
+    # Get the allocated channel and assign it
+    channel = Database.getSymbolValue("core", dmaChannelID)
+    symbol.setValue(channel)
+
+def requestDMAComment(symbol, event):
+    global plcPhyTXRXDMA
+
+    if(event["value"] == -2) and (plcPhyTXRXDMA.getValue() == True):
+        symbol.setVisible(True)
+        event["symbol"].setVisible(False)
+    else:
+        symbol.setVisible(False)
 
 def destroyComponent(spiComponent):
-    spiPeripheral = Database.getSymbolValue("drv_plcPhy", "DRV_PLC_PLIB")
-    dmaTxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
-    dmaRxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
-    Database.setSymbolValue("core", dmaTxID, False, 2) 
-    Database.setSymbolValue("core", dmaRxID, False, 2) 
+    global drvPlcPhyInstanceSpace
+
+    if isDMAPresent:
+        spiPeripheral = Database.getSymbolValue(drvPlcPhyInstanceSpace, "DRV_PLC_PLIB")
+
+        dmaTxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+        dmaRxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
+
+        Database.setSymbolValue("core", dmaTxID, False)
+        Database.setSymbolValue("core", dmaRxID, False)

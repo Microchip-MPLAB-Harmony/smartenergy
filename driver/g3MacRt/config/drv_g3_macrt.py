@@ -25,6 +25,14 @@
 ################################################################################
 #### Component ####
 ################################################################################
+global sort_alphanumeric
+
+def sort_alphanumeric(l):
+    import re
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
+    return sorted(l, key = alphanum_key)
+
 def externalAddressingTrigger(symbol, event):
     global g3MacRTSourceBinFileCENA
     global g3MacRTSourceBinFileCENB
@@ -113,7 +121,7 @@ def externalInterruptTrigger(symbol, event):
 
     key = event["symbol"].getKeyDescription(event["value"])
     intSrc = "PIO" + key[1] + "_IRQn"
-    g3MacRtExtIntSource.setValue(intSrc, 1)
+    g3MacRtExtIntSource.setValue(intSrc)
 
         
 def enableEncriptScript(symbol, event):
@@ -129,14 +137,34 @@ def visibleEncriptComment(symbol, event):
         symbol.setVisible(False)        
 		
 def instantiateComponent(g3MacRtComponent):  
+    global drvG3MacRtInstanceSpace
+    global isDMAPresent
 
-    res = Database.activateComponents(["HarmonyCore"])
+    drvG3MacRtInstanceSpace = "drvG3MacRt"
 
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True)
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True)
+
+    # Enable "Enable System Ports" option in MHC
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True)
+
+    # Enable "ENABLE_SYS_DMA" option in MHC
+    if Database.getSymbolValue("core", "DMA_ENABLE") == None:
+        isDMAPresent = False
+        print("isDMAPresent = False")
+    else:
+        isDMAPresent = True
+        print("isDMAPresent = False")
+
+        # Enable "Enable System DMA" option in MHC
+        if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA") == False):
+            Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True)
     
     g3MacRtSymNumInst = g3MacRtComponent.createIntegerSymbol("DRV_G3_MACRT_NUM_INSTANCES", None)
     g3MacRtSymNumInst.setLabel("Number of Instances")
@@ -155,67 +183,49 @@ def instantiateComponent(g3MacRtComponent):
     global g3MacRtExtIntPin
     g3MacRtExtIntPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     g3MacRtExtIntPin.setLabel("External Interrupt Pin")
-    g3MacRtExtIntPin.setDefaultValue(104) #PD28
     g3MacRtExtIntPin.setOutputMode("Key")
     g3MacRtExtIntPin.setDisplayMode("Description")
 
     global g3MacRtExtIntSource
     g3MacRtExtIntSource = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     g3MacRtExtIntSource.setLabel("External Interrupt Source")
-    g3MacRtExtIntSource.setDefaultValue("PIOD_IRQn") #PIOD_IRQn
+    g3MacRtExtIntSource.setDefaultValue("PIOA_IRQn")
     g3MacRtExtIntSource.setVisible(True)
     g3MacRtExtIntSource.setReadOnly(True)
     g3MacRtExtIntSource.setDependencies(externalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
 
     g3MacRtResetPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     g3MacRtResetPin.setLabel("Reset Pin")
-    g3MacRtResetPin.setDefaultValue(34) #PB2
     g3MacRtResetPin.setOutputMode("Key")
     g3MacRtResetPin.setDisplayMode("Description")
 
     g3MacRtLDOEnPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
     g3MacRtLDOEnPin.setLabel("LDO Enable Pin")
-    g3MacRtLDOEnPin.setDefaultValue(35) #PB3
     g3MacRtLDOEnPin.setOutputMode("Key")
-    g3MacRtLDOEnPin.setDisplayMode("Description")    
+    g3MacRtLDOEnPin.setDisplayMode("Description")   
 
-    myVariableValue = Database.getSymbolValue("core", "COMPONENT_PACKAGE")
-    pinOutNode = ATDF.getNode('/avr-tools-device-file/pinouts/pinout@[name= "' + str(myVariableValue) + '"]')
-    # pinOutNode = ATDF.getNode("/avr-tools-device-file/pinouts/pinout")
-    pinOut = pinOutNode.getChildren()
-    
-    for pad in range(0, len(pinOut)):
-        pin = pinOut[pad].getAttribute("pad")
-        if (pin[0] == "P") and (pin[-1].isdigit()):
-            key = "SYS_PORT_PIN_" + pin
-            value = pinOut[pad].getAttribute("position")
-            description = pinOut[pad].getAttribute("pad")
-            g3MacRtExtIntPin.addKey(key, value, description)
-            g3MacRtResetPin.addKey(key, value, description)
-            g3MacRtLDOEnPin.addKey(key, value, description)
+    g3MacRtCDPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
+    g3MacRtCDPin.setLabel("Carrier Detect Pin")
+    g3MacRtCDPin.setOutputMode("Key")
+    g3MacRtCDPin.setDisplayMode("Description")   
+
+    availablePinDictionary = {}
+
+    # Send message to core to get available pins
+    availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
+
+    for pad in sort_alphanumeric(availablePinDictionary.values()):
+        key = "SYS_PORT_PIN_" + pad
+        value = list(availablePinDictionary.keys())[list(availablePinDictionary.values()).index(pad)]
+        description = pad
+        g3MacRtExtIntPin.addKey(key, value, description)
+        g3MacRtResetPin.addKey(key, value, description)
+        g3MacRtLDOEnPin.addKey(key, value, description)
+        g3MacRtCDPin.addKey(key, value, description)
 
     g3MacRtSymPinConfigComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_PINS_CONFIG_COMMENT", None)
     g3MacRtSymPinConfigComment.setVisible(True)
     g3MacRtSymPinConfigComment.setLabel("***Above selected pins must be configured as GPIO Output in Pin Manager***")
-    
-    global g3MacRtTXDMAChannel
-    g3MacRtTXDMAChannel = g3MacRtComponent.createIntegerSymbol("DRV_PLC_TX_DMA_CHANNEL", None)
-    g3MacRtTXDMAChannel.setLabel("DMA Channel For Transmit")
-    g3MacRtTXDMAChannel.setDefaultValue(0)
-    g3MacRtTXDMAChannel.setVisible(False)
-    g3MacRtTXDMAChannel.setReadOnly(True)
-
-    global g3MacRtRXDMAChannel
-    g3MacRtRXDMAChannel = g3MacRtComponent.createIntegerSymbol("DRV_PLC_RX_DMA_CHANNEL", None)
-    g3MacRtRXDMAChannel.setLabel("DMA Channel For Receive")
-    g3MacRtRXDMAChannel.setDefaultValue(1)
-    g3MacRtRXDMAChannel.setVisible(False)
-    g3MacRtRXDMAChannel.setReadOnly(True)
-
-    global g3MacRtDMAChannelComment
-    g3MacRtDMAChannelComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_DMA_CH_COMMENT", None)
-    g3MacRtDMAChannelComment.setLabel("***Couldn't Allocate DMA Channel for Transmit/Receive. Check DMA manager.***")
-    g3MacRtDMAChannelComment.setVisible(False)
 
     global binExternalAddressing
     binExternalAddressing = g3MacRtComponent.createBooleanSymbol("DRV_G3_MACRT_EXTERNAL_ADDRESSING", None)
@@ -253,6 +263,44 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtSpecCompliance.setDisplayMode("Description")
     g3MacRtSpecCompliance.setOutputMode("Value")
     g3MacRtSpecCompliance.setDefaultValue(0)
+    
+    global g3MacRtTXRXDMA
+    g3MacRtTXRXDMA = g3MacRtComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
+    g3MacRtTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
+    g3MacRtTXRXDMA.setVisible(isDMAPresent)
+    g3MacRtTXRXDMA.setReadOnly(True)
+
+    global g3MacRtTXDMAChannel
+    g3MacRtTXDMAChannel = g3MacRtComponent.createIntegerSymbol("DRV_PLC_TX_DMA_CHANNEL", None)
+    g3MacRtTXDMAChannel.setLabel("DMA Channel For Transmit")
+    g3MacRtTXDMAChannel.setDefaultValue(0)
+    g3MacRtTXDMAChannel.setVisible(False)
+    g3MacRtTXDMAChannel.setReadOnly(True)
+    g3MacRtTXDMAChannel.setDependencies(requestAndAssignTxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+
+    global g3MacRtTXDMAChannelComment
+    g3MacRtTXDMAChannelComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_TX_DMA_CH_COMMENT", None)
+    g3MacRtTXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit. Check DMA Manager. !!!")
+    g3MacRtTXDMAChannelComment.setVisible(False)
+    g3MacRtTXDMAChannelComment.setDependencies(requestDMAComment, ["DRV_PLC_TX_DMA_CHANNEL"])
+
+    global g3MacRtRXDMAChannel
+    g3MacRtRXDMAChannel = g3MacRtComponent.createIntegerSymbol("DRV_PLC_RX_DMA_CHANNEL", None)
+    g3MacRtRXDMAChannel.setLabel("DMA Channel For Receive")
+    g3MacRtRXDMAChannel.setDefaultValue(1)
+    g3MacRtRXDMAChannel.setVisible(False)
+    g3MacRtRXDMAChannel.setReadOnly(True)
+    g3MacRtRXDMAChannel.setDependencies(requestAndAssignRxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+
+    global g3MacRtRXDMAChannelComment
+    g3MacRtRXDMAChannelComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_RX_DMA_CH_COMMENT", None)
+    g3MacRtRXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Receive. Check DMA Manager. !!!")
+    g3MacRtRXDMAChannelComment.setVisible(False)
+    g3MacRtRXDMAChannelComment.setDependencies(requestDMAComment, ["DRV_PLC_RX_DMA_CHANNEL"])
+
+    g3MacRtDependencyDMAComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_DEPENDENCY_DMA_COMMENT", None)
+    g3MacRtDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
+    g3MacRtDependencyDMAComment.setVisible(isDMAPresent)
 
     ############################################################################
     #### Code Generation ####
@@ -450,100 +498,114 @@ def instantiateComponent(g3MacRtComponent):
 #### Business Logic ####
 ################################################################################  
 def onAttachmentConnected(source, target):
-    global g3MacRtTXDMAChannel
-    global g3MacRtRXDMAChannel
-    global g3MacRtDMAChannelComment
-    global g3MacRtProfile
-
-    print("onAttachmentConnected event")
+    global isDMAPresent
 
     localComponent = source["component"]
     remoteComponent = target["component"]
-    g3MacRtPlibId = remoteComponent.getID().upper()
+    remoteID = remoteComponent.getID()
     connectID = source["id"]
-
-    dmaRxRequestID = "DMA_CH_NEEDED_FOR_" + g3MacRtPlibId + "_Receive"
-    dmaTxRequestID = "DMA_CH_NEEDED_FOR_" + g3MacRtPlibId + "_Transmit"
-    dmaTxChannelID = "DMA_CH_FOR_" + g3MacRtPlibId + "_Transmit"
-    dmaRxChannelID = "DMA_CH_FOR_" + g3MacRtPlibId + "_Receive"
-
-    if connectID == "drv_g3_macrt_SPI_dependency" :
-        print("drv_g3_macrt_SPI_dependency")
-        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
-        plibUsed.clearValue()
-        plibUsed.setValue(g3MacRtPlibId, 1)
-        Database.setSymbolValue(g3MacRtPlibId, "SPI_DRIVER_CONTROLLED", True, 1)
-
-        # Set DMA in database
-        Database.setSymbolValue("core", dmaRxRequestID, True, 2)
-        Database.setSymbolValue("core", dmaTxRequestID, True, 2)
-
-        # Get the allocated channel and assign it
-        txChannel = Database.getSymbolValue("core", dmaTxChannelID)
-        localComponent.setSymbolValue("DRV_PLC_TX_DMA_CHANNEL", txChannel, 2)
-        rxChannel = Database.getSymbolValue("core", dmaRxChannelID)
-        localComponent.setSymbolValue("DRV_PLC_RX_DMA_CHANNEL", rxChannel, 2)
-    
-        # Get the allocated channel and assign it
-        g3MacRtTXDMAChannel.setValue(txChannel, 2)
-        g3MacRtTXDMAChannel.setVisible(True)
-        g3MacRtRXDMAChannel.setValue(rxChannel, 2)
-        g3MacRtRXDMAChannel.setVisible(True)
-        g3MacRtDMAChannelComment.setVisible(True)
-
-        # Disable SPI interrupts
-        plibIntUsed = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
-        plibIntUsed.clearValue()
-        plibIntUsed.setValue(False, 1)
-
-        # Set SPI baudrate
-        plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
-        plibBaudrate.clearValue()
-        if (g3MacRtProfile.getSelectedValue() == "2"): 
-            plibBaudrate.setValue(12000000, 1)
-            print("Set SPI baudrate: 12000000 - " + g3MacRtProfile.getSelectedValue())
-        else:
-            plibBaudrate.setValue(8000000, 1)
-            print("Set SPI baudrate: 8000000 - " + g3MacRtProfile.getSelectedValue())
-
-  
-def onAttachmentDisconnected(source, target):
-    global g3MacRtTXDMAChannel
-    global g3MacRtRXDMAChannel
-    global g3MacRtDMAChannelComment
-
-    print("onDependencyDisconnected event")
-
-    localComponent = source["component"]
-    remoteComponent = target["component"]
-    g3MacRtPlibId = remoteComponent.getID().upper()
-    connectID = source["id"]
-
-    dmaRxRequestID = "DMA_CH_NEEDED_FOR_" + g3MacRtPlibId + "_Receive"
-    dmaTxRequestID = "DMA_CH_NEEDED_FOR_" + g3MacRtPlibId + "_Transmit"
-    dmaTxChannelID = "DMA_CH_FOR_" + g3MacRtPlibId + "_Transmit"
-    dmaRxChannelID = "DMA_CH_FOR_" + g3MacRtPlibId + "_Receive"
+    targetID = target["id"]
 
     if connectID == "drv_g3_macrt_SPI_dependency":
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValue()
-        Database.setSymbolValue(g3MacRtPlibId, "SPI_DRIVER_CONTROLLED", False, 1)
+        plibUsed.setValue(remoteID.upper())
 
-        # Set DMA in database
-        Database.setSymbolValue("core", dmaRxRequestID, False, 2)
-        Database.setSymbolValue("core", dmaTxRequestID, False, 2)
-        print("DBG -> dmaTxRequestID: " + dmaTxRequestID)
-        print("DBG -> dmaRxRequestID: " + dmaRxRequestID)
-   
-        # Get the allocated channel and assign it
-        g3MacRtTXDMAChannel.setVisible(False)
-        g3MacRtRXDMAChannel.setVisible(False)
-        g3MacRtDMAChannelComment.setVisible(False)
+        Database.setSymbolValue(remoteID, "SPI_DRIVER_CONTROLLED", True)
+        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
 
+        # Do not change the order as DMA Channels needs to be allocated
+        # after setting the plibUsed symbol
+        # Both device and connected plib should support DMA
+        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
+            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setReadOnly(False)
+
+def onAttachmentDisconnected(source, target):
+    global isDMAPresent
+
+    localComponent = source["component"]
+    remoteComponent = target["component"]
+    remoteID = remoteComponent.getID()
+    connectID = source["id"]
+
+    if connectID == "drv_g3_macrt_SPI_dependency":
+
+        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+
+        # Do not change the order as DMA Channels needs to be cleared
+        # before clearing the plibUsed symbol
+        # Both device and connected plib should support DMA
+        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").clearValue()
+            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setReadOnly(True)
+            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
+
+        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
+        plibUsed.clearValue()
+        Database.setSymbolValue(remoteID, "SPI_DRIVER_CONTROLLED", False)
+
+def requestAndAssignTxDMAChannel(symbol, event):
+    global drvG3MacRtInstanceSpace
+    global g3MacRtTXDMAChannelComment
+
+    spiPeripheral = Database.getSymbolValue(drvG3MacRtInstanceSpace, "DRV_PLC_PLIB")
+
+    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+
+    if event["value"] == False:
+        Database.setSymbolValue("core", dmaRequestID, False)
+        g3MacRtXDMAChannelComment.setVisible(False)
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+        Database.setSymbolValue("core", dmaRequestID, True)
+
+    # Get the allocated channel and assign it
+    channel = Database.getSymbolValue("core", dmaChannelID)
+    symbol.setValue(channel)
+
+def requestAndAssignRxDMAChannel(symbol, event):
+    global drvG3MacRtInstanceSpace
+    global g3MacRtRXDMAChannelComment
+
+    spiPeripheral = Database.getSymbolValue(drvG3MacRtInstanceSpace, "DRV_PLC_PLIB")
+
+    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
+    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
+
+    if event["value"] == False:
+        Database.setSymbolValue("core", dmaRequestID, False)
+        g3MacRtRXDMAChannelComment.setVisible(False)
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+        Database.setSymbolValue("core", dmaRequestID, True)
+
+    # Get the allocated channel and assign it
+    channel = Database.getSymbolValue("core", dmaChannelID)
+    symbol.setValue(channel)
+
+def requestDMAComment(symbol, event):
+    global g3MacRtTXRXDMA
+
+    if(event["value"] == -2) and (g3MacRtTXRXDMA.getValue() == True):
+        symbol.setVisible(True)
+        event["symbol"].setVisible(False)
+    else:
+        symbol.setVisible(False)
 
 def destroyComponent(spiComponent):
-    spiPeripheral = Database.getSymbolValue("drv_g3_macrt", "DRV_PLC_PLIB")
-    dmaTxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
-    dmaRxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
-    Database.setSymbolValue("core", dmaTxID, False, 2) 
-    Database.setSymbolValue("core", dmaRxID, False, 2) 
+    global drvG3MacRtInstanceSpace
+
+    if isDMAPresent:
+        spiPeripheral = Database.getSymbolValue(drvG3MacRtInstanceSpace, "DRV_PLC_PLIB")
+
+        dmaTxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+        dmaRxID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
+
+        Database.setSymbolValue("core", dmaTxID, False)
+        Database.setSymbolValue("core", dmaRxID, False)

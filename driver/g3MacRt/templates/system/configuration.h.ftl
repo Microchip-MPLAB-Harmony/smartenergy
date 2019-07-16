@@ -4,6 +4,7 @@
 #define DRV_PLC_EXT_INT_PIN                  ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_RESET_PIN                    ${DRV_PLC_RESET_PIN?string}
 #define DRV_PLC_LDO_EN_PIN                   ${DRV_PLC_LDO_EN_PIN?string}
+#define DRV_PLC_CD_PIN                       ${DRV_PLC_CD_PIN?string}
 <#if DRV_G3_MACRT_PLC_PROFILE == "0">
 #define DRV_PLC_SPI_CLK                      8000000
 #define DRV_G3_MACRT_PLC_PROFILE             ${DRV_G3_MACRT_PLC_PROFILE?string}
