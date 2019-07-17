@@ -338,14 +338,15 @@ DRV_HANDLE USI_USART_Initialize( const USI_USART_INIT* const init )
     
     /* Set USART PLIB handler */
     dObj->plib->readCallbackRegister(_USI_USART_PLIB_CALLBACK, (uintptr_t)dObj);
-    
+
+<#if core.DMA_ENABLE?has_content>   
     /* Configure DMA for USART */
     SYS_DMA_DataWidthSetup(dObj->plib->dmaChannelTx, SYS_DMA_WIDTH_8_BIT);
     SYS_DMA_AddressingModeSetup(dObj->plib->dmaChannelTx, 
             SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, 
             SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
-    
-    
+
+</#if>
     return (DRV_HANDLE)dObj;
 }
 
@@ -365,10 +366,14 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     {
         return 0;
     }
-    
+
     /* Waiting for USART is free */
+<#if core.DMA_ENABLE?has_content>        
     while (SYS_DMA_ChannelIsBusy(dObj->plib->dmaChannelTx));
-    
+<#else>
+    while (dObj->plib->writeIsBusy());
+</#if>
+
     /* Launch transmission */
     if (DATA_CACHE_ENABLED)
     {
@@ -376,9 +381,13 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
          * to load the latest data in the actual memory to the cache */
         DCACHE_CLEAN_BY_ADDR((uint32_t *)dObj->pWrBuffer, dObj->wrBufferSize);
     }
-    
+
+<#if core.DMA_ENABLE?has_content>      
     SYS_DMA_ChannelTransfer (dObj->plib->dmaChannelTx, (const void *)dObj->pWrBuffer, 
             (const void *)dObj->plib->usartAddressTx, length);
+<#else>
+    dObj->plib->write(dObj->pWrBuffer, length);
+</#if>   
     
     return length;
 }

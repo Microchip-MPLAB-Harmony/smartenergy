@@ -1,5 +1,6 @@
 /* PLC MAC RT Driver Configuration Options */
 #define DRV_PLC_SECURE                       ${DRV_PLC_SECURE_MODE?string}
+#define DRV_PLC_EXT_INT_PIO_PORT             ${DRV_PLC_EXT_INT_PIO_PORT?string}
 #define DRV_PLC_EXT_INT_SRC                  ${DRV_PLC_EXT_INT_SRC?string}
 #define DRV_PLC_EXT_INT_PIN                  ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_RESET_PIN                    ${DRV_PLC_RESET_PIN?string}

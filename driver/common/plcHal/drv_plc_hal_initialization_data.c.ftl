@@ -2,9 +2,10 @@
 
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
+
  <#if DRV_PLC_TX_RX_DMA == true> 
-    /* PLC SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_PLC_PLIB}_TransferSetup,
+    /* SPI Transfer Setup */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
 
     /* DMA Channel for Transmit */
     .dmaChannelTx = SYS_DMA_CHANNEL_${DRV_PLC_TX_DMA_CHANNEL?string},
@@ -13,14 +14,20 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .dmaChannelRx  = SYS_DMA_CHANNEL_${DRV_PLC_RX_DMA_CHANNEL?string},
 
     /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(${DRV_PLC_PLIB?string}_REGS->SPI_TDR),
+    .spiAddressTx =  (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_TDR),
 
     /* SPI Receive Register */
-    .spiAddressRx  = (void *)&(${DRV_PLC_PLIB?string}_REGS->SPI_RDR),
+    .spiAddressRx  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_RDR),
 <#else>
-    /* PLC FLEXCOM SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${DRV_PLC_PLIB}_SPI_TransferSetup,
-<#endif>
+    /* SPI Transfer Setup */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
+
+    /* SPI Write/Read */
+    .spiWriteRead = ${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_WriteRead,
+    
+    /* SPI Is Busy */
+    .spiIsBusy = ${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsBusy,
+</#if>
     
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,

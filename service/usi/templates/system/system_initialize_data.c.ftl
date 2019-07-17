@@ -1,15 +1,21 @@
 // <editor-fold defaultstate="collapsed" desc="SRV_USI Instance ${INDEX?string} Initialization Data">
 
 <#if SRV_USI_USART_API_INDEX == true>
-uint8_t gSrvUSI${SRV_USI_COMM_API?string}ReadBuffer[SRV_USI${INDEX?string}_RD_BUF_SIZE] = {0};
-uint8_t gSrvUSI${SRV_USI_COMM_API?string}WriteBuffer[SRV_USI${INDEX?string}_WR_BUF_SIZE] = {0};
+uint8_t gSrvUSI${SRV_USI_PLIB?string}ReadBuffer[SRV_USI${INDEX?string}_RD_BUF_SIZE] = {0};
+uint8_t gSrvUSI${SRV_USI_PLIB?string}WriteBuffer[SRV_USI${INDEX?string}_WR_BUF_SIZE] = {0};
 
-const SRV_USI_USART_INTERFACE srvUsi${SRV_USI_COMM_API?string}PlibAPI = {
-    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${SRV_USI_COMM_API?string}_ReadCallbackRegister,
-    .read = (USI_USART_PLIB_READ)${SRV_USI_COMM_API?string}_Read,
-    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)${SRV_USI_COMM_API?string}_WriteCallbackRegister,
+const SRV_USI_USART_INTERFACE srvUsi${SRV_USI_PLIB?string}PlibAPI = {
+    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_ReadCallbackRegister,
+    .read = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_Read,
+    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_WriteCallbackRegister,
+<#if SRV_USI_TX_DMA == true>     
     .dmaChannelTx = SYS_DMA_CHANNEL_${SRV_USI_USART_TX_DMA_CHANNEL?string},
-    .usartAddressTx = (void *)&(${SRV_USI_COMM_API?string}_REGS->US_THR)
+    .usartAddressTx = (void *)&(${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_REGS->US_THR)
+<#else>
+    .write = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_Write,
+    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_WriteIsBusy,
+    .serialSetup = (USI_USART_PLIB_SERIAL_SETUP)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_SerialSetup
+</#if>
 };
 
 </#if>
@@ -30,13 +36,13 @@ const SRV_USI_INIT srvUSI${INDEX?string}InitData =
 <#if SRV_USI_USART_API_INDEX == true>
     .usiInterfaceApi = SRV_USI_USART_API,
 
-    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsi${SRV_USI_COMM_API?string}PlibAPI,
+    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsi${SRV_USI_PLIB?string}PlibAPI,
 
-    .readBuffer = (void*)gSrvUSI${SRV_USI_COMM_API?string}ReadBuffer,
+    .readBuffer = (void*)gSrvUSI${SRV_USI_PLIB?string}ReadBuffer,
 
     .readSizeMax = SRV_USI${INDEX?string}_RD_BUF_SIZE,
 
-    .writeBuffer = (void*)gSrvUSI${SRV_USI_COMM_API?string}WriteBuffer,
+    .writeBuffer = (void*)gSrvUSI${SRV_USI_PLIB?string}WriteBuffer,
 
     .writeSizeMax = SRV_USI${INDEX?string}_WR_BUF_SIZE,
 

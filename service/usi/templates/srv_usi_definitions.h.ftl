@@ -215,10 +215,13 @@ typedef enum
 typedef void (* PLIB_CALLBACK)( uintptr_t context );
 
 typedef void(* USI_USART_PLIB_CALLBACK)( uintptr_t context);
-typedef void(*USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
-typedef bool(*USI_USART_PLIB_READ)(void *buffer, const size_t size);
-typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
-
+typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
+typedef bool(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
+typedef void(* USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
+<#if !(core.DMA_ENABLE?has_content)>
+typedef bool(* USI_USART_PLIB_WRITE_ISBUSY)( void );
+typedef bool(* USI_USART_PLIB_SERIAL_SETUP)(uintptr_t, uint32_t);
+</#if>
 // *****************************************************************************
 /* USI Service USART Interface Data
 
@@ -236,10 +239,16 @@ typedef void(*USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr
 typedef struct
 {
     USI_USART_PLIB_READ_CALLBACK_REG readCallbackRegister;
-    USI_USART_PLIB_READ read;
+    USI_USART_PLIB_WRRD read;
     USI_USART_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
+<#if core.DMA_ENABLE?has_content>
     SYS_DMA_CHANNEL dmaChannelTx;
     void *usartAddressTx;
+<#else>
+    USI_USART_PLIB_WRRD write;
+    USI_USART_PLIB_WRITE_ISBUSY writeIsBusy;
+    USI_USART_PLIB_SERIAL_SETUP serialSetup;
+</#if>
 
 } SRV_USI_USART_INTERFACE;
 </#if>

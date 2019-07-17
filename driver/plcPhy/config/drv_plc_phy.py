@@ -128,12 +128,15 @@ def plcPhyProfileConfiguration(symbol, event):
             plcPhySourceBinFileG3FCC.setEnabled(False)
             plcPhyAssemblyBinFile.setEnabled(False)
 
-def plcPhyExternalInterruptTrigger(symbol, event):
-    global plcPhyExtIntSource
-
+def plcPhyExternalInterruptSource(symbol, event):
     key = event["symbol"].getKeyDescription(event["value"])
     intSrc = "PIO" + key[1] + "_IRQn"
-    plcPhyExtIntSource.setValue(intSrc)
+    symbol.setValue(intSrc)
+
+def plcPhyExternalInterruptPort(symbol, event):
+    key = event["symbol"].getKeyDescription(event["value"])
+    intPort = "PIO_PORT_" + key[1]
+    symbol.setValue(intPort)
 
         
 def plcPhyEnableEncScript(symbol, event):
@@ -192,19 +195,24 @@ def instantiateComponent(plcPhyComponent):
     plcPhySymNumClients.setReadOnly(True)
     plcPhySymNumClients.setDefaultValue(1)
 
-    global plcPhyExtIntPin
     plcPhyExtIntPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcPhyExtIntPin.setLabel("External Interrupt Pin")
     plcPhyExtIntPin.setOutputMode("Key")
     plcPhyExtIntPin.setDisplayMode("Description")
 
-    global plcPhyExtIntSource
     plcPhyExtIntSource = plcPhyComponent.createStringSymbol("DRV_PLC_PHY_EXT_INT_SRC", None)
     plcPhyExtIntSource.setLabel("External Interrupt Source")
     plcPhyExtIntSource.setDefaultValue("PIOA_IRQn")
     plcPhyExtIntSource.setVisible(True)
     plcPhyExtIntSource.setReadOnly(True)
-    plcPhyExtIntSource.setDependencies(plcPhyExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
+    plcPhyExtIntSource.setDependencies(plcPhyExternalInterruptSource, ["DRV_PLC_EXT_INT_PIN"])
+
+    plcPhyExtIntPioPort = plcPhyComponent.createStringSymbol("DRV_PLC_PHY_EXT_INT_PIO_PORT", None)
+    plcPhyExtIntPioPort.setLabel("External Interrupt Port")
+    plcPhyExtIntPioPort.setDefaultValue("PIO_PORT_A")
+    plcPhyExtIntPioPort.setVisible(True)
+    plcPhyExtIntPioPort.setReadOnly(True)
+    plcPhyExtIntPioPort.setDependencies(plcPhyExternalInterruptPort, ["DRV_PLC_EXT_INT_PIN"])
 
     plcPhyResetPin = plcPhyComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     plcPhyResetPin.setLabel("Reset Pin")
@@ -307,6 +315,12 @@ def instantiateComponent(plcPhyComponent):
     plcPhyDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
     plcPhyDependencyDMAComment.setVisible(isDMAPresent)
 
+    plcPhyKeyCortex = plcPhyComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
+    plcPhyKeyCortex.setLabel("PLC Phy Key Cortex")
+    plcPhyKeyCortex.setDefaultValue(0x1122)
+    plcPhyKeyCortex.setVisible(False)
+    plcPhyKeyCortex.setReadOnly(True)
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -314,23 +328,25 @@ def instantiateComponent(plcPhyComponent):
     configName = Variables.get("__CONFIGURATION_NAME")
 
     plcPhyHalHeaderFile = plcPhyComponent.createFileSymbol("PLC_HAL_HEADER", None)
-    plcPhyHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal_phy.h")
+    plcPhyHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal.h.ftl")
     plcPhyHalHeaderFile.setOutputName("drv_plc_hal.h")
     plcPhyHalHeaderFile.setDestPath("driver/plc/common/")
     plcPhyHalHeaderFile.setProjectPath("config/" + configName + "/driver/plc/common/")
     plcPhyHalHeaderFile.setType("HEADER")
+    plcPhyHalHeaderFile.setMarkup(True)
 
     plcPhyHalFile = plcPhyComponent.createFileSymbol("PLC_HAL", None)
-    plcPhyHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c")
+    plcPhyHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c.ftl")
     plcPhyHalFile.setOutputName("drv_plc_hal.c")
     plcPhyHalFile.setDestPath("driver/plc/common/")
     plcPhyHalFile.setProjectPath("config/" + configName + "/driver/plc/common/")
     plcPhyHalFile.setType("SOURCE")
+    plcPhyHalFile.setMarkup(True)
 
     plcPhyHALInitDataFile = plcPhyComponent.createFileSymbol("DRV_HAL_INIT_DATA", None)
     plcPhyHALInitDataFile.setType("STRING")
     plcPhyHALInitDataFile.setOutputName("core.LIST_SYSTEM_INIT_C_DRIVER_INITIALIZATION_DATA")
-    plcPhyHALInitDataFile.setSourcePath("driver/common/plcHal/drv_plc_hal_definitions.c.ftl")
+    plcPhyHALInitDataFile.setSourcePath("driver/common/plcHal/drv_plc_hal_initialization_data.c.ftl")
     plcPhyHALInitDataFile.setMarkup(True)
 
     plcPhyBootFile = plcPhyComponent.createFileSymbol("PLC_BOOT", None)

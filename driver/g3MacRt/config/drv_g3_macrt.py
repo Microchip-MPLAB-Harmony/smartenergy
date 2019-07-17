@@ -116,12 +116,15 @@ def profileConfiguration(symbol, event):
         g3MacRTSourceBinFileARIB.setEnabled(False)
         binAssemblyFile.setEnabled(False)
 
-def externalInterruptTrigger(symbol, event):
-    global g3MacRtExtIntSource
-
+def externalInterruptSource(symbol, event):
     key = event["symbol"].getKeyDescription(event["value"])
     intSrc = "PIO" + key[1] + "_IRQn"
-    g3MacRtExtIntSource.setValue(intSrc)
+    symbol.setValue(intSrc)
+
+def externalInterruptPort(symbol, event):
+    key = event["symbol"].getKeyDescription(event["value"])
+    intPort = "PIO_PORT_" + key[1]
+    symbol.setValue(intPort)
 
         
 def enableEncriptScript(symbol, event):
@@ -180,19 +183,24 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtSymNumClients.setReadOnly(True)
     g3MacRtSymNumClients.setDefaultValue(1)
 
-    global g3MacRtExtIntPin
     g3MacRtExtIntPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     g3MacRtExtIntPin.setLabel("External Interrupt Pin")
     g3MacRtExtIntPin.setOutputMode("Key")
     g3MacRtExtIntPin.setDisplayMode("Description")
 
-    global g3MacRtExtIntSource
     g3MacRtExtIntSource = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     g3MacRtExtIntSource.setLabel("External Interrupt Source")
     g3MacRtExtIntSource.setDefaultValue("PIOA_IRQn")
     g3MacRtExtIntSource.setVisible(True)
     g3MacRtExtIntSource.setReadOnly(True)
-    g3MacRtExtIntSource.setDependencies(externalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
+    g3MacRtExtIntSource.setDependencies(externalInterruptSource, ["DRV_PLC_EXT_INT_PIN"])
+
+    g3MacRtExtIntPioPort = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_PIO_PORT", None)
+    g3MacRtExtIntPioPort.setLabel("External Interrupt Port")
+    g3MacRtExtIntPioPort.setDefaultValue("PIO_PORT_A")
+    g3MacRtExtIntPioPort.setVisible(True)
+    g3MacRtExtIntPioPort.setReadOnly(True)
+    g3MacRtExtIntPioPort.setDependencies(externalInterruptPort, ["DRV_PLC_EXT_INT_PIN"])
 
     g3MacRtResetPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     g3MacRtResetPin.setLabel("Reset Pin")
@@ -302,6 +310,12 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
     g3MacRtDependencyDMAComment.setVisible(isDMAPresent)
 
+    g3MacRtKeyCortex = g3MacRtComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
+    g3MacRtKeyCortex.setLabel("G3 MAC RT Key Cortex")
+    g3MacRtKeyCortex.setDefaultValue(0x5A5A)
+    g3MacRtKeyCortex.setVisible(False)
+    g3MacRtKeyCortex.setReadOnly(True)
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -309,23 +323,25 @@ def instantiateComponent(g3MacRtComponent):
     configName = Variables.get("__CONFIGURATION_NAME")
 
     g3MacRtHalHeaderFile = g3MacRtComponent.createFileSymbol("PLC_HAL_HEADER", None)
-    g3MacRtHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal_g3macrt.h")
+    g3MacRtHalHeaderFile.setSourcePath("driver/common/plcHal/drv_plc_hal.h.ftl")
     g3MacRtHalHeaderFile.setOutputName("drv_plc_hal.h")
     g3MacRtHalHeaderFile.setDestPath("driver/plc/common/")
     g3MacRtHalHeaderFile.setProjectPath("config/" + configName + "/driver/plc/common/")
     g3MacRtHalHeaderFile.setType("HEADER")
+    g3MacRtHalHeaderFile.setMarkup(True)
 
     g3MacRtHalFile = g3MacRtComponent.createFileSymbol("PLC_HAL", None)
-    g3MacRtHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c")
+    g3MacRtHalFile.setSourcePath("driver/common/plcHal/drv_plc_hal.c.ftl")
     g3MacRtHalFile.setOutputName("drv_plc_hal.c")
     g3MacRtHalFile.setDestPath("driver/plc/common/")
     g3MacRtHalFile.setProjectPath("config/" + configName + "/driver/plc/common/")
     g3MacRtHalFile.setType("SOURCE")
+    g3MacRtHalFile.setMarkup(True)
 
     g3MacRtHALInitDataFile = g3MacRtComponent.createFileSymbol("DRV_HAL_INIT_DATA", None)
     g3MacRtHALInitDataFile.setType("STRING")
     g3MacRtHALInitDataFile.setOutputName("core.LIST_SYSTEM_INIT_C_DRIVER_INITIALIZATION_DATA")
-    g3MacRtHALInitDataFile.setSourcePath("driver/common/plcHal/drv_plc_hal_definitions.c.ftl")
+    g3MacRtHALInitDataFile.setSourcePath("driver/common/plcHal/drv_plc_hal_initialization_data.c.ftl")
     g3MacRtHALInitDataFile.setMarkup(True)
 
     g3MacRtBootFile = g3MacRtComponent.createFileSymbol("PLC_BOOT", None)

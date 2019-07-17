@@ -39,13 +39,17 @@ def instantiateComponent(usiComponentCommon):
     
     Log.writeInfoMessage("Loading PLC USI Common Service")
 
-    res = Database.activateComponents(["HarmonyCore"])
-
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True)
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True, 1)
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True)
+
+    # Enable "Enable System Ports" option in MHC
+    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS") == False):
+        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True)
 
     ############################################################################
     #### Code Generation ####
@@ -134,12 +138,12 @@ def instantiateComponent(usiComponentCommon):
 
     # USART wrapper Files
     usiUsartSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_SOURCE", None)
-    usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c")
+    usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c.ftl")
     usiUsartSourceFile.setOutputName("srv_usi_usart.c")
     usiUsartSourceFile.setDestPath("service/usi")
     usiUsartSourceFile.setProjectPath("config/" + configName + "/service/usi/")
     usiUsartSourceFile.setType("SOURCE")
-    usiUsartSourceFile.setMarkup(False)
+    usiUsartSourceFile.setMarkup(True)
     usiUsartSourceFile.setOverwrite(True)
     usiUsartSourceFile.setEnabled(False)
     usiUsartSourceFile.setDependencies(enableUsartFiles, ["SRV_USI_USART_API"])
