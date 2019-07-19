@@ -209,11 +209,10 @@ typedef void (* PLIB_CALLBACK)( uintptr_t context );
 
 typedef void(* USI_USART_PLIB_CALLBACK)( uintptr_t context);
 typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
-typedef bool(* USI_USART_PLIB_READ)(void *buffer, const size_t size);
+typedef bool(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
 typedef void(* USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(* USI_USART_PLIB_WRITE_ISBUSY)( void );
 typedef bool(* USI_USART_PLIB_SERIAL_SETUP)(uintptr_t, uint32_t);
-
 // *****************************************************************************
 /* USI Service USART Interface Data
 
@@ -231,9 +230,9 @@ typedef bool(* USI_USART_PLIB_SERIAL_SETUP)(uintptr_t, uint32_t);
 typedef struct
 {
     USI_USART_PLIB_READ_CALLBACK_REG readCallbackRegister;
-    USI_USART_PLIB_READ read;
+    USI_USART_PLIB_WRRD read;
     USI_USART_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
-    USI_USART_PLIB_READ write;
+    USI_USART_PLIB_WRRD write;
     USI_USART_PLIB_WRITE_ISBUSY writeIsBusy;
     USI_USART_PLIB_SERIAL_SETUP serialSetup;
 

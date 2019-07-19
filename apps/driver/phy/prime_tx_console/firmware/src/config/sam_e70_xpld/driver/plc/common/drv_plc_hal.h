@@ -50,8 +50,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "system/dma/sys_dma.h"
 #include "system/ports/sys_ports.h"
+#include "system/dma/sys_dma.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -99,6 +99,55 @@
 // *****************************************************************************
 
 typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
+typedef bool (* DRV_PLC_SPI_WRITE_READ)( void * pTransmitData, size_t txSize, 
+        void * pReceiveData, size_t rxSize );
+typedef bool (* DRV_PLC_SPI_ISBUSY)( void );
+
+ typedef enum
+{
+    DRV_PLC_SPI_CLOCK_PHASE_TRAILING_EDGE = 0 << SPI_CSR_NCPHA_Pos,
+    DRV_PLC_SPI_CLOCK_PHASE_LEADING_EDGE = 1 << SPI_CSR_NCPHA_Pos,
+
+    /* Force the compiler to reserve 32-bit space for each enum value */
+    DRV_PLC_SPI_CLOCK_PHASE_INVALID = 0xFFFFFFFF
+
+}DRV_PLC_SPI_CLOCK_PHASE;
+
+typedef enum
+{
+    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_LOW = 0 << SPI_CSR_CPOL_Pos,
+    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_HIGH = 1 << SPI_CSR_CPOL_Pos,
+
+    /* Force the compiler to reserve 32-bit space for each enum value */
+    DRV_PLC_SPI_CLOCK_POLARITY_INVALID = 0xFFFFFFFF
+
+}DRV_PLC_SPI_CLOCK_POLARITY;
+
+typedef enum
+{
+    DRV_PLC_SPI_DATA_BITS_8 = SPI_CSR_BITS_8_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_9 = SPI_CSR_BITS_9_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_10 = SPI_CSR_BITS_10_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_11 = SPI_CSR_BITS_11_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_12 = SPI_CSR_BITS_12_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_13 = SPI_CSR_BITS_13_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_14 = SPI_CSR_BITS_14_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_15 = SPI_CSR_BITS_15_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_DATA_BITS_16 = SPI_CSR_BITS_16_BIT_Val << SPI_CSR_BITS_Pos,
+
+    /* Force the compiler to reserve 32-bit space for each enum value */
+    DRV_PLC_SPI_DATA_BITS_INVALID = 0xFFFFFFFF
+
+}DRV_PLC_SPI_DATA_BITS;
+
+typedef struct
+{
+    uint32_t    clockFrequency;
+    DRV_PLC_SPI_CLOCK_PHASE clockPhase;
+    DRV_PLC_SPI_CLOCK_POLARITY clockPolarity;
+    DRV_PLC_SPI_DATA_BITS   dataBits;
+
+}DRV_PLC_SPI_TRANSFER_SETUP;
 
 // *****************************************************************************
 /* PLC Driver PLIB Interface Data
@@ -115,21 +164,15 @@ typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
 */
 
 typedef struct
-{
+{  
     /* PLC SPI PLIB Transfer Setup */
-    DRV_PLC_SPI_PLIB_TRANSFER_SETUP      spiPlibTransferSetup;
+    DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup;
 
-    /* SPI transmit DMA channel. */
-    SYS_DMA_CHANNEL                        dmaChannelTx;
-
-    /* SPI receive DMA channel. */
-    SYS_DMA_CHANNEL                        dmaChannelRx;
-
-    /* SPI transmit register address used for DMA operation. */
-    void                                   *spiAddressTx;
-
-    /* SPI receive register address used for DMA operation. */
-    void                                   *spiAddressRx;
+    /* SPI Write/Read */
+    DRV_PLC_SPI_WRITE_READ                         spiWriteRead;
+    
+    /* SPI Is Busy */
+    DRV_PLC_SPI_ISBUSY                             spiIsBusy;
 
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;

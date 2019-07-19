@@ -27,12 +27,6 @@ extern "C" {
 #endif
 // DOM-IGNORE-END
     
-#ifndef LED_On
-#define LED_On LED0_On
-#define LED_Off LED0_Off
-#define LED_Toggle LED0_Toggle    
-#endif
-
 /* The below tables should be redefined by customer to calibrate their own hardware
  * These values have been got from ATPLCOUP007v2/ATPLCOUP008v2 coupling board */    
     

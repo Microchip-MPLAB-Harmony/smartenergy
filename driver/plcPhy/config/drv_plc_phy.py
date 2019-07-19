@@ -172,14 +172,15 @@ def instantiateComponent(plcPhyComponent):
     # Enable "ENABLE_SYS_DMA" option in MHC
     if Database.getSymbolValue("core", "DMA_ENABLE") == None:
         isDMAPresent = False
-        print("isDMAPresent = False")
+        print(" PLC PHY isDMAPresent = False")
     else:
         isDMAPresent = True
-        print("isDMAPresent = False")
+        print("PLC PHY isDMAPresent = True")
 
         # Enable "Enable System DMA" option in MHC
         if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA") == False):
             Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True)
+            print("PLC PHY HarmonyCore ENABLE_SYS_DMA")
     
     plcPhySymNumInst = plcPhyComponent.createIntegerSymbol("DRV_PLC_PHY_NUM_INSTANCES", None)
     plcPhySymNumInst.setLabel("Number of Instances")
@@ -281,6 +282,7 @@ def instantiateComponent(plcPhyComponent):
     plcPhyTXRXDMA = plcPhyComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
     plcPhyTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
     plcPhyTXRXDMA.setVisible(isDMAPresent)
+    plcPhyTXRXDMA.setDefaultValue(isDMAPresent)
     plcPhyTXRXDMA.setReadOnly(True)
 
     global plcPhyTXDMAChannel
@@ -585,6 +587,8 @@ def requestAndAssignTxDMAChannel(symbol, event):
     global drvPlcPhyInstanceSpace
     global plcPhyTXDMAChannelComment
 
+    print("requestAndAssignTxDMAChannel")
+
     spiPeripheral = Database.getSymbolValue(drvPlcPhyInstanceSpace, "DRV_PLC_PLIB")
 
     dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
@@ -600,11 +604,14 @@ def requestAndAssignTxDMAChannel(symbol, event):
 
     # Get the allocated channel and assign it
     channel = Database.getSymbolValue("core", dmaChannelID)
+    print("channel:" + str(channel))
     symbol.setValue(channel)
 
 def requestAndAssignRxDMAChannel(symbol, event):
     global drvPlcPhyInstanceSpace
     global plcPhyRXDMAChannelComment
+
+    print("requestAndAssignRxDMAChannel")
 
     spiPeripheral = Database.getSymbolValue(drvPlcPhyInstanceSpace, "DRV_PLC_PLIB")
 
@@ -621,6 +628,7 @@ def requestAndAssignRxDMAChannel(symbol, event):
 
     # Get the allocated channel and assign it
     channel = Database.getSymbolValue("core", dmaChannelID)
+    print("channel:" + str(channel))
     symbol.setValue(channel)
 
 def requestDMAComment(symbol, event):

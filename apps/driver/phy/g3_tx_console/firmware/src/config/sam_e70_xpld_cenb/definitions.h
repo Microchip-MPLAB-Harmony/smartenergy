@@ -58,12 +58,12 @@
 #include "driver/memory/drv_memory.h"
 #include "peripheral/efc/plib_efc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "system/time/sys_time.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 #include "driver/plc/phy/drv_plc_phy_definitions.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/phy/drv_plc_phy_comm.h"
+#include "system/time/sys_time.h"
 #include "driver/memory/drv_memory_efc.h"
 #include "peripheral/trng/plib_trng.h"
 #include "peripheral/spi/plib_spi0.h"
@@ -197,10 +197,10 @@ void SYS_Tasks ( void );
 
 typedef struct
 {
-    SYS_MODULE_OBJ  sysTime;
     /* PLC PHY Driver Object */
     SYS_MODULE_OBJ drvPlcPhy;
 
+    SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  drvMemory0;
 
 } SYSTEM_OBJECTS;

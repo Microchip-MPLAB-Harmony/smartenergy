@@ -1,5 +1,5 @@
 /******************************************************************************
-  DRV_PLC_PHY PRIME Profile Layer
+  DRV_PLC_PHY G3 Profile Layer
 
   Company:
     Microchip Technology Inc.
@@ -8,11 +8,11 @@
     drv_plc_phy_comm.c
 
   Summary:
-    PLC Driver PRIME Profile Layer
+    PLC Driver G3 Profile Layer
 
   Description:
-    This file contains the source code for the implementation of the PRIME
-    Profile Layer.
+    This file contains the source code for the implementation of the G3 Profile 
+    Layer.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -54,7 +54,7 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Global data
+// Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
 
@@ -63,10 +63,10 @@ static DRV_PLC_PHY_OBJ *gPlcPhyObj;
 
 /* Buffer definition to communicate with PLC */
 static uint8_t sDataInfo[PLC_STATUS_LENGTH];
-static uint8_t sDataTx[PLC_TX_PAR_SIZE + PLC_DATA_PKT_SIZE];
+static uint8_t sDataTxPar[PLC_TX_PAR_SIZE];
 static uint8_t sDataRxPar[PLC_RX_PAR_SIZE];
 static uint8_t sDataRxDat[PLC_DATA_PKT_SIZE];
-static uint8_t sDataTxCfm[2][PLC_CMF_PKT_SIZE];
+static uint8_t sDataTxCfm[PLC_CMF_PKT_SIZE];
 static uint8_t sDataReg[PLC_REG_PKT_SIZE];
 
 // *****************************************************************************
@@ -74,6 +74,7 @@ static uint8_t sDataReg[PLC_REG_PKT_SIZE];
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
+
 static uint32_t _DRV_PLC_PHY_COMM_GetPibBaseAddress(DRV_PLC_PHY_ID id)
 {
     uint32_t addr;
@@ -101,17 +102,17 @@ uint16_t _DRV_PLC_PHY_COMM_GetDelayUs(DRV_PLC_PHY_ID id)
     {
         switch (id) 
         {
-            case PLC_ID_CHANNEL_CFG:
-            delay = 100;
+            case PLC_ID_TONE_MASK:
+            delay = 600;
             break;
 
             case PLC_ID_PREDIST_COEF_TABLE_HI:
             case PLC_ID_PREDIST_COEF_TABLE_LO:
-            delay = 1000;
+            delay = 250;
             break;
 
             case PLC_ID_PREDIST_COEF_TABLE_VLO:
-            delay = 2000;
+            delay = 350;
             break;
 
             default:
@@ -128,40 +129,37 @@ static size_t _DRV_PLC_PHY_COMM_TxStringify(DRV_PLC_PHY_TRANSMISSION_OBJ *pSrc)
     uint8_t *pDst;
     size_t size;
     
-    pDst = sDataTx;
+    pDst = sDataTxPar;
     
     *pDst++ = (uint8_t)pSrc->time;
     *pDst++ = (uint8_t)(pSrc->time >> 8);
     *pDst++ = (uint8_t)(pSrc->time >> 16);
     *pDst++ = (uint8_t)(pSrc->time >> 24);
     *pDst++ = (uint8_t)pSrc->dataLength;
-    *pDst++ = (uint8_t)(pSrc->dataLength >> 8);    
-    *pDst++ = pSrc->attenuation;
-    *pDst++ = pSrc->scheme;
-    *pDst++ = pSrc->forced;
-    *pDst++ = pSrc->frameType;
+    *pDst++ = (uint8_t)(pSrc->dataLength >> 8);
+    memcpy(pDst, pSrc->preemphasis, sizeof(pSrc->preemphasis));
+    pDst += sizeof(pSrc->preemphasis);
+    memcpy(pDst, pSrc->toneMap, sizeof(pSrc->toneMap));
+    pDst += sizeof(pSrc->toneMap);
     *pDst++ = pSrc->mode;
-    *pDst++ = pSrc->bufferId;
+    *pDst++ = pSrc->attenuation;
+    *pDst++ = pSrc->modType;
+    *pDst++ = pSrc->modScheme;
+    *pDst++ = pSrc->pdc;
+    *pDst++ = pSrc->rs2Blocks;
+    *pDst++ = pSrc->delimiterType;
 
-    if (pSrc->dataLength > PLC_DATA_PKT_SIZE)
-    {
-        pSrc->dataLength = PLC_DATA_PKT_SIZE;
-    }
-
-    memcpy(pDst, pSrc->pTransmitData, pSrc->dataLength);
-    pDst += pSrc->dataLength;
-
-    size = (uint16_t)(pDst - sDataTx);
+    size = (uint16_t)(pDst - sDataTxPar);
     
     return size;
     
 }
 
-static void _DRV_PLC_PHY_COMM_TxCfmEvent(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj, uint8_t id)
+static void _DRV_PLC_PHY_COMM_TxCfmEvent(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj)
 {
     uint8_t *pSrc;
     
-    pSrc = sDataTxCfm[id];
+    pSrc = sDataTxCfm;
     
     pCfmObj->rmsCalc = (uint32_t)*pSrc++;
     pCfmObj->rmsCalc += (uint32_t)*pSrc++ << 8;
@@ -173,9 +171,7 @@ static void _DRV_PLC_PHY_COMM_TxCfmEvent(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmO
     pCfmObj->time += (uint32_t)*pSrc++ << 16;
     pCfmObj->time += (uint32_t)*pSrc++ << 24;
 
-    pCfmObj->frameType = (DRV_PLC_PHY_FRAME_TYPE)*pSrc++;
-    pCfmObj->result = (DRV_PLC_PHY_TX_RESULT)*pSrc++;
-    pCfmObj->bufferId = (DRV_PLC_PHY_BUFFER_ID)*pSrc;
+    pCfmObj->result = (DRV_PLC_PHY_TX_RESULT)*pSrc;
 }
 
 static void _DRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
@@ -185,40 +181,61 @@ static void _DRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
     pSrc = sDataRxPar;
     
     /* Parse parameters of reception event */
-    pRxObj->evmHeaderAcum = (uint32_t)*pSrc++;
-    pRxObj->evmHeaderAcum += (uint32_t)*pSrc++ << 8;
-    pRxObj->evmHeaderAcum += (uint32_t)*pSrc++ << 16;
-    pRxObj->evmHeaderAcum += (uint32_t)*pSrc++ << 24;
-    pRxObj->evmPayloadAcum = (uint32_t)*pSrc++;
-    pRxObj->evmPayloadAcum += (uint32_t)*pSrc++ << 8;
-    pRxObj->evmPayloadAcum += (uint32_t)*pSrc++ << 16;
-    pRxObj->evmPayloadAcum += (uint32_t)*pSrc++ << 24;
     pRxObj->time = (uint32_t)*pSrc++;
     pRxObj->time += (uint32_t)*pSrc++ << 8;
     pRxObj->time += (uint32_t)*pSrc++ << 16;
     pRxObj->time += (uint32_t)*pSrc++ << 24;
-    pRxObj->evmHeader = (uint16_t)*pSrc++;
-    pRxObj->evmHeader += (uint16_t)*pSrc++ << 8;
-    pRxObj->evmPayload = (uint16_t)*pSrc++;
-    pRxObj->evmPayload += (uint16_t)*pSrc++ << 8;
+
+    pRxObj->frameDuration = (uint32_t)*pSrc++;
+    pRxObj->frameDuration += (uint32_t)*pSrc++ << 8;
+    pRxObj->frameDuration += (uint32_t)*pSrc++ << 16;
+    pRxObj->frameDuration += (uint32_t)*pSrc++ << 24;
+
+    pRxObj->rssi = (uint16_t)*pSrc++;
+    pRxObj->rssi += (uint16_t)*pSrc++ << 8;
+    
     pRxObj->dataLength = (uint16_t)*pSrc++;
     pRxObj->dataLength += (uint16_t)*pSrc++ << 8;
-    pRxObj->scheme = (DRV_PLC_PHY_SCH)*pSrc++;
-    pRxObj->frameType = (DRV_PLC_PHY_FRAME_TYPE)*pSrc++;
-    pRxObj->headerType = (DRV_PLC_PHY_HEADER)*pSrc++;
-    pRxObj->rssiAvg = *pSrc++;
-    pRxObj->cinrAvg = *pSrc++;
-    pRxObj->cinrMin = *pSrc++;
-    pRxObj->berSoftAvg = *pSrc++;
-    pRxObj->berSoftMax = *pSrc++;
-    pRxObj->narBandPercent = *pSrc++;
-    pRxObj->impNoisePercent = *pSrc++;
-
-    if (pRxObj->dataLength > PLC_DATA_PKT_SIZE)
-    {
+    if (pRxObj->dataLength > PLC_DATA_PKT_SIZE) {
         pRxObj->dataLength = PLC_DATA_PKT_SIZE;
     }
-    
+
+    pRxObj->zctDiff = *pSrc++;
+    pRxObj->rsCorrectedErrors = *pSrc++;
+    pRxObj->modType = (DRV_PLC_PHY_MOD_TYPE)*pSrc++;
+    pRxObj->modScheme = (DRV_PLC_PHY_MOD_SCHEME)*pSrc++;
+
+    pRxObj->agcFactor = (uint32_t)*pSrc++;
+    pRxObj->agcFactor += (uint32_t)*pSrc++ << 8;
+    pRxObj->agcFactor += (uint32_t)*pSrc++ << 16;
+    pRxObj->agcFactor += (uint32_t)*pSrc++ << 24;
+    pRxObj->agcFine = (uint16_t)*pSrc++;
+    pRxObj->agcFine += (uint16_t)*pSrc++ << 8;
+    pRxObj->agcOffsetMeas = (uint16_t)*pSrc++;
+    pRxObj->agcOffsetMeas += (uint16_t)*pSrc++ << 8;
+    pRxObj->agcActive = *pSrc++;
+    pRxObj->agcActive = *pSrc++;
+    pRxObj->snrFch = (uint16_t)*pSrc++;
+    pRxObj->snrFch += (uint16_t)*pSrc++ << 8;
+    pRxObj->snrPay = (uint16_t)*pSrc++;
+    pRxObj->snrPay += (uint16_t)*pSrc++ << 8;
+    pRxObj->payloadCorruptedCarriers = (uint16_t)*pSrc++;
+    pRxObj->payloadCorruptedCarriers += (uint16_t)*pSrc++ << 8;
+    pRxObj->payloadNoisedSymbols = (uint16_t)*pSrc++;
+    pRxObj->payloadNoisedSymbols += (uint16_t)*pSrc++ << 8;
+    pRxObj->payloadSnrWorstCarrier = *pSrc++;
+    pRxObj->payloadSnrWorstCarrier = *pSrc++;
+    pRxObj->payloadSnrImpulsive = *pSrc++;
+    pRxObj->payloadSnrBand = *pSrc++;
+    pRxObj->payloadSnrBackground = *pSrc++;
+    pRxObj->lqi = *pSrc++;
+
+    pRxObj->delimiterType = (DRV_PLC_PHY_DEL_TYPE)*pSrc++;
+    pRxObj->rsrv0 = *pSrc++;
+    memcpy(pRxObj->toneMap, pSrc, TONE_MAP_SIZE_MAX);
+    pSrc += sizeof(pRxObj->toneMap);
+    memcpy(pRxObj->carrierSnr, pSrc, PROTOCOL_CARRIERS_MAX);
+
     /* Set data content pointer */
     pRxObj->pReceivedData = sDataRxDat;
 }
@@ -370,8 +387,7 @@ static void _DRV_PLC_PHY_COMM_GetEventsInfo(DRV_PLC_PHY_EVENTS_OBJ *eventsObj)
     }    
     
     /* Extract Events information */
-    eventsObj->evCfm[0] = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_TX0_CFM_MASK)? 1:0;
-    eventsObj->evCfm[1] = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_TX1_CFM_MASK)? 1:0;
+    eventsObj->evCfm = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_TX_CFM_MASK)? 1:0;
     eventsObj->evRxDat = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_RX_DAT_MASK)? 1:0;
     eventsObj->evRxPar = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_RX_PAR_MASK)? 1:0;
     eventsObj->evReg = (halInfo.flags & DRV_PLC_PHY_EV_FLAG_REG_MASK)? 1:0;
@@ -400,7 +416,6 @@ void DRV_PLC_PHY_Init(DRV_PLC_PHY_OBJ *pl360)
     
     /* Clear information about PLC events */
     gPlcPhyObj->evTxCfm[0] = false;
-    gPlcPhyObj->evTxCfm[1] = false;
     gPlcPhyObj->evRxPar = false;
     gPlcPhyObj->evRxDat = false;
     gPlcPhyObj->evRegRspLength = 0;
@@ -413,34 +428,30 @@ void DRV_PLC_PHY_Init(DRV_PLC_PHY_OBJ *pl360)
 void DRV_PLC_PHY_Task(void)
 {
     /* Check event flags */
-    for (uint8_t idx = 0; idx < 2; idx++)
+    if ((gPlcPhyObj->evTxCfm[0]) || (gPlcPhyObj->evResetTxCfm))
     {
-        if (gPlcPhyObj->evTxCfm[idx])
+        DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
+        
+        if (gPlcPhyObj->evResetTxCfm)
         {
-            DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
+            gPlcPhyObj->evResetTxCfm = false;
+            gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
             
-            if (gPlcPhyObj->evResetTxCfm)
-            {
-				gPlcPhyObj->evResetTxCfm = false;
-            	gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
-				
-                cfmObj.bufferId = (DRV_PLC_PHY_BUFFER_ID)idx;
-                cfmObj.rmsCalc = 0;
-                cfmObj.time = 0;
-                cfmObj.result = DRV_PLC_PHY_TX_RESULT_NO_TX;
-            } else {
-                _DRV_PLC_PHY_COMM_TxCfmEvent(&cfmObj, idx);            
-            }
-            
-            if (gPlcPhyObj->dataCfmCallback)
-            {
-                /* Report to upper layer */
-                gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
-            }
-            
-            /* Reset event flag */
-            gPlcPhyObj->evTxCfm[idx] = false;
+            cfmObj.rmsCalc = 0;
+            cfmObj.time = 0;
+            cfmObj.result = DRV_PLC_PHY_TX_RESULT_NO_TX;
+        } else {
+            _DRV_PLC_PHY_COMM_TxCfmEvent(&cfmObj);            
         }
+        
+        if (gPlcPhyObj->dataCfmCallback)
+        {
+            /* Report to upper layer */
+            gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
+        }
+        
+        /* Reset event flag */
+        gPlcPhyObj->evTxCfm[0] = false;
     }
     
     if (gPlcPhyObj->evRxPar && gPlcPhyObj->evRxDat)
@@ -464,28 +475,30 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
 {    
     if((handle != DRV_HANDLE_INVALID) && (handle == 0) && (gPlcPhyObj->state == DRV_PLC_PHY_STATE_IDLE))
     {
-        size_t size;
+        size_t size_params;
         
-        size = _DRV_PLC_PHY_COMM_TxStringify(transmitObj);
+        size_params = _DRV_PLC_PHY_COMM_TxStringify(transmitObj);
         
-        if (size)
+        if (size_params)
         {
             /* Update PLC state: transmitting */
             gPlcPhyObj->state = DRV_PLC_PHY_STATE_TX;
             
-            /* Send TX message */
-            if (transmitObj->bufferId == TX_BUFFER_0)
-            {
-                _DRV_PLC_PHY_COMM_SpiWriteCmd(TX0_PAR_ID, sDataTx, size);
-            }
-            else
-            {
-                _DRV_PLC_PHY_COMM_SpiWriteCmd(TX1_PAR_ID, sDataTx, size);
-            }
+            /* Send TX parameters */
+            _DRV_PLC_PHY_COMM_SpiWriteCmd(TX_PAR_ID, sDataTxPar, size_params);
             
-                           
-            /* Update PLC state: waiting confirmation */
-            gPlcPhyObj->state = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
+            /* Waiting CFM to avoid soon error responses */
+            gPlcPhyObj->plcHal->delay(200);
+            
+            /* Send TX data */
+            if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_TX)
+            {
+                /* Send TX data content */
+                _DRV_PLC_PHY_COMM_SpiWriteCmd(TX_DAT_ID, transmitObj->pTransmitData, transmitObj->dataLength);
+            
+                /* Update PLC state: waiting confirmation */
+                gPlcPhyObj->state = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
+            }
         }
     }
 }
@@ -663,8 +676,8 @@ bool DRV_PLC_PHY_PIBSet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
     return false;
 }
 
-void DRV_PLC_PHY_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context )
-{    
+void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
+{   
     /* Avoid warning */
     (void)context;
 
@@ -672,27 +685,18 @@ void DRV_PLC_PHY_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context )
     {
         DRV_PLC_PHY_EVENTS_OBJ evObj;
         
-        /* Time guard */
+        /* Time guard ?? */
         gPlcPhyObj->plcHal->delay(20);
         
         /* Get PLC events information */
         _DRV_PLC_PHY_COMM_GetEventsInfo(&evObj);
         
         /* Check confirmation of the transmission event */
-        if (evObj.evCfm[0])
+        if (evObj.evCfm)
         {
-            _DRV_PLC_PHY_COMM_SpiReadCmd(TX0_CFM_ID, sDataTxCfm[0], PLC_CMF_PKT_SIZE);
+            _DRV_PLC_PHY_COMM_SpiReadCmd(TX_CFM_ID, sDataTxCfm, PLC_CMF_PKT_SIZE);
             /* update event flag */
             gPlcPhyObj->evTxCfm[0] = true;
-            /* Update PLC state: idle */
-            gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
-        }
-
-        if (evObj.evCfm[1])
-        {
-            _DRV_PLC_PHY_COMM_SpiReadCmd(TX1_CFM_ID, sDataTxCfm[1], PLC_CMF_PKT_SIZE);
-            /* update event flag */
-            gPlcPhyObj->evTxCfm[1] = true;
             /* Update PLC state: idle */
             gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
         }
@@ -721,10 +725,10 @@ void DRV_PLC_PHY_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context )
             gPlcPhyObj->evRegRspLength = evObj.regRspLength;
         }
         
-        /* Time guard */
+        /* Time guard ?? */
         gPlcPhyObj->plcHal->delay(50);
     }
     
     /* PORTD Interrupt Status Clear */
-    ((pio_registers_t*)PIO_PORT_D)->PIO_ISR;
+    ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
 }

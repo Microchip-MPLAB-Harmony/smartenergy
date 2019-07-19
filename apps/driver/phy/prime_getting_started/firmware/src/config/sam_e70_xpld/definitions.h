@@ -54,13 +54,13 @@
 #include "peripheral/xdmac/plib_xdmac.h"
 #include "peripheral/efc/plib_efc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "system/debug/sys_debug.h"
-#include "system/time/sys_time.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 #include "driver/plc/phy/drv_plc_phy_definitions.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/phy/drv_plc_phy_comm.h"
+#include "system/debug/sys_debug.h"
+#include "system/time/sys_time.h"
 #include "peripheral/spi/plib_spi0.h"
 #include "system/console/sys_console.h"
 #include "system/console/src/sys_console_uart_definitions.h"
@@ -192,12 +192,12 @@ void SYS_Tasks ( void );
 
 typedef struct
 {
-    SYS_MODULE_OBJ  sysDebug;
-
-    SYS_MODULE_OBJ  sysTime;
     /* PLC PHY Driver Object */
     SYS_MODULE_OBJ drvPlcPhy;
 
+    SYS_MODULE_OBJ  sysDebug;
+
+    SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  sysConsole0;
 
 

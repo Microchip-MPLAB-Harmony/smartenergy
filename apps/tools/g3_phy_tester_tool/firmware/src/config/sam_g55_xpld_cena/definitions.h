@@ -49,12 +49,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "service/pserial/srv_pserial.h"
+#include "peripheral/flexcom/usart/plib_flexcom7_usart.h"
 #include "peripheral/pio/plib_pio.h"
 #include "peripheral/clock/plib_clock.h"
 #include "peripheral/nvic/plib_nvic.h"
-#include "peripheral/flexcom/spi/plib_flexcom3_spi.h"
-#include "peripheral/flexcom/usart/plib_flexcom4_usart.h"
 #include "peripheral/efc/plib_efc.h"
+#include "peripheral/flexcom/spi/plib_flexcom5_spi.h"
 #include "peripheral/tc/plib_tc0.h"
 #include "service/usi/srv_usi.h"
 #include "service/usi/srv_usi_definitions.h"
@@ -68,7 +68,6 @@
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"
 #include "system/cache/sys_cache.h"
-#include "system/dma/sys_dma.h"
 #include "osal/osal.h"
 #include "app.h"
 

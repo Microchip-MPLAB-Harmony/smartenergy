@@ -57,12 +57,12 @@
 #include "bsp/bsp.h"
 #include "service/usi/srv_usi.h"
 #include "service/usi/srv_usi_definitions.h"
-#include "system/time/sys_time.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 #include "driver/plc/phy/drv_plc_phy_definitions.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/phy/drv_plc_phy_comm.h"
+#include "system/time/sys_time.h"
 #include "peripheral/spi/plib_spi0.h"
 #include "peripheral/usart/plib_usart1.h"
 #include "service/psniffer/srv_psniffer.h"
@@ -193,10 +193,10 @@ void SYS_Tasks ( void );
 
 typedef struct
 {
-    SYS_MODULE_OBJ  sysTime;
     /* PLC PHY Driver Object */
     SYS_MODULE_OBJ drvPlcPhy;
 
+    SYS_MODULE_OBJ  sysTime;
     /* USI0 Service Object */
     SYS_MODULE_OBJ srvUSI0;
 

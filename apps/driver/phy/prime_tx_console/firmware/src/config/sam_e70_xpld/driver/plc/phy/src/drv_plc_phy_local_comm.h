@@ -1,5 +1,5 @@
 /*******************************************************************************
-  PLC Driver Local PRIME Data Structures
+  PLC Driver Local G3 Data Structures
 
   Company:
     Microchip Technology Inc.
@@ -8,10 +8,10 @@
     drv_plc_phy_local_comm.h
 
   Summary:
-    PLC Driver Local PRIME Data Structures
+    PLC Driver Local G3 Data Structures
 
   Description:
-    Driver Local PRIME Data Structures
+    Driver Local G3 Data Structures
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -42,6 +42,7 @@
 #ifndef _DRV_PLC_PHY_LOCAL_COMM_H
 #define _DRV_PLC_PHY_LOCAL_COMM_H
 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -54,7 +55,6 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
-
 #define PLC_STATUS_LENGTH     8
 #define PLC_DATA_PKT_SIZE     512
 #define PLC_TX_PAR_SIZE       sizeof(DRV_PLC_PHY_TRANSMISSION_OBJ)
@@ -66,12 +66,10 @@
 #define NUM_TX_BUFFERS                           1
 
 /* FLAG MASKs for set events */
-#define DRV_PLC_PHY_EV_FLAG_TX0_CFM_MASK           0x0001
-#define DRV_PLC_PHY_EV_FLAG_TX1_CFM_MASK           0x0002
-#define DRV_PLC_PHY_EV_FLAG_RX_DAT_MASK            0x0004
-#define DRV_PLC_PHY_EV_FLAG_CD_MASK                0x0008
-#define DRV_PLC_PHY_EV_FLAG_REG_MASK               0x0010
-#define DRV_PLC_PHY_EV_FLAG_RX_PAR_MASK            0x0020
+#define DRV_PLC_PHY_EV_FLAG_TX_CFM_MASK            0x0001
+#define DRV_PLC_PHY_EV_FLAG_RX_DAT_MASK            0x0002
+#define DRV_PLC_PHY_EV_FLAG_REG_MASK               0x0008
+#define DRV_PLC_PHY_EV_FLAG_RX_PAR_MASK            0x0010
 
 /* FLAG MASKs for register events */
 #define DRV_PLC_PHY_REG_LEN_MASK                   0x1FF
@@ -112,8 +110,8 @@ typedef struct {
     uint16_t rcvDataLength;
     /* Received Register Response length */
     uint16_t regRspLength;
-    /* Flag to indicate if CONFIRMATION MSG from buffer 0 event is enable */
-    bool evCfm[2];
+    /* Flag to indicate if CONFIRMATION MSG event is enable */
+    bool evCfm;
     /* Flag to indicate if DATA INDICATION MSG event is enable */
     bool evRxDat;
     /* Flag to indicate if QPAR INDICATION MSG event is enable */
@@ -137,12 +135,9 @@ typedef struct {
 
 typedef enum {
     STATUS_ID = 0,
-    TX0_PAR_ID,
-    TX0_DAT_ID,
-    TX0_CFM_ID,
-    TX1_PAR_ID,
-    TX1_DAT_ID,
-    TX1_CFM_ID,
+    TX_PAR_ID,
+    TX_DAT_ID,
+    TX_CFM_ID,
     RX_PAR_ID,
     RX_DAT_ID,
     REG_INFO_ID,

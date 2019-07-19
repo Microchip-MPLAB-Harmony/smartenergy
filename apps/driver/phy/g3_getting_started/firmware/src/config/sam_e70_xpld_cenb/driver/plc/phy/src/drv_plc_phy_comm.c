@@ -730,5 +730,5 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
     }
     
     /* PORTD Interrupt Status Clear */
-    ((pio_registers_t*)PIO_PORT_D)->PIO_ISR;
+    ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
 }

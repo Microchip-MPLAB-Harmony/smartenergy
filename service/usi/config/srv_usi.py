@@ -84,6 +84,7 @@ def instantiateComponent(usiComponent, index):
     usiTXDMA = usiComponent.createBooleanSymbol("SRV_USI_TX_DMA", None)
     usiTXDMA.setLabel("Use DMA for Transmit ?")
     usiTXDMA.setVisible(isDMAPresent)
+    usiTXDMA.setDefaultValue(isDMAPresent)
     usiTXDMA.setReadOnly(True)            
     
     global usiUsartTXDMAChannel

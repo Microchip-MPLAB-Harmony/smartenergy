@@ -88,20 +88,20 @@ void RTT_Handler                ( void ) __attribute__((weak, alias("Dummy_Handl
 void WDT_Handler                ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void PMC_Handler                ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void EFC_Handler                ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void FLEXCOM7_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM7_InterruptHandler  ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void FLEXCOM0_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void FLEXCOM1_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void PIOA_InterruptHandler      ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void PIOB_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void PIOA_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void PIOB_InterruptHandler      ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void PDMIC0_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void FLEXCOM2_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void MEM2MEM_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void I2SC0_Handler              ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void I2SC1_Handler              ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void PDMIC1_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void FLEXCOM3_InterruptHandler  ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void FLEXCOM4_InterruptHandler  ( void ) __attribute__((weak, alias("Dummy_Handler")));
-void FLEXCOM5_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM3_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM4_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
+void FLEXCOM5_InterruptHandler  ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void FLEXCOM6_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void TC0_CH0_InterruptHandler   ( void ) __attribute__((weak, alias("Dummy_Handler")));
 void TC0_CH1_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
@@ -143,20 +143,20 @@ const DeviceVectors exception_table=
     .pfnWDT_Handler                = ( void * ) WDT_Handler,
     .pfnPMC_Handler                = ( void * ) PMC_Handler,
     .pfnEFC_Handler                = ( void * ) EFC_Handler,
-    .pfnFLEXCOM7_Handler           = ( void * ) FLEXCOM7_Handler,
+    .pfnFLEXCOM7_Handler           = ( void * ) FLEXCOM7_InterruptHandler,
     .pfnFLEXCOM0_Handler           = ( void * ) FLEXCOM0_Handler,
     .pfnFLEXCOM1_Handler           = ( void * ) FLEXCOM1_Handler,
-    .pfnPIOA_Handler               = ( void * ) PIOA_InterruptHandler,
-    .pfnPIOB_Handler               = ( void * ) PIOB_Handler,
+    .pfnPIOA_Handler               = ( void * ) PIOA_Handler,
+    .pfnPIOB_Handler               = ( void * ) PIOB_InterruptHandler,
     .pfnPDMIC0_Handler             = ( void * ) PDMIC0_Handler,
     .pfnFLEXCOM2_Handler           = ( void * ) FLEXCOM2_Handler,
     .pfnMEM2MEM_Handler            = ( void * ) MEM2MEM_Handler,
     .pfnI2SC0_Handler              = ( void * ) I2SC0_Handler,
     .pfnI2SC1_Handler              = ( void * ) I2SC1_Handler,
     .pfnPDMIC1_Handler             = ( void * ) PDMIC1_Handler,
-    .pfnFLEXCOM3_Handler           = ( void * ) FLEXCOM3_InterruptHandler,
-    .pfnFLEXCOM4_Handler           = ( void * ) FLEXCOM4_InterruptHandler,
-    .pfnFLEXCOM5_Handler           = ( void * ) FLEXCOM5_Handler,
+    .pfnFLEXCOM3_Handler           = ( void * ) FLEXCOM3_Handler,
+    .pfnFLEXCOM4_Handler           = ( void * ) FLEXCOM4_Handler,
+    .pfnFLEXCOM5_Handler           = ( void * ) FLEXCOM5_InterruptHandler,
     .pfnFLEXCOM6_Handler           = ( void * ) FLEXCOM6_Handler,
     .pfnTC0_CH0_Handler            = ( void * ) TC0_CH0_InterruptHandler,
     .pfnTC0_CH1_Handler            = ( void * ) TC0_CH1_Handler,

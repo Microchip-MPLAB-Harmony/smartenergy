@@ -71,7 +71,7 @@
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    /* PLC SPI PLIB */
+     /* SPI Transfer Setup */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
@@ -263,6 +263,8 @@ void SYS_Initialize ( void* data )
 
 	WDT_Initialize();
 
+
+  
 
  
     TC0_CH0_TimerInitialize(); 

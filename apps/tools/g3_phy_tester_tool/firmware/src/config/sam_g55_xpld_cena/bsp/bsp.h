@@ -60,14 +60,14 @@
 // Section: BSP Macros
 // *****************************************************************************
 // *****************************************************************************
-/*** LED Macros for LED1 ***/
-#define LED1_Toggle() (PIOA_REGS->PIO_ODSR ^= (1<<15))
-#define LED1_On() (PIOA_REGS->PIO_CODR = (1<<15))
-#define LED1_Off() (PIOA_REGS->PIO_SODR = (1<<15))
-/*** LED Macros for LED0 ***/
-#define LED0_Toggle() (PIOA_REGS->PIO_ODSR ^= (1<<12))
-#define LED0_On() (PIOA_REGS->PIO_CODR = (1<<12))
-#define LED0_Off() (PIOA_REGS->PIO_SODR = (1<<12))
+/*** LED Macros for LED ***/
+#define LED_Toggle() (PIOA_REGS->PIO_ODSR ^= (1<<6))
+#define LED_On() (PIOA_REGS->PIO_CODR = (1<<6))
+#define LED_Off() (PIOA_REGS->PIO_SODR = (1<<6))
+/*** SWITCH Macros for SWITCH ***/
+#define SWITCH_Get() ((PIOA_REGS->PIO_PDSR >> 2) & 0x1)
+#define SWITCH_STATE_PRESSED 0
+#define SWITCH_STATE_RELEASED 1
 
 
 

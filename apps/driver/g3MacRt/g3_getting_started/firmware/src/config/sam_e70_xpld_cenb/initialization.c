@@ -71,20 +71,14 @@
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    /* PLC SPI PLIB */
+     /* SPI Transfer Setup */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
-    /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_1,
-
-    /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
-
-    /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
-
-    /* SPI Receive Register */
-    .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
+    /* SPI Write/Read */
+    .spiWriteRead = SPI0_WriteRead,
+    
+    /* SPI Is Busy */
+    .spiIsBusy = SPI0_IsBusy,
     
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
@@ -233,6 +227,8 @@ void SYS_Initialize ( void* data )
 	WDT_REGS->WDT_MR = WDT_MR_WDDIS_Msk; 		// Disable WDT 
 
 	SPI0_Initialize();
+
+  
 
  
     TC0_CH0_TimerInitialize(); 

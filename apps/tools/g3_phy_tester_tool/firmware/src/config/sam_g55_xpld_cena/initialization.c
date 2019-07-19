@@ -70,14 +70,14 @@
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    /* PLC SPI PLIB */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)FLEXCOM3_SPI_TransferSetup,
+     /* SPI Transfer Setup */
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)FLEXCOM5_SPI_TransferSetup,
 
     /* SPI Write/Read */
-    .spiWriteRead = FLEXCOM3_SPI_WriteRead,
+    .spiWriteRead = FLEXCOM5_SPI_WriteRead,
     
     /* SPI Is Busy */
-    .spiIsBusy = FLEXCOM3_SPI_IsBusy,
+    .spiIsBusy = FLEXCOM5_SPI_IsBusy,
     
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
@@ -156,29 +156,29 @@ DRV_PLC_PHY_INIT drvPlcPhyInitData = {
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="SRV_USI Instance 0 Initialization Data">
 
-uint8_t gSrvUSIFLEXCOM4ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {0};
-uint8_t gSrvUSIFLEXCOM4WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {0};
+uint8_t gSrvUSIFLEXCOM7ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {0};
+uint8_t gSrvUSIFLEXCOM7WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {0};
 
-const SRV_USI_USART_INTERFACE srvUsiFLEXCOM4PlibAPI = {
-    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)FLEXCOM4_USART_ReadCallbackRegister,
-    .read = (USI_USART_PLIB_READ)FLEXCOM4_USART_Read,
-    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)FLEXCOM4_USART_WriteCallbackRegister,
-    .write = (USI_USART_PLIB_READ)FLEXCOM4_USART_Write,
-    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)FLEXCOM4_USART_WriteIsBusy,
-    .serialSetup = (USI_USART_PLIB_SERIAL_SETUP)FLEXCOM4_USART_SerialSetup
+const SRV_USI_USART_INTERFACE srvUsiFLEXCOM7PlibAPI = {
+    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)FLEXCOM7_USART_ReadCallbackRegister,
+    .read = (USI_USART_PLIB_WRRD)FLEXCOM7_USART_Read,
+    .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)FLEXCOM7_USART_WriteCallbackRegister,
+    .write = (USI_USART_PLIB_WRRD)FLEXCOM7_USART_Write,
+    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)FLEXCOM7_USART_WriteIsBusy,
+    .serialSetup = (USI_USART_PLIB_SERIAL_SETUP)FLEXCOM7_USART_SerialSetup
 };
 
 const SRV_USI_INIT srvUSI0InitData =
 {
     .usiInterfaceApi = SRV_USI_USART_API,
 
-    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsiFLEXCOM4PlibAPI,
+    .usiApi = (SRV_USI_USART_INTERFACE *)&srvUsiFLEXCOM7PlibAPI,
 
-    .readBuffer = (void*)gSrvUSIFLEXCOM4ReadBuffer,
+    .readBuffer = (void*)gSrvUSIFLEXCOM7ReadBuffer,
 
     .readSizeMax = SRV_USI0_RD_BUF_SIZE,
 
-    .writeBuffer = (void*)gSrvUSIFLEXCOM4WriteBuffer,
+    .writeBuffer = (void*)gSrvUSIFLEXCOM7WriteBuffer,
 
     .writeSizeMax = SRV_USI0_WR_BUF_SIZE,
 
@@ -248,11 +248,11 @@ void SYS_Initialize ( void* data )
 
     CLOCK_Initialize();
 
+    FLEXCOM7_USART_Initialize();
+
 	WDT_REGS->WDT_MR = WDT_MR_WDDIS_Msk; 		// Disable WDT 
 
-    FLEXCOM3_SPI_Initialize();
-
-    FLEXCOM4_USART_Initialize();
+    FLEXCOM5_SPI_Initialize();
 
   
 
