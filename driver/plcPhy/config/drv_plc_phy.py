@@ -506,7 +506,7 @@ def instantiateComponent(plcPhyComponent):
     plcPhySymSystemDefObjFile.setSourcePath("driver/plcPhy/templates/system/definitions_objects.h.ftl")
     plcPhySymSystemDefObjFile.setMarkup(True)
 
-    plcPhySymSystemConfigFile = plcPhyComponent.createFileSymbol("DRV_PLC_PHY_CONFIGIRUTION", None)
+    plcPhySymSystemConfigFile = plcPhyComponent.createFileSymbol("DRV_PLC_PHY_CONFIGURATION", None)
     plcPhySymSystemConfigFile.setType("STRING")
     plcPhySymSystemConfigFile.setOutputName("core.LIST_SYSTEM_CONFIG_H_DRIVER_CONFIGURATION")
     plcPhySymSystemConfigFile.setSourcePath("driver/plcPhy/templates/system/configuration.h.ftl")
