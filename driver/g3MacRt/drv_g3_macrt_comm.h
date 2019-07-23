@@ -213,10 +213,10 @@ typedef enum {
 	PHY_PARAM_RRC_NOTCH_INDEX,
     /* Indicate noise power in dBuV for the noisier carrier */
 	PHY_PARAM_NOISE_PEAK_POWER,
-    /* Reserved for future uses */
-	PHY_PARAM_RSV0,
-    /* Reserved for future uses */
-	PHY_PARAM_RSV1,
+    /* Capability to compute Payload CRC in PHY Layer */
+	PHY_PARAM_CRC_TX_RX_CAPABILITY,
+    /* Number of errors in Payload CRC in received PDUs */
+	PHY_PARAM_RX_BAD_CRC_PAY,
     /* Auto-Detect Impedance Mode */
 	PHY_PARAM_CFG_AUTODETECT_IMPEDANCE,
     /* Transmission Mode (HIGH, LOW, VERY_LOW) */
@@ -257,7 +257,7 @@ typedef enum {
      * configuration */
 	PHY_PARAM_DACC_TABLE_CFG,
     /* Reserved for future uses */
-	PHY_PARAM_RSV2,
+	PHY_PARAM_RSV0,
     /* Number of Tx attenuation levels (3 dB steps) for normal transmission
      * behavior */
 	PHY_PARAM_NUM_TX_LEVELS,
@@ -295,6 +295,10 @@ typedef enum {
     /* PDC value (field in G3 Frame Control Header) corresponding to last 
      * received PDU */
 	PHY_PARAM_PDC_LAST_RX,
+    /* Parameters for Maximum PSDU length computation */
+	PHY_PARAM_MAX_PSDU_LEN_PARAMS,
+    /* Maximum PSDU length depending on TX parameters */
+	PHY_PARAM_MAX_PSDU_LEN,
     /* Index of the notch filter. 8 bits. */
     PHY_PARAM_RRC_NOTCH_INDEX_LEGACY = 0x0164,
     /* Disable PLC Tx/Rx. 8 bits. */
@@ -321,7 +325,6 @@ typedef enum {
     MAC_RT_MOD_BPSK = 0x01,
     MAC_RT_MOD_QPSK = 0x02,
     MAC_RT_MOD_8PSK = 0x03,
-    MAC_RT_MOD_16_QAM = 0x04
 }MAC_RT_MOD_TYPE;
 
 // *****************************************************************************
