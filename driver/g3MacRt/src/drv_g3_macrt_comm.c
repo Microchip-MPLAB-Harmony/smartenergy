@@ -139,6 +139,14 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
                         gG3MacRtObj->contextExc);
             }
         }
+    
+        /* Check if there is any tx_cfm pending to be reported */
+        if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
+        {
+            gG3MacRtObj->evResetTxCfm = true;
+        }
+        
+        return true;
     }
     else
     {
@@ -151,15 +159,9 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
                     gG3MacRtObj->contextExc
             );
         }
+        
+        return false;
     }
-    
-    /* Check if there is any tx_cfm pending to be reported */
-    if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
-    {
-        gG3MacRtObj->evResetTxCfm = true;
-    }
-    
-    return false;
 }
 
 static void _DRV_G3_MACRT_COMM_SpiWriteCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pData, 
@@ -193,6 +195,7 @@ static void _DRV_G3_MACRT_COMM_SpiWriteCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pDat
             }
             break;
         }
+        gG3MacRtObj->plcHal->reset();
         gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }  
     
@@ -231,6 +234,7 @@ static void _DRV_G3_MACRT_COMM_SpiReadCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pData
             }
             break;
         }
+        gG3MacRtObj->plcHal->reset();
         gG3MacRtObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }    
     
