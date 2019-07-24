@@ -40,6 +40,9 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
        
     /* PLC External Interrupt Pin */
     .extIntPin = DRV_PLC_EXT_INT_PIN,
+       
+    /* PLC External Interrupt Pin */
+    .cdPin = DRV_PLC_CD_PIN,
 };
 
 /* HAL Interface Initialization for PLC transceiver */

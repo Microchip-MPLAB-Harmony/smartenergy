@@ -68,6 +68,8 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
+#define DRV_PLC_HAL_CPU_CLOCK_FREQ            ${core.CPU_CLOCK_FREQUENCY}
+
 #define DRV_PLC_HAL_CMD_POS                   15
 #define DRV_PLC_HAL_CMD_RD                    (0 << DRV_PLC_HAL_CMD_POS)
 #define DRV_PLC_HAL_CMD_WR                    (1 << DRV_PLC_HAL_CMD_POS)
@@ -186,10 +188,10 @@ typedef struct
     void                                   *spiAddressRx;
 <#else>
     /* SPI Write/Read */
-    DRV_PLC_SPI_WRITE_READ                         spiWriteRead;
+    DRV_PLC_SPI_WRITE_READ                 spiWriteRead;
     
     /* SPI Is Busy */
-    DRV_PLC_SPI_ISBUSY                             spiIsBusy;
+    DRV_PLC_SPI_ISBUSY                     spiIsBusy;
  </#if>
 
     /* SPI clock frequency */
@@ -203,6 +205,9 @@ typedef struct
 
     /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
+
+    /* PLC Carrier Detect pin */
+    SYS_PORT_PIN                           cdPin;
 
 } DRV_PLC_PLIB_INTERFACE;
 

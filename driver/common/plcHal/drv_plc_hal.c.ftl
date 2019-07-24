@@ -170,12 +170,18 @@ void DRV_PLC_HAL_Reset(void)
 
 bool DRV_PLC_HAL_GetCarrierDetect(void)
 {
-    return false;
+    return SYS_PORT_PinRead(sPlcPlib->cdPin);
 }
 
 void DRV_PLC_HAL_Delay(uint64_t delayUs)
-{    
-    _delay((delayUs * 300000000 + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
+{ 
+<#if core.CoreArchitecture == "CORTEX-M7">
+    _delay((delayUs * DRV_PLC_HAL_CPU_CLOCK_FREQ + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
+<#elseif core.CoreArchitecture == "CORTEX-M4">
+    _delay((delayUs * DRV_PLC_HAL_CPU_CLOCK_FREQ + (uint64_t)(14e6 - 1ul)) / (uint64_t)14e6);
+<#else>
+    _delay((delayUs * DRV_PLC_HAL_CPU_CLOCK_FREQ + (uint64_t)(14e6 - 1ul)) / (uint64_t)14e6);
+</#if>       
 }
 
 void DRV_PLC_HAL_EnableInterrupts(bool enable)
