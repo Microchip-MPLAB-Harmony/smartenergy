@@ -88,6 +88,18 @@ extern "C" {
 #define SYS_TIME_CPU_CLOCK_FREQUENCY         300000000
 #define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES      (900)
 
+/* Console System Service Configuration Options */
+#define SYS_CONSOLE_DEVICE_MAX_INSTANCES   1
+#define SYS_CONSOLE_UART_MAX_INSTANCES     1
+
+
+/* RX queue size has one additional element for the empty spot needed in circular queue */
+#define SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0    2
+
+/* TX queue size has one additional element for the empty spot needed in circular queue */
+#define SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0    2
+#define SYS_CONSOLE_BUFFER_DMA_READY
+
 
 
 // *****************************************************************************
@@ -97,12 +109,12 @@ extern "C" {
 // *****************************************************************************
 /* PLC MAC RT Driver Configuration Options */
 #define DRV_PLC_SECURE                       false
-#define DRV_PLC_EXT_INT_PIO_PORT             PIO_PORT_A
-#define DRV_PLC_EXT_INT_SRC                  PIOA_IRQn
-#define DRV_PLC_EXT_INT_PIN                  SYS_PORT_PIN_PA0
-#define DRV_PLC_RESET_PIN                    SYS_PORT_PIN_PA0
-#define DRV_PLC_LDO_EN_PIN                   SYS_PORT_PIN_PA0
-#define DRV_PLC_CD_PIN                       SYS_PORT_PIN_PA0
+#define DRV_PLC_EXT_INT_PIO_PORT             PIO_PORT_D
+#define DRV_PLC_EXT_INT_SRC                  PIOD_IRQn
+#define DRV_PLC_EXT_INT_PIN                  SYS_PORT_PIN_PD28
+#define DRV_PLC_RESET_PIN                    SYS_PORT_PIN_PB2
+#define DRV_PLC_LDO_EN_PIN                   SYS_PORT_PIN_PB3
+#define DRV_PLC_CD_PIN                       SYS_PORT_PIN_PB1
 #define DRV_PLC_SPI_CLK                      12000000
 #define DRV_G3_MACRT_PLC_PROFILE             2
 #define DRV_G3_MACRT_INSTANCES_NUMBER        1

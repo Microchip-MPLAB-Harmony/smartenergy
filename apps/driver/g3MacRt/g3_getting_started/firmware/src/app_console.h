@@ -93,13 +93,15 @@ typedef struct
     
     APP_CONSOLE_STATES state;
 
+    char pTrasmitChar[SERIAL_BUFFER_SIZE];
+
     char pReceivedChar[SERIAL_BUFFER_SIZE];
 
     char* pNextChar;
     
     uint8_t numCharToReceive;
     
-    uint16_t dataLength;
+    size_t dataLength;
     
     bool echoOn;
     
@@ -241,7 +243,68 @@ void APP_CONSOLE_Initialize ( void );
 
 void APP_CONSOLE_Tasks( void );
 
+// *****************************************************************************
+/* Function:
+    void APP_CONSOLE_Print(const char *format, ...)
 
+ 
+
+  Summary:
+    Formats and prints a message with a variable number of arguments to the
+    console.
+
+ 
+
+  Description:
+    This function formats and prints a message with a variable number of
+    arguments to the console.
+
+ 
+
+  Precondition:
+    APP_CONSOLE_Initialize must have returned a valid object handle.
+
+ 
+
+  Parameters:
+    format          - Pointer to a buffer containing the format string for
+                      the message to be displayed.
+    ...             - Zero or more optional parameters to be formated as
+                      defined by the format string.
+
+ 
+
+  Returns:
+    None.
+
+ 
+
+  Example:
+    <code>
+    // In source code
+    int result;
+
+ 
+
+    result = SomeOperation();
+    if (result > MAX_VALUE)
+    {
+        APP_CONSOLE_Print("Result of %d exceeds max value\r\n", result);
+    }
+    </code>
+
+ 
+
+  Remarks:
+    The format string and arguments follow the printf convention.
+
+ 
+
+*/
+
+ 
+
+void APP_CONSOLE_Print(const char *format, ...);
 
 #endif /* _APP_CONSOLE_H */
 

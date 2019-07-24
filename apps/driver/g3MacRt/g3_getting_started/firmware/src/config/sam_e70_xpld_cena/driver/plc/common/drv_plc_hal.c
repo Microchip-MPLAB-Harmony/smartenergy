@@ -107,15 +107,20 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
 {
     DRV_PLC_SPI_TRANSFER_SETUP spiPlibSetup;
 
-    while(sPlcPlib->spiIsBusy());
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
     if (set16Bits) 
     {
         spiPlibSetup.dataBits = DRV_PLC_SPI_DATA_BITS_16;
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelTx, SYS_DMA_WIDTH_16_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelRx, SYS_DMA_WIDTH_16_BIT);
     }
     else
     {
         spiPlibSetup.dataBits = DRV_PLC_SPI_DATA_BITS_8;
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelTx, SYS_DMA_WIDTH_8_BIT);
+        SYS_DMA_DataWidthSetup(sPlcPlib->dmaChannelRx, SYS_DMA_WIDTH_8_BIT);
     }
     
     /* Configure SPI PLIB */
@@ -124,6 +129,9 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
     spiPlibSetup.clockPolarity = DRV_PLC_SPI_CLOCK_POLARITY_IDLE_LOW;    
     sPlcPlib->spiPlibTransferSetup((uintptr_t)&spiPlibSetup, 0);
     
+    /* Configure DMA */
+    SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelTx, SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
+    SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
     
 }
 
@@ -178,7 +186,8 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     uint8_t *pTxData;  
     size_t size;
 
-    while(sPlcPlib->spiIsBusy());
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
     
     pTxData = sTxSpiData;
     
@@ -189,7 +198,7 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     pTxData += 2;
     if (dataLength)
     {
-        if (dataLength > HAL_SPI_BUFFER_SIZE)
+        if (dataLength > HAL_SPI_BUFFER_SIZE - 6)
         {
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
@@ -216,9 +225,11 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
 
-    sPlcPlib->spiWriteRead(sTxSpiData, size, sRxSpiData, size);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelRx, (const void *)sPlcPlib->spiAddressRx, (const void *)sRxSpiData, size);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPlcPlib->spiAddressTx, size);
+
     if (pDataRd) {
-        while(sPlcPlib->spiIsBusy());
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
         /* Update data received */
         memcpy(pDataRd, &sRxSpiData[6], dataLength);
@@ -231,7 +242,8 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     size_t cmdSize;
     size_t dataLength;
 
-    while(sPlcPlib->spiIsBusy());
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
     
     pTxData = sTxSpiData;
     
@@ -278,10 +290,12 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
 
-    sPlcPlib->spiWriteRead(sTxSpiData, cmdSize >> 1, sRxSpiData, cmdSize >> 1);    
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelRx, (const void *)sPlcPlib->spiAddressRx, (const void *)sRxSpiData, cmdSize >> 1);
+    SYS_DMA_ChannelTransfer (sPlcPlib->dmaChannelTx, (const void *)sTxSpiData, (const void *)sPlcPlib->spiAddressTx, cmdSize >> 1);
 
     if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
-        while(sPlcPlib->spiIsBusy());
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
+        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
         
         /* Update data received */
         memcpy(pCmd->pData, &sRxSpiData[4], pCmd->length);

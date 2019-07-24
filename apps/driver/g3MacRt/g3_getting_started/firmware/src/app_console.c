@@ -29,6 +29,7 @@
 
 #include <stdbool.h>
 #include <string.h>
+#include <stdarg.h>
 #include "definitions.h"
 
 // *****************************************************************************
@@ -67,10 +68,10 @@ void Timer1_Callback (uintptr_t context)
     LED_Set();
 }
 
-void APP_CONSOLE_ReadCallback(uintptr_t context)
+void APP_CONSOLE_ReadCallback(void *buffer)
 {
     /* ErrorGet clears errors */
-    if(USART1_ErrorGet() == USART_ERROR_NONE)
+    if (buffer == (void *)appConsole.pNextChar) 
     {
         if (appConsole.echoOn)
         {
@@ -95,7 +96,7 @@ void APP_CONSOLE_ReadCallback(uintptr_t context)
 // *****************************************************************************
 // *****************************************************************************
 
-static uint32_t APP_CONSOLE_ReadSerialChar(uint8_t size, bool restart)
+static uint32_t APP_CONSOLE_ReadSerialChar(bool restart)
 {
     if (restart)
     {
@@ -104,9 +105,9 @@ static uint32_t APP_CONSOLE_ReadSerialChar(uint8_t size, bool restart)
         appConsole.dataLength = 0;
     }
     
-    appConsole.numCharToReceive = size;
+    appConsole.numCharToReceive = 1;
     
-    if ( USART1_Read((void*)appConsole.pNextChar, size) )
+    if (SYS_CONSOLE_Read(SYS_CONSOLE_INDEX_0, 0, (void*)appConsole.pNextChar, 1))
     {
         /* Success */
         return 0;
@@ -224,7 +225,7 @@ void APP_CONSOLE_Tasks ( void )
         
         if (APP_CONSOLE_CheckIsPrintable(*pData))
         {
-            printf("%c", (unsigned int)*pData);
+            APP_CONSOLE_Print("%c", (unsigned int)*pData);
         }
         
         appConsole.newEcho = false;
@@ -237,12 +238,13 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_INIT:
         {
             /* Configure USART Callback */
-            USART1_ReadCallbackRegister(APP_CONSOLE_ReadCallback, 0);
+            SYS_CONSOLE_RegisterCallback(SYS_CONSOLE_INDEX_0, APP_CONSOLE_ReadCallback, 
+                    SYS_CONSOLE_EVENT_READ_COMPLETE);
             
             appConsole.state = APP_CONSOLE_STATE_WAIT_PLC;
             
             /* Show App Header */
-            printf(STRING_HEADER);
+            APP_CONSOLE_Print(STRING_HEADER);
             
             break;
         }
@@ -253,14 +255,14 @@ void APP_CONSOLE_Tasks ( void )
             if (appPlc.state == APP_PLC_STATE_WAITING)
             {     
                 /* Waiting Console type */
-                printf("\r\nPress 'CTRL+S' to enter configuration menu. ");
-                printf("\r\nEnter text and press 'ENTER' to trigger transmission");
-                printf("\r\n>>> ");
+                APP_CONSOLE_Print("\r\nPress 'CTRL+S' to enter configuration menu. ");
+                APP_CONSOLE_Print("\r\nEnter text and press 'ENTER' to trigger transmission");
+                APP_CONSOLE_Print("\r\n>>> ");
                 appConsole.state = APP_CONSOLE_STATE_CONSOLE;
             
                 /* Launch initial Reception job */
                 appConsole.dataLength = 0;
-                APP_CONSOLE_ReadSerialChar(1, true);
+                APP_CONSOLE_ReadSerialChar(true);
             }
             break;
         }
@@ -271,12 +273,12 @@ void APP_CONSOLE_Tasks ( void )
             if (appPlc.state == APP_PLC_STATE_WAITING)
             {     
                 /* Waiting Console type */
-                printf("\r\n>>> ");
+                APP_CONSOLE_Print("\r\n>>> ");
                 appConsole.state = APP_CONSOLE_STATE_CONSOLE;
             
                 /* Launch initial Reception job */
                 appConsole.dataLength = 0;
-                APP_CONSOLE_ReadSerialChar(1, true);
+                APP_CONSOLE_ReadSerialChar(true);
             }
             break;
         }
@@ -291,13 +293,13 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     case 0x13: // (CTRL+S) : Configuration Menu
                         appConsole.state = APP_CONSOLE_STATE_CONFIG_MENU;
-                        printf("\r\n--- Configuration Menu ---");
-                        printf("\r\nSelect parameter to configure:");
-                        printf("\r\n\t0: G3 MAC Tx Modulation");
-                        printf("\r\n\t1: G3 MAC Source Address");
-                        printf("\r\n\t2: G3 MAC Destination Address");
-                        printf("\r\n>>> ");
-                        APP_CONSOLE_ReadSerialChar(1, true);
+                        APP_CONSOLE_Print("\r\n--- Configuration Menu ---");
+                        APP_CONSOLE_Print("\r\nSelect parameter to configure:");
+                        APP_CONSOLE_Print("\r\n\t0: G3 MAC Tx Modulation");
+                        APP_CONSOLE_Print("\r\n\t1: G3 MAC Source Address");
+                        APP_CONSOLE_Print("\r\n\t2: G3 MAC Destination Address");
+                        APP_CONSOLE_Print("\r\n>>> ");
+                        APP_CONSOLE_ReadSerialChar(true);
                         break;
 
                     case '\r': // (\r) : Send G3 MAC RT message
@@ -317,9 +319,9 @@ void APP_CONSOLE_Tasks ( void )
                             /* Update reception data */
                             appConsole.pNextChar -= 2;
                             appConsole.dataLength -= 1;
-                            printf("\b \b");
+                            APP_CONSOLE_Print("\b \b");
                             /* Wait to next character */
-                            APP_CONSOLE_ReadSerialChar(1, false);
+                            APP_CONSOLE_ReadSerialChar(false);
                         }
                         break;
 
@@ -340,13 +342,13 @@ void APP_CONSOLE_Tasks ( void )
                             else
                             {
                                 /* Wait to next character */
-                                APP_CONSOLE_ReadSerialChar(1, false);
+                                APP_CONSOLE_ReadSerialChar(false);
                             }
                         }
                         else
                         {
                             /* Discard character */  
-                            APP_CONSOLE_ReadSerialChar(1, true);
+                            APP_CONSOLE_ReadSerialChar(true);
                         }                        
                         break;
                 }
@@ -363,36 +365,36 @@ void APP_CONSOLE_Tasks ( void )
                         
                     case '0': // G3 MAC Tx Modulation
                         appConsole.state = APP_CONSOLE_STATE_SET_MODULATION;
-                        printf("\r\n--- Tx Modulation Configuration Menu ---");
-                        printf("\r\nSelect Modulation:");
-                        printf("\r\n\t0: BPSK Robust Differential");
-                        printf("\r\n\t1: BPSK Differential");
-                        printf("\r\n\t2: QPSK Differential");
-                        printf("\r\n\t3: 8PSK Differential");
-                        printf("\r\n\t4: BPSK Robust Coherent");
-                        printf("\r\n\t5: BPSK Coherent");
-                        printf("\r\n\t6: QPSK Coherent");
-                        printf("\r\n\t7: 8PSK Coherent");
-                        printf("\r\n>>> ");
-                        APP_CONSOLE_ReadSerialChar(1, true);
+                        APP_CONSOLE_Print("\r\n--- Tx Modulation Configuration Menu ---");
+                        APP_CONSOLE_Print("\r\nSelect Modulation:");
+                        APP_CONSOLE_Print("\r\n\t0: BPSK Robust Differential");
+                        APP_CONSOLE_Print("\r\n\t1: BPSK Differential");
+                        APP_CONSOLE_Print("\r\n\t2: QPSK Differential");
+                        APP_CONSOLE_Print("\r\n\t3: 8PSK Differential");
+                        APP_CONSOLE_Print("\r\n\t4: BPSK Robust Coherent");
+                        APP_CONSOLE_Print("\r\n\t5: BPSK Coherent");
+                        APP_CONSOLE_Print("\r\n\t6: QPSK Coherent");
+                        APP_CONSOLE_Print("\r\n\t7: 8PSK Coherent");
+                        APP_CONSOLE_Print("\r\n>>> ");
+                        APP_CONSOLE_ReadSerialChar(true);
                         break;
                         
                     case '1': // G3 MAC Source Address
                         appConsole.state = APP_CONSOLE_STATE_SET_SRC_ADDRESS;
-                        printf("\r\nIntroduce new source address [0x0000]: 0x");
-                        APP_CONSOLE_ReadSerialChar(1, true);
+                        APP_CONSOLE_Print("\r\nIntroduce new source address [0x0000]: 0x");
+                        APP_CONSOLE_ReadSerialChar(true);
                         break;
                         
                     case '2': // G3 MAC Destination Address
                         appConsole.state = APP_CONSOLE_STATE_SET_DST_ADDRESS;
-                        printf("\r\nIntroduce new destination address [0x0000]: 0x");
-                        APP_CONSOLE_ReadSerialChar(1, true);
+                        APP_CONSOLE_Print("\r\nIntroduce new destination address [0x0000]: 0x");
+                        APP_CONSOLE_ReadSerialChar(true);
                         break;
                         
                     default:
-                        printf("\r\nUnknown command. Skipping configuration\r\n");
+                        APP_CONSOLE_Print("\r\nUnknown command. Skipping configuration\r\n");
                         appConsole.state = APP_CONSOLE_STATE_CONSOLE;
-                        APP_CONSOLE_ReadSerialChar(1, true);
+                        APP_CONSOLE_ReadSerialChar(true);
                 }
             }  
             break;
@@ -407,23 +409,23 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_GetShortAddress(appConsole.pReceivedChar, &shortAddress))
                 {
                     appPlc.sourceAddress = shortAddress;
-                    printf("\r\nSet G3 MAC RT Source Address: 0x%04x", shortAddress);
+                    APP_CONSOLE_Print("\r\nSet G3 MAC RT Source Address: 0x%04x", shortAddress);
                 }
                 else
                 {
-                    printf("\r\nShort Address not valid. Use hexadecimal values.");
+                    APP_CONSOLE_Print("\r\nShort Address not valid. Use hexadecimal values.");
                 }
                 
-                printf("\r\n>>> ");
+                APP_CONSOLE_Print("\r\n>>> ");
                 appConsole.state = APP_CONSOLE_STATE_CONSOLE;
-                APP_CONSOLE_ReadSerialChar(1, true);
+                APP_CONSOLE_ReadSerialChar(true);
             }
             else
             {
                 if (appConsole.numCharToReceive == 0)
                 {
                     /* Receive next char */
-                    APP_CONSOLE_ReadSerialChar(1, false);
+                    APP_CONSOLE_ReadSerialChar(false);
                 }
             }
             break;
@@ -438,23 +440,23 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_GetShortAddress(appConsole.pReceivedChar, &shortAddress))
                 {
                     appPlc.destinationAddress = shortAddress;
-                    printf("\r\nSet G3 MAC RT Destination Address: 0x%04x", shortAddress);
+                    APP_CONSOLE_Print("\r\nSet G3 MAC RT Destination Address: 0x%04x", shortAddress);
                 }
                 else
                 {
-                    printf("\r\nShort Address not valid. Use hexadecimal values.");
+                    APP_CONSOLE_Print("\r\nShort Address not valid. Use hexadecimal values.");
                 }
                 
-                printf("\r\n>>> ");
+                APP_CONSOLE_Print("\r\n>>> ");
                 appConsole.state = APP_CONSOLE_STATE_CONSOLE;
-                APP_CONSOLE_ReadSerialChar(1, true);
+                APP_CONSOLE_ReadSerialChar(true);
             }
             else
             {
                 if (appConsole.numCharToReceive == 0)
                 {
                     /* Receive next char */
-                    APP_CONSOLE_ReadSerialChar(1, false);
+                    APP_CONSOLE_ReadSerialChar(false);
                 }
             }
             break;
@@ -469,58 +471,58 @@ void APP_CONSOLE_Tasks ( void )
                     case '0': // BPSK Robust Differential
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_DIFFERENTIAL;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_ROBUST;
-                        printf("\r\nSet modulation: BPSK Robust Differential");
+                        APP_CONSOLE_Print("\r\nSet modulation: BPSK Robust Differential");
                         break;
                         
                     case '1': // BPSK Differential
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_DIFFERENTIAL;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_BPSK;
-                        printf("\r\nSet modulation: BPSK Differential");
+                        APP_CONSOLE_Print("\r\nSet modulation: BPSK Differential");
                         break;
                         
                     case '2': // QPSK Differential
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_DIFFERENTIAL;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_QPSK;
-                        printf("\r\nSet modulation: QPSK Differential");
+                        APP_CONSOLE_Print("\r\nSet modulation: QPSK Differential");
                         break;
                         
                     case '3': // 8PSK Differential
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_DIFFERENTIAL;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_8PSK;
-                        printf("\r\nSet modulation: 8PSK Differential");
+                        APP_CONSOLE_Print("\r\nSet modulation: 8PSK Differential");
                         break;
                         
                     case '4': // BPSK Robust Coherent
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_COHERENT;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_ROBUST;
-                        printf("\r\nSet modulation: BPSK Robust Coherent");
+                        APP_CONSOLE_Print("\r\nSet modulation: BPSK Robust Coherent");
                         break;
                         
                     case '5': // BPSK Coherent
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_COHERENT;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_BPSK;
-                        printf("\r\nSet modulation: BPSK Coherent");
+                        APP_CONSOLE_Print("\r\nSet modulation: BPSK Coherent");
                         break;
                         
                     case '6': // QPSK Coherent
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_COHERENT;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_QPSK;
-                        printf("\r\nSet modulation: QPSK Coherent");
+                        APP_CONSOLE_Print("\r\nSet modulation: QPSK Coherent");
                         break;
                         
                     case '7': // 8PSK Coherent
                         appPlc.g3MacRtTxParameters.modScheme = MAC_RT_MOD_SCHEME_COHERENT;
                         appPlc.g3MacRtTxParameters.modType = MAC_RT_MOD_8PSK;
-                        printf("\r\nSet modulation: 8PSK Coherent");
+                        APP_CONSOLE_Print("\r\nSet modulation: 8PSK Coherent");
                         break;
                         
                     default:
-                        printf("\r\nUnknown modulation. Skipping configuration\r\n");
+                        APP_CONSOLE_Print("\r\nUnknown modulation. Skipping configuration\r\n");
                 }
                 
-                printf("\r\n>>> ");
+                APP_CONSOLE_Print("\r\n>>> ");
                 appConsole.state = APP_CONSOLE_STATE_CONSOLE;
-                APP_CONSOLE_ReadSerialChar(1, true);
+                APP_CONSOLE_ReadSerialChar(true);
             }  
             break;
         }
@@ -533,6 +535,24 @@ void APP_CONSOLE_Tasks ( void )
     }
 }
 
+void APP_CONSOLE_Print(const char *format, ...)
+{
+    size_t len = 0;
+    va_list args = {0};
+    
+    while (SYS_CONSOLE_Status(sysObj.sysConsole0) != SYS_STATUS_READY);
+
+    va_start( args, format );
+    len = vsnprintf(appConsole.pTrasmitChar, SERIAL_BUFFER_SIZE - 1, format, args);
+    va_end( args );
+
+    if (len > 0 && len < SERIAL_BUFFER_SIZE - 1)
+    {
+        appConsole.pTrasmitChar[len] = '\0';
+
+        SYS_CONSOLE_Write(SYS_CONSOLE_INDEX_0, 0, appConsole.pTrasmitChar, len);
+    }
+}
 
 /*******************************************************************************
  End of File

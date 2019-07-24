@@ -137,31 +137,31 @@ static void APP_PLC_TxCfmCb ( MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context )
     switch(cfmObj->status)
     {
         case MAC_RT_STATUS_SUCCESS:
-            printf("...MAC_RT_STATUS_SUCCESS\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_SUCCESS\r\n");
             break;   
         case MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE:
-            printf("...MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE\r\n");
             break;   
         case MAC_RT_STATUS_NO_ACK:
-            printf("...MAC_RT_STATUS_NO_ACK\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_NO_ACK\r\n");
             break;
         case MAC_RT_STATUS_DENIED:
-            printf("...MAC_RT_STATUS_DENIED\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_DENIED\r\n");
             break;
         case MAC_RT_STATUS_INVALID_INDEX:
-            printf("...MAC_RT_STATUS_INVALID_INDEX\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_INVALID_INDEX\r\n");
             break;
         case MAC_RT_STATUS_INVALID_PARAMETER:
-            printf("...MAC_RT_STATUS_INVALID_PARAMETER\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_INVALID_PARAMETER\r\n");
             break;
         case MAC_RT_STATUS_TRANSACTION_OVERFLOW:
-            printf("...MAC_RT_STATUS_TRANSACTION_OVERFLOW\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_TRANSACTION_OVERFLOW\r\n");
             break;
         case MAC_RT_STATUS_UNSUPPORTED_ATTRIBUTE:
-            printf("...MAC_RT_STATUS_UNSUPPORTED_ATTRIBUTE\r\n");
+            APP_CONSOLE_Print("...MAC_RT_STATUS_UNSUPPORTED_ATTRIBUTE\r\n");
             break;
         default:
-            printf("...UNKNWED STATUS\r\n");
+            APP_CONSOLE_Print("...UNKNWED STATUS\r\n");
     }
     
     /* Update App to waiting state */
@@ -193,45 +193,45 @@ static void APP_PLC_DataIndCb ( uint8_t *pData, uint16_t length,
     appPlc.pPlcRxData[length] = '\0';
 
     /* Show Data Message */
-    printf("\nRx (");
+    APP_CONSOLE_Print("\nRx (");
 
     switch(appPlc.g3MacRtRxParameters.modType)
     {
         case MAC_RT_MOD_ROBUST:
-            printf("BPSK ROBUST ");
+            APP_CONSOLE_Print("BPSK ROBUST ");
             break;
             
         case MAC_RT_MOD_BPSK:
-            printf("BPSK ");
+            APP_CONSOLE_Print("BPSK ");
             break;
             
         case MAC_RT_MOD_QPSK:
-            printf("QPSK ");
+            APP_CONSOLE_Print("QPSK ");
             break;
             
         case MAC_RT_MOD_8PSK:
-            printf("8PSK ");
+            APP_CONSOLE_Print("8PSK ");
             break;
             
         case MAC_RT_MOD_16_QAM:
-            printf("16QAM ");
+            APP_CONSOLE_Print("16QAM ");
             break;
     }
 
     switch(appPlc.g3MacRtRxParameters.modScheme)
     {
         case MAC_RT_MOD_SCHEME_DIFFERENTIAL:
-            printf("Differential, ");
+            APP_CONSOLE_Print("Differential, ");
             break;
             
         case MAC_RT_MOD_SCHEME_COHERENT:
-            printf("Coherent, ");
+            APP_CONSOLE_Print("Coherent, ");
             break;
     }
     
-    printf("LQI %udB): ", appPlc.g3MacRtRxParameters.pduLinkQuality);
-    printf("%s\r\n", appPlc.pPlcRxData);
-    printf("\r\n>>>");
+    APP_CONSOLE_Print("LQI %udB): ", appPlc.g3MacRtRxParameters.pduLinkQuality);
+    APP_CONSOLE_Print("%s\r\n", appPlc.pPlcRxData);
+    APP_CONSOLE_Print("\r\n>>>");
     
 }
 
@@ -504,7 +504,7 @@ void APP_PLC_Tasks ( void )
                 pibObj.length = 4;
                 DRV_G3_MACRT_PIBGet(appPlc.drvG3MacRtHandle, &pibObj);   
                 appPlc.phyVersion = *(uint32_t *)pibObj.value;
-                printf("\r\nPHY version: 0x%08x - ", (unsigned int)appPlc.phyVersion);
+                APP_CONSOLE_Print("\r\nPHY version: 0x%08x - ", (unsigned int)appPlc.phyVersion);
                 
                 plcBand = (uint8_t)(appPlc.phyVersion >> 16);
                 /* plcBand corresponds to G3 PHY band 
@@ -512,23 +512,23 @@ void APP_PLC_Tasks ( void )
                 switch (plcBand) 
                 {
                     case 0x01:
-                        printf("CENELEC-A band: 35 - 91 kHz\r\n");
+                        APP_CONSOLE_Print("CENELEC-A band: 35 - 91 kHz\r\n");
                         break;
 
                     case 0x02:
-                        printf("FCC band: 154 - 488 kHz\r\n");
+                        APP_CONSOLE_Print("FCC band: 154 - 488 kHz\r\n");
                         break;
 
                     case 0x03:
-                        printf("ARIB band: 154 - 404 kHz\r\n");
+                        APP_CONSOLE_Print("ARIB band: 154 - 404 kHz\r\n");
                         break;
 
                     case 0x04:
-                        printf("CENELEC-B band: 98 - 122 kHz\r\n");
+                        APP_CONSOLE_Print("CENELEC-B band: 98 - 122 kHz\r\n");
                         break;
 
                     default:
-                        printf("G3 PLC Critical Error!!!! Unknown band\r\n");
+                        APP_CONSOLE_Print("G3 PLC Critical Error!!!! Unknown band\r\n");
                         while(1);
                         break;
                 }
@@ -592,7 +592,7 @@ void APP_PLC_SendMessage( uint8_t *pData, uint16_t length )
     /* Update App to TX state */
     appPlc.state = APP_PLC_STATE_TX;
     
-    printf("\r\nTx (%u bytes): ", length + sizeof(APP_G3_MAC_HEADER));
+    APP_CONSOLE_Print("\r\nTx (%u bytes): ", length + sizeof(APP_G3_MAC_HEADER));
     
     /* G3 MAC RT TX Configuration */
     APP_PLC_SetG3MacRtConfiguration();
