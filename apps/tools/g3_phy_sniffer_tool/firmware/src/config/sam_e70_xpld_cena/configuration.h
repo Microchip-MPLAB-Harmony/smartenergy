@@ -103,12 +103,12 @@ extern "C" {
 #define SRV_USI_MSG_POOL_SIZE                 5
 /* PLC PHY Driver Configuration Options */
 #define DRV_PLC_SECURE                        false
-#define DRV_PLC_EXT_INT_PIO_PORT              PIO_PORT_A
-#define DRV_PLC_EXT_INT_SRC                   PIOA_IRQn
-#define DRV_PLC_EXT_INT_PIN                   SYS_PORT_PIN_PA0
-#define DRV_PLC_RESET_PIN                     SYS_PORT_PIN_PA0
-#define DRV_PLC_LDO_EN_PIN                    SYS_PORT_PIN_PA0
-#define DRV_PLC_CD_PIN                        SYS_PORT_PIN_PA0
+#define DRV_PLC_EXT_INT_PIO_PORT              PIO_PORT_D
+#define DRV_PLC_EXT_INT_SRC                   PIOD_IRQn
+#define DRV_PLC_EXT_INT_PIN                   SYS_PORT_PIN_PD28
+#define DRV_PLC_RESET_PIN                     SYS_PORT_PIN_PB2
+#define DRV_PLC_LDO_EN_PIN                    SYS_PORT_PIN_PB3
+#define DRV_PLC_CD_PIN                        SYS_PORT_PIN_PB1
 #define DRV_PLC_SPI_CLK                       8000000
 #define DRV_PLC_PHY_PROFILE                   0
 #define DRV_PLC_PHY_INSTANCES_NUMBER          1

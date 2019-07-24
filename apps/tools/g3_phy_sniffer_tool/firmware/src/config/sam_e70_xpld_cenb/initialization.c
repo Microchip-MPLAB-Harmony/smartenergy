@@ -75,10 +75,10 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
 
     /* DMA Channel for Transmit */
-    .dmaChannelTx = SYS_DMA_CHANNEL_16,
+    .dmaChannelTx = SYS_DMA_CHANNEL_1,
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_15,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_0,
 
     /* SPI Transmit Register */
     .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
@@ -97,6 +97,9 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
        
     /* PLC External Interrupt Pin */
     .extIntPin = DRV_PLC_EXT_INT_PIN,
+       
+    /* PLC External Interrupt Pin */
+    .cdPin = DRV_PLC_CD_PIN,
 };
 
 /* HAL Interface Initialization for PLC transceiver */
@@ -170,7 +173,7 @@ const SRV_USI_USART_INTERFACE srvUsiUSART1PlibAPI = {
     .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)USART1_ReadCallbackRegister,
     .read = (USI_USART_PLIB_WRRD)USART1_Read,
     .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)USART1_WriteCallbackRegister,
-    .dmaChannelTx = SYS_DMA_CHANNEL_18,
+    .dmaChannelTx = SYS_DMA_CHANNEL_2,
     .usartAddressTx = (void *)&(USART1_REGS->US_THR)
 };
 
