@@ -268,6 +268,14 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
                 gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_RESET, gPlcPhyObj->contextExc);
             }
         }
+
+        /* Check if there is any tx_cfm pending to be reported */
+        if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
+        {
+            gPlcPhyObj->evResetTxCfm = true;
+        }
+
+        return true;
     }
     else
     {
@@ -277,15 +285,9 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         {
             gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY, gPlcPhyObj->contextExc);
         }
+
+        return false;
     }
-    
-    /* Check if there is any tx_cfm pending to be reported */
-    if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
-    {
-        gPlcPhyObj->evResetTxCfm = true;
-    }
-    
-    return false;
 }
 
 static void _DRV_PLC_PHY_COMM_SpiWriteCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData, uint16_t length)
@@ -315,6 +317,7 @@ static void _DRV_PLC_PHY_COMM_SpiWriteCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData,
             }
             break;
         }
+        gPlcPhyObj->plcHal->reset();
         gPlcPhyObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }  
     
@@ -349,6 +352,7 @@ static void _DRV_PLC_PHY_COMM_SpiReadCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData, 
             }
             break;
         }
+        gPlcPhyObj->plcHal->reset();
         gPlcPhyObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }    
     

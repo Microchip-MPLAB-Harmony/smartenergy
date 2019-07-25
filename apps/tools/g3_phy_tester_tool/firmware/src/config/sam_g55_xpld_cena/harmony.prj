@@ -43,8 +43,8 @@
           <Name dnOrder="1">drv_plc_hal.c</Name>
           <LogicalPath dnOrder="2">config/sam_g55_xpld_cena/driver/plc/common/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/plc/common/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">43DC003F7D4C9318B3785DD3B4EEEDAA</GeneratedChecksum>
-          <UserChecksum dnOrder="5">43DC003F7D4C9318B3785DD3B4EEEDAA</UserChecksum>
+          <GeneratedChecksum dnOrder="4">FB1DADE41036ECC97D8F263E82CE15C0</GeneratedChecksum>
+          <UserChecksum dnOrder="5">FB1DADE41036ECC97D8F263E82CE15C0</UserChecksum>
         </File>
         <File dnOrder="5">
           <Type dnOrder="0">SOURCE</Type>
@@ -59,8 +59,8 @@
           <Name dnOrder="1">drv_plc_phy_comm.c</Name>
           <LogicalPath dnOrder="2">config/sam_g55_xpld_cena/driver/plc/phy/src/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/plc/phy/src/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">9C0C45A0F4252AEF550B3AFDF17B82B5</GeneratedChecksum>
-          <UserChecksum dnOrder="5">9C0C45A0F4252AEF550B3AFDF17B82B5</UserChecksum>
+          <GeneratedChecksum dnOrder="4">6C6FF3E09A825E6F1F667D29D13B85B9</GeneratedChecksum>
+          <UserChecksum dnOrder="5">6C6FF3E09A825E6F1F667D29D13B85B9</UserChecksum>
         </File>
         <File dnOrder="7">
           <Type dnOrder="0">SOURCE</Type>
@@ -91,8 +91,8 @@
           <Name dnOrder="1">initialization.c</Name>
           <LogicalPath dnOrder="2">config/sam_g55_xpld_cena/</LogicalPath>
           <PhysicalPath dnOrder="3">/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">902031F92004007A53C475619F45D025</GeneratedChecksum>
-          <UserChecksum dnOrder="5">902031F92004007A53C475619F45D025</UserChecksum>
+          <GeneratedChecksum dnOrder="4">A4308C9C8FCA4BBFCE010F5A0AE77FD0</GeneratedChecksum>
+          <UserChecksum dnOrder="5">A4308C9C8FCA4BBFCE010F5A0AE77FD0</UserChecksum>
         </File>
         <File dnOrder="11">
           <Type dnOrder="0">SOURCE</Type>
@@ -467,8 +467,8 @@
           <Name dnOrder="1">drv_plc_hal.h</Name>
           <LogicalPath dnOrder="2">config/sam_g55_xpld_cena/driver/plc/common/</LogicalPath>
           <PhysicalPath dnOrder="3">/driver/plc/common/</PhysicalPath>
-          <GeneratedChecksum dnOrder="4">1F6596D9BF560FD4B3D64D1A151BB99D</GeneratedChecksum>
-          <UserChecksum dnOrder="5">1F6596D9BF560FD4B3D64D1A151BB99D</UserChecksum>
+          <GeneratedChecksum dnOrder="4">9E3DD01BD9682CD8D0269D43335ED2B4</GeneratedChecksum>
+          <UserChecksum dnOrder="5">9E3DD01BD9682CD8D0269D43335ED2B4</UserChecksum>
         </File>
         <File dnOrder="58">
           <Type dnOrder="0">HEADER</Type>
@@ -951,7 +951,7 @@
       <Setting dnOrder="1" key="DFPPath" value=".\dev_packs\Microchip\SAMG_DFP\3.0.15\samg55\atdf\ATSAMG55J19.atdf"/>
       <Setting dnOrder="2" key="FORCE_OPTIMIZATION" value="false"/>
       <Setting dnOrder="3" key="GENERATE_BACKUP" value="true"/>
-      <Setting dnOrder="4" key="MERGE_STRATEGY" value="USER_ALL"/>
+      <Setting dnOrder="4" key="MERGE_STRATEGY" value="ALL"/>
       <Setting dnOrder="5" key="PackageFilter" value="bsp;core;csp;smartenergy_plc;"/>
     </Settings>
   </Configurator>

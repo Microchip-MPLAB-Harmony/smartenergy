@@ -99,7 +99,7 @@
         <itemPath>../src/config/sam_g55_xpld_cena/osal/osal_impl_basic.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="packs" projectFiles="true">
-        <logicalFolder name="f3" displayName="ATSAMG55J19_DFP" projectFiles="true">
+        <logicalFolder name="f2" displayName="ATSAMG55J19_DFP" projectFiles="true">
           <logicalFolder name="f1" displayName="component" projectFiles="true">
             <itemPath>../src/packs/ATSAMG55J19_DFP/component/adc.h</itemPath>
             <itemPath>../src/packs/ATSAMG55J19_DFP/component/chipid.h</itemPath>
@@ -275,8 +275,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="SAMG_DFP" vendor="Microchip" version="3.0.9"/>
         <pack name="CMSIS" vendor="ARM" version="5.0.1"/>
+        <pack name="SAMG_DFP" vendor="Microchip" version="3.0.9"/>
       </packs>
       <compileType>
         <linkerTool>

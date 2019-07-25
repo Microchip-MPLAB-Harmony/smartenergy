@@ -160,12 +160,12 @@ void DRV_PLC_HAL_Reset(void)
 
 bool DRV_PLC_HAL_GetCarrierDetect(void)
 {
-    return false;
+    return SYS_PORT_PinRead(sPlcPlib->cdPin);
 }
 
 void DRV_PLC_HAL_Delay(uint64_t delayUs)
-{    
-    _delay((delayUs * 300000000 + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
+{ 
+    _delay((delayUs * DRV_PLC_HAL_CPU_CLOCK_FREQ + (uint64_t)(5.932e6 - 1ul)) / (uint64_t)5.932e6);
 }
 
 void DRV_PLC_HAL_EnableInterrupts(bool enable)
@@ -198,7 +198,7 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     pTxData += 2;
     if (dataLength)
     {
-        if (dataLength > HAL_SPI_BUFFER_SIZE)
+        if (dataLength > HAL_SPI_BUFFER_SIZE - 6)
         {
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
