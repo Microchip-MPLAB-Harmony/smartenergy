@@ -43,7 +43,7 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define SERIAL_BUFFER_SIZE        64
+#define SERIAL_BUFFER_SIZE        512
 #define LED_RX_OFF_RATE_MS        100    
     
 // *****************************************************************************
@@ -71,9 +71,7 @@ typedef enum
     APP_CONSOLE_STATE_SET_DATA_LEN,
     APP_CONSOLE_STATE_SET_DATA,
     APP_CONSOLE_STATE_SET_TONE_MAP,
-    APP_CONSOLE_STATE_SET_PREEMPHASIS,
     APP_CONSOLE_STATE_SET_BRANCH_MODE,
-    APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL,
     APP_CONSOLE_STATE_SET_PLC_BAND,
     APP_CONSOLE_STATE_VIEW_CONFIG,
     APP_CONSOLE_STATE_TX,
@@ -101,11 +99,17 @@ typedef struct
     
     APP_CONSOLE_STATES state;
 
+    char pTrasmitChar[SERIAL_BUFFER_SIZE];
+    
+    volatile uint8_t numCharToTransmit;
+
     char pReceivedChar[SERIAL_BUFFER_SIZE];
 
     char* pNextChar;
     
     uint8_t numCharToReceive;
+    
+    size_t dataLength;
 
 } APP_CONSOLE_DATA;
 
@@ -130,15 +134,13 @@ extern APP_CONSOLE_DATA appConsole;
 	"-- HOST version: "DRV_PLC_PHY_HOST_DESC " --\r\n"
 
 #define MENU_HEADER "\n\r-- Menu Configuration --------------\n\r" \
-	"0: Select attenuation Level\n\r" \
+	"0: Select Attenuation Level\n\r" \
 	"1: Select Modulation/Scheme\n\r" \
-	"2: Select time period between messages to transmit(us.)\n\r" \
+	"2: Select Time period between messages to transmit(us.)\n\r" \
 	"3: Select Data to transmit\n\r" \
 	"4: Select TX tone Map\n\r" \
-	"5: Select TX preemphasis\n\r" \
-	"6: Select Branch Mode\n\r" \
-	"7: Set/Clear Force No Output Signal\n\r" \
-	"8: Select PLC band (only for multiband boards)\n\r" \
+	"5: Select Branch Mode\n\r" \
+	"6: Select PLC band (only for multiband boards)\n\r" \
 	"v: View TX configuration values\n\r" \
 	"e: Execute transmission application\n\r" \
 	"otherwise: Display this main menu\n\n\r"
@@ -167,10 +169,6 @@ extern APP_CONSOLE_DATA appConsole;
 	"0: Autodetect\n\r" \
 	"1: High Impedance\n\r"	\
 	"2: Very Low Impedance\n\r"
-
-#define MENU_NO_OUTPUT "\n\r-- Force No Output Signal --------------\r\n"	\
-	"0: Clear\n\r" \
-	"1: Set\n\r"
 
 #define MENU_MULTIBAND "\n\r-- Select PLC band --------------\r\n"	\
 	"0: CEN A\n\r" \
@@ -244,7 +242,68 @@ void APP_CONSOLE_Initialize ( void );
 
 void APP_CONSOLE_Tasks( void );
 
+// *****************************************************************************
+/* Function:
+    void APP_CONSOLE_Print(const char *format, ...)
 
+ 
+
+  Summary:
+    Formats and prints a message with a variable number of arguments to the
+    console.
+
+ 
+
+  Description:
+    This function formats and prints a message with a variable number of
+    arguments to the console.
+
+ 
+
+  Precondition:
+    APP_CONSOLE_Initialize must have returned a valid object handle.
+
+ 
+
+  Parameters:
+    format          - Pointer to a buffer containing the format string for
+                      the message to be displayed.
+    ...             - Zero or more optional parameters to be formated as
+                      defined by the format string.
+
+ 
+
+  Returns:
+    None.
+
+ 
+
+  Example:
+    <code>
+    // In source code
+    int result;
+
+ 
+
+    result = SomeOperation();
+    if (result > MAX_VALUE)
+    {
+        APP_CONSOLE_Print("Result of %d exceeds max value\r\n", result);
+    }
+    </code>
+
+ 
+
+  Remarks:
+    The format string and arguments follow the printf convention.
+
+ 
+
+*/
+
+ 
+
+void APP_CONSOLE_Print(const char *format, ...);
 
 #endif /* _APP_CONSOLE_H */
 

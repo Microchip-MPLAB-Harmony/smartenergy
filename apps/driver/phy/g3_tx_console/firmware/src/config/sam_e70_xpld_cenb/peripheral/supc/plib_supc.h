@@ -1,20 +1,21 @@
 /*******************************************************************************
-  NVIC PLIB Implementation
+  Supply Controller (SUPC) Peripheral Library (PLIB)
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_nvic.c
+    plib_supc.h
 
   Summary:
-    NVIC PLIB Source File
+    Interface definition of the SUPC PLIB Header File
 
   Description:
     None
 
 *******************************************************************************/
 
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -37,38 +38,63 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+// DOM-IGNORE-END
 
+#ifndef PLIB_SUPC_H // Guards against multiple inclusion
+#define PLIB_SUPC_H
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+
+/* This section lists the other files that are included in this file.
+*/
 #include "device.h"
-#include "plib_nvic.h"
+#include "plib_supc_common.h"
 
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+    extern "C" {
+#endif
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: NVIC Implementation
+// Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
 
-void NVIC_Initialize( void )
-{
-    /* Priority 0 to 7 and no sub-priority. 0 is the highest priority */
-    NVIC_SetPriorityGrouping( 0x04 );
+typedef enum {
+    GPBR_REGS_0,
+    GPBR_REGS_1,
+    GPBR_REGS_2,
+    GPBR_REGS_3,
+    GPBR_REGS_4,
+    GPBR_REGS_5,
+    GPBR_REGS_6,
+    GPBR_REGS_7,
+} GPBR_REGS_INDEX;
 
-    /* Enable NVIC Controller */
-    __DMB();
-    __enable_irq();
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
-    /* Enable the interrupt sources and configure the priorities as configured
-     * from within the "Interrupt Manager" of MHC. */
-    NVIC_SetPriority(USART1_IRQn, 7);
-    NVIC_EnableIRQ(USART1_IRQn);
-    NVIC_SetPriority(PIOD_IRQn, 6);
-    NVIC_EnableIRQ(PIOD_IRQn);
-    NVIC_SetPriority(TC0_CH0_IRQn, 5);
-    NVIC_EnableIRQ(TC0_CH0_IRQn);
-    NVIC_SetPriority(XDMAC_IRQn, 5);
-    NVIC_EnableIRQ(XDMAC_IRQn);
+void SUPC_Initialize (void);
+void SUPC_SleepModeEnter (void);
+void SUPC_WaitModeEnter (WAITMODE_FLASH_STATE flash_lpm, WAITMODE_WKUP_SOURCE source);
+void SUPC_BackupModeEnter (void);
+uint32_t SUPC_GPBRRead (GPBR_REGS_INDEX reg);
+void SUPC_GPBRWrite(GPBR_REGS_INDEX reg, uint32_t data);
 
 
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+    }
+#endif
+// DOM-IGNORE-END
 
-    return;
-}
+#endif // PLIB_SUPC_H

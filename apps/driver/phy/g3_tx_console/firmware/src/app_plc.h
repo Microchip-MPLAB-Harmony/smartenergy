@@ -133,10 +133,6 @@ typedef struct
     
     uint32_t pl360PhyVersion;
     
-    uint16_t pl360GainHigh[3];
-    
-    uint16_t pl360GainVeryLow[3];
-    
     DRV_PLC_PHY_TRANSMISSION_OBJ pl360Tx;
     
     uint8_t pDataTx[BUFFER_SIZE];
@@ -147,11 +143,7 @@ typedef struct
     
 	uint8_t txImpedance;
     
-	uint8_t txForceNoOutput;
-    
     uint8_t toneMapSize;
-    
-    uint8_t preemphasisSize;
     
     bool inTx;
     

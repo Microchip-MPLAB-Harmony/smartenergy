@@ -148,40 +148,39 @@ static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_
     switch(cfmObj->result)
     {
         case DRV_PLC_PHY_TX_RESULT_PROCESS:
-            printf("...DRV_PLC_PHY_TX_RESULT_PROCESS\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_PROCESS\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_SUCCESS:
-            printf("...DRV_PLC_PHY_TX_RESULT_SUCCESS\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_SUCCESS\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_LENGTH:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_LENGTH\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_LENGTH\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_BUSY_CH:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_CH\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_CH\r\n");
             break;    
         case DRV_PLC_PHY_TX_RESULT_BUSY_TX:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_TX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_TX\r\n");
             break;    
         case DRV_PLC_PHY_TX_RESULT_BUSY_RX:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_RX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_RX\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_SCHEME:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_SCHEME\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_SCHEME\r\n");
             break; 
         case DRV_PLC_PHY_TX_RESULT_TIMEOUT:
-            printf("...DRV_PLC_PHY_TX_RESULT_TIMEOUT\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_TIMEOUT\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_TONEMAP:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_TONEMAP\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_TONEMAP\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_INV_MODE:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_MODE\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_MODE\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_NO_TX:
-            printf("...DRV_PLC_PHY_TX_RESULT_NO_TX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_NO_TX\r\n");
             break;   
     }
-    
 }
 
 // *****************************************************************************
@@ -333,7 +332,6 @@ void APP_PLC_Tasks ( void )
                     appPlcTx.pl360PhyVersion = 0;
                     appPlcTx.txImpedance = HI_STATE;
                     appPlcTx.txAuto = 1;
-                    appPlcTx.txForceNoOutput = 0;
                     appPlcTx.pl360Tx.time = 1000000;
                     appPlcTx.pl360Tx.attenuation = 0;
                     appPlcTx.pl360Tx.modScheme = MOD_SCHEME_DIFFERENTIAL;
@@ -353,7 +351,6 @@ void APP_PLC_Tasks ( void )
                     /* CEN A */
                     appPlcTx.toneMapSize = 1;
                     appPlcTx.pl360Tx.toneMap[0] = 0x3F;
-                    appPlcTx.preemphasisSize = 6;                       
                     
                     memset(appPlcTx.pl360Tx.preemphasis, 0, sizeof(appPlcTx.pl360Tx.preemphasis));
                     
@@ -469,16 +466,37 @@ void APP_PLC_Tasks ( void )
                 {
                     appPlcTx.pl360PhyVersion = version;
                     
-                    /* Get PLC PHY Gains for High Impedance Mode */
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)&appPlcTx.pl360GainHigh;
-                    DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);                
-                    /* Get PLC PHY Gains for Very Low Impedance Mode */
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)&appPlcTx.pl360GainVeryLow;
-                    DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);
+                    /* Adjust ToneMap Info */
+                    switch ((uint8_t)(appPlcTx.pl360PhyVersion >> 16))
+                    {
+                        case 1:
+                            /* CEN A */
+                            appPlcTx.toneMapSize = TONE_MAP_SIZE_CENELEC;
+                            appPlcTx.pl360Tx.toneMap[0] = 0x3F;
+                            break;
+                           
+                        case 2:
+                            /* FCC */
+                            appPlcTx.toneMapSize = TONE_MAP_SIZE_FCC;
+                            appPlcTx.pl360Tx.toneMap[0] = 0xFF;
+                            appPlcTx.pl360Tx.toneMap[1] = 0xFF;
+                            appPlcTx.pl360Tx.toneMap[2] = 0xFF;
+                            break;
+                           
+                        case 3:
+                            /* ARIB */
+                            appPlcTx.toneMapSize = TONE_MAP_SIZE_FCC;
+                            appPlcTx.pl360Tx.toneMap[0] = 0x03;
+                            appPlcTx.pl360Tx.toneMap[1] = 0xFF;
+                            appPlcTx.pl360Tx.toneMap[2] = 0xFF;
+                            break;  
+                           
+                        case 4:
+                            /* CEN B */
+                            appPlcTx.toneMapSize = TONE_MAP_SIZE_CENELEC;
+                            appPlcTx.pl360Tx.toneMap[0] = 0x0F;
+                            break;                      
+                    }
 
                     /* Store configuration in NVM memory */
                     appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
@@ -515,29 +533,7 @@ void APP_PLC_Tasks ( void )
                 pibObj.length = 1;
                 pibObj.pData = (uint8_t *)&appPlcTx.txImpedance;
                 DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                /* Force No Output Signal */
-                if (appPlcTx.txForceNoOutput)
-                {
-                    uint16_t nullGain[3] = {0};
-                    
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)nullGain;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                }
-                else
-                {
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)appPlcTx.pl360GainHigh;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)appPlcTx.pl360GainVeryLow;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);                    
-                }
+
                 /* Set Transmission Mode */
                 appPlcTx.pl360Tx.mode = TX_MODE_RELATIVE; 
                 
@@ -590,22 +586,6 @@ void APP_PLC_Tasks ( void )
             /* Clear Transmission flags */
             appPlcTx.inTx = false;
             appPlc.waitingTxCfm = false;
-            
-            /* Adjust ToneMap and Preemphasis by default */
-            if (appPlcTx.bin2InUse)
-            {
-                /* FCC */
-                appPlcTx.toneMapSize = 3;
-                memset(appPlcTx.pl360Tx.toneMap, 0xFF, 3);
-                appPlcTx.preemphasisSize = 24;                   
-            }
-            else
-            {
-                /* CEN A */
-                appPlcTx.toneMapSize = 1;
-                appPlcTx.pl360Tx.toneMap[0] = 0x3F;
-                appPlcTx.preemphasisSize = 6;    
-            }
             
             /* Close PLC Driver */
             DRV_PLC_PHY_Close(appPlc.drvPl360Handle);

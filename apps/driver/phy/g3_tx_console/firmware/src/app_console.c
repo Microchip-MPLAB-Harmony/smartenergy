@@ -28,6 +28,7 @@
 // *****************************************************************************
 
 #include <string.h>
+#include <stdarg.h>
 #include <math.h>
 #include "definitions.h"
 
@@ -53,6 +54,10 @@
 
 APP_CONSOLE_DATA CACHE_ALIGN appConsole;
 
+
+
+static bool APP_CONSOLE_CheckIsPrintable(char data);
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -65,15 +70,25 @@ void Timer1_Callback (uintptr_t context)
     LED_Set();
 }
 
-void APP_CONSOLE_ReadCallback(uintptr_t context)
+void APP_CONSOLE_ReadCallback(void *buffer)
 {
-    /* ErrorGet clears errors */
-    if(USART1_ErrorGet() == USART_ERROR_NONE)
+    if (buffer == (void *)appConsole.pNextChar) 
     {
+        if (APP_CONSOLE_CheckIsPrintable(*appConsole.pNextChar))
+        {
+            /* Update Message length */
+            appConsole.dataLength++;
+        }
+
         /* Update reception data */
         appConsole.pNextChar++;
         appConsole.numCharToReceive = 0;
     }
+}
+
+void APP_CONSOLE_WriteCallback(void *buffer)
+{
+    appConsole.numCharToTransmit = 0;
 }
 
 // *****************************************************************************
@@ -87,11 +102,12 @@ static uint32_t APP_CONSOLE_ReadSerialChar(uint8_t size, bool restart)
     if (restart)
     {
         appConsole.pNextChar = appConsole.pReceivedChar;
+        appConsole.dataLength = 0;
     }
     
     appConsole.numCharToReceive = size;
     
-    if(USART1_Read((void*)appConsole.pNextChar, size))
+    if (SYS_CONSOLE_Read(SYS_CONSOLE_INDEX_0, 0, (void*)appConsole.pNextChar, size))
     {
         /* Success */
         return 0;
@@ -104,21 +120,62 @@ static uint32_t APP_CONSOLE_ReadSerialChar(uint8_t size, bool restart)
     }
 }
 
-static bool APP_CONSOLE_SetAttenuationLevel(char *level)
+static bool APP_CONSOLE_CharToHex(char value, uint8_t *hex)
 {
-	uint16_t attLevel;
-    bool res = false;
-
-    attLevel = (*level++ - 0x30) * 10;
-    attLevel += (*level - 0x30);
-    
-    if (attLevel < 32) {
-        appPlcTx.pl360Tx.attenuation = attLevel;
-//        save_config(PHY_APP_CONSOLE_CMD_MENU_START_MODE);
-        res = true;
+    if ((value >= '0') && (value <= '9')) 
+    {
+        *hex = value - 0x30;
+    }
+    else if ((value >= 'A') && (value <= 'F')) 
+    {
+        *hex = value - 0x37;
+    } 
+    else if ((value >= 'a') && (value <= 'f')) 
+    {
+        *hex = value - 0x57;
+    } 
+    else
+    {
+        return 0;
     }
     
-    return res;
+    return 1;
+}
+
+static bool APP_CONSOLE_CheckIsPrintable(char data)
+{
+    if (((data >= 32) && (data <= 126)) || 
+        ((data >= 128) && (data <= 254)) || 
+         (data == '\t') || (data == '\n')) 
+    {
+        return 1;
+    }
+    
+    return 0;
+}
+
+static bool APP_CONSOLE_SetAttenuationLevel(char *level)
+{
+	uint8_t attLevel;
+    uint8_t attLevelHex;
+    
+    if (APP_CONSOLE_CharToHex(*level++, &attLevelHex))
+    {
+        attLevel = attLevelHex << 4;
+        
+        attLevelHex = *level;
+        if (APP_CONSOLE_CharToHex(*level, &attLevelHex))
+        {
+            attLevel += attLevelHex;
+            
+            if ((attLevel <= 0x1F) || (attLevel == 0xFF)) {
+                appPlcTx.pl360Tx.attenuation = attLevel;
+                return true;
+            }
+        }
+    }
+    
+    return false;
 }
 
 static bool APP_CONSOLE_SetScheme(char *scheme)
@@ -315,47 +372,6 @@ static bool APP_CONSOLE_SetToneMap(char *toneMap, size_t length)
     return res;
 }
 
-static bool APP_CONSOLE_SetPreemphasis(char *preemphasis, size_t length)
-{
-    uint8_t index;
-    uint8_t* pPreemphasisTx;
-    bool res = true;
-    
-    pPreemphasisTx = appPlcTx.pl360Tx.preemphasis;
-    memset(pPreemphasisTx, 0, sizeof(appPlcTx.pl360Tx.preemphasis));
-
-    for(index = 0; index < length * 2; index++, preemphasis++)
-    {
-        if (*preemphasis >= 0x30 && *preemphasis < 0x40) { 
-            /* 0 to 9 */
-            if (index % 2) {
-                *pPreemphasisTx++ += *preemphasis - 0x30;
-            } else {
-                *pPreemphasisTx = (*preemphasis - 0x30) << 4;
-            }
-        } else if (*preemphasis >= 0x41 && *preemphasis < 0x47) {
-            /* A to F */
-            if (index % 2) {
-                *pPreemphasisTx++ += *preemphasis - 0x37;
-            } else {
-                *pPreemphasisTx = (*preemphasis - 0x37) << 4;
-            }
-        } else if (*preemphasis >= 0x61 && *preemphasis < 0x67) {
-            /* a to f */
-            if (index % 2) {
-                *pPreemphasisTx++ += *preemphasis - 0x57;
-            } else {
-                *pPreemphasisTx = (*preemphasis - 0x57) << 4;
-            }
-        } else {
-            res = false;
-            break;
-        }
-    }
-    
-    return res;
-}
-
 static bool APP_CONSOLE_SetBranchMode(char *mode)
 {
     bool res = true;
@@ -375,27 +391,6 @@ static bool APP_CONSOLE_SetBranchMode(char *mode)
 		case '2':
 			appPlcTx.txAuto = 0;
 			appPlcTx.txImpedance = VLO_STATE;
-			break;
-
-		default:
-			res = false;
-	}
-    
-    return res;
-}
-
-static bool APP_CONSOLE_SetOutputMode(char *mode)
-{
-    bool res = true;
-    
-	switch (*mode) 
-    {
-		case '0':
-			appPlcTx.txForceNoOutput = 0;
-			break;
-
-		case '1':
-			appPlcTx.txForceNoOutput = 1;
 			break;
 
 		default:
@@ -430,100 +425,93 @@ static void APP_CONSOLE_ShowConfiguration(void)
 {
     uint8_t index;
     
-    printf("\n\r-- Configuration Info --------------\r\n");
-    printf("-I- PHY Version: 0x%08X\n\r", (unsigned int)appPlcTx.pl360PhyVersion);
-    printf("-I- TX Attenuation: %u\n\r", (unsigned int)appPlcTx.pl360Tx.attenuation);
+    APP_CONSOLE_Print("\n\r-- Configuration Info --------------\r\n");
+    APP_CONSOLE_Print("-I- PHY Version: 0x%08X\n\r", (unsigned int)appPlcTx.pl360PhyVersion);
+    APP_CONSOLE_Print("-I- TX Attenuation: 0x%02X\n\r", (unsigned int)appPlcTx.pl360Tx.attenuation);
     switch (appPlcTx.pl360Tx.modType) 
     {
         case MOD_TYPE_BPSK:
             if (appPlcTx.pl360Tx.modScheme) 
             {
-                printf("-I- Modulation Scheme: Coherent BPSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Coherent BPSK \n\r");
             }
             else
             {
-                printf("-I- Modulation Scheme: Differential BPSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Differential BPSK \n\r");
             }
 		break;
 
         case MOD_TYPE_QPSK:
             if (appPlcTx.pl360Tx.modScheme) 
             {
-                printf("-I- Modulation Scheme: Coherent QPSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Coherent QPSK \n\r");
             }
             else
             {
-                printf("-I- Modulation Scheme: Differential QPSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Differential QPSK \n\r");
             }
             break;
 
         case MOD_TYPE_8PSK:
             if (appPlcTx.pl360Tx.modScheme) 
             {
-                printf("-I- Modulation Scheme: Coherent 8PSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Coherent 8PSK \n\r");
             } 
             else 
             {
-                printf("-I- Modulation Scheme: Differential 8PSK \n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Differential 8PSK \n\r");
             }
             break;
 
         case MOD_TYPE_BPSK_ROBO:
             if (appPlcTx.pl360Tx.modScheme) 
             {
-                printf("-I- Modulation Scheme: Coherent Robust\n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Coherent Robust\n\r");
             } 
             else 
             {
-                printf("-I- Modulation Scheme: Differential Robust\n\r");
+                APP_CONSOLE_Print("-I- Modulation Scheme: Differential Robust\n\r");
             }
             break;
 
         default:
-            printf("-I- Modulation Scheme: ERROR CFG\n\r");
+            APP_CONSOLE_Print("-I- Modulation Scheme: ERROR CFG\n\r");
 	}
     
-    printf("-I- Tone Map: ");
+    APP_CONSOLE_Print("-I- Tone Map: ");
 	for (index = 0; index < appPlcTx.toneMapSize; index++) {
-		printf("%02X", appPlcTx.pl360Tx.toneMap[index]);
+		APP_CONSOLE_Print("%02X", appPlcTx.pl360Tx.toneMap[index]);
 	}
-	printf("\r\n");
-    
-    printf("-I- Preemphasis: ");
-	for (index = 0; index < appPlcTx.preemphasisSize; index++) {
-		printf("%02X", appPlcTx.pl360Tx.preemphasis[index]);
-	}
-	printf("\r\n");
+	APP_CONSOLE_Print("\r\n");
     
     if (appPlcTx.txAuto) 
     {
-		printf("-I- Branch Mode : Autodetect - ");
+		APP_CONSOLE_Print("-I- Branch Mode : Autodetect - ");
 	} 
     else 
     {
-		printf("-I- Branch Mode : Fixed - ");
+		APP_CONSOLE_Print("-I- Branch Mode : Fixed - ");
 	}
 
 	if (appPlcTx.txImpedance == HI_STATE) 
     {
-		printf("High Impedance \r\n");
+		APP_CONSOLE_Print("High Impedance \r\n");
 	} 
     else 
     {
-		printf("Very Low Impedance \r\n");
+		APP_CONSOLE_Print("Very Low Impedance \r\n");
 	}
     
-    printf("-I- Forced No Output Signal: %u\n\r", (unsigned int)appPlcTx.txForceNoOutput);
-	printf("-I- Time Period: %u\n\r", (unsigned int)appPlcTx.pl360Tx.time);
-	printf("-I- Data Len: %u\n\r", (unsigned int)appPlcTx.pl360Tx.dataLength);    
+	APP_CONSOLE_Print("-I- Time Period: %u\n\r", (unsigned int)appPlcTx.pl360Tx.time);
+	APP_CONSOLE_Print("-I- Data Len: %u\n\r", (unsigned int)appPlcTx.pl360Tx.dataLength);    
 
 	if (appPlcTx.pl360Tx.pTransmitData[0] == 0x30) 
     {
-		printf("-I- Fixed Data\r\n");
+		APP_CONSOLE_Print("-I- Fixed Data\r\n");
 	} 
     else 
     {
-		printf("-I- Random Data\r\n");
+		APP_CONSOLE_Print("-I- Random Data\r\n");
 	}
 }
 
@@ -552,6 +540,10 @@ void APP_CONSOLE_Initialize ( void )
     /* Update state machine */
     appConsole.state = APP_CONSOLE_STATE_INIT; 
     
+    /* Init App vars */
+    appConsole.numCharToTransmit = 0;
+    appConsole.numCharToReceive = 0;
+    
 }
 
 /******************************************************************************
@@ -573,13 +565,16 @@ void APP_CONSOLE_Tasks ( void )
         /* Application's initial state. */
         case APP_CONSOLE_STATE_INIT:
         {
-            /* Configure USART Callback */
-            USART1_ReadCallbackRegister(APP_CONSOLE_ReadCallback, 0);
+            /* Configure CONSOLE Callbacks */
+            SYS_CONSOLE_RegisterCallback(SYS_CONSOLE_INDEX_0, APP_CONSOLE_ReadCallback, 
+                    SYS_CONSOLE_EVENT_READ_COMPLETE);
+            SYS_CONSOLE_RegisterCallback(SYS_CONSOLE_INDEX_0, APP_CONSOLE_WriteCallback, 
+                    SYS_CONSOLE_EVENT_WRITE_COMPLETE);
             
             appConsole.state = APP_CONSOLE_STATE_WAIT_PLC;
             
             /* Show App Header */
-            printf(STRING_HEADER);
+            APP_CONSOLE_Print(STRING_HEADER);
             
             break;
         }
@@ -603,7 +598,7 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_SHOW_MENU:
         {
             /* Show console interface */
-            printf(MENU_HEADER);
+            APP_CONSOLE_Print(MENU_HEADER);
 
             /* Waiting Console command */
             appConsole.state = APP_CONSOLE_STATE_CONSOLE;
@@ -622,24 +617,24 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     case '0':
                         appConsole.state = APP_CONSOLE_STATE_SET_ATT_LEVEL;
-                        printf("\r\nEnter attenuation level using 2 digits [00..31] : ");
+                        APP_CONSOLE_Print("\r\nEnter attenuation level using 2 digits [00..1F][use FF for signal 0] : ");
                         APP_CONSOLE_ReadSerialChar(2, true);
                         break;
 
                     case '1':
                         appConsole.state = APP_CONSOLE_STATE_SET_SCHEME;
-                        printf(MENU_SCHEME);
+                        APP_CONSOLE_Print(MENU_SCHEME);
                         APP_CONSOLE_ReadSerialChar(1, true);
                         break;
 
                     case '2':
-                        printf("\r\nEnter transmission period in us. (max. 10 digits and value min 2100 us): ");
+                        APP_CONSOLE_Print("\r\nEnter transmission period in us. (max. 10 digits and value min 2100 us): ");
                         APP_CONSOLE_ReadSerialChar(1, true);
                         appConsole.state = APP_CONSOLE_STATE_SET_TIME_PERIOD;
                         break;
 
                     case '3':
-                        printf("\r\nEnter length of data to transmit in bytes (max. 512 bytes): ");
+                        APP_CONSOLE_Print("\r\nEnter length of data to transmit in bytes (max. 512 bytes): ");
                         appConsole.state = APP_CONSOLE_STATE_SET_DATA_LEN;       
                         APP_CONSOLE_ReadSerialChar(1, true);
                         break;
@@ -647,17 +642,17 @@ void APP_CONSOLE_Tasks ( void )
                     case '4':
                         if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x01)
                         {
-                            printf("\r\nEnter enter value for tone map. CENA(01 - 3F) : ");
+                            APP_CONSOLE_Print("\r\nEnter enter value for tone map. CENA(01 - 3F) : ");
                             appPlcTx.toneMapSize = 1;
                         }
                         else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x02)
                         {
-                            printf("\r\nEnter enter value for tone map. FCC(000001 - FFFFFF) : ");
+                            APP_CONSOLE_Print("\r\nEnter enter value for tone map. FCC(000001 - FFFFFF) : ");
                             appPlcTx.toneMapSize = 3;
                         }
                         else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x04)
                         {
-                            printf("\r\nEnter enter value for tone map. CENB(01 - 0F) : ");
+                            APP_CONSOLE_Print("\r\nEnter enter value for tone map. CENB(01 - 0F) : ");
                             appPlcTx.toneMapSize = 1;
                         }
                         
@@ -666,48 +661,21 @@ void APP_CONSOLE_Tasks ( void )
                         break;
 
                     case '5':
-                        if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x01)
-                        {
-                            printf("\r\nEnter enter value for preemphasis. CENA(6 bytes) : ");
-                            appPlcTx.preemphasisSize = 6;
-                        }
-                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x02)
-                        {
-                            printf("\r\nEnter enter value for preemphasis. FCC(24 bytes) : ");
-                            appPlcTx.preemphasisSize = 24;
-                        }
-                        else if (((appPlcTx.pl360PhyVersion >> 16) & 0xFF) == 0x04)
-                        {
-                            printf("\r\nEnter enter value for preemphasis. CENB(3 bytes) : ");
-                            appPlcTx.preemphasisSize = 3;
-                        }
-                        
-                        APP_CONSOLE_ReadSerialChar(appPlcTx.preemphasisSize << 1, true);     
-                        appConsole.state = APP_CONSOLE_STATE_SET_PREEMPHASIS;
-                        break;
-
-                    case '6':
-                        printf(MENU_BRANCH_MODE);                        
+                        APP_CONSOLE_Print(MENU_BRANCH_MODE);                        
                         APP_CONSOLE_ReadSerialChar(1, true);
                         appConsole.state = APP_CONSOLE_STATE_SET_BRANCH_MODE;
                         break;
 
-                    case '7':
-                        printf(MENU_NO_OUTPUT);                        
-                        APP_CONSOLE_ReadSerialChar(1, true);
-                        appConsole.state = APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL;
-                        break;
-
-                    case '8':
+                    case '6':
                         if (appPlc.plcMultiband)
                         {
-                            printf(MENU_MULTIBAND);                        
+                            APP_CONSOLE_Print(MENU_MULTIBAND);                        
                             APP_CONSOLE_ReadSerialChar(1, true);
                             appConsole.state = APP_CONSOLE_STATE_SET_PLC_BAND;   
                         }
                         else
                         {
-                            printf("\r\nMulti-band option is not supported.\r\n");
+                            APP_CONSOLE_Print("\r\nMulti-band option is not supported.\r\n");
                             APP_CONSOLE_ReadSerialChar(1, true);
                         }                        
                         break;
@@ -719,7 +687,7 @@ void APP_CONSOLE_Tasks ( void )
 
                     case 'e':
                     case 'E':
-                        printf("\r\nStart transmission, type 'x' to cancel.\r\n");
+                        APP_CONSOLE_Print("\r\nStart transmission, type 'x' to cancel.\r\n");
                         appPlc.state = APP_PLC_STATE_TX;
                         appConsole.state = APP_CONSOLE_STATE_TX;
                         APP_CONSOLE_ReadSerialChar(1, true);
@@ -742,14 +710,14 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (APP_CONSOLE_SetAttenuationLevel(appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Attenuation level = %u\r\n", 
+                    APP_CONSOLE_Print("\r\nSet Attenuation level = 0x%02x\r\n", 
                             (unsigned int)appPlcTx.pl360Tx.attenuation);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Attenuation level not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Attenuation level not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(2, true);
                 }
             }  
@@ -762,7 +730,7 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (APP_CONSOLE_SetScheme(appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Type: %u, Scheme: %u \r\n", 
+                    APP_CONSOLE_Print("\r\nSet Type: %u, Scheme: %u \r\n", 
                             (unsigned int)appPlcTx.pl360Tx.modType,
                             (unsigned int)appPlcTx.pl360Tx.modScheme);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
@@ -770,7 +738,7 @@ void APP_CONSOLE_Tasks ( void )
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Scheme not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Scheme not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }  
@@ -786,14 +754,14 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetTransmissionPeriod(appConsole.pReceivedChar, 
                         appConsole.pNextChar - appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Time Period = %u us.\r\n", 
+                    APP_CONSOLE_Print("\r\nSet Time Period = %u us.\r\n", 
                             (unsigned int)appPlcTx.pl360Tx.time);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Time Period not defined. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Time Period not defined. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }
@@ -813,18 +781,18 @@ void APP_CONSOLE_Tasks ( void )
                 if (APP_CONSOLE_SetDataLength(appConsole.pReceivedChar, 
                         appConsole.pNextChar - appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Data Length = %u bytes\r\n", 
+                    APP_CONSOLE_Print("\r\nSet Data Length = %u bytes\r\n", 
                             (unsigned int)appPlcTx.pl360Tx.dataLength);
                     
                     /* Set Data content */
-                    printf(MENU_DATA_MODE);
+                    APP_CONSOLE_Print(MENU_DATA_MODE);
                     APP_CONSOLE_ReadSerialChar(1, true);
                     appConsole.state = APP_CONSOLE_STATE_SET_DATA;
                 }
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Time Period not defined. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Time Period not defined. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }
@@ -841,13 +809,13 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (APP_CONSOLE_SetDataMode(appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Data mode successfully\r\n");
+                    APP_CONSOLE_Print("\r\nSet Data mode successfully\r\n");
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Data Mode not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Data Mode not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }  
@@ -862,14 +830,14 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     if (appPlcTx.toneMapSize == 3)
                     {
-                        printf("\r\nSet ToneMap: %02x%02x%02x \r\n", 
+                        APP_CONSOLE_Print("\r\nSet ToneMap: %02x%02x%02x \r\n", 
                             (unsigned int)appPlcTx.pl360Tx.toneMap[0],
                             (unsigned int)appPlcTx.pl360Tx.toneMap[1],
                             (unsigned int)appPlcTx.pl360Tx.toneMap[2]);
                     }
                     else
                     {
-                        printf("\r\nSet ToneMap: %02X \r\n", 
+                        APP_CONSOLE_Print("\r\nSet ToneMap: %02X \r\n", 
                             (unsigned int)appPlcTx.pl360Tx.toneMap[0]);
                     }
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
@@ -877,27 +845,8 @@ void APP_CONSOLE_Tasks ( void )
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: ToneMap not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: ToneMap not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(appPlcTx.toneMapSize << 1, true);  
-                }
-            }  
-            break;
-        }
-
-        case APP_CONSOLE_STATE_SET_PREEMPHASIS:
-        {
-            if (appConsole.numCharToReceive == 0)
-            {
-                if (APP_CONSOLE_SetPreemphasis(appConsole.pReceivedChar, appPlcTx.preemphasisSize))
-                {
-                    printf("\r\nSet Preemphasis values successfully\r\n");
-                    appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
-                }
-                else
-                {
-                    /* Try it again */
-                    printf("\r\nERROR: Preemphasis values not permitted. Try again : ");
-                    APP_CONSOLE_ReadSerialChar(appPlcTx.preemphasisSize << 1, true);  
                 }
             }  
             break;
@@ -909,7 +858,7 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (APP_CONSOLE_SetBranchMode(appConsole.pReceivedChar))
                 {
-                    printf("\r\nSet Auto: %u, Branch: %u \r\n", 
+                    APP_CONSOLE_Print("\r\nSet Auto: %u, Branch: %u \r\n", 
                             (unsigned int)appPlcTx.txAuto,
                             (unsigned int)appPlcTx.txImpedance);
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
@@ -917,27 +866,7 @@ void APP_CONSOLE_Tasks ( void )
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Branch Mode not permitted. Try again : ");
-                    APP_CONSOLE_ReadSerialChar(1, true);
-                }
-            }  
-            break;
-        }
-
-        case APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL:
-        {
-            if (appConsole.numCharToReceive == 0)
-            {
-                if (APP_CONSOLE_SetOutputMode(appConsole.pReceivedChar))
-                {
-                    printf("\r\nSet Force No Output : %u\r\n", 
-                            (unsigned int)appPlcTx.txForceNoOutput);
-                    appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
-                }
-                else
-                {
-                    /* Try it again */
-                    printf("\r\nERROR: Value not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Branch Mode not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }  
@@ -952,11 +881,11 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     if (appPlcTx.bin2InUse)
                     {
-                        printf("\r\nSet FCC Band\r\n");
+                        APP_CONSOLE_Print("\r\nSet FCC Band\r\n");
                     }
                     else
                     {
-                        printf("\r\nSet CEN A Band\r\n");
+                        APP_CONSOLE_Print("\r\nSet CEN A Band\r\n");
                     }
                     
                     appPlc.state = APP_PLC_STATE_SET_BAND;
@@ -965,7 +894,7 @@ void APP_CONSOLE_Tasks ( void )
                 else
                 {
                     /* Try it again */
-                    printf("\r\nERROR: Value not permitted. Try again : ");
+                    APP_CONSOLE_Print("\r\nERROR: Value not permitted. Try again : ");
                     APP_CONSOLE_ReadSerialChar(1, true);
                 }
             }  
@@ -985,7 +914,7 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if ((*appConsole.pReceivedChar == 'x') || (*appConsole.pReceivedChar == 'X'))
                 {
-                    printf("\r\nCancel transmission\r\n");
+                    APP_CONSOLE_Print("\r\nCancel transmission\r\n");
                     appPlc.state = APP_PLC_STATE_STOP_TX;
                     appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
                 }
@@ -999,7 +928,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_ERROR:
         {
-            printf("\r\nERROR: Unknown received character\r\n");
+            APP_CONSOLE_Print("\r\nERROR: Unknown received character\r\n");
             appConsole.state = APP_CONSOLE_STATE_SHOW_MENU;
             break;
         }
@@ -1010,6 +939,27 @@ void APP_CONSOLE_Tasks ( void )
             /* TODO: Handle error in application's state machine. */
             break;
         }
+    }
+}
+
+void APP_CONSOLE_Print(const char *format, ...)
+{
+    size_t len = 0;
+    va_list args = {0};
+    
+    while (appConsole.numCharToTransmit);
+
+    va_start( args, format );
+    len = vsnprintf(appConsole.pTrasmitChar, SERIAL_BUFFER_SIZE - 1, format, args);
+    va_end( args );
+
+    if (len > 0 && len < SERIAL_BUFFER_SIZE - 1)
+    {
+        appConsole.pTrasmitChar[len] = '\0';
+    
+        appConsole.numCharToTransmit = len;
+
+        SYS_CONSOLE_Write(SYS_CONSOLE_INDEX_0, 0, appConsole.pTrasmitChar, len);
     }
 }
 
