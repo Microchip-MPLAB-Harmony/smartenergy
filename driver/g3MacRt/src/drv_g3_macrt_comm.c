@@ -138,6 +138,9 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
                 gG3MacRtObj->exceptionCallback(DRV_G3_MACRT_EXCEPTION_RESET, 
                         gG3MacRtObj->contextExc);
             }
+            
+            /* Update Driver Status */
+            gPlcPhyObj->status = SYS_STATUS_BUSY;
         }
     
         /* Check if there is any tx_cfm pending to be reported */
@@ -159,6 +162,9 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
                     gG3MacRtObj->contextExc
             );
         }
+            
+        /* Update Driver Status */
+        gPlcPhyObj->status = SYS_STATUS_ERROR;
         
         return false;
     }
