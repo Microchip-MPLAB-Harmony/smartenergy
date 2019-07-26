@@ -70,7 +70,6 @@ void Timer1_Callback (uintptr_t context)
 
 void APP_CONSOLE_ReadCallback(void *buffer)
 {
-    /* ErrorGet clears errors */
     if (buffer == (void *)appConsole.pNextChar) 
     {
         if (appConsole.echoOn)
