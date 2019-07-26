@@ -51,12 +51,14 @@
 // *****************************************************************************
 // *****************************************************************************
 
+#include "peripheral/xdmac/plib_xdmac.h"
 
-#define SYS_DMA_ChannelCallbackRegister(channel, eventHandler, context)
+#define SYS_DMA_ChannelCallbackRegister(channel, eventHandler, context)  XDMAC_ChannelCallbackRegister((XDMAC_CHANNEL)channel, (XDMAC_CHANNEL_CALLBACK)eventHandler, context)
 
-#define SYS_DMA_ChannelTransfer(channel, srcAddr, destAddr, blockSize)
+#define SYS_DMA_ChannelTransfer(channel, srcAddr, destAddr, blockSize)  XDMAC_ChannelTransfer((XDMAC_CHANNEL)channel, srcAddr, destAddr, blockSize)
 
-#define SYS_DMA_ChannelIsBusy(channel)
+#define SYS_DMA_ChannelIsBusy(channel)  XDMAC_ChannelIsBusy((XDMAC_CHANNEL)channel)
 
-#define SYS_DMA_ChannelDisable(channel)
+#define SYS_DMA_ChannelDisable(channel)  XDMAC_ChannelDisable((XDMAC_CHANNEL)channel)
+
 #endif // SYS_DMA_MAPPING_H

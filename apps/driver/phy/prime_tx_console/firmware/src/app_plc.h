@@ -126,8 +126,6 @@ typedef struct
     
 	uint8_t txImpedance;
     
-	uint8_t txForceNoOutput;
-    
     uint8_t channel;
     
     bool inTx;

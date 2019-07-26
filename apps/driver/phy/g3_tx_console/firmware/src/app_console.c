@@ -54,8 +54,6 @@
 
 APP_CONSOLE_DATA CACHE_ALIGN appConsole;
 
-
-
 static bool APP_CONSOLE_CheckIsPrintable(char data);
 
 // *****************************************************************************
@@ -427,7 +425,16 @@ static void APP_CONSOLE_ShowConfiguration(void)
     
     APP_CONSOLE_Print("\n\r-- Configuration Info --------------\r\n");
     APP_CONSOLE_Print("-I- PHY Version: 0x%08X\n\r", (unsigned int)appPlcTx.pl360PhyVersion);
-    APP_CONSOLE_Print("-I- TX Attenuation: 0x%02X\n\r", (unsigned int)appPlcTx.pl360Tx.attenuation);
+    
+    if (appPlcTx.pl360Tx.attenuation == 0xFF)
+    {
+        APP_CONSOLE_Print("-I- TX Attenuation: 0xFF (no signal)\n\r");
+    }
+    else
+    {
+        APP_CONSOLE_Print("-I- TX Attenuation: 0x%02X\n\r", (unsigned int)appPlcTx.pl360Tx.attenuation);
+    }
+
     switch (appPlcTx.pl360Tx.modType) 
     {
         case MOD_TYPE_BPSK:

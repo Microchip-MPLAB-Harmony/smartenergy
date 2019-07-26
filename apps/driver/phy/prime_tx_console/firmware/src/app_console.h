@@ -47,7 +47,7 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define SERIAL_BUFFER_SIZE        64
+#define SERIAL_BUFFER_SIZE        512
 #define LED_RX_OFF_RATE_MS        100    
     
 // *****************************************************************************
@@ -79,7 +79,6 @@ typedef enum
     APP_CONSOLE_STATE_SET_DATA,
     APP_CONSOLE_STATE_SET_CHANNEL,
     APP_CONSOLE_STATE_SET_BRANCH_MODE,
-    APP_CONSOLE_STATE_SET_OUTPUT_SIGNAL,
     APP_CONSOLE_STATE_VIEW_CONFIG,
     APP_CONSOLE_STATE_TX,
     APP_CONSOLE_STATE_ERROR,
@@ -106,11 +105,17 @@ typedef struct
     
     APP_CONSOLE_STATES state;
 
+    char pTrasmitChar[SERIAL_BUFFER_SIZE];
+    
+    volatile uint8_t numCharToTransmit;
+
     char pReceivedChar[SERIAL_BUFFER_SIZE];
 
     char* pNextChar;
     
     uint8_t numCharToReceive;
+    
+    size_t dataLength;
 
 } APP_CONSOLE_DATA;
 
@@ -144,7 +149,6 @@ extern APP_CONSOLE_DATA appConsole;
 	"6: Select Data to transmit\n\r" \
 	"7: Select channel\n\r" \
 	"8: Select branch mode\n\r" \
-	"9: Set/Clear Force No Output Signal\n\r" \
 	"v: View TX configuration values\n\r" \
 	"e: Execute transmission application\n\r" \
 	"otherwise: Display this main menu\n\n\r"
@@ -252,6 +256,69 @@ void APP_CONSOLE_Initialize ( void );
  */
 
 void APP_CONSOLE_Tasks( void );
+
+// *****************************************************************************
+/* Function:
+    void APP_CONSOLE_Print(const char *format, ...)
+
+ 
+
+  Summary:
+    Formats and prints a message with a variable number of arguments to the
+    console.
+
+ 
+
+  Description:
+    This function formats and prints a message with a variable number of
+    arguments to the console.
+
+ 
+
+  Precondition:
+    APP_CONSOLE_Initialize must have returned a valid object handle.
+
+ 
+
+  Parameters:
+    format          - Pointer to a buffer containing the format string for
+                      the message to be displayed.
+    ...             - Zero or more optional parameters to be formated as
+                      defined by the format string.
+
+ 
+
+  Returns:
+    None.
+
+ 
+
+  Example:
+    <code>
+    // In source code
+    int result;
+
+ 
+
+    result = SomeOperation();
+    if (result > MAX_VALUE)
+    {
+        APP_CONSOLE_Print("Result of %d exceeds max value\r\n", result);
+    }
+    </code>
+
+ 
+
+  Remarks:
+    The format string and arguments follow the printf convention.
+
+ 
+
+*/
+
+ 
+
+void APP_CONSOLE_Print(const char *format, ...);
 
 
 

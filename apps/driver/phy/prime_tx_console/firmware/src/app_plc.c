@@ -37,7 +37,7 @@
 // *****************************************************************************
 // *****************************************************************************
 #define DRV_PLC_PHY_INDEX_0   0
-#define APP_PLC_CONFIG_KEY  0xA55A
+#define APP_PLC_CONFIG_KEY  0xA66A
 
 extern uint8_t plc_phy_bin_start;
 extern uint8_t plc_phy_bin_end;
@@ -203,37 +203,37 @@ static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_
     switch(cfmObj->result)
     {
         case DRV_PLC_PHY_TX_RESULT_PROCESS:
-            printf("...DRV_PLC_PHY_TX_RESULT_PROCESS\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_PROCESS\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_SUCCESS:
-            printf("...DRV_PLC_PHY_TX_RESULT_SUCCESS\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_SUCCESS\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_LENGTH:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_LENGTH\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_LENGTH\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_BUSY_CH:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_CH\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_CH\r\n");
             break;    
         case DRV_PLC_PHY_TX_RESULT_BUSY_TX:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_TX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_TX\r\n");
             break;    
         case DRV_PLC_PHY_TX_RESULT_BUSY_RX:
-            printf("...DRV_PLC_PHY_TX_RESULT_BUSY_RX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_RX\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_SCHEME:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_SCHEME\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_SCHEME\r\n");
             break; 
         case DRV_PLC_PHY_TX_RESULT_TIMEOUT:
-            printf("...DRV_PLC_PHY_TX_RESULT_TIMEOUT\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_TIMEOUT\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_INV_BUFFER:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_BUFFER\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_BUFFER\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_INV_MODE:
-            printf("...DRV_PLC_PHY_TX_RESULT_INV_MODE\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_MODE\r\n");
             break;   
         case DRV_PLC_PHY_TX_RESULT_NO_TX:
-            printf("...DRV_PLC_PHY_TX_RESULT_NO_TX\r\n");
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_NO_TX\r\n");
             break;   
     }
     
@@ -392,7 +392,6 @@ void APP_PLC_Tasks ( void )
                     appPlcTx.pl360PhyVersion = 0;
                     appPlcTx.txImpedance = HI_STATE;
                     appPlcTx.txAuto = 1;
-                    appPlcTx.txForceNoOutput = 0;
                     appPlcTx.pl360Tx.bufferId = 0;
                     appPlcTx.pl360Tx.attenuation = 0;
                     appPlcTx.pl360Tx.scheme = SCHEME_DBPSK;
@@ -402,6 +401,7 @@ void APP_PLC_Tasks ( void )
                     appPlcTx.pl360Tx.time = 1000000;        
                     appPlcTx.pl360Tx.pTransmitData = appPlcTx.pDataTx;
                     appPlcTx.pl360Tx.dataLength = 64;
+                    appPlcTx.channel = 1;
                     pData = appPlcTx.pDataTx;
                     for(index = 0; index < appPlcTx.pl360Tx.dataLength; index++)
                     {
@@ -501,25 +501,8 @@ void APP_PLC_Tasks ( void )
                 {
                     appPlcTx.pl360PhyVersion = version;
                     
-                    /* Get PLC PHY Gains for High Impedance Mode */
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)&appPlcTx.pl360GainHigh;
-                    DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);                
-                    /* Get PLC PHY Gains for Very Low Impedance Mode */
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)&appPlcTx.pl360GainVeryLow;
-                    DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);
-
                     /* Store configuration in NVM memory */
                     appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
-                }        
-                
-                /* Apply PLC coupling configuration */
-                if (appPlc.couplingConfig)
-                {
-                    APP_PLC_ApplyPlcConfiguration();
                 }
             }                
             break;
@@ -547,28 +530,17 @@ void APP_PLC_Tasks ( void )
                 pibObj.length = 1;
                 pibObj.pData = (uint8_t *)&appPlcTx.txImpedance;
                 DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                /* Force No Output Signal */
-                if (appPlcTx.txForceNoOutput)
+                
+                /* Set Channel */
+                pibObj.id = PLC_ID_CHANNEL_CFG;
+                pibObj.length = 1;
+                pibObj.pData = (uint8_t *)&appPlcTx.channel;
+                DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
+                
+                /* Apply PLC coupling configuration */
+                if (appPlc.couplingConfig)
                 {
-                    uint16_t nullGain[3] = {0};
-                    
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)nullGain;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                }
-                else
-                {
-                    pibObj.id = PLC_ID_GAIN_TABLE_HI;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)appPlcTx.pl360GainHigh;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-                    pibObj.length = 6;
-                    pibObj.pData = (uint8_t *)appPlcTx.pl360GainVeryLow;
-                    DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);                    
+                    APP_PLC_ApplyPlcConfiguration();
                 }
                 
                 /* Set Time mode */

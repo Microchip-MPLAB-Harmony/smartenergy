@@ -66,6 +66,8 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
+#define DRV_PLC_HAL_CPU_CLOCK_FREQ            300000000
+
 #define DRV_PLC_HAL_CMD_POS                   15
 #define DRV_PLC_HAL_CMD_RD                    (0 << DRV_PLC_HAL_CMD_POS)
 #define DRV_PLC_HAL_CMD_WR                    (1 << DRV_PLC_HAL_CMD_POS)
@@ -99,9 +101,6 @@
 // *****************************************************************************
 
 typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
-typedef bool (* DRV_PLC_SPI_WRITE_READ)( void * pTransmitData, size_t txSize, 
-        void * pReceiveData, size_t rxSize );
-typedef bool (* DRV_PLC_SPI_ISBUSY)( void );
 
  typedef enum
 {
@@ -168,11 +167,17 @@ typedef struct
     /* PLC SPI PLIB Transfer Setup */
     DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup;
 
-    /* SPI Write/Read */
-    DRV_PLC_SPI_WRITE_READ                         spiWriteRead;
-    
-    /* SPI Is Busy */
-    DRV_PLC_SPI_ISBUSY                             spiIsBusy;
+    /* SPI transmit DMA channel. */
+    SYS_DMA_CHANNEL                        dmaChannelTx;
+
+    /* SPI receive DMA channel. */
+    SYS_DMA_CHANNEL                        dmaChannelRx;
+
+    /* SPI transmit register address used for DMA operation. */
+    void                                   *spiAddressTx;
+
+    /* SPI receive register address used for DMA operation. */
+    void                                   *spiAddressRx;
 
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;
@@ -185,6 +190,9 @@ typedef struct
 
     /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
+
+    /* PLC Carrier Detect pin */
+    SYS_PORT_PIN                           cdPin;
 
 } DRV_PLC_PLIB_INTERFACE;
 

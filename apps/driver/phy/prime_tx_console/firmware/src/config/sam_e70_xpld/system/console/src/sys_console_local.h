@@ -1,21 +1,20 @@
 /*******************************************************************************
-  SPI PLIB
+  Console System Service Local Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    plib_spi0.h
+    sys_console_local.h
 
   Summary:
-    SPI0 PLIB Header File
+    Console System Service local declarations and definitions.
 
   Description:
-    This file has prototype of all the interfaces provided for particular
-    SPI peripheral.
-
+    This file contains the Console System Service local declarations and definitions.
 *******************************************************************************/
 
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -38,41 +37,46 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-
-#ifndef PLIB_SPI0_H
-#define PLIB_SPI0_H
-
-#include "device.h"
-#include "plib_spi_common.h"
-
-/* Provide C++ Compatibility */
-#ifdef __cplusplus
-
-    extern "C" {
-
-#endif
-
-/****************************** SPI0 Interface *********************************/
-
-void SPI0_Initialize ( void );
-
-bool SPI0_WriteRead (void* pTransmitData, size_t txSize, void* pReceiveData, size_t rxSize);
-
-bool SPI0_Write(void* pTransmitData, size_t txSize);
-
-bool SPI0_Read(void* pReceiveData, size_t rxSize);
-
-bool SPI0_TransferSetup (SPI_TRANSFER_SETUP *setup, uint32_t spiSourceClock);
+//DOM-IGNORE-END
 
 
-/* Provide C++ Compatibility */
-#ifdef __cplusplus
+#ifndef SYS_CONSOLE_LOCAL_H
+#define SYS_CONSOLE_LOCAL_H
 
-    }
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File includes
+// *****************************************************************************
+// *****************************************************************************
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+extern "C" {
 
 #endif
+// DOM-IGNORE-END
 
-#endif // PLIB_SPI0_H
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Type Definitions
+// *****************************************************************************
+// *****************************************************************************
+
+typedef uintptr_t CONSOLE_DEVICE_INDEX;
+
+//DOM-IGNORE-BEGIN
+#ifdef __cplusplus
+}
+#endif
+//DOM-IGNORE-END
+
+#endif //#ifndef SYS_CONSOLE_LOCAL_H
 
 /*******************************************************************************
  End of File
