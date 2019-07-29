@@ -69,27 +69,34 @@
 #define G3_CEN_A                                   0
 #define G3_CEN_B                                   1
 #define G3_FCC                                     2
+#define G3_ARIB                                    3
 
 /* Number of carriers for Cenelec-A bandplan */
 #define NUM_CARRIERS_CENELEC_A                     36
-/* Number of carriers for FCC bandplan */      
-#define NUM_CARRIERS_FCC                           72
 /* Number of carriers for Cenelec-B bandplan */      
 #define NUM_CARRIERS_CENELEC_B                     16
+/* Number of carriers for FCC bandplan */      
+#define NUM_CARRIERS_FCC                           72
+/* Number of carriers for ARIB bandplan */      
+#define NUM_CARRIERS_ARIB                          54
 
 /* Subbands for Cenelec-A bandplan */
 #define NUM_SUBBANDS_CENELEC_A                     6
-/* Subbands for FCC bandplan */
-#define NUM_SUBBANDS_FCC                           24
 /* Subbands for Cenelec-B bandplan */
 #define NUM_SUBBANDS_CENELEC_B                     4
+/* Subbands for FCC bandplan */
+#define NUM_SUBBANDS_FCC                           24
+/* Subbands for ARIB bandplan */
+#define NUM_SUBBANDS_ARIB                          16
 
 /* CENELEC A Band Plan (35 - 91 Khz) */
-#define PLC_CENELEC_A                            0
+#define PLC_CENELEC_A                              0
 /* CENELEC-B Band Plan (98 - 122 Khz) */
-#define PLC_CENELEC_B                            1
+#define PLC_CENELEC_B                              1
 /* FCC Band Plan (155 - 487 Khz) */
-#define PLC_FCC                                  2
+#define PLC_FCC                                    2
+/* ARIB Band Plan (155 - 404 Khz) */
+#define PLC_ARIB                                   3
       
 /* Tone Map size for Cenelec(A,B) bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1
@@ -323,6 +330,27 @@ typedef struct {
   /* Tone Map */
   uint8_t toneMap[TONE_MAP_SIZE_MAX];
 } DRV_PLC_PHY_TONE_MAP_RSP;
+
+// *****************************************************************************
+/* G3 maximum PSDU length parameters data
+
+   Summary
+    This struct includes the parameters used for the maximum PSDU length
+    computation.
+
+   Remarks:
+    This struct is related to PLC_ID_MAX_PSDU_LEN_PARAMS
+*/
+typedef struct {
+  /* Modulation type */
+  DRV_PLC_PHY_MOD_TYPE modType;
+  /* Modulation scheme */
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  /* Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC) */
+  uint8_t rs2Blocks;
+  /* Tone Map */
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
+} DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;
 
 // *****************************************************************************
 /* G3 Transmission setup data
