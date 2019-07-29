@@ -47,6 +47,7 @@
 // *****************************************************************************
 #include <string.h>
 #include "configuration.h"
+#include "system/system.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"

@@ -46,7 +46,6 @@
 // *****************************************************************************
 // *****************************************************************************
 #include <string.h>
-#include "system/system.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 
@@ -291,11 +290,11 @@ static void _DRV_PLC_BOOT_DisableBootCmd(void)
     /* Disable Bootloader */
     sDrvPlcHalObj->sendBootCmd(DRV_PLC_BOOT_CMD_DIS_SPI_CLK_CTRL, 0, 0, NULL, NULL);
     
-    /* Wait to PLC startup (10ms) */
-    sDrvPlcHalObj->delay(10000);
-    
     /* Configure 16 bits transfer */
     sDrvPlcHalObj->setup(true);
+    
+    /* Wait to PLC startup (2ms) */
+    sDrvPlcHalObj->delay(2000);
 }
 
 static bool _DRV_PLC_BOOT_CheckFirmware(void)
@@ -408,7 +407,6 @@ void DRV_PLC_BOOT_Restart(bool update)
 
         /* Wait to PLC startup (2ms) */
         sDrvPlcHalObj->delay(2000);
-        
     }
     else
     {
@@ -420,7 +418,6 @@ void DRV_PLC_BOOT_Restart(bool update)
         /* Enable Boot Command Mode */
         _DRV_PLC_BOOT_EnableBootCmd();
         
-        /* Update boot status */
         sDrvPlcBootInfo.status = DRV_PLC_BOOT_STATUS_PROCESING;
         
         _DRV_PLC_BOOT_FirmwareUploadTask();

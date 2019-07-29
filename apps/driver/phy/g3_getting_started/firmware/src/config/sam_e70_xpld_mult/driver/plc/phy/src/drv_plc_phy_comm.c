@@ -47,6 +47,7 @@
 // *****************************************************************************
 #include <string.h>
 #include "configuration.h"
+#include "system/system.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
@@ -267,7 +268,18 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
             {
                 gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_RESET, gPlcPhyObj->contextExc);
             }
+            
+            /* Update Driver Status */
+            gPlcPhyObj->status = SYS_STATUS_BUSY;
         }
+
+        /* Check if there is any tx_cfm pending to be reported */
+        if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
+        {
+            gPlcPhyObj->evResetTxCfm = true;
+        }
+
+        return true;
     }
     else
     {
@@ -277,15 +289,12 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         {
             gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY, gPlcPhyObj->contextExc);
         }
+            
+        /* Update Driver Status */
+        gPlcPhyObj->status = SYS_STATUS_ERROR;
+
+        return false;
     }
-    
-    /* Check if there is any tx_cfm pending to be reported */
-    if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
-    {
-        gPlcPhyObj->evResetTxCfm = true;
-    }
-    
-    return false;
 }
 
 static void _DRV_PLC_PHY_COMM_SpiWriteCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData, uint16_t length)
@@ -315,6 +324,7 @@ static void _DRV_PLC_PHY_COMM_SpiWriteCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData,
             }
             break;
         }
+        gPlcPhyObj->plcHal->reset();
         gPlcPhyObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }  
     
@@ -349,6 +359,7 @@ static void _DRV_PLC_PHY_COMM_SpiReadCmd(DRV_PLC_PHY_MEM_ID id, uint8_t *pData, 
             }
             break;
         }
+        gPlcPhyObj->plcHal->reset();
         gPlcPhyObj->plcHal->sendWrRdCmd(&halCmd, &halInfo);
     }    
     

@@ -62,6 +62,15 @@
 // *****************************************************************************
 
 
+/*** Macros for PLC_CD pin ***/
+#define PLC_CD_Set()               (PIOB_REGS->PIO_SODR = (1<<1))
+#define PLC_CD_Clear()             (PIOB_REGS->PIO_CODR = (1<<1))
+#define PLC_CD_Toggle()            (PIOB_REGS->PIO_ODSR ^= (1<<1))
+#define PLC_CD_Get()               ((PIOB_REGS->PIO_PDSR >> 1) & 0x1)
+#define PLC_CD_OutputEnable()      (PIOB_REGS->PIO_OER = (1<<1))
+#define PLC_CD_InputEnable()       (PIOB_REGS->PIO_ODR = (1<<1))
+#define PLC_CD_PIN                  PIO_PIN_PB1
+
 /*** Macros for PLC_LDO pin ***/
 #define PLC_LDO_Set()               (PIOB_REGS->PIO_SODR = (1<<2))
 #define PLC_LDO_Clear()             (PIOB_REGS->PIO_CODR = (1<<2))

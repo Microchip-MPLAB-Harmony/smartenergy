@@ -48,6 +48,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "configuration.h"
+#include "system/system.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 #include "driver/plc/g3MacRt/drv_g3_macrt.h"
@@ -140,7 +141,7 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
             }
             
             /* Update Driver Status */
-            gPlcPhyObj->status = SYS_STATUS_BUSY;
+            gG3MacRtObj->status = SYS_STATUS_BUSY;
         }
     
         /* Check if there is any tx_cfm pending to be reported */
@@ -164,7 +165,7 @@ static bool _DRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         }
             
         /* Update Driver Status */
-        gPlcPhyObj->status = SYS_STATUS_ERROR;
+        gG3MacRtObj->status = SYS_STATUS_ERROR;
         
         return false;
     }

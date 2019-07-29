@@ -66,6 +66,8 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
+#define DRV_PLC_HAL_CPU_CLOCK_FREQ            300000000
+
 #define DRV_PLC_HAL_CMD_POS                   15
 #define DRV_PLC_HAL_CMD_RD                    (0 << DRV_PLC_HAL_CMD_POS)
 #define DRV_PLC_HAL_CMD_WR                    (1 << DRV_PLC_HAL_CMD_POS)
@@ -188,6 +190,9 @@ typedef struct
 
     /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
+
+    /* PLC Carrier Detect pin */
+    SYS_PORT_PIN                           cdPin;
 
 } DRV_PLC_PLIB_INTERFACE;
 

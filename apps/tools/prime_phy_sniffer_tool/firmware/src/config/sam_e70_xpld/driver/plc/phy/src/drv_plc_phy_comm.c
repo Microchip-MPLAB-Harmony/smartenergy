@@ -47,6 +47,7 @@
 // *****************************************************************************
 #include <string.h>
 #include "configuration.h"
+#include "system/system.h"
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
@@ -250,6 +251,9 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
             {
                 gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_RESET, gPlcPhyObj->contextExc);
             }
+            
+            /* Update Driver Status */
+            gPlcPhyObj->status = SYS_STATUS_BUSY;
         }
 
         /* Check if there is any tx_cfm pending to be reported */
@@ -268,6 +272,9 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         {
             gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY, gPlcPhyObj->contextExc);
         }
+            
+        /* Update Driver Status */
+        gPlcPhyObj->status = SYS_STATUS_ERROR;
 
         return false;
     }
