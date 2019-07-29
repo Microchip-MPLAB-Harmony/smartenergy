@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app.h
+    app_console.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -13,13 +13,13 @@
   Description:
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
-    "APP_Initialize" and "APP_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_STATES" definition).  Both
+    "APP_CONSOLE_Initialize" and "APP_CONSOLE_Tasks" prototypes) and some of them are only used
+    internally by the application (such as the "APP_CONSOLE_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef _APP_H
-#define _APP_H
+#ifndef _APP_CONSOLE_H
+#define _APP_CONSOLE_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -27,10 +27,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdlib.h>
 #include "configuration.h"
 #include "definitions.h"
 
@@ -47,9 +43,16 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define BUFFER_SIZE               512
+#define STRING_HEADER "\r\n-- MCHP G3 PHY Getting Started Application --\r\n" \
+	"-- Compiled: "__DATE__ " "__TIME__ " --\r\n"    
     
-#define LED_RX_OFF_RATE_MS        100    
+#define PRINT_BUFFER_SIZE 512    
+    
+#define CONSOLE_READ_BUFFER_SIZE (SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0 - 1)
+    
+#define DIV_ROUND(a, b)      (((a) + (b >> 1)) / (b))
+    
+#define LED_BLINK_RATE_MS             500
     
 // *****************************************************************************
 /* Application states
@@ -65,35 +68,24 @@ extern "C" {
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_STATE_IDLE=0,
-    APP_STATE_INIT,
-    APP_STATE_DEV_OPEN,
-    APP_STATE_TX_SETUP,
-    APP_STATE_TX,
-    APP_STATE_WAITING_TX_CFM,
-    APP_STATE_WAITING_RX,
-    APP_STATE_RX,
-    APP_STATE_ERROR,
+    APP_CONSOLE_STATE_INIT=0,
+            
+    /* Application waiting for initialization of PLC application */
+    APP_CONSOLE_STATE_WAIT_PLC,
+            
+    APP_CONSOLE_STATE_WAIT_COMMAND,
+            
+    APP_CONSOLE_STATE_TYPING,
+            
+    APP_CONSOLE_STATE_CONFIG_MENU,
+            
+    APP_CONSOLE_STATE_CONFIG_MOD,
+            
+    APP_CONSOLE_STATE_CONFIG_BAND,
+            
+    APP_CONSOLE_STATE_TRANSMITTING,
 
-} APP_STATES;
-
-/* Application modes
-
-  Summary:
-    Application modes enumeration
-
-  Description:
-    This enumeration defines the mode of application. This mode
-    determines the behavior of the application at PLC communication.
-*/
-
-typedef enum
-{
-    APP_MODE_TRANSMISION=0,
-    APP_MODE_RECEPTION,
-
-} APP_MODES;
-
+} APP_CONSOLE_STATES;
 
 // *****************************************************************************
 /* Application Data
@@ -111,43 +103,24 @@ typedef enum
 typedef struct
 {
     /* The application's current state */
-    SYS_TIME_HANDLE tmr1Handle;   
+    APP_CONSOLE_STATES state;
     
-    APP_STATES state;
+    /* Index for transmission data buffer */
+    uint16_t txDataIndex;
     
-    APP_MODES mode;
+    /**/
+    uint8_t charRcvIndex;
     
-    DRV_HANDLE drvPl360Handle;
+    /**/
+    uint8_t charProcessedIndex;
     
-    bool plc_phy_exception;
+    /* Flag to indicate if SYS_CONSOLE is busy for write */
+    volatile bool consolePrintBusy;    
     
-    uint32_t plc_phy_err_unexpected;
+    /* Console echo enabled/disabled */
+    bool echoOn;
     
-    uint32_t plc_phy_err_critical;
-    
-    uint32_t plc_phy_err_reset;
-    
-    uint32_t plc_phy_err_unknow;
-    
-    DRV_PLC_PHY_TRANSMISSION_OBJ pl360Tx;
-    
-    DRV_PLC_PHY_TRANSMISSION_CFM_OBJ pl360TxCfm;
-    
-    DRV_PLC_PHY_RECEPTION_OBJ pl360Rx;
-    
-    uint8_t pDataTx[BUFFER_SIZE];
-    
-    uint8_t pDataRx[BUFFER_SIZE];
-    
-    uint32_t counterTx;
-    
-    uint32_t counterTxCfm;
-    
-    uint32_t counterRx;
-
-    /* TODO: Define any additional data used by the application. */
-
-} APP_DATA;
+} APP_CONSOLE_DATA;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -159,13 +132,13 @@ typedef struct
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Application Initialization and State Machine Functions
+// Section: Console Interface Definition
 // *****************************************************************************
 // *****************************************************************************
 
 /*******************************************************************************
   Function:
-    void APP_Initialize ( void )
+    void APP_CONSOLE_Initialize ( void )
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -173,7 +146,7 @@ typedef struct
   Description:
     This function initializes the Harmony application.  It places the
     application in its initial state and prepares it to run so that its
-    APP_Tasks function can be called.
+    APP_CONSOLE_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -187,19 +160,19 @@ typedef struct
 
   Example:
     <code>
-    APP_Initialize();
+    APP_CONSOLE_Initialize();
     </code>
 
   Remarks:
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_Initialize ( void );
+void APP_CONSOLE_Initialize ( void );
 
 
 /*******************************************************************************
   Function:
-    void APP_Tasks ( void )
+    void APP_CONSOLE_Tasks ( void )
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -220,18 +193,64 @@ void APP_Initialize ( void );
 
   Example:
     <code>
-    APP_Tasks();
+    APP_CONSOLE_Tasks();
     </code>
 
   Remarks:
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_Tasks( void );
+void APP_CONSOLE_Tasks( void );
+
+
+// *****************************************************************************
+/* Function:
+    void APP_CONSOLE_Print(const char *format, ...) 
+
+  Summary:
+    Formats and prints a message with a variable number of arguments to the
+    console. 
+
+  Description:
+    This function formats and prints a message with a variable number of
+    arguments to the console. 
+
+  Precondition:
+    APP_CONSOLE_Initialize must have returned a valid object handle. 
+
+  Parameters:
+    format          - Pointer to a buffer containing the format string for
+                      the message to be displayed.
+    ...             - Zero or more optional parameters to be formated as
+                      defined by the format string. 
+
+  Returns:
+    None. 
+
+  Example:
+    <code>
+    // In source code
+    int result; 
+
+    result = SomeOperation();
+    if (result > MAX_VALUE)
+    {
+        APP_CONSOLE_Print("Result of %d exceeds max value\r\n", result);
+    }
+    </code> 
+
+  Remarks:
+    The format string and arguments follow the printf convention.
+*/ 
+
+void APP_CONSOLE_Print(const char *format, ...);
+
+void APP_CONSOLE_HandleRxMsgCrcOk(uint8_t *pData, uint16_t dataLen, DRV_PLC_PHY_MOD_SCHEME modScheme, DRV_PLC_PHY_MOD_TYPE modType, uint16_t rssi, uint8_t lqi);
+void APP_CONSOLE_HandleRxMsgCrcBad(void);
 
 
 
-#endif /* _APP_H */
+#endif /* _APP_CONSOLE_H */
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
