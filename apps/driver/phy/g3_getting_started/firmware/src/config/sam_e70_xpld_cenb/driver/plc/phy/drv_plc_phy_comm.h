@@ -69,34 +69,34 @@
 #define G3_CEN_A                                   0
 #define G3_CEN_B                                   1
 #define G3_FCC                                     2
-
-/* Header Length in symbols for Cenelec-A bandplan */
-#define FCH_LEN_CENELEC_A                          5
-/* Header Length in symbols for FCC bandplan */      
-#define FCH_LEN_FCC                                9
-/* Header Length in symbols for Cenelec-B bandplan */      
-#define FCH_LEN_CENELEC_B                          5
+#define G3_ARIB                                    3
 
 /* Number of carriers for Cenelec-A bandplan */
 #define NUM_CARRIERS_CENELEC_A                     36
-/* Number of carriers for FCC bandplan */      
-#define NUM_CARRIERS_FCC                           72
 /* Number of carriers for Cenelec-B bandplan */      
 #define NUM_CARRIERS_CENELEC_B                     16
+/* Number of carriers for FCC bandplan */      
+#define NUM_CARRIERS_FCC                           72
+/* Number of carriers for ARIB bandplan */      
+#define NUM_CARRIERS_ARIB                          54
 
 /* Subbands for Cenelec-A bandplan */
 #define NUM_SUBBANDS_CENELEC_A                     6
-/* Subbands for FCC bandplan */
-#define NUM_SUBBANDS_FCC                           24
 /* Subbands for Cenelec-B bandplan */
 #define NUM_SUBBANDS_CENELEC_B                     4
+/* Subbands for FCC bandplan */
+#define NUM_SUBBANDS_FCC                           24
+/* Subbands for ARIB bandplan */
+#define NUM_SUBBANDS_ARIB                          16
 
 /* CENELEC A Band Plan (35 - 91 Khz) */
-#define PLC_CENELEC_A                            0
+#define PLC_CENELEC_A                              0
 /* CENELEC-B Band Plan (98 - 122 Khz) */
-#define PLC_CENELEC_B                            1
+#define PLC_CENELEC_B                              1
 /* FCC Band Plan (155 - 487 Khz) */
-#define PLC_FCC                                  2
+#define PLC_FCC                                    2
+/* ARIB Band Plan (155 - 404 Khz) */
+#define PLC_ARIB                                   3
       
 /* Tone Map size for Cenelec(A,B) bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1
@@ -106,8 +106,6 @@
 #define PROTOCOL_CARRIERS_MAX                      NUM_CARRIERS_FCC
 /* Maximum number of tone map */
 #define TONE_MAP_SIZE_MAX                          TONE_MAP_SIZE_FCC     
-/* Maximum Length of FCH */
-#define FCH_LEN_MAX                                FCH_LEN_FCC
 /* Maximum number of subbands */
 #define NUM_SUBBANDS_MAX                           NUM_SUBBANDS_FCC
 
@@ -189,8 +187,8 @@ typedef enum {
   PLC_ID_RRC_NOTCH_ACTIVE,
   PLC_ID_RRC_NOTCH_INDEX,
   PLC_ID_NOISE_PEAK_POWER,
-  PLC_ID_RSV0,
-  PLC_ID_RSV1,
+  PLC_ID_CRC_TX_RX_CAPABILITY,
+  PLC_ID_RX_BAD_CRC_PAY,
   PLC_ID_CFG_AUTODETECT_IMPEDANCE,
   PLC_ID_CFG_IMPEDANCE,
   PLC_ID_ZC_PERIOD,
@@ -210,7 +208,7 @@ typedef enum {
   PLC_ID_GAIN_TABLE_LO,
   PLC_ID_GAIN_TABLE_VLO,
   PLC_ID_DACC_TABLE_CFG,
-  PLC_ID_RSV2,
+  PLC_ID_RSV0,
   PLC_ID_NUM_TX_LEVELS,
   PLC_ID_CORRECTED_RMS_CALC,
   PLC_ID_RRC_NOTCH_THR_ON,
@@ -226,8 +224,11 @@ typedef enum {
   PLC_ID_TONE_MAP_RSP_ENABLED_MODS,
   PLC_ID_PPM_CALIB_ON,
   PLC_ID_SFO_ESTIMATION_LAST_RX,
+  PLC_ID_PDC_LAST_RX,
+  PLC_ID_MAX_PSDU_LEN_PARAMS,
+  PLC_ID_MAX_PSDU_LEN,
   PLC_ID_END_ID,
-} DRV_PLC_PHY_ID;    
+} DRV_PLC_PHY_ID;
 
 // *****************************************************************************
 /* G3 Modulation types
@@ -242,7 +243,6 @@ typedef enum {
   MOD_TYPE_BPSK = 0,
   MOD_TYPE_QPSK = 1,
   MOD_TYPE_8PSK = 2,
-  MOD_TYPE_QAM = 3,
   MOD_TYPE_BPSK_ROBO = 4,
 }DRV_PLC_PHY_MOD_TYPE;
 
@@ -287,27 +287,29 @@ typedef enum {
 */
 typedef enum {
   /* Transmission result: already in process */
-  DRV_PLC_PHY_TX_RESULT_PROCESS = 0,   
-  /* Transmission result: end successfully */            
-  DRV_PLC_PHY_TX_RESULT_SUCCESS = 1,      
+  DRV_PLC_PHY_TX_RESULT_PROCESS = 0,
+  /* Transmission result: end successfully */
+  DRV_PLC_PHY_TX_RESULT_SUCCESS = 1,
   /* Transmission result: invalid length error */
-  DRV_PLC_PHY_TX_RESULT_INV_LENGTH = 2,            
+  DRV_PLC_PHY_TX_RESULT_INV_LENGTH = 2,
   /* Transmission result: busy channel error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_CH = 3,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_CH = 3,
   /* Transmission result: busy in transmission error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_TX = 4,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_TX = 4,
   /* Transmission result: busy in reception error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_RX = 5,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_RX = 5,
   /* Transmission result: invalid modulation scheme error */
-  DRV_PLC_PHY_TX_RESULT_INV_SCHEME = 6,            
+  DRV_PLC_PHY_TX_RESULT_INV_SCHEME = 6,
   /* Transmission result: timeout error */
-  DRV_PLC_PHY_TX_RESULT_TIMEOUT = 7,               
+  DRV_PLC_PHY_TX_RESULT_TIMEOUT = 7,
   /* Transmission result: invalid tone map error */
-  DRV_PLC_PHY_TX_RESULT_INV_TONEMAP = 8,           
-  /* Transmission result: invalid G3 Mode error */
-  DRV_PLC_PHY_TX_RESULT_INV_MODE = 9,              
+  DRV_PLC_PHY_TX_RESULT_INV_TONEMAP = 8,
+  /* Transmission result: invalid modulation type error */
+  DRV_PLC_PHY_TX_RESULT_INV_MODTYPE = 9,
+  /* Transmission result: invalid delimiter type error */
+  DRV_PLC_PHY_TX_RESULT_INV_DT = 10,
   /* Transmission result: No transmission ongoing */
-  DRV_PLC_PHY_TX_RESULT_NO_TX = 255,               
+  DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 }DRV_PLC_PHY_TX_RESULT;
 
 // *****************************************************************************
@@ -322,12 +324,33 @@ typedef enum {
 */
 typedef struct {
   /* Modulation type */
-  DRV_PLC_PHY_MOD_TYPE modType;       
-  /* Modulation scheme */             
-  DRV_PLC_PHY_MOD_SCHEME modScheme;   
-   /* Tone Map */             
-  uint8_t toneMap[TONE_MAP_SIZE_MAX];           
+  DRV_PLC_PHY_MOD_TYPE modType;
+  /* Modulation scheme */
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  /* Tone Map */
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
 } DRV_PLC_PHY_TONE_MAP_RSP;
+
+// *****************************************************************************
+/* G3 maximum PSDU length parameters data
+
+   Summary
+    This struct includes the parameters used for the maximum PSDU length
+    computation.
+
+   Remarks:
+    This struct is related to PLC_ID_MAX_PSDU_LEN_PARAMS
+*/
+typedef struct {
+  /* Modulation type */
+  DRV_PLC_PHY_MOD_TYPE modType;
+  /* Modulation scheme */
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  /* Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC) */
+  uint8_t rs2Blocks;
+  /* Tone Map */
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
+} DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;
 
 // *****************************************************************************
 /* G3 Transmission setup data
@@ -340,29 +363,29 @@ typedef struct {
 */
 typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to data buffer to transmit */
-  uint8_t *pTransmitData;       
-  /* Instant when transmission has to start referred to 1ms PHY counter */                 
-  uint32_t time;         
-  /* Length of the data to transmit */                        
-  uint16_t dataLength;           
-  /* Preemphasis for transmission */                
-  uint8_t preemphasis[NUM_SUBBANDS_MAX];  
-  /* Tone Map to use on transmission */       
+  uint8_t *pTransmitData;
+  /* Instant when transmission has to start referred to 1us PHY counter */
+  uint32_t time;
+  /* Length of the data to transmit in bytes */
+  uint16_t dataLength;
+  /* Preemphasis for transmission */
+  uint8_t preemphasis[NUM_SUBBANDS_MAX];
+  /* Tone Map to use on transmission */
   uint8_t toneMap[TONE_MAP_SIZE_MAX]; 
-  /* Transmission Mode (absolute, relative, forced, continuous, cancel). Constants above */           
-  uint8_t mode;            
-  /* Power to transmit */                      
-  uint8_t attenuation;             
-  /* Phase Detector Counter */              
-  uint8_t pdc;                   
-  /* Flag to indicate whether 2 RS blocks have to be used (only used for FCC) */                
-  uint8_t rs2Blocks;         
-  /* Modulation type */                    
-  DRV_PLC_PHY_MOD_TYPE modType;             
-  /* Modulation scheme */       
-  DRV_PLC_PHY_MOD_SCHEME modScheme;            
-  /* DT field to be used in header */    
-  DRV_PLC_PHY_DEL_TYPE delimiterType;              
+  /* Transmission Mode (absolute, relative, forced, continuous, cancel). Constants above */
+  uint8_t mode;
+  /* Power to transmit */
+  uint8_t attenuation;
+  /* Phase Detector Counter */
+  uint8_t pdc;
+  /* Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC) */
+  uint8_t rs2Blocks;
+  /* Modulation type */
+  DRV_PLC_PHY_MOD_TYPE modType;
+  /* Modulation scheme */
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  /* DT field to be used in header */
+  DRV_PLC_PHY_DEL_TYPE delimiterType;
 } DRV_PLC_PHY_TRANSMISSION_OBJ;
 
 // *****************************************************************************
@@ -376,12 +399,12 @@ typedef struct __attribute__((packed, aligned(1))) {
     None
 */
 typedef struct {
-  /* Instant when frame transmission ended referred to 1ms PHY counter */
-  uint32_t time;    
-  /* RMS_CALC it allows to estimate tx power injected */                             
-  uint32_t rmsCalc;            
-  /* Tx Result (see "TX Result values" above) */                  
-  DRV_PLC_PHY_TX_RESULT result;                    
+  /* Instant when frame transmission ended referred to 1us PHY counter */
+  uint32_t time;
+  /* RMS_CALC it allows to estimate tx power injected */
+  uint32_t rmsCalc;
+  /* Tx Result (see "TX Result values" above) */
+  DRV_PLC_PHY_TX_RESULT result;
 } DRV_PLC_PHY_TRANSMISSION_CFM_OBJ;
 
 // *****************************************************************************
@@ -395,61 +418,61 @@ typedef struct {
 */
 typedef struct __attribute__((packed, aligned(1))) {
    /* Pointer to received data buffer */
-  uint8_t *pReceivedData;                       
-  /* Instant when frame was received */
-  uint32_t time;                                 
-  /* Frame duration referred to 1ms PHY counter (FCH + Payload) */
-  uint32_t frameDuration;                        
-  /* Length of the received data */
-  uint16_t dataLength;                           
-  /* Reception RSSI */
-  uint16_t rssi;                                 
+  uint8_t *pReceivedData;
+  /* Instant when frame was received (end of message) referred to 1us PHY counter */
+  uint32_t time;
+  /* Frame duration referred to 1us PHY counter (Preamble + FCH + Payload) */
+  uint32_t frameDuration;
+  /* Length of the received data in bytes */
+  uint16_t dataLength;
+  /* Reception RSSI in dBuV */
+  uint16_t rssi;
   /* ZCT info */
-  uint8_t zctDiff;                               
-  /* Errors corrected by RS */
-  uint8_t rsCorrectedErrors;                     
+  uint8_t zctDiff;
+  /* Errors corrected by Reed-Solomon */
+  uint8_t rsCorrectedErrors;
   /* Modulation type */
-  DRV_PLC_PHY_MOD_TYPE modType;                    
+  DRV_PLC_PHY_MOD_TYPE modType;
   /* Modulation scheme */
-  DRV_PLC_PHY_MOD_SCHEME modScheme;                
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
   /* DT field coming in header */
-  DRV_PLC_PHY_DEL_TYPE delimiterType;              
-  /* Reserved */
-  uint8_t rsrv0;                                 
+  DRV_PLC_PHY_DEL_TYPE delimiterType;
+  /* MAC CRC. 1: OK; 0: BAD; 0xFE: Timeout Error; 0xFF: CRC capability disabled (PLC_ID_CRC_TX_RX_CAPABILITY) */
+  uint8_t crcOk;
   /* Test data information */
-  uint32_t agcFactor;          
-  /* Test data information */  
-  uint16_t agcFine;            
-  /* Test data information */  
-  int16_t agcOffsetMeas;       
-  /* Test data information */  
-  uint8_t agcActive;           
-  /* Test data information */  
-  uint8_t agcPgaValue;         
-  /* Test data information */  
-  int16_t snrFch;              
-  /* Test data information */  
-  int16_t snrPay;                          
-  /* BER: Number of corrupted carriers */
-  uint16_t payloadCorruptedCarriers;             
-  /* BER: Number of noised symbols */
-  uint16_t payloadNoisedSymbols;                 
-  /* BER: SNR of the worst carrier */
-  uint8_t payloadSnrWorstCarrier;                
-  /* BER: SNR of the worst symbol */
-  uint8_t payloadSnrWorstSymbol;                 
-  /* BER: SNR on impulsive noise */
-  uint8_t payloadSnrImpulsive;                  
-   /* BER: Narrowband SNR */ 
-  uint8_t payloadSnrBand;                       
-  /* BER: Background SNR */
-  uint8_t payloadSnrBackground;                  
-  /* BER: Link Quality */
-  uint8_t lqi;                                   
+  uint16_t agcFine;
+  /* Test data information */
+  uint32_t agcFactor;  
+  /* Test data information */
+  int16_t agcOffsetMeas;
+  /* Test data information */
+  uint8_t agcActive;
+  /* Test data information */
+  uint8_t agcPgaValue;
+  /* Test data information */
+  int16_t snrFch;
+  /* Test data information */
+  int16_t snrPay;
+  /* Number of corrupted carriers */
+  uint16_t payloadCorruptedCarriers;
+  /* Number of noised symbols */
+  uint16_t payloadNoisedSymbols;
+  /* SNR of the worst carrier */
+  uint8_t payloadSnrWorstCarrier;
+  /* SNR of the worst symbol */
+  uint8_t payloadSnrWorstSymbol;
+  /* SNR of impulsive noise */
+  uint8_t payloadSnrImpulsive;
+   /* SNR of Narrowband noise */ 
+  uint8_t payloadSnrBand;
+  /* Background SNR */
+  uint8_t payloadSnrBackground;
+  /* Link Quality Indicator */
+  uint8_t lqi;
   /* Reception Tone Map */
-  uint8_t toneMap[TONE_MAP_SIZE_MAX];            
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
   /* SNR per carrier */
-  uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];     
+  uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];
 } DRV_PLC_PHY_RECEPTION_OBJ;
 
 // *****************************************************************************
@@ -463,11 +486,11 @@ typedef struct __attribute__((packed, aligned(1))) {
 */
 typedef struct {
   /* Pointer to PIB data */
-  uint8_t *pData;                                
+  uint8_t *pData;
   /* PLC Information base identification */
-  DRV_PLC_PHY_ID id;                               
+  DRV_PLC_PHY_ID id;
   /* Length in bytes of the data information */
-  uint16_t length;                               
+  uint16_t length;
 } DRV_PLC_PHY_PIB_OBJ;
 
 //DOM-IGNORE-BEGIN
