@@ -116,7 +116,8 @@ APP_PLC_COUPLING_DATA plcCouplingConfigCenA =
     .predistorsionVeryLow = PREDIST_VLO_TABLE_CENA,
     .gainHigh = GAIN_HI_CENA, 
     .gainVeryLow = GAIN_VLO_CENA,
-    .numTxLevels = NUM_TX_LEVELS};
+    .numTxLevels = NUM_TX_LEVELS_CENA
+};
 #endif
 
 #ifdef DACC_CFG_TABLE_CENB
@@ -131,7 +132,8 @@ APP_PLC_COUPLING_DATA plcCouplingConfigCenB =
     .predistorsionVeryLow = PREDIST_VLO_TABLE_CENB,
     .gainHigh = GAIN_HI_CENB, 
     .gainVeryLow = GAIN_VLO_CENB,
-    .numTxLevels = NUM_TX_LEVELS};
+    .numTxLevels = NUM_TX_LEVELS_CENB
+};
 #endif
 
 #ifdef DACC_CFG_TABLE_FCC
@@ -146,7 +148,8 @@ APP_PLC_COUPLING_DATA plcCouplingConfigFcc =
     .predistorsionVeryLow = PREDIST_VLO_TABLE_FCC,
     .gainHigh = GAIN_HI_FCC, 
     .gainVeryLow = GAIN_VLO_FCC,
-    .numTxLevels = NUM_TX_LEVELS};
+    .numTxLevels = NUM_TX_LEVELS_FCC
+};
 #endif
 
 #ifdef DACC_CFG_TABLE_ARIB
@@ -161,7 +164,17 @@ APP_PLC_COUPLING_DATA plcCouplingConfigArib =
     .predistorsionVeryLow = PREDIST_VLO_TABLE_ARIB,
     .gainHigh = GAIN_HI_ARIB, 
     .gainVeryLow = GAIN_VLO_ARIB,
-    .numTxLevels = NUM_TX_LEVELS};
+    .numTxLevels = NUM_TX_LEVELS_ARIB
+};
+#endif
+
+#if (APP_CONFIG_PLC_MULTIBAND == true)
+extern uint8_t plc_phy_bin_start;
+extern uint8_t plc_phy_bin_end;
+extern uint8_t plc_phy_bin2_start;
+extern uint8_t plc_phy_bin2_end;
+/* PLC Driver Initialization Data (initialization.c) */
+extern DRV_PLC_PHY_INIT drvPlcPhyInitData;
 #endif
 
 // *****************************************************************************

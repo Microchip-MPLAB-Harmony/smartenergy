@@ -63,62 +63,63 @@ extern "C" {
  * used */
 
 /* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of Tx attenuation levels
- * (3 dB steps) for normal behavior. Next levels use always LO mode.
+ * (3 dB steps) for normal behavior. Next levels use always LOW mode.
  * Maximum values is 8 */
-#define NUM_TX_LEVELS            8
+#define NUM_TX_LEVELS_CENB       8
 
-/* PLC_ID_MAX_RMS_TABLE_HI: Target RMS_CALC value in HI mode when dynamic gain
+/* PLC_ID_MAX_RMS_TABLE_HI: Target RMS_CALC value in HIGH mode when dynamic gain
  * is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2). Each value (up to 8)
  * corresponds to the first attenuation levels (3 dB steps) */
 #define MAX_RMS_HI_TABLE_CENB    {1133, 793, 559, 396, 280, 199, 143, 108}
 
-/* PLC_ID_MAX_RMS_TABLE_VLO: Target RMS_CALC value in VLO mode when dynamic gain
- * is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2). Each value (up to 8)
- * corresponds to the first attenuation levels (3 dB steps) */
+/* PLC_ID_MAX_RMS_TABLE_VLO: Target RMS_CALC value in VERY_LOW mode when dynamic
+ * gain is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2). Each value
+ * (up to 8) corresponds to the first attenuation levels (3 dB steps) */
 #define MAX_RMS_VLO_TABLE_CENB   {2871, 2120, 1498, 1054, 740, 519, 366, 259}
 
 /* PLC_ID_THRESHOLDS_TABLE_HI: Thresholds to change impedance mode
- * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from HI mode.
- * First 8 values (one per Tx level) are thresholds to change from HI to LO
+ * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from HIGH mode.
+ * First 8 values (one per Tx level) are thresholds to change from HIGH to LOW
  * (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from HI to VLO.
- * When RMS_CALC is below threshold, impedance mode changes to VLO */
+ * Next 8 values (one per Tx level) are thresholds to change from HIGH to
+ * VERY_LOW. When RMS_CALC is below threshold, impedance mode changes to
+ * VERY_LOW */
 #define THRESHOLD_HI_TABLE_CENB  {0, 0, 0, 0, 0, 0, 0, 0, \
                                   950, 667, 471, 334, 238, 169, 122, 90}
 
 /* PLC_ID_THRESHOLDS_TABLE_VLO: Thresholds to change impedance mode
- * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from VLO mode.
- * First 8 values (one per Tx level) are thresholds to change from VLO to LO
- * (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from VLO to HI.
- * When RMS_CALC is above threshold, impedance mode changes to HI */
+ * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from VERY_LOW mode.
+ * First 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * LOW (0 to disable).
+ * Next 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * HIGH. When RMS_CALC is above threshold, impedance mode changes to HIGH */
 #define THRESHOLD_VLO_TABLE_CENB {0, 0, 0, 0, 0, 0, 0, 0, \
                                   3878, 2749, 1935, 1362, 965, 686, 493, 353}
 
-/* PLC_ID_PREDIST_COEF_TABLE_HI: Equalization values for HI mode. Specific gain
- * for each carrier to equalize transmission and compensate HW filter frequency
- * response */
+/* PLC_ID_PREDIST_COEF_TABLE_HI: Equalization values for HIGH mode. Specific
+ * gain for each carrier to equalize transmission and compensate HW filter
+ * frequency response */
 #define PREDIST_HI_TABLE_CENB    {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF}
 
-/* PLC_ID_PREDIST_COEF_TABLE_VLO: Equalization values for VLO mode. Specific
- * gain for each carrier to equalize transmission and compensate HW filter
- * frequency response */
+/* PLC_ID_PREDIST_COEF_TABLE_VLO: Equalization values for VERY_LOW mode.
+ * Specific gain for each carrier to equalize transmission and compensate HW
+ * filter frequency response */
 #define PREDIST_VLO_TABLE_CENB   {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                   0x7FFF}
 
-/* PLC_ID_GAIN_TABLE_HI: Gain values for HI mode. {Initial, minimum, maximum}.
+/* PLC_ID_GAIN_TABLE_HI: Gain values for HIGH mode. {Initial, minimum, maximum}.
  * Minimum and Maximum values are used when dynamic gain is enabled
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2) */
 #define GAIN_HI_CENB              {248, 119, 496}
 
-/* PLC_ID_GAIN_TABLE_VLO: Gain values for VLO mode. {Initial, minimum, maximum}.
- * Minimum and Maximum values are used when dynamic gain is enabled
- * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2) */
+/* PLC_ID_GAIN_TABLE_VLO: Gain values for VERY_LOW mode.
+ * {Initial, minimum, maximum}. Minimum and Maximum values are used when dynamic
+ * gain is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2) */
 #define GAIN_VLO_CENB             {701, 350, 883}
 
 /* PLC_ID_DACC_TABLE_CFG: DAC Table configuration.
