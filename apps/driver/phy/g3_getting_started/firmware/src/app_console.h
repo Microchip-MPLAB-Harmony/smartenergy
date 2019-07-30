@@ -43,17 +43,23 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define STRING_HEADER "\r\n-- MCHP G3 PHY Getting Started Application --\r\n" \
-	"-- Compiled: "__DATE__ " "__TIME__ " --\r\n"    
-    
-#define PRINT_BUFFER_SIZE 512    
-    
-#define CONSOLE_READ_BUFFER_SIZE (SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0 - 1)
-    
-#define DIV_ROUND(a, b)      (((a) + (b >> 1)) / (b))
-    
+
+/* String shown at Application initialization. */
+#define APP_CONSOLE_STRING_HEADER "\r\n-- MCHP G3 PHY Getting Started" \
+    "Application --\r\n -- Compiled: "__DATE__ " "__TIME__ " --\r\n"
+
+/* Buffer size for console print (APP_CONSOLE_Print()) */
+#define APP_CONSOLE_PRINT_BUFFER_SIZE 512
+
+/* Buffer size for console input */
+#define APP_CONSOLE_READ_BUFFER_SIZE  (SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0 - 1)
+
+/* Macro to compute round(a / b) using integer arithmetic */
+#define DIV_ROUND(a, b)               (((a) + (b >> 1)) / (b))
+
+/* Time in milliseconds for status led blink rate. */
 #define LED_BLINK_RATE_MS             500
-    
+
 // *****************************************************************************
 /* Application states
 
@@ -69,20 +75,26 @@ typedef enum
 {
     /* Application's state machine's initial state. */
     APP_CONSOLE_STATE_INIT=0,
-            
-    /* Application waiting for initialization of PLC application */
+
+    /* Application waiting for initialization of PLC application. */
     APP_CONSOLE_STATE_WAIT_PLC,
-            
+
+    /* Application waiting for commands from console. */
     APP_CONSOLE_STATE_WAIT_COMMAND,
-            
+
+    /* The user is typing a message to transmit. */
     APP_CONSOLE_STATE_TYPING,
-            
+
+    /* Application waiting for input (Configuration Menu). */
     APP_CONSOLE_STATE_CONFIG_MENU,
-            
+
+    /* Application waiting for input (Modulation Configuration Menu). */
     APP_CONSOLE_STATE_CONFIG_MOD,
-            
+
+    /* Application waiting for input (Band Configuration Menu). */
     APP_CONSOLE_STATE_CONFIG_BAND,
-            
+
+    /* Application waiting for message to be transmitted. */
     APP_CONSOLE_STATE_TRANSMITTING,
 
 } APP_CONSOLE_STATES;
@@ -104,22 +116,22 @@ typedef struct
 {
     /* The application's current state */
     APP_CONSOLE_STATES state;
-    
+
     /* Index for transmission data buffer */
     uint16_t txDataIndex;
-    
-    /**/
+
+    /* Index to next input character to be received */
     uint8_t charRcvIndex;
-    
-    /**/
+
+    /* Index to next input character to be processed */
     uint8_t charProcessedIndex;
-    
+
     /* Flag to indicate if SYS_CONSOLE is busy for write */
-    volatile bool consolePrintBusy;    
-    
+    volatile bool consolePrintBusy;
+
     /* Console echo enabled/disabled */
     bool echoOn;
-    
+
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************
@@ -205,47 +217,50 @@ void APP_CONSOLE_Tasks( void );
 
 // *****************************************************************************
 /* Function:
-    void APP_CONSOLE_Print(const char *format, ...) 
+    void APP_CONSOLE_Print(const char *format, ...)
 
   Summary:
     Formats and prints a message with a variable number of arguments to the
-    console. 
+    console.
 
   Description:
     This function formats and prints a message with a variable number of
-    arguments to the console. 
+    arguments to the console.
 
   Precondition:
-    APP_CONSOLE_Initialize must have returned a valid object handle. 
+    APP_CONSOLE_Initialize must have returned a valid object handle.
 
   Parameters:
     format          - Pointer to a buffer containing the format string for
                       the message to be displayed.
     ...             - Zero or more optional parameters to be formated as
-                      defined by the format string. 
+                      defined by the format string.
 
   Returns:
-    None. 
+    None.
 
   Example:
     <code>
     // In source code
-    int result; 
+    int result;
 
     result = SomeOperation();
     if (result > MAX_VALUE)
     {
         APP_CONSOLE_Print("Result of %d exceeds max value\r\n", result);
     }
-    </code> 
+    </code>
 
   Remarks:
     The format string and arguments follow the printf convention.
-*/ 
+*/
 
 void APP_CONSOLE_Print(const char *format, ...);
 
-void APP_CONSOLE_HandleRxMsgCrcOk(uint8_t *pData, uint16_t dataLen, DRV_PLC_PHY_MOD_SCHEME modScheme, DRV_PLC_PHY_MOD_TYPE modType, uint16_t rssi, uint8_t lqi);
+void APP_CONSOLE_HandleRxMsgCrcOk(uint8_t *pData, uint16_t dataLen,
+        DRV_PLC_PHY_MOD_SCHEME modScheme, DRV_PLC_PHY_MOD_TYPE modType,
+        uint16_t rssi, uint8_t lqi);
+
 void APP_CONSOLE_HandleRxMsgCrcBad(void);
 
 

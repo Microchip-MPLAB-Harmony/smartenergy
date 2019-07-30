@@ -34,7 +34,7 @@ extern "C" {
 
 /* Configure Coupling Parameters for PLC device. If APP_CONFIG_PLC_COUP is true,
  * Coupling parameters are set at initialization with the values defined below.
- * In this example multiband is supported, so PLCOUP011_v1 should be used. For
+ * In this example mult-iband is supported, so PLCOUP011_v1 should be used. For
  * PLCOUP011_v1, DAC Table configuration must be configured when using FCC band
  * (the default configuration in the PLC transceiver assumes PLCOUP006_v2).
  * Thus, Coupling Parameters configuration must be enabled in this project (DAC
@@ -42,11 +42,11 @@ extern "C" {
  * will be configured). */
 #define APP_CONFIG_PLC_COUP          true
 
-/* Enable multiband. G3_MULTIBAND should be selected in the PLC Profile menu of
+/* Enable multi-band. G3_MULTIBAND should be selected in the PLC Profile menu of
  * the PLC PHY Driver configuration options in Harmony Configurator. Two
  * binaries (CENELEC-A and FCC) have to be linked. If APP_CONFIG_PLC_MULTIBAND
  * is true, it will be possible to change the G3 band through the console.
- * This example supports multiband (CENELEC-A / FCC). */
+ * This example supports multi-band (CENELEC-A / FCC). */
 #define APP_CONFIG_PLC_MULTIBAND     true
 
 /* Tone Mask (Static Notching): Each carrier corresponding to the band can be
@@ -79,7 +79,7 @@ extern "C" {
  * designs, it may be needed to calibrate and obtain your own values. MCHP PHY
  * Calibration Tool should be used. */
 
-/* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of Tx attenuation levels
+/* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of TX attenuation levels
  * (3 dB steps) for normal behavior. Next levels use always LOW mode.
  * Maximum values is 8 */
 #define NUM_TX_LEVELS_CENA       8
@@ -99,9 +99,9 @@ extern "C" {
 
 /* PLC_ID_THRESHOLDS_TABLE_HI: Thresholds to change impedance mode
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from HIGH mode.
- * First 8 values (one per Tx level) are thresholds to change from HIGH to LOW
+ * First 8 values (one per TX level) are thresholds to change from HIGH to LOW
  * (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from HIGH to
+ * Next 8 values (one per TX level) are thresholds to change from HIGH to
  * VERY_LOW. When RMS_CALC is below threshold, impedance mode changes to
  * VERY_LOW */
 #define THRESHOLD_HI_TABLE_CENA  {0, 0, 0, 0, 0, 0, 0, 0, \
@@ -111,9 +111,9 @@ extern "C" {
 
 /* PLC_ID_THRESHOLDS_TABLE_VLO: Thresholds to change impedance mode
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from VERY_LOW mode.
- * First 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * First 8 values (one per TX level) are thresholds to change from VERY_LOW to
  * LOW (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * Next 8 values (one per TX level) are thresholds to change from VERY_LOW to
  * HIGH. When RMS_CALC is above threshold, impedance mode changes to HIGH */
 #define THRESHOLD_VLO_TABLE_CENA {0, 0, 0, 0, 0, 0, 0, 0, \
                                   8988, 6370, 4466, 3119, 2171, 1512, 1061, 752}
@@ -217,7 +217,7 @@ extern "C" {
 /* PLC_ID_DACC_TABLE_CFG: DAC Table configuration (FCC).
  * In this case choose PLCOUP011 configuration in order to be able to use the
  * same hardware for both CENELEC-A and FCC bands (this project supports
- * multiband). With PLCOUP011 in FCC it does not make sense to use HIGH Tx mode
+ * multi-band). With PLCOUP011 in FCC it does not make sense to use HIGH TX mode
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE should be 0 or 2 and PLC_ID_CFG_IMPEDANCE
  * should be 2 (VERY_LOW)). */
 #define DACC_CFG_TABLE_FCC        DACC_CFG_TABLE_FCC_COUP11

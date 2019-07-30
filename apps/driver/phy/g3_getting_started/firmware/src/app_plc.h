@@ -47,7 +47,7 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-    
+
 // *****************************************************************************
 /* Maximum data length
 
@@ -63,18 +63,20 @@ extern "C" {
         See "DRV_PLC_PHY_MOD_SCHEME" in "drv_plc_phy_comm.h".
       - Number of Reed-Solomon blocks ("rs2Blocks"). Only applies to FCC band.
         1 or 2 blocks. With 2 blocks the maximum length is the double.
-      - Tone Map ("toneMap"). Dynamic notching: The subbands used to send the
+      - Tone Map ("toneMap"). Dynamic notching: The sub-bands used to send the
         data can be chosen with Tone Map.
       - Tone Mask (PLC_ID_TONE_MASK). Static notching: Carriers can be notched
         and no energy is sent in those carriers.
- 
+
   Remarks:
     The absolute maximum corresponds to FCC band with 2 Reed-Solomon blocks and
     BPSK Robust modulation. 2 * (255 - 8) = 494.
 */
-#define MAX_DATA_LEN        494
-    
-#define LED_BLINK_PLC_MSG_MS          100
+#define MAX_DATA_LEN             494
+
+/* Time in milliseconds that led is on to indicate that a new message was
+ * received. */
+#define LED_BLINK_PLC_MSG_MS     100
 
 // *****************************************************************************
 /* Application states
@@ -91,20 +93,20 @@ typedef enum
 {
     /* Application's initial state. */
     APP_PLC_STATE_INIT=0,
-            
+
     /* Application waiting for completion of PLC driver open process */
     APP_PLC_STATE_OPEN,
-            
+
     /* Application configures PIB parameters through PLC driver */
     APP_PLC_STATE_PARAM_CONFIG,
-            
+
     /* Application initializes transmission parameters */
     APP_PLC_STATE_INIT_TX_PARAMS,
-            
+
     /* Waiting for commands from console */
     APP_PLC_STATE_WAITING,
-            
-    /*  */
+
+    /* Error in the initialization of PLC driver */
     APP_PLC_STATE_ERROR,
 
 } APP_PLC_STATES;
@@ -130,35 +132,37 @@ typedef struct
 
     /* Handle to the PLC driver */
     DRV_HANDLE drvPlcHandle;
-    
+
     /* Parameters for PLC transmitted message */
     DRV_PLC_PHY_TRANSMISSION_OBJ plcTxObj;
-    
+
     /* Maximum data length depending on configuration */
     uint16_t maxDataLen;
-    
+
     /* G3-PLC band */
     uint8_t plcBand;
-    
+
     /* Number of carriers (depends on G3-PLC band) */
     uint8_t numCarriers;
-    
-    /* Number of subbands (depends on G3-PLC band) */
+
+    /* Number of sub-bands (depends on G3-PLC band) */
     uint8_t numSubbands;
-    
+
     /* Size of Tone Map in bytes (depends on G3-PLC band) */
     uint8_t toneMapSize;
-    
+
+    /* Flag to indicate if the second binary has to be used (for multi-band) */
     bool bin2InUse;
-    
+
+    /* Enable/Disable Multi-band */
     bool plcMultiband;
-    
+
     /* Enable/Disable Tone Mask (Static Notching) configuration */
     bool toneMaskConfig;
-    
+
     /* Enable/Disable Coupling parameters configuration */
     bool couplingConfig;
-    
+
     /* Flag to indicate that we are waiting for a Transmission Confirm */
     bool waitingTxCfm;
 
@@ -170,14 +174,16 @@ extern APP_PLC_DATA appPlcData;
 /* PLC Coupling configuration data
 
   Summary:
-    Holds PLC configuration data
+    Holds PLC Coupling configuration data
 
   Description:
-    This structure holds the PLC coupling configuration data.
+    This structure holds the PLC coupling configuration data with the values
+    defined in "user.h"
 
-  Remarks: 
-    The maximum number of levels is 8.
- */    
+  Remarks:
+    The maximum number of levels is 8. If multi-band is supported there is one
+    structure for each band
+ */
 typedef struct {
 	uint32_t maxRMSHigh[8];
 	uint32_t maxRMSVeryLow[8];
@@ -271,9 +277,82 @@ void APP_PLC_Initialize ( void );
 
 void APP_PLC_Tasks( void );
 
+
+// *****************************************************************************
+/* Function:
+    void APP_PLC_SendMsg(uint8_t *pData, uint16_t dataLen)
+
+  Summary:
+    Sends a PLC message.
+
+  Description:
+    This function sends a PLC message with the data content passed as
+    parameters. The physical parameters used for the transmission are stored in
+    appPlcData.plcTxObj. See "APP_PLC_SetModulation".
+
+  Parameters:
+    pData           - Pointer to a buffer containing the data to be transmitted.
+    dataLen         - Length of the data to be transmitted in bytes.
+
+  Returns:
+    None.
+*/
+
 void APP_PLC_SendMsg(uint8_t *pData, uint16_t dataLen);
 
-void APP_PLC_SetModulation(DRV_PLC_PHY_MOD_SCHEME modScheme, DRV_PLC_PHY_MOD_TYPE modType);
+// *****************************************************************************
+/* Function:
+    void APP_PLC_SetModulation(DRV_PLC_PHY_MOD_SCHEME modScheme,
+            DRV_PLC_PHY_MOD_TYPE modType)
+
+  Summary:
+    Sets the modulation to use in the transmitted messages.
+
+  Description:
+    This function sets the modulation to use in the transmitted messages. See
+    "APP_PLC_SendMsg"
+
+  Parameters:
+    modScheme       - Modulation Scheme (DRV_PLC_PHY_MOD_SCHEME) to be used in
+                      transmitted messages.
+    modType         - Modulation Type (DRV_PLC_PHY_MOD_TYPE) to be used in
+                      transmitted messages.
+
+  Returns:
+    None.
+*/
+
+void APP_PLC_SetModulation(DRV_PLC_PHY_MOD_SCHEME modScheme,
+        DRV_PLC_PHY_MOD_TYPE modType);
+
+// *****************************************************************************
+/* Function:
+    bool APP_PLC_SetBand(uint8_t newBand)
+
+  Summary:
+    Sets the G3 band to be used for transmission and reception.
+
+  Description:
+    This function sets the G3 band to be used for transmission and reception.
+    The PLC driver is closed and the binary corresponding to the new band is
+    loaded.
+
+  Precondition:
+    G3_MULTIBAND must be selected in the PLC Profile menu of the PLC PHY Driver
+    configuration options in Harmony Configurator. APP_CONFIG_PLC_MULTIBAND must
+    be true (see "user.h").
+
+  Parameters:
+    newBand         - New G3 band to be used. See "G3 Bandplan" in
+                      "drv_plc_phy_comm.h"
+
+  Returns:
+    Boolean value to indicate if the configuration was successful (true) or not
+   (false).
+
+  Remarks:
+    It is needed to link two binaries (CENELEC-A / FCC).
+*/
 
 bool APP_PLC_SetBand(uint8_t newBand);
 

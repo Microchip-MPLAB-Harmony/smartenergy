@@ -37,11 +37,11 @@ extern "C" {
  */
 #define APP_CONFIG_PLC_COUP          false
 
-/* Enable multiband. G3_MULTIBAND should be selected in the PLC Profile menu of
+/* Enable multi-band. G3_MULTIBAND should be selected in the PLC Profile menu of
  * the PLC PHY Driver configuration options in Harmony Configurator. Two
  * binaries (CENELEC-A and FCC) have to be linked. If APP_CONFIG_PLC_MULTIBAND
  * is true, it will be possible to change the G3 band through the console.
- * This example is for CENELEC-B, so multiband is not supported. */
+ * This example is for CENELEC-B, so multi-band is not supported. */
 #define APP_CONFIG_PLC_MULTIBAND     false
 
 /* Tone Mask (Static Notching): Each carrier corresponding to the band can be
@@ -62,7 +62,7 @@ extern "C" {
  * to calibrate and obtain your own values. MCHP PHY Calibration Tool should be
  * used */
 
-/* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of Tx attenuation levels
+/* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of TX attenuation levels
  * (3 dB steps) for normal behavior. Next levels use always LOW mode.
  * Maximum values is 8 */
 #define NUM_TX_LEVELS_CENB       8
@@ -79,9 +79,9 @@ extern "C" {
 
 /* PLC_ID_THRESHOLDS_TABLE_HI: Thresholds to change impedance mode
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from HIGH mode.
- * First 8 values (one per Tx level) are thresholds to change from HIGH to LOW
+ * First 8 values (one per TX level) are thresholds to change from HIGH to LOW
  * (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from HIGH to
+ * Next 8 values (one per TX level) are thresholds to change from HIGH to
  * VERY_LOW. When RMS_CALC is below threshold, impedance mode changes to
  * VERY_LOW */
 #define THRESHOLD_HI_TABLE_CENB  {0, 0, 0, 0, 0, 0, 0, 0, \
@@ -89,9 +89,9 @@ extern "C" {
 
 /* PLC_ID_THRESHOLDS_TABLE_VLO: Thresholds to change impedance mode
  * (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from VERY_LOW mode.
- * First 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * First 8 values (one per TX level) are thresholds to change from VERY_LOW to
  * LOW (0 to disable).
- * Next 8 values (one per Tx level) are thresholds to change from VERY_LOW to
+ * Next 8 values (one per TX level) are thresholds to change from VERY_LOW to
  * HIGH. When RMS_CALC is above threshold, impedance mode changes to HIGH */
 #define THRESHOLD_VLO_TABLE_CENB {0, 0, 0, 0, 0, 0, 0, 0, \
                                   3878, 2749, 1935, 1362, 965, 686, 493, 353}
