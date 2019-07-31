@@ -72,40 +72,46 @@ APP_PLC_DATA appPlcData;
 */
 
 #ifdef STATIC_NOTCHING_CENA
-static uint8_t staticNotchingCenA[NUM_CARRIERS_CENELEC_A]=STATIC_NOTCHING_CENA;
+static const uint8_t staticNotchingCenA[NUM_CARRIERS_CENELEC_A] =
+                                                        STATIC_NOTCHING_CENA;
 #endif
 
 #ifdef STATIC_NOTCHING_CENB
-static uint8_t staticNotchingCenB[NUM_CARRIERS_CENELEC_B]=STATIC_NOTCHING_CENB;
+static const uint8_t staticNotchingCenB[NUM_CARRIERS_CENELEC_B] =
+                                                        STATIC_NOTCHING_CENB;
 #endif
 
 #ifdef STATIC_NOTCHING_FCC
-static uint8_t staticNotchingFcc[NUM_CARRIERS_FCC]=STATIC_NOTCHING_FCC;
+static const uint8_t staticNotchingFcc[NUM_CARRIERS_FCC] =
+                                                        STATIC_NOTCHING_FCC;
 #endif
 
 #ifdef STATIC_NOTCHING_ARIB
-static uint8_t staticNotchingArib[NUM_CARRIERS_ARIB]=STATIC_NOTCHING_ARIB;
+static const uint8_t staticNotchingArib[NUM_CARRIERS_ARIB] =
+                                                        STATIC_NOTCHING_ARIB;
 #endif
 
 
 // *****************************************************************************
-/* PLC Coupling configuration data
+/* PLC TX & Coupling configuration data
 
   Summary:
-    Holds PLC configuration data for each band
+    Holds the PLC TX & Coupling configuration data for each band
 
   Description:
-    This structure holds the PLC coupling configuration data for each band.
+    This structure holds the PLC TX & Coupling configuration data for each band.
     It is only used if APP_CONFIG_PLC_COUP is true in the "user.h" file.
 
   Remarks:
-    Only needed to define the coupling configuration data for the band(s) in use.
-    They are defined in the "user.h" file.
+    Only needed to define them for the band(s) in use. The values are defined in
+    the "user.h" file. They have been calibrated for MCHP reference designs. For
+    other Hardware designs, it may be needed to calibrate and obtain your own
+    values. MCHP PHY Calibration Tool should be used.
     The maximum number of levels is 8.
  */
 
 #ifdef DACC_CFG_TABLE_CENA
-APP_PLC_COUPLING_DATA plcCouplingConfigCenA =
+APP_PLC_COUPLING_DATA const plcCouplingConfigCenA =
 {
     .maxRMSHigh = MAX_RMS_HI_TABLE_CENA,
     .maxRMSVeryLow = MAX_RMS_VLO_TABLE_CENA,
@@ -121,7 +127,7 @@ APP_PLC_COUPLING_DATA plcCouplingConfigCenA =
 #endif
 
 #ifdef DACC_CFG_TABLE_CENB
-APP_PLC_COUPLING_DATA plcCouplingConfigCenB =
+APP_PLC_COUPLING_DATA const plcCouplingConfigCenB =
 {
     .maxRMSHigh = MAX_RMS_HI_TABLE_CENB,
     .maxRMSVeryLow = MAX_RMS_VLO_TABLE_CENB,
@@ -137,7 +143,7 @@ APP_PLC_COUPLING_DATA plcCouplingConfigCenB =
 #endif
 
 #ifdef DACC_CFG_TABLE_FCC
-APP_PLC_COUPLING_DATA plcCouplingConfigFcc =
+APP_PLC_COUPLING_DATA const plcCouplingConfigFcc =
 {
     .maxRMSHigh = MAX_RMS_HI_TABLE_FCC,
     .maxRMSVeryLow = MAX_RMS_VLO_TABLE_FCC,
@@ -153,7 +159,7 @@ APP_PLC_COUPLING_DATA plcCouplingConfigFcc =
 #endif
 
 #ifdef DACC_CFG_TABLE_ARIB
-APP_PLC_COUPLING_DATA plcCouplingConfigArib =
+APP_PLC_COUPLING_DATA const plcCouplingConfigArib =
 {
     .maxRMSHigh = MAX_RMS_HI_TABLE_ARIB,
     .maxRMSVeryLow = MAX_RMS_VLO_TABLE_ARIB,
@@ -273,7 +279,8 @@ static void _APP_PLC_DataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj,
          * offset: SNR(dB) = (LQI - 40) / 4 */
 		lqi = indObj->lqi;
 
-		APP_CONSOLE_HandleRxMsgCrcOk(pData, dataLen, modScheme, modType, rssi, lqi);
+		APP_CONSOLE_HandleRxMsgCrcOk(pData, dataLen, modScheme, modType, rssi,
+                lqi);
 	} else {
 		/* CRC Error */
 		APP_CONSOLE_HandleRxMsgCrcBad();
@@ -464,12 +471,11 @@ static void _APP_PLC_SetStaticNotching(void)
      * 1: carrier notched). By default it is all 0's in the PLC transceiver.
      * The length is the number of carriers corresponding to the band in use
      * (see "drv_plc_phy_comm.h"). The same Tone Mask must be set in both
-     * transmitter and receiver, otherwise they don't understand each other
-     */
+     * transmitter and receiver, otherwise they don't understand each other */
 
     if (appPlcData.toneMaskConfig)
     {
-        uint8_t *pToneMask = NULL;
+        uint8_t const *pToneMask = NULL;
         bool staticNotchingDefined = true;
 
         /* Select the Tone Mask corresponding to the band in use */
@@ -530,7 +536,7 @@ static void _APP_PLC_SetStaticNotching(void)
 
             pibObj.id = PLC_ID_TONE_MASK;
             pibObj.length = appPlcData.numCarriers;
-            pibObj.pData = pToneMask;
+            pibObj.pData = (uint8_t *)pToneMask;
             DRV_PLC_PHY_PIBSet(appPlcData.drvPlcHandle, &pibObj);
         }
         else
@@ -542,16 +548,16 @@ static void _APP_PLC_SetStaticNotching(void)
 
 static void _APP_PLC_SetCouplingConfiguration(void)
 {
-    /* Configure Coupling Parameters. Default values defined in "user.h" have
-     * been calibrated for MCHP reference designs. For other Hardware designs,
-     * it may be needed to calibrate and obtain your own values. MCHP PHY
-     * Calibration Tool should be used. Here, all parameters related to the
-     * coupling are configured. The user can customize it depending on the
-     * requirements. */
+    /* Configure TX & Coupling Parameters. The default values defined in
+     * "user.h" have been calibrated for MCHP reference designs. For other
+     * Hardware designs, it may be needed to calibrate and obtain your own
+     * values. MCHP PHY Calibration Tool should be used. Here, all parameters
+     * related to TX & Coupling are configured. The user can customize it
+     * depending on the requirements. */
 
     if (appPlcData.couplingConfig)
     {
-        APP_PLC_COUPLING_DATA *pCoupData = NULL;
+        APP_PLC_COUPLING_DATA const *pCoupData = NULL;
         bool couplingParamsDefined = true;
 
         /* Select the Coupling parameters corresponding to the band in use */
@@ -613,7 +619,7 @@ static void _APP_PLC_SetCouplingConfiguration(void)
             /* Adjust your own parameters : PLC_ID_NUM_TX_LEVELS. 1 byte */
             pibObj.id = PLC_ID_NUM_TX_LEVELS;
             pibObj.length = 1;
-            pibObj.pData = &pCoupData->numTxLevels;
+            pibObj.pData = (uint8_t *)&pCoupData->numTxLevels;
             DRV_PLC_PHY_PIBSet(appPlcData.drvPlcHandle, &pibObj);
 
             /* Adjust your own parameters : PLC_ID_MAX_RMS_TABLE_HI. 32 bytes */
@@ -698,8 +704,8 @@ static void _APP_PLC_SetCouplingConfiguration(void)
         "DRV_PLC_PHY_MOD_SCHEME" in "drv_plc_phy_comm.h"
       - Number of Reed-Solomon blocks (rs2Blocks). Only applies to FCC band.
         1 or 2 blocks. With 2 blocks the maximum length is the double
-      - Tone Map (toneMap). Dynamic notching: The sub-bands used to send the data
-        can be chosen with Tone Map
+      - Tone Map (toneMap). Dynamic notching: The sub-bands used to send the
+        data can be chosen with Tone Map
       - Tone Mask (PLC_ID_TONE_MASK). Static notching: Carriers can be notched
         and no energy is sent in those carriers
     If CRC capability is enabled (PLC_ID_CRC_TX_RX_CAPABILITY), 2 bytes
@@ -758,10 +764,10 @@ static void _APP_PLC_TxParamsInit(void)
 	uint8_t toneMapBitInd;
 
 	/* Configure Tone Map (Dynamic Notching) to use all carriers. Each bit
-     * corresponds to a sub-band. If the bit is '1' the sub-band is used to carry
-     * data. If the bit is '0' the subband does not carry data, but energy is
-     * sent in those carriers. The number of sub-bands is different in each G3
-     * band (CENELEC-A, CENELEC-B, FCC, ARIB). See "drv_plc_phy_comm.h". The
+     * corresponds to a sub-band. If the bit is '1' the sub-band is used to
+     * carry data. If the bit is '0' the subband does not carry data, but energy
+     * is sent in those carriers. The number of sub-bands is different in each
+     * G3 band (CENELEC-A, CENELEC-B, FCC, ARIB). See "drv_plc_phy_comm.h". The
      * number of carriers per sub-band is 6 for CENELEC-A, 4 for CENELEC-B and
      * 3 for FCC and ARIB. Full Tone Map: 0x3F0000 (CENELEC-A, 6 sub-bands);
      * 0x0F0000 (CENELEC-B, 4 sub-bands); 0xFFFFFF (FCC, 24 sub-bands);
@@ -894,6 +900,7 @@ bool APP_PLC_SetBand(uint8_t newBand)
         }
 
         /* Reset application state machine (load new binary into the PLC
+         * transceiver and wait until the new binary is running in the PLC
          * transceiver). */
         appPlcData.state = APP_PLC_STATE_INIT;
 
@@ -928,7 +935,7 @@ void APP_PLC_Initialize ( void )
     /* Enable/Disable Tone Mask (Static Notching) configuration */
     appPlcData.toneMaskConfig = APP_CONFIG_STATIC_NOTCHING;
 
-    /* Enable/Disable Coupling parameters configuration */
+    /* TX & Enable/Disable Coupling parameters configuration */
     appPlcData.couplingConfig = APP_CONFIG_PLC_COUP;
 
     /* Enable/Disable Multi-band */
@@ -985,7 +992,7 @@ void APP_PLC_Tasks ( void )
 
             if (appPlcData.drvPlcHandle != DRV_HANDLE_INVALID)
             {
-                APP_CONSOLE_Print("\r\nOpening PLC driver: Loading PHY"
+                APP_CONSOLE_Print("\r\nOpening PLC driver: Loading PHY "
                         "binary\r\n");
 
                 /* Next Application state: Wait to PLC binary download */

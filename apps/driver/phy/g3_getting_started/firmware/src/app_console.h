@@ -45,7 +45,7 @@ extern "C" {
 // *****************************************************************************
 
 /* String shown at Application initialization. */
-#define APP_CONSOLE_STRING_HEADER "\r\n-- MCHP G3 PHY Getting Started" \
+#define APP_CONSOLE_STRING_HEADER "\r\n-- MCHP G3 PHY Getting Started " \
     "Application --\r\n -- Compiled: "__DATE__ " "__TIME__ " --\r\n"
 
 /* Buffer size for console print (APP_CONSOLE_Print()) */

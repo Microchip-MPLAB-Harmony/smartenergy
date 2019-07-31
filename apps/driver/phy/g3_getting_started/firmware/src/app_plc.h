@@ -160,7 +160,7 @@ typedef struct
     /* Enable/Disable Tone Mask (Static Notching) configuration */
     bool toneMaskConfig;
 
-    /* Enable/Disable Coupling parameters configuration */
+    /* Enable/Disable TX & Coupling parameters configuration */
     bool couplingConfig;
 
     /* Flag to indicate that we are waiting for a Transmission Confirm */
@@ -171,14 +171,14 @@ typedef struct
 extern APP_PLC_DATA appPlcData;
 
 // *****************************************************************************
-/* PLC Coupling configuration data
+/* PLC TX & Coupling configuration data
 
   Summary:
-    Holds PLC Coupling configuration data
+    Holds PLC TX & Coupling configuration data
 
   Description:
-    This structure holds the PLC coupling configuration data with the values
-    defined in "user.h"
+    This structure holds the PLC TX & Coupling configuration data with the
+    values defined in "user.h"
 
   Remarks:
     The maximum number of levels is 8. If multi-band is supported there is one

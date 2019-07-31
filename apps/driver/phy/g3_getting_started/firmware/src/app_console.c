@@ -73,7 +73,7 @@ static void _APP_CONSOLE_TimerLedToggleCb(uintptr_t context)
     /* Avoid warning */
     (void)context;
 
-    /* Status Led Toogle */
+    /* Status Led Toggle */
     LED_Toggle();
 }
 
@@ -261,7 +261,8 @@ static void _APP_CONSOLE_ShowDataRate(DRV_PLC_PHY_MOD_SCHEME modScheme,
                         if (appPlcData.plcTxObj.rs2Blocks == 0)
                         {
                             /* 1 Reed-Solomon block */
-                            APP_CONSOLE_Print(" .............. 96.6 kbit/s\r\n");
+                            APP_CONSOLE_Print(" .............. 96.6 kbit/s"
+                                    "\r\n");
                         }
                         else
                         {
@@ -289,7 +290,8 @@ static void _APP_CONSOLE_ShowDataRate(DRV_PLC_PHY_MOD_SCHEME modScheme,
                         if (appPlcData.plcTxObj.rs2Blocks == 0)
                         {
                             /* 1 Reed-Solomon block */
-                            APP_CONSOLE_Print(" .............. 152.3 kbit/s\r\n");
+                            APP_CONSOLE_Print(" .............. 152.3 kbit/s"
+                                    "\r\n");
                         }
                         else
                         {
@@ -317,12 +319,14 @@ static void _APP_CONSOLE_ShowDataRate(DRV_PLC_PHY_MOD_SCHEME modScheme,
                         if (appPlcData.plcTxObj.rs2Blocks == 0)
                         {
                             /* 1 Reed-Solomon block */
-                            APP_CONSOLE_Print(" .............. 184.2 kbit/s\r\n");
+                            APP_CONSOLE_Print(" .............. 184.2 kbit/s"
+                                    "\r\n");
                         }
                         else
                         {
                             /* 2 Reed-Solomon blocks */
-                            APP_CONSOLE_Print(" .............. 252.1 kbit/s\r\n");
+                            APP_CONSOLE_Print(" .............. 252.1 kbit/s"
+                                    "\r\n");
                         }
                         break;
 
@@ -443,8 +447,9 @@ static void _APP_CONSOLE_ShowMenu(bool fullMenu)
             /* Idle state: Show available options */
             if (fullMenu)
             {
-                APP_CONSOLE_Print("\r\nPress 'CTRL+S' to enter configuration menu. "
-                        "Enter text and press 'ENTER' to trigger transmission");
+                APP_CONSOLE_Print("\r\nPress 'CTRL+S' to enter configuration "
+                        "menu. Enter text and press 'ENTER' to trigger "
+                        "transmission");
             }
 
             APP_CONSOLE_Print("\r\n>>> ");
@@ -481,8 +486,10 @@ static void _APP_CONSOLE_ShowMenu(bool fullMenu)
             }
 
             APP_CONSOLE_Print("\t0: ");
-            _APP_CONSOLE_ShowModulation(MOD_SCHEME_DIFFERENTIAL, MOD_TYPE_BPSK_ROBO);
-            _APP_CONSOLE_ShowDataRate(MOD_SCHEME_DIFFERENTIAL, MOD_TYPE_BPSK_ROBO);
+            _APP_CONSOLE_ShowModulation(MOD_SCHEME_DIFFERENTIAL,
+                    MOD_TYPE_BPSK_ROBO);
+            _APP_CONSOLE_ShowDataRate(MOD_SCHEME_DIFFERENTIAL,
+                    MOD_TYPE_BPSK_ROBO);
 
             if ((appPlcData.plcTxObj.modScheme == MOD_SCHEME_DIFFERENTIAL) &&
                     (appPlcData.plcTxObj.modType == MOD_TYPE_BPSK))
@@ -506,16 +513,19 @@ static void _APP_CONSOLE_ShowMenu(bool fullMenu)
 
             if (appPlcData.plcBand != G3_ARIB)
             {
-                /* 8PSK modulation type and coherent modulation scheme not allowed in ARIB band */
-                if ((appPlcData.plcTxObj.modScheme == MOD_SCHEME_DIFFERENTIAL) &&
-                        (appPlcData.plcTxObj.modType == MOD_TYPE_8PSK))
+                /* 8PSK modulation type and coherent modulation scheme not
+                 * allowed in ARIB band */
+                if ((appPlcData.plcTxObj.modScheme == MOD_SCHEME_DIFFERENTIAL)
+                        && (appPlcData.plcTxObj.modType == MOD_TYPE_8PSK))
                 {
                     APP_CONSOLE_Print("->");
                 }
 
                 APP_CONSOLE_Print("\t3: ");
-                _APP_CONSOLE_ShowModulation(MOD_SCHEME_DIFFERENTIAL, MOD_TYPE_8PSK);
-                _APP_CONSOLE_ShowDataRate(MOD_SCHEME_DIFFERENTIAL, MOD_TYPE_8PSK);
+                _APP_CONSOLE_ShowModulation(MOD_SCHEME_DIFFERENTIAL,
+                        MOD_TYPE_8PSK);
+                _APP_CONSOLE_ShowDataRate(MOD_SCHEME_DIFFERENTIAL,
+                        MOD_TYPE_8PSK);
 
                 if ((appPlcData.plcTxObj.modScheme == MOD_SCHEME_COHERENT) &&
                         (appPlcData.plcTxObj.modType == MOD_TYPE_BPSK_ROBO))
@@ -524,8 +534,10 @@ static void _APP_CONSOLE_ShowMenu(bool fullMenu)
                 }
 
                 APP_CONSOLE_Print("\t4: ");
-                _APP_CONSOLE_ShowModulation(MOD_SCHEME_COHERENT, MOD_TYPE_BPSK_ROBO);
-                _APP_CONSOLE_ShowDataRate(MOD_SCHEME_COHERENT, MOD_TYPE_BPSK_ROBO);
+                _APP_CONSOLE_ShowModulation(MOD_SCHEME_COHERENT,
+                        MOD_TYPE_BPSK_ROBO);
+                _APP_CONSOLE_ShowDataRate(MOD_SCHEME_COHERENT,
+                        MOD_TYPE_BPSK_ROBO);
 
                 if ((appPlcData.plcTxObj.modScheme == MOD_SCHEME_COHERENT) &&
                         (appPlcData.plcTxObj.modType == MOD_TYPE_BPSK))
@@ -626,7 +638,8 @@ static bool _APP_CONSOLE_CheckRcvChar(char *rcvChar)
         }
 
         /* Update index of processed characters */
-        if (appConsoleData.charProcessedIndex == (APP_CONSOLE_READ_BUFFER_SIZE - 1))
+        if (appConsoleData.charProcessedIndex ==
+                (APP_CONSOLE_READ_BUFFER_SIZE - 1))
         {
             appConsoleData.charProcessedIndex = 0;
         }
@@ -692,7 +705,8 @@ void APP_CONSOLE_Print(const char *format, ...)
 
     va_start( args, format );
 
-    len = vsnprintf(printBuffer, APP_CONSOLE_PRINT_BUFFER_SIZE - 1, format, args);
+    len = vsnprintf(printBuffer, APP_CONSOLE_PRINT_BUFFER_SIZE - 1, format,
+            args);
 
     va_end( args );
 
@@ -767,7 +781,8 @@ void APP_CONSOLE_Tasks ( void )
                     _APP_CONSOLE_RcvCharCb, SYS_CONSOLE_EVENT_READ_COMPLETE);
 
             /* Start read operations on SYS_CONSOLE */
-            for (uint8_t index = 0; index < APP_CONSOLE_READ_BUFFER_SIZE; index++)
+            for (uint8_t index = 0; index < APP_CONSOLE_READ_BUFFER_SIZE;
+                    index++)
             {
                 SYS_CONSOLE_Read(SYS_CONSOLE_INDEX_0, 0,
                         &charRcvBuffer[index], 1);
@@ -966,7 +981,7 @@ void APP_CONSOLE_Tasks ( void )
                  * reception */
                 appConsoleData.txDataIndex = 2;
 
-                /* Reset Chat App state */
+                /* Wait for new commands from console */
                 appConsoleData.state = APP_CONSOLE_STATE_WAIT_COMMAND;
 
                 _APP_CONSOLE_ShowMenu(false);

@@ -27,44 +27,53 @@ extern "C" {
 #endif
 // DOM-IGNORE-END
 
-/* Enable setting Tone Mask (Static Notching) in order to not use all band
- * carriers. If APP_CONFIG_STATIC_NOTCHING is true, PLC_ID_TONE_MASK is set at
- * initialization with the value defined below */
+/*********************** Static Notching Enable/Disable ************************
+ * Enable/disable setting Tone Mask (Static Notching) in order to not use all
+ * band carriers. If APP_CONFIG_STATIC_NOTCHING is true, PLC_ID_TONE_MASK is set
+ * at initialization with the value defined below.
+ ******************************************************************************/
 #define APP_CONFIG_STATIC_NOTCHING   false
 
-/* Configure Coupling Parameters for PLC device. If APP_CONFIG_PLC_COUP is true,
- * Coupling parameters are set at initialization with the values defined below
- */
+/************** Configure TX & Coupling Parameters Enable/Disable **************
+ * Configure TX & Coupling Parameters for the PLC transceiver. If
+ * APP_CONFIG_PLC_COUP is true, TX & Coupling parameters are set at
+ * initialization with the values defined below.
+ ******************************************************************************/
 #define APP_CONFIG_PLC_COUP          false
 
-/* Enable multi-band. G3_MULTIBAND should be selected in the PLC Profile menu of
+/************************* Multi-Band Enable/Disable ***************************
+ * Enable multi-band. G3_MULTIBAND should be selected in the PLC Profile menu of
  * the PLC PHY Driver configuration options in Harmony Configurator. Two
  * binaries (CENELEC-A and FCC) have to be linked. If APP_CONFIG_PLC_MULTIBAND
  * is true, it will be possible to change the G3 band through the console.
- * This example is for CENELEC-B, so multi-band is not supported. */
+ * This example is for CENELEC-B, so multi-band is not supported.
+ ******************************************************************************/
 #define APP_CONFIG_PLC_MULTIBAND     false
 
-/* Tone Mask (Static Notching): Each carrier corresponding to the band can be
+/*************************** Static Notching Values ****************************
+ * Tone Mask (Static Notching): Each carrier corresponding to the band can be
  * notched (no energy is sent in those carriers). Each carrier is represented by
  * one byte (0: carrier used; 1: carrier notched). By default it is all 0's in
  * the PLC transceiver. The length is the number of carriers corresponding to
  * the band in use (see "drv_plc_phy_comm.h"). In this case 16 (CENELEC-B). The
  * same Tone Mask must be set in both transmitter and receiver, otherwise they
- * don't understand each other */
+ * don't understand each other
+ ******************************************************************************/
 #define STATIC_NOTCHING_CENB     {0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, \
                                   0}
 
-/**************************** Coupling Parameters ****************************/
-/* CENELEC-B: Recommended to use PLCOUP014_v1 (external driver) /
+/************************** TX & Coupling Parameters ***************************
+ * CENELEC-B: Recommended to use PLCOUP014_v1 (external driver) /
  * PLCOUP012_v1/PLCOUP013_v1 (internal driver) coupling board (Single Branch).
- * The following values are the default values, calibrated for MCHP
+ * IMPORTANT!!! The following values are the default values, calibrated for MCHP
  * PLCOUP014_v1 reference designs. For other Hardware designs, it may be needed
  * to calibrate and obtain your own values. MCHP PHY Calibration Tool should be
- * used */
+ * used.
+ ******************************************************************************/
 
 /* PLC_ID_NUM_TX_LEVELS: Number of TX levels. Number of TX attenuation levels
  * (3 dB steps) for normal behavior. Next levels use always LOW mode.
- * Maximum values is 8 */
+ * Maximum value is 8 */
 #define NUM_TX_LEVELS_CENB       8
 
 /* PLC_ID_MAX_RMS_TABLE_HI: Target RMS_CALC value in HIGH mode when dynamic gain
@@ -107,10 +116,7 @@ extern "C" {
 /* PLC_ID_PREDIST_COEF_TABLE_VLO: Equalization values for VERY_LOW mode.
  * Specific gain for each carrier to equalize transmission and compensate HW
  * filter frequency response */
-#define PREDIST_VLO_TABLE_CENB   {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
-                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
-                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
-                                  0x7FFF}
+#define PREDIST_VLO_TABLE_CENB   PREDIST_HI_TABLE_CENB
 
 /* PLC_ID_GAIN_TABLE_HI: Gain values for HIGH mode. {Initial, minimum, maximum}.
  * Minimum and Maximum values are used when dynamic gain is enabled
@@ -124,7 +130,7 @@ extern "C" {
 
 /* PLC_ID_DACC_TABLE_CFG: DAC Table configuration.
  * Configuration for PLCOUP014 (only use Branch 0) */
- #define DACC_CFG_TABLE_CENB      {0x00000000, 0x00002120, 0x0000073F, \
+#define DACC_CFG_TABLE_CENB       {0x00000000, 0x00002120, 0x0000073F, \
                                    0x00003F3F, 0x00000333, 0x00000000, \
                                    0x58CA00FF, 0x19191919, 0x00002020, \
                                    0x00000044, 0x0FD20004, 0x00000355, \
