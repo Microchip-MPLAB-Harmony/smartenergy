@@ -79,14 +79,6 @@ extern "C" {
 // Section: System Service Configuration
 // *****************************************************************************
 // *****************************************************************************
-
-#define SYS_DEBUG_ENABLE
-#define SYS_DEBUG_GLOBAL_ERROR_LEVEL       SYS_ERROR_DEBUG
-#define SYS_DEBUG_PRINT_BUFFER_SIZE        200
-#define SYS_DEBUG_BUFFER_DMA_READY
-#define SYS_DEBUG_USE_CONSOLE
-
-
 /* TIME System Service Configuration Options */
 #define SYS_TIME_INDEX_0                     0
 #define SYS_TIME_MAX_TIMERS                  5
@@ -102,10 +94,10 @@ extern "C" {
 
 
 /* RX queue size has one additional element for the empty spot needed in circular queue */
-#define SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0    11
+#define SYS_CONSOLE_UART_RD_QUEUE_DEPTH_IDX0    33
 
 /* TX queue size has one additional element for the empty spot needed in circular queue */
-#define SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0    65
+#define SYS_CONSOLE_UART_WR_QUEUE_DEPTH_IDX0    2
 #define SYS_CONSOLE_BUFFER_DMA_READY
 
 
@@ -117,12 +109,12 @@ extern "C" {
 // *****************************************************************************
 /* PLC PHY Driver Configuration Options */
 #define DRV_PLC_SECURE                        false
-#define DRV_PLC_EXT_INT_PIO_PORT              PIO_PORT_A
-#define DRV_PLC_EXT_INT_SRC                   PIOA_IRQn
-#define DRV_PLC_EXT_INT_PIN                   SYS_PORT_PIN_PA0
-#define DRV_PLC_RESET_PIN                     SYS_PORT_PIN_PA0
-#define DRV_PLC_LDO_EN_PIN                    SYS_PORT_PIN_PA0
-#define DRV_PLC_CD_PIN                        SYS_PORT_PIN_PA0
+#define DRV_PLC_EXT_INT_PIO_PORT              PIO_PORT_D
+#define DRV_PLC_EXT_INT_SRC                   PIOD_IRQn
+#define DRV_PLC_EXT_INT_PIN                   SYS_PORT_PIN_PD28
+#define DRV_PLC_RESET_PIN                     SYS_PORT_PIN_PB2
+#define DRV_PLC_LDO_EN_PIN                    SYS_PORT_PIN_PB3
+#define DRV_PLC_CD_PIN                        SYS_PORT_PIN_PB1
 #define DRV_PLC_SPI_CLK                       8000000
 #define DRV_PLC_PHY_PROFILE                   4
 #define DRV_PLC_PHY_INSTANCES_NUMBER          1

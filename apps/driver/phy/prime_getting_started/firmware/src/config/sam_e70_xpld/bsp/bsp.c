@@ -1,20 +1,20 @@
 /*******************************************************************************
-  Debug System Service Local Data Structures
+  Board Support Package Implementation
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    sys_debug_local.h
+    bsp.c
 
   Summary:
-    Debug System Service local declarations and definitions.
+    Board Support Package implementation.
 
   Description:
-    This file contains the Debug System Service local declarations and definitions.
+    This file contains routines that implement the board support package
 *******************************************************************************/
 
-//DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -37,83 +37,49 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-//DOM-IGNORE-END
-
-#ifndef SYS_DEBUG_LOCAL_H
-#define SYS_DEBUG_LOCAL_H
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: File includes
-// *****************************************************************************
-// *****************************************************************************
-
-#include "configuration.h"
-#include "driver/driver.h"
-#include "system/debug/sys_debug.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    extern "C" {
-
-#endif
 // DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Type Definitions
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+
+#include "bsp.h"
+
+// *****************************************************************************
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
 // *****************************************************************************
 // *****************************************************************************
 
 // *****************************************************************************
-/* SYS Debug State Machine States
-
-   Summary
-    Defines the various states that can be achieved by the driver operation.
-
-   Description
-    This enumeration defines the various states that can be achieved by the
-    driver operation.
-
-   Remarks:
-    None.
-*/
-
-typedef enum
-{
-    SYS_DEBUG_STATE_IDLE
-
-} SYS_DEBUG_STATES;
-
-
-// *****************************************************************************
-/* SYS DEBUG OBJECT INSTANCE structure
+/* Function:
+    void BSP_Initialize(void)
 
   Summary:
-    System Debug object instance structure.
+    Performs the necessary actions to initialize a board
 
   Description:
-    This data type defines the System Debug object instance.
+    This function initializes the LED, Switch and other ports on the board.
+    This function must be called by the user before using any APIs present in
+    this BSP.
 
   Remarks:
-    None.
+    Refer to bsp.h for usage information.
 */
 
-typedef struct
+void BSP_Initialize(void )
 {
-    SYS_STATUS                        status;
-    SYS_DEBUG_STATES                  state;
-    SYS_MODULE_INDEX                  debugConsole;
-    int                               prtBufPtr;
-} SYS_DEBUG_INSTANCE;
 
-//DOM-IGNORE-BEGIN
-#ifdef __cplusplus
 
-    }
+    /* Switch off LEDs */
+		LED_Off(); 
 
-#endif
-//DOM-IGNORE-END
 
-#endif //#ifndef SYS_DEBUG_LOCAL_H
+}
+
+/*******************************************************************************
+ End of File
+*/

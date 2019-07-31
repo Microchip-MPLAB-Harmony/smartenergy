@@ -198,7 +198,7 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     pTxData += 2;
     if (dataLength)
     {
-        if (dataLength > HAL_SPI_BUFFER_SIZE)
+        if (dataLength > HAL_SPI_BUFFER_SIZE - 6)
         {
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }

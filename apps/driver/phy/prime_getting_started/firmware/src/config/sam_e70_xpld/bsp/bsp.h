@@ -1,22 +1,23 @@
 /*******************************************************************************
-  Debug System Service Local Data Structures
+  Board Support Package Header File.
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    sys_debug_local.h
+    bsp.h
 
   Summary:
-    Debug System Service local declarations and definitions.
+    Board Support Package Header File 
 
   Description:
-    This file contains the Debug System Service local declarations and definitions.
+    This file contains constants, macros, type definitions and function
+    declarations 
 *******************************************************************************/
 
-//DOM-IGNORE-BEGIN
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,93 +38,76 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-//DOM-IGNORE-END
-
-
-#ifndef SYS_DEBUG_LOCAL_H
-#define SYS_DEBUG_LOCAL_H
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: File includes
-// *****************************************************************************
-// *****************************************************************************
-#include "configuration.h"
-#include "driver/driver.h"
-#include "system/console/sys_debug.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-extern "C" {
-
-#endif
 // DOM-IGNORE-END
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Data Type Definitions
-// *****************************************************************************
-// *****************************************************************************
-
+#ifndef _BSP_H
+#define _BSP_H
 
 // *****************************************************************************
-/* SYS Debug State Machine States
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
 
-   Summary
-    Defines the various states that can be achieved by the driver operation.
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "device.h"
 
-   Description
-    This enumeration defines the various states that can be achieved by the
-    driver operation.
+// *****************************************************************************
+// *****************************************************************************
+// Section: BSP Macros
+// *****************************************************************************
+// *****************************************************************************
+/*** LED Macros for LED ***/
+#define LED_Toggle() (PIOC_REGS->PIO_ODSR ^= (1<<8))
+#define LED_On() (PIOC_REGS->PIO_CODR = (1<<8))
+#define LED_Off() (PIOC_REGS->PIO_SODR = (1<<8))
 
-   Remarks:
-    None.
-*/
 
-typedef enum
-{
-    SYS_DEBUG_STATE_IDLE
-
-} SYS_DEBUG_STATES;
 
 
 // *****************************************************************************
-/* SYS DEBUG OBJECT INSTANCE structure
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
+
+// *****************************************************************************
+/* Function:
+    void BSP_Initialize(void)
 
   Summary:
-    System Debug object instance structure.
+    Performs the necessary actions to initialize a board
 
   Description:
-    This data type defines the System Debug object instance.
+    This function initializes the LED and Switch ports on the board.  This
+    function must be called by the user before using any APIs present on this
+    BSP.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    //Initialize the BSP
+    BSP_Initialize();
+    </code>
 
   Remarks:
-    None.
+    None
 */
 
-typedef struct
-{
-    SYS_STATUS                        status;
-    SYS_DEBUG_STATES                  state;
-    SYS_MODULE_INDEX                  debugConsole;
-    int                               prtBufPtr;
-} SYS_DEBUG_INSTANCE;
+void BSP_Initialize(void);
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Extern data Definitions
-// *****************************************************************************
-// *****************************************************************************
-
-//DOM-IGNORE-BEGIN
-#ifdef __cplusplus
-}
-#endif
-//DOM-IGNORE-END
-
-#endif //#ifndef SYS_DEBUG_LOCAL_H
+#endif // _BSP_H
 
 /*******************************************************************************
  End of File

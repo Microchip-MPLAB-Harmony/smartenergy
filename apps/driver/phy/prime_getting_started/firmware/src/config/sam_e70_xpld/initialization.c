@@ -183,15 +183,6 @@ SYSTEM_OBJECTS sysObj;
 // Section: System Initialization
 // *****************************************************************************
 // *****************************************************************************
-
-const SYS_DEBUG_INIT debugInit =
-{
-    .moduleInit = {0},
-    .errorLevel = SYS_DEBUG_GLOBAL_ERROR_LEVEL,
-    .consoleIndex = 0,
-};
-
-
 // <editor-fold defaultstate="collapsed" desc="SYS_TIME Initialization Data">
 
 const SYS_TIME_PLIB_INTERFACE sysTimePlibAPI = {
@@ -290,6 +281,7 @@ void SYS_Initialize ( void* data )
     TC0_CH0_TimerInitialize(); 
      
     
+	BSP_Initialize();
 	SPI0_Initialize();
 
 	USART1_Initialize();
@@ -302,15 +294,13 @@ void SYS_Initialize ( void* data )
     PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_PLC_EXT_INT_PIN, DRV_PLC_PHY_ExternalInterruptHandler, sysObj.drvPlcPhy);
    
 
-    sysObj.sysDebug = SYS_DEBUG_Initialize(SYS_DEBUG_INDEX_0, (SYS_MODULE_INIT*)&debugInit);
-
-
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
     sysObj.sysConsole0 = SYS_CONSOLE_Initialize(SYS_CONSOLE_INDEX_0, (SYS_MODULE_INIT *)&sysConsole0Init);
 
 
 
-    APP_Initialize();
+    APP_CONSOLE_Initialize();
+    APP_PLC_Initialize();
 
 
     NVIC_Initialize();

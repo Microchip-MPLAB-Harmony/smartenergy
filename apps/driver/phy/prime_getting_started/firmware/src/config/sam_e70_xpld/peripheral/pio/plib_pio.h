@@ -91,15 +91,6 @@
 #define PLC_INT_InterruptDisable()  (PIOD_REGS->PIO_IDR = (1<<28))
 #define PLC_INT_PIN                  PIO_PIN_PD28
 
-/*** Macros for LED pin ***/
-#define LED_Set()               (PIOC_REGS->PIO_SODR = (1<<8))
-#define LED_Clear()             (PIOC_REGS->PIO_CODR = (1<<8))
-#define LED_Toggle()            (PIOC_REGS->PIO_ODSR ^= (1<<8))
-#define LED_Get()               ((PIOC_REGS->PIO_PDSR >> 8) & 0x1)
-#define LED_OutputEnable()      (PIOC_REGS->PIO_OER = (1<<8))
-#define LED_InputEnable()       (PIOC_REGS->PIO_ODR = (1<<8))
-#define LED_PIN                  PIO_PIN_PC8
-
 
 // *****************************************************************************
 /* PIO Port
