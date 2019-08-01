@@ -257,27 +257,31 @@ typedef enum {
 */
 typedef enum {
   /* Transmission result: already in process */
-  DRV_PLC_PHY_TX_RESULT_PROCESS = 0,               
+  DRV_PLC_PHY_TX_RESULT_PROCESS = 0,
   /* Transmission result: end successfully */
-  DRV_PLC_PHY_TX_RESULT_SUCCESS = 1,               
+  DRV_PLC_PHY_TX_RESULT_SUCCESS = 1,
   /* Transmission result: invalid length error */
-  DRV_PLC_PHY_TX_RESULT_INV_LENGTH = 2,            
+  DRV_PLC_PHY_TX_RESULT_INV_LENGTH = 2,
   /* Transmission result: busy channel error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_CH = 3,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_CH = 3,
   /* Transmission result: busy in transmission error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_TX = 4,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_TX = 4,
   /* Transmission result: busy in reception error */
-  DRV_PLC_PHY_TX_RESULT_BUSY_RX = 5,               
+  DRV_PLC_PHY_TX_RESULT_BUSY_RX = 5,
   /* Transmission result: invalid modulation scheme error */
-  DRV_PLC_PHY_TX_RESULT_INV_SCHEME = 6,            
+  DRV_PLC_PHY_TX_RESULT_INV_SCHEME = 6,
   /* Transmission result: timeout error */
-  DRV_PLC_PHY_TX_RESULT_TIMEOUT = 7,               
+  DRV_PLC_PHY_TX_RESULT_TIMEOUT = 7,
   /* Transmission result: invalid buffer identifier error */
-  DRV_PLC_PHY_TX_RESULT_INV_BUFFER = 8,            
+  DRV_PLC_PHY_TX_RESULT_INV_BUFFER = 8,
   /* Transmission result: invalid PRIME Mode error */
-  DRV_PLC_PHY_TX_RESULT_INV_MODE = 9,              
+  DRV_PLC_PHY_TX_RESULT_INV_MODE = 9,
+  /* Transmission result: invalid transmission mode */
+  DRV_PLC_PHY_TX_RESULT_INV_TX_MODE = 10,
+  /* Transmission result: Transmission cancelled */
+  DRV_PLC_PHY_TX_RESULT_CANCELLED = 11,
   /* Transmission result: No transmission ongoing */
-  DRV_PLC_PHY_TX_RESULT_NO_TX = 255,               
+  DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 }DRV_PLC_PHY_TX_RESULT;
 
 // *****************************************************************************
@@ -291,23 +295,23 @@ typedef enum {
 */
 typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to data buffer to transmit */
-  uint8_t *pTransmitData;                        
-  /* Instant when transmission has to start referred to 1ms PLC counter */
-  uint32_t time;                                 
-  /* Length of the data to transmit */
-  uint16_t dataLength;                           
+  uint8_t *pTransmitData;
+  /* Instant when transmission has to start referred to 1us PHY counter */
+  uint32_t time;
+  /* Length of the data to transmit in bytes */
+  uint16_t dataLength;
   /* Transmission Mode (absolute, relative, cancel, continuous). Constants above */
-  uint8_t mode;                                  
+  uint8_t mode;
   /* Power to transmit */
-  uint8_t attenuation;                           
+  uint8_t attenuation;
   /* Forced transmission */
-  uint8_t forced;                                
+  uint8_t forced;
   /* Buffer Id used for transmission */
-  DRV_PLC_PHY_BUFFER_ID bufferId;                  
+  DRV_PLC_PHY_BUFFER_ID bufferId;
   /* Scheme of Modulation */
-  DRV_PLC_PHY_SCH scheme;                          
+  DRV_PLC_PHY_SCH scheme;
   /* PRIME Frame type */
-  DRV_PLC_PHY_FRAME_TYPE frameType;                
+  DRV_PLC_PHY_FRAME_TYPE frameType;
 } DRV_PLC_PHY_TRANSMISSION_OBJ;
 
 // *****************************************************************************
@@ -321,16 +325,16 @@ typedef struct __attribute__((packed, aligned(1))) {
     None
 */
 typedef struct {
-  /* Instant when frame transmission ended referred to 1ms PHY counter */
-  uint32_t time;                                 
+  /* Instant when frame transmission started referred to 1us PHY counter */
+  uint32_t time;
   /* RMS_CALC it allows to estimate tx power injected */
-  uint32_t rmsCalc;                              
+  uint32_t rmsCalc;
   /* PRIME Frame type */
-  DRV_PLC_PHY_FRAME_TYPE frameType;                
+  DRV_PLC_PHY_FRAME_TYPE frameType;
   /* Tx Result (see "TX Result values" above) */
-  DRV_PLC_PHY_TX_RESULT result;                    
+  DRV_PLC_PHY_TX_RESULT result;
   /* Buffer Id used for transmission */
-  DRV_PLC_PHY_BUFFER_ID bufferId;                  
+  DRV_PLC_PHY_BUFFER_ID bufferId;
 } DRV_PLC_PHY_TRANSMISSION_CFM_OBJ;
 
 // *****************************************************************************
@@ -344,39 +348,39 @@ typedef struct {
 */
 typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to received data buffer */
-  uint8_t *pReceivedData;                       
-  /* Instant when frame was received */
-  uint32_t time;                                 
+  uint8_t *pReceivedData;
+  /* Instant when frame was received (start of message) referred to 1us PHY counter */
+  uint32_t time;
   /* Accumulated Error Vector Magnitude for header */
-  uint32_t evmHeaderAcum;                        
+  uint32_t evmHeaderAcum;
   /* Accumulated Error Vector Magnitude for payload */
-  uint32_t evmPayloadAcum;                       
+  uint32_t evmPayloadAcum;
   /* Error Vector Magnitude for header */
-  uint16_t evmHeader;                            
+  uint16_t evmHeader;
   /* Error Vector Magnitude for payload */
-  uint16_t evmPayload;                           
-  /* Length of the received data */
-  uint16_t dataLength;                           
+  uint16_t evmPayload;
+  /* Length of the received data in bytes */
+  uint16_t dataLength;
   /* Scheme of Modulation */
-  DRV_PLC_PHY_SCH scheme;                          
+  DRV_PLC_PHY_SCH scheme;
   /* PRIME Frame type */
-  DRV_PLC_PHY_FRAME_TYPE frameType;                
+  DRV_PLC_PHY_FRAME_TYPE frameType;
   /* Header type */
-  DRV_PLC_PHY_HEADER headerType;                   
-  /* Average RSSI (Received Signal Strength Indication) */
-  uint8_t rssiAvg;                               
+  DRV_PLC_PHY_HEADER headerType;
+  /* Average RSSI (Received Signal Strength Indication) in dBuV */
+  uint8_t rssiAvg;
   /* Average CNIR (Carrier to Interference + Noise ratio) */
-  uint8_t cinrAvg;                               
+  uint8_t cinrAvg;
   /* Minimum CNIR (Carrier to Interference + Noise ratio) */
-  uint8_t cinrMin;                               
+  uint8_t cinrMin;
   /* Average Soft BER (Bit Error Rate) */
-  uint8_t berSoftAvg;                            
+  uint8_t berSoftAvg;
   /* Maximum Soft BER (Bit Error Rate) */
-  uint8_t berSoftMax;                            
+  uint8_t berSoftMax;
   /* Percentage of carriers affected by narrow band noise */
-  uint8_t narBandPercent;                        
+  uint8_t narBandPercent;
   /* Percentage of symbols affected by impulsive noise */
-  uint8_t impNoisePercent;                       
+  uint8_t impNoisePercent;
 } DRV_PLC_PHY_RECEPTION_OBJ;
 
 // *****************************************************************************
@@ -390,11 +394,11 @@ typedef struct __attribute__((packed, aligned(1))) {
 */
 typedef struct {
   /* Pointer to PIB data */
-  uint8_t *pData;                            
-  /* PLC Information base identification */    
-  DRV_PLC_PHY_ID id;                         
-  /* Length in bytes of the data information */      
-  uint16_t length;                               
+  uint8_t *pData;
+  /* PLC Information base identification */
+  DRV_PLC_PHY_ID id;
+  /* Length in bytes of the data information */
+  uint16_t length;
 } DRV_PLC_PHY_PIB_OBJ;
 
 

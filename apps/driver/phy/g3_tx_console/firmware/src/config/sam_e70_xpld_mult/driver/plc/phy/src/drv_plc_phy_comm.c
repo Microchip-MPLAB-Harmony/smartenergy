@@ -215,7 +215,7 @@ static void _DRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
     pRxObj->agcOffsetMeas = (uint16_t)*pSrc++;
     pRxObj->agcOffsetMeas += (uint16_t)*pSrc++ << 8;
     pRxObj->agcActive = *pSrc++;
-    pRxObj->agcActive = *pSrc++;
+    pRxObj->agcPgaValue = *pSrc++;
     pRxObj->snrFch = (uint16_t)*pSrc++;
     pRxObj->snrFch += (uint16_t)*pSrc++ << 8;
     pRxObj->snrPay = (uint16_t)*pSrc++;
@@ -232,7 +232,7 @@ static void _DRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
     pRxObj->lqi = *pSrc++;
 
     pRxObj->delimiterType = (DRV_PLC_PHY_DEL_TYPE)*pSrc++;
-    pRxObj->rsrv0 = *pSrc++;
+    pRxObj->crcOk = *pSrc++;
     memcpy(pRxObj->toneMap, pSrc, TONE_MAP_SIZE_MAX);
     pSrc += sizeof(pRxObj->toneMap);
     memcpy(pRxObj->carrierSnr, pSrc, PROTOCOL_CARRIERS_MAX);

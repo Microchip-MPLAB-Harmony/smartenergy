@@ -66,45 +66,45 @@ APP_PLC_DATA CACHE_ALIGN appPlc;
   Description:
     This structure holds the PLC coupling configuration data.
 
-  Remarks: 
+  Remarks:
     Parameters are defined in user.h file
- */ 
+ */
 
 #ifdef MAX_RMS_HI_TABLE_CENA
-APP_PLC_COUPLING_DATA appPLCCoupConfigCENA = {MAX_RMS_HI_TABLE_CENA, 
-                                              MAX_RMS_VLO_TABLE_CENA, 
-                                              THRESHOLD_HI_TABLE_CENA, 
+APP_PLC_COUPLING_DATA appPLCCoupConfigCENA = {MAX_RMS_HI_TABLE_CENA,
+                                              MAX_RMS_VLO_TABLE_CENA,
+                                              THRESHOLD_HI_TABLE_CENA,
                                               THRESHOLD_VLO_TABLE_CENA,
                                               DACC_CFG_TABLE_CENA,
-                                              PREDIST_HI_TABLE_CENA, 
+                                              PREDIST_HI_TABLE_CENA,
                                               PREDIST_VLO_TABLE_CENA,
-                                              GAIN_HI_CENA, 
+                                              GAIN_HI_CENA,
                                               GAIN_VLO_CENA,
                                               NUM_TX_LEVELS};
 #endif
 
 #ifdef MAX_RMS_HI_TABLE_FCC
-APP_PLC_COUPLING_DATA appPLCCoupConfigFCC  = {MAX_RMS_HI_TABLE_FCC, 
-                                              MAX_RMS_VLO_TABLE_FCC, 
-                                              THRESHOLD_HI_TABLE_FCC, 
+APP_PLC_COUPLING_DATA appPLCCoupConfigFCC  = {MAX_RMS_HI_TABLE_FCC,
+                                              MAX_RMS_VLO_TABLE_FCC,
+                                              THRESHOLD_HI_TABLE_FCC,
                                               THRESHOLD_VLO_TABLE_FCC,
                                               DACC_CFG_TABLE_FCC,
-                                              PREDIST_HI_TABLE_FCC, 
+                                              PREDIST_HI_TABLE_FCC,
                                               PREDIST_VLO_TABLE_FCC,
-                                              GAIN_HI_FCC, 
+                                              GAIN_HI_FCC,
                                               GAIN_VLO_FCC,
                                               NUM_TX_LEVELS};
 #endif
 
 #ifdef MAX_RMS_HI_TABLE_CENB
-APP_PLC_COUPLING_DATA appPLCCoupConfigCENB  = {MAX_RMS_HI_TABLE_CENB, 
-                                              MAX_RMS_VLO_TABLE_CENB, 
-                                              THRESHOLD_HI_TABLE_CENB, 
+APP_PLC_COUPLING_DATA appPLCCoupConfigCENB  = {MAX_RMS_HI_TABLE_CENB,
+                                              MAX_RMS_VLO_TABLE_CENB,
+                                              THRESHOLD_HI_TABLE_CENB,
                                               THRESHOLD_VLO_TABLE_CENB,
                                               DACC_CFG_TABLE_CENB,
-                                              PREDIST_HI_TABLE_CENB, 
+                                              PREDIST_HI_TABLE_CENB,
                                               PREDIST_VLO_TABLE_CENB,
-                                              GAIN_HI_CENB, 
+                                              GAIN_HI_CENB,
                                               GAIN_VLO_CENB,
                                               NUM_TX_LEVELS};
 #endif
@@ -115,12 +115,12 @@ APP_PLC_COUPLING_DATA appPLCCoupConfigCENB  = {MAX_RMS_HI_TABLE_CENB,
 // *****************************************************************************
 // *****************************************************************************
 
-static void APP_PLC_ExceptionCb ( DRV_G3_MACRT_EXCEPTION exceptionObj, 
+static void APP_PLC_ExceptionCb ( DRV_G3_MACRT_EXCEPTION exceptionObj,
         uintptr_t context )
 {
     /* Avoid warning */
     (void)context;
-    
+
     /* Clear App flag */
     appPlc.waitingTxCfm = false;
 }
@@ -129,19 +129,19 @@ static void APP_PLC_TxCfmCb ( MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context )
 {
     /* Avoid warning */
     (void)context;
-    
+
     /* Update App flags */
     appPlc.waitingTxCfm = false;
-    
+
     /* Handle result of transmission : Show it through Console */
     switch(cfmObj->status)
     {
         case MAC_RT_STATUS_SUCCESS:
             APP_CONSOLE_Print("...MAC_RT_STATUS_SUCCESS\r\n");
-            break;   
+            break;
         case MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE:
             APP_CONSOLE_Print("...MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE\r\n");
-            break;   
+            break;
         case MAC_RT_STATUS_NO_ACK:
             APP_CONSOLE_Print("...MAC_RT_STATUS_NO_ACK\r\n");
             break;
@@ -163,12 +163,12 @@ static void APP_PLC_TxCfmCb ( MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context )
         default:
             APP_CONSOLE_Print("...UNKNWED STATUS\r\n");
     }
-    
+
     /* Update App to waiting state */
     appPlc.state = APP_PLC_STATE_WAITING;
 }
 
-static void APP_PLC_MlmeGetCfmCb ( MAC_RT_RX_PARAMETERS_OBJ *pParameters, 
+static void APP_PLC_MlmeGetCfmCb ( MAC_RT_RX_PARAMETERS_OBJ *pParameters,
         uintptr_t context )
 {
     /* Avoid warning */
@@ -178,12 +178,12 @@ static void APP_PLC_MlmeGetCfmCb ( MAC_RT_RX_PARAMETERS_OBJ *pParameters,
     appPlc.g3MacRtRxParameters = *pParameters;
 }
 
-static void APP_PLC_DataIndCb ( uint8_t *pData, uint16_t length, 
+static void APP_PLC_DataIndCb ( uint8_t *pData, uint16_t length,
         uintptr_t context )
 {
     /* Avoid warning */
     (void)context;
-    
+
     /* Store data message */
     if ((length > 0) && (length <= sizeof(appPlc.pPlcRxData)))
     {
@@ -200,21 +200,17 @@ static void APP_PLC_DataIndCb ( uint8_t *pData, uint16_t length,
         case MAC_RT_MOD_ROBUST:
             APP_CONSOLE_Print("BPSK ROBUST ");
             break;
-            
+
         case MAC_RT_MOD_BPSK:
             APP_CONSOLE_Print("BPSK ");
             break;
-            
+
         case MAC_RT_MOD_QPSK:
             APP_CONSOLE_Print("QPSK ");
             break;
-            
+
         case MAC_RT_MOD_8PSK:
             APP_CONSOLE_Print("8PSK ");
-            break;
-            
-        case MAC_RT_MOD_16_QAM:
-            APP_CONSOLE_Print("16QAM ");
             break;
     }
 
@@ -223,16 +219,16 @@ static void APP_PLC_DataIndCb ( uint8_t *pData, uint16_t length,
         case MAC_RT_MOD_SCHEME_DIFFERENTIAL:
             APP_CONSOLE_Print("Differential, ");
             break;
-            
+
         case MAC_RT_MOD_SCHEME_COHERENT:
             APP_CONSOLE_Print("Coherent, ");
             break;
     }
-    
+
     APP_CONSOLE_Print("LQI %udB): ", appPlc.g3MacRtRxParameters.pduLinkQuality);
     APP_CONSOLE_Print("%s\r\n", appPlc.pPlcRxData);
     APP_CONSOLE_Print("\r\n>>>");
-    
+
 }
 
 // *****************************************************************************
@@ -258,8 +254,8 @@ static void APP_PLC_SetCouplingConfiguration ( void )
 #ifdef MAX_RMS_HI_TABLE_FCC
     /* CEN B */
     pCfgData = &appPLCCoupConfigFCC;
-#endif    
-    
+#endif
+
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_NUM_TX_LEVELS;
     pibObj.length = 1;
@@ -269,76 +265,76 @@ static void APP_PLC_SetCouplingConfiguration ( void )
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_MAX_RMS_TABLE_HI;
     pibObj.length = sizeof(pCfgData->maxRMSHigh);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->maxRMSHigh, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->maxRMSHigh,
             sizeof(pCfgData->maxRMSHigh));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_MAX_RMS_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->maxRMSVeryLow);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->maxRMSVeryLow, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->maxRMSVeryLow,
             sizeof(pCfgData->maxRMSVeryLow));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_THRESHOLDS_TABLE_HI;
     pibObj.length = sizeof(pCfgData->thresholdHigh);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->thresholdHigh, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->thresholdHigh,
             sizeof(pCfgData->thresholdHigh));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_THRESHOLDS_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->thresholdVeryLow);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->thresholdVeryLow, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->thresholdVeryLow,
             sizeof(pCfgData->thresholdVeryLow));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_GAIN_TABLE_HI;
     pibObj.length = sizeof(pCfgData->gainHigh);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->gainHigh, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->gainHigh,
             sizeof(pCfgData->gainHigh));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_GAIN_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->gainVeryLow);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->gainVeryLow, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->gainVeryLow,
             sizeof(pCfgData->gainVeryLow));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_DACC_TABLE_CFG;
     pibObj.length = sizeof(pCfgData->daccConfig);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->daccConfig, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->daccConfig,
             sizeof(pCfgData->daccConfig));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_PREDIST_COEF_TABLE_HI;
     pibObj.length = sizeof(pCfgData->predistorsionHigh);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->predistorsionHigh, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->predistorsionHigh,
             sizeof(pCfgData->predistorsionHigh));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
 
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = PHY_PARAM_PREDIST_COEF_TABLE_VLO;
     pibObj.length = sizeof(pCfgData->predistorsionVeryLow);
-    memcpy(pibObj.value, (uint8_t *)&pCfgData->predistorsionVeryLow, 
+    memcpy(pibObj.value, (uint8_t *)&pCfgData->predistorsionVeryLow,
             sizeof(pCfgData->predistorsionVeryLow));
     DRV_G3_MACRT_PIBSet(appPlc.drvG3MacRtHandle, &pibObj);
-    
+
 }
 
 static void APP_PLC_SetG3MacRtConfiguration ( void )
 {
     MAC_RT_TX_PARAMETERS_OBJ *pParams;
     uint8_t plcBand;
-    
+
     /* Init G3 Mac RT Parameters */
     pParams = &appPlc.g3MacRtTxParameters;
-    
+
     pParams->dstAddr.addressMode = MAC_RT_SHORT_ADDRESS;
     pParams->dstAddr.shortAddress = appPlc.destinationAddress;
     pParams->forceRobo = 0;
@@ -349,15 +345,15 @@ static void APP_PLC_SetG3MacRtConfiguration ( void )
     pParams->requestAck = 0;
     pParams->securityEnabled = 0;
     pParams->toneMapRequest = 0;
-    memset(pParams->txCoef, 0, sizeof(pParams->txCoef)); 
+    memset(pParams->txCoef, 0, sizeof(pParams->txCoef));
     pParams->txGain = 0;
     pParams->txRes = 0;
-    
-    /* plcBand corresponds to G3 PHY band 
+
+    /* plcBand corresponds to G3 PHY band
      * [0x01: CEN-A, 0x02: FCC, 0x03: ARIB, 0x04: CEN-B] */
     memset(pParams->toneMap, 0, sizeof(pParams->toneMap));
     plcBand = (uint8_t)(appPlc.phyVersion >> 16);
-    switch (plcBand) 
+    switch (plcBand)
     {
         case 0x01:
             /* G3 CEN A */
@@ -383,15 +379,15 @@ static void APP_PLC_SetG3MacRtConfiguration ( void )
             pParams->toneMap[0] = 0x0F;
             break;
     }
-    
+
 }
 
 static void APP_PLC_BuildG3MacHeader ( void )
 {
     APP_G3_MAC_HEADER *macHeader;
-    
+
     macHeader = (APP_G3_MAC_HEADER *)appPlc.pPlcTxData;
-    
+
     /* Set Frame Control */
     macHeader->frameControl.srcAddressingMode = 2; // 16b
     macHeader->frameControl.frameVersion = 0;
@@ -425,30 +421,30 @@ void APP_PLC_Initialize ( void )
 {
     /* Set initial state */
     appPlc.state = APP_PLC_STATE_INIT;
-    
+
     /* Set configuration of coupling parameters */
     appPlc.couplingConfig = APP_CONFIG_PLC_COUP;
-    
+
     /* Select second binary file to start PLC Application
        false : CEN A, true : FCC */
     appPlc.bin2InUse = 0;
-    
+
     /* Init flags of PLC transmission */
     appPlc.waitingTxCfm = 0;
-    
+
     /* Init Sequence Number */
     appPlc.sequenceNumber = (uint8_t)TRNG_ReadData();
-    
+
     /* Get Unique Short Address from True Random Number Generator */
     appPlc.sourceAddress = (uint16_t)TRNG_ReadData();
-    
+
     /* Set Destination Address */
     appPlc.destinationAddress = MAC_RT_SHORT_ADDRESS_BROADCAST;
-    
+
     /* Set G3 MAC RT payload pointers */
     appPlc.pG3MacRtTxPayload = appPlc.pPlcTxData + sizeof(APP_G3_MAC_HEADER);
     appPlc.pG3MacRtRxPayload = appPlc.pPlcRxData + sizeof(APP_G3_MAC_HEADER);
-       
+
 }
 
 /******************************************************************************
@@ -468,7 +464,7 @@ void APP_PLC_Tasks ( void )
         {
             /* Open PLC driver */
             appPlc.drvG3MacRtHandle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL);
-            
+
             if (appPlc.drvG3MacRtHandle != DRV_HANDLE_INVALID)
             {
                 appPlc.state = APP_PLC_STATE_OPEN;
@@ -479,37 +475,37 @@ void APP_PLC_Tasks ( void )
             }
             break;
         }
-            
+
         case APP_PLC_STATE_OPEN:
         {
             /* Check PLC transceiver */
             if (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_0) == SYS_STATUS_READY)
-            { 
+            {
                 MAC_RT_PIB_OBJ pibObj;
                 uint8_t plcBand;
-                
+
                 /* Configure G3 MACRT call-backs */
-                DRV_G3_MACRT_ExceptionCallbackRegister(appPlc.drvG3MacRtHandle, 
+                DRV_G3_MACRT_ExceptionCallbackRegister(appPlc.drvG3MacRtHandle,
                         APP_PLC_ExceptionCb, (const uintptr_t)&appPlc);
-                DRV_G3_MACRT_TxCfmCallbackRegister(appPlc.drvG3MacRtHandle, 
+                DRV_G3_MACRT_TxCfmCallbackRegister(appPlc.drvG3MacRtHandle,
                         APP_PLC_TxCfmCb, (const uintptr_t)&appPlc);
-                DRV_G3_MACRT_MlmeGetCfmCallbackRegister(appPlc.drvG3MacRtHandle, 
+                DRV_G3_MACRT_MlmeGetCfmCallbackRegister(appPlc.drvG3MacRtHandle,
                         APP_PLC_MlmeGetCfmCb, (const uintptr_t)&appPlc);
-                DRV_G3_MACRT_DataIndCallbackRegister(appPlc.drvG3MacRtHandle, 
+                DRV_G3_MACRT_DataIndCallbackRegister(appPlc.drvG3MacRtHandle,
                         APP_PLC_DataIndCb, (const uintptr_t)&appPlc);
-                
+
                 /* Get version of the PLC Physical Layer */
                 pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
                 pibObj.index = PHY_PARAM_VERSION_NUM;
                 pibObj.length = 4;
-                DRV_G3_MACRT_PIBGet(appPlc.drvG3MacRtHandle, &pibObj);   
+                DRV_G3_MACRT_PIBGet(appPlc.drvG3MacRtHandle, &pibObj);
                 appPlc.phyVersion = *(uint32_t *)pibObj.value;
                 APP_CONSOLE_Print("\r\nPHY version: 0x%08x - ", (unsigned int)appPlc.phyVersion);
-                
+
                 plcBand = (uint8_t)(appPlc.phyVersion >> 16);
-                /* plcBand corresponds to G3 PHY band 
+                /* plcBand corresponds to G3 PHY band
                  * [0x01: CEN-A, 0x02: FCC, 0x03: ARIB, 0x04: CEN-B] */
-                switch (plcBand) 
+                switch (plcBand)
                 {
                     case 0x01:
                         APP_CONSOLE_Print("CENELEC-A band: 35 - 91 kHz\r\n");
@@ -532,10 +528,10 @@ void APP_PLC_Tasks ( void )
                         while(1);
                         break;
                 }
-                
+
                 /* Update App to next state */
                 appPlc.state = APP_PLC_STATE_TX_CONFIG;
-            }                
+            }
             break;
         }
 
@@ -546,10 +542,10 @@ void APP_PLC_Tasks ( void )
             {
                 APP_PLC_SetCouplingConfiguration();
             }
-            
+
             /* Update App to next state */
             appPlc.state = APP_PLC_STATE_WAITING;
-            
+
             break;
         }
 
@@ -569,10 +565,10 @@ void APP_PLC_Tasks ( void )
             /* Clear Transmission flags */
             appPlc.inTx = 0;
             appPlc.waitingTxCfm = 0;
-            
+
             /* Close PLC Driver */
             DRV_G3_MACRT_Close(appPlc.drvG3MacRtHandle);
-            
+
             /* Restart PLC Driver */
             appPlc.state = APP_PLC_STATE_INIT;
             break;
@@ -587,29 +583,29 @@ void APP_PLC_Tasks ( void )
     }
 }
 
-void APP_PLC_SendMessage( uint8_t *pData, uint16_t length ) 
+void APP_PLC_SendMessage( uint8_t *pData, uint16_t length )
 {
     /* Update App to TX state */
     appPlc.state = APP_PLC_STATE_TX;
-    
+
     APP_CONSOLE_Print("\r\nTx (%u bytes): ", length + sizeof(APP_G3_MAC_HEADER));
-    
+
     /* G3 MAC RT TX Configuration */
     APP_PLC_SetG3MacRtConfiguration();
-    
+
     /* Send MLME Set to fix TX parameters */
     DRV_G3_MACRT_MlmeSet(appPlc.drvG3MacRtHandle, &appPlc.g3MacRtTxParameters);
-    
+
     /* Build G3 MAC RT Header */
     APP_PLC_BuildG3MacHeader();
-            
+
     /* Build G3 MAC RT Payload */
     memcpy(appPlc.pG3MacRtTxPayload, pData, length);
-    
+
     /* Send G3 MAC RT message. Length: HDR + DATA */
     DRV_G3_MACRT_Send(appPlc.drvG3MacRtHandle, appPlc.pPlcTxData,
-            length + sizeof(APP_G3_MAC_HEADER)); 
-    
+            length + sizeof(APP_G3_MAC_HEADER));
+
     /* Update Sequence Number */
     appPlc.sequenceNumber++;
 }

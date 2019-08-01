@@ -71,49 +71,49 @@ APP_PLC_DATA_TX CACHE_ALIGN appPlcTx;
 
   Description:
     These structures hold the PLC coupling configuration data.
-    For each channel, there are 8 values, corresponding to first 8 TX 
+    For each channel, there are 8 values, corresponding to first 8 TX
     attenuation levels (1 dB steps).
-    - plcMaxRMSHigh: Target RMS_CALC in High impedance mode value when dynamic 
+    - plcMaxRMSHigh: Target RMS_CALC in High impedance mode value when dynamic
       gain is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2).
-    - plcMaxRMSVeryLow: Target RMS_CALC in Very low impedance mode value when 
+    - plcMaxRMSVeryLow: Target RMS_CALC in Very low impedance mode value when
       dynamic gain is enabled (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1 or 2).
-    - plcThresholdsHigh: Thresholds to change impedance mode 
+    - plcThresholdsHigh: Thresholds to change impedance mode
       (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from High impedance mode.
-      For each channel there are 16 values. First 8 values (one per TX level) 
-      are thresholds to change from High imp. to Low imp. (0 to disable). 
-      Next 8 values (one per TX level) are thresholds to change from High to 
+      For each channel there are 16 values. First 8 values (one per TX level)
+      are thresholds to change from High imp. to Low imp. (0 to disable).
+      Next 8 values (one per TX level) are thresholds to change from High to
       VeryLow. When RMS_CALC is below threshold, impedance mode changes to VeryLow.
-    - plcThresholdsVeryLow: Thresholds to change impedance mode 
+    - plcThresholdsVeryLow: Thresholds to change impedance mode
       (PLC_ID_CFG_AUTODETECT_IMPEDANCE = 1) from Very Low impedance mode.
-      For each channel there are 16 values. First 8 values (one per TX level) 
-      are thresholds to change from High imp. to Low imp. (0 to disable). 
-      Next 8 values (one per TX level) are thresholds to change from High to 
+      For each channel there are 16 values. First 8 values (one per TX level)
+      are thresholds to change from High imp. to Low imp. (0 to disable).
+      Next 8 values (one per TX level) are thresholds to change from High to
       VeryLow. When RMS_CALC is below threshold, impedance mode changes to VeryLow.
     - plcGainHighChn1: Gain values for HI and VLO modes for channel 1.
       There are three values: {GAIN_INI, GAIN_MIN, GAIN_MAX}.
     - plcGainHighChn2_8: Gain values for HI and VLO modes for channels 2 to 8.
       There are three values: {GAIN_INI, GAIN_MIN, GAIN_MAX}.
-    - plcPredistorsionHigh1: Equalization values for High Impedance mode. Specific 
-      gain for each carrier to equalize transmission and compensate HW filter 
+    - plcPredistorsionHigh1: Equalization values for High Impedance mode. Specific
+      gain for each carrier to equalize transmission and compensate HW filter
       frequency response. [Channel 1]
-    - plcPredistorsionHigh2_8: Equalization values for High Impedance mode. Specific 
-      gain for each carrier to equalize transmission and compensate HW filter 
+    - plcPredistorsionHigh2_8: Equalization values for High Impedance mode. Specific
+      gain for each carrier to equalize transmission and compensate HW filter
       frequency response. [Channel 2 to 8]
-    - plcPredistorsionVeryLow1: Equalization values for Very Low Impedance mode. 
-      Specific gain for each carrier to equalize transmission and compensate HW filter 
+    - plcPredistorsionVeryLow1: Equalization values for Very Low Impedance mode.
+      Specific gain for each carrier to equalize transmission and compensate HW filter
       frequency response. [Channel 1]
-    - plcPredistorsionVeryLow2_8: Equalization values for Very Low Impedance mode. 
-      Specific gain for each carrier to equalize transmission and compensate HW filter 
+    - plcPredistorsionVeryLow2_8: Equalization values for Very Low Impedance mode.
+      Specific gain for each carrier to equalize transmission and compensate HW filter
       frequency response. [Channel 2 to 8]
     - plcDaccConfiguration1: DACC Configuration for channel 1.
     - plcDaccConfiguration2_8: DACC Configuration for channel 2 to 8.
 
-  Remarks: 
+  Remarks:
     Parameters are defined in user.h file
     The following values are valid for MCHP EKs.
-    For other hardware designs, calibration values should be checked with 
+    For other hardware designs, calibration values should be checked with
     MCHP PHY Calibration Tool.
- */ 
+ */
 
 static const uint32_t plcMaxRMSHigh[8][8] = {
 	MAX_RMS_HI_TABLE_CH1,
@@ -184,7 +184,7 @@ static void APP_PLC_ExceptionCb(DRV_PLC_PHY_EXCEPTION exceptionObj, uintptr_t co
 {
     /* Avoid warning */
     (void)context;
-    
+
     /* Clear App flag */
     appPlc.waitingTxCfm = false;
     /* Restore TX configuration */
@@ -195,48 +195,54 @@ static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_
 {
     /* Avoid warning */
     (void)context;
-    
+
     /* Update App flags */
     appPlc.waitingTxCfm = false;
-    
+
     /* Handle result of transmission : Show it through Console */
     switch(cfmObj->result)
     {
         case DRV_PLC_PHY_TX_RESULT_PROCESS:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_PROCESS\r\n");
-            break;   
+            break;
         case DRV_PLC_PHY_TX_RESULT_SUCCESS:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_SUCCESS\r\n");
-            break;   
+            break;
         case DRV_PLC_PHY_TX_RESULT_INV_LENGTH:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_LENGTH\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_BUSY_CH:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_CH\r\n");
-            break;    
+            break;
         case DRV_PLC_PHY_TX_RESULT_BUSY_TX:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_TX\r\n");
-            break;    
+            break;
         case DRV_PLC_PHY_TX_RESULT_BUSY_RX:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_BUSY_RX\r\n");
-            break;   
+            break;
         case DRV_PLC_PHY_TX_RESULT_INV_SCHEME:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_SCHEME\r\n");
-            break; 
+            break;
         case DRV_PLC_PHY_TX_RESULT_TIMEOUT:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_TIMEOUT\r\n");
-            break;   
+            break;
         case DRV_PLC_PHY_TX_RESULT_INV_BUFFER:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_BUFFER\r\n");
             break;
         case DRV_PLC_PHY_TX_RESULT_INV_MODE:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_MODE\r\n");
-            break;   
+            break;
+        case DRV_PLC_PHY_TX_RESULT_INV_TX_MODE:
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_INV_TX_MODE\r\n");
+            break;
+        case DRV_PLC_PHY_TX_RESULT_CANCELLED:
+            APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_CANCELLED\r\n");
+            break;
         case DRV_PLC_PHY_TX_RESULT_NO_TX:
             APP_CONSOLE_Print("...DRV_PLC_PHY_TX_RESULT_NO_TX\r\n");
-            break;   
+            break;
     }
-    
+
 }
 
 // *****************************************************************************
@@ -246,23 +252,23 @@ static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_
 // *****************************************************************************
 static void APP_PLC_ApplyPlcConfiguration ( void )
 {
-    DRV_PLC_PHY_PIB_OBJ pibObj;   
+    DRV_PLC_PHY_PIB_OBJ pibObj;
     uint16_t *pEquHi, *pEquVlo, *pGainHi, *pGainVlo;
 	uint32_t *pDaccTbl;
     uint8_t index;
-    
+
     index = appPlcTx.channel - 1;
     if (index > 7)
     {
         /* Error in PLC Channel */
         return;
     }
-    
+
     pibObj.id = PLC_ID_NUM_TX_LEVELS;
     pibObj.length = 1;
     pibObj.pData = &appPlc.couplingLevels;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
     pibObj.length = 8 << 2;
     pibObj.pData = (uint8_t *)&plcMaxRMSHigh[index];
@@ -282,7 +288,7 @@ static void APP_PLC_ApplyPlcConfiguration ( void )
     pibObj.length = 16 << 2;
     pibObj.pData = (uint8_t *)&plcThresholdsVeryLow[index];
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     if (index >= 1) {
 		/* Channel 2 - 8 */
 		pEquHi = (uint16_t *)plcPredistorsionHigh2_8;
@@ -303,27 +309,27 @@ static void APP_PLC_ApplyPlcConfiguration ( void )
     pibObj.length = 3 << 1;
     pibObj.pData = (uint8_t *)pGainHi;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     pibObj.id = PLC_ID_GAIN_TABLE_VLO;
     pibObj.length = 3 << 1;
     pibObj.pData = (uint8_t *)pGainVlo;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
     pibObj.length = 97 << 1;
     pibObj.pData = (uint8_t *)pEquHi;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
     pibObj.length = 97 << 1;
     pibObj.pData = (uint8_t *)pEquVlo;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
     pibObj.id = PLC_ID_DACC_TABLE_CFG;
     pibObj.length = 17 << 2;
     pibObj.pData = (uint8_t *)pDaccTbl;
     DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-    
+
 }
 
 /*******************************************************************************
@@ -338,17 +344,17 @@ void APP_PLC_Initialize ( void )
 {
     /* Read configuration from NVM memory */
     appPlc.state = APP_PLC_STATE_READ_CONFIG;
-    
+
     /* Set configuration of coupling parameters */
     appPlc.couplingConfig = APP_CONFIG_PLC_COUP;
     appPlc.couplingLevels = NUM_TX_LEVELS;
-    
+
     /* Init flags of PLC transmission */
     appPlc.waitingTxCfm = false;
-    
+
     /* Init PLC objects */
     appPlcTx.pl360Tx.pTransmitData = appPlcTx.pDataTx;
-    
+
 }
 
 /******************************************************************************
@@ -372,7 +378,7 @@ void APP_PLC_Tasks ( void )
                 appNvm.pData = (uint8_t*)&appPlcTx;
                 appNvm.dataLength = sizeof(appPlcTx);
                 appNvm.state = APP_NVM_STATE_READ_MEMORY;
-                
+
                 appPlc.state = APP_PLC_STATE_CHECK_CONFIG;
             }
             break;
@@ -386,7 +392,7 @@ void APP_PLC_Tasks ( void )
                 {
                     uint8_t index;
                     uint8_t* pData;
-                    
+
                     /* Set configuration by default */
                     appPlcTx.configKey = APP_PLC_CONFIG_KEY;
                     appPlcTx.pl360PhyVersion = 0;
@@ -398,7 +404,7 @@ void APP_PLC_Tasks ( void )
                     appPlcTx.pl360Tx.frameType = FRAME_TYPE_A;
                     appPlcTx.pl360Tx.forced = 0;
                     appPlcTx.pl360Tx.mode = TX_MODE_RELATIVE;
-                    appPlcTx.pl360Tx.time = 1000000;        
+                    appPlcTx.pl360Tx.time = 1000000;
                     appPlcTx.pl360Tx.pTransmitData = appPlcTx.pDataTx;
                     appPlcTx.pl360Tx.dataLength = 64;
                     appPlcTx.channel = 1;
@@ -406,15 +412,15 @@ void APP_PLC_Tasks ( void )
                     for(index = 0; index < appPlcTx.pl360Tx.dataLength; index++)
                     {
                         *pData++ = index;
-                    }                       
-                    
+                    }
+
                     /* Clear Transmission flag */
                     appPlcTx.inTx = false;
-                    
+
                     /* Select PLC binary by default */
                     appPlcTx.bin2InUse = false;
                 }
-                    
+
                 /* Initialize PLC driver */
                 appPlc.state = APP_PLC_STATE_INIT;
             }
@@ -428,7 +434,7 @@ void APP_PLC_Tasks ( void )
                 appNvm.pData = (uint8_t*)&appPlcTx;
                 appNvm.dataLength = sizeof(appPlcTx);
                 appNvm.state = APP_NVM_STATE_WRITE_MEMORY;
-                
+
                 appPlc.state = APP_PLC_STATE_WAIT_CONFIG;
             }
             break;
@@ -445,16 +451,16 @@ void APP_PLC_Tasks ( void )
                 else
                 {
                     appPlc.state = APP_PLC_STATE_WAITING;
-                }                
+                }
             }
             break;
         }
-        
+
         case APP_PLC_STATE_INIT:
         {
             /* Open PLC driver */
             appPlc.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX_0, NULL);
-            
+
             if (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)
             {
                 appPlc.state = APP_PLC_STATE_OPEN;
@@ -465,31 +471,31 @@ void APP_PLC_Tasks ( void )
             }
             break;
         }
-            
+
         case APP_PLC_STATE_OPEN:
         {
             /* Check PLC transceiver */
             if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX_0) == SYS_STATUS_READY)
-            { 
-                DRV_PLC_PHY_PIB_OBJ pibObj;                
+            {
+                DRV_PLC_PHY_PIB_OBJ pibObj;
                 uint32_t version;
-                
+
                 /* Configure PLC callbacks */
                 DRV_PLC_PHY_ExceptionCallbackRegister(appPlc.drvPl360Handle, APP_PLC_ExceptionCb, DRV_PLC_PHY_INDEX_0);
                 DRV_PLC_PHY_DataCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb, DRV_PLC_PHY_INDEX_0);
-                
+
                 /* Get PLC PHY version */
                 pibObj.id = PLC_ID_VERSION_NUM;
                 pibObj.length = 4;
                 pibObj.pData = (uint8_t *)&version;
-                DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);     
-                
+                DRV_PLC_PHY_PIBGet(appPlc.drvPl360Handle, &pibObj);
+
                 if (version == appPlcTx.pl360PhyVersion)
                 {
                     if (appPlcTx.inTx)
                     {
                         /* Previous Transmission state */
-                        appPlc.state = APP_PLC_STATE_TX;                        
+                        appPlc.state = APP_PLC_STATE_TX;
                     }
                     else
                     {
@@ -500,11 +506,11 @@ void APP_PLC_Tasks ( void )
                 else
                 {
                     appPlcTx.pl360PhyVersion = version;
-                    
+
                     /* Store configuration in NVM memory */
                     appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
                 }
-            }                
+            }
             break;
         }
 
@@ -518,7 +524,7 @@ void APP_PLC_Tasks ( void )
             if (!appPlcTx.inTx)
             {
                 DRV_PLC_PHY_PIB_OBJ pibObj;
-                
+
                 /* Apply TX configuration */
                 /* Set Autodetect Mode */
                 pibObj.id = PLC_ID_CFG_AUTODETECT_IMPEDANCE;
@@ -530,25 +536,25 @@ void APP_PLC_Tasks ( void )
                 pibObj.length = 1;
                 pibObj.pData = (uint8_t *)&appPlcTx.txImpedance;
                 DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                
+
                 /* Set Channel */
                 pibObj.id = PLC_ID_CHANNEL_CFG;
                 pibObj.length = 1;
                 pibObj.pData = (uint8_t *)&appPlcTx.channel;
                 DRV_PLC_PHY_PIBSet(appPlc.drvPl360Handle, &pibObj);
-                
+
                 /* Apply PLC coupling configuration */
                 if (appPlc.couplingConfig)
                 {
                     APP_PLC_ApplyPlcConfiguration();
                 }
-                
+
                 /* Set Time mode */
                 appPlcTx.pl360Tx.mode = TX_MODE_RELATIVE;
-                
+
                 /* Set Transmission flag */
-                appPlcTx.inTx = true;  
-                
+                appPlcTx.inTx = true;
+
                 /* Store TX configuration */
                 appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
             }
@@ -558,10 +564,10 @@ void APP_PLC_Tasks ( void )
                 {
                     appPlc.waitingTxCfm = true;
                     /* Send PLC message */
-                    DRV_PLC_PHY_Send(appPlc.drvPl360Handle, &appPlcTx.pl360Tx);                    
+                    DRV_PLC_PHY_Send(appPlc.drvPl360Handle, &appPlcTx.pl360Tx);
                 }
-            }            
-            
+            }
+
             break;
         }
 
@@ -569,15 +575,15 @@ void APP_PLC_Tasks ( void )
         {
             /* Clear Transmission flag */
             appPlcTx.inTx = false;
-            
+
             /* Store TX configuration */
             appPlc.state = APP_PLC_STATE_WRITE_CONFIG;
-            
+
             /* Cancel last transmission */
             if (appPlc.waitingTxCfm)
             {
                 /* Send PLC Cancel message */
-                appPlcTx.pl360Tx.mode = TX_MODE_CANCEL | TX_MODE_RELATIVE;   
+                appPlcTx.pl360Tx.mode = TX_MODE_CANCEL | TX_MODE_RELATIVE;
                 DRV_PLC_PHY_Send(appPlc.drvPl360Handle, &appPlcTx.pl360Tx);
             }
             break;

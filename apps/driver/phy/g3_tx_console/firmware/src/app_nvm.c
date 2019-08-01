@@ -220,9 +220,9 @@ void APP_NVM_Tasks ( void )
             {
                 appNvm.numEraseBlocks = 1;
             }
-            
+
             appNvm.state = APP_NVM_STATE_CMD_WAIT;
-            
+
             break;
         }
 
@@ -248,10 +248,10 @@ void APP_NVM_Tasks ( void )
                     appNvm.dataLength = NVM_BUFFER_SIZE;
                 }
                 memcpy(appNvm.pNvmBuffer, appNvm.pData, appNvm.dataLength);
-                
+
                 appNvm.state = APP_NVM_STATE_ERASE_FLASH;
             }
-            
+
             break;
         }
 
@@ -267,7 +267,7 @@ void APP_NVM_Tasks ( void )
             {
                 appNvm.state = APP_NVM_STATE_XFER_WAIT;
             }
-            
+
             break;
         }
 
@@ -283,7 +283,7 @@ void APP_NVM_Tasks ( void )
             {
                 appNvm.state = APP_NVM_STATE_XFER_WAIT;
             }
-            
+
             break;
         }
 

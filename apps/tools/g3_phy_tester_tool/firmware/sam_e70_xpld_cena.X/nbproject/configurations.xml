@@ -2,104 +2,12 @@
 <configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="f1" displayName="Header Files" projectFiles="true">
-      <logicalFolder name="f2" displayName="config" projectFiles="true">
-        <logicalFolder name="f1" displayName="sam_e70_xpld_cena" projectFiles="true">
-          <logicalFolder name="f3" displayName="bsp" projectFiles="true">
-            <itemPath>../src/config/sam_e70_xpld_cena/bsp/bsp.h</itemPath>
-          </logicalFolder>
-          <logicalFolder name="f4" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="plc" projectFiles="true">
-              <logicalFolder name="f1" displayName="common" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/common/drv_plc_hal.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/common/drv_plc_boot.h</itemPath>
-              </logicalFolder>
-              <logicalFolder name="f2" displayName="phy" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/drv_plc_phy.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/drv_plc_phy_definitions.h</itemPath>
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/drv_plc_phy_comm.h</itemPath>
-              </logicalFolder>
-            </logicalFolder>
-            <itemPath>../src/config/sam_e70_xpld_cena/driver/driver.h</itemPath>
-            <itemPath>../src/config/sam_e70_xpld_cena/driver/driver_common.h</itemPath>
-          </logicalFolder>
-          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f1" displayName="clk" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/clk/plib_clk.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f5" displayName="efc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/efc/plib_efc.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f3" displayName="nvic" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/nvic/plib_nvic.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="pio" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/pio/plib_pio.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f7" displayName="spi" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi_common.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi0.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f6" displayName="tc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc0.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc_common.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f8" displayName="usart" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart_common.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart1.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f4" displayName="xdmac" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/xdmac/plib_xdmac_common.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/xdmac/plib_xdmac.h</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <logicalFolder name="f1" displayName="service" projectFiles="true">
-            <logicalFolder name="f3" displayName="pcrc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/pcrc/srv_pcrc.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f1" displayName="pserial" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/pserial/srv_pserial.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="usi" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi_definitions.h</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <logicalFolder name="f5" displayName="system" projectFiles="true">
-            <logicalFolder name="f4" displayName="cache" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/cache/sys_cache.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f5" displayName="dma" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/dma/sys_dma.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/system/dma/sys_dma_mapping.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="int" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/int/sys_int.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/system/int/sys_int_mapping.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f3" displayName="ports" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/ports/sys_ports.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/system/ports/sys_ports_mapping.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f1" displayName="time" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/time/sys_time.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/system/time/sys_time_definitions.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/system/time/src/sys_time_local.h</itemPath>
-            </logicalFolder>
-            <itemPath>../src/config/sam_e70_xpld_cena/system/system.h</itemPath>
-            <itemPath>../src/config/sam_e70_xpld_cena/system/system_common.h</itemPath>
-            <itemPath>../src/config/sam_e70_xpld_cena/system/system_module.h</itemPath>
-          </logicalFolder>
-          <itemPath>../src/config/sam_e70_xpld_cena/device_cache.h</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/toolchain_specifics.h</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/definitions.h</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/user.h</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/configuration.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="f2" displayName="sam_g55_xpld_cena" projectFiles="true">
-          <logicalFolder name="f5" displayName="bsp" projectFiles="true">
+      <logicalFolder name="f1" displayName="config" projectFiles="true">
+        <logicalFolder name="f1" displayName="sam_g55_xpld_cena" projectFiles="true">
+          <logicalFolder name="f1" displayName="bsp" projectFiles="true">
             <itemPath>../src/config/sam_g55_xpld_cena/bsp/bsp.h</itemPath>
           </logicalFolder>
-          <logicalFolder name="f3" displayName="driver" projectFiles="true">
+          <logicalFolder name="f2" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="plc" projectFiles="true">
               <logicalFolder name="f1" displayName="common" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/common/drv_plc_hal.h</itemPath>
@@ -114,30 +22,30 @@
             <itemPath>../src/config/sam_g55_xpld_cena/driver/driver.h</itemPath>
             <itemPath>../src/config/sam_g55_xpld_cena/driver/driver_common.h</itemPath>
           </logicalFolder>
-          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f3" displayName="clock" projectFiles="true">
+          <logicalFolder name="f3" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f1" displayName="clock" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/clock/plib_clock.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="cmcc" projectFiles="true">
+            <logicalFolder name="f2" displayName="cmcc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/cmcc/plib_cmcc.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="efc" projectFiles="true">
+            <logicalFolder name="f3" displayName="efc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/efc/plib_efc.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="flexcom" projectFiles="true">
-              <logicalFolder name="f2" displayName="spi" projectFiles="true">
+            <logicalFolder name="f4" displayName="flexcom" projectFiles="true">
+              <logicalFolder name="f1" displayName="spi" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/spi/plib_flexcom5_spi.h</itemPath>
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/spi/plib_flexcom_spi_local.h</itemPath>
               </logicalFolder>
-              <logicalFolder name="f1" displayName="usart" projectFiles="true">
+              <logicalFolder name="f2" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/usart/plib_flexcom7_usart.h</itemPath>
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/usart/plib_flexcom_usart_local.h</itemPath>
               </logicalFolder>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="nvic" projectFiles="true">
+            <logicalFolder name="f5" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/nvic/plib_nvic.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="pio" projectFiles="true">
+            <logicalFolder name="f6" displayName="pio" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/pio/plib_pio.h</itemPath>
             </logicalFolder>
             <logicalFolder name="f7" displayName="tc" projectFiles="true">
@@ -145,20 +53,20 @@
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/tc/plib_tc_common.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f1" displayName="service" projectFiles="true">
-            <logicalFolder name="f3" displayName="pcrc" projectFiles="true">
+          <logicalFolder name="f4" displayName="service" projectFiles="true">
+            <logicalFolder name="f1" displayName="pcrc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/pcrc/srv_pcrc.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="pserial" projectFiles="true">
+            <logicalFolder name="f2" displayName="pserial" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/pserial/srv_pserial.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="usi" projectFiles="true">
+            <logicalFolder name="f3" displayName="usi" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi.h</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi_definitions.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f4" displayName="system" projectFiles="true">
-            <logicalFolder name="f4" displayName="cache" projectFiles="true">
+          <logicalFolder name="f5" displayName="system" projectFiles="true">
+            <logicalFolder name="f1" displayName="cache" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/system/cache/sys_cache.h</itemPath>
             </logicalFolder>
             <logicalFolder name="f2" displayName="int" projectFiles="true">
@@ -169,7 +77,7 @@
               <itemPath>../src/config/sam_g55_xpld_cena/system/ports/sys_ports.h</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/system/ports/sys_ports_mapping.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="time" projectFiles="true">
+            <logicalFolder name="f4" displayName="time" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/system/time/sys_time.h</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/system/time/sys_time_definitions.h</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/system/time/src/sys_time_local.h</itemPath>
@@ -190,8 +98,8 @@
         <itemPath>../src/config/sam_e70_xpld_cena/osal/osal_definitions.h</itemPath>
         <itemPath>../src/config/sam_e70_xpld_cena/osal/osal_impl_basic.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="f1" displayName="packs" projectFiles="true">
-        <logicalFolder name="f2" displayName="ATSAME70Q21B_DFP" projectFiles="true">
+      <logicalFolder name="f2" displayName="packs" projectFiles="true">
+        <logicalFolder name="f3" displayName="ATSAME70Q21B_DFP" projectFiles="true">
           <logicalFolder name="f1" displayName="component" projectFiles="true">
             <itemPath>../src/packs/ATSAME70Q21B_DFP/component/acc.h</itemPath>
             <itemPath>../src/packs/ATSAME70Q21B_DFP/component/aes.h</itemPath>
@@ -236,7 +144,7 @@
           <itemPath>../src/packs/ATSAME70Q21B_DFP/device.h</itemPath>
           <itemPath>../src/packs/ATSAME70Q21B_DFP/atsame70q21b.h</itemPath>
         </logicalFolder>
-        <logicalFolder name="f3" displayName="ATSAMG55J19_DFP" projectFiles="true">
+        <logicalFolder name="f1" displayName="ATSAMG55J19_DFP" projectFiles="true">
           <logicalFolder name="f1" displayName="component" projectFiles="true">
             <itemPath>../src/packs/ATSAMG55J19_DFP/component/adc.h</itemPath>
             <itemPath>../src/packs/ATSAMG55J19_DFP/component/chipid.h</itemPath>
@@ -270,7 +178,7 @@
           <itemPath>../src/packs/ATSAMG55J19_DFP/device.h</itemPath>
           <itemPath>../src/packs/ATSAMG55J19_DFP/atsamg55j19.h</itemPath>
         </logicalFolder>
-        <logicalFolder name="f1" displayName="CMSIS" projectFiles="true">
+        <logicalFolder name="f2" displayName="CMSIS" projectFiles="true">
           <logicalFolder name="f1" displayName="CMSIS" projectFiles="true">
             <logicalFolder name="f1" displayName="Core" projectFiles="true">
               <logicalFolder name="f1" displayName="Include" projectFiles="true">
@@ -303,110 +211,22 @@
     </logicalFolder>
     <logicalFolder name="f4" displayName="Source Files" projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
-        <logicalFolder name="f1" displayName="sam_e70_xpld_cena" projectFiles="true">
-          <logicalFolder name="f4" displayName="bsp" projectFiles="true">
-            <itemPath>../src/config/sam_e70_xpld_cena/bsp/bsp.c</itemPath>
-          </logicalFolder>
-          <logicalFolder name="f5" displayName="driver" projectFiles="true">
-            <logicalFolder name="f1" displayName="plc" projectFiles="true">
-              <logicalFolder name="f1" displayName="common" projectFiles="true">
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/common/drv_plc_hal.c</itemPath>
-                <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/common/drv_plc_boot.c</itemPath>
-              </logicalFolder>
-              <logicalFolder name="f2" displayName="phy" projectFiles="true">
-                <logicalFolder name="f2" displayName="bin" projectFiles="true">
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/bin/PLC_PHY_G3_CENA.bin</itemPath>
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/bin/plc_phy_bin.S</itemPath>
-                </logicalFolder>
-                <logicalFolder name="f1" displayName="src" projectFiles="true">
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/src/drv_plc_phy_comm.c</itemPath>
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/src/drv_plc_phy.c</itemPath>
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/src/drv_plc_phy_local.h</itemPath>
-                  <itemPath>../src/config/sam_e70_xpld_cena/driver/plc/phy/src/drv_plc_phy_local_comm.h</itemPath>
-                </logicalFolder>
-              </logicalFolder>
-            </logicalFolder>
-          </logicalFolder>
-          <logicalFolder name="f3" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f1" displayName="clk" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/clk/plib_clk.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f5" displayName="efc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/efc/plib_efc.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f3" displayName="nvic" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/nvic/plib_nvic.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="pio" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/pio/plib_pio.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f7" displayName="spi" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/spi/plib_spi0.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f6" displayName="tc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/tc/plib_tc0.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f8" displayName="usart" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/usart/plib_usart1.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f4" displayName="xdmac" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/peripheral/xdmac/plib_xdmac.c</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <logicalFolder name="f1" displayName="service" projectFiles="true">
-            <logicalFolder name="f3" displayName="pcrc" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/pcrc/srv_pcrc.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f1" displayName="pserial" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/pserial/srv_pserial.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="usi" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi_local.h</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi_usart.c</itemPath>
-              <itemPath>../src/config/sam_e70_xpld_cena/service/usi/srv_usi_usart.h</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <logicalFolder name="f2" displayName="stdio" projectFiles="true">
-            <itemPath>../src/config/sam_e70_xpld_cena/stdio/xc32_monitor.c</itemPath>
-          </logicalFolder>
-          <logicalFolder name="f6" displayName="system" projectFiles="true">
-            <logicalFolder name="f3" displayName="cache" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/cache/sys_cache.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f4" displayName="dma" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/dma/sys_dma.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f2" displayName="int" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/int/src/sys_int.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="f1" displayName="time" projectFiles="true">
-              <itemPath>../src/config/sam_e70_xpld_cena/system/time/src/sys_time.c</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <itemPath>../src/config/sam_e70_xpld_cena/initialization.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/interrupts.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/exceptions.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/startup_xc32.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/libc_syscalls.c</itemPath>
-          <itemPath>../src/config/sam_e70_xpld_cena/tasks.c</itemPath>
-        </logicalFolder>
-        <logicalFolder name="f2" displayName="sam_g55_xpld_cena" projectFiles="true">
-          <logicalFolder name="f6" displayName="bsp" projectFiles="true">
+        <logicalFolder name="f1" displayName="sam_g55_xpld_cena" projectFiles="true">
+          <logicalFolder name="f1" displayName="bsp" projectFiles="true">
             <itemPath>../src/config/sam_g55_xpld_cena/bsp/bsp.c</itemPath>
           </logicalFolder>
-          <logicalFolder name="f4" displayName="driver" projectFiles="true">
+          <logicalFolder name="f2" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="plc" projectFiles="true">
               <logicalFolder name="f1" displayName="common" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/common/drv_plc_hal.c</itemPath>
                 <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/common/drv_plc_boot.c</itemPath>
               </logicalFolder>
               <logicalFolder name="f2" displayName="phy" projectFiles="true">
-                <logicalFolder name="f2" displayName="bin" projectFiles="true">
+                <logicalFolder name="f1" displayName="bin" projectFiles="true">
                   <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/phy/bin/PLC_PHY_G3_CENA.bin</itemPath>
                   <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/phy/bin/plc_phy_bin.S</itemPath>
                 </logicalFolder>
-                <logicalFolder name="f1" displayName="src" projectFiles="true">
+                <logicalFolder name="f2" displayName="src" projectFiles="true">
                   <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/phy/src/drv_plc_phy_comm.c</itemPath>
                   <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/phy/src/drv_plc_phy.c</itemPath>
                   <itemPath>../src/config/sam_g55_xpld_cena/driver/plc/phy/src/drv_plc_phy_local.h</itemPath>
@@ -415,59 +235,59 @@
               </logicalFolder>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f3" displayName="clock" projectFiles="true">
+          <logicalFolder name="f3" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f1" displayName="clock" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/clock/plib_clock.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f5" displayName="cmcc" projectFiles="true">
+            <logicalFolder name="f2" displayName="cmcc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/cmcc/plib_cmcc.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="efc" projectFiles="true">
+            <logicalFolder name="f3" displayName="efc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/efc/plib_efc.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="flexcom" projectFiles="true">
-              <logicalFolder name="f2" displayName="spi" projectFiles="true">
+            <logicalFolder name="f4" displayName="flexcom" projectFiles="true">
+              <logicalFolder name="f1" displayName="spi" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/spi/plib_flexcom5_spi.c</itemPath>
               </logicalFolder>
-              <logicalFolder name="f1" displayName="usart" projectFiles="true">
+              <logicalFolder name="f2" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/sam_g55_xpld_cena/peripheral/flexcom/usart/plib_flexcom7_usart.c</itemPath>
               </logicalFolder>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="nvic" projectFiles="true">
+            <logicalFolder name="f5" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/nvic/plib_nvic.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="pio" projectFiles="true">
+            <logicalFolder name="f6" displayName="pio" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/pio/plib_pio.c</itemPath>
             </logicalFolder>
             <logicalFolder name="f7" displayName="tc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/peripheral/tc/plib_tc0.c</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f1" displayName="service" projectFiles="true">
-            <logicalFolder name="f3" displayName="pcrc" projectFiles="true">
+          <logicalFolder name="f4" displayName="service" projectFiles="true">
+            <logicalFolder name="f1" displayName="pcrc" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/pcrc/srv_pcrc.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="pserial" projectFiles="true">
+            <logicalFolder name="f2" displayName="pserial" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/pserial/srv_pserial.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="usi" projectFiles="true">
+            <logicalFolder name="f3" displayName="usi" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi.c</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi_local.h</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi_usart.c</itemPath>
               <itemPath>../src/config/sam_g55_xpld_cena/service/usi/srv_usi_usart.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f3" displayName="stdio" projectFiles="true">
+          <logicalFolder name="f5" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/sam_g55_xpld_cena/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
-          <logicalFolder name="f5" displayName="system" projectFiles="true">
-            <logicalFolder name="f3" displayName="cache" projectFiles="true">
+          <logicalFolder name="f6" displayName="system" projectFiles="true">
+            <logicalFolder name="f1" displayName="cache" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/system/cache/sys_cache.c</itemPath>
             </logicalFolder>
             <logicalFolder name="f2" displayName="int" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/system/int/src/sys_int.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="time" projectFiles="true">
+            <logicalFolder name="f3" displayName="time" projectFiles="true">
               <itemPath>../src/config/sam_g55_xpld_cena/system/time/src/sys_time.c</itemPath>
             </logicalFolder>
           </logicalFolder>

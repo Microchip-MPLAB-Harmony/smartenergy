@@ -54,7 +54,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "system/system.h"
-#include "service/usi/srv_usi_definitions.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
