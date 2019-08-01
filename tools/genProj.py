@@ -12,7 +12,7 @@ if __name__ == '__main__':
 	##########################################################################
 	parser = argparse.ArgumentParser(description='''This script updates bin ATPL360B bin file to atpl/bin/folder''')
 	parser.add_argument('--h3path', required=False, help='Harmony 3 absolute path: [c:\\MH3]')
-	parser.add_argument('--project', required=False, help='Name of the project')
+	parser.add_argument('--project', required=False, help='Name of the project, including path info')
 	args = parser.parse_args()
 	
 	time_start = time.time()
@@ -35,7 +35,8 @@ if __name__ == '__main__':
 	mplabx = []
 	projects = []
 	xml_files = []
-	counter_prj = 0;
+	counter_prj = 0
+	dummy = 0
 	
 	for curr_folder in plcfolders:
 		prjFolder = os.path.abspath(curr_folder).endswith(".X")	
@@ -46,34 +47,19 @@ if __name__ == '__main__':
 				if curr_folder.find(projName) == -1:
 					continue
 			
-			src_path = os.path.dirname(os.path.abspath(curr_folder))
-			os.chdir (src_path + "\src\config")	
+			mplabx.append(os.path.abspath(curr_folder))
+			config_name = curr_folder.split("\\")[-1][:-2]
+			prjFile = os.path.dirname(os.path.abspath(curr_folder)) + "\\src\\config\\" + config_name + "\\harmony.prj"
+			projects.append(prjFile)
+			xml_files.append(config_name + ".xml")
+			counter_prj = counter_prj + 1
+			
 			for (dirpath, subdirs, files) in os.walk("."):
 				for x in files:
 					# Remove .bin files
 					if x.endswith(".bin"):
 						binfile = dirpath + "\\" + x
 						os.remove(binfile)
-				
-					if x.endswith(".xml"):
-						addPrj = False
-						if (curr_folder.find('prime') != -1):
-							mplabx.append(os.path.abspath(curr_folder))
-							xml_files.append(x)
-							addPrj = True
-						else:
-							band = x[-8:-3]
-							if (curr_folder.find(band) != -1):
-								mplabx.append(os.path.abspath(curr_folder))
-								xml_files.append(x)
-								addPrj = True
-						
-						if addPrj:
-							prjFile = os.path.dirname(os.path.abspath(curr_folder)) + "\\src\\config\\" + x[:-4] + "\\harmony.prj"
-							projects.append(prjFile)
-							counter_prj = counter_prj + 1
-
-
 	
 	logGlobalFile = os.path.dirname(os.path.abspath(mhcpath)) + "\\MH3_global_log.txt"
 	
