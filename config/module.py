@@ -17,7 +17,7 @@ def loadModule():
 	drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
 
 	## USI Service (Universal Synchronous Interface)
-	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/Libraries/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
+	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/SmartEnergy/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
 	srvUSIComponent.addCapability("libsrvUSI", "USI_PLC")
 	srvUSIComponent.addDependency("srv_usi_USART_dependency", "UART", False, False)
 	## srvUSIComponent.addDependency("srv_usi_CDC_dependency", "USB_DEVICE_CDC", False, False)
@@ -26,22 +26,22 @@ def loadModule():
 	srvUSIComponent.addDependency("drv_usi_CRC_dependency", "PCRC", "PLC CRC", True, True)
 	srvUSIComponent.setDisplayType("PLC Service")
 
-	## srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/Libraries/PLC/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
+	## srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/SmartEnergy/PLC/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
 	## srvUSITCPAuxComponent.addCapability("libsrvUSITCPAux", "USI_TCP_AUX")
 	## srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
 	## srvUSITCPAuxComponent.setDisplayType("PLC Service")
 
 	## PCRC Service (PLC CRC service)
-	srvPCRCComponent = Module.CreateComponent("srv_pcrc", "PLC CRC", "/Libraries/PLC/Services/", "service/pcrc/config/srv_pcrc.py")
+	srvPCRCComponent = Module.CreateComponent("srv_pcrc", "PLC CRC", "/SmartEnergy/PLC/Services/", "service/pcrc/config/srv_pcrc.py")
 	srvPCRCComponent.addCapability("libsrvPCRC", "PCRC", "PCRC", True)
 	srvPCRCComponent.setDisplayType("PLC Service")
 
 	## PSERIAL Service (PHY Layer serialization service)
-	srvPSERIALComponent = Module.CreateComponent("srv_pserial", "PLC PHY Serial", "/Libraries/PLC/Services/", "service/pserial/config/srv_pserial.py")
+	srvPSERIALComponent = Module.CreateComponent("srv_pserial", "PLC PHY Serial", "/SmartEnergy/PLC/Services/", "service/pserial/config/srv_pserial.py")
 	srvPSERIALComponent.addCapability("libsrvPSerial", "PSER", "PSER", True)
 	srvPSERIALComponent.setDisplayType("PLC Service")
 
 	## PSNIFFER Service (PHY Sniffer serialization service)
-	srvPSNIFFERComponent = Module.CreateComponent("srv_psniffer", "PLC PHY Sniffer", "/Libraries/PLC/Services/", "service/psniffer/config/srv_psniffer.py")
+	srvPSNIFFERComponent = Module.CreateComponent("srv_psniffer", "PLC PHY Sniffer", "/SmartEnergy/PLC/Services/", "service/psniffer/config/srv_psniffer.py")
 	srvPSNIFFERComponent.addCapability("libsrvPSniffer", "PSNF", "PSNF", True)
 	srvPSNIFFERComponent.setDisplayType("PLC Service")

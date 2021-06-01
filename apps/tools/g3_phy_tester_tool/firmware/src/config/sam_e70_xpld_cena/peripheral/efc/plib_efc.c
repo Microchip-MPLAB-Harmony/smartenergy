@@ -43,6 +43,7 @@ It allows user to Program, Erase and lock the on-chip FLASH memory.
 #include <string.h>
 #include "device.h"
 #include "plib_efc.h"
+#include "interrupts.h"
 
 static uint32_t status = 0;
 
@@ -72,6 +73,43 @@ bool EFC_SectorErase( uint32_t address )
     return true;
 }
 
+bool EFC_PageBufferWrite( uint32_t *data, const uint32_t address)
+{
+    uint16_t page_number;
+
+    /*Calculate the Page number to be passed for FARG register*/
+    page_number = (address - IFLASH_ADDR) / IFLASH_PAGE_SIZE;
+
+    for (uint32_t i = 0; i < IFLASH_PAGE_SIZE; i += 4)
+    {
+    *((uint32_t *)( IFLASH_ADDR + ( page_number * IFLASH_PAGE_SIZE ) + i )) =    *(( data++ ));
+    }
+
+    __DSB();
+    __ISB();    
+
+    return true;
+}
+
+bool EFC_PageBufferCommit( const uint32_t address)
+{
+    uint16_t page_number;
+
+    /*Calculate the Page number to be passed for FARG register*/
+    page_number = (address - IFLASH_ADDR) / IFLASH_PAGE_SIZE;    
+
+    __DSB();
+    __ISB();
+
+    /* Issue the FLASH write operation*/
+    EFC_REGS->EEFC_FCR = (EEFC_FCR_FCMD_WP | EEFC_FCR_FARG(page_number)| EEFC_FCR_FKEY_PASSWD);
+
+    status = 0;
+
+
+    return true;
+}
+
 bool EFC_PageWrite( uint32_t *data, uint32_t address )
 {
     uint16_t page_number;
@@ -79,7 +117,7 @@ bool EFC_PageWrite( uint32_t *data, uint32_t address )
     /*Calculate the Page number to be passed for FARG register*/
     page_number = (address - IFLASH_ADDR) / IFLASH_PAGE_SIZE;
 
-    for (int i = 0; i < IFLASH_PAGE_SIZE; i += 4)
+    for (uint32_t i = 0; i < IFLASH_PAGE_SIZE; i += 4)
     {
     *((uint32_t *)( IFLASH_ADDR + ( page_number * IFLASH_PAGE_SIZE ) + i )) =    *(( data++ ));
     }
@@ -103,7 +141,7 @@ bool EFC_QuadWordWrite( uint32_t *data, uint32_t address )
     /*Calculate the Page number to be passed for FARG register*/
     page_number = (address - IFLASH_ADDR) / IFLASH_PAGE_SIZE;
 
-    for (int i = 0; i < 16; i += 4)
+    for (uint32_t i = 0; i < 16; i += 4)
     {
     *((uint32_t *)(( address ) + i )) =    *((uint32_t *)( data++ ));
     }
@@ -149,7 +187,7 @@ bool EFC_IsBusy(void)
 EFC_ERROR EFC_ErrorGet( void )
 {
     status |= EFC_REGS->EEFC_FSR;
-    return status;
+    return (EFC_ERROR)status;
 }
 
 

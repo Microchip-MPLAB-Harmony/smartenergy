@@ -52,7 +52,7 @@ plc_phy_bin_start:
 <#elseif DRV_PLC_PHY_PROFILE == "3">
   .incbin "./PLC_PHY_G3_ARIB.bin"
 <#elseif DRV_PLC_PHY_PROFILE == "4">
-  .incbin "./PLC_PHY_PRIME.bin"
+  .incbin "./PLC_PHY_PRIME_2CHN.bin"
 </#if>
   .align 8
 plc_phy_bin_end:

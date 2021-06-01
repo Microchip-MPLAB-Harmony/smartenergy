@@ -42,6 +42,7 @@
 //DOM-IGNORE-END
 
 #include "plib_pio.h"
+#include "interrupts.h"
 
 
 #define PIO_MAX_NUM_OF_CHANNELS     5
@@ -64,6 +65,7 @@ uint8_t portNumCb[PIO_MAX_NUM_OF_CHANNELS + 1] = {0, 0, 0, 0, 1, 1};
 */
 void PIO_Initialize ( void )
 {
+    MATRIX_REGS->CCFG_SYSIO = 0x0;
     /* Selected System IO pins are configured as GPIO */
     MATRIX_REGS->CCFG_SYSIO |= 0xc10;
 

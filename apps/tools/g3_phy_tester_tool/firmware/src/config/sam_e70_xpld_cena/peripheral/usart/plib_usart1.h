@@ -56,6 +56,7 @@
 // Section: Interface
 // *****************************************************************************
 // *****************************************************************************
+
 #define USART1_FrequencyGet()    (uint32_t)(150000000UL)
 
 /****************************** USART1 API *********************************/
@@ -78,6 +79,8 @@ size_t USART1_WriteCountGet( void );
 
 size_t USART1_ReadCountGet( void );
 
+bool USART1_ReadAbort(void);
+
 void USART1_WriteCallbackRegister( USART_CALLBACK callback, uintptr_t context );
 
 void USART1_ReadCallbackRegister( USART_CALLBACK callback, uintptr_t context );
@@ -89,5 +92,6 @@ void USART1_ReadCallbackRegister( USART_CALLBACK callback, uintptr_t context );
     }
 
 #endif
+
 // DOM-IGNORE-END
 #endif // PLIB_USART1_H

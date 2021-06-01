@@ -54,6 +54,8 @@
 #include "definitions.h"
 
 
+
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: System "Tasks" Routine
@@ -67,7 +69,6 @@
   Remarks:
     See prototype in system/common/sys_module.h.
 */
-
 void SYS_Tasks ( void )
 {
     /* Maintain system services */
@@ -91,8 +92,8 @@ void SYS_Tasks ( void )
 
 
 
-}
 
+}
 
 /*******************************************************************************
  End of File
