@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="DRV_PLC_PHY Initialization Data">
 
-<#if DRV_PLC_PHY_EXTERNAL_ADDRESSING == false> 
+<#if DRV_PLC_BIN_STATIC_ADDRESSING == false> 
 /* PLC Binary file addressing */
 extern uint8_t plc_phy_bin_start;
 extern uint8_t plc_phy_bin_end;
-<#if DRV_PLC_PHY_PROFILE == "5">
+<#if ((DRV_PLC_PROFILE == "G3") && (DRV_PLC_COUP_G3_MULTIBAND == true))>
 extern uint8_t plc_phy_bin2_start;
 extern uint8_t plc_phy_bin2_end;
 </#if>
@@ -21,7 +21,7 @@ DRV_PLC_PHY_INIT drvPlcPhyInitData = {
 
     /* PLC PHY profile */
     .plcProfile = DRV_PLC_PHY_PROFILE,
- <#if DRV_PLC_PHY_EXTERNAL_ADDRESSING == true>   
+ <#if DRV_PLC_BIN_STATIC_ADDRESSING == true>   
  
     /* PLC Binary start address */
     .binStartAddress = 0,

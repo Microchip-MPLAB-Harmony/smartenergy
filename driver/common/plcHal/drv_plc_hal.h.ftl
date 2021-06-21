@@ -186,6 +186,12 @@ typedef struct
 
     /* SPI receive register address used for DMA operation. */
     void                                   *spiAddressRx;
+
+    /* SPI MR register address. */
+    uint32_t                               *spiMR;
+
+    /* SPI MR register address. */
+    uint32_t                               *spiCSR;
 <#else>
     /* SPI Write/Read */
     DRV_PLC_SPI_WRITE_READ                 spiWriteRead;
@@ -209,6 +215,14 @@ typedef struct
     /* PLC Carrier Detect pin */
     SYS_PORT_PIN                           cdPin;
 
+<#if DRV_PLC_MODE == "PL460">       
+    /* PLC StandBy Pin */
+    SYS_PORT_PIN                           stByPin;
+
+    /* PLC Thermal Monitor pin */
+    SYS_PORT_PIN                           thMonPin;
+</#if>
+
 } DRV_PLC_PLIB_INTERFACE;
 
 // *****************************************************************************
@@ -219,6 +233,10 @@ typedef void (* DRV_PLC_HAL_SETUP)(bool);
 
 typedef void (* DRV_PLC_HAL_RESET)(void);
 
+<#if DRV_PLC_MODE == "PL460">     
+typedef void (* DRV_PLC_HAL_STBY)(bool);
+
+</#if>
 typedef bool (* DRV_PLC_HAL_GET_CD)(void);
 
 typedef void (* DRV_PLC_HAL_ENABLE_EXT_INT)(bool);
@@ -257,6 +275,11 @@ typedef struct
     /* PLC HAL reset device */
     DRV_PLC_HAL_RESET                        reset;
 
+<#if DRV_PLC_MODE == "PL460">       
+    /* PLC low power management */
+    DRV_PLC_HAL_STBY                         standBy;
+
+</#if>
     /* PLC HAL Get Carrier Detect or PLC Line Status */
     DRV_PLC_HAL_GET_CD                       getCd;
 
@@ -322,6 +345,9 @@ typedef struct
 
 void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib);
 void DRV_PLC_HAL_Reset(void);
+<#if DRV_PLC_MODE == "PL460">       
+void DRV_PLC_HAL_StandBy(bool enable);
+</#if>
 void DRV_PLC_HAL_Setup(bool set16Bits);
 bool DRV_PLC_HAL_GetCarrierDetect(void);
 void DRV_PLC_HAL_EnableInterrupts(bool enable);

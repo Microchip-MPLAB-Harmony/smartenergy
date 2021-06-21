@@ -3,18 +3,24 @@ def loadModule():
 	print("Load Module: Harmony Smart Energy PLC")
 	
 	## PLC PHY Driver (G3, PRIME)
-	drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC_PHY", "/Harmony/Drivers/PLC", "driver/plcPhy/config/drv_plc_phy.py")
+	drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC_PHY", "/SmartEnergy/PLC/Drivers/", "driver/plcPhy/config/drv_plc_phy.py")
 	drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY")	
 	drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
 	drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+	drvPlcPhyComponent.addDependency("srv_plc_phy_CouplingDependency", "PCOUP", "PCOUP", True, True)
 	drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
 	
 	## G3 MAC RT Driver
-	drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3_MAC_RT", "/Harmony/Drivers/PLC", "driver/g3MacRt/config/drv_g3_macrt.py")
+	drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3_MAC_RT", "/SmartEnergy/PLC/Drivers/", "driver/g3MacRt/config/drv_g3_macrt.py")
 	drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT")	
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
 	drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
+
+	## PCOUP Service (PHY PLC Coupling Settings)
+	srvPhyCouplingComponent = Module.CreateComponent("srv_pcoup", "PLC PHY Coupling", "/SmartEnergy/PLC/Services/", "service/pcoup/config/srv_pcoup.py")
+	srvPhyCouplingComponent.addCapability("libsrvPCoup", "PCOUP", "PCOUP", True)
+	srvPhyCouplingComponent.setDisplayType("PLC Service")
 
 	## USI Service (Universal Synchronous Interface)
 	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/SmartEnergy/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")

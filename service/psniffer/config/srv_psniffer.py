@@ -21,6 +21,38 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+def isKeyPresent(symbol, key):
+    for i in range(symbol.getKeyCount()):
+        if symbol.getKey(i) == key:
+            return True
+    return False
+
+def handleMessage(messageID, args):
+    global pSnifferPLCProfile
+
+    result_dict = {}
+
+    if (messageID == "SRV_PSNIFFER_G3_CENA"):
+        if isKeyPresent(pSnifferPLCProfile, "G3_CEN_A") == True:
+            pSnifferPLCProfile.setSelectedKey("G3_CEN_A")
+
+    elif (messageID == "SRV_PSNIFFER_G3_CENB"):
+        if isKeyPresent(pSnifferPLCProfile, "G3_CEN_B") == True:
+            pSnifferPLCProfile.setSelectedKey("G3_CEN_B")
+
+    elif (messageID == "SRV_PSNIFFER_G3_FCC"):
+        if isKeyPresent(pSnifferPLCProfile, "G3_FCC") == True:
+            pSnifferPLCProfile.setSelectedKey("G3_FCC")
+
+    elif (messageID == "SRV_PSNIFFER_G3_ARIB"):
+        if isKeyPresent(pSnifferPLCProfile, "G3_ARIB") == True:
+            pSnifferPLCProfile.setSelectedKey("G3_ARIB")
+
+    elif (messageID == "SRV_PSNIFFER_PRIME"):
+        if isKeyPresent(pSnifferPLCProfile, "PRIME") == True:
+            pSnifferPLCProfile.setSelectedKey("PRIME")
+
+    return result_dict
 
 def setProfile(symbol, event):
     global pSnifferSourceFileG3
@@ -47,11 +79,13 @@ def instantiateComponent(pSnifferComponentCommon):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
     
+    global pSnifferPLCProfile
     pSnifferPLCProfile = pSnifferComponentCommon.createKeyValueSetSymbol("SRV_PSNF_PLC_PROFILE", None)
     pSnifferPLCProfile.setLabel("PLC Profile")
     pSnifferPLCProfile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pSnifferPLCProfile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pSnifferPLCProfile.addKey("G3_FCC", "2", "G3_FCC")
+    pSnifferPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
     pSnifferPLCProfile.addKey("PRIME", "4", "PRIME")
     pSnifferPLCProfile.setDisplayMode("Description")
     pSnifferPLCProfile.setOutputMode("Value")

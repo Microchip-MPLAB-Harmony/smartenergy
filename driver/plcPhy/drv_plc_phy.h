@@ -1021,7 +1021,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object );
 }
 #endif
 
-#include "driver/plc/phy/src/drv_plc_phy_local.h"
+#include "driver/plc/phy/drv_plc_phy_local.h"
 
 #endif // #ifndef _DRV_PLC_PHY_H
 /*******************************************************************************

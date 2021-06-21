@@ -18,6 +18,12 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_RDR),
+
+    /* SPI MR register address. */
+    .spiMR  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_MR),
+
+    /* SPI CSR register address. */
+    .spiCSR  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_CSR),
 <#else>
     /* SPI Transfer Setup */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
@@ -40,9 +46,18 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
        
     /* PLC External Interrupt Pin */
     .extIntPin = DRV_PLC_EXT_INT_PIN,
-       
+
     /* PLC External Interrupt Pin */
     .cdPin = DRV_PLC_CD_PIN,
+
+<#if DRV_PLC_MODE == "PL460">       
+    /* PLC StandBy Pin */
+    .stByPin = DRV_PLC_STBY_PIN,
+
+    /* PLC External Interrupt Pin */
+    .thMonPin = DRV_PLC_THMON_PIN,
+    
+</#if>
 };
 
 /* HAL Interface Initialization for PLC transceiver */
@@ -59,6 +74,14 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
     /* PLC transceiver reset */
     .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
+
+<#if DRV_PLC_MODE == "PL460">       
+    /* PLC low power management */
+    .standBy = (DRV_PLC_HAL_STBY)DRV_PLC_HAL_StandBy,    
+<#else>
+    /* PLC low power management */
+    .standBy = NULL,
+</#if>
 
     /* PLC Carrier Detect Status */
     .getCd = (DRV_PLC_HAL_GET_CD)DRV_PLC_HAL_GetCarrierDetect,

@@ -375,7 +375,7 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
 </#if>
 
     /* Launch transmission */
-    if (DATA_CACHE_ENABLED)
+    if (DATA_CACHE_IS_ENABLED())
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */

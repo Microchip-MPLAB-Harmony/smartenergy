@@ -121,7 +121,7 @@ typedef struct
     /* Flag to indicate this object is in use  */
     bool                            inUse;
 
-    DRV_PLC_PHY_STATE                 state;
+    DRV_PLC_PHY_STATE               state;
 
     /* Keep track of the number of clients that have opened this driver */
     size_t                          nClients;
@@ -133,7 +133,7 @@ typedef struct
     SYS_STATUS                      status;
 
     /* HAL API list that will be used by the driver to access the hardware */
-    DRV_PLC_HAL_INTERFACE        *plcHal;
+    DRV_PLC_HAL_INTERFACE           *plcHal;
 
     /* PLC Profile */
     uint8_t                         plcProfile;
@@ -148,16 +148,16 @@ typedef struct
     bool                            secure;
 
     /* Application Data Confirm Callback */
-    DRV_PLC_PHY_DATA_CFM_CALLBACK     dataCfmCallback;
+    DRV_PLC_PHY_DATA_CFM_CALLBACK   dataCfmCallback;
 
     /* Application Data Indication Callback */
-    DRV_PLC_PHY_DATA_IND_CALLBACK     dataIndCallback;
+    DRV_PLC_PHY_DATA_IND_CALLBACK   dataIndCallback;
 
     /* Application Exception Callback */
-    DRV_PLC_PHY_EXCEPTION_CALLBACK    exceptionCallback;
+    DRV_PLC_PHY_EXCEPTION_CALLBACK  exceptionCallback;
 
     /* Application Bootloader Data Callback */
-    DRV_PLC_BOOT_DATA_CALLBACK    bootDataCallback;
+    DRV_PLC_BOOT_DATA_CALLBACK      bootDataCallback;
 
     /* Application context for Data Confirm Callback */
     uintptr_t                       contextCfm;

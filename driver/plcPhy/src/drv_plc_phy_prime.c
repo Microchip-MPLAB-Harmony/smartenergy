@@ -51,7 +51,7 @@
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
-#include "driver/plc/phy/src/drv_plc_phy_local_comm.h"
+#include "driver/plc/phy/drv_plc_phy_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************

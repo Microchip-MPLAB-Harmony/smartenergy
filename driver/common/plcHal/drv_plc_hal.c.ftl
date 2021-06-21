@@ -89,6 +89,11 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
 {
     sPlcPlib = plcPlib;   
     
+<#if DRV_PLC_MODE == "PL460">       
+    /* Clear StandBy pin */
+    SYS_PORT_PinClear(sPlcPlib->stByPin);
+</#if>
+    
     /* Disable External Pin Interrupt */
     PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
     /* Enable External Interrupt Source */
@@ -97,6 +102,10 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
 
 void DRV_PLC_HAL_Setup(bool set16Bits)
 {
+<#if DRV_PLC_TX_RX_DMA == true> 
+    uint32_t spiPCS;
+    uint8_t chipSelect = 0;
+</#if>    
     DRV_PLC_SPI_TRANSFER_SETUP spiPlibSetup;
 
 <#if DRV_PLC_TX_RX_DMA == true>     
@@ -133,6 +142,16 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
     /* Configure DMA */
     SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelTx, SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
     SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
+
+    /* Configure Peripheral Deselection with DMA */
+    spiPCS = (*(sPlcPlib->spiMR) & SPI_MR_PCS_Msk) >> SPI_MR_PCS_Pos;
+    while(spiPCS & 0x01) {
+        chipSelect++;
+        spiPCS >>= 1;
+    }
+    /* CS rises if there is no more data to transfer */
+    sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSAAT_Msk;
+    sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSNAAT_Msk;
 </#if>
     
 }
@@ -157,6 +176,31 @@ void DRV_PLC_HAL_Reset(void)
     /* Wait to PLC startup (1000us) */
     DRV_PLC_HAL_Delay(1000);
 }
+
+<#if DRV_PLC_MODE == "PL460">       
+void DRV_PLC_HAL_StandBy(bool enable)
+{
+    if (enable) {
+        /* Enable Reset Pin */
+        SYS_PORT_PinClear(sPlcPlib->resetPin);
+
+        /* Enable Stby Pin */
+        SYS_PORT_PinSet(sPlcPlib->stByPin);
+    } else {
+        /* Disable Stby Pin */
+        SYS_PORT_PinClear(sPlcPlib->stByPin);
+
+        /* Wait to stby deactivation (100us) */
+        DRV_PLC_HAL_Delay(100);
+
+        /* Disable Reset pin */
+        SYS_PORT_PinSet(sPlcPlib->resetPin);
+
+        /* Wait to PLC startup (700us) */
+        DRV_PLC_HAL_Delay(700);
+    }
+}
+</#if>
 
 bool DRV_PLC_HAL_GetCarrierDetect(void)
 {
@@ -227,7 +271,7 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     /* Get length of transaction in bytes */
     size = pTxData - sTxSpiData;
        
-    if (DATA_CACHE_ENABLED)
+    if (DATA_CACHE_IS_ENABLED())
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */
@@ -304,7 +348,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
         cmdSize++;
     }
        
-    if (DATA_CACHE_ENABLED)
+    if (DATA_CACHE_IS_ENABLED())
     {
         /* Invalidate cache lines having received buffer before using it
          * to load the latest data in the actual memory to the cache */

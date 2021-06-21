@@ -22,6 +22,41 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+def isKeyPresent(symbol, key):
+    for i in range(symbol.getKeyCount()):
+        if symbol.getKey(i) == key:
+            return True
+    return False
+
+def handleMessage(messageID, args):
+    global pSerialPLCProfile
+
+    result_dict = {}
+
+    print ("[CHRIS_dbg]: SRV_PSERIAL handleMessage:" + messageID)
+
+    if (messageID == "SRV_PSERIAL_G3_CENA"):
+        if isKeyPresent(pSerialPLCProfile, "G3_CEN_A") == True:
+            pSerialPLCProfile.setSelectedKey("G3_CEN_A")
+
+    elif (messageID == "SRV_PSERIAL_G3_CENB"):
+        if isKeyPresent(pSerialPLCProfile, "G3_CEN_B") == True:
+            pSerialPLCProfile.setSelectedKey("G3_CEN_B")
+
+    elif (messageID == "SRV_PSERIAL_G3_FCC"):
+        if isKeyPresent(pSerialPLCProfile, "G3_FCC") == True:
+            pSerialPLCProfile.setSelectedKey("G3_FCC")
+
+    elif (messageID == "SRV_PSERIAL_G3_ARIB"):
+        if isKeyPresent(pSerialPLCProfile, "G3_ARIB") == True:
+            pSerialPLCProfile.setSelectedKey("G3_ARIB")
+
+    elif (messageID == "SRV_PSERIAL_PRIME"):
+        if isKeyPresent(pSerialPLCProfile, "PRIME") == True:
+            pSerialPLCProfile.setSelectedKey("PRIME")
+
+    return result_dict
+
 def setProfile(symbol, event):
     global pSerialSourceFileG3
     global pSerialSourceFilePrime
@@ -47,11 +82,13 @@ def instantiateComponent(pSerialComponentCommon):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
     
+    global pSerialPLCProfile
     pSerialPLCProfile = pSerialComponentCommon.createKeyValueSetSymbol("SRV_PSER_PLC_PROFILE", None)
     pSerialPLCProfile.setLabel("PLC Profile")
     pSerialPLCProfile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pSerialPLCProfile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pSerialPLCProfile.addKey("G3_FCC", "2", "G3_FCC")
+    pSerialPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
     pSerialPLCProfile.addKey("PRIME", "4", "PRIME")
     pSerialPLCProfile.setDisplayMode("Description")
     pSerialPLCProfile.setOutputMode("Value")

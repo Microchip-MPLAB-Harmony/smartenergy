@@ -36,20 +36,23 @@ def enableUsartFiles(symbol, event):
         print("Disable USART files")
 
 def instantiateComponent(usiComponentCommon):
-    
-    Log.writeInfoMessage("Loading PLC USI Common Service")
+
+    Log.writeInfoMessage("Loading PLC USI Service...common")
+
+    res = Database.activateComponents(["HarmonyCore"])
 
     # Enable "Generate Harmony Driver Common Files" option in MHC
-    if (Database.getSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON") == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_DRV_COMMON", True)
+    Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":True})
 
     # Enable "Generate Harmony System Service Common Files" option in MHC
-    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON") == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_COMMON", True)
+    Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":True})
 
-    # Enable "Enable System Ports" option in MHC
-    if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS") == False):
-        Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_PORTS", True)
+    # Enable "Generate Harmony System Port Files" option in MHC
+    Database.sendMessage("HarmonyCore", "ENABLE_SYS_PORTS", {"isEnabled":True})
+
+    # Enable "Generate Harmony System DMA Files" option in MHC
+    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
+        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":True})
 
     ############################################################################
     #### Code Generation ####
@@ -98,6 +101,8 @@ def instantiateComponent(usiComponentCommon):
     usiSymNumTcp.setVisible(True)
     usiSymNumTcp.setDependencies(setConnections, ["SRV_USI_TCP_API"])
 
+    ##### Header Files  ####################################################
+    
     usiHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_HEADER", None)
     usiHeaderFile.setSourcePath("service/usi/srv_usi.h")
     usiHeaderFile.setOutputName("srv_usi.h")
@@ -106,7 +111,8 @@ def instantiateComponent(usiComponentCommon):
     usiHeaderFile.setType("HEADER")
     usiHeaderFile.setOverwrite(True)
 
-    # Source Files
+    #### FreeMaker Files ######################################################
+
     usiSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_SOURCE", None)
     usiSourceFile.setSourcePath("service/usi/src/srv_usi.c.ftl")
     usiSourceFile.setOutputName("srv_usi.c")
@@ -172,3 +178,9 @@ def instantiateComponent(usiComponentCommon):
     usiSymSystemDefIncFile.setSourcePath("service/usi/templates/system/system_definitions.h.ftl")
     usiSymSystemDefIncFile.setMarkup(True)
 
+def destroyComponent(usiComponentCommon):
+    Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":False})
+    Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":False})
+
+    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
+        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":False})

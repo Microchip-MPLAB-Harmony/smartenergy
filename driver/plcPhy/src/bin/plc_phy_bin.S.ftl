@@ -36,29 +36,34 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
   .section .rodata
   .global plc_phy_bin_start
   .global plc_phy_bin_end
-<#if DRV_PLC_PHY_PROFILE == "5">
+<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 8) || (DRV_PLC_BAND_IN_USE == 9)>
   .global plc_phy_bin2_start
   .global plc_phy_bin2_end
 </#if>
 
   .align 8
 plc_phy_bin_start:
-<#if (DRV_PLC_PHY_PROFILE == "0") || (DRV_PLC_PHY_PROFILE == "5")>
+<#if DRV_PLC_BAND_IN_USE == 1>
   .incbin "./PLC_PHY_G3_CENA.bin"
-<#elseif DRV_PLC_PHY_PROFILE == "1">
-  .incbin "./PLC_PHY_G3_CENB.bin"
-<#elseif DRV_PLC_PHY_PROFILE == "2">
+<#elseif DRV_PLC_BAND_IN_USE == 2 || DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7>
   .incbin "./PLC_PHY_G3_FCC.bin"
-<#elseif DRV_PLC_PHY_PROFILE == "3">
+<#elseif DRV_PLC_BAND_IN_USE == 3 || DRV_PLC_BAND_IN_USE == 8 || DRV_PLC_BAND_IN_USE == 9>
   .incbin "./PLC_PHY_G3_ARIB.bin"
-<#elseif DRV_PLC_PHY_PROFILE == "4">
+<#elseif DRV_PLC_BAND_IN_USE == 4>
+  .incbin "./PLC_PHY_G3_CENB.bin"
+<#elseif DRV_PLC_BAND_IN_USE == 5>
   .incbin "./PLC_PHY_PRIME_2CHN.bin"
 </#if>
   .align 8
 plc_phy_bin_end:
-<#if DRV_PLC_PHY_PROFILE == "5">
+<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
 plc_phy_bin2_start:
-  .incbin "./PLC_PHY_G3_FCC.bin"
+  .incbin "./PLC_PHY_G3_CENA.bin"
+  .align 8
+plc_phy_bin2_end:
+<#elseif (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 9)>
+plc_phy_bin2_start:
+  .incbin "./PLC_PHY_G3_CENB.bin"
   .align 8
 plc_phy_bin2_end:
 </#if>
