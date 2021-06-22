@@ -209,12 +209,12 @@ bool DRV_PLC_HAL_GetCarrierDetect(void)
 
 void DRV_PLC_HAL_Delay(uint64_t delayUs)
 { 
-    SYS_TIME_HANDLE timer = SYS_TIME_HANDLE_INVALID;
+    SYS_TIME_HANDLE tmrHandle = SYS_TIME_HANDLE_INVALID;
 
-    if (SYS_TIME_DelayUS(delayUs, &timer) == SYS_TIME_SUCCESS)
+    if (SYS_TIME_DelayUS(delayUs, &tmrHandle) == SYS_TIME_SUCCESS)
     {
         // Wait till the delay has not expired
-        while (SYS_TIME_DelayIsComplete(timer) == false);
+        while (SYS_TIME_DelayIsComplete(tmrHandle) == false);
     }
 }
 

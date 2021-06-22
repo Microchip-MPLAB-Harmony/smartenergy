@@ -284,7 +284,7 @@ typedef struct
     /* Number of Tx attenuation levels (3 dB steps) for normal transmission behavior */
     uint8_t                                numTxLevels;
     
-    /* Size of Equalization Coefficients table in Tx mode. */
+    /* Size of Equalization Coefficients table in Tx mode in bytes. */
     uint8_t                                equSize;
     
     /* Configuration of the embedded PLC Line Driver */
