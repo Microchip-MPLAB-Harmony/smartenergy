@@ -36,10 +36,8 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
   .section .rodata
   .global plc_phy_bin_start
   .global plc_phy_bin_end
-<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 8) || (DRV_PLC_BAND_IN_USE == 9)>
   .global plc_phy_bin2_start
   .global plc_phy_bin2_end
-</#if>
 
   .align 8
 plc_phy_bin_start:
@@ -65,5 +63,8 @@ plc_phy_bin2_end:
 plc_phy_bin2_start:
   .incbin "./PLC_PHY_G3_CENB.bin"
   .align 8
+plc_phy_bin2_end:
+<#else>
+plc_phy_bin2_start:
 plc_phy_bin2_end:
 </#if>

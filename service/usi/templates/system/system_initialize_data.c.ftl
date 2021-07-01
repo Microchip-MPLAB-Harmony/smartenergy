@@ -9,8 +9,8 @@ const SRV_USI_USART_INTERFACE srvUsi${SRV_USI_PLIB?string}PlibAPI = {
     .read = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_Read,
     .writeCallbackRegister = (USI_USART_PLIB_WRITE_CALLBACK_REG)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_WriteCallbackRegister,
 <#if SRV_USI_TX_DMA == true>     
-    .dmaChannelTx = SYS_DMA_CHANNEL_${SRV_USI_USART_TX_DMA_CHANNEL?string},
-    .usartAddressTx = (void *)&(${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_REGS->US_THR)
+    .dmaChannelTx = SYS_DMA_CHANNEL_${SRV_USI_USART_TX_DMA_CHANNEL?string}, 
+    .usartAddressTx = (void *)${.vars["${SRV_USI_PLIB?lower_case}"].TRANSMIT_DATA_REGISTER}
 <#else>
     .write = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_Write,
     .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)${.vars["${SRV_USI_PLIB?lower_case}"].USART_PLIB_API_PREFIX}_WriteIsBusy,

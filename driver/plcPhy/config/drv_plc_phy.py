@@ -221,9 +221,14 @@ def showPL460Pins(symbol, event):
         symbol.setVisible(False)   
 
 def showG3HighAttenuation(symbol, event):
+    global plcDriverMode
+
     print("[CHRIS_dbg] : showG3HighAttenuation <- " + event["id"])
     if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
-        symbol.setVisible(True)
+        if (plcDriverMode.getValue() == "PL460"):
+            symbol.setVisible(True)
+        else:
+            symbol.setVisible(False)
     else:
         symbol.setVisible(False)
         # symbol.setReadOnly(True)
@@ -344,13 +349,13 @@ def instantiateComponent(plcComponent):
 
     plcExtIntPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcExtIntPin.setLabel("External Interrupt Pin")
-    plcExtIntPin.setDefaultValue(104) #PD28
+    plcExtIntPin.setDefaultValue(0)
     plcExtIntPin.setOutputMode("Key")
     plcExtIntPin.setDisplayMode("Description")
 
     plcExtIntSource = plcComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     plcExtIntSource.setLabel("External Interrupt Source")
-    plcExtIntSource.setDefaultValue("PIOD_IRQn") #PIOD_IRQn
+    plcExtIntSource.setDefaultValue("PIOA_IRQn")
     plcExtIntSource.setVisible(True)
     plcExtIntSource.setReadOnly(True)
     plcExtIntSource.setDependencies(plcExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
@@ -364,32 +369,32 @@ def instantiateComponent(plcComponent):
 
     plcResetPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     plcResetPin.setLabel("Reset Pin")
-    plcResetPin.setDefaultValue(34) #PB2
+    plcResetPin.setDefaultValue(0)
     plcResetPin.setOutputMode("Key")
     plcResetPin.setDisplayMode("Description")
 
     plcLDOEnPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
     plcLDOEnPin.setLabel("LDO Enable Pin")
-    plcLDOEnPin.setDefaultValue(35) #PB3
+    plcLDOEnPin.setDefaultValue(0)
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
 
     plcCDPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
     plcCDPin.setLabel("Carrier Detect Pin")
-    plcCDPin.setDefaultValue(35) #PB3
+    plcCDPin.setDefaultValue(0)
     plcCDPin.setOutputMode("Key")
     plcCDPin.setDisplayMode("Description")
 
     plcStbyPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", None)
     plcStbyPin.setLabel("Stand By Pin")
-    plcStbyPin.setDefaultValue(4) #PA3
+    plcStbyPin.setDefaultValue(0)
     plcStbyPin.setOutputMode("Key")
     plcStbyPin.setDisplayMode("Description")
     plcStbyPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
 
     plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", None)
     plcThMonPin.setLabel("Thermal Monitor Pin")
-    plcThMonPin.setDefaultValue(4) #PA3
+    plcThMonPin.setDefaultValue(0)
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
     plcThMonPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
@@ -419,7 +424,7 @@ def instantiateComponent(plcComponent):
     global plcTXRXDMA
     plcTXRXDMA = plcComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
     plcTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
-    plcTXRXDMA.setDefaultValue(1)
+    plcTXRXDMA.setDefaultValue(0)
     plcTXRXDMA.setVisible(True) #### Change to hide it
     plcTXRXDMA.setReadOnly(True)
 

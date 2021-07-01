@@ -70,6 +70,7 @@
 #define G3_CEN_B                                   1
 #define G3_FCC                                     2
 #define G3_ARIB                                    3
+#define G3_INVALID                                 0xFF
 
 /* Number of carriers for Cenelec-A bandplan */
 #define NUM_CARRIERS_CENELEC_A                     36

@@ -49,6 +49,7 @@
 #include "configuration.h"
 #include "driver/driver_common.h"
 #include "service/pcoup/srv_pcoup.h"
+#include "driver/plc/phy/drv_plc_phy_comm.h"
 
 // *****************************************************************************
 /* PLC Coupling configuration data
@@ -90,9 +91,12 @@ static const SRV_PLC_PCOUP srvPlcCoupAux = {
 // *****************************************************************************
 SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 {
-  if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) {
+  if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
+  {
     return (SRV_PLC_PCOUP *)&srvPlcCoup;
-  } else {
+  } 
+  else 
+  {
 <#if (drvPlcPhy.DRV_PLC_G3_BAND == "FCC" || drvPlcPhy.DRV_PLC_G3_BAND == "ARIB") && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>    
     return (SRV_PLC_PCOUP *)&srvPlcCoupAux;
 <#else>
@@ -105,4 +109,32 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void )
 {
   return SRV_PCOUP_DEFAULT_BRANCH;
+}
+
+uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
+{
+  if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
+  {
+<#if (drvPlcPhy.DRV_PLC_G3_BAND == "CEN-A")>
+    return G3_CEN_A;
+<#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "CEN-B")>
+    return G3_CEN_B;
+<#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "FCC")>
+    return G3_FCC;
+<#else>
+    return G3_ARIB;
+</#if>
+  } 
+  else 
+  {
+<#if (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>    
+  <#if (drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-A")>
+    return G3_CEN_A;
+  <#else>
+    return G3_CEN_B;
+  </#if>
+<#else>
+    return G3_INVALID;
+</#if>
+  }
 }

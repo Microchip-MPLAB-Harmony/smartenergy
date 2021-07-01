@@ -7,7 +7,7 @@ def loadModule():
 	drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY")	
 	drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
 	drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-	drvPlcPhyComponent.addDependency("srv_plc_phy_CouplingDependency", "PCOUP", "PCOUP", True, True)
+	drvPlcPhyComponent.addDependency("drv_plc_phy_CouplingDependency", "PCOUP", "PCOUP", True, False)
 	drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
 	
 	## G3 MAC RT Driver
@@ -15,6 +15,7 @@ def loadModule():
 	drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT")	
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+	drvG3MacRTComponent.addDependency("drv_g3_macrt_CouplingDependency", "PCOUP", "PCOUP", True, False)
 	drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
 
 	## PCOUP Service (PHY PLC Coupling Settings)

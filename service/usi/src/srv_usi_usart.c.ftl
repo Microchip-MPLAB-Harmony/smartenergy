@@ -374,6 +374,7 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     while (dObj->plib->writeIsBusy());
 </#if>
 
+<#if core.DMA_ENABLE?has_content> 
     /* Launch transmission */
     if (DATA_CACHE_IS_ENABLED())
     {
@@ -381,8 +382,7 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
          * to load the latest data in the actual memory to the cache */
         DCACHE_CLEAN_BY_ADDR((uint32_t *)dObj->pWrBuffer, dObj->wrBufferSize);
     }
-
-<#if core.DMA_ENABLE?has_content>      
+     
     SYS_DMA_ChannelTransfer (dObj->plib->dmaChannelTx, (const void *)dObj->pWrBuffer, 
             (const void *)dObj->plib->usartAddressTx, length);
 <#else>

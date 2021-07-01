@@ -377,6 +377,44 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
 
 SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void );
 
+/***************************************************************************
+  Function:
+    uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
+    
+  Summary:
+    Get the PHY band of the branch that is selected.
+
+  Description:
+    This function is used to Get the PHY band linked to the selected branch 
+    of the PLC PHY Coupling.
+
+  Precondition:
+    None.
+
+  Parameters:
+    branch             - Branch from which the phy band is obtained
+
+  Returns:
+    PHY band linked to the coupling branch. See "drv_plc_phy_comm.h" .
+    [G3_CEN_A, G3_CEN_B, G3_FCC, G3_ARIB, G3_INVALID]
+
+  Example:
+    <code>
+    uint8_t pCoupPhyBand;
+
+    pCoupPhyBand = SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_MAIN_BRANCH);
+
+    if (pCoupPhyBand == G3_CEN_A) {
+      // G3 CEN-A band
+    }
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
+
+uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch);
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
