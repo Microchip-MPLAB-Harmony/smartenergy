@@ -883,7 +883,7 @@ def onAttachmentDisconnected(source, target):
         localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
 
 def requestAndAssignTxDMAChannel(symbol, event):
-    global spiTXDMAChannelComment
+    global plcTXDMAChannelComment
 
     spiPeripheral = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PLIB")
 
@@ -911,7 +911,7 @@ def requestAndAssignTxDMAChannel(symbol, event):
     symbol.setValue(channel)
 
 def requestAndAssignRxDMAChannel(symbol, event):
-    global spiRXDMAChannelComment
+    global plcRXDMAChannelComment
 
     spiPeripheral = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PLIB")
 

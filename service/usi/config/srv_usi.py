@@ -22,55 +22,55 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+def selectDeviceSet(symbol, event):
+    symbol.clearValue()
+    if ("USART" in event["value"]) or ("UART" in event["value"]) or ("SERCOM" in event["value"]) or ("FLEXCOM" in event["value"]):
+        symbol.setValue("UART")
+    elif "USB" in event["value"]:
+        symbol.setValue("USB_CDC")
+    else:
+        symbol.setValue("")
+
 ################################################################################
 #### Component ####
 ################################################################################
 def instantiateComponent(usiComponent, index):
     global srvUsiInstanceSpace
-    global isDMAPresent
 
     Log.writeInfoMessage("Loading PLC USI Service...instance:" + str(index))
 
     srvUsiInstanceSpace = "srv_usi_" + str(index)
 
-    # Enable "ENABLE_SYS_DMA" option in MHC
-    if Database.getSymbolValue("core", "DMA_ENABLE") == None:
-        isDMAPresent = False
-        Log.writeInfoMessage("isDMAPresent = False")
-    else:
-        isDMAPresent = True
-        Log.writeInfoMessage("isDMAPresent = False")
-
-        # Enable "Enable System DMA" option in MHC
-        if (Database.getSymbolValue("HarmonyCore", "ENABLE_SYS_DMA") == False):
-            Database.setSymbolValue("HarmonyCore", "ENABLE_SYS_DMA", True)
-
     usiSymIndex = usiComponent.createIntegerSymbol("INDEX", None)
     usiSymIndex.setVisible(False)
     usiSymIndex.setDefaultValue(index)
 
-    usiSymUsartAPI = usiComponent.createBooleanSymbol("SRV_USI_USART_API_INDEX", None)
+    usiSymDevice = usiComponent.createStringSymbol("SRV_USI_DEVICE", None)
+    usiSymDevice.setLabel("Device Used")
+    usiSymDevice.setReadOnly(True)
+    usiSymDevice.setDefaultValue("")
+
+    usiSymDeviceSet = usiComponent.createStringSymbol("SRV_USI_DEVICE_SET", None)
+    usiSymDeviceSet.setLabel("Device Set")
+    usiSymDeviceSet.setDefaultValue("")
+    usiSymDeviceSet.setDependencies(selectDeviceSet, ["SRV_USI_DEVICE"])
+
+    usiSymUsartAPI = usiComponent.createIntegerSymbol("SRV_USI_USART_API_INDEX", None)
     usiSymUsartAPI.setLabel("USART API INDEX")
-    usiSymUsartAPI.setReadOnly(True)
-    usiSymUsartAPI.setDefaultValue(False)
+    usiSymUsartAPI.setDefaultValue(0)
     usiSymUsartAPI.setVisible(True)
+    usiSymUsartAPI.setUseSingleDynamicValue(True)
 
-    usiSymCdcAPI = usiComponent.createBooleanSymbol("SRV_USI_CDC_API_INDEX", None)
+    usiSymCdcAPI = usiComponent.createIntegerSymbol("SRV_USI_CDC_API_INDEX", None)
     usiSymCdcAPI.setLabel("CDC API INDEX")
-    usiSymCdcAPI.setReadOnly(True)
-    usiSymCdcAPI.setDefaultValue(False)
-    usiSymCdcAPI.setVisible(False)
+    usiSymCdcAPI.setDefaultValue(0)
+    usiSymCdcAPI.setVisible(True)
+    usiSymCdcAPI.setUseSingleDynamicValue(True)
 
-    usiSymTcpAPI = usiComponent.createBooleanSymbol("SRV_USI_TCP_API_INDEX", None)
-    usiSymTcpAPI.setLabel("TCP API INDEX")
-    usiSymTcpAPI.setReadOnly(True)
-    usiSymTcpAPI.setDefaultValue(False)
-    usiSymTcpAPI.setVisible(False)
-
-    usiSymCommAPI = usiComponent.createStringSymbol("SRV_USI_PLIB", None)
-    usiSymCommAPI.setLabel("Communication API Used")
-    usiSymCommAPI.setReadOnly(True)
-    usiSymCommAPI.setDefaultValue("")
+    usiSymDeviceIndex = usiComponent.createIntegerSymbol("SRV_USI_CDC_DEVICE_INDEX", None)
+    usiSymDeviceIndex.setLabel("CDC Device Index")
+    usiSymDeviceIndex.setVisible(True)
+    usiSymDeviceIndex.setDefaultValue(0)
 
     usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_RD_BUF_SIZE", None)
     usiSymReadBufferSize.setLabel("Read Buffer Size")
@@ -79,31 +79,6 @@ def instantiateComponent(usiComponent, index):
     usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_WR_BUF_SIZE", None)
     usiSymReadBufferSize.setLabel("Write Buffer Size")
     usiSymReadBufferSize.setDefaultValue(1024)
-
-    global usiTXDMA
-    usiTXDMA = usiComponent.createBooleanSymbol("SRV_USI_TX_DMA", None)
-    usiTXDMA.setLabel("Use DMA for Transmit ?")
-    usiTXDMA.setVisible(isDMAPresent)
-    usiTXDMA.setDefaultValue(isDMAPresent)
-    usiTXDMA.setReadOnly(True)            
-    
-    global usiUsartTXDMAChannel
-    usiUsartTXDMAChannel = usiComponent.createIntegerSymbol("SRV_USI_USART_TX_DMA_CHANNEL", None)
-    usiUsartTXDMAChannel.setLabel("DMA Channel For Transmit")
-    usiUsartTXDMAChannel.setDefaultValue(0)
-    usiUsartTXDMAChannel.setVisible(False)
-    usiUsartTXDMAChannel.setReadOnly(True)
-    usiUsartTXDMAChannel.setDependencies(requestAndAssignTxDMAChannel, ["SRV_USI_TX_DMA"])
-
-    global usiUsartTXDMAChannelComment
-    usiUsartTXDMAChannelComment = usiComponent.createCommentSymbol("SRV_USI_USART_TX_DMA_CH_COMMENT", None)
-    usiUsartTXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit. Check DMA Manager. !!!")
-    usiUsartTXDMAChannelComment.setVisible(False)
-    usiUsartTXDMAChannelComment.setDependencies(requestDMAComment, ["SRV_USI_USART_TX_DMA_CHANNEL"])
-
-    usiUsartDependencyDMAComment = usiComponent.createCommentSymbol("SRV_USI_USART_DEPENDENCY_DMA_COMMENT", None)
-    usiUsartDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
-    usiUsartDependencyDMAComment.setVisible(isDMAPresent)
 
     ############################################################################
     #### Code Generation ####
@@ -144,105 +119,39 @@ def instantiateComponent(usiComponent, index):
 #### Business Logic ####
 ################################################################################  
 def onAttachmentConnected(source, target):
-    global isDMAPresent
-
     localComponent = source["component"]
     remoteComponent = target["component"]
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
+    dict = {}
+
     if connectID == "srv_usi_USART_dependency":
-        plibUsed = localComponent.getSymbolByID("SRV_USI_PLIB")
+        plibUsed = localComponent.getSymbolByID("SRV_USI_DEVICE")
         plibUsed.clearValue()
         plibUsed.setValue(remoteID.upper())
-        
-        # Set USART USI API index
-        apiUsedIndex = localComponent.getSymbolByID("SRV_USI_USART_API_INDEX")
-        apiUsedIndex.clearValue()
-        apiUsedIndex.setValue(True)
-
-        # localComponent.setSymbolValue("SRV_USI_USART_API", True)
-        Database.setSymbolValue("srv_usi", "SRV_USI_USART_API", True)
-
-        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
-        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
-
-        # Do not change the order as DMA Channels needs to be allocated
-        # after setting the plibUsed symbol
-        # Both device and connected plib should support DMA
-        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
-            localComponent.getSymbolByID("SRV_USI_TX_DMA").setValue(1)
-            localComponent.getSymbolByID("SRV_USI_USART_DEPENDENCY_DMA_COMMENT").setVisible(False)
-        else:
-            print("[CHIRS_dbg] : USI connect USI DMA ERROR")
-            localComponent.getSymbolByID("SRV_USI_USART_TX_DMA_CH_COMMENT").setVisible(True)
+        dict = Database.sendMessage("srv_usi", "USI_ADD_USART_API", {})
+    
+    if connectID == "srv_usi_CDC_dependency":
+        plibUsed = localComponent.getSymbolByID("SRV_USI_DEVICE")
+        plibUsed.clearValue()
+        plibUsed.setValue(remoteID.upper())
+        cdcSymDeviceIndex = localComponent.getSymbolByID("SRV_USI_CDC_DEVICE_INDEX")
+        cdcSymDeviceIndex.setValue(Database.getSymbolValue(remoteID, "CONFIG_USB_DEVICE_FUNCTION_INDEX"))
+        dict = Database.sendMessage("srv_usi", "USI_ADD_CDC_API", {})
 
 def onAttachmentDisconnected(source, target):
-    global isDMAPresent
-
     localComponent = source["component"]
     remoteComponent = target["component"]
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    print("[CHIRS_dbg] : USI onAttachmentDisconnected")
+    dict = {}
 
     if connectID == "srv_usi_USART_dependency":
-
-        print("[CHIRS_dbg] : USI connect srv_usi_USART_dependency")
-
-        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
-        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
-
-        # Do not change the order as DMA Channels needs to be cleared
-        # before clearing the plibUsed symbol
-        # Both device and connected plib should support DMA
-        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
-            print("[CHIRS_dbg] : USI connect srv_usi_USART_dependency remoteID.upper " + remoteID.upper())
-            localComponent.getSymbolByID("SRV_USI_TX_DMA").setValue(0)
-            localComponent.getSymbolByID("SRV_USI_USART_DEPENDENCY_DMA_COMMENT").setVisible(True)
-        else:
-            print("[CHIRS_dbg] : USI disconnect DMA ERROR")
-            localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
-
-        localComponent.getSymbolByID("SRV_USI_PLIB").clearValue()
-        localComponent.getSymbolByID("SRV_USI_USART_API_INDEX").clearValue()
-        Database.setSymbolValue("srv_usi", "SRV_USI_USART_API", False)
-        # localComponent.setSymbolValue("SRV_USI_USART_API", False)
-
-def requestAndAssignTxDMAChannel(symbol, event):
-    global srvUsiInstanceSpace
-    global usiUsartTXDMAChannelComment
-
-    usartPeripheral = Database.getSymbolValue(srvUsiInstanceSpace, "SRV_USI_PLIB")
-
-    dmaChannelID = "DMA_CH_FOR_" + str(usartPeripheral) + "_Transmit"
-    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(usartPeripheral) + "_Transmit"
-
-    # Clear the DMA symbol. Done for backward compatibility.
-    Database.clearSymbolValue("core", dmaRequestID)
-
-    dummyDict = {}
-
-    if event["value"] == False:
-        print("[CHIRS_dbg] : USI requestAndAssignTxDMAChannel event False" + dmaRequestID)
-        dummyDict = Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
-        usiUsartTXDMAChannelComment.setVisible(False)
-        symbol.setVisible(False)
-    else:
-        print("[CHIRS_dbg] : USI requestAndAssignTxDMAChannel event True" + dmaRequestID)
-        symbol.setVisible(True)
-        dummyDict = Database.sendMessage("core", "DMA_CHANNEL_ENABLE", {"dma_channel":dmaRequestID})
-
-    # Get the allocated channel and assign it
-    channel = Database.getSymbolValue("core", dmaChannelID)
-    symbol.setValue(channel)
-
-def requestDMAComment(symbol, event):
-    global usiTXDMA
-
-    if(event["value"] == -2) and (usiTXDMA.getValue() == True):
-        symbol.setVisible(True)
-        event["symbol"].setVisible(False)
-    else:
-        symbol.setVisible(False)
+        localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
+        dict = Database.sendMessage("srv_usi", "USI_REMOVE_USART_API", {})
+    
+    if connectID == "srv_usi_CDC_dependency":
+        localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
+        dict = Database.sendMessage("srv_usi", "USI_REMOVE_CDC_API", {})

@@ -49,14 +49,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-<#if SRV_USI_USART_API = true>
-#include "system/dma/sys_dma.h"
-</#if>
-<#if SRV_USI_CDC_API = true>
-</#if>
-<#if SRV_USI_TCP_API = true>
-</#if>
-
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -203,92 +195,19 @@ typedef enum
     /* USB CDC Class interface API */
     SRV_USI_CDC_API,
     
-    /* TCP interface API */
-    SRV_USI_TCP_API
-
 } SRV_USI_INTERFACE_API;
-
-<#if SRV_USI_USART_API = true>
-// *****************************************************************************
-/* USART PLIB API Set needed by USI service */
-
-typedef void (* PLIB_CALLBACK)( uintptr_t context );
-
-typedef void(* USI_USART_PLIB_CALLBACK)( uintptr_t context);
-typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
-typedef bool(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
-typedef void(* USI_USART_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
-<#if !(core.DMA_ENABLE?has_content)>
-typedef bool(* USI_USART_PLIB_WRITE_ISBUSY)( void );
-typedef bool(* USI_USART_PLIB_SERIAL_SETUP)(uintptr_t, uint32_t);
-</#if>
-// *****************************************************************************
-/* USI Service USART Interface Data
-
-  Summary:
-    Defines the data required to initialize the USI service USART Interface.
-
-  Description:
-    This data type defines the data required to initialize the USI service USART
-    Interface.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
+        
+typedef enum
 {
-    USI_USART_PLIB_READ_CALLBACK_REG readCallbackRegister;
-    USI_USART_PLIB_WRRD read;
-    USI_USART_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
-<#if core.DMA_ENABLE?has_content>
-    SYS_DMA_CHANNEL dmaChannelTx;
-    void *usartAddressTx;
-<#else>
-    USI_USART_PLIB_WRRD write;
-    USI_USART_PLIB_WRITE_ISBUSY writeIsBusy;
-    USI_USART_PLIB_SERIAL_SETUP serialSetup;
-</#if>
+    SRV_USI_STATUS_NOT_CONFIGURED,
 
-} SRV_USI_USART_INTERFACE;
-</#if>
+    SRV_USI_STATUS_CONFIGURED,
 
-// *****************************************************************************
-/* USI Service Initialization Data
+    SRV_USI_STATUS_BUSY,
 
-  Summary:
-    Defines the data required to initialize the USI service
+    SRV_USI_STATUS_ERROR
 
-  Description:
-    This data type defines the data required to initialize or the USI service.
-    If the service is built statically, the members of this data structure are
-    statically over-ridden by static override definitions in the
-    configuration.h file.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* Identifies the interface with peripherals */
-    SRV_USI_INTERFACE_API                    usiInterfaceApi;
-
-    /* Identifies the USI interface API with peripherals */
-    void*                                    usiApi;
-
-    /* Pointer to the internal read buffer */
-    void*                                    readBuffer;
-
-    /* Number of bytes of the buffer to receive serial data */
-    size_t                                   readSizeMax;
-
-    /* Pointer to the internal write buffer */
-    void*                                    writeBuffer;
-
-    /* Number of bytes of the buffer to send serial data */
-    size_t                                   writeSizeMax;   
-} SRV_USI_INIT;
+} SRV_USI_STATUS;
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

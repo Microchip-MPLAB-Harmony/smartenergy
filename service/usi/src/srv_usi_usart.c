@@ -54,7 +54,6 @@
 #include "stddef.h"
 #include "configuration.h"
 #include "driver/driver_common.h"
-#include "system/dma/sys_dma.h"
 #include "srv_usi_local.h"
 #include "srv_usi_usart.h"
 #include "srv_usi_definitions.h"
@@ -65,9 +64,23 @@
 // *****************************************************************************
 // *****************************************************************************
 /* This is the service instance object array. */
+const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
+{
+    .usiDevice                  = SRV_USI_DEV_USART,
+    .intent                     = DRV_IO_INTENT_READWRITE,
+    .init                       = USI_USART_Initialize,
+    .setReadCallback            = USI_USART_RegisterCallback,
+    .write                      = USI_USART_Write,
+    .task                       = USI_USART_Tasks,
+    .flush                      = USI_USART_Flush,
+    .close                      = USI_USART_Close,
+};
+
 static USI_USART_OBJ gUsiUsartOBJ[SRV_USI_USART_CONNECTIONS] = {NULL};
 static USI_USART_MSG gUsiUsartMsgPool[SRV_USI_MSG_POOL_SIZE] = {0};
 static USI_USART_MSG_QUEUE gUsiUsartMsgQueue[SRV_USI_USART_CONNECTIONS] = {NULL};
+
+#define USI_USART_GET_INSTANCE(index)    (index >= SRV_USI_USART_CONNECTIONS)? NULL : &gUsiUsartOBJ[index]
 
 // *****************************************************************************
 // *****************************************************************************
@@ -274,91 +287,52 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
     dObj->plib->read(&dObj->rcvChar, 1);
 }
 
-static USI_USART_OBJ* _USI_USART_GetFreeUsartObj(void)
-{
-    uint8_t index;
-    
-    for(index=0; index < SRV_USI_USART_CONNECTIONS; index++)
-    {
-        if (gUsiUsartOBJ[index].plib == NULL) {
-            return &gUsiUsartOBJ[index];
-        }
-    }
-    
-    return NULL;
-}
-
-static USI_USART_OBJ* _USI_USART_CheckHandler(DRV_HANDLE handle)
-{
-    uint8_t index;
-    
-    for(index=0; index < SRV_USI_USART_CONNECTIONS; index++)
-    {
-        if ((DRV_HANDLE)(&gUsiUsartOBJ[index]) == handle) {
-            return &gUsiUsartOBJ[index];
-        }
-    }
-    
-    return NULL;
-}
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: USI USART Service Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
-DRV_HANDLE USI_USART_Initialize( const USI_USART_INIT* const init )
+DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData)
 {
-    USI_USART_INIT* dObjInit;
-    USI_USART_OBJ* dObj;
-    
-    /* Find Free USI USART instance */
-    dObj = _USI_USART_GetFreeUsartObj();
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
+    USI_USART_INIT_DATA* dObjInit = (USI_USART_INIT_DATA*)initData;
     
     if (dObj == NULL)
     {
         return DRV_HANDLE_INVALID;
     }
     
-    /* Initialize USI USART instance */
-    dObjInit = (USI_USART_INIT*)init;
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return DRV_HANDLE_INVALID;
+    }
     
     dObj->plib = (SRV_USI_USART_INTERFACE*)dObjInit->plib;
     dObj->pRdBuffer = dObjInit->pRdBuffer;
     dObj->rdBufferSize = dObjInit->rdBufferSize;
-    dObj->pWrBuffer = dObjInit->pWrBuffer;
-    dObj->wrBufferSize = dObjInit->wrBufferSize;
     
     dObj->pRcvMsg = NULL;
-    dObj->pMsgQueue = gUsiUsartMsgQueue;
+    dObj->pMsgQueue = &gUsiUsartMsgQueue[index];
     dObj->byteCount = 0;
     dObj->cbFunc = NULL;
     dObj->status = USI_USART_IDLE;
-    
-    /* Set USART PLIB handler */
-    dObj->plib->readCallbackRegister(_USI_USART_PLIB_CALLBACK, (uintptr_t)dObj);
 
-<#if core.DMA_ENABLE?has_content>   
-    /* Configure DMA for USART */
-    SYS_DMA_DataWidthSetup(dObj->plib->dmaChannelTx, SYS_DMA_WIDTH_8_BIT);
-    SYS_DMA_AddressingModeSetup(dObj->plib->dmaChannelTx, 
-            SYS_DMA_SOURCE_ADDRESSING_MODE_INCREMENTED, 
-            SYS_DMA_DESTINATION_ADDRESSING_MODE_FIXED);
-
-</#if>
-    return (DRV_HANDLE)dObj;
+    return (DRV_HANDLE)index;
 }
 
-size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
+size_t USI_USART_Write(DRV_HANDLE handle, void* pData, size_t length)
 {
-    USI_USART_OBJ* dObj;
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
     
     /* Check handler */
-    dObj = _USI_USART_CheckHandler(handle);
     if (dObj == NULL)
     {
-        /* Not valid handler */
+        return 0;
+    }
+    
+    if (handle >= SRV_USI_USART_CONNECTIONS)
+    {
         return 0;
     }
     
@@ -368,41 +342,31 @@ size_t USI_USART_Write( DRV_HANDLE handle, size_t length )
     }
 
     /* Waiting for USART is free */
-<#if core.DMA_ENABLE?has_content>        
-    while (SYS_DMA_ChannelIsBusy(dObj->plib->dmaChannelTx));
-<#else>
     while (dObj->plib->writeIsBusy());
-</#if>
 
-<#if core.DMA_ENABLE?has_content> 
-    /* Launch transmission */
-    if (DATA_CACHE_IS_ENABLED())
-    {
-        /* Invalidate cache lines having received buffer before using it
-         * to load the latest data in the actual memory to the cache */
-        DCACHE_CLEAN_BY_ADDR((uint32_t *)dObj->pWrBuffer, dObj->wrBufferSize);
-    }
-     
-    SYS_DMA_ChannelTransfer (dObj->plib->dmaChannelTx, (const void *)dObj->pWrBuffer, 
-            (const void *)dObj->plib->usartAddressTx, length);
-<#else>
-    dObj->plib->write(dObj->pWrBuffer, length);
-</#if>   
+    dObj->plib->write(pData, length);
     
     return length;
 }
 
-void USI_USART_RegisterCallback( DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
+void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
         uintptr_t context)
 {
-    USI_USART_OBJ* dObj;
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
     
     /* Check handler */
-    dObj = _USI_USART_CheckHandler(handle);
     if (dObj == NULL)
     {
         return;
     }
+    
+    if (handle >= SRV_USI_USART_CONNECTIONS)
+    {
+        return;
+    }
+    
+    /* Set USART PLIB handler */
+    dObj->plib->readCallbackRegister(_USI_USART_PLIB_CALLBACK, (uintptr_t)dObj);
     
     /* Set callback function */
     dObj->cbFunc = cbFunc;
@@ -426,12 +390,16 @@ void USI_USART_Close(DRV_HANDLE handle)
 
 void USI_USART_Tasks ( DRV_HANDLE handle )
 {
-    USI_USART_OBJ* dObj;
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
     USI_USART_MSG* pMsg;
     
-    /* Check handler */
-    dObj = _USI_USART_CheckHandler(handle);
+    /* Check handler */    
     if (dObj == NULL)
+    {
+        return;
+    }
+    
+    if (handle >= SRV_USI_USART_CONNECTIONS)
     {
         return;
     }

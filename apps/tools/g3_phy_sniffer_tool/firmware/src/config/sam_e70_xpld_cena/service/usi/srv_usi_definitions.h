@@ -65,6 +65,8 @@
 // *****************************************************************************
 // *****************************************************************************
 
+typedef uintptr_t USI_DEVICE_INDEX;
+
 // *****************************************************************************
 /* USI Service Serial Protocol Identifiers
 
@@ -171,36 +173,6 @@ typedef enum
     SRV_USI_INVALID
 
 } SRV_USI_ERROR;
-
-// *****************************************************************************
-/* USI Serive Communication Interface
-
-  Summary:
-    Defines the Communication Interface values
-
-  Description:
-    This data type defines the Communication Interface values for the connection
-    with peripherals.
-
-  Remarks:
-    None.
-*/
-
-typedef enum
-{
-    /* Invalid interface API */
-    SRV_USI_INVALID_API,
-
-    /* USART interface API */
-    SRV_USI_USART_API,
-    
-    /* USB CDC Class interface API */
-    SRV_USI_CDC_API,
-    
-    /* TCP interface API */
-    SRV_USI_TCP_API
-
-} SRV_USI_INTERFACE_API;
 
 // *****************************************************************************
 /* USART PLIB API Set needed by USI service */

@@ -27,7 +27,7 @@ def loadModule():
 	srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/SmartEnergy/PLC/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
 	srvUSIComponent.addCapability("libsrvUSI", "USI_PLC")
 	srvUSIComponent.addDependency("srv_usi_USART_dependency", "UART", False, False)
-	## srvUSIComponent.addDependency("srv_usi_CDC_dependency", "USB_DEVICE_CDC", False, False)
+	srvUSIComponent.addDependency("srv_usi_CDC_dependency", "USB_DEVICE_CDC", False, False)
 	## srvUSIComponent.addDependency("srv_usi_TCP_AUX_dependency", "USI_TCP_AUX", False, False)
 	srvUSIComponent.addDependency("drv_usi_HarmonyCore_dependency", "Core Service", "Core Service", True, True)
 	srvUSIComponent.addDependency("drv_usi_CRC_dependency", "PCRC", "PLC CRC", True, True)

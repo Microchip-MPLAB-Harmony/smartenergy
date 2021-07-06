@@ -21,19 +21,60 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
-def setConnections(symbol, event):
-    symbol.setVisible(event["value"]) 
-    if(event["value"] == False):
-        symbol.clearValue()
-    else:
-        symbol.setValue(1, 0)        
 
-def enableUsartFiles(symbol, event):
+def handleMessage(messageID, args):
+    global usiSymUsartAPI
+    global usiSymCdcAPI
+    global usiSymNumUsart
+    global usiSymNumCdc
+
+    result_dict = {}
+
+    usi_usart_connections = usiSymNumUsart.getValue()
+    usi_cdc_connections = usiSymNumCdc.getValue()
+
+    if (messageID == "USI_ADD_USART_API"):
+        usi_usart_connections += 1
+    elif (messageID == "USI_REMOVE_USART_API"):
+        usi_usart_connections -= 1
+    elif (messageID == "USI_ADD_CDC_API"):
+        usi_cdc_connections += 1
+    elif (messageID == "USI_REMOVE_CDC_API"):
+        usi_cdc_connections -= 1
+
+    usiSymNumUsart.setValue(usi_usart_connections)
+    usiSymNumCdc.setValue(usi_cdc_connections)
+
+    if (usi_usart_connections):
+        usiSymUsartAPI.setValue(True)
+    else:
+        usiSymUsartAPI.setValue(False)
+
+    if (usi_cdc_connections):
+        usiSymCdcAPI.setValue(True)
+    else:
+        usiSymCdcAPI.setValue(False)
+
+    usiInstances = filter(lambda k: "srv_usi_" in k, Database.getActiveComponentIDs())
+
+    uart_count = 0
+    usb_count = 0
+    for usiInstance in sorted(usiInstances):
+        if Database.getSymbolValue(usiInstance, "SRV_USI_DEVICE_SET") == "UART":
+            Database.setSymbolValue(usiInstance, "SRV_USI_USART_API_INDEX", uart_count, 1)
+            uart_count += 1
+        if Database.getSymbolValue(usiInstance, "SRV_USI_DEVICE_SET") == "USB_CDC":
+            Database.setSymbolValue(usiInstance, "SRV_USI_CDC_API_INDEX", usb_count, 1)
+            usb_count += 1
+
+    return result_dict
+
+def enableFiles(symbol, event):
     symbol.setEnabled(event["value"])  
     if(event["value"]):
-        print("Enable USART files")
+        print("Enable Src/Hdr files")
     else:
-        print("Disable USART files")
+        print("Disable Src/Hdr files")   
 
 def instantiateComponent(usiComponentCommon):
 
@@ -47,13 +88,6 @@ def instantiateComponent(usiComponentCommon):
     # Enable "Generate Harmony System Service Common Files" option in MHC
     Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":True})
 
-    # Enable "Generate Harmony System Port Files" option in MHC
-    Database.sendMessage("HarmonyCore", "ENABLE_SYS_PORTS", {"isEnabled":True})
-
-    # Enable "Generate Harmony System DMA Files" option in MHC
-    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
-        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":True})
-
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -65,43 +99,40 @@ def instantiateComponent(usiComponentCommon):
     usiSymMsgPoolSize.setMax(10)
     usiSymMsgPoolSize.setDefaultValue(5)
 
+    global usiSymUsartAPI
     usiSymUsartAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_USART_API", None)
     usiSymUsartAPI.setLabel("USART API")
     usiSymUsartAPI.setReadOnly(True)
     usiSymUsartAPI.setDefaultValue(False)
     usiSymUsartAPI.setVisible(True)
 
+    global usiSymCdcAPI
     usiSymCdcAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_CDC_API", None)
     usiSymCdcAPI.setLabel("CDC API")
     usiSymCdcAPI.setReadOnly(True)
     usiSymCdcAPI.setDefaultValue(False)
     usiSymCdcAPI.setVisible(True)
 
-    usiSymTcpAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_TCP_API", None)
-    usiSymTcpAPI.setLabel("TCP API")
-    usiSymTcpAPI.setReadOnly(True)
-    usiSymTcpAPI.setDefaultValue(False)
-    usiSymTcpAPI.setVisible(True)
-
+    global usiSymNumUsart
     usiSymNumUsart = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_USART", usiSymUsartAPI)
     usiSymNumUsart.setLabel("USART Connections")
     usiSymNumUsart.setDefaultValue(0)
     usiSymNumUsart.setVisible(True)
-    usiSymNumUsart.setDependencies(setConnections, ["SRV_USI_USART_API"])
 
+    global usiSymNumCdc
     usiSymNumCdc = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_CDC", usiSymCdcAPI)
     usiSymNumCdc.setLabel("CDC Connections")
     usiSymNumCdc.setDefaultValue(0)
     usiSymNumCdc.setVisible(True)
-    usiSymNumCdc.setDependencies(setConnections, ["SRV_USI_CDC_API"])
 
-    usiSymNumTcp = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_TCP", usiSymTcpAPI)
-    usiSymNumTcp.setLabel("TCP Connections")
-    usiSymNumTcp.setDefaultValue(0)
-    usiSymNumTcp.setVisible(True)
-    usiSymNumTcp.setDependencies(setConnections, ["SRV_USI_TCP_API"])
+    ##### USI Files  ####################################################
 
-    ##### Header Files  ####################################################
+    usiSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_SOURCE", None)
+    usiSourceFile.setSourcePath("service/usi/src/srv_usi.c")
+    usiSourceFile.setOutputName("srv_usi.c")
+    usiSourceFile.setDestPath("service/usi")
+    usiSourceFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiSourceFile.setType("SOURCE")
     
     usiHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_HEADER", None)
     usiHeaderFile.setSourcePath("service/usi/srv_usi.h")
@@ -109,63 +140,59 @@ def instantiateComponent(usiComponentCommon):
     usiHeaderFile.setDestPath("service/usi")
     usiHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
     usiHeaderFile.setType("HEADER")
-    usiHeaderFile.setOverwrite(True)
-
-    #### FreeMaker Files ######################################################
-
-    usiSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_SOURCE", None)
-    usiSourceFile.setSourcePath("service/usi/src/srv_usi.c.ftl")
-    usiSourceFile.setOutputName("srv_usi.c")
-    usiSourceFile.setDestPath("service/usi")
-    usiSourceFile.setProjectPath("config/" + configName + "/service/usi/")
-    usiSourceFile.setType("SOURCE")
-    usiSourceFile.setMarkup(True)
-    usiSourceFile.setOverwrite(True)
-    usiSourceFile.setEnabled(True)
-
-    usiHeaderLocalFile = usiComponentCommon.createFileSymbol("SRV_USI_SOURCE_LOCAL", None)
-    usiHeaderLocalFile.setSourcePath("service/usi/src/srv_usi_local.h.ftl")
-    usiHeaderLocalFile.setOutputName("srv_usi_local.h")
-    usiHeaderLocalFile.setDestPath("service/usi")
-    usiHeaderLocalFile.setProjectPath("config/" + configName + "/service/usi/")
-    usiHeaderLocalFile.setType("SOURCE")
-    usiHeaderLocalFile.setMarkup(True)
-    usiHeaderLocalFile.setOverwrite(True)
-    usiHeaderLocalFile.setEnabled(True)
-
-    usiSymHeaderDefFile = usiComponentCommon.createFileSymbol("DRV_USI_FILE_DEF_HEADER", None)
-    usiSymHeaderDefFile.setSourcePath("service/usi/templates/srv_usi_definitions.h.ftl")
-    usiSymHeaderDefFile.setOutputName("srv_usi_definitions.h")
-    usiSymHeaderDefFile.setDestPath("service/usi/")
-    usiSymHeaderDefFile.setProjectPath("config/" + configName + "/service/usi/")
-    usiSymHeaderDefFile.setType("HEADER")
-    usiSymHeaderDefFile.setMarkup(True)
-    usiSymHeaderDefFile.setOverwrite(True)
-
-    # USART wrapper Files
+    
+    usiDefHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_DEF_HEADER", None)
+    usiDefHeaderFile.setSourcePath("service/usi/srv_usi_definitions.h")
+    usiDefHeaderFile.setOutputName("srv_usi_definitions.h")
+    usiDefHeaderFile.setDestPath("service/usi")
+    usiDefHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiDefHeaderFile.setType("HEADER")
+    
+    usiLocalHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_LOCAL_HEADER", None)
+    usiLocalHeaderFile.setSourcePath("service/usi/src/srv_usi_local.h")
+    usiLocalHeaderFile.setOutputName("srv_usi_local.h")
+    usiLocalHeaderFile.setDestPath("service/usi")
+    usiLocalHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiLocalHeaderFile.setType("SOURCE")
+    
     usiUsartSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_SOURCE", None)
-    usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c.ftl")
+    usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c")
     usiUsartSourceFile.setOutputName("srv_usi_usart.c")
     usiUsartSourceFile.setDestPath("service/usi")
     usiUsartSourceFile.setProjectPath("config/" + configName + "/service/usi/")
     usiUsartSourceFile.setType("SOURCE")
-    usiUsartSourceFile.setMarkup(True)
-    usiUsartSourceFile.setOverwrite(True)
     usiUsartSourceFile.setEnabled(False)
-    usiUsartSourceFile.setDependencies(enableUsartFiles, ["SRV_USI_USART_API"])
-
+    usiUsartSourceFile.setDependencies(enableFiles, ["SRV_USI_USART_API"])
+    
     usiUsartHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_HEADER", None)
     usiUsartHeaderFile.setSourcePath("service/usi/src/srv_usi_usart.h")
     usiUsartHeaderFile.setOutputName("srv_usi_usart.h")
     usiUsartHeaderFile.setDestPath("service/usi")
     usiUsartHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
-    usiUsartHeaderFile.setType("SOURCE")
-    usiUsartHeaderFile.setMarkup(False)
-    usiUsartHeaderFile.setOverwrite(True)
+    usiUsartHeaderFile.setType("HEADER")
     usiUsartHeaderFile.setEnabled(False)
-    usiUsartHeaderFile.setDependencies(enableUsartFiles, ["SRV_USI_USART_API"])
+    usiUsartHeaderFile.setDependencies(enableFiles, ["SRV_USI_USART_API"])
+    
+    usiCDCSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_CDC_SOURCE", None)
+    usiCDCSourceFile.setSourcePath("service/usi/src/srv_usi_cdc.c")
+    usiCDCSourceFile.setOutputName("srv_usi_cdc.c")
+    usiCDCSourceFile.setDestPath("service/usi")
+    usiCDCSourceFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiCDCSourceFile.setType("SOURCE")
+    usiCDCSourceFile.setEnabled(False)
+    usiCDCSourceFile.setDependencies(enableFiles, ["SRV_USI_CDC_API"])
+    
+    usiCDCHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_CDC_HEADER", None)
+    usiCDCHeaderFile.setSourcePath("service/usi/src/srv_usi_cdc.h")
+    usiCDCHeaderFile.setOutputName("srv_usi_cdc.h")
+    usiCDCHeaderFile.setDestPath("service/usi")
+    usiCDCHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
+    usiCDCHeaderFile.setType("HEADER")
+    usiCDCHeaderFile.setOverwrite(True)
+    usiCDCHeaderFile.setEnabled(False)
+    usiCDCHeaderFile.setDependencies(enableFiles, ["SRV_USI_CDC_API"])
 
-    # System Template Files
+    #### FreeMaker Files ######################################################
     usiSymCommonSysCfgFile = usiComponentCommon.createFileSymbol("SRV_USI_SYS_CFG_COMMON", None)
     usiSymCommonSysCfgFile.setType("STRING")
     usiSymCommonSysCfgFile.setOutputName("core.LIST_SYSTEM_CONFIG_H_DRIVER_CONFIGURATION")

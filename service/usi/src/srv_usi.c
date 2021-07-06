@@ -51,14 +51,6 @@
 #include "service/usi/srv_usi.h"
 #include "service/pcrc/srv_pcrc.h"
 #include "srv_usi_local.h"
-<#if __PROCESSOR?matches("PIC32M.*") == false>
-<#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
-#include "system/cache/sys_cache.h"
-</#if>
-</#if>
-<#if SRV_USI_USART_API == true>
-#include "srv_usi_usart.h"
-</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -196,8 +188,7 @@ static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
     return(SRV_USI_HANDLE_INVALID);
 }
 
- <#if SRV_USI_USART_API == true>  
-static void _SRV_USART_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) 
+static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) 
 {    
     SRV_USI_OBJ* dObj;
     uint32_t crcGetValue;
@@ -277,7 +268,6 @@ static void _SRV_USART_Callback_Handle ( uint8_t *pData, uint16_t length, uintpt
         }        
     }
 }
-</#if>
 
 static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
                                       uint16_t length, uint8_t *pEndData )
@@ -312,7 +302,7 @@ static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
     return pDstData;
 }
 
-static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj, 
+static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength, 
                                      SRV_USI_PROTOCOL_ID protocol, 
                                      uint8_t *pData, size_t length )
 {
@@ -326,8 +316,8 @@ static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj,
     crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
     
     /* Build new message */
-    pNewData = (uint8_t*)dObj->writeBuffer;
-    pEndData = pNewData + (dObj->writeSizeMax - 3);
+    pNewData = pDstData;
+    pEndData = pNewData + (maxDstLength - 3);
     
     /* Build header message */
     *pNewData++ = USI_ESC_KEY_7E;
@@ -380,7 +370,7 @@ static size_t _SRV_USI_BuildMessage( SRV_USI_OBJ* dObj,
     
     *pNewData++ = USI_ESC_KEY_7E;
     
-    return (pNewData - (uint8_t*)dObj->writeBuffer);
+    return (pNewData - pDstData);
 }
 
 // *****************************************************************************
@@ -397,44 +387,40 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     SRV_USI_OBJ* dObj;
     SRV_USI_INIT* usiInit = (SRV_USI_INIT *)init ;
 
-    /* Validate the request */
+    /* Confirm valid arguments */
     if(index >= SRV_USI_INSTANCES_NUMBER)
-    {
-        return SYS_MODULE_OBJ_INVALID;
-    }
-
-    /* Is the service instance already initialized? */
-    if(gSrvUSIOBJ[index].inUse == true)
     {
         return SYS_MODULE_OBJ_INVALID;
     }
 
     /* Allocate the service object */
     dObj = &gSrvUSIOBJ[index];
-
-    dObj->inUse                 = true;
-    dObj->usiInterfaceApi       = usiInit->usiInterfaceApi;
-    dObj->usiApi                = usiInit->usiApi;
-    dObj->readBuffer            = usiInit->readBuffer;
-    dObj->readSizeMax           = usiInit->readSizeMax;
-    dObj->writeBuffer           = usiInit->writeBuffer;
-    dObj->writeSizeMax          = usiInit->writeSizeMax;
-
-    dObj->apiDriver             = DRV_HANDLE_INVALID;
-    dObj->callback              = &gSrvUSICallbackOBJ[index][0];
-
-    /* Update the status */
-    dObj->status = SYS_STATUS_READY;
-
+    
+    if ((dObj->status == SYS_STATUS_UNINITIALIZED) && usiInit)
+    {
+        dObj->inUse                 = false;
+        dObj->status                = SYS_STATUS_READY;
+        dObj->devIndex              = usiInit->deviceIndex;
+        dObj->devDesc               = usiInit->consDevDesc;
+	    dObj->pWrBuffer             = usiInit->pWrBuffer;
+	    dObj->wrBufferSize          = usiInit->wrBufferSize;
+        dObj->callback              = &gSrvUSICallbackOBJ[index][0];
+    
+        dObj->devDesc->init(dObj->devIndex, usiInit->deviceInitData);
+        
+        /* Return the object structure */
+        return ( (SYS_MODULE_OBJ)index );
+    }
+    
     /* Return the object structure */
-    return ( (SYS_MODULE_OBJ)index );
+    return SYS_MODULE_OBJ_INVALID;
 }
 
 SRV_USI_HANDLE SRV_USI_Open(
     const SYS_MODULE_INDEX index
 )
 {
-    SRV_USI_OBJ* dObj;
+    SRV_USI_OBJ* dObj = &gSrvUSIOBJ[index];
 
     /* Validate the request */
     if (index >= SRV_USI_INSTANCES_NUMBER)
@@ -442,58 +428,13 @@ SRV_USI_HANDLE SRV_USI_Open(
         return SRV_USI_HANDLE_INVALID;
     }
 
-    dObj = &gSrvUSIOBJ[index];
-
-    if((dObj->status != SYS_STATUS_READY) || (dObj->inUse == false))
+    if(dObj->status != SYS_STATUS_READY)
     {
         return SRV_USI_HANDLE_INVALID;
     }
     
-<#if SRV_USI_USART_API == true>
-    if (dObj->usiInterfaceApi == SRV_USI_USART_API)
-    {
-        USI_USART_INIT init;
-        
-        init.plib = dObj->usiApi;
-        init.pRdBuffer = dObj->readBuffer;
-        init.rdBufferSize = dObj->readSizeMax;
-        init.pWrBuffer = dObj->writeBuffer;
-        init.wrBufferSize = dObj->writeSizeMax;
-        
-        /* Open Serial interface */
-        dObj->apiDriver = USI_USART_Initialize(&init);
-        if (dObj->apiDriver == DRV_HANDLE_INVALID)
-        {
-            return SRV_USI_HANDLE_INVALID;
-        }
-        
-        /* Register callback and launch reception transfer */
-        USI_USART_RegisterCallback(dObj->apiDriver, _SRV_USART_Callback_Handle, 
-                (uintptr_t)dObj);
-    }
-    
-</#if>
-<#if SRV_USI_CDC_API == true>
-    if (dObj->usiInterfaceApi == SRV_USI_CDC_API)
-    {
-        /* Open USB CDC interface */
-    }
-    
-</#if>
-<#if SRV_USI_TCP_API == true>
-if (dObj->usiInterfaceApi == SRV_USI_TCP_API)
-    {
-        /* Open TCP interface */
-    }
-    
-</#if>
-
-    /* Update USI object status */
-    dObj->inUse = true;
-    dObj->status = SYS_STATUS_READY;
-    
-    /* Initialize other elements in USI Object */
-    dObj->usiIndex = index;
+    /* Register reception callback */
+    dObj->devDesc->setReadCallback(dObj->devIndex, _SRV_USI_Callback_Handle, (uintptr_t)dObj);
 
     return ((SRV_USI_HANDLE)dObj);
 }
@@ -514,29 +455,9 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
     {
         return;
     }
-  
-<#if SRV_USI_USART_API == true>
-    if (dObj->usiInterfaceApi == SRV_USI_USART_API)
-    {
-        /* Close Serial interface */
-        USI_USART_Close(dObj->apiDriver);
-    }
     
-</#if>
-<#if SRV_USI_CDC_API == true>
-    if (dObj->usiInterfaceApi == SRV_USI_CDC_API)
-    {
-        /* Close USB CDC interface */
-    }
+    dObj->devDesc->close(dObj->devIndex);
     
-</#if>
-<#if SRV_USI_TCP_API == true>
-if (dObj->usiInterfaceApi == SRV_USI_TCP_API)
-    {
-        /* Close TCP interface */
-    }
-    
-</#if>
     /* De-Allocate the service object */
     dObj->inUse = false;
 
@@ -557,7 +478,7 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
-    SRV_USI_OBJ* dObj;
+    SRV_USI_OBJ* dObj = (SRV_USI_OBJ*)handle;
     SRV_USI_CALLBACK *cb;
 
     /* Validate the driver handle */
@@ -565,8 +486,6 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
     {
         return;
     }
-
-    dObj = (SRV_USI_OBJ*)handle;
 
     /* Get callback index from USI protocol */
     callbackIndex = _SRV_USI_GetCallbackIndexFromProtocol(protocol);
@@ -585,11 +504,16 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
     /* Register callback to the USI protocol */ 
     cb = &(dObj->callback[callbackIndex]);
     *cb = callback;
+    
+    /* Set USI as used */ 
+    dObj->inUse = true;
 
 }
 
 void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
 {
+    SRV_USI_OBJ* dObj = &gSrvUSIOBJ[index];
+    
     /* Validate the request */
     if(index >= SRV_USI_INSTANCES_NUMBER)
     {
@@ -597,27 +521,19 @@ void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
     }
 
     /* Is the service instance already initialized? */
-    if(gSrvUSIOBJ[index].inUse == false)
+    if(dObj->inUse == false)
     {
         return;
     }
     
-    /* Is the read buffer already registered? */
-    if(gSrvUSIOBJ[index].readBuffer == NULL)
-    {
-        return;
-    }
- 
-<#if SRV_USI_USART_API == true>   
-    USI_USART_Tasks(gSrvUSIOBJ[index].apiDriver);
-</#if>    
+    dObj->devDesc->task(dObj->devIndex);
     
 }
 
 void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 {
-    SRV_USI_OBJ* dObj;
+    SRV_USI_OBJ* dObj = (SRV_USI_OBJ*)handle;
     size_t writeLength;
 
     /* Validate the driver handle */
@@ -625,20 +541,16 @@ void SRV_USI_Send_Message( const SRV_USI_HANDLE handle,
     {
         return;
     }
-
-    dObj = (SRV_USI_OBJ*)handle;
     
     /* Check length */
-    if ((length == 0) || (length > dObj->writeSizeMax))
+    if ((length == 0) || (length > dObj->wrBufferSize))
     {
         return;
     }
     
     /* Build USI message */
-    writeLength = _SRV_USI_BuildMessage(dObj, protocol, data, length);
+    writeLength = _SRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, length);
     
-<#if SRV_USI_USART_API == true>      
     /* Send message */
-    USI_USART_Write(dObj->apiDriver, writeLength);
-</#if>  
+    dObj->devDesc->write(dObj->devIndex, dObj->pWrBuffer, writeLength);
 }
