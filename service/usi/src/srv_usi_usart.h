@@ -19,7 +19,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -125,7 +125,8 @@ typedef struct
     uint8_t                                  rcvChar;
     USI_USART_MSG*                           pRcvMsg;
     USI_USART_MSG_QUEUE*                     pMsgQueue;
-    USI_USART_STATE                          status;
+    USI_USART_STATE                          devStatus;
+    SRV_USI_STATUS                           usiStatus;
     uintptr_t                                context;
 } USI_USART_OBJ;
         
@@ -137,14 +138,18 @@ typedef struct
 
 DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData);
 
-void USI_USART_Tasks (DRV_HANDLE handle);
+DRV_HANDLE USI_USART_Open(uint32_t index);
 
-size_t USI_USART_Write(DRV_HANDLE handle, void* pData, size_t length);
+void USI_USART_Tasks (uint32_t index);
 
-void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc, uintptr_t context);
+size_t USI_USART_Write(uint32_t index, void* pData, size_t length);
 
-void USI_USART_Flush(DRV_HANDLE handle);
+void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc, uintptr_t context);
 
-void USI_USART_Close(DRV_HANDLE handle);
+void USI_USART_Flush(uint32_t index);
+
+void USI_USART_Close(uint32_t index);
+
+SRV_USI_STATUS USI_USART_Status(uint32_t index);
 
 #endif //SRV_USI_USART_H

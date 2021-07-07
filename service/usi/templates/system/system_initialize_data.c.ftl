@@ -31,11 +31,17 @@ const SRV_USI_INIT srvUSI${INDEX?string}Init =
 
 </#if>
 <#if SRV_USI_DEVICE_SET == "USB_CDC">
-/* Declared in usi cdc service implementation (srv_usi_cdc.c) */
+static uint8_t CACHE_ALIGN srvUSI${INDEX?string}CDCReadBuffer[128] = {0};
+
+/* Declared in USI CDC service implementation (srv_usi_cdc.c) */
 extern const SRV_USI_DEV_DESC srvUSICDCDevDesc;
 
 const USI_CDC_INIT_DATA srvUsi${INDEX?string}InitData = {
     .cdcInstanceIndex = ${SRV_USI_CDC_DEVICE_INDEX?string},
+    .usiReadBuffer = srvUSI${INDEX?string}ReadBuffer,
+    .usiBufferSize = SRV_USI${INDEX?string}_RD_BUF_SIZE,
+    .cdcReadBuffer = srvUSI${INDEX?string}CDCReadBuffer,
+    .cdcBufferSize = 128
 };
 
 const SRV_USI_INIT srvUSI${INDEX?string}Init =

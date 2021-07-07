@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -69,14 +69,16 @@ const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
     .usiDevice                  = SRV_USI_DEV_USART,
     .intent                     = DRV_IO_INTENT_READWRITE,
     .init                       = USI_USART_Initialize,
+    .open                       = USI_USART_Open,
     .setReadCallback            = USI_USART_RegisterCallback,
     .write                      = USI_USART_Write,
     .task                       = USI_USART_Tasks,
     .flush                      = USI_USART_Flush,
     .close                      = USI_USART_Close,
+    .status                     = USI_USART_Status,
 };
 
-static USI_USART_OBJ gUsiUsartOBJ[SRV_USI_USART_CONNECTIONS] = {NULL};
+static USI_USART_OBJ gUsiUsartOBJ[SRV_USI_USART_CONNECTIONS] = {0};
 static USI_USART_MSG gUsiUsartMsgPool[SRV_USI_MSG_POOL_SIZE] = {0};
 static USI_USART_MSG_QUEUE gUsiUsartMsgQueue[SRV_USI_USART_CONNECTIONS] = {NULL};
 
@@ -189,7 +191,7 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
     pMsg = dObj->pRcvMsg;
     next = false;
     
-    switch(dObj->status)
+    switch(dObj->devStatus)
     {
         case USI_USART_IDLE:
             /* Waiting to MSG KEY */
@@ -217,7 +219,7 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 dObj->pRcvMsg = pMsg;
                         
                 /* New Message, start reception */
-                dObj->status = USI_USART_RCV;
+                dObj->devStatus = USI_USART_RCV;
             }            
             break;
             
@@ -227,12 +229,12 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 /* End of Message */
                 pMsg->length = pMsg->pDataRd - pMsg->pMessage;
                 dObj->pRcvMsg = NULL;
-                dObj->status = USI_USART_IDLE;
+                dObj->devStatus = USI_USART_IDLE;
             }              
             else if (dObj->rcvChar == USI_ESC_KEY_7D)
             {
                 /* Escape character */
-                dObj->status = USI_USART_ESC;
+                dObj->devStatus = USI_USART_ESC;
             } 
             else
             {
@@ -247,20 +249,20 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
             {
                 /* Store character after escape it */
                 *pMsg->pDataRd++ = USI_ESC_KEY_7E;
-                dObj->status = USI_USART_RCV;
+                dObj->devStatus = USI_USART_RCV;
             }  
             else if (dObj->rcvChar == USI_ESC_KEY_5D)
             {
                 /* Store character after escape it */
                 *pMsg->pDataRd++ = USI_ESC_KEY_7D;
-                dObj->status = USI_USART_RCV;
+                dObj->devStatus = USI_USART_RCV;
             }
             else
             {
                 /* ERROR: Escape format */
                 _USI_USART_ABORT_MSG_IN_QUEUE(dObj);
                 dObj->pRcvMsg = NULL;
-                dObj->status = USI_USART_IDLE;
+                dObj->devStatus = USI_USART_IDLE;
             }
       
             break;
@@ -316,14 +318,34 @@ DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData)
     dObj->pMsgQueue = &gUsiUsartMsgQueue[index];
     dObj->byteCount = 0;
     dObj->cbFunc = NULL;
-    dObj->status = USI_USART_IDLE;
+    dObj->devStatus = USI_USART_IDLE;
+    dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 
     return (DRV_HANDLE)index;
 }
 
-size_t USI_USART_Write(DRV_HANDLE handle, void* pData, size_t length)
+DRV_HANDLE USI_USART_Open(uint32_t index)
 {
-    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
+    
+    if (dObj == NULL)
+    {
+        return DRV_HANDLE_INVALID;
+    }
+    
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return DRV_HANDLE_INVALID;
+    }
+
+    dObj->usiStatus = SRV_USI_STATUS_CONFIGURED;
+
+    return (DRV_HANDLE)index;
+}
+
+size_t USI_USART_Write(uint32_t index, void* pData, size_t length)
+{
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     
     /* Check handler */
     if (dObj == NULL)
@@ -331,12 +353,17 @@ size_t USI_USART_Write(DRV_HANDLE handle, void* pData, size_t length)
         return 0;
     }
     
-    if (handle >= SRV_USI_USART_CONNECTIONS)
+    if (index >= SRV_USI_USART_CONNECTIONS)
     {
         return 0;
     }
     
     if (length == 0)
+    {
+        return 0;
+    }
+    
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return 0;
     }
@@ -349,10 +376,10 @@ size_t USI_USART_Write(DRV_HANDLE handle, void* pData, size_t length)
     return length;
 }
 
-void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
+void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc,
         uintptr_t context)
 {
-    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     
     /* Check handler */
     if (dObj == NULL)
@@ -360,7 +387,12 @@ void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
         return;
     }
     
-    if (handle >= SRV_USI_USART_CONNECTIONS)
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return;
+    }
+    
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;
     }
@@ -378,19 +410,50 @@ void USI_USART_RegisterCallback(DRV_HANDLE handle, USI_USART_CALLBACK cbFunc,
     dObj->plib->read(&dObj->rcvChar, 1);
 }
 
-void USI_USART_Flush(DRV_HANDLE handle)
+void USI_USART_Flush(uint32_t index)
 {
-    (void)handle;
+    (void)index;
 }
 
-void USI_USART_Close(DRV_HANDLE handle)
+void USI_USART_Close(uint32_t index)
 {
-    (void)handle;
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
+    
+    /* Check handler */    
+    if (dObj == NULL)
+    {
+        return;
+    }
+    
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return;
+    }
+    
+    dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 }
 
-void USI_USART_Tasks ( DRV_HANDLE handle )
+SRV_USI_STATUS USI_USART_Status(uint32_t index)
 {
-    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(handle);
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
+    
+    /* Check handler */    
+    if (dObj == NULL)
+    {
+        return SRV_USI_STATUS_ERROR;
+    }
+    
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return SRV_USI_STATUS_ERROR;
+    }
+
+    return dObj->usiStatus;
+}
+
+void USI_USART_Tasks (uint32_t index)
+{
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     USI_USART_MSG* pMsg;
     
     /* Check handler */    
@@ -399,7 +462,12 @@ void USI_USART_Tasks ( DRV_HANDLE handle )
         return;
     }
     
-    if (handle >= SRV_USI_USART_CONNECTIONS)
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return;
+    }
+    
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;
     }

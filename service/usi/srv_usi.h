@@ -212,17 +212,19 @@ typedef void (*USI_READ_CALLBACK) (uint8_t *data, uint16_t length, uintptr_t con
 
 typedef DRV_HANDLE (*SRV_USI_INIT_FPTR) (uint32_t index, const void* initData);
 
-typedef void (*SRV_USI_REGISTER_READ_CALLBACK_FPTR) (DRV_HANDLE handle, USI_READ_CALLBACK buf, uintptr_t context);
+typedef DRV_HANDLE (*SRV_USI_OPEN_FPTR) (uint32_t index);
 
-typedef size_t (*SRV_USI_WRITE_FPTR) (DRV_HANDLE handle, void* buf, size_t length);
+typedef void (*SRV_USI_REGISTER_READ_CALLBACK_FPTR) (uint32_t index, USI_READ_CALLBACK buf, uintptr_t context);
 
-typedef void (*SRV_USI_TASK_FPTR) (DRV_HANDLE handle);
+typedef size_t (*SRV_USI_WRITE_FPTR) (uint32_t index, void* buf, size_t length);
 
-typedef SRV_USI_STATUS (*SRV_USI_STATUS_FPTR) (DRV_HANDLE handle);
+typedef void (*SRV_USI_TASK_FPTR) (uint32_t index);
 
-typedef void (*SRV_USI_FLUSH_FPTR) (DRV_HANDLE handle);
+typedef SRV_USI_STATUS (*SRV_USI_STATUS_FPTR) (uint32_t index);
 
-typedef void (*SRV_USI_CLOSE) (DRV_HANDLE handle);
+typedef void (*SRV_USI_FLUSH_FPTR) (uint32_t index);
+
+typedef void (*SRV_USI_CLOSE) (uint32_t index);
 
 // *****************************************************************************
 /*  USI device descriptor
@@ -246,6 +248,8 @@ typedef struct
 
     SRV_USI_INIT_FPTR init;
 
+    SRV_USI_OPEN_FPTR open;
+
     SRV_USI_REGISTER_READ_CALLBACK_FPTR setReadCallback;
 
     SRV_USI_WRITE_FPTR write;
@@ -255,6 +259,8 @@ typedef struct
     SRV_USI_FLUSH_FPTR flush;
 
     SRV_USI_CLOSE close;
+
+    SRV_USI_STATUS_FPTR status;
 
 } SRV_USI_DEV_DESC;
 
@@ -277,7 +283,7 @@ typedef struct
     bool                                     inUse;
     
     /* State of this instance */
-    SYS_STATUS                               status;
+    SRV_USI_STATUS                           status;
 
     /* Device Descriptor */
     const SRV_USI_DEV_DESC*                  devDesc;
@@ -491,7 +497,7 @@ void SRV_USI_Close( const SRV_USI_HANDLE handle );
 
 // *****************************************************************************
 /* Function:
-    SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object)
+    SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle )
 
   Summary:
     Returns USI instance service status.
@@ -503,18 +509,20 @@ void SRV_USI_Close( const SRV_USI_HANDLE handle );
     None.
 
   Parameters:
-    object - USI service object handle, returned from the
-    SRV_USI_Initialize routine
+    object - USI service object handle, returned from the SRV_USI_Initialize routine
 
   Returns:
-    SYS_STATUS_UNINITIALIZED - Indicates that the USI instance is not initialized.
+    SRV_USI_STATUS_NOT_CONFIGURED - Indicates that the USI instance is not configured.
 
-    SYS_STATUS_READY - Indicates that the USI instance initialization is
-                       complete and it ready to be used.
+    SRV_USI_STATUS_CONFIGURED - Indicates that the USI instance is properly configured
+
+    SRV_USI_STATUS_BUSY - Indicates that the USI instance is busy
+  
+    SRV_USI_STATUS_ERROR - Indicates that there is an error with the handler
 
   Example:
     <code>
-    if (SRV_USI_Status (SRV_USI_INDEX_0) == SYS_STATUS_READY)
+    if (SRV_USI_Status (SRV_USI_INDEX_0) == SRV_USI_STATUS_CONFIGURED)
     {
        // USI service is initialized and ready to accept new requests.
     }
@@ -524,7 +532,7 @@ void SRV_USI_Close( const SRV_USI_HANDLE handle );
     None.
   */
 
-SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object);
+SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle );
 
 // *****************************************************************************
 /* Function:

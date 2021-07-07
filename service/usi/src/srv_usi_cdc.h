@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name
-    srv_usi_cdc.h
+    srv_usi_usart.h
 
   Summary
     USB CDC wrapper used from USI service interface.
@@ -54,6 +54,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "system/system.h"
+#include "usb/usb_device_cdc.h"
 #include "service/usi/srv_usi_definitions.h"
 
 // DOM-IGNORE-BEGIN
@@ -74,11 +75,11 @@ typedef void ( * USI_CDC_CALLBACK ) ( uint8_t *data, uint16_t length, uintptr_t 
 
 typedef struct
 {
-    uint8_t*                               pMessage;
-    uint8_t*                               pDataRd;
-    size_t                                 length;
-    bool                                   inUse;
-    struct USI_CDC_MSG*                    next; 
+    uint8_t*                                 pMessage;
+    uint8_t*                                 pDataRd;
+    size_t                                   length;
+    bool                                     inUse;
+    struct USI_CDC_MSG*                      next; 
 } USI_CDC_MSG; 
 
 typedef struct
@@ -96,40 +97,55 @@ typedef enum
 
 typedef void (* PLIB_CALLBACK)( uintptr_t context );
 
-typedef void(* USI_CDC_PLIB_CALLBACK)( uintptr_t context);
 typedef void(* USI_CDC_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(* USI_CDC_PLIB_WRRD)(void *buffer, const size_t size);
-typedef void(* USI_CDC_PLIB_WRITE_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
+typedef bool(* USI_CDC_PLIB_WRITE_ISBUSY)(void);
 
 typedef struct
 {
     USI_CDC_PLIB_READ_CALLBACK_REG readCallbackRegister;
     USI_CDC_PLIB_WRRD read;
-    USI_CDC_PLIB_WRITE_CALLBACK_REG writeCallbackRegister;
     USI_CDC_PLIB_WRRD write;
     USI_CDC_PLIB_WRITE_ISBUSY writeIsBusy;
-    USI_CDC_PLIB_SERIAL_SETUP serialSetup;
 } SRV_USI_CDC_INTERFACE;
 
 typedef struct
 {
-    void*                                  plib;
-    void*                                  pRdBuffer;
-    size_t                                 rdBufferSize;
+    uint8_t                                  cdcInstanceIndex;
+    uint8_t*                                 cdcReadBuffer;
+    uint8_t*                                 usiReadBuffer;
+    size_t                                   cdcBufferSize;
+    size_t                                   usiBufferSize;
 } USI_CDC_INIT_DATA; 
 
 typedef struct
 {
-    SRV_USI_CDC_INTERFACE*                 plib;
-    USI_CDC_CALLBACK                       cbFunc;
-    void*                                  pRdBuffer;
-    size_t                                 rdBufferSize;
-    size_t                                 byteCount;
-    uint8_t                                rcvChar;
-    USI_CDC_MSG*                           pRcvMsg;
-    USI_CDC_MSG_QUEUE*                     pMsgQueue;
-    USI_CDC_STATE                          status;
-    uintptr_t                              context;
+    uint8_t                                  cdcInstanceIndex;
+    USB_DEVICE_HANDLE                        devHandle;
+    bool                                     sofEventHasOccurred;
+    USB_CDC_LINE_CODING                      getLineCodingData;
+    USB_CDC_LINE_CODING                      setLineCodingData;
+    USB_CDC_CONTROL_LINE_STATE               controlLineStateData;
+    uint16_t                                 breakData;
+    USB_DEVICE_CDC_TRANSFER_HANDLE           readTransferHandle;
+    USB_DEVICE_CDC_TRANSFER_HANDLE           writeTransferHandle;
+    
+    uint8_t*                                 cdcReadBuffer;
+    uint8_t*                                 usiReadBuffer;
+    uint8_t*                                 usiRdInIndex;
+    uint8_t*                                 usiRdOutIndex;
+    uint32_t                                 cdcNumBytesRead;
+    uint32_t                                 usiNumBytesRead;
+    size_t                                   cdcBufferSize;
+    size_t                                   usiBufferSize;
+    bool                                     cdcIsReadComplete;
+    bool                                     usiIsReadComplete;
+    bool                                     cdcIsWriteComplete;
+    
+    USI_CDC_CALLBACK                         cbFunc;
+    USI_CDC_STATE                            devStatus;
+    SRV_USI_STATUS                           usiStatus;
+    uintptr_t                                context;
 } USI_CDC_OBJ;
         
 // *****************************************************************************
@@ -140,14 +156,18 @@ typedef struct
 
 DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData);
 
-void USI_CDC_Tasks (DRV_HANDLE handle);
+DRV_HANDLE USI_CDC_Open(uint32_t index);
 
-size_t USI_CDC_Write(DRV_HANDLE handle, void* pData, size_t length);
+void USI_CDC_Tasks (uint32_t index);
 
-void USI_CDC_RegisterCallback(DRV_HANDLE handle, USI_CDC_CALLBACK cbFunc, uintptr_t context);
+size_t USI_CDC_Write(uint32_t index, void* pData, size_t length);
 
-void USI_CDC_Flush(DRV_HANDLE handle);
+void USI_CDC_RegisterCallback(uint32_t index, USI_CDC_CALLBACK cbFunc, uintptr_t context);
 
-void USI_CDC_Close(DRV_HANDLE handle);
+void USI_CDC_Flush(uint32_t index);
+
+void USI_CDC_Close(uint32_t index);
+
+SRV_USI_STATUS USI_CDC_Status(uint32_t index);
 
 #endif //SRV_USI_CDC_H

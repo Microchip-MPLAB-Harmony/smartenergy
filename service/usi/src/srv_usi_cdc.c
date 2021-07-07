@@ -54,10 +54,11 @@
 #include "stddef.h"
 #include "configuration.h"
 #include "driver/driver_common.h"
-#include "system/dma/sys_dma.h"
+#include "usb/usb_device.h"
+#include "usb/usb_device_cdc.h"
 #include "srv_usi_local.h"
-#include "srv_usi_cdc.h"
 #include "srv_usi_definitions.h"
+#include "srv_usi_cdc.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -65,21 +66,21 @@
 // *****************************************************************************
 // *****************************************************************************
 /* This is the service instance object array. */
-const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
+const SRV_USI_DEV_DESC srvUSICDCDevDesc =
 {
-    .usiDevice                  = SRV_USI_DEV_USART,
+    .usiDevice                  = SRV_USI_DEV_USB_CDC,
     .intent                     = DRV_IO_INTENT_READWRITE,
     .init                       = USI_CDC_Initialize,
+    .open                       = USI_CDC_Open,
     .setReadCallback            = USI_CDC_RegisterCallback,
     .write                      = USI_CDC_Write,
     .task                       = USI_CDC_Tasks,
     .flush                      = USI_CDC_Flush,
     .close                      = USI_CDC_Close,
+    .status                     = USI_CDC_Status,
 };
 
-static USI_CDC_OBJ gUsiCdcOBJ[SRV_USI_CDC_CONNECTIONS] = {NULL};
-static USI_CDC_MSG gUsiCdcMsgPool[SRV_USI_MSG_POOL_SIZE] = {0};
-static USI_CDC_MSG_QUEUE gUsiCdcMsgQueue[SRV_USI_CDC_CONNECTIONS] = {NULL};
+static USI_CDC_OBJ gUsiCdcOBJ[SRV_USI_CDC_CONNECTIONS] = {0};
 
 #define USI_CDC_GET_INSTANCE(index)    (index >= SRV_USI_CDC_CONNECTIONS)? NULL : &gUsiCdcOBJ[index]
 
@@ -88,209 +89,242 @@ static USI_CDC_MSG_QUEUE gUsiCdcMsgQueue[SRV_USI_CDC_CONNECTIONS] = {NULL};
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static USI_CDC_MSG* _USI_CDC_PUT_MSG_TO_QUEUE( USI_CDC_OBJ* dObj )
+static uint32_t _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
 {
-    USI_CDC_MSG* pMsg;
-    uint8_t index;
+    uint8_t *pData = dObj->cdcReadBuffer;
+    uint8_t *bookmark;
     
-    /* Get free buffer from POOL */
-    for (index = 0; index < SRV_USI_MSG_POOL_SIZE; index++)
+    while(dObj->cdcNumBytesRead)
     {
-        pMsg = &gUsiCdcMsgPool[index];
-        if (pMsg->inUse == 0)
+        switch(dObj->devStatus)
         {
-            USI_CDC_MSG_QUEUE* dObjQueue;
-            
-            /* Initialize Message data */
-            pMsg->inUse = 1;
-            pMsg->next = NULL;
-            
-            /* Update queue */
-            dObjQueue = dObj->pMsgQueue;
-            if (dObjQueue->rear == NULL)
-            {   /* Queue is empty */
-                dObjQueue->front = dObjQueue->rear = pMsg;
-            }
-            else
-            {   /* Queue is not empty. Add new msg */
-                dObjQueue->rear->next = (struct USI_CDC_MSG*)pMsg;
-                dObjQueue->rear = pMsg;
-            }           
-            
-            return pMsg;
-        }
+            case USI_CDC_IDLE:
+                /* Waiting to MSG KEY */
+                if (*pData == USI_ESC_KEY_7E)
+                {
+                    dObj->usiIsReadComplete = false;
+                    /* Start of USI Message */
+                    dObj->usiNumBytesRead = 0;
+                    /* New Message, start reception */
+                    dObj->devStatus = USI_CDC_RCV;
+                    /* Store the initial position of USI buffer input */
+                    bookmark = dObj->usiRdInIndex;
+                }            
+                break;
+
+            case USI_CDC_RCV:
+                if (*pData == USI_ESC_KEY_7E)
+                {
+                    /* End of USI Message */    /////////// Como sacar varios mensajes en una misma recepcion??????????????
+                    dObj->usiIsReadComplete = true;
+                    dObj->devStatus = USI_CDC_IDLE;
+                }              
+                else if (*pData == USI_ESC_KEY_7D)
+                {
+                    /* Escape character */
+                    dObj->devStatus = USI_CDC_ESC;
+                } 
+                else
+                {
+                    /* Store character */
+                    *dObj->usiRdInIndex++ = *pData;
+                    dObj->usiNumBytesRead++;
+                }
+
+                break;
+
+            case USI_CDC_ESC:
+                if (*pData == USI_ESC_KEY_5E)
+                {
+                    /* Store character after escape it */
+                    *dObj->usiRdInIndex++ = USI_ESC_KEY_7E;
+                    dObj->devStatus = USI_CDC_RCV;
+                    dObj->usiNumBytesRead++;
+                }  
+                else if (*pData == USI_ESC_KEY_5D)
+                {
+                    /* Store character after escape it */
+                    *dObj->usiRdInIndex++ = USI_ESC_KEY_7D;
+                    dObj->devStatus = USI_CDC_RCV;
+                    dObj->usiNumBytesRead++;
+                }
+                else
+                {
+                    /* ERROR: Escape format - restore USI buffer */
+                    dObj->usiRdInIndex = bookmark;
+                    dObj->usiNumBytesRead = 0;
+                    dObj->devStatus = USI_CDC_IDLE;
+                }
+
+                break;
+        }    
+        
+        pData++;
+        dObj->cdcNumBytesRead--;
     }
     
-    return NULL;
+    return dObj->usiNumBytesRead;    
 }
 
-static void _USI_CDC_GET_MSG_FROM_QUEUE( USI_CDC_OBJ* dObj )
-{
-    USI_CDC_MSG_QUEUE* dObjQueue;
-    
-    /* Get Queue */
-    dObjQueue = dObj->pMsgQueue;
-    
-    if (dObjQueue->front == NULL)
-    {   /* Queue is empty */
-        return;
-    }
-    
-    /* Update buffer content */
-    dObjQueue->front->inUse = 0;
-    
-    /* Update queue front */
-    dObjQueue->front = (USI_CDC_MSG*)dObjQueue->front->next;
-    
-    if (dObjQueue->front == NULL)
-    {   /* There isn't anymore elements */
-        dObjQueue->rear = NULL;
-    }
-}
-
-static void _USI_CDC_ABORT_MSG_IN_QUEUE( USI_CDC_OBJ* dObj )
-{
-    USI_CDC_MSG_QUEUE* dObjQueue;
-    USI_CDC_MSG* pMsgTmp;
-    
-    /* Get Queue */
-    dObjQueue = dObj->pMsgQueue;
-    
-    if (dObjQueue->front == NULL)
-    {   /* Queue is empty */
-        return;
-    }
-    
-    /* Find previous element in queue */
-    pMsgTmp = dObjQueue->front;
-    while (pMsgTmp != NULL)
-    {
-        if (pMsgTmp->next == (struct USI_CDC_MSG*)dObjQueue->rear)
-        {
-            /* Update buffer in use. Return it to pool */
-            dObjQueue->rear->inUse = false;
-            /* Update last link */
-            pMsgTmp->next = NULL;
-            /* Update queue to the previous element */
-            dObjQueue->rear = pMsgTmp;            
-            return;
-        }
-        /* Check next element */
-        pMsgTmp = (USI_CDC_MSG*)pMsgTmp->next;        
-    }
-}
-
-static void _USI_CDC_PLIB_CALLBACK( uintptr_t context)
+/*******************************************************
+ * USB CDC Device Events - Event Handler
+ *******************************************************/
+static USB_DEVICE_CDC_EVENT_RESPONSE _USB_CDC_DeviceCDCEventHandler(USB_DEVICE_CDC_INDEX index,
+    USB_DEVICE_CDC_EVENT event, void * pData, uintptr_t userData)
 {
     USI_CDC_OBJ* dObj;
-    USI_CDC_MSG* pMsg;
-    bool next;
+    USB_CDC_CONTROL_LINE_STATE * controlLineStateData;
+    USB_DEVICE_CDC_EVENT_DATA_READ_COMPLETE * eventDataRead;
+    
+    dObj = (USI_CDC_OBJ *)userData;
+
+    switch(event)
+    {
+        case USB_DEVICE_CDC_EVENT_GET_LINE_CODING:
+
+            /* This means the host wants to know the current line
+             * coding. This is a control transfer request. Use the
+             * USB_DEVICE_ControlSend() function to send the data to
+             * host.  */
+
+            USB_DEVICE_ControlSend(dObj->devHandle, &dObj->getLineCodingData, sizeof(USB_CDC_LINE_CODING));
+
+            break;
+
+        case USB_DEVICE_CDC_EVENT_SET_LINE_CODING:
+
+            /* This means the host wants to set the line coding.
+             * This is a control transfer request. Use the
+             * USB_DEVICE_ControlReceive() function to receive the
+             * data from the host */
+
+            USB_DEVICE_ControlReceive(dObj->devHandle, &dObj->setLineCodingData, sizeof(USB_CDC_LINE_CODING));
+
+            break;
+
+        case USB_DEVICE_CDC_EVENT_SET_CONTROL_LINE_STATE:
+
+            /* This means the host is setting the control line state.
+             * Read the control line state. We will accept this request
+             * for now. */
+
+            controlLineStateData = (USB_CDC_CONTROL_LINE_STATE *)pData;
+            dObj->controlLineStateData.dtr = controlLineStateData->dtr;
+            dObj->controlLineStateData.carrier = controlLineStateData->carrier;
+
+            USB_DEVICE_ControlStatus(dObj->devHandle, USB_DEVICE_CONTROL_STATUS_OK);
+
+            break;
+
+        case USB_DEVICE_CDC_EVENT_SEND_BREAK:
+
+            /* This means that the host is requesting that a break of the
+             * specified duration be sent. Read the break duration */
+
+            dObj->breakData = ((USB_DEVICE_CDC_EVENT_DATA_SEND_BREAK *)pData)->breakDuration;
+            
+            /* Complete the control transfer by sending a ZLP  */
+            USB_DEVICE_ControlStatus(dObj->devHandle, USB_DEVICE_CONTROL_STATUS_OK);
+            
+            break;
+
+        case USB_DEVICE_CDC_EVENT_READ_COMPLETE:
+
+            /* This means that the host has sent some data*/
+            eventDataRead = (USB_DEVICE_CDC_EVENT_DATA_READ_COMPLETE *)pData;
+            
+            if(eventDataRead->status != USB_DEVICE_CDC_RESULT_ERROR)
+            {
+                dObj->cdcIsReadComplete = true;
+                
+                dObj->cdcNumBytesRead = eventDataRead->length; 
+            }
+            break;
+
+        case USB_DEVICE_CDC_EVENT_CONTROL_TRANSFER_DATA_RECEIVED:
+
+            /* The data stage of the last control transfer is complete. */
+
+            USB_DEVICE_ControlStatus(dObj->devHandle, USB_DEVICE_CONTROL_STATUS_OK);
+            break;
+
+        case USB_DEVICE_CDC_EVENT_CONTROL_TRANSFER_DATA_SENT:
+
+            /* This means the GET LINE CODING function data is valid. */
+            break;
+
+        case USB_DEVICE_CDC_EVENT_WRITE_COMPLETE:
+
+            /* This means that the data write got completed. */
+
+            dObj->cdcIsWriteComplete = true;
+            break;
+
+        default:
+            break;
+    }
+
+    return USB_DEVICE_CDC_EVENT_RESPONSE_NONE;
+}
+
+/***********************************************
+ * USB Device Layer Event Handler.
+ ***********************************************/
+static void _USI_CDC_DeviceEventHandler(USB_DEVICE_EVENT event, void * eventData, 
+    uintptr_t context)
+{
+    USB_DEVICE_EVENT_DATA_CONFIGURED *configuredEventData;
+    USI_CDC_OBJ* dObj;
     
     dObj = (USI_CDC_OBJ*)context;
-    pMsg = dObj->pRcvMsg;
-    next = false;
-    
-    switch(dObj->status)
+
+    switch(event)
     {
-        case USI_CDC_IDLE:
-            /* Waiting to MSG KEY */
-            if (dObj->rcvChar == USI_ESC_KEY_7E)
-            {
-                uint8_t *pData; 
-                
-                /* Restart Byte Counter */
-                if (dObj->pMsgQueue->front == NULL)
-                {
-                    /* Not received anymore characters: Restart reception buffer */
-                    dObj->byteCount = 0;
-                }
-                
-                /* Create new message */
-                pMsg = _USI_CDC_PUT_MSG_TO_QUEUE(dObj);
-                
-                /* Fill in the message */  
-                pData = (uint8_t *)(dObj->pRdBuffer);
-                pMsg->pMessage = pData + dObj->byteCount;
-                pMsg->pDataRd = pMsg->pMessage;
-                pMsg->length = 0;    
-                
-                /* Update Msg in reception data */
-                dObj->pRcvMsg = pMsg;
-                        
-                /* New Message, start reception */
-                dObj->status = USI_CDC_RCV;
-            }            
+        case USB_DEVICE_EVENT_SOF:
+            /* Flag determines SOF event occurrence */
+            dObj->sofEventHasOccurred = true;
             break;
+
+        case USB_DEVICE_EVENT_RESET:
+            dObj->devStatus = USI_CDC_IDLE;
+            dObj->usiStatus = SRV_USI_STATUS_UNINITIALIZED;
+            break;
+
+        case USB_DEVICE_EVENT_CONFIGURED:
+            /* Check the configuration. We only support configuration 1 */
+            configuredEventData = (USB_DEVICE_EVENT_DATA_CONFIGURED*)eventData;
+            if (configuredEventData->configurationValue == 1)
+            {
+                /* Register the CDC Device event handler */
+                USB_DEVICE_CDC_EventHandlerSet(dObj->cdcInstanceIndex, _USB_CDC_DeviceCDCEventHandler, (uintptr_t)dObj);
+                /* Mark that the device is now configured */
+                dObj->usiStatus = SRV_USI_STATUS_CONFIGURED;
+            }
+            break;
+
+        case USB_DEVICE_EVENT_POWER_DETECTED:
+            /* VBUS was detected. We can attach the device */
+            USB_DEVICE_Attach(dObj->devHandle);
+            break;
+
+        case USB_DEVICE_EVENT_POWER_REMOVED:
+            /* VBUS is not available. We can detach the device */
+            USB_DEVICE_Detach(dObj->devHandle);
+            dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
+            break;
+
+        case USB_DEVICE_EVENT_SUSPENDED:
+        case USB_DEVICE_EVENT_RESUMED:
+        case USB_DEVICE_EVENT_ERROR:
+        default:
             
-        case USI_CDC_RCV:
-            if (dObj->rcvChar == USI_ESC_KEY_7E)
-            {
-                /* End of Message */
-                pMsg->length = pMsg->pDataRd - pMsg->pMessage;
-                dObj->pRcvMsg = NULL;
-                dObj->status = USI_CDC_IDLE;
-            }              
-            else if (dObj->rcvChar == USI_ESC_KEY_7D)
-            {
-                /* Escape character */
-                dObj->status = USI_CDC_ESC;
-            } 
-            else
-            {
-                /* Store character */
-                next = true;
-            }
-      
             break;
-            
-        case USI_CDC_ESC:
-            if (dObj->rcvChar == USI_ESC_KEY_5E)
-            {
-                /* Store character after escape it */
-                *pMsg->pDataRd++ = USI_ESC_KEY_7E;
-                dObj->status = USI_CDC_RCV;
-            }  
-            else if (dObj->rcvChar == USI_ESC_KEY_5D)
-            {
-                /* Store character after escape it */
-                *pMsg->pDataRd++ = USI_ESC_KEY_7D;
-                dObj->status = USI_CDC_RCV;
-            }
-            else
-            {
-                /* ERROR: Escape format */
-                _USI_CDC_ABORT_MSG_IN_QUEUE(dObj);
-                dObj->pRcvMsg = NULL;
-                dObj->status = USI_CDC_IDLE;
-            }
-      
-            break;
-    }    
-    
-    /* Update pointers */
-    if (next)
-    {
-        dObj->byteCount++;
-        if (dObj->byteCount == dObj->rdBufferSize)
-        {
-            /* ERROR: Overflow */
-            _USI_CDC_ABORT_MSG_IN_QUEUE(dObj);
-            dObj->pRcvMsg = NULL;
-            dObj->byteCount = 0;
-        }
-        else
-        {
-            *pMsg->pDataRd++ = dObj->rcvChar;
-        }        
     }
-    
-    /* Read next char */
-    dObj->plib->read(&dObj->rcvChar, 1);
 }
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: USI USART Service Common Interface Implementation
+// Section: USI CDC Service Common Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
@@ -309,22 +343,63 @@ DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData)
         return DRV_HANDLE_INVALID;
     }
     
-    dObj->plib = (SRV_USI_CDC_INTERFACE*)dObjInit->plib;
-    dObj->pRdBuffer = dObjInit->pRdBuffer;
-    dObj->rdBufferSize = dObjInit->rdBufferSize;
+    dObj->cdcInstanceIndex = dObjInit->cdcInstanceIndex;
+    dObj->cdcReadBuffer = dObjInit->cdcReadBuffer;
+    dObj->usiReadBuffer = dObjInit->usiReadBuffer;
+    dObj->cdcBufferSize = dObjInit->cdcBufferSize;
+    dObj->usiBufferSize = dObjInit->usiBufferSize;
     
-    dObj->pRcvMsg = NULL;
-    dObj->pMsgQueue = &gUsiCdcMsgQueue[index];
-    dObj->byteCount = 0;
+    dObj->cdcNumBytesRead = 0;
+    dObj->usiNumBytesRead = 0;
+    dObj->usiRdInIndex = dObj->usiReadBuffer;
+    dObj->usiRdOutIndex = dObj->usiReadBuffer;
+    
     dObj->cbFunc = NULL;
-    dObj->status = USI_CDC_IDLE;
+    dObj->devStatus = USI_CDC_IDLE;
+    dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
+
+    dObj->cdcIsReadComplete = true;
+    dObj->cdcIsWriteComplete = true;
+    dObj->usiIsReadComplete = false;
+    dObj->readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
+    dObj->writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
 
     return (DRV_HANDLE)index;
 }
 
-size_t USI_CDC_Write(DRV_HANDLE handle, void* pData, size_t length)
+DRV_HANDLE USI_CDC_Open(uint32_t index)
 {
-    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(handle);
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
+    
+    if (dObj == NULL)
+    {
+        return DRV_HANDLE_INVALID;
+    }
+    
+    if (index >= SRV_USI_CDC_CONNECTIONS)
+    {
+        return DRV_HANDLE_INVALID;
+    }
+
+    /* Open the USB device layer */
+    dObj->devHandle = USB_DEVICE_Open(dObj->cdcInstanceIndex, DRV_IO_INTENT_READWRITE);
+
+    if(dObj->devHandle != USB_DEVICE_HANDLE_INVALID)
+    {
+        /* Register a callback with device layer to get event notification (for end point 0) */
+        USB_DEVICE_EventHandlerSet(dObj->devHandle, _USI_CDC_DeviceEventHandler, (uintptr_t)dObj);
+        return (DRV_HANDLE)index;
+    }
+    else
+    {
+        return DRV_HANDLE_INVALID;
+    }
+}
+
+size_t USI_CDC_Write(uint32_t index, void* pData, size_t length)
+{
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
+    USB_DEVICE_CDC_RESULT result;
     
     /* Check handler */
     if (dObj == NULL)
@@ -332,7 +407,7 @@ size_t USI_CDC_Write(DRV_HANDLE handle, void* pData, size_t length)
         return 0;
     }
     
-    if (handle >= SRV_USI_CDC_CONNECTIONS)
+    if (index >= SRV_USI_CDC_CONNECTIONS)
     {
         return 0;
     }
@@ -341,19 +416,28 @@ size_t USI_CDC_Write(DRV_HANDLE handle, void* pData, size_t length)
     {
         return 0;
     }
-
-    /* Waiting for USART is free */
-    while (dObj->plib->writeIsBusy());
-
-    dObj->plib->write(pData, length);
     
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
+    {
+        return 0;
+    }
+    
+    result = USB_DEVICE_CDC_Write(dObj->cdcInstanceIndex,
+                &dObj->writeTransferHandle, pData, length,
+                USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+    
+    if ((result != USB_DEVICE_CDC_RESULT_OK) || (dObj->writeTransferHandle == USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID))
+    {
+        return 0;
+    }
+
     return length;
 }
 
-void USI_CDC_RegisterCallback(DRV_HANDLE handle, USI_CDC_CALLBACK cbFunc,
+void USI_CDC_RegisterCallback(uint32_t index, USI_CDC_CALLBACK cbFunc,
         uintptr_t context)
 {
-    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(handle);
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
     
     /* Check handler */
     if (dObj == NULL)
@@ -361,38 +445,31 @@ void USI_CDC_RegisterCallback(DRV_HANDLE handle, USI_CDC_CALLBACK cbFunc,
         return;
     }
     
-    if (handle >= SRV_USI_CDC_CONNECTIONS)
+    if (index >= SRV_USI_CDC_CONNECTIONS)
     {
         return;
     }
     
-    /* Set USART PLIB handler */
-    dObj->plib->readCallbackRegister(_USI_CDC_PLIB_CALLBACK, (uintptr_t)dObj);
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
+    {
+        return;
+    }
     
     /* Set callback function */
     dObj->cbFunc = cbFunc;
     
     /* Set context related to cbFunc */
     dObj->context = context;
-    
-    /* Launch reception */
-    dObj->plib->read(&dObj->rcvChar, 1);
 }
 
-void USI_CDC_Flush(DRV_HANDLE handle)
+void USI_CDC_Flush(uint32_t index)
 {
-    (void)handle;
+    (void)index;
 }
 
-void USI_CDC_Close(DRV_HANDLE handle)
+void USI_CDC_Close(uint32_t index)
 {
-    (void)handle;
-}
-
-void USI_CDC_Tasks ( DRV_HANDLE handle )
-{
-    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(handle);
-    USI_CDC_MSG* pMsg;
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
     
     /* Check handler */    
     if (dObj == NULL)
@@ -400,21 +477,80 @@ void USI_CDC_Tasks ( DRV_HANDLE handle )
         return;
     }
     
-    if (handle >= SRV_USI_CDC_CONNECTIONS)
+    if (index >= SRV_USI_CDC_CONNECTIONS)
     {
         return;
     }
     
-    /* Handle callback functions */
-    pMsg = dObj->pMsgQueue->front;
-    if ((pMsg != NULL) && (pMsg->length > 0))
-    {        
-        if (dObj->cbFunc)
+    dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
+}
+
+SRV_USI_STATUS USI_CDC_Status(uint32_t index)
+{
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
+    
+    /* Check handler */    
+    if (dObj == NULL)
+    {
+        return SRV_USI_STATUS_ERROR;
+    }
+    
+    if (index >= SRV_USI_CDC_CONNECTIONS)
+    {
+        return SRV_USI_STATUS_ERROR;
+    }
+
+    return dObj->usiStatus;
+}
+
+void USI_CDC_Tasks (uint32_t index)
+{
+    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
+    
+    /* Check handler */    
+    if (dObj == NULL)
+    {
+        return;
+    }
+    
+    if (index >= SRV_USI_CDC_CONNECTIONS)
+    {
+        return;
+    }
+    
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
+    {
+        return;
+    }
+    
+    if(dObj->cdcIsReadComplete == true)
+    {
+        /* Extract CDC received data to USI buffer */
+        if (dObj->cdcNumBytesRead)
         {
-            dObj->cbFunc(pMsg->pMessage, pMsg->length, dObj->context);
+            _USI_CDC_Transfer_Received_Data(dObj);
         }
         
-        /* Remove Message from Queue */
-        _USI_CDC_GET_MSG_FROM_QUEUE(dObj);
-    }
+        /* Launch next CDC reception process */
+        dObj->cdcIsReadComplete = false;
+        USB_DEVICE_CDC_Read (dObj->cdcInstanceIndex, &dObj->readTransferHandle, dObj->cdcReadBuffer,
+                        dObj->cdcBufferSize);
+        
+        /* Report Reception callback */
+        if (dObj->usiIsReadComplete)
+        {
+            if (dObj->cbFunc)
+            {
+                dObj->cbFunc(dObj->usiRdOutIndex, dObj->usiNumBytesRead, dObj->context);
+            }
+            
+            /* Update Out Pointer */
+            dObj->usiRdOutIndex += dObj->usiNumBytesRead;
+            if (dObj->usiRdOutIndex == dObj->usiRdInIndex) {
+                /* Restart In/Out Pointers */
+                dObj->usiRdOutIndex = dObj->usiReadBuffer;
+                dObj->usiRdInIndex = dObj->usiReadBuffer;
+            }
+        }
+    }            
 }

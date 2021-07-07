@@ -199,6 +199,8 @@ typedef enum
         
 typedef enum
 {
+    SRV_USI_STATUS_UNINITIALIZED,
+
     SRV_USI_STATUS_NOT_CONFIGURED,
 
     SRV_USI_STATUS_CONFIGURED,

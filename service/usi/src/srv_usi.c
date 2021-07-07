@@ -396,10 +396,10 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     /* Allocate the service object */
     dObj = &gSrvUSIOBJ[index];
     
-    if ((dObj->status == SYS_STATUS_UNINITIALIZED) && usiInit)
+   if ((dObj->status == SRV_USI_STATUS_UNINITIALIZED) && usiInit)
     {
         dObj->inUse                 = false;
-        dObj->status                = SYS_STATUS_READY;
+        dObj->status                = SRV_USI_STATUS_NOT_CONFIGURED;
         dObj->devIndex              = usiInit->deviceIndex;
         dObj->devDesc               = usiInit->consDevDesc;
 	    dObj->pWrBuffer             = usiInit->pWrBuffer;
@@ -428,13 +428,13 @@ SRV_USI_HANDLE SRV_USI_Open(
         return SRV_USI_HANDLE_INVALID;
     }
 
-    if(dObj->status != SYS_STATUS_READY)
+    if(dObj->status != SRV_USI_STATUS_NOT_CONFIGURED)
     {
         return SRV_USI_HANDLE_INVALID;
     }
     
-    /* Register reception callback */
-    dObj->devDesc->setReadCallback(dObj->devIndex, _SRV_USI_Callback_Handle, (uintptr_t)dObj);
+    /* Open USI device */
+    dObj->devDesc->open(dObj->devIndex);
 
     return ((SRV_USI_HANDLE)dObj);
 }
@@ -451,7 +451,7 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
 
     dObj = (SRV_USI_OBJ*)handle;
 
-    if((dObj->status != SYS_STATUS_READY) || (dObj->inUse == false))
+    if((dObj->status != SRV_USI_STATUS_CONFIGURED) || (dObj->inUse == false))
     {
         return;
     }
@@ -463,15 +463,22 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
 
 }
 
-SYS_STATUS SRV_USI_Status( SYS_MODULE_OBJ object)
+SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle )
 {
-    /* Validate the request */
-    if( (object == SYS_MODULE_OBJ_INVALID) || (object >= SRV_USI_INSTANCES_NUMBER) )
+    SRV_USI_OBJ* dObj;
+
+    /* Validate the driver handle */
+    if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
-        return SYS_STATUS_UNINITIALIZED;
+        return SRV_USI_STATUS_ERROR;
     }
 
-    return (gSrvUSIOBJ[object].status);
+    dObj = (SRV_USI_OBJ*)handle;
+    
+    /* Check USI device status */
+    dObj->status = dObj->devDesc->status(dObj->devIndex);
+
+    return dObj->status;
 }
 
 void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle, 
@@ -504,6 +511,9 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
     /* Register callback to the USI protocol */ 
     cb = &(dObj->callback[callbackIndex]);
     *cb = callback;
+    
+    /* Register reception callback */
+    dObj->devDesc->setReadCallback(dObj->devIndex, _SRV_USI_Callback_Handle, (uintptr_t)dObj);
     
     /* Set USI as used */ 
     dObj->inUse = true;
