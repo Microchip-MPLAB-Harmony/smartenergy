@@ -425,7 +425,7 @@ def instantiateComponent(plcComponent):
     plcTXRXDMA = plcComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
     plcTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
     plcTXRXDMA.setDefaultValue(0)
-    plcTXRXDMA.setVisible(True) #### Change to hide it
+    plcTXRXDMA.setVisible(False) #### Change to hide it
     plcTXRXDMA.setReadOnly(True)
 
     global plcTXDMAChannel
@@ -829,24 +829,39 @@ def onAttachmentConnected(source, target):
         plibUsed.setValue(remoteID.upper())
 
         # Set SPI baudrate
-        plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        if "FLEXCOM" in remoteID.upper():
+            plibBaudrate = remoteComponent.getSymbolByID("FLEXCOM_SPI_BAUD_RATE")
+        else:
+            plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         plibBaudrate.clearValue()
         plibBaudrate.setValue(8000000)
         print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
 
-        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
-        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+        if (isDMAPresent == True):
 
-        # Do not change the order as DMA Channels needs to be allocated
-        # after setting the plibUsed symbol
-        # Both device and connected plib should support DMA
-        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
-            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
-            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(1)
+            dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+            dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+
+            # Do not change the order as DMA Channels needs to be allocated
+            # after setting the plibUsed symbol
+            # Both device and connected plib should support DMA
+            if dmaChannelSym != None and dmaRequestSym != None:
+                localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
+                localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(1)
+            else:
+                print("[CHIRS_dbg] : DMA ERROR")
+                localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
+                localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
-            print("[CHIRS_dbg] : DMA ERROR")
-            localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
-            localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
+            if "FLEXCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
+                remoteSym.clearValue()
+                remoteSym.setValue(True)
+                remoteSym.setReadOnly(True)
+                remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                remoteSym.clearValue()
+                remoteSym.setValue(True)
+                remoteSym.setReadOnly(True)
 
   
 def onAttachmentDisconnected(source, target):
@@ -862,25 +877,37 @@ def onAttachmentDisconnected(source, target):
     if connectID == "drv_plc_phy_SPI_dependency" :
         print("[CHIRS_dbg] : drv_plc_phy_SPI_dependency")
 
-        dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
-        dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
 
         dummyDict = {}
         dummyDict = Database.sendMessage(remoteID, "SPI_MASTER_MODE", {"isReadOnly":False})
         dummyDict = Database.sendMessage(remoteID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":False})
 
-        # Do not change the order as DMA Channels needs to be allocated
-        # after setting the plibUsed symbol
-        # Both device and connected plib should support DMA
-        if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
-            localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(0)
-            localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
-        else:
-            print("[CHIRS_dbg] : DMA ERROR")
-            localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
-            localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
+        if (isDMAPresent == True):
 
-        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
+            dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
+            dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
+
+            # Do not change the order as DMA Channels needs to be allocated
+            # after setting the plibUsed symbol
+            # Both device and connected plib should support DMA
+            if isDMAPresent == True and dmaChannelSym != None and dmaRequestSym != None:
+                localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(0)
+                localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
+            else:
+                print("[CHIRS_dbg] : DMA ERROR")
+                localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
+                localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
+        else:
+            if "FLEXCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
+                remoteSym.clearValue()
+                remoteSym.setReadOnly(False)
+                remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                remoteSym.clearValue()
+                remoteSym.setReadOnly(False)
+
+        
 
 def requestAndAssignTxDMAChannel(symbol, event):
     global plcTXDMAChannelComment
