@@ -1,15 +1,13 @@
 // <editor-fold defaultstate="collapsed" desc="DRV_G3_MACRT Initialization Data">
 
-<#if DRV_G3_MACRT_EXTERNAL_ADDRESSING == false> 
-/* PLC Binary file addressing */
+<#if DRV_PLC_BIN_STATIC_ADDRESSING == false> 
+/* PLC MAC RT Binary file addressing */
 extern uint8_t g3_mac_rt_bin_start;
 extern uint8_t g3_mac_rt_bin_end;
-<#if DRV_G3_MACRT_PLC_PROFILE == "4">
 extern uint8_t g3_mac_rt_bin2_start;
 extern uint8_t g3_mac_rt_bin2_end;
 </#if>
 
-</#if>
 /* G3 MAC RT Driver Initialization Data */
 DRV_G3_MACRT_INIT drvG3MacRtInitData = {
 
@@ -19,12 +17,9 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
     /* G3 MAC RT Number of clients */
     .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  
 
-    /* G3 MAC RT PLC profile */
-    .plcProfile = DRV_G3_MACRT_PLC_PROFILE,
-
     /* G3 MAC RT Specification Compliance */
     .plcSpecification = DRV_G3_MACRT_SPEC_COMPLIANCE,
- <#if DRV_G3_MACRT_EXTERNAL_ADDRESSING == true>   
+<#if DRV_PLC_BIN_STATIC_ADDRESSING == true> 
  
     /* PLC Binary start address */
     .binStartAddress = 0,
@@ -32,12 +27,22 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
     /* PLC Binary end address */
     .binEndAddress = 0,
 <#else>
+  <#if ((DRV_PLC_BAND_IN_USE >= 5) && (DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
  
-    /* PLC Binary start address */
+    /* PLC MAC RT Binary start address */
+    .binStartAddress = (uint32_t)&g3_mac_rt_bin2_start,
+    
+    /* PLC MAC RT Binary end address */
+    .binEndAddress = (uint32_t)&g3_mac_rt_bin2_end,
+
+  <#else>
+ 
+    /* PLC MAC RT Binary start address */
     .binStartAddress = (uint32_t)&g3_mac_rt_bin_start,
     
-    /* PLC Binary end address */
+    /* PLC MAC RT Binary end address */
     .binEndAddress = (uint32_t)&g3_mac_rt_bin_end,
+  </#if>
 </#if>  
 
     /* Secure Mode */

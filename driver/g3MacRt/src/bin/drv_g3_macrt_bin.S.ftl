@@ -9,7 +9,7 @@
 *******************************************************************************/
 
 /*****************************************************************************
- Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+ Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 
 Microchip Technology Inc. and its subsidiaries.
 
@@ -36,27 +36,33 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
   .section .rodata
   .global g3_mac_rt_bin_start
   .global g3_mac_rt_bin_end
-<#if DRV_G3_MACRT_PLC_PROFILE == "4">
   .global g3_mac_rt_bin2_start
   .global g3_mac_rt_bin2_end
-</#if>
 
   .align 8
 g3_mac_rt_bin_start:
-<#if (DRV_G3_MACRT_PLC_PROFILE == "0") || (DRV_G3_MACRT_PLC_PROFILE == "4")>
+<#if DRV_PLC_BAND_IN_USE == 1>
   .incbin "./G3_MAC_RT_CENA.bin"
-<#elseif DRV_G3_MACRT_PLC_PROFILE == "1">
-  .incbin "./G3_MAC_RT_CENB.bin"
-<#elseif DRV_G3_MACRT_PLC_PROFILE == "2">
+<#elseif DRV_PLC_BAND_IN_USE == 2 || DRV_PLC_BAND_IN_USE == 5 || DRV_PLC_BAND_IN_USE == 6>
   .incbin "./G3_MAC_RT_FCC.bin"
-<#elseif DRV_G3_MACRT_PLC_PROFILE == "3">
-  .incbin "./G3_MAC_RT_ARIB.bin"  
+<#elseif DRV_PLC_BAND_IN_USE == 3 || DRV_PLC_BAND_IN_USE == 7 || DRV_PLC_BAND_IN_USE == 8>
+  .incbin "./PLC_PHY_G3_ARIB.bin"
+<#elseif DRV_PLC_BAND_IN_USE == 4>
+  .incbin "./G3_MAC_RT_CENB.bin"
 </#if>
   .align 8
-g3_mac_rt_bin_end:
-<#if DRV_G3_MACRT_PLC_PROFILE == "4">
+plc_phy_bin_end:
+<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
 g3_mac_rt_bin2_start:
-  .incbin "./G3_MAC_RT_FCC.bin"
+  .incbin "./G3_MAC_RT_CENA.bin"
   .align 8
+g3_mac_rt_bin2_end:
+<#elseif (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 9)>
+g3_mac_rt_bin2_start:
+  .incbin "./G3_MAC_RT_CENB.bin"
+  .align 8
+g3_mac_rt_bin2_end:
+<#else>
+g3_mac_rt_bin2_start:
 g3_mac_rt_bin2_end:
 </#if>
