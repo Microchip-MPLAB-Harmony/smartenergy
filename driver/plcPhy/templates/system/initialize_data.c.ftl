@@ -4,7 +4,7 @@
 /* PLC Binary file addressing */
 extern uint8_t plc_phy_bin_start;
 extern uint8_t plc_phy_bin_end;
-<#if ((DRV_PLC_PROFILE == "G3") && (DRV_PLC_COUP_G3_MULTIBAND == true))>
+<#if (DRV_PLC_PROFILE == "G3")>
 extern uint8_t plc_phy_bin2_start;
 extern uint8_t plc_phy_bin2_end;
 </#if>
@@ -29,13 +29,23 @@ DRV_PLC_PHY_INIT drvPlcPhyInitData = {
     /* PLC Binary end address */
     .binEndAddress = 0,
 <#else>
+  <#if ((DRV_PLC_BAND_IN_USE >= 6) && (DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
+ 
+    /* PLC Binary start address */
+    .binStartAddress = (uint32_t)&plc_phy_bin2_start,
+    
+    /* PLC Binary end address */
+    .binEndAddress = (uint32_t)&plc_phy_bin2_end,
+
+  <#else>
  
     /* PLC Binary start address */
     .binStartAddress = (uint32_t)&plc_phy_bin_start,
     
     /* PLC Binary end address */
     .binEndAddress = (uint32_t)&plc_phy_bin_end,
-</#if>  
+  </#if>
+</#if>
 
     /* Secure Mode */
     .secure = DRV_PLC_SECURE,

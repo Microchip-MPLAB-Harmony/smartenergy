@@ -101,8 +101,10 @@
       
 /* Tone Map size for Cenelec(A,B) bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1
-/* Tone Map size for FCC and ARIB bandplans */
+/* Tone Map size for FCC bandplan */
 #define TONE_MAP_SIZE_FCC                          3
+/* Tone Map size for ARIB bandplan */
+#define TONE_MAP_SIZE_ARIB                         3
 /* Maximum number of protocol carriers */
 #define PROTOCOL_CARRIERS_MAX                      NUM_CARRIERS_FCC
 /* Maximum number of tone map */
