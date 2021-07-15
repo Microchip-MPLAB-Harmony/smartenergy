@@ -131,16 +131,30 @@ gain_vlow_arib_c11  = [403, 200, 451]
 
 def updatePlcCouplingParameters():
     global pCoupPLCRAuxBranch
+    global pCoupPLCMainPhyG3Band
+    global pCoupPLCAuxPhyG3Band
+
+    if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
+        print("------------------------- [CHRIS_dbg]: Encontrado PLC_PHY driver, atualizamos parametros")
+        plcDriver = "drvPlcPhy"
+    elif Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE") != None:
+        print("------------------------- [CHRIS_dbg]: Encontrado PLC_G3_MACRT driver, atualizamos parametros")
+        plcDriver = "drvG3MacRt"
+    else:
+        plcDriver = ""
+        print("------------------------- [CHRIS_dbg]: NO Encontrado DRV_PLC_MODE")
+        return
     
-    plcDevice = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE")
-    plcPhyBand = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND")
-    plcHighAtt = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_G3_HIGH_ATTENUATION")
-    plcMultiband = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_G3_MULTIBAND")
-    plcInternal = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_G3_INTERNAL")
-    plcBandAux = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND_AUX")
+    plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
+    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND")
+    plcHighAtt = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_HIGH_ATTENUATION")
+    plcMultiband = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_MULTIBAND")
+    plcInternal = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_INTERNAL")
+    plcBandAux = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND_AUX")
 
     pCoupPLCRAuxBranch.setVisible(False)
     auxiliaryBand = False
+    pCoupPLCAuxPhyG3Band.setValue("None")
 
     if (plcDevice == "PL460"):
         if plcPhyBand == "CEN-A":
@@ -153,6 +167,7 @@ def updatePlcCouplingParameters():
             gain_high = gain_high_cena
             gain_vlow = gain_vlow_cena
             line_drv  = drv_conf_cena
+            pCoupPLCMainPhyG3Band.setValue("CEN-A")
 
         elif plcPhyBand == "CEN-B":
             print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL460 G3 CEN-B")
@@ -164,8 +179,14 @@ def updatePlcCouplingParameters():
             gain_high = gain_high_cenb
             gain_vlow = gain_vlow_cenb
             line_drv  = drv_conf_cenb
+            pCoupPLCMainPhyG3Band.setValue("CEN-B")
 
         elif plcPhyBand == "FCC" or plcPhyBand == "ARIB":
+            if (plcPhyBand == "FCC"):
+                pCoupPLCMainPhyG3Band.setValue("FCC")
+            else:
+                pCoupPLCMainPhyG3Band.setValue("ARIB")
+
             if (plcHighAtt == True):
                 print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
                 rms_high  = rms_high_fcc_himp 
@@ -189,6 +210,7 @@ def updatePlcCouplingParameters():
 
             if (plcMultiband == True):
                 auxiliaryBand = True
+
                 if (plcBandAux == "CEN-A"):
                     print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
                     rms_high_aux  = rms_high_cena_c07 
@@ -199,6 +221,7 @@ def updatePlcCouplingParameters():
                     gain_high_aux = gain_high_cena_c07
                     gain_vlow_aux = gain_vlow_cena_c07
                     line_drv_aux  = drv_conf_cena_c07
+                    pCoupPLCAuxPhyG3Band.setValue("CEN-A")
                 else:
                     # "CEN-B"
                     print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
@@ -210,6 +233,7 @@ def updatePlcCouplingParameters():
                     gain_high_aux = gain_high_cenb_c14
                     gain_vlow_aux = gain_vlow_cenb_c14
                     line_drv_aux  = drv_conf_cenb_c14
+                    pCoupPLCAuxPhyG3Band.setValue("CEN-B")
 
     else: # "PL360"
         line_drv = 0
@@ -223,8 +247,10 @@ def updatePlcCouplingParameters():
             dacc      = dacc_cena_c07
             gain_high = gain_high_cena_c07
             gain_vlow = gain_vlow_cena_c07
+            pCoupPLCMainPhyG3Band.setValue("CEN-A")
 
         elif plcPhyBand == "CEN-B":
+            pCoupPLCMainPhyG3Band.setValue("CEN-B")
             if (plcInternal == True):
                 print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 CEN-B Internal")
                 rms_high  = rms_high_cenb_c12
@@ -245,6 +271,7 @@ def updatePlcCouplingParameters():
                 gain_vlow = gain_vlow_cenb_c14
 
         elif plcPhyBand == "FCC":
+            pCoupPLCMainPhyG3Band.setValue("FCC")
             if (plcHighAtt == True):
                 print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 FCC HIGHT ATT")
                 rms_high  = rms_high_fcc_c11 
@@ -274,8 +301,10 @@ def updatePlcCouplingParameters():
                 dacc_aux      = dacc_cena_c07     
                 gain_high_aux = gain_high_cena_c07
                 gain_vlow_aux = gain_vlow_cena_c07
+                pCoupPLCAuxPhyG3Band.setValue("CEN-A")
 
         elif plcPhyBand == "ARIB":
+            pCoupPLCMainPhyG3Band.setValue("ARIB")
             if (plcHighAtt == True):
                 print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 ARIB HIGHT ATT")
                 rms_high  = rms_high_arib_c11 
@@ -305,6 +334,7 @@ def updatePlcCouplingParameters():
                 dacc_aux      = dacc_cena_c07     
                 gain_high_aux = gain_high_cena_c07
                 gain_vlow_aux = gain_vlow_cena_c07
+                pCoupPLCAuxPhyG3Band.setValue("CEN-A")
 
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_LINE_DRIVER", line_drv)
@@ -381,6 +411,12 @@ def instantiateComponent(pCoupComponentCommon):
 
     pCoupPLCMainBranch = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_MAIN_BRANCH", None)
     pCoupPLCMainBranch.setLabel("Main Transmission branch")
+
+    global pCoupPLCMainPhyG3Band
+    pCoupPLCMainPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_MAIN_G3_BAND", pCoupPLCMainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    pCoupPLCMainPhyG3Band.setLabel("Phy G3 Band")
+    pCoupPLCMainPhyG3Band.setDefaultValue("CEN-A")
+    pCoupPLCMainPhyG3Band.setReadOnly(True)
     
     pCoupPLCNumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_NUM_TX_LVL", pCoupPLCMainBranch)
     pCoupPLCNumTxLvl.setLabel("Number of TX levels")
@@ -452,7 +488,13 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPLCRAuxBranch = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_AUX_BRANCH", None)
     pCoupPLCRAuxBranch.setLabel("Auxiliary Transmission branch")
     pCoupPLCRAuxBranch.setVisible(False)
-    
+
+    global pCoupPLCAuxPhyG3Band
+    pCoupPLCAuxPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_AUX_G3_BAND", pCoupPLCRAuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
+    pCoupPLCAuxPhyG3Band.setLabel("Phy G3 Band")
+    pCoupPLCAuxPhyG3Band.setDefaultValue("None")
+    pCoupPLCAuxPhyG3Band.setReadOnly(True)
+
     pCoupPLCAuxNumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_AUX_NUM_TX_LVL", pCoupPLCRAuxBranch)
     pCoupPLCAuxNumTxLvl.setLabel("Number of TX levels")
     pCoupPLCAuxNumTxLvl.setDefaultValue(8)
@@ -543,8 +585,4 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupSystemDefFile.setMarkup(True)
 
     # Update PLC Profile according to PLC PHY driver configuration
-    if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
-        print("------------------------- [CHRIS_dbg]: Encontrado PLC_PHY driver, atualizamos parametros")
-        updatePlcCouplingParameters()
-    else:
-        print("------------------------- [CHRIS_dbg]: NO Encontrado PLC_PHY driver")
+    updatePlcCouplingParameters()

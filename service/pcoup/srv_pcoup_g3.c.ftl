@@ -49,7 +49,11 @@
 #include "configuration.h"
 #include "driver/driver_common.h"
 #include "service/pcoup/srv_pcoup.h"
+<#if (drvPlcPhy)??>
 #include "driver/plc/phy/drv_plc_phy_comm.h"
+<#elseif (drvG3MacRt)??>
+#include "driver/plc/g3MacRt/drv_g3_macrt_comm.h"
+</#if>
 
 // *****************************************************************************
 /* PLC Coupling configuration data
@@ -73,7 +77,7 @@ static const SRV_PLC_PCOUP srvPlcCoup = {
   SRV_PCOUP_PRED_HIGH_TBL, SRV_PCOUP_PRED_VLOW_TBL
 };
 
-<#if (drvPlcPhy.DRV_PLC_G3_BAND == "FCC" || drvPlcPhy.DRV_PLC_G3_BAND == "ARIB") && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>   
+<#if (SRV_PCOUP_MAIN_G3_BAND == "FCC" || SRV_PCOUP_MAIN_G3_BAND == "ARIB") && (SRV_PCOUP_AUX_G3_BAND != "None")>   
 static const SRV_PLC_PCOUP srvPlcCoupAux = {
   SRV_PCOUP_AUX_RMS_HIGH_TBL, SRV_PCOUP_AUX_RMS_VLOW_TBL,
   SRV_PCOUP_AUX_THRS_HIGH_TBL, SRV_PCOUP_AUX_THRS_VLOW_TBL,
@@ -97,7 +101,7 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
   } 
   else 
   {
-<#if (drvPlcPhy.DRV_PLC_G3_BAND == "FCC" || drvPlcPhy.DRV_PLC_G3_BAND == "ARIB") && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>    
+<#if (SRV_PCOUP_MAIN_G3_BAND == "FCC" || SRV_PCOUP_MAIN_G3_BAND == "ARIB") && (SRV_PCOUP_AUX_G3_BAND != "None")>    
     return (SRV_PLC_PCOUP *)&srvPlcCoupAux;
 <#else>
     /* Auxiliary Branch has not been configured. Please review project configuration with MHC */
@@ -115,11 +119,11 @@ uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
 {
   if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
   {
-<#if (drvPlcPhy.DRV_PLC_G3_BAND == "CEN-A")>
+<#if (SRV_PCOUP_MAIN_G3_BAND == "CEN-A")>
     return G3_CEN_A;
-<#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "CEN-B")>
+<#elseif (SRV_PCOUP_MAIN_G3_BAND == "CEN-B")>
     return G3_CEN_B;
-<#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "FCC")>
+<#elseif (SRV_PCOUP_MAIN_G3_BAND == "FCC")>
     return G3_FCC;
 <#else>
     return G3_ARIB;
@@ -127,8 +131,8 @@ uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
   } 
   else 
   {
-<#if (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>    
-  <#if (drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-A")>
+<#if (SRV_PCOUP_AUX_G3_BAND != "None")>    
+  <#if (SRV_PCOUP_AUX_G3_BAND == "CEN-A")>
     return G3_CEN_A;
   <#else>
     return G3_CEN_B;

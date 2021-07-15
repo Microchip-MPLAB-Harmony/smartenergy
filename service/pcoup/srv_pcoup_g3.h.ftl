@@ -71,25 +71,33 @@
 // DOM-IGNORE-END
 
 /* PLC Phy Coupling Default Branch */
-<#if drvPlcPhy.DRV_PLC_G3_BAND_AUX_ACTIVE == true>
+<#if (drvPlcPhy)??>
+  <#if ((drvPlcPhy.DRV_PLC_BAND_IN_USE > 4) && (drvPlcPhy.DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_AUXILIARY_BRANCH
-<#else>
+  <#else>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
+  </#if>
+<#elseif (drvG3MacRt)??>
+  <#if ((drvG3MacRt.DRV_PLC_BAND_IN_USE > 4) && (drvG3MacRt.DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
+#define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_AUXILIARY_BRANCH
+  <#else>
+#define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
+  </#if>
 </#if>
 
 /* PLC Phy Coupling Configuration Options */
 #define SRV_PCOUP_MAX_NUM_TX_LEVELS              ${SRV_PCOUP_NUM_TX_LVL?string}
 
-<#if drvPlcPhy.DRV_PLC_G3_BAND == "CEN-A">
+<#if SRV_PCOUP_MAIN_G3_BAND == "CEN-A">
 /* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   36
-<#elseif drvPlcPhy.DRV_PLC_G3_BAND == "CEN-B">
+<#elseif SRV_PCOUP_MAIN_G3_BAND == "CEN-B">
 /* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   16
-<#elseif drvPlcPhy.DRV_PLC_G3_BAND == "FCC">
+<#elseif SRV_PCOUP_MAIN_G3_BAND == "FCC">
 /* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   72
-<#elseif drvPlcPhy.DRV_PLC_G3_BAND == "ARIB">
+<#elseif SRV_PCOUP_MAIN_G3_BAND == "ARIB">
 /* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   54
 </#if>
@@ -106,21 +114,21 @@
 
 #define SRV_PCOUP_LINE_DRV_CONF                  ${SRV_PCOUP_LINE_DRIVER?string}
 
-<#if drvPlcPhy.DRV_PLC_MODE == "PL460"> 
-  <#if drvPlcPhy.DRV_PLC_G3_BAND == "CEN-A">
+<#if (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_MODE == "PL460")) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_MODE == "PL460")))> 
+  <#if SRV_PCOUP_MAIN_G3_BAND == "CEN-A">
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x5620, 0x59C7, 0x5E1E, 0x6333, 0x698B, 0x6F03, 0x72CD, 0x760E, 0x7904, 0x7B57, 0x7D2C, 0x7E72, 0x7F0F, 0x7FC6, \
                                                   0x7FFF, 0x7ED1, 0x7D11, 0x7BCE, 0x7A1A, 0x777C, 0x7496, 0x720F, 0x6F8E, 0x6BE0, 0x6780, 0x6357, 0x5F5E, 0x5C0C, \
                                                   0x597B, 0x5782, 0x572D, 0x57A2, 0x5823, 0x59F2, 0x5D86, 0x6153}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7F81, 0x7E57, 0x7C6F, 0x7A35, 0x771F, 0x730B, 0x6E99, 0x6A40, 0x6654, 0x62C6, 0x5F77, 0x5CE6, 0x5B68, \
                                                   0x5A7B, 0x5A08, 0x5A66, 0x5BAD, 0x5D58, 0x5F29, 0x6109, 0x6338, 0x6539, 0x6686, 0x672E, 0x67D2, 0x686D, 0x68D2, \
                                                   0x68F6, 0x6927, 0x6995, 0x6989, 0x68C3, 0x68D1, 0x69AA, 0x6AC3}
-  <#elseif drvPlcPhy.DRV_PLC_G3_BAND == "CEN-B">
+  <#elseif SRV_PCOUP_MAIN_G3_BAND == "CEN-B">
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}  
-  <#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "FCC") || (drvPlcPhy.DRV_PLC_G3_BAND == "ARIB")>
-    <#if drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION == true> 
+  <#elseif (SRV_PCOUP_MAIN_G3_BAND == "FCC") || (SRV_PCOUP_MAIN_G3_BAND == "ARIB")>
+    <#if (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION == true)) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_COUP_G3_HIGH_ATTENUATION == true)))> 
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x6FFD, 0x6AD0, 0x65CF, 0x6073, 0x5AF7, 0x5618, 0x5158, 0x4CA7, 0x4869, 0x44EC, 0x4222, 0x3FD7, 0x3E4E, 0x3DB9, \
                                                   0x3DC3, 0x3E05, 0x3E97, 0x3F8B, 0x407B, 0x4130, 0x41D1, 0x4285, 0x4330, 0x4379, 0x4394, 0x43C5, 0x4407, 0x43FA, \
                                                   0x43C6, 0x43B2, 0x43C5, 0x43B2, 0x435D, 0x4359, 0x43AD, 0x43FB, 0x4437, 0x44CD, 0x45EC, 0x46C7, 0x47D3, 0x48F6, \
@@ -149,19 +157,19 @@
     </#if>
   </#if>
 <#else>
-  <#if drvPlcPhy.DRV_PLC_G3_BAND == "CEN-A">
+  <#if SRV_PCOUP_MAIN_G3_BAND == "CEN-A">
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x670A, 0x660F, 0x676A, 0x6A6B, 0x6F3F, 0x7440, 0x74ED, 0x7792, 0x762D, 0x7530, 0x7938, 0x7C0A, 0x7C2A, 0x7B0E, \
                                                   0x7AF2, 0x784B, 0x7899, 0x76F9, 0x76D6, 0x769F, 0x775D, 0x70C0, 0x6EB9, 0x6F18, 0x6F1E, 0x6FA2, 0x6862, 0x67C9, \
                                                   0x68F9, 0x68A5, 0x6CA3, 0x7153, 0x7533, 0x750B, 0x7B59, 0x7FFF}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7DB1, 0x7CE6, 0x7B36, 0x772F, 0x7472, 0x70AA, 0x6BC2, 0x682D, 0x6618, 0x6384, 0x6210, 0x61D7, 0x6244, \
                                                   0x6269, 0x63A8, 0x6528, 0x65CC, 0x67F6, 0x693B, 0x6B13, 0x6C29, 0x6D43, 0x6E26, 0x6D70, 0x6C94, 0x6BB5, 0x6AC9, \
                                                   0x6A5F, 0x6B65, 0x6B8C, 0x6A62, 0x6CEC, 0x6D5A, 0x6F9D, 0x6FD3}   
-  <#elseif drvPlcPhy.DRV_PLC_G3_BAND == "CEN-B">
+  <#elseif SRV_PCOUP_MAIN_G3_BAND == "CEN-B">
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}  
-  <#elseif (drvPlcPhy.DRV_PLC_G3_BAND == "FCC") || (drvPlcPhy.DRV_PLC_G3_BAND == "ARIB")>
+  <#elseif (SRV_PCOUP_MAIN_G3_BAND == "FCC") || (SRV_PCOUP_MAIN_G3_BAND == "ARIB")>
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
@@ -177,14 +185,15 @@
   </#if>
 </#if>
 
-<#if (drvPlcPhy.DRV_PLC_G3_BAND == "FCC" || drvPlcPhy.DRV_PLC_G3_BAND == "ARIB") && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)>
+<#if (SRV_PCOUP_MAIN_G3_BAND == "FCC" || SRV_PCOUP_MAIN_G3_BAND == "ARIB") && 
+(((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_COUP_G3_MULTIBAND == true)))>
 /* PLC Phy Coupling Configuration Options */
 #define SRV_PCOUP_AUX_MAX_NUM_TX_LEVELS          ${SRV_PCOUP_AUX_NUM_TX_LVL?string}
 
-<#if drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-A">
+<#if SRV_PCOUP_AUX_G3_BAND == "CEN-A">
 /* Equalization number of coefficients (number of carriers) for Auxiliary branch */
 #define SRV_PCOUP_AUX_EQU_NUM_COEF               36
-<#elseif drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-B">
+<#elseif SRV_PCOUP_AUX_G3_BAND == "CEN-B">
 /* Equalization number of coefficients (number of carriers) for Auxiliary branch */
 #define SRV_PCOUP_AUX_EQU_NUM_COEF               16
 </#if>
@@ -201,14 +210,14 @@
 
 #define SRV_PCOUP_AUX_LINE_DRV_CONF              ${SRV_PCOUP_AUX_LINE_DRIVER?string}
 
-  <#if drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-A">  
+  <#if SRV_PCOUP_AUX_G3_BAND == "CEN-A">  
 #define SRV_PCOUP_AUX_PRED_HIGH_TBL              {0x670A, 0x660F, 0x676A, 0x6A6B, 0x6F3F, 0x7440, 0x74ED, 0x7792, 0x762D, 0x7530, 0x7938, 0x7C0A, 0x7C2A, 0x7B0E, \
                                                   0x7AF2, 0x784B, 0x7899, 0x76F9, 0x76D6, 0x769F, 0x775D, 0x70C0, 0x6EB9, 0x6F18, 0x6F1E, 0x6FA2, 0x6862, 0x67C9, \
                                                   0x68F9, 0x68A5, 0x6CA3, 0x7153, 0x7533, 0x750B, 0x7B59, 0x7FFF}
 #define SRV_PCOUP_AUX_PRED_VLOW_TBL              {0x7FFF, 0x7DB1, 0x7CE6, 0x7B36, 0x772F, 0x7472, 0x70AA, 0x6BC2, 0x682D, 0x6618, 0x6384, 0x6210, 0x61D7, 0x6244, \
                                                   0x6269, 0x63A8, 0x6528, 0x65CC, 0x67F6, 0x693B, 0x6B13, 0x6C29, 0x6D43, 0x6E26, 0x6D70, 0x6C94, 0x6BB5, 0x6AC9, \
                                                   0x6A5F, 0x6B65, 0x6B8C, 0x6A62, 0x6CEC, 0x6D5A, 0x6F9D, 0x6FD3}  
-  <#elseif drvPlcPhy.DRV_PLC_G3_BAND_AUX == "CEN-B">
+  <#elseif SRV_PCOUP_AUX_G3_BAND == "CEN-B">
 #define SRV_PCOUP_AUX_PRED_HIGH_TBL              {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}
 #define SRV_PCOUP_AUX_PRED_VLOW_TBL              {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
