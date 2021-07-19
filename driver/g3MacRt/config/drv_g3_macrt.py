@@ -285,11 +285,11 @@ def instantiateComponent(g3MacRtComponent):
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
 
-    # plcCDPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
-    # plcCDPin.setLabel("Carrier Detect Pin")
-    # plcCDPin.setDefaultValue(0)
-    # plcCDPin.setOutputMode("Key")
-    # plcCDPin.setDisplayMode("Description")
+    plcCDPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
+    plcCDPin.setLabel("Carrier Detect Pin")
+    plcCDPin.setDefaultValue(0)
+    plcCDPin.setOutputMode("Key")
+    plcCDPin.setDisplayMode("Description")
 
     plcStbyPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", None)
     plcStbyPin.setLabel("Stand By Pin")
@@ -317,7 +317,7 @@ def instantiateComponent(g3MacRtComponent):
         plcExtIntPin.addKey(key, value, description)
         plcResetPin.addKey(key, value, description)
         plcLDOEnPin.addKey(key, value, description)
-        # plcCDPin.addKey(key, value, description)
+        plcCDPin.addKey(key, value, description)
         plcStbyPin.addKey(key, value, description)
         plcThMonPin.addKey(key, value, description)
 
@@ -613,14 +613,6 @@ def instantiateComponent(g3MacRtComponent):
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
-
-    g3MacRtSpecCompliance = g3MacRtComponent.createKeyValueSetSymbol("DRV_G3_MACRT_SPEC_COMPLIANCE", None)
-    g3MacRtSpecCompliance.setLabel("G3 Spec. Compliance")
-    g3MacRtSpecCompliance.addKey("G3_17", "0", "G3 Specification 17")
-    g3MacRtSpecCompliance.addKey("G3_15", "1", "G3 Specification 15")
-    g3MacRtSpecCompliance.setDisplayMode("Description")
-    g3MacRtSpecCompliance.setOutputMode("Value")
-    g3MacRtSpecCompliance.setDefaultValue(0)
 
     #### FreeMaker Files ######################################################
 

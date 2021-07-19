@@ -5,6 +5,7 @@
 #define DRV_PLC_EXT_INT_PIN                  ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_RESET_PIN                    ${DRV_PLC_RESET_PIN?string}
 #define DRV_PLC_LDO_EN_PIN                   ${DRV_PLC_LDO_EN_PIN?string}
+#define DRV_PLC_CD_PIN                       ${DRV_PLC_CD_PIN?string}
 <#if DRV_PLC_MODE == "PL460">
 #define DRV_PLC_STBY_PIN                     ${DRV_PLC_STBY_PIN?string}
 #define DRV_PLC_THMON_PIN                    ${DRV_PLC_THMON_PIN?string}
@@ -17,4 +18,4 @@
 #define DRV_G3_MACRT_INDEX                   0
 #define DRV_G3_MACRT_INSTANCES_NUMBER        1
 #define DRV_G3_MACRT_CLIENTS_NUMBER_IDX      1
-#define DRV_G3_MACRT_SPEC_COMPLIANCE         ${DRV_G3_MACRT_SPEC_COMPLIANCE?string}
+#define DRV_G3_MACRT_HOST_DESC               "${__PROCESSOR?string}"

@@ -52,8 +52,8 @@
 #include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 #include "driver/plc/g3MacRt/drv_g3_macrt.h"
-#include "driver/plc/g3MacRt/src/drv_g3_macrt_local.h"
-#include "driver/plc/g3MacRt/src/drv_g3_macrt_local_comm.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt_local.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt_local_comm.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -460,7 +460,7 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         *pDst++ = (uint8_t)(pibObj->index >> 8);
         *pDst++ = (uint8_t)(pibObj->index);
         *pDst++ = (uint8_t)(pibObj->length);
-        memcpy(pDst, pibObj->value, pibObj->length);
+        memcpy(pDst, pibObj->pData, pibObj->length);
         pDst += pibObj->length;
 
         /* Send PIB information request */
@@ -487,7 +487,7 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
 		}
 
         /* Copy Reg data in PIB object */
-		memcpy(pibObj->value, gG3RegData + 8, gG3MacRtObj->evRegRspLength);
+		memcpy(pibObj->pData, gG3RegData + 8, gG3MacRtObj->evRegRspLength);
 		pibObj->length = gG3MacRtObj->evRegRspLength;
 
 		/* Reset event flag */
@@ -524,7 +524,7 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         *pDst++ = (uint8_t)(pibObj->index >> 8);
         *pDst++ = (uint8_t)(pibObj->index);
         *pDst++ = (uint8_t)(pibObj->length);
-        memcpy(pDst, pibObj->value, pibObj->length);
+        memcpy(pDst, pibObj->pData, pibObj->length);
         pDst += pibObj->length;
 
         /* Send PIB information request */
@@ -714,6 +714,6 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         gG3MacRtObj->plcHal->delay(50);
     }
     
-    /* PORTD Interrupt Status Clear */
-    ((pio_registers_t*)PIO_PORT_D)->PIO_ISR;
+    /* PORT Interrupt Status Clear */
+    ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
 }

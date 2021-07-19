@@ -58,11 +58,11 @@
 // DOM-IGNORE-END
 
 /* G3 Bandplan */
-#define G3_CEN_A                        0
-#define G3_CEN_B                        1
-#define G3_FCC                          2
-#define G3_ARIB                         3
-#define G3_INVALID                      0xFF
+#define G3_CEN_A                                   0
+#define G3_CEN_B                                   1
+#define G3_FCC                                     2
+#define G3_ARIB                                    3
+#define G3_INVALID                                 0xFF
 
 // *****************************************************************************
 // *****************************************************************************
@@ -306,6 +306,10 @@ typedef enum {
 	PHY_PARAM_MAX_PSDU_LEN_PARAMS,
     /* Maximum PSDU length depending on TX parameters */
 	PHY_PARAM_MAX_PSDU_LEN,
+	PHY_PARAM_RESET_STATS,
+	PHY_PARAM_IC_DRIVER_CFG,
+	PHY_PARAM_RX_CHN_EST_REAL,
+	PHY_PARAM_RX_CHN_EST_IMAG,
     /* Index of the notch filter. 8 bits. */
     PHY_PARAM_RRC_NOTCH_INDEX_LEGACY = 0x0164,
     /* Disable PLC Tx/Rx. 8 bits. */
@@ -467,23 +471,23 @@ typedef struct {
 */
 typedef struct {
     /* Frame Type */
-    uint16_t ft : 3;
+    uint16_t frameType : 3;
     /* Security Enable */
-    uint16_t se : 1;
+    uint16_t securityEnabled : 1;
     /* Frame pending */
-    uint16_t fp : 1;
+    uint16_t framePending : 1;
     /* Ack Request */
-    uint16_t ackr : 1;
+    uint16_t ackRequest : 1;
     /* PAN ID Compression */
-    uint16_t pic : 1;
+    uint16_t panIdCompression : 1;
     /* Reserved */
-    uint16_t res : 3;
+    uint16_t reserved : 3;
     /* Destination Addressing Mode */
-    uint16_t dam : 2;
+    uint16_t destAddressingMode : 2;
     /* Frame Version  */
-    uint16_t fv : 2;
+    uint16_t frameVersion : 2;
     /* Source Addressing Mode */
-    uint16_t sam : 2;  
+    uint16_t srcAddressingMode : 2;  
 } MAC_RT_FRAME_CONTROL;
 
 // *****************************************************************************
@@ -498,19 +502,19 @@ typedef struct {
 */
 typedef struct {
     /* Reserved */
-    uint8_t res : 4;
+    uint8_t reserved : 4;
     /* Tone Map Request */
-    uint8_t tmr : 1;
+    uint8_t toneMapRequest : 1;
     /* Contention Control */
-    uint8_t cc : 1;
+    uint8_t contentionControl : 1;
     /* Channel Access Priority */
-    uint8_t cap : 1;
+    uint8_t channelAccessPriority : 1;
     /* Last Segment Flag */
-    uint8_t lsf : 1;
+    uint8_t lastSegmentFlag : 1;
     /* Segment Count */
-    uint16_t sc : 6;
+    uint16_t segmentCount : 6;
     /* Segment Length of MAC frame */
-    uint16_t sl : 10;  
+    uint16_t segmentLength : 10;  
 } MAC_RT_SEGMENT_CONTROL;
 
 // *****************************************************************************
@@ -525,15 +529,15 @@ typedef struct {
 */
 typedef struct {
     /* Security Level */
-    uint8_t se : 3;
+    uint8_t securityLevel : 3;
     /* Key Identifier Mode */
-    uint8_t kim : 2;
+    uint8_t keyIdentifierMode : 2;
     /* Reserved */
-    uint8_t res : 3;
+    uint8_t reserved : 3;
     /* Frame Counter */
-    uint32_t fc;
+    uint32_t frameCounter;
     /* Key Identifier */
-    uint8_t ki;
+    uint8_t keyIdentifier;
 } MAC_RT_AUX_SECURITY_HEADER;
 
 // *****************************************************************************
@@ -662,7 +666,7 @@ typedef struct {
     MAC_RT_PIB pib;
     uint16_t index;
     uint8_t length;
-    uint8_t value[MAC_RT_PIB_MAX_VALUE_LENGTH];
+    uint8_t pData[MAC_RT_PIB_MAX_VALUE_LENGTH];
 }MAC_RT_PIB_OBJ;
 
 // *****************************************************************************

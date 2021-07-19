@@ -51,7 +51,7 @@ g3_mac_rt_bin_start:
   .incbin "./G3_MAC_RT_CENB.bin"
 </#if>
   .align 8
-plc_phy_bin_end:
+g3_mac_rt_bin_end:
 <#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
 g3_mac_rt_bin2_start:
   .incbin "./G3_MAC_RT_CENA.bin"

@@ -46,9 +46,9 @@
 // *****************************************************************************
 // *****************************************************************************
 #include "configuration.h"
-#include "driver/plc/g3MacRt/drv_g3_macrt.h"
 #include "driver/plc/common/drv_plc_boot.h"
-#include "driver/plc/g3MacRt/src/drv_g3_macrt_local_comm.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt.h"
+#include "driver/plc/g3MacRt/drv_g3_macrt_local_comm.h"
 #include "drv_g3_macrt_local.h"
 
 // *****************************************************************************
