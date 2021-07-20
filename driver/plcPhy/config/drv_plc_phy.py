@@ -548,11 +548,12 @@ def instantiateComponent(plcComponent):
     #### Source and header PLC PHY Files #######################################
 
     plcHeaderFile = plcComponent.createFileSymbol("PLC_HEADER", None)
-    plcHeaderFile.setSourcePath("driver/plcPhy/drv_plc_phy.h")
+    plcHeaderFile.setSourcePath("driver/plcPhy/drv_plc_phy.h.ftl")
     plcHeaderFile.setOutputName("drv_plc_phy.h")
     plcHeaderFile.setDestPath("driver/plc/phy")
     plcHeaderFile.setProjectPath("config/" + configName + "/driver/plc/phy")
     plcHeaderFile.setType("HEADER")
+    plcHeaderFile.setMarkup(True)
 
     plcSymHeaderDefFile = plcComponent.createFileSymbol("DRV_PLC_DEF", None)
     plcSymHeaderDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_definitions.h")
@@ -586,11 +587,12 @@ def instantiateComponent(plcComponent):
     plcProfileDefFile.setType("HEADER")
 
     plcSourceFile = plcComponent.createFileSymbol("PLC_SOURCE", None)
-    plcSourceFile.setSourcePath("driver/plcPhy/src/drv_plc_phy.c")
+    plcSourceFile.setSourcePath("driver/plcPhy/src/drv_plc_phy.c.ftl")
     plcSourceFile.setOutputName("drv_plc_phy.c")
     plcSourceFile.setDestPath("driver/plc/phy")
     plcSourceFile.setProjectPath("config/" + configName + "/driver/plc/phy")
     plcSourceFile.setType("SOURCE")
+    plcSourceFile.setMarkup(True)
 
     global plcProfileHeaderLocalFile
     plcProfileHeaderLocalFile = plcComponent.createFileSymbol("DRV_PLC_PROFILE_LOCAL", None)
@@ -768,6 +770,11 @@ def instantiateComponent(plcComponent):
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
+
+    plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
+    plcSleepMode.setLabel("Sleep Mode")
+    plcSleepMode.setDefaultValue(False)
+    
 
     #### FreeMaker Files ######################################################
 

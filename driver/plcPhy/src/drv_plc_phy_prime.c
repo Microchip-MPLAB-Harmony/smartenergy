@@ -237,7 +237,7 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         if (info->flags & DRV_PLC_HAL_FLAG_RST_WDOG)   
         {
             /* Debugger is connected */
-            DRV_PLC_BOOT_Restart(false);
+            DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_SOFT);
             if (gPlcPhyObj->exceptionCallback)
             {
                 gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_DEBUG, gPlcPhyObj->contextExc);
@@ -246,7 +246,7 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         else
         {
             /* PLC needs boot process to upload firmware */
-            DRV_PLC_BOOT_Restart(true);
+            DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_HARD);
             if (gPlcPhyObj->exceptionCallback)
             {
                 gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_RESET, gPlcPhyObj->contextExc);
@@ -473,6 +473,8 @@ void DRV_PLC_PHY_Task(void)
 
 void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *transmitObj)
 {    
+    DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
+
     if((handle != DRV_HANDLE_INVALID) && (handle == 0) && (gPlcPhyObj->state == DRV_PLC_PHY_STATE_IDLE))
     {
         size_t size;
@@ -497,6 +499,43 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
                            
             /* Update PLC state: waiting confirmation */
             gPlcPhyObj->state = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
+        }
+            else
+            {
+                /* Notify DRV_PLC_PHY_TX_RESULT_BUSY_TX */
+                if (gPlcPhyObj->dataCfmCallback)
+                {
+                    cfmObj.rmsCalc = 0;
+                    cfmObj.time = 0;
+                    cfmObj.result = DRV_PLC_PHY_TX_RESULT_BUSY_TX;
+                    /* Report to upper layer */
+                    gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
+                }
+            }
+        }
+        else
+        {
+            /* Notify DRV_PLC_PHY_TX_RESULT_INV_LENGTH */
+            if (gPlcPhyObj->dataCfmCallback)
+            {
+                cfmObj.rmsCalc = 0;
+                cfmObj.time = 0;
+                cfmObj.result = DRV_PLC_PHY_TX_RESULT_INV_LENGTH;
+                /* Report to upper layer */
+                gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
+            }
+        }
+    }
+    else
+    {
+        if (gPlcPhyObj->dataCfmCallback)
+        {
+            /* Notify DRV_PLC_PHY_TX_RESULT_NO_TX */
+            cfmObj.rmsCalc = 0;
+            cfmObj.time = 0;
+            cfmObj.result = DRV_PLC_PHY_TX_RESULT_NO_TX;
+            /* Report to upper layer */
+            gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
         }
     }
 }
