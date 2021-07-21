@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -173,6 +173,20 @@ typedef enum {
   PLC_ID_PPM_CALIB_ON,
   PLC_ID_ZC_PERIOD,
   PLC_ID_SYNC_THRESHOLDS,
+  PLC_ID_NUM_CHANNELS,
+  PLC_ID_MAX_NUM_CHANNELS,
+  PLC_ID_PREDIST_COEF_TABLE_HI_2,
+  PLC_ID_PREDIST_COEF_TABLE_LO_2,
+  PLC_ID_PREDIST_COEF_TABLE_VLO_2,
+  PLC_ID_NOISE_PER_CARRIER_2,
+  PLC_ID_RESET_STATS,
+  PLC_ID_PLC_IC_DRIVER_CFG,
+  PLC_ID_RX_CHN_EST_REAL,
+  PLC_ID_RX_CHN_EST_IMAG,
+  PLC_ID_RX_CHN_EST_REAL_2,
+  PLC_ID_RX_CHN_EST_IMAG_2,
+  PLC_ID_TX_DISABLE,
+  PLC_ID_TX_HIGH_TEMP_120,
   PLC_ID_OBSOLETE_ID,
   PLC_ID_END_ID,
 } DRV_PLC_PHY_ID;    
@@ -280,6 +294,10 @@ typedef enum {
   DRV_PLC_PHY_TX_RESULT_INV_TX_MODE = 10,
   /* Transmission result: Transmission cancelled */
   DRV_PLC_PHY_TX_RESULT_CANCELLED = 11,
+  /* Transmission result: high temperature error */
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_ERR = 12,
+  /* Transmission result: high temperature warning */
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_WARN = 13,
   /* Transmission result: No transmission ongoing */
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 }DRV_PLC_PHY_TX_RESULT;

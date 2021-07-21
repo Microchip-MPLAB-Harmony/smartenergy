@@ -16,7 +16,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -341,6 +341,7 @@ typedef void ( *DRV_PLC_PHY_DATA_IND_CALLBACK )( DRV_PLC_PHY_RECEPTION_OBJ *indO
 
 typedef void ( *DRV_PLC_PHY_EXCEPTION_CALLBACK )( DRV_PLC_PHY_EXCEPTION exception, uintptr_t context );
 
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
 // *****************************************************************************
 /* PLC Driver Sleep Mode Disable Event Handler Function Pointer
 
@@ -388,6 +389,7 @@ typedef void ( *DRV_PLC_PHY_EXCEPTION_CALLBACK )( DRV_PLC_PHY_EXCEPTION exceptio
 
 typedef void ( *DRV_PLC_PHY_SLEEP_CALLBACK )( uintptr_t context );
 
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: DRV_PLC_PHY Driver System Interface Routines
@@ -935,6 +937,7 @@ void DRV_PLC_PHY_ExceptionCallbackRegister(
     const uintptr_t context 
 );
 
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
 // *****************************************************************************
 /* Function:
 	void DRV_PLC_PHY_SleepDisableCallbackRegister( 
@@ -1006,6 +1009,7 @@ void DRV_PLC_PHY_SleepDisableCallbackRegister(
     const uintptr_t context 
 );
 
+</#if> 
 // *****************************************************************************
 /* Function:
     void DRV_PLC_PHY_ExternalInterruptHandler( 
@@ -1123,7 +1127,7 @@ SYS_STATUS DRV_PLC_PHY_Status( const SYS_MODULE_INDEX index );
 
 void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object );
 
-<#if DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
 /***************************************************************************
   Function:
        void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )

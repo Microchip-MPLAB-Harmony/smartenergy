@@ -209,8 +209,8 @@ def setPlcProfile(symbol, event):
     else:
         print("[CHRIS_dbg] : setPlcProfile update G3 files")
         plcSourceBinFilePRIME.setEnabled(False)
-        plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c")
-        plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h")
+        plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c.ftl")
+        plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h.ftl")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_g3.h")
 
 def showPL460Pins(symbol, event):
@@ -308,6 +308,12 @@ def resetPlcBand(symbol, event):
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
+
+def enablePL460Capabilities(symbol, event):
+    if (event["value"] == "PL460"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
 
 def instantiateComponent(plcComponent):  
     global isDMAPresent
@@ -563,28 +569,31 @@ def instantiateComponent(plcComponent):
     plcSymHeaderDefFile.setType("HEADER")
 
     plcHeaderLocalFile = plcComponent.createFileSymbol("PLC_HEADER_LOCAL", None)
-    plcHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local.h")
+    plcHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local.h.ftl")
     plcHeaderLocalFile.setOutputName("drv_plc_phy_local.h")
     plcHeaderLocalFile.setDestPath("driver/plc/phy")
     plcHeaderLocalFile.setProjectPath("config/" + configName + "/driver/plc/phy")
     plcHeaderLocalFile.setType("HEADER")
+    plcHeaderLocalFile.setMarkup(True)
 
     global plcProfileFile
     plcProfileFile = plcComponent.createFileSymbol("DRV_PLC_PROF_FILE", None)
-    plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c")
+    plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c.ftl")
     plcProfileFile.setOutputName("drv_plc_phy_comm.c")
     plcProfileFile.setDestPath("driver/plc/phy")
     plcProfileFile.setProjectPath("config/" + configName + "/driver/plc/phy")
     plcProfileFile.setType("SOURCE")
     plcProfileFile.setDependencies(setPlcProfile, ["DRV_PLC_PROFILE"])
+    plcProfileFile.setMarkup(True)
 
     global plcProfileDefFile
     plcProfileDefFile = plcComponent.createFileSymbol("DRV_PLC_PROFILE_DEF", None)
-    plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h")
+    plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h.ftl")
     plcProfileDefFile.setOutputName("drv_plc_phy_comm.h")
     plcProfileDefFile.setDestPath("driver/plc/phy")
     plcProfileDefFile.setProjectPath("config/" + configName + "/driver/plc/phy")
     plcProfileDefFile.setType("HEADER")
+    plcProfileDefFile.setMarkup(True)
 
     plcSourceFile = plcComponent.createFileSymbol("PLC_SOURCE", None)
     plcSourceFile.setSourcePath("driver/plcPhy/src/drv_plc_phy.c.ftl")
@@ -774,6 +783,12 @@ def instantiateComponent(plcComponent):
     plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
     plcSleepMode.setDefaultValue(False)
+    plcSleepMode.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
+
+    plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
+    plcThermalMonitor.setLabel("Thermal Monitor")
+    plcThermalMonitor.setDefaultValue(False)
+    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
     
 
     #### FreeMaker Files ######################################################

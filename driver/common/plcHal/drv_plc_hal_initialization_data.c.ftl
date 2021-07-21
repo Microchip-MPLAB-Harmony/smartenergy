@@ -50,10 +50,12 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     /* PLC External Interrupt Pin */
     .cdPin = DRV_PLC_CD_PIN,
 
-<#if DRV_PLC_MODE == "PL460">       
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>     
     /* PLC StandBy Pin */
     .stByPin = DRV_PLC_STBY_PIN,
-
+    
+</#if>
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
     /* PLC External Interrupt Pin */
     .thMonPin = DRV_PLC_THMON_PIN,
     
@@ -75,16 +77,18 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
     /* PLC transceiver reset */
     .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
-<#if DRV_PLC_MODE == "PL460">       
-    /* PLC low power management */
-    .standBy = (DRV_PLC_HAL_STBY)DRV_PLC_HAL_StandBy,    
-<#else>
-    /* PLC low power management */
-    .standBy = NULL,
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>
+    /* PLC Set StandBy Mode */
+    .setStandBy = (DRV_PLC_HAL_SET_STBY)DRV_PLC_HAL_SetStandBy,
+    
 </#if>
-
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
+    /* PLC Get Thermal Monitor value */
+    .getThermalMonitor = (DRV_PLC_HAL_GET_THMON)DRV_PLC_HAL_GetThermalMonitor,
+    
+</#if>
     /* PLC Carrier Detect Status */
-    .getCd = (DRV_PLC_HAL_GET_CD)DRV_PLC_HAL_GetCarrierDetect,
+    .getCarrierDetect = (DRV_PLC_HAL_GET_CD)DRV_PLC_HAL_GetCarrierDetect,
 
     /* PLC HAL Enable/Disable external interrupt */
     .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)DRV_PLC_HAL_EnableInterrupts,

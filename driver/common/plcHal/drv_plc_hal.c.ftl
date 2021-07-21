@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -89,11 +89,11 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
 {
     sPlcPlib = plcPlib;   
     
-<#if DRV_PLC_MODE == "PL460">       
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>      
     /* Clear StandBy pin */
     SYS_PORT_PinClear(sPlcPlib->stByPin);
+
 </#if>
-    
     /* Disable External Pin Interrupt */
     PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
     /* Enable External Interrupt Source */
@@ -152,8 +152,8 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
     /* CS rises if there is no more data to transfer */
     sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSAAT_Msk;
     sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSNAAT_Msk;
+
 </#if>
-    
 }
 
 void DRV_PLC_HAL_Reset(void)
@@ -177,8 +177,8 @@ void DRV_PLC_HAL_Reset(void)
     DRV_PLC_HAL_Delay(1000);
 }
 
-<#if DRV_PLC_MODE == "PL460">       
-void DRV_PLC_HAL_StandBy(bool enable)
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>        
+void DRV_PLC_HAL_SetStandBy(bool enable)
 {
     if (enable) {
         /* Enable Stby Pin */
@@ -194,8 +194,15 @@ void DRV_PLC_HAL_StandBy(bool enable)
         DRV_PLC_HAL_Delay(700);
     }
 }
-</#if>
 
+</#if>
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
+bool DRV_PLC_HAL_GetThermalMonitor(void)
+{
+    return SYS_PORT_PinRead(sPlcPlib->thMonPin);
+}
+
+</#if>
 bool DRV_PLC_HAL_GetCarrierDetect(void)
 {
     return SYS_PORT_PinRead(sPlcPlib->cdPin);
