@@ -319,9 +319,9 @@ typedef enum {
   DRV_PLC_PHY_TX_RESULT_INV_DT = 10,
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
   /* Transmission result: high temperature error */
-  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_ERR = 11,
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_120 = 11,
   /* Transmission result: high temperature warning */
-  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_WARN = 12,
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_110 = 12,
 </#if>
   /* Transmission result: No transmission ongoing */
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,

@@ -295,9 +295,9 @@ typedef enum {
   /* Transmission result: Transmission cancelled */
   DRV_PLC_PHY_TX_RESULT_CANCELLED = 11,
   /* Transmission result: high temperature error */
-  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_ERR = 12,
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_120 = 12,
   /* Transmission result: high temperature warning */
-  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_WARN = 13,
+  DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_110 = 13,
   /* Transmission result: No transmission ongoing */
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 }DRV_PLC_PHY_TX_RESULT;
