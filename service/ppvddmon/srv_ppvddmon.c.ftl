@@ -84,9 +84,9 @@ static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_
 }
 
 /* Start PLC PVDD Monitor */
-void SRV_PPVDDMON_Start(${PVDD_MON_MASK_PREFIX}_CHANNEL_NUM channel, SRV_PVDDMON_CMP_MODE cmpMode, uint16_t highThres, uint16_t lowThres)
+void SRV_PPVDDMON_Start(SRV_PVDDMON_CMP_MODE cmpMode)
 {
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << channel);
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
 
     /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
@@ -98,7 +98,7 @@ void SRV_PPVDDMON_Start(${PVDD_MON_MASK_PREFIX}_CHANNEL_NUM channel, SRV_PVDDMON
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
 
     /* Set Compare Window Register */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(highThres) || ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(lowThres); 
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) || ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD); 
 
     /* Set Comparison Mode */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
@@ -123,13 +123,48 @@ void SRV_PPVDDMON_Start(${PVDD_MON_MASK_PREFIX}_CHANNEL_NUM channel, SRV_PVDDMON
 
     /* Set Comparison Selected Channel */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL_Msk;
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |=  ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(channel);
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |=  ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PPVDDMON_ADC_CHANNEL});
 
     /* Enable Comparison Event Interrupt */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
 
     /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
+    ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
+
+    /* Start ${PVDD_MON_ADC_INSTANCE} conversion */
+    ${PVDD_MON_ADC_INSTANCE}_ConversionStart();
+
+}
+
+/* Start PLC PVDD Monitor */
+void SRV_PPVDDMON_Restart(SRV_PVDDMON_CMP_MODE cmpMode)
+{
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
+
+    /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
+
+    /* Disable channel COMPE interrupt */
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IDR |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
+
+    /* Set Comparison Mode */
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
+    if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
+    {
+      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
+      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+    }
+    else
+    {
+      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
+      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+    }
+
+    /* Enable Comparison Event Interrupt */
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
+
+    /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
+    ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
 
     /* Start ${PVDD_MON_ADC_INSTANCE} conversion */
     ${PVDD_MON_ADC_INSTANCE}_ConversionStart();

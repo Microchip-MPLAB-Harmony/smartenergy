@@ -21,10 +21,27 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+import math 
+
+global pPVDDMonHighThrsHex
+global pPVDDMonLowThrsHex
+
 def handleMessage(messageID, args):
     result_dict = {}
 
     return result_dict
+
+def getNewADCThresholds(symbol, event):
+    maxValue = pow(2, Database.getSymbolValue("srv_ppvddmon", "SRV_PPVDDMON_ADC_BITS")) - 1
+    VoutHigh = Database.getSymbolValue("srv_ppvddmon", "SRV_PPVDDMON_HIGH_TH") * 10.0 / (10 + 36)
+    VoutLow = Database.getSymbolValue("srv_ppvddmon", "SRV_PPVDDMON_LOW_TH") * 10. / (10 + 36)
+
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3.3)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3.3)))
+
+    pPVDDMonHighThrsHex.setValue(HighThresholdHex)
+    pPVDDMonLowThrsHex.setValue(LowThresholdHex)
+
 
 def setPlibValue(symbol, event):
     symbol.setValue(event["value"])
@@ -38,29 +55,81 @@ def instantiateComponent(pPVDDMonComponent):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
+    pVddValue = 12
+    pVddHighThrs = 13
+    pVddLowThrs = 10
+    pVddResolution = 12
+
     ppvddmon_node = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="ADC"]')
-    print("[CHRIS_dbg]: ppvddmon_node ADC...")
-    print(ppvddmon_node)
-
-    pHWSupport = pPVDDMonComponent.createBooleanSymbol("SRV_PPVDDMON_ADC_HW_SUPPORT", None)
-    pHWSupport.setLabel("ADC PLIB support")
     if (ppvddmon_node == None):
-        pHWSupport.setDefaultValue(False)
-    else:
-        pHWSupport.setDefaultValue(True)
-    pHWSupport.setReadOnly(True)
+        ppvddmon_node = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="AFEC"]')
+        if (ppvddmon_node == None):
+            ppvddmon_plib = ""
+        else:
+            ppvddmon_plib = "AFEC"
+    else:            
+        ppvddmon_plib = "ADC"
 
-    ppvddmon_node = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="AFEC"]')
-    print("[CHRIS_dbg]: ppvddmon_node AFEC...")
-    print(ppvddmon_node)
+    pPVDDMonVdd = pPVDDMonComponent.createLongSymbol("SRV_PPVDDMON_PVDD", None)
+    pPVDDMonVdd.setLabel("Vdd [V]")
+    pPVDDMonVdd.setDefaultValue(pVddValue) 
+    pPVDDMonVdd.setReadOnly(True)
 
-    pHWSupport = pPVDDMonComponent.createBooleanSymbol("SRV_PPVDDMON_AFEC_HW_SUPPORT", None)
-    pHWSupport.setLabel("AFEC PLIB support")
-    if (ppvddmon_node == None):
-        pHWSupport.setDefaultValue(False)
-    else:
-        pHWSupport.setDefaultValue(True)
-    pHWSupport.setReadOnly(True)
+    pPVDDMonHighThreshold = pPVDDMonComponent.createLongSymbol("SRV_PPVDDMON_HIGH_TH", pPVDDMonVdd)
+    pPVDDMonHighThreshold.setLabel("High Threshold [V]")
+    pPVDDMonHighThreshold.setDefaultValue(pVddHighThrs)
+
+    pPVDDMonLowThreshold = pPVDDMonComponent.createLongSymbol("SRV_PPVDDMON_LOW_TH", pPVDDMonVdd)
+    pPVDDMonLowThreshold.setLabel("Low Threshold [V]")
+    pPVDDMonLowThreshold.setDefaultValue(pVddLowThrs)
+
+    pPVDDMonADCPlib = pPVDDMonComponent.createStringSymbol("SRV_PPVDDMON_ADC_PLIB", None)
+    pPVDDMonADCPlib.setLabel("Peripheral lib")
+    pPVDDMonADCPlib.setDefaultValue(ppvddmon_plib)
+    pPVDDMonADCPlib.setReadOnly(True)
+
+    pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PPVDDMON_ADC_CHANNEL", pPVDDMonADCPlib)
+    pPVDDMonADCChannel.setLabel("Channel")
+    pPVDDMonADCChannel.setDefaultValue(0)
+
+    pPVDDMonADCResolution = pPVDDMonComponent.createIntegerSymbol("SRV_PPVDDMON_ADC_BITS", pPVDDMonADCPlib)
+    pPVDDMonADCResolution.setLabel("Result Resolution bits")
+    pPVDDMonADCResolution.setDefaultValue(pVddResolution)
+
+    pPVDDMonADCComment1 = pPVDDMonComponent.createCommentSymbol("SRV_PPVDDMON_ADC_COMMENT1", pPVDDMonADCPlib)
+    pPVDDMonADCComment1.setLabel("**** " + ppvddmon_plib + " will be configured in FreeRun mode.")
+    pPVDDMonADCComment1.setVisible(True)
+
+    pPVDDMonADCComment2 = pPVDDMonComponent.createCommentSymbol("SRV_PPVDDMON_ADC_COMMENT2", pPVDDMonADCPlib)
+    pPVDDMonADCComment2.setLabel("**** Enable manually " + ppvddmon_plib + " End of conversion interrupt in the " + ppvddmon_plib + " channel configuration.")
+    pPVDDMonADCComment2.setVisible(True)
+
+    if (ppvddmon_plib == ""):
+        pPVDDMonADCComment3 = pPVDDMonComponent.createCommentSymbol("SRV_PPVDDMON_ADC_COMMENT2", None)
+        pPVDDMonADCComment3.setLabel("**** CRITICAL ERROR. ADC peripheral has not been detected.")
+        pPVDDMonADCComment3.setVisible(True)
+    
+    maxValue = pow(2, pVddResolution) - 1
+    VoutHigh = pVddHighThrs * 10.0 / (10 + 36)
+    VoutLow = pVddLowThrs * 10. / (10 + 36)
+
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3.3)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3.3)))
+
+    print("[CHRIS_dbg]: HighThresholdHex " + str(HighThresholdHex))
+    
+    global pPVDDMonHighThrsHex
+    pPVDDMonHighThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PPVDDMON_HIGH_THRESHOLD_HEX", None)
+    pPVDDMonHighThrsHex.setLabel("High Threshold [Hex]")
+    pPVDDMonHighThrsHex.setDefaultValue(HighThresholdHex)
+    pPVDDMonHighThrsHex.setDependencies(getNewADCThresholds, ["SRV_PPVDDMON_HIGH_TH", "SRV_PPVDDMON_LOW_TH", "SRV_PPVDDMON_ADC_BITS"])
+    
+    global pPVDDMonLowThrsHex
+    pPVDDMonLowThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PPVDDMON_LOW_THRESHOLD_HEX", None)
+    pPVDDMonLowThrsHex.setLabel("Low Threshold [Hex]")
+    pPVDDMonLowThrsHex.setDefaultValue(LowThresholdHex)
+
+
 
     # PLC PVDD Monitor Files
     pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PPVDDMON_HEADER", None)
