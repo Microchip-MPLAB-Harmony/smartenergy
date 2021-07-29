@@ -84,7 +84,7 @@ static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_
 }
 
 /* Start PLC PVDD Monitor */
-void SRV_PPVDDMON_Start(SRV_PVDDMON_CMP_MODE cmpMode)
+void SRV_PPVDDMON_Initialize (void)
 {
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
 
@@ -93,6 +93,12 @@ void SRV_PPVDDMON_Start(SRV_PVDDMON_CMP_MODE cmpMode)
 
     /* Disable channel interrupt */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable(channelMsk);
+}
+
+/* Start PLC PVDD Monitor */
+void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
+{
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
 
     /* Set Free Run reset */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
@@ -137,7 +143,7 @@ void SRV_PPVDDMON_Start(SRV_PVDDMON_CMP_MODE cmpMode)
 }
 
 /* Start PLC PVDD Monitor */
-void SRV_PPVDDMON_Restart(SRV_PVDDMON_CMP_MODE cmpMode)
+void SRV_PPVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
 
@@ -171,7 +177,7 @@ void SRV_PPVDDMON_Restart(SRV_PVDDMON_CMP_MODE cmpMode)
 
 }
 
-void SRV_PPVDDMON_RegisterCallback(SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
+void SRV_PPVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
 {
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
