@@ -26,6 +26,9 @@
 #### G3 Coupling Parameters ####
 ############################################################################
 
+pCoupPLCDACC = []
+pCoupPLCDACCAux = []
+
 rms_high_cena  = [2226, 1586, 1132, 805, 573, 408, 290, 206]
 rms_vlow_cena  = [5920, 4604, 3331, 2374, 1686, 1193, 846, 599]
 thrs_high_cena = [0, 0, 0, 0, 0, 0, 0, 0, 1884, 1341, 955, 677, 483, 341, 243, 173]
@@ -84,8 +87,8 @@ drv_conf_cenb_c14  = 8
 
 rms_high_cenb_c12  = [0, 0, 0, 0, 0, 0, 0, 0]
 rms_vlow_cenb_c12  = [0, 0, 0, 0, 0, 0, 0, 0]
-thrs_high_cenb_c12 = [0, 0, 0, 0, 0, 0, 0, 0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF]
-thrs_vlow_cenb_c12 = [0, 0, 0, 0, 0, 0, 0, 0, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF]
+thrs_high_cenb_c12 = [0, 0, 0, 0, 0, 0, 0, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647]
+thrs_vlow_cenb_c12 = [0, 0, 0, 0, 0, 0, 0, 0, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647]
 dacc_cenb_c12      = [0, 0, 0x3F3F3F3F, 0x3F3F3F3F, 0x00000FFF, 0, 0x58CA00FF, 0x19191919, 0, 0, 0x0FD20004, 0x000000FF, 0x0F000000, 0x00102000, 0x000000FF, 0x0F000000, 0x00102000]
 gain_high_cenb_c12 = [645, 645, 645]
 gain_vlow_cenb_c12 = [645, 645, 645]
@@ -347,11 +350,8 @@ def updatePlcCouplingParameters():
         Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_THRS_HIGH_" + str(idx), thrs_high[idx])
         Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_THRS_VLOW_" + str(idx), thrs_vlow[idx])
 
-    # for idx in range(17):
-    #     print("[CHRIS_dbg]: Writing ... dacc[idx] = " + str(dacc[idx]) + " - hex(dacc[idx]) = " + str(hex(dacc[idx])))
-    #     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_DACC_" + str(idx), hex(dacc[idx]))
-    #     tmp = Database.getSymbolValue("srv_pcoup", "SRV_PCOUP_DACC_" + str(idx))
-    #     print("[CHRIS_dbg]: Read ... tmp = " + str(tmp) + " - hex(tmp) = " + str(hex(dacc[idx])))
+    for idx in range(17):
+        pCoupPLCDACC[idx].setValue(dacc[idx])
 
     for idx in range(3):
         Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_GAIN_HIGH_" + str(idx), gain_high[idx])
@@ -371,11 +371,8 @@ def updatePlcCouplingParameters():
             Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_AUX_THRS_HIGH_" + str(idx), thrs_high_aux[idx])
             Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_AUX_THRS_VLOW_" + str(idx), thrs_vlow_aux[idx])
 
-        # for idx in range(17):
-        #     print("[CHRIS_dbg]: Writing ... dacc[idx] = " + str(dacc[idx]) + " - hex(dacc[idx]) = " + str(hex(dacc[idx])))
-        #     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_AUX_DACC_" + str(idx), hex(dacc_aux[idx]))
-        #     tmp = Database.getSymbolValue("srv_pcoup", "SRV_PCOUP_AUX_DACC_" + str(idx))
-        #     print("[CHRIS_dbg]: Read ... tmp = " + str(tmp) + " - hex(tmp) = " + str(hex(dacc_aux[idx])))
+        for idx in range(17):
+            pCoupPLCDACCAux[idx].setValue(dacc_aux[idx])
 
         for idx in range(3):
             Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_AUX_GAIN_HIGH_" + str(idx), gain_high_aux[idx])
@@ -452,13 +449,13 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPLCSymbol.setLabel("THRS_VLOW_" + str(idx))
         pCoupPLCSymbol.setDefaultValue(thrs_vlow_cena[idx])
 
-    pCoupPLCDACC = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC", pCoupPLCMainBranch)
-    pCoupPLCDACC.setLabel("DACC Configuration values")
+    pCoupPLCDACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC", pCoupPLCMainBranch)
+    pCoupPLCDACCMenu.setLabel("DACC Configuration values")
 
     for idx in range(17):
-        pCoupPLCSymbol = pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_" + str(idx), pCoupPLCDACC)
-        pCoupPLCSymbol.setLabel("DACC_" + str(idx))
-        pCoupPLCSymbol.setDefaultValue(dacc_cena[idx])
+        pCoupPLCDACC.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_" + str(idx), pCoupPLCDACCMenu))
+        pCoupPLCDACC[idx].setLabel("DACC_" + str(idx))
+        pCoupPLCDACC[idx].setDefaultValue(dacc_cena[idx])
     
     pCoupPLCGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_GAIN_HIGH", pCoupPLCMainBranch)
     pCoupPLCGainHigh.setLabel("Gain values for HIGH Tx Mode")
@@ -527,13 +524,13 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPLCSymbol.setLabel("THRS_VLOW_" + str(idx))
         pCoupPLCSymbol.setDefaultValue(thrs_vlow_cena[idx])
 
-    pCoupPLCAuxDACC = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_AUX_DACC", pCoupPLCRAuxBranch)
-    pCoupPLCAuxDACC.setLabel("DACC Configuration values")
+    pCoupPLCAuxDACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_AUX_DACC", pCoupPLCRAuxBranch)
+    pCoupPLCAuxDACCMenu.setLabel("DACC Configuration values")
 
     for idx in range(17):
-        pCoupPLCSymbol = pCoupComponentCommon.createHexSymbol("SRV_PCOUP_AUX_DACC_" + str(idx), pCoupPLCAuxDACC)
-        pCoupPLCSymbol.setLabel("DACC_" + str(idx))
-        pCoupPLCSymbol.setDefaultValue(dacc_cena[idx])
+        pCoupPLCDACCAux.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_AUX_DACC_" + str(idx), pCoupPLCAuxDACCMenu))
+        pCoupPLCDACCAux[idx].setLabel("DACC_" + str(idx))
+        pCoupPLCDACCAux[idx].setDefaultValue(dacc_cena[idx])
     
     pCoupPLCAuxGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_AUX_GAIN_HIGH", pCoupPLCRAuxBranch)
     pCoupPLCAuxGainHigh.setLabel("Gain values for HIGH Tx Mode")
