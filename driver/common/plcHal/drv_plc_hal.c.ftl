@@ -89,7 +89,7 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
 {
     sPlcPlib = plcPlib;   
     
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>      
+<#if DRV_PLC_SLEEP_MODE == true>      
     /* Clear StandBy pin */
     SYS_PORT_PinClear(sPlcPlib->stByPin);
 
@@ -177,7 +177,7 @@ void DRV_PLC_HAL_Reset(void)
     DRV_PLC_HAL_Delay(1000);
 }
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>        
+<#if DRV_PLC_SLEEP_MODE == true>        
 void DRV_PLC_HAL_SetStandBy(bool enable)
 {
     if (enable) {

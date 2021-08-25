@@ -218,7 +218,11 @@ def showPL460Pins(symbol, event):
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)   
+        symbol.setVisible(False)  
+
+def showSleepPin(symbol, event):
+    print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
+    symbol.setVisible(event["value"])
 
 def showG3HighAttenuation(symbol, event):
     global plcDriverMode
@@ -391,12 +395,18 @@ def instantiateComponent(plcComponent):
     plcCDPin.setOutputMode("Key")
     plcCDPin.setDisplayMode("Description")
 
-    plcStbyPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", None)
+    plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
+    plcSleepMode.setLabel("Sleep Mode")
+    plcSleepMode.setDefaultValue(False)
+    plcSleepMode.setVisible(True)
+
+    plcStbyPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
     plcStbyPin.setLabel("Stand By Pin")
     plcStbyPin.setDefaultValue(0)
     plcStbyPin.setOutputMode("Key")
     plcStbyPin.setDisplayMode("Description")
-    plcStbyPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
+    plcStbyPin.setVisible(False)
+    plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
 
     plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", None)
     plcThMonPin.setLabel("Thermal Monitor Pin")
@@ -779,11 +789,6 @@ def instantiateComponent(plcComponent):
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
-
-    plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
-    plcSleepMode.setLabel("Sleep Mode")
-    plcSleepMode.setDefaultValue(False)
-    plcSleepMode.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")

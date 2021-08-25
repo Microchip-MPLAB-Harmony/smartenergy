@@ -50,7 +50,7 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     /* PLC External Interrupt Pin */
     .cdPin = DRV_PLC_CD_PIN,
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>     
+<#if DRV_PLC_SLEEP_MODE == true>     
     /* PLC StandBy Pin */
     .stByPin = DRV_PLC_STBY_PIN,
     
@@ -77,7 +77,7 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
     /* PLC transceiver reset */
     .reset = (DRV_PLC_HAL_RESET)DRV_PLC_HAL_Reset,
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>
+<#if DRV_PLC_SLEEP_MODE == true>
     /* PLC Set StandBy Mode */
     .setStandBy = (DRV_PLC_HAL_SET_STBY)DRV_PLC_HAL_SetStandBy,
     

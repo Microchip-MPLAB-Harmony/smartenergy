@@ -6,8 +6,10 @@
 #define DRV_PLC_RESET_PIN                     ${DRV_PLC_RESET_PIN?string}
 #define DRV_PLC_LDO_EN_PIN                    ${DRV_PLC_LDO_EN_PIN?string}
 #define DRV_PLC_CD_PIN                        ${DRV_PLC_CD_PIN?string}
-<#if DRV_PLC_MODE == "PL460">
+<#if DRV_PLC_SLEEP_MODE == true>
 #define DRV_PLC_STBY_PIN                      ${DRV_PLC_STBY_PIN?string}
+</#if>
+<#if DRV_PLC_MODE == "PL460">
 #define DRV_PLC_THMON_PIN                     ${DRV_PLC_THMON_PIN?string}
 </#if>
 

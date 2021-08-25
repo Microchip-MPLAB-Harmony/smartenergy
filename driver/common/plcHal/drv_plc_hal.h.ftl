@@ -215,7 +215,7 @@ typedef struct
     /* PLC Carrier Detect pin */
     SYS_PORT_PIN                           cdPin;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>       
+<#if DRV_PLC_SLEEP_MODE == true>       
     /* PLC StandBy Pin */
     SYS_PORT_PIN                           stByPin;
 
@@ -236,7 +236,7 @@ typedef void (* DRV_PLC_HAL_SETUP)(bool);
 
 typedef void (* DRV_PLC_HAL_RESET)(void);
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>    
+<#if DRV_PLC_SLEEP_MODE == true>    
 typedef void (* DRV_PLC_HAL_SET_STBY)(bool);
 
 </#if>
@@ -282,7 +282,7 @@ typedef struct
     /* PLC HAL reset device */
     DRV_PLC_HAL_RESET                        reset;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>        
+<#if DRV_PLC_SLEEP_MODE == true>        
     /* PLC low power management */
     DRV_PLC_HAL_SET_STBY                     setStandBy;
 
@@ -357,7 +357,7 @@ typedef struct
 
 void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib);
 void DRV_PLC_HAL_Reset(void);
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>       
+<#if DRV_PLC_SLEEP_MODE == true>       
 void DRV_PLC_HAL_SetStandBy(bool enable);
 </#if>
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
