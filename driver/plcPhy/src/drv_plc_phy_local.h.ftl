@@ -147,7 +147,7 @@ typedef struct
     /* Secure mode */
     bool                            secure;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
     /* Sleep mode */
     bool                            sleep;
 
@@ -161,7 +161,7 @@ typedef struct
     /* Application Exception Callback */
     DRV_PLC_PHY_EXCEPTION_CALLBACK  exceptionCallback;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
     /* Application Exception Callback */
     DRV_PLC_PHY_SLEEP_CALLBACK      sleepDisableCallback;
 
@@ -178,7 +178,7 @@ typedef struct
     /* Application context for Exception Callback */
     uintptr_t                       contextExc;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
     /* Application context for Sleep Mode Callback */
     uintptr_t                       contextSleep;
 

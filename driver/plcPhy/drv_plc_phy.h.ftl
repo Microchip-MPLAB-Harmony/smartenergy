@@ -341,7 +341,7 @@ typedef void ( *DRV_PLC_PHY_DATA_IND_CALLBACK )( DRV_PLC_PHY_RECEPTION_OBJ *indO
 
 typedef void ( *DRV_PLC_PHY_EXCEPTION_CALLBACK )( DRV_PLC_PHY_EXCEPTION exception, uintptr_t context );
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
 // *****************************************************************************
 /* PLC Driver Sleep Mode Disable Event Handler Function Pointer
 
@@ -937,7 +937,7 @@ void DRV_PLC_PHY_ExceptionCallbackRegister(
     const uintptr_t context 
 );
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
 // *****************************************************************************
 /* Function:
 	void DRV_PLC_PHY_SleepDisableCallbackRegister( 
@@ -1127,7 +1127,7 @@ SYS_STATUS DRV_PLC_PHY_Status( const SYS_MODULE_INDEX index );
 
 void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object );
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
 /***************************************************************************
   Function:
        void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )

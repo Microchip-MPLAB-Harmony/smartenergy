@@ -94,7 +94,7 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
     gDrvPlcPhyObj.binSize               = plcPhyInit->binEndAddress - plcPhyInit->binStartAddress;
     gDrvPlcPhyObj.binStartAddress       = plcPhyInit->binStartAddress;
     gDrvPlcPhyObj.secure                = plcPhyInit->secure;
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>   
+<#if DRV_PLC_SLEEP_MODE == true>   
     gDrvPlcPhyObj.sleep                 = false;
 </#if>
     
@@ -103,7 +103,7 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
     gDrvPlcPhyObj.dataIndCallback       = 0;
     gDrvPlcPhyObj.exceptionCallback     = 0;
     gDrvPlcPhyObj.bootDataCallback      = 0;
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>     
+<#if DRV_PLC_SLEEP_MODE == true>     
     gDrvPlcPhyObj.sleepDisableCallback  = 0;
 </#if>
 
@@ -239,7 +239,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
             DRV_PLC_PHY_Init(&gDrvPlcPhyObj);
             gDrvPlcPhyObj.status = SYS_STATUS_READY;
             gDrvPlcPhyObj.state = DRV_PLC_PHY_STATE_IDLE;
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>             
+<#if DRV_PLC_SLEEP_MODE == true>             
             if (gDrvPlcPhyObj.sleep && gDrvPlcPhyObj.sleepDisableCallback)
             {
                 gDrvPlcPhyObj.sleep = false;
@@ -259,7 +259,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
     }
 }
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true> 
+<#if DRV_PLC_SLEEP_MODE == true> 
 void DRV_PLC_PHY_SleepDisableCallbackRegister( 
     const DRV_HANDLE handle, 
     const DRV_PLC_PHY_SLEEP_CALLBACK callback, 

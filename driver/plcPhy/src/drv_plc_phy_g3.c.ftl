@@ -438,7 +438,7 @@ void DRV_PLC_PHY_Init(DRV_PLC_PHY_OBJ *pl360)
 
 void DRV_PLC_PHY_Task(void)
 {
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>             
+<#if DRV_PLC_SLEEP_MODE == true>             
     if (gPlcPhyObj->sleep)
     {
         return;
@@ -493,7 +493,7 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
 {    
     DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
 
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>             
+<#if DRV_PLC_SLEEP_MODE == true>             
     if (gPlcPhyObj->sleep)
     {
         /* Do not transmit in SLeep Mode. */
@@ -597,7 +597,7 @@ bool DRV_PLC_PHY_PIBGet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
 {    
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>             
+<#if DRV_PLC_SLEEP_MODE == true>             
         if (gPlcPhyObj->sleep)
         {
             return false;
@@ -713,7 +713,7 @@ bool DRV_PLC_PHY_PIBSet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
 {    
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_SLEEP_MODE == true>             
+<#if DRV_PLC_SLEEP_MODE == true>             
         if (gPlcPhyObj->sleep)
         {
             return false;
