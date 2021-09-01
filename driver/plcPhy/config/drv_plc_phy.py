@@ -723,7 +723,8 @@ def instantiateComponent(plcComponent):
     plcCoupG3Settings.setDescription("Coupling Settings")
     plcCoupG3Settings.setVisible(True)
 
-    plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    # plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
     plcG3Band.setLabel("G3 Phy Band")
     plcG3Band.setDefaultValue("CEN-A")
     # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])

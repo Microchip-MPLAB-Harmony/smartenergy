@@ -88,7 +88,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialPLCProfile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pSerialPLCProfile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pSerialPLCProfile.addKey("G3_FCC", "2", "G3_FCC")
-    pSerialPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
+    # pSerialPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
     pSerialPLCProfile.addKey("PRIME", "4", "PRIME")
     pSerialPLCProfile.setDisplayMode("Description")
     pSerialPLCProfile.setOutputMode("Value")

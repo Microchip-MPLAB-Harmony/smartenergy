@@ -85,7 +85,7 @@ def instantiateComponent(pSnifferComponentCommon):
     pSnifferPLCProfile.addKey("G3_CEN_A", "0", "G3_CEN_A")
     pSnifferPLCProfile.addKey("G3_CEN_B", "1", "G3_CEN_B")
     pSnifferPLCProfile.addKey("G3_FCC", "2", "G3_FCC")
-    pSnifferPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
+    # pSnifferPLCProfile.addKey("G3_ARIB", "3", "G3_ARIB")
     pSnifferPLCProfile.addKey("PRIME", "4", "PRIME")
     pSnifferPLCProfile.setDisplayMode("Description")
     pSnifferPLCProfile.setOutputMode("Value")
