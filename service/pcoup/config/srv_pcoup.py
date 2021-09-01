@@ -275,8 +275,9 @@ def updatePlcCouplingParameters():
 
         elif plcPhyBand == "FCC":
             pCoupPLCMainPhyG3Band.setValue("FCC")
-            if (plcHighAtt == True):
-                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 FCC HIGHT ATT")
+            if (plcMultiband == True):
+                auxiliaryBand = True
+                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 FCC SB")
                 rms_high  = rms_high_fcc_c11 
                 rms_vlow  = rms_vlow_fcc_c11 
                 thrs_high = thrs_high_fcc_c11
@@ -284,8 +285,18 @@ def updatePlcCouplingParameters():
                 dacc      = dacc_fcc_c11     
                 gain_high = gain_high_fcc_c11
                 gain_vlow = gain_vlow_fcc_c11
+
+                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
+                rms_high_aux  = rms_high_cena_c07 
+                rms_vlow_aux  = rms_vlow_cena_c07 
+                thrs_high_aux = thrs_high_cena_c07
+                thrs_vlow_aux = thrs_vlow_cena_c07
+                dacc_aux      = dacc_cena_c07     
+                gain_high_aux = gain_high_cena_c07
+                gain_vlow_aux = gain_vlow_cena_c07
+                pCoupPLCAuxPhyG3Band.setValue("CEN-A")
             else:
-                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 FCC")
+                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 FCC 2B")
                 rms_high  = rms_high_fcc_c06 
                 rms_vlow  = rms_vlow_fcc_c06 
                 thrs_high = thrs_high_fcc_c06
@@ -294,22 +305,11 @@ def updatePlcCouplingParameters():
                 gain_high = gain_high_fcc_c06
                 gain_vlow = gain_vlow_fcc_c06
 
-            if (plcMultiband == True):
-                auxiliaryBand = True
-                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
-                rms_high_aux  = rms_high_cena_c07 
-                rms_vlow_aux  = rms_vlow_cena_c07 
-                thrs_high_aux = thrs_high_cena_c07
-                thrs_vlow_aux = thrs_vlow_cena_c07
-                dacc_aux      = dacc_cena_c07     
-                gain_high_aux = gain_high_cena_c07
-                gain_vlow_aux = gain_vlow_cena_c07
-                pCoupPLCAuxPhyG3Band.setValue("CEN-A")
-
         elif plcPhyBand == "ARIB":
             pCoupPLCMainPhyG3Band.setValue("ARIB")
-            if (plcHighAtt == True):
-                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 ARIB HIGHT ATT")
+            if (plcMultiband == True):
+                auxiliaryBand = True
+                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 ARIB SB")
                 rms_high  = rms_high_arib_c11 
                 rms_vlow  = rms_vlow_arib_c11 
                 thrs_high = thrs_high_arib_c11
@@ -317,18 +317,7 @@ def updatePlcCouplingParameters():
                 dacc      = dacc_arib_c11     
                 gain_high = gain_high_arib_c11
                 gain_vlow = gain_vlow_arib_c11
-            else:
-                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 ARIB")
-                rms_high  = rms_high_arib_c06 
-                rms_vlow  = rms_vlow_arib_c06 
-                thrs_high = thrs_high_arib_c06
-                thrs_vlow = thrs_vlow_arib_c06
-                dacc      = dacc_arib_c06     
-                gain_high = gain_high_arib_c06
-                gain_vlow = gain_vlow_arib_c06
 
-            if (plcMultiband == True):
-                auxiliaryBand = True
                 print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
                 rms_high_aux  = rms_high_cena_c07 
                 rms_vlow_aux  = rms_vlow_cena_c07 
@@ -338,6 +327,15 @@ def updatePlcCouplingParameters():
                 gain_high_aux = gain_high_cena_c07
                 gain_vlow_aux = gain_vlow_cena_c07
                 pCoupPLCAuxPhyG3Band.setValue("CEN-A")
+            else:
+                print("------------------------- [CHRIS_dbg]: updatePlcCouplingParameters ->  PL360 G3 ARIB 2B")
+                rms_high  = rms_high_arib_c06 
+                rms_vlow  = rms_vlow_arib_c06 
+                thrs_high = thrs_high_arib_c06
+                thrs_vlow = thrs_vlow_arib_c06
+                dacc      = dacc_arib_c06     
+                gain_high = gain_high_arib_c06
+                gain_vlow = gain_vlow_arib_c06
 
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_LINE_DRIVER", line_drv)

@@ -113,16 +113,35 @@ def setPlcBandInUse(plcBand):
         dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_PRIME", {})
 
 def setPlcMultiBandInUse(g3_band, g3_aux_band):
+    dict = {}
+
+    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND_AUX_ACTIVE") == True) :
+        g3_aux_band_default = True
+    else:
+        g3_aux_band_default = False
+
     if (g3_band == "FCC"):
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_A)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_pserial", "SRV_PSERIAL_G3_CENA", {})
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_B)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_pserial", "SRV_PSERIAL_G3_CENB", {})
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
     else:
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_A)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_pserial", "SRV_PSERIAL_G3_CENA", {})
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_B)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_pserial", "SRV_PSERIAL_G3_CENB", {})
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
 
 def removeAllBinFiles():
     print("[CHRIS_dbg] : removeAllBinFiles")
@@ -788,7 +807,7 @@ def instantiateComponent(plcComponent):
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
-    plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
+    plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND", "DRV_PLC_G3_BAND_AUX_ACTIVE"])
 
     plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
