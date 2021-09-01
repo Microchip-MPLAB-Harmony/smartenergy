@@ -63,7 +63,7 @@ thrs_vlow_fcc_himp  = [0, 0, 0, 0, 0, 0, 0, 0, 9668, 6931, 4955, 3538, 2520, 179
 dacc_fcc_himp       = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
 gain_high_fcc_himp  = [105, 50, 256]
 gain_vlow_fcc_himp  = [364, 180, 408]
-drv_conf_fcc_himp   = 8
+drv_conf_fcc_himp   = 7
 
 rms_high_cena_c07  = [1991, 1381, 976, 695, 495, 351, 250, 179]
 rms_vlow_cena_c07  = [6356, 4706, 3317, 2308, 1602, 1112, 778, 546]
@@ -408,7 +408,8 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPLCMainBranch.setLabel("Main Transmission branch")
 
     global pCoupPLCMainPhyG3Band
-    pCoupPLCMainPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_MAIN_G3_BAND", pCoupPLCMainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    # pCoupPLCMainPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_MAIN_G3_BAND", pCoupPLCMainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    pCoupPLCMainPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_MAIN_G3_BAND", pCoupPLCMainBranch, ["CEN-A", "CEN-B", "FCC"])
     pCoupPLCMainPhyG3Band.setLabel("Phy G3 Band")
     pCoupPLCMainPhyG3Band.setDefaultValue("CEN-A")
     pCoupPLCMainPhyG3Band.setReadOnly(True)
@@ -485,7 +486,8 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPLCRAuxBranch.setVisible(False)
 
     global pCoupPLCAuxPhyG3Band
-    pCoupPLCAuxPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_AUX_G3_BAND", pCoupPLCRAuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
+    # pCoupPLCAuxPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_AUX_G3_BAND", pCoupPLCRAuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
+    pCoupPLCAuxPhyG3Band = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_AUX_G3_BAND", pCoupPLCRAuxBranch, ["None", "CEN-A", "CEN-B", "FCC"])
     pCoupPLCAuxPhyG3Band.setLabel("Phy G3 Band")
     pCoupPLCAuxPhyG3Band.setDefaultValue("None")
     pCoupPLCAuxPhyG3Band.setReadOnly(True)
