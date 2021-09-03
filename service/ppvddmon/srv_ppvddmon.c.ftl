@@ -76,10 +76,10 @@ static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_
 {
     if (status & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk)
     {
-      if (${PVDD_MON_ADC_INSTANCE}_CompareCallback)
-      {
-        ${PVDD_MON_ADC_INSTANCE}_CompareCallback(srv_pvddmon_mode, context);
-      }
+        if (${PVDD_MON_ADC_INSTANCE}_CompareCallback)
+        {
+            ${PVDD_MON_ADC_INSTANCE}_CompareCallback(srv_pvddmon_mode, context);
+        }
     }
 }
 
@@ -98,38 +98,36 @@ void SRV_PPVDDMON_Initialize (void)
 /* Start PLC PVDD Monitor */
 void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 {
+    uint32_t emr = 0;
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
 
     /* Set Free Run reset */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
 
     /* Set Compare Window Register */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) || ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD); 
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD); 
 
     /* Set Comparison Mode */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
     {
-      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
-      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+        srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
+        emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
     }
     else
     {
-      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
-      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+        srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
+        emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
     }
 
-<#if (adc.ADC_INSTANCE_NAME)?has_content>
-    /* Clear Comparison Type */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~(1 << 2);
-
-</#if>
-    /* Clear Compare All and Compare Filter fields */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~(${PVDD_MON_MASK_PREFIX}_EMR_CMPALL_Msk || ${PVDD_MON_MASK_PREFIX}_EMR_CMPFILTER_Msk);
-
     /* Set Comparison Selected Channel */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL_Msk;
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |=  ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PPVDDMON_ADC_CHANNEL});
+    emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PPVDDMON_ADC_CHANNEL});
+
+    /* Set Compare Type */
+    emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPTYPE_Msk;
+
+    /* Set Filter */
+    emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPFILTER(3);
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR = emr;
 
     /* Enable Comparison Event Interrupt */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
@@ -137,44 +135,48 @@ void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
 
+    /* Comparison Restart */
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CR = 0x1U << ${PVDD_MON_MASK_PREFIX}_CR_CMPRST_Pos;
+
     /* Start ${PVDD_MON_ADC_INSTANCE} conversion */
     ${PVDD_MON_ADC_INSTANCE}_ConversionStart();
-
 }
 
-/* Start PLC PVDD Monitor */
+/* Restart PLC PVDD Monitor */
 void SRV_PPVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
+    uint32_t emr;
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
-
-    /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
-    ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
 
     /* Disable channel COMPE interrupt */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IDR |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
 
+    /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
+    ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
+
     /* Set Comparison Mode */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
     {
       srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
-      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+      emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
     }
     else
     {
       srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
-      ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+      emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
     }
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= emr;
 
-    /* Enable Comparison Event Interrupt */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
+    /* Comparison Restart */
+    while(${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_ISR & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk);
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CR = 0x1U << ${PVDD_MON_MASK_PREFIX}_CR_CMPRST_Pos;
 
     /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
 
-    /* Start ${PVDD_MON_ADC_INSTANCE} conversion */
-    ${PVDD_MON_ADC_INSTANCE}_ConversionStart();
-
+    /* Enable Comparison Event Interrupt */
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
 }
 
 void SRV_PPVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
@@ -182,4 +184,23 @@ void SRV_PPVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t 
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback_fn;
+}
+
+bool SRV_PPVDDMON_CheckComparisonInWindow(void)
+{
+    uint16_t adcData;
+    
+    adcData = (uint16_t) ((${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_LCDR & ${PVDD_MON_MASK_PREFIX}_LCDR_LDATA_Msk) >> ${PVDD_MON_MASK_PREFIX}_LCDR_LDATA_Pos);
+    
+    if (adcData > SRV_PVDDMON_HIGH_TRESHOLD)
+    {
+        return false;
+    }
+    
+    if (adcData < SRV_PVDDMON_LOW_TRESHOLD)
+    {
+        return false;
+    }
+    
+    return true;
 }
