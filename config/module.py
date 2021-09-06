@@ -59,5 +59,5 @@ def loadModule():
 	srvPTRNGomponent.setDisplayType("PLC TRNG Service")
 
 	## PLC PVDD Monitor Service (True Random Generator Service)
-	srvPVDDMonitorComponent = Module.CreateComponent("srv_ppvddmon", "PLC PVDD MONITOR", "/SmartEnergy/PLC/Services/", "service/ppvddmon/config/srv_ppvddmon.py")
+	srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD MONITOR", "/SmartEnergy/PLC/Services/", "service/pvddmon/config/srv_pvddmon.py")
 	srvPVDDMonitorComponent.setDisplayType("PLC PVDD Monitor Service")

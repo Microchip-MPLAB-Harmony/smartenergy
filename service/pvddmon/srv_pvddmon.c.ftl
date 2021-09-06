@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    srv_ppvddmon.c
+    srv_pvddmon.c
 
   Summary:
     PLC PVDD Monitor Service File
@@ -58,7 +58,7 @@
 <#if core.CoreSysIntFile == true>
 #include "interrupts.h"
 </#if>
-#include "srv_ppvddmon.h"
+#include "srv_pvddmon.h"
 #include "peripheral/${PVDD_MON_ADC_INSTANCE?lower_case}/plib_${PVDD_MON_ADC_INSTANCE?lower_case}.h"
 
 static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
@@ -84,9 +84,9 @@ static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_
 }
 
 /* Start PLC PVDD Monitor */
-void SRV_PPVDDMON_Initialize (void)
+void SRV_PVDDMON_Initialize (void)
 {
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
 
     /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
@@ -96,10 +96,10 @@ void SRV_PPVDDMON_Initialize (void)
 }
 
 /* Start PLC PVDD Monitor */
-void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
+void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr = 0;
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
 
     /* Set Free Run reset */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
@@ -120,7 +120,7 @@ void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     }
 
     /* Set Comparison Selected Channel */
-    emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PPVDDMON_ADC_CHANNEL});
+    emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PVDDMON_ADC_CHANNEL});
 
     /* Set Compare Type */
     emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPTYPE_Msk;
@@ -143,10 +143,10 @@ void SRV_PPVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 }
 
 /* Restart PLC PVDD Monitor */
-void SRV_PPVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
+void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr;
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PPVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
 
     /* Disable channel COMPE interrupt */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IDR |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
@@ -179,14 +179,14 @@ void SRV_PPVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
 }
 
-void SRV_PPVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
+void SRV_PVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
 {
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback_fn;
 }
 
-bool SRV_PPVDDMON_CheckComparisonInWindow(void)
+bool SRV_PVDDMON_CheckComparisonInWindow(void)
 {
     uint16_t adcData;
     
