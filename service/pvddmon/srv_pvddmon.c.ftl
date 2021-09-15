@@ -59,7 +59,7 @@
 #include "interrupts.h"
 </#if>
 #include "srv_pvddmon.h"
-#include "peripheral/${PVDD_MON_ADC_INSTANCE?lower_case}/plib_${PVDD_MON_ADC_INSTANCE?lower_case}.h"
+#include "peripheral/${PVDD_MON_MASK_PREFIX?lower_case}/plib_${PVDD_MON_ADC_INSTANCE?lower_case}.h"
 
 static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
 
@@ -122,9 +122,11 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     /* Set Comparison Selected Channel */
     emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPSEL(${SRV_PVDDMON_ADC_CHANNEL});
 
+<#if (adc.ADC_INSTANCE_NAME)?has_content>
     /* Set Compare Type */
     emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPTYPE_Msk;
 
+</#if>
     /* Set Filter */
     emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPFILTER(3);
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR = emr;
@@ -135,9 +137,11 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
 
+<#if (adc.ADC_INSTANCE_NAME)?has_content>
     /* Comparison Restart */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CR = 0x1U << ${PVDD_MON_MASK_PREFIX}_CR_CMPRST_Pos;
 
+</#if>
     /* Start ${PVDD_MON_ADC_INSTANCE} conversion */
     ${PVDD_MON_ADC_INSTANCE}_ConversionStart();
 }
@@ -168,10 +172,13 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= emr;
 
-    /* Comparison Restart */
     while(${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_ISR & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk);
+
+<#if (adc.ADC_INSTANCE_NAME)?has_content>
+    /* Comparison Restart */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CR = 0x1U << ${PVDD_MON_MASK_PREFIX}_CR_CMPRST_Pos;
 
+</#if>
     /* Enable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsEnable(channelMsk);
 

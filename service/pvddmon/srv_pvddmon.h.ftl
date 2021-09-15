@@ -62,7 +62,7 @@
 <#if core.CoreSysIntFile == true>
 #include "interrupts.h"
 </#if>
-#include "peripheral/${PVDD_MON_ADC_INSTANCE?lower_case}/plib_${PVDD_MON_ADC_INSTANCE?lower_case}_common.h"
+#include "peripheral/${PVDD_MON_MASK_PREFIX?lower_case}/plib_${PVDD_MON_MASK_PREFIX?lower_case}_common.h"
 
 
 #ifdef __cplusplus // Provide C++ Compatibility
