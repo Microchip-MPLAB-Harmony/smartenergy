@@ -652,6 +652,7 @@ def instantiateComponent(plcComponent):
     plcSourceBinFileG3CENA.setType("SOURCE")
     plcSourceBinFileG3CENA.setEnabled(True)
     plcSourceBinFileG3CENA.setVisible(False)
+    plcSourceBinFileG3CENA.setOverwrite(True)
 
     global plcSourceBinFileG3CENB
     plcSourceBinFileG3CENB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_CENB", None)
@@ -662,6 +663,7 @@ def instantiateComponent(plcComponent):
     plcSourceBinFileG3CENB.setType("SOURCE")
     plcSourceBinFileG3CENB.setEnabled(False)
     plcSourceBinFileG3CENB.setVisible(False)
+    plcSourceBinFileG3CENB.setOverwrite(True)
 
     global plcSourceBinFileG3FCC
     plcSourceBinFileG3FCC = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_FCC", None)
@@ -672,6 +674,7 @@ def instantiateComponent(plcComponent):
     plcSourceBinFileG3FCC.setType("SOURCE")
     plcSourceBinFileG3FCC.setEnabled(False)
     plcSourceBinFileG3FCC.setVisible(False)
+    plcSourceBinFileG3FCC.setOverwrite(True)
 
     global plcSourceBinFileG3ARIB
     plcSourceBinFileG3ARIB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_ARIB", None)
@@ -682,6 +685,7 @@ def instantiateComponent(plcComponent):
     plcSourceBinFileG3ARIB.setType("SOURCE")
     plcSourceBinFileG3ARIB.setEnabled(False)
     plcSourceBinFileG3ARIB.setVisible(False)
+    plcSourceBinFileG3ARIB.setOverwrite(True)
 
     global plcSourceBinFilePRIME
     plcSourceBinFilePRIME = plcComponent.createFileSymbol("PLC_SOURCE_BIN_PRIME", None)
@@ -692,6 +696,7 @@ def instantiateComponent(plcComponent):
     plcSourceBinFilePRIME.setType("SOURCE")
     plcSourceBinFilePRIME.setEnabled(False)
     plcSourceBinFilePRIME.setVisible(False)
+    plcSourceBinFilePRIME.setOverwrite(True)
 
     global plcAssemblyBinFile
     plcAssemblyBinFile = plcComponent.createFileSymbol("PLC_ASSEMBLY_BIN", None)
@@ -701,6 +706,7 @@ def instantiateComponent(plcComponent):
     plcAssemblyBinFile.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
     plcAssemblyBinFile.setType("SOURCE")
     plcAssemblyBinFile.setMarkup(True)
+    plcAssemblyBinFile.setOverwrite(True)
     
     ##### PLC Profile Selector  ####################################################
 
