@@ -71,10 +71,10 @@ def handleMessage(messageID, args):
 
 def enableFiles(symbol, event):
     symbol.setEnabled(event["value"])  
-    if(event["value"]):
-        print("Enable Src/Hdr files")
-    else:
-        print("Disable Src/Hdr files")   
+    # if(event["value"]):
+        # print("Enable Src/Hdr files")
+    # else:
+        # print("Disable Src/Hdr files")   
 
 def instantiateComponent(usiComponentCommon):
 

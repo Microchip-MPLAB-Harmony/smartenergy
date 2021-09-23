@@ -144,7 +144,7 @@ def setPlcMultiBandInUse(g3_band, g3_aux_band):
                 dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
 
 def removeAllBinFiles():
-    print("[CHRIS_dbg] : removeAllBinFiles")
+    # print("[CHRIS_dbg] : removeAllBinFiles")
     plcSourceBinFilePRIME.setEnabled(False)
     plcSourceBinFileG3CENA.setEnabled(False)
     plcSourceBinFileG3CENB.setEnabled(False)
@@ -158,21 +158,21 @@ def includeBinFile(plcBand):
         plcSourceBinFileG3CENB.setEnabled(False)
         plcSourceBinFileG3FCC.setEnabled(False)
         plcSourceBinFileG3ARIB.setEnabled(False)
-        print("[CHRIS_dbg] : includeBinFile PRIME")
+        print("PLC Drv: Include binary file for PRIME")
     else:
         plcSourceBinFilePRIME.setEnabled(False)
         if (plcBand == "CEN-A"):          
             plcSourceBinFileG3CENA.setEnabled(True)
-            print("[CHRIS_dbg] : includeBinFile CEN-A")
+            print("PLC Drv: Include binary file for CEN-A")
         elif (plcBand == "CEN-B"):            
             plcSourceBinFileG3CENB.setEnabled(True)
-            print("[CHRIS_dbg] : includeBinFile CEN-B")
+            print("PLC Drv: Include binary file for CEN-B")
         elif (plcBand == "FCC"):            
             plcSourceBinFileG3FCC.setEnabled(True)
-            print("[CHRIS_dbg] : includeBinFile FCC")
+            print("PLC Drv: Include binary file for FCC")
         elif (plcBand == "ARIB"):           
             plcSourceBinFileG3ARIB.setEnabled(True) 
-            print("[CHRIS_dbg] : includeBinFile ARIB")
+            print("PLC Drv: Include binary file for ARIB")
 
 def updateBinFiles():
     removeAllBinFiles()
@@ -205,11 +205,11 @@ def updateBinFiles():
 #     updateBinFiles()
 
 def updatePLCBandInUse(symbol, event):
-    print("[CHRIS_dbg] : updatePLCBandInUse <- " + event["id"])
+    # print("[CHRIS_dbg] : updatePLCBandInUse <- " + event["id"])
     updateBinFiles()
 
 def plcBinAddressingMode(symbol, event):
-    print("[CHRIS_dbg] : plcBinAddressingMode <- " + event["id"])
+    # print("[CHRIS_dbg] : plcBinAddressingMode <- " + event["id"])
     symbol.setVisible(event["value"])
     updateBinFiles()
 
@@ -218,35 +218,35 @@ def setPlcProfile(symbol, event):
     global plcProfileDefFile
     global plcProfileHeaderLocalFile
 
-    print("[CHRIS_dbg] : setPlcProfile event value " + event["value"])
+    # print("[CHRIS_dbg] : setPlcProfile event value " + event["value"])
 
     if (event["value"] == "PRIME"):
-        print("[CHRIS_dbg] : setPlcProfile update PRIME files")
+        # print("[CHRIS_dbg] : setPlcProfile update PRIME files")
         plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_prime.c")
         plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_prime.h")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_prime.h")
     else:
-        print("[CHRIS_dbg] : setPlcProfile update G3 files")
+        # print("[CHRIS_dbg] : setPlcProfile update G3 files")
         plcSourceBinFilePRIME.setEnabled(False)
         plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c.ftl")
         plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h.ftl")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_g3.h")
 
 def showPL460Pins(symbol, event):
-    print("[CHRIS_dbg] : showPL460Pins <- " + event["id"])
+    # print("[CHRIS_dbg] : showPL460Pins <- " + event["id"])
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)  
 
 def showSleepPin(symbol, event):
-    print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
+    # print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
     symbol.setVisible(event["value"])
 
 def showG3HighAttenuation(symbol, event):
     global plcDriverMode
 
-    print("[CHRIS_dbg] : showG3HighAttenuation <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3HighAttenuation <- " + event["id"])
     if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
         if (plcDriverMode.getValue() == "PL460"):
             symbol.setVisible(True)
@@ -261,7 +261,7 @@ def showG3HighAttenuation(symbol, event):
 def showG3InternalDriver(symbol, event):
     global plcDriverMode
 
-    print("[CHRIS_dbg] : showG3InternalDriver <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3InternalDriver <- " + event["id"])
     if (event["symbol"].getValue() == "CEN-B") and plcDriverMode.getValue() == "PL360":
         symbol.setVisible(True)
     else:
@@ -271,7 +271,7 @@ def showG3InternalDriver(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3Multiband(symbol, event):
-    print("[CHRIS_dbg] : showG3Multiband <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3Multiband <- " + event["id"])
     if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
         symbol.setVisible(True)
     else:
@@ -281,14 +281,14 @@ def showG3Multiband(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3AuxBand(symbol, event):
-    print("[CHRIS_dbg] : showG3AuxBand <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3AuxBand <- " + event["id"])
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
     
 def showPRIMEHighAttenuation(symbol, event):
-    print("[CHRIS_dbg] : showPRIMEHighAttenuation <- " + event["id"])
+    # print("[CHRIS_dbg] : showPRIMEHighAttenuation <- " + event["id"])
     if (event["symbol"].getValue() == "CH1"):
         symbol.setVisible(False)
         # symbol.setReadOnly(True)
@@ -298,7 +298,7 @@ def showPRIMEHighAttenuation(symbol, event):
         symbol.setVisible(True)
 
 def showPRIMEMultiband(symbol, event):
-    print("[CHRIS_dbg] : showPRIMEMultiband <- " + event["id"])
+    # print("[CHRIS_dbg] : showPRIMEMultiband <- " + event["id"])
     if (event["symbol"].getValue() == "CH1"):
         symbol.setVisible(False)
         # symbol.setReadOnly(True)
@@ -308,14 +308,14 @@ def showPRIMEMultiband(symbol, event):
         symbol.setVisible(True)
 
 def showPRIMEAuxBand(symbol, event):
-    print("[CHRIS_dbg] : showPRIMEAuxBand <- " + event["id"])
+    # print("[CHRIS_dbg] : showPRIMEAuxBand <- " + event["id"])
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)    
 
 def updateShowCoupSettings(symbol, event):
-    print("[CHRIS_dbg] : updateShowCoupSettings <- " + event["id"])
+    # print("[CHRIS_dbg] : updateShowCoupSettings <- " + event["id"])
     global plcCoupPRIMESettings
     global plcCoupG3Settings
 
@@ -327,7 +327,7 @@ def updateShowCoupSettings(symbol, event):
         plcCoupPRIMESettings.setVisible(True)
 
 def resetPlcBand(symbol, event):  
-    print("[CHRIS_dbg] : resetPlcBand <- " + event["id"])
+    # print("[CHRIS_dbg] : resetPlcBand <- " + event["id"])
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
@@ -358,10 +358,10 @@ def instantiateComponent(plcComponent):
 
     if Database.getSymbolValue("core", "DMA_ENABLE") == None:
         isDMAPresent = False
-        print("[CHRIS_dbg] : DMA is NOT present")
+        # print("[CHRIS_dbg] : DMA is NOT present")
     else:
         isDMAPresent = True
-        print("[CHRIS_dbg] : DMA is present")
+        # print("[CHRIS_dbg] : DMA is present")
 
     global plcDriverMode
     plcDriverMode = plcComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
@@ -567,7 +567,7 @@ def instantiateComponent(plcComponent):
     plcAsmPathSetting.setCategory("C32-AS")
     plcAsmPathSetting.setKey("extra-include-directories-for-assembler")
     plcAsmPathSetting.setValue("../src/config/" + configName + "/driver/plc/phy/bin")
-    plcAsmPathSetting.setAppend(True, ";")
+    plcAsmPathSetting.setAppend(False, None)
 
     #### Miscellanea ###########################################################
 
@@ -873,10 +873,10 @@ def onAttachmentConnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    print("[CHIRS_dbg] : onAttachmentConnected event - remoteID: " + remoteID.upper())
+    # print("[CHIRS_dbg] : onAttachmentConnected event - remoteID: " + remoteID.upper())
 
     if connectID == "drv_plc_phy_SPI_dependency" :
-        print("[CHIRS_dbg] : drv_plc_phy_SPI_dependency")
+        # print("[CHIRS_dbg] : drv_plc_phy_SPI_dependency")
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValue()
         plibUsed.setValue(remoteID.upper())
@@ -888,7 +888,7 @@ def onAttachmentConnected(source, target):
             plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         plibBaudrate.clearValue()
         plibBaudrate.setValue(8000000)
-        print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
+        # print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
 
         if (isDMAPresent == True):
 
@@ -902,7 +902,7 @@ def onAttachmentConnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(1)
             else:
-                print("[CHIRS_dbg] : DMA ERROR")
+                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -925,10 +925,10 @@ def onAttachmentDisconnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    print("[CHIRS_dbg] : onAttachmentDisconnected event - remoteID: " + remoteID.upper())
+    # print("[CHIRS_dbg] : onAttachmentDisconnected event - remoteID: " + remoteID.upper())
 
     if connectID == "drv_plc_phy_SPI_dependency" :
-        print("[CHIRS_dbg] : drv_plc_phy_SPI_dependency")
+        # print("[CHIRS_dbg] : drv_plc_phy_SPI_dependency")
 
         localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
 
@@ -948,7 +948,7 @@ def onAttachmentDisconnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(0)
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
             else:
-                print("[CHIRS_dbg] : DMA ERROR")
+                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -970,7 +970,7 @@ def requestAndAssignTxDMAChannel(symbol, event):
     dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
     dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
 
-    print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - " + dmaChannelID)
+    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - " + dmaChannelID)
 
     # Clear the DMA symbol. Done for backward compatibility.
     Database.clearSymbolValue("core", dmaRequestID)
@@ -987,7 +987,7 @@ def requestAndAssignTxDMAChannel(symbol, event):
 
     # Get the allocated channel and assign it
     channel = Database.getSymbolValue("core", dmaChannelID)
-    print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - channel " + str(channel))
+    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - channel " + str(channel))
     symbol.setValue(channel)
 
 def requestAndAssignRxDMAChannel(symbol, event):
@@ -998,7 +998,7 @@ def requestAndAssignRxDMAChannel(symbol, event):
     dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
     dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
 
-    print("[CHRIS_dbg] : requestAndAssignRxDMAChannel - " + dmaChannelID)
+    # print("[CHRIS_dbg] : requestAndAssignRxDMAChannel - " + dmaChannelID)
 
     # Clear the DMA symbol. Done for backward compatibility.
     Database.clearSymbolValue("core", dmaRequestID)

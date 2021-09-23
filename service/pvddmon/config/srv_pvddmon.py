@@ -116,7 +116,7 @@ def instantiateComponent(pPVDDMonComponent):
     HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3.3)))
     LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3.3)))
 
-    print("[CHRIS_dbg]: HighThresholdHex " + str(HighThresholdHex))
+    # print("[CHRIS_dbg]: HighThresholdHex " + str(HighThresholdHex))
     
     global pPVDDMonHighThrsHex
     pPVDDMonHighThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_HIGH_THRESHOLD_HEX", None)
