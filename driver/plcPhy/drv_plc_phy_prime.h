@@ -294,10 +294,12 @@ typedef enum {
   DRV_PLC_PHY_TX_RESULT_INV_TX_MODE = 10,
   /* Transmission result: Transmission cancelled */
   DRV_PLC_PHY_TX_RESULT_CANCELLED = 11,
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
   /* Transmission result: high temperature error */
   DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_120 = 12,
   /* Transmission result: high temperature warning */
   DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_110 = 13,
+</#if>
   /* Transmission result: No transmission ongoing */
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 }DRV_PLC_PHY_TX_RESULT;
@@ -418,7 +420,6 @@ typedef struct {
   /* Length in bytes of the data information */
   uint16_t length;
 } DRV_PLC_PHY_PIB_OBJ;
-
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

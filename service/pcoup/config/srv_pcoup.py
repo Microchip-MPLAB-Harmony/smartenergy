@@ -129,6 +129,24 @@ gain_vlow_arib_c11  = [403, 200, 451]
 #### PRIME Coupling Parameters ####
 ############################################################################
 
+dacc_chn1_c07   = [0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
+				0x00002020, 0x00000044, 0x0FD20005, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF] #ok
+
+rms_high_chn1  = [2226, 1586, 1132, 805, 573, 408, 290, 206]
+rms_vlow_chn1  = [5920, 4604, 3331, 2374, 1686, 1193, 846, 599]
+thrs_high_chn1 = [0, 0, 0, 0, 0, 0, 0, 0, 1884, 1341, 955, 677, 483, 341, 243, 173]
+thrs_vlow_chn1 = [0, 0, 0, 0, 0, 0, 0, 0, 9551, 6881, 4936, 3541, 2532, 1805, 1290, 922]
+gain_high_chn1 = [126, 60, 336]
+gain_vlow_chn1 = [532, 230, 597]
+drv_conf_chn1  = 5
+
+rms_high_chn1_c07  = [1725, 1522, 1349, 1202, 1071, 957, 855, 764]  #ok
+rms_vlow_chn1_c07  = [4874, 4427, 3986, 3555, 3157, 2795, 2470, 2184] #ok
+thrs_high_chn1_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 1467, 1292, 1145, 1019, 910, 811, 725, 648] #ok
+thrs_vlow_chn1_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 8479, 7515, 6665, 5874, 5192, 4576, 4030, 3557] #ok
+gain_high_chn1_c07 = [126, 60, 336]
+gain_vlow_chn1_c07 = [532, 230, 597]
+drv_conf_chn1_c07  = 5
 
 ############################################################################
 
@@ -148,17 +166,18 @@ def updatePlcCouplingParameters():
         # print("------------------------- [CHRIS_dbg]: NO Encontrado DRV_PLC_MODE")
         return
     
+    plcProfile = Database.getSymbolValue(plcDriver, "DRV_PLC_PROFILE")
     plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
-    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND")
-    plcHighAtt = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_HIGH_ATTENUATION")
-    plcMultiband = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_MULTIBAND")
-    plcInternal = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_INTERNAL")
-    plcBandAux = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND_AUX")
 
     pCoupPLCRAuxBranch.setVisible(False)
     auxiliaryBand = False
     pCoupPLCAuxPhyG3Band.setValue("None")
 
+    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND")
+    plcHighAtt = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_HIGH_ATTENUATION")
+    plcMultiband = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_MULTIBAND")
+    plcInternal = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_INTERNAL")
+    plcBandAux = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND_AUX")
     if (plcDevice == "PL460"):
         if plcPhyBand == "CEN-A":
             print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
@@ -337,6 +356,7 @@ def updatePlcCouplingParameters():
                 gain_high = gain_high_arib_c06
                 gain_vlow = gain_vlow_arib_c06
 
+
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_LINE_DRIVER", line_drv)
 
@@ -401,7 +421,7 @@ def instantiateComponent(pCoupComponentCommon):
     configName = Variables.get("__CONFIGURATION_NAME")
 
     ############################################################################
-    #### Main Transmission Branch ####
+    #### G3 Main Transmission Branch ####
     ############################################################################
 
     pCoupPLCMainBranch = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_MAIN_BRANCH", None)
@@ -477,7 +497,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPLCLineDriver.setReadOnly(True)
 
     ############################################################################
-    #### Auxiliary Transmission Branch ####
+    #### G3 Auxiliary Transmission Branch ####
     ############################################################################
 
     global pCoupPLCRAuxBranch
@@ -553,7 +573,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPLCAuxLineDriver.setReadOnly(True)
 
     #### Phy Coupling Files ######################################################
-    pCoupG3SourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_SOURCE", None)
+    pCoupG3SourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_SOURCE_G3", None)
     pCoupG3SourceFile.setSourcePath("service/pcoup/srv_pcoup_g3.c.ftl")
     pCoupG3SourceFile.setOutputName("srv_pcoup.c")
     pCoupG3SourceFile.setDestPath("service/pcoup")
@@ -563,7 +583,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3SourceFile.setOverwrite(True)
     pCoupG3SourceFile.setEnabled(True)
 
-    pCoupG3HeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_HEADER", None)
+    pCoupG3HeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_HEADER_G3", None)
     pCoupG3HeaderFile.setSourcePath("service/pcoup/srv_pcoup_g3.h.ftl")
     pCoupG3HeaderFile.setOutputName("srv_pcoup.h")
     pCoupG3HeaderFile.setDestPath("service/pcoup")
@@ -572,6 +592,26 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3HeaderFile.setMarkup(True)
     pCoupG3HeaderFile.setOverwrite(True)
     pCoupG3HeaderFile.setEnabled(True)
+    
+    pCoupPRIMESourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_SOURCE_PRIME", None)
+    pCoupPRIMESourceFile.setSourcePath("service/pcoup/srv_pcoup_prime.c.ftl")
+    pCoupPRIMESourceFile.setOutputName("srv_pcoup.c")
+    pCoupPRIMESourceFile.setDestPath("service/pcoup")
+    pCoupPRIMESourceFile.setProjectPath("config/" + configName + "/service/pcoup/")
+    pCoupPRIMESourceFile.setType("SOURCE")
+    pCoupPRIMESourceFile.setMarkup(True)
+    pCoupPRIMESourceFile.setOverwrite(True)
+    pCoupPRIMESourceFile.setEnabled(False)
+
+    pCoupPRIMEHeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_HEADER_PRIME", None)
+    pCoupPRIMEHeaderFile.setSourcePath("service/pcoup/srv_pcoup_prime.h.ftl")
+    pCoupPRIMEHeaderFile.setOutputName("srv_pcoup.h")
+    pCoupPRIMEHeaderFile.setDestPath("service/pcoup")
+    pCoupPRIMEHeaderFile.setProjectPath("config/" + configName + "/service/pcoup/")
+    pCoupPRIMEHeaderFile.setType("HEADER")
+    pCoupPRIMEHeaderFile.setMarkup(True)
+    pCoupPRIMEHeaderFile.setOverwrite(True)
+    pCoupPRIMEHeaderFile.setEnabled(False)
 
     #### FreeMaker System Files ######################################################
 

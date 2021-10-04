@@ -63,18 +63,19 @@
 static DRV_PLC_PHY_OBJ *gPlcPhyObj;
 
 /* Buffer definition to communicate with PLC */
-static uint8_t sDataInfo[PLC_STATUS_LENGTH];
-static uint8_t sDataTx[PLC_TX_PAR_SIZE + PLC_DATA_PKT_SIZE];
-static uint8_t sDataRxPar[PLC_RX_PAR_SIZE];
-static uint8_t sDataRxDat[PLC_DATA_PKT_SIZE];
-static uint8_t sDataTxCfm[2][PLC_CMF_PKT_SIZE];
-static uint8_t sDataReg[PLC_REG_PKT_SIZE];
+static CACHE_ALIGN uint8_t sDataInfo[CACHE_ALIGNED_SIZE_GET(PLC_STATUS_LENGTH)];
+static CACHE_ALIGN uint8_t sDataTx[CACHE_ALIGNED_SIZE_GET(PLC_TX_PAR_SIZE + PLC_DATA_PKT_SIZE)];
+static CACHE_ALIGN uint8_t sDataRxPar[CACHE_ALIGNED_SIZE_GET(PLC_RX_PAR_SIZE)];
+static CACHE_ALIGN uint8_t sDataRxDat[CACHE_ALIGNED_SIZE_GET(PLC_DATA_PKT_SIZE)];
+static CACHE_ALIGN uint8_t sDataTxCfm[2][CACHE_ALIGNED_SIZE_GET(PLC_CMF_PKT_SIZE)];
+static CACHE_ALIGN uint8_t sDataReg[CACHE_ALIGNED_SIZE_GET(PLC_REG_PKT_SIZE)];
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
+
 static uint32_t _DRV_PLC_PHY_COMM_GetPibBaseAddress(DRV_PLC_PHY_ID id)
 {
     uint32_t addr;
@@ -267,7 +268,7 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
     else
     {
         /* PLC needs boot process to upload firmware */
-        DRV_PLC_BOOT_Restart(true);
+        DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_HARD);
         if (gPlcPhyObj->exceptionCallback)
         {
             gPlcPhyObj->exceptionCallback(DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY, gPlcPhyObj->contextExc);
@@ -423,10 +424,17 @@ void DRV_PLC_PHY_Init(DRV_PLC_PHY_OBJ *pl360)
 
 void DRV_PLC_PHY_Task(void)
 {
+<#if DRV_PLC_SLEEP_MODE == true>             
+    if (gPlcPhyObj->sleep)
+    {
+        return;
+    }
+
+</#if>  
     /* Check event flags */
     for (uint8_t idx = 0; idx < 2; idx++)
     {
-        if (gPlcPhyObj->evTxCfm[idx])
+        if ((gPlcPhyObj->evTxCfm[idx]) || (gPlcPhyObj->evResetTxCfm))
         {
             DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
             
@@ -475,6 +483,40 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
 {    
     DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
 
+<#if DRV_PLC_SLEEP_MODE == true>             
+    if (gPlcPhyObj->sleep)
+    {
+        /* Do not transmit in SLeep Mode. */
+        if (gPlcPhyObj->dataCfmCallback)
+        {
+            cfmObj.rmsCalc = 0;
+            cfmObj.time = 0;
+            cfmObj.result = DRV_PLC_PHY_TX_RESULT_NO_TX;
+            /* Report to upper layer */
+            gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
+        }
+        
+        return;
+    }
+
+</#if>     
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
+    if (gPlcPhyObj->plcHal->getThermalMonitor()) 
+    {
+        /* Check thermal warning (>110�C). Do not transmit and report High Temperature warning. */
+        if (gPlcPhyObj->dataCfmCallback)
+        {
+            cfmObj.rmsCalc = 0;
+            cfmObj.time = 0;
+            cfmObj.result = DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_110;
+            /* Report to upper layer */
+            gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
+        }
+        
+        return;
+    }
+
+</#if>  
     if((handle != DRV_HANDLE_INVALID) && (handle == 0) && (gPlcPhyObj->state == DRV_PLC_PHY_STATE_IDLE))
     {
         size_t size;
@@ -496,22 +538,8 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
                 _DRV_PLC_PHY_COMM_SpiWriteCmd(TX1_PAR_ID, sDataTx, size);
             }
             
-                           
             /* Update PLC state: waiting confirmation */
             gPlcPhyObj->state = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
-        }
-            else
-            {
-                /* Notify DRV_PLC_PHY_TX_RESULT_BUSY_TX */
-                if (gPlcPhyObj->dataCfmCallback)
-                {
-                    cfmObj.rmsCalc = 0;
-                    cfmObj.time = 0;
-                    cfmObj.result = DRV_PLC_PHY_TX_RESULT_BUSY_TX;
-                    /* Report to upper layer */
-                    gPlcPhyObj->dataCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
-                }
-            }
         }
         else
         {
@@ -544,6 +572,13 @@ bool DRV_PLC_PHY_PIBGet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
 {    
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
+<#if DRV_PLC_SLEEP_MODE == true>             
+        if (gPlcPhyObj->sleep)
+        {
+            return false;
+        }
+
+</#if>  
         if (pibObj->id == PLC_ID_TIME_REF_ID)
         {
             /* Send PIB information request */
@@ -653,6 +688,13 @@ bool DRV_PLC_PHY_PIBSet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
 {    
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
+<#if DRV_PLC_SLEEP_MODE == true>             
+        if (gPlcPhyObj->sleep)
+        {
+            return false;
+        }
+
+</#if>  
         if (pibObj->id & DRV_PLC_PHY_REG_ID_MASK)
         {
             uint8_t *pDst;

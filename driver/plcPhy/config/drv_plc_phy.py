@@ -49,6 +49,9 @@ PLC_PROFILE_G3_FCC_CEN_B = 7
 PLC_PROFILE_G3_ARIB_CEN_A = 8
 PLC_PROFILE_G3_ARIB_CEN_B = 9
 
+plcCoupPRIMECH = []
+plcCoupPRIME2CH = []
+
 def handleMessage(messageID, args):
 
     result_dict = {}
@@ -245,18 +248,15 @@ def showSleepPin(symbol, event):
 
 def showG3HighAttenuation(symbol, event):
     global plcDriverMode
+    global plcG3Band
 
-    # print("[CHRIS_dbg] : showG3HighAttenuation <- " + event["id"])
-    if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
-        if (plcDriverMode.getValue() == "PL460"):
+    if (plcDriverMode.getValue() == "PL360"):
+        symbol.setVisible(False)
+    else:
+        if (plcG3Band.getValue() == "FCC") or (plcG3Band.getValue() == "ARIB"):
             symbol.setVisible(True)
         else:
             symbol.setVisible(False)
-    else:
-        symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
 
 def showG3InternalDriver(symbol, event):
     global plcDriverMode
@@ -288,34 +288,71 @@ def showG3AuxBand(symbol, event):
         symbol.setVisible(False)
     
 def showPRIMEHighAttenuation(symbol, event):
-    # print("[CHRIS_dbg] : showPRIMEHighAttenuation <- " + event["id"])
-    if (event["symbol"].getValue() == "CH1"):
+    global plcDriverMode
+    if (plcDriverMode.getValue() == "PL360"):
         symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
     else:
         symbol.setVisible(True)
-
-def showPRIMEMultiband(symbol, event):
-    # print("[CHRIS_dbg] : showPRIMEMultiband <- " + event["id"])
-    if (event["symbol"].getValue() == "CH1"):
-        symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
-    else:
-        symbol.setVisible(True)
+        # if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CHN_MODE") == "DOUBLE CHANNEL"):
+        #     symbol.setVisible(True)
+        # else:
+        #     symbol.setVisible(False)
 
 def showPRIMEAuxBand(symbol, event):
-    # print("[CHRIS_dbg] : showPRIMEAuxBand <- " + event["id"])
-    if (event["value"] == True):
+    global plcDriverMode
+    if (plcDriverMode.getValue() == "PL360"):
+        symbol.setVisible(False)
+    else:
+        if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CHN_MODE") == "SINGLE CHANNEL"):
+            symbol.setVisible(True)
+        else:
+            symbol.setVisible(False)
+
+def showPrimeChannelSelect(symbol, event):
+    global plcCoupPRIMEChannel
+    if (event["value"] == "SINGLE CHANNEL"):
+        symbol.setVisible(True)
+        plcCoupPRIMEChannel.setVisible(True)
+    else:
+        symbol.setVisible(False)
+        plcCoupPRIMEChannel.setVisible(False)
+
+def showPrime2ChannelSelect(symbol, event):
+    if (event["value"] == "DOUBLE CHANNEL"):
+        symbol.setVisible(True)
+        plcCoupPRIME2Channel.setVisible(True)
+    else:
+        symbol.setVisible(False)
+        plcCoupPRIME2Channel.setVisible(False)
+
+def checkPrimeChannelConf(symbol, event):
+    global plcCoupPRIMEChannel
+    global plcCoupPRIMEBandAux
+
+    channel_def = int(plcCoupPRIMEChannel.getValue()[-1])
+    channel_sel = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH" + str(channel_def))
+    
+    if (channel_sel == False):
+        symbol.setVisible(True)
+        if (channel_def == 1):
+            plcCoupPRIMEBandAux.setVisible(False)
+    else:
+        symbol.setVisible(False)
+        if (channel_def == 1):
+            plcCoupPRIMEBandAux.setVisible(True)
+
+def checkPrime2ChannelConf(symbol, event):
+    global plcCoupPRIME2Channel
+
+    channel_def = int(plcCoupPRIME2Channel.getValue()[2])
+    channel_sel = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH" + str(channel_def))
+    
+    if (channel_sel == False):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)    
+        symbol.setVisible(False)
 
 def updateShowCoupSettings(symbol, event):
-    # print("[CHRIS_dbg] : updateShowCoupSettings <- " + event["id"])
     global plcCoupPRIMESettings
     global plcCoupG3Settings
 
@@ -327,7 +364,6 @@ def updateShowCoupSettings(symbol, event):
         plcCoupPRIMESettings.setVisible(True)
 
 def resetPlcBand(symbol, event):  
-    # print("[CHRIS_dbg] : resetPlcBand <- " + event["id"])
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
@@ -729,9 +765,10 @@ def instantiateComponent(plcComponent):
     plcCoupG3Settings.setDescription("Coupling Settings")
     plcCoupG3Settings.setVisible(True)
 
+    global plcG3Band
     # plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
     plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
-    plcG3Band.setLabel("G3 Phy Band")
+    plcG3Band.setLabel("G3 Main Branch")
     plcG3Band.setDefaultValue("CEN-A")
     # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
 
@@ -750,7 +787,7 @@ def instantiateComponent(plcComponent):
     plcCoupGMultiBand.setDependencies(showG3Multiband, ["DRV_PLC_G3_BAND"])
 
     plcG3BandAux = plcComponent.createComboSymbol("DRV_PLC_G3_BAND_AUX", plcCoupGMultiBand, ["CEN-A", "CEN-B"])
-    plcG3BandAux.setLabel("G3 Phy Auxiliary Band")
+    plcG3BandAux.setLabel("G3 Auxiliary Branch")
     plcG3BandAux.setDefaultValue("CEN-A")
     plcG3BandAux.setVisible(False)
     plcG3BandAux.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
@@ -762,11 +799,11 @@ def instantiateComponent(plcComponent):
     plcG3BandAuxActive.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcCoupG3HighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_COUP_G3_HIGH_ATTENUATION", plcG3Band)
-    plcCoupG3HighAttenuation.setLabel("FCC high attenuation coupling")
+    plcCoupG3HighAttenuation.setLabel("FCC high attenuation branch")
     plcCoupG3HighAttenuation.setDescription("FCC high attenuation")
     plcCoupG3HighAttenuation.setVisible(False)
     plcCoupG3HighAttenuation.setDefaultValue(False)
-    plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND"])
+    plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
     
     ##### Coupling Settings : PRIME  ####################################################
     global plcCoupPRIMESettings
@@ -775,30 +812,70 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMESettings.setDescription("Coupling Settings")
     plcCoupPRIMESettings.setVisible(False)
 
-    plcCoupPRIMEMultiBand = plcComponent.createBooleanSymbol("DRV_PLC_COUP_PRIME_MULTIBAND", plcCoupPRIMESettings)
-    plcCoupPRIMEMultiBand.setLabel("Multiband")
-    plcCoupPRIMEMultiBand.setDescription("Multiband")
-    plcCoupPRIMEMultiBand.setVisible(True)
-    plcCoupPRIMEMultiBand.setDefaultValue(False)
-    plcCoupPRIMEMultiBand.setDependencies(showPRIMEMultiband, ["DRV_PLC_PRIME_CHN"])
+    plcCoupPRIMEModeChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_CHN_MODE", plcCoupPRIMESettings, ["SINGLE CHANNEL", "DOUBLE CHANNEL"])
+    plcCoupPRIMEModeChannel.setLabel("Mode Channel")
+    plcCoupPRIMEModeChannel.setDefaultValue("SINGLE CHANNEL")
+    plcCoupPRIMEModeChannel.setVisible(True)
 
-    plcPRIME3BandAux = plcComponent.createComboSymbol("DRV_PLC_PRIME_BAND_AUX", plcCoupPRIMEMultiBand, ["CH1"])
-    plcPRIME3BandAux.setLabel("PRIME Phy Second Channel")
-    plcPRIME3BandAux.setDefaultValue("CEN-A")
-    plcPRIME3BandAux.setVisible(False)
-    plcPRIME3BandAux.setDependencies(showPRIMEAuxBand, ["DRV_PLC_COUP_PRIME_MULTIBAND"])
+    plcCoupPRIMEChannelComment = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_COMMENT", plcCoupPRIMESettings)
+    plcCoupPRIMEChannelComment.setLabel("Select available channels")
+    plcCoupPRIMEChannelComment.setVisible(True)
+    plcCoupPRIMEChannelComment.setDependencies(showPrimeChannelSelect, ["DRV_PLC_PRIME_CHN_MODE"])
 
-    plcPRIMEChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_CHN", plcCoupPRIMESettings, ["CH1", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8", "CH3-4", "CH4-5", "CH5-6", "CH6-7", "CH7-8"])
-    plcPRIMEChannel.setLabel("PRIME Phy Channel")
-    plcPRIMEChannel.setDefaultValue("CH1")
-    plcPRIMEChannel.setVisible(True)
+    for idx in range(8):
+        plcCoupPRIMECH.append(plcComponent.createBooleanSymbol("DRV_PLC_PRIME_CH" + str(idx + 1), plcCoupPRIMEChannelComment))
+        plcCoupPRIMECH[idx].setLabel("Channel " + str(idx + 1))
+        plcCoupPRIMECH[idx].setDescription("Channel " + str(idx + 1))
+        plcCoupPRIMECH[idx].setDefaultValue(True)
 
-    plcCoupPRIMEHighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_HIGH_ATTENUATION", plcPRIMEChannel)
-    plcCoupPRIMEHighAttenuation.setLabel("FCC high attenuation coupling")
+    plcCoupPRIME2ChannelComment = plcComponent.createCommentSymbol("DRV_PLC_PRIME_2CHANNEL_COMMENT", plcCoupPRIMESettings)
+    plcCoupPRIME2ChannelComment.setLabel("Select available channels")
+    plcCoupPRIME2ChannelComment.setVisible(False)
+    plcCoupPRIME2ChannelComment.setDependencies(showPrime2ChannelSelect, ["DRV_PLC_PRIME_CHN_MODE"])
+
+    for idx in range(7):
+        plcCoupPRIME2CH.append(plcComponent.createBooleanSymbol("DRV_PLC_PRIME_2CH" + str(idx + 1), plcCoupPRIME2ChannelComment))
+        plcCoupPRIME2CH[idx].setLabel("Channels " + str(idx + 1) + " - " + str(idx + 2))
+        plcCoupPRIME2CH[idx].setDescription("Channel " + str(idx + 1))
+        plcCoupPRIME2CH[idx].setDefaultValue(True)
+
+    global plcCoupPRIMEChannel
+    plcCoupPRIMEChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_CHN", plcCoupPRIMESettings, ["CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8"])
+    plcCoupPRIMEChannel.setLabel("Default Channel")
+    plcCoupPRIMEChannel.setDefaultValue("CH1")
+    plcCoupPRIMEChannel.setVisible(True)
+
+    plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEChannel)
+    plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
+    plcCoupPRIMEChannelWarning.setVisible(False)
+    plcCoupPRIMEChannelWarning.setDependencies(checkPrimeChannelConf, ["DRV_PLC_PRIME_CH1", "DRV_PLC_PRIME_CH2", "DRV_PLC_PRIME_CH3", \
+        "DRV_PLC_PRIME_CH4", "DRV_PLC_PRIME_CH5", "DRV_PLC_PRIME_CH6", "DRV_PLC_PRIME_CH7", "DRV_PLC_PRIME_CH8", "DRV_PLC_PRIME_CHN"])
+
+    global plcCoupPRIME2Channel
+    plcCoupPRIME2Channel = plcComponent.createComboSymbol("DRV_PLC_PRIME_2CHN", plcCoupPRIMESettings, ["CH2-CH3", "CH3-CH4", "CH4-CH5", "CH5-CH6", "CH6-CH7", "CH7-CH8"])
+    plcCoupPRIME2Channel.setLabel("Default Channel")
+    plcCoupPRIME2Channel.setDefaultValue("CH7-CH8")
+    plcCoupPRIME2Channel.setVisible(False)
+
+    plcCoupPRIME2ChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_2CHANNEL_WARN", plcCoupPRIME2Channel)
+    plcCoupPRIME2ChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
+    plcCoupPRIME2ChannelWarning.setVisible(False)
+    plcCoupPRIME2ChannelWarning.setDependencies(checkPrime2ChannelConf, ["DRV_PLC_PRIME_2CH1", "DRV_PLC_PRIME_2CH2", "DRV_PLC_PRIME_2CH3", \
+        "DRV_PLC_PRIME_2CH4", "DRV_PLC_PRIME_2CH5", "DRV_PLC_PRIME_2CH6", "DRV_PLC_PRIME_2CH7", "DRV_PLC_PRIME_2CHN"])
+
+    plcCoupPRIMEHighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_HIGH_ATTENUATION", plcCoupPRIMESettings)
+    plcCoupPRIMEHighAttenuation.setLabel("FCC high attenuation branch")
     plcCoupPRIMEHighAttenuation.setDescription("FCC high attenuation")
-    plcCoupPRIMEHighAttenuation.setVisible(True)
+    plcCoupPRIMEHighAttenuation.setVisible(False)
     plcCoupPRIMEHighAttenuation.setDefaultValue(False)
-    plcCoupPRIMEHighAttenuation.setDependencies(showPRIMEHighAttenuation, ["DRV_PLC_PRIME_CHN"])
+    plcCoupPRIMEHighAttenuation.setDependencies(showPRIMEHighAttenuation, ["DRV_PLC_PRIME_CHN", "DRV_PLC_PRIME_CHN_MODE", "DRV_PLC_MODE"])
+    
+    global plcCoupPRIMEBandAux
+    plcCoupPRIMEBandAux = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_BAND_AUX", plcCoupPRIMECH[0])
+    plcCoupPRIMEBandAux.setLabel("Use Auxiliary Branch")
+    plcCoupPRIMEBandAux.setDefaultValue(True)
+    plcCoupPRIMEBandAux.setVisible(True)
+    plcCoupPRIMEBandAux.setDependencies(showPRIMEAuxBand, ["DRV_PLC_PRIME_CHN_MODE", "DRV_PLC_MODE"])
 
     plcPhyKeyCortex = plcComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
     plcPhyKeyCortex.setLabel("PLC Phy Key Cortex")
