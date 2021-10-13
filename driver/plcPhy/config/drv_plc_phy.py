@@ -178,6 +178,7 @@ def includeBinFile(plcBand):
             print("PLC Drv: Include binary file for ARIB")
 
 def updateBinFiles():
+    dict = {}
     removeAllBinFiles()
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE") == "G3") :
         g3_band = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND")
@@ -187,9 +188,11 @@ def updateBinFiles():
             g3_aux_band = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND_AUX")
             includeBinFile(g3_aux_band)
             setPlcMultiBandInUse(g3_band, g3_aux_band)
+        dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
     else:
         includeBinFile("PRIME")
         setPlcBandInUse("PRIME")
+        dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
     
     # Check Internal/External Addressing    
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
@@ -200,15 +203,8 @@ def updateBinFiles():
         removeAllBinFiles()
         plcAssemblyBinFile.setEnabled(False)
 
-    dict = {}
-    dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PARAMETERS", {})
-    
-
-# def updatePLCBinFiles(symbol, event):
-#     updateBinFiles()
-
-def updatePLCBandInUse(symbol, event):
-    # print("[CHRIS_dbg] : updatePLCBandInUse <- " + event["id"])
+def updateG3PLCBandInUse(symbol, event):
+    # print("[CHRIS_dbg] : updateG3PLCBandInUse <- " + event["id"])
     updateBinFiles()
 
 def plcBinAddressingMode(symbol, event):
@@ -325,8 +321,8 @@ def checkPrimeChannelConf(symbol, event):
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH7") << 14)
 
     channel_value = plcCoupPRIMEDefChannel.getValue()
-    if (channel_value.rfind("-") > 0):
-        channel_default_idx = int(channel_value[2]) + 7
+    if (channel_value.rfind("_") > 0):
+        channel_default_idx = int(channel_value[3]) + 7
     else:
         channel_default_idx = int(channel_value[-1]) - 1
 
@@ -355,6 +351,13 @@ def checkPrimeChannelConf(symbol, event):
             plcCoupPRIMEHighAttenuation.setVisible(False)
         else:
             plcCoupPRIMEHighAttenuation.setVisible(True)
+
+    # Update internal Channels Selected Symbol
+    Database.setSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CHANNELS_SELECTED", channels_selected)
+
+    # Send message to PLC COUP to update PRIME configuration
+    dict = {}
+    dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
 
 
 def checkPrime2ChannelConf(symbol, event):
@@ -549,7 +552,7 @@ def instantiateComponent(plcComponent):
 
     plcStaticAddressing = plcComponent.createBooleanSymbol("DRV_PLC_BIN_STATIC_ADDRESSING", None)
     plcStaticAddressing.setLabel("Static Bin file Addressing")
-    plcStaticAddressing.setVisible(True)
+    plcStaticAddressing.setVisible(False)
     plcStaticAddressing.setDefaultValue(False)
 
     plcBinaryAddress = plcComponent.createHexSymbol("DRV_PLC_PLC_BIN_ADDRESS", plcStaticAddressing)
@@ -566,7 +569,7 @@ def instantiateComponent(plcComponent):
 
     plcSecureMode = plcComponent.createBooleanSymbol("DRV_PLC_SECURE_MODE", None)
     plcSecureMode.setLabel("PLC Secure Mode")
-    plcSecureMode.setVisible(True)
+    plcSecureMode.setVisible(False)
     plcSecureMode.setDefaultValue(False)
 
     ############################################################################
@@ -856,9 +859,9 @@ def instantiateComponent(plcComponent):
             plcCoupPRIME2CH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_2CHN_MODE"])
 
     global plcCoupPRIMEDefChannel
-    plcCoupPRIMEDefChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_DEF_CHN", plcCoupPRIMESettings, ["CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8", "CH2-CH3", "CH3-CH4", "CH4-CH5", "CH5-CH6", "CH6-CH7", "CH7-CH8"])
+    plcCoupPRIMEDefChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_DEF_CHN", plcCoupPRIMESettings, ["CHN1", "CHN2", "CHN3", "CHN4", "CHN5", "CHN6", "CHN7", "CHN8", "CHN2_CHN3", "CHN3_CHN4", "CHN4_CHN5", "CHN5_CHN6", "CHN6_CHN7", "CHN7_CHN8"])
     plcCoupPRIMEDefChannel.setLabel("Default Channel")
-    plcCoupPRIMEDefChannel.setDefaultValue("CH1")
+    plcCoupPRIMEDefChannel.setDefaultValue("CHN1")
     plcCoupPRIMEDefChannel.setVisible(True)
 
     global plcCoupPRIMEBandAux
@@ -882,6 +885,11 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMEHighAttenuation.setVisible(False)
     plcCoupPRIMEHighAttenuation.setDefaultValue(False)
 
+    pCoupPRIMEChannelsSelected = plcComponent.createIntegerSymbol("DRV_PLC_PRIME_CHANNELS_SELECTED", plcCoupPRIMESettings)
+    pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
+    pCoupPRIMEChannelsSelected.setVisible(True)   # Cambiar a False
+    pCoupPRIMEChannelsSelected.setDefaultValue(0)
+
     plcPhyKeyCortex = plcComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
     plcPhyKeyCortex.setLabel("PLC Phy Key Cortex")
     plcPhyKeyCortex.setDefaultValue(0x1122)
@@ -896,7 +904,7 @@ def instantiateComponent(plcComponent):
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
     #plcBandInUse.setVisible(False)
     plcBandInUse.setReadOnly(True)
-    plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND", "DRV_PLC_G3_BAND_AUX_ACTIVE"])
+    plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND", "DRV_PLC_G3_BAND_AUX_ACTIVE"])
 
     plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
