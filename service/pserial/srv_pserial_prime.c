@@ -167,7 +167,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t*
     pDataDst->forced += (uint32_t)*pDataSrc++;
     pDataDst->dataLength = ((uint16_t)*pDataSrc++) << 8;
     pDataDst->dataLength += (uint16_t)*pDataSrc++;
-    
+
     if (pDataDst->frameType == FRAME_TYPE_A) 
     {
         pDataDst->pTransmitData[0] = 0xAA;
@@ -187,6 +187,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t*
 size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc)
 {
     uint8_t* pData;
+    uint16_t dataLength;
     
     pData = pDataDst;
     
@@ -221,24 +222,25 @@ size_t SRV_PSERIAL_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ*
     *pData++ = (uint8_t)(pDataSrc->narBandPercent);
     *pData++ = (uint8_t)(pDataSrc->impNoisePercent);
     
+    dataLength = pDataSrc->dataLength;
     if (pDataSrc->frameType == FRAME_TYPE_A) 
     {
+        dataLength -= 3;
         /* remove Generic Data Frame Header */
-        pDataSrc->dataLength -= 3;
-        *pData++ = (uint8_t)((pDataSrc->dataLength) >> 8);
-        *pData++ = (uint8_t)(pDataSrc->dataLength);
+        *pData++ = (uint8_t)((dataLength) >> 8);
+        *pData++ = (uint8_t)(dataLength);
         /* copy data */
-        memcpy(pData, pDataSrc->pReceivedData + 3, pDataSrc->dataLength);
+        memcpy(pData, pDataSrc->pReceivedData + 3, dataLength);
     }
     else
     {
         /* copy data */
-        *pData++ = (uint8_t)((pDataSrc->dataLength) >> 8);
-        *pData++ = (uint8_t)(pDataSrc->dataLength);
-        memcpy(pData, pDataSrc->pReceivedData + 3, pDataSrc->dataLength);
+        *pData++ = (uint8_t)((dataLength) >> 8);
+        *pData++ = (uint8_t)(dataLength);
+        memcpy(pData, pDataSrc->pReceivedData, dataLength);
     }
     
-    pData += pDataSrc->dataLength;
+    pData += dataLength;
     
     return (pData - pDataDst);    
 }

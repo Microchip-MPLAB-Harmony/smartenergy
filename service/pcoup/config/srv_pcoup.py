@@ -1028,7 +1028,7 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
                 gain_vlow = gain_vlow_drv_sb[channel - 2]
 
     # Update Values of the pCoup symbols
-    symbol_id = "SRV_PCOUP_PRIME_CH" + str(channel)
+    symbol_id = "SRV_PCOUP_PRIME_CHN" + str(channel)
     Database.setSymbolValue("srv_pcoup", symbol_id + "_LINE_DRIVER", line_drv)
 
     for idx in range(8):
@@ -1084,7 +1084,8 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
             gain_vlow = gain_vlow_drv_sb[channel]
 
     # Update Values of the pCoup symbols
-    symbol_id = "SRV_PCOUP_PRIME_2CH" + str(channel + 2) + str(channel + 3)
+    symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(channel + 2) + str(channel + 3)
+    Database.setSymbolValue("srv_pcoup", symbol_id, True)
     Database.setSymbolValue("srv_pcoup", symbol_id + "_LINE_DRIVER", line_drv)
 
     for idx in range(8):
@@ -1110,11 +1111,11 @@ def updatePRIMECouplingParameters():
     global pCoupG3TXBranches
 
     if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
-        print("------------------------- [CHRIS_dbg]: Found PLC_PHY driver, updating parameters")
+        # print("------------------------- [CHRIS_dbg]: Found PLC_PHY driver, updating parameters")
         plcDriver = "drvPlcPhy"
     else:
         plcDriver = ""
-        print("------------------------- [CHRIS_dbg]: ERROR - Don't found DRV_PLC_MODE")
+        # print("------------------------- [CHRIS_dbg]: ERROR - Don't found DRV_PLC_MODE")
         return
 
     # Show PRIME setting, hide G3 setting
@@ -1138,19 +1139,25 @@ def updatePRIMECouplingParameters():
 
     # Configure Single channels selected in PHY driver
     for idx in range(8):
+        symbol_id = "SRV_PCOUP_PRIME_CHN" + str(idx + 1)
         if (channels_sel & (1 << idx)):
             pCoupConfigureChannel(plcDevice, idx + 1, multiband, auxBranch, highImp)
             pCoupPRIMEMenuChn[idx].setVisible(True)
+            Database.setSymbolValue("srv_pcoup", symbol_id, True)
         else:
             pCoupPRIMEMenuChn[idx].setVisible(False)
+            Database.setSymbolValue("srv_pcoup", symbol_id, False)
 
     # Configure Double channels selected in PHY driver
     for idx in range(6):
+        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(idx + 2) + str(idx + 3)
         if (channels_sel & (1 << (idx + 9))):
             pCoupConfigure2Channel(plcDevice, idx, multiband, highImp)
             pCoupPRIMEMenu2Chn[idx].setVisible(True)
+            Database.setSymbolValue("srv_pcoup", symbol_id, True)
         else:
             pCoupPRIMEMenu2Chn[idx].setVisible(False)
+            Database.setSymbolValue("srv_pcoup", symbol_id, False)
 
     pCoupPRIMEChannelsSelected.setValue(channels_sel)
 
@@ -1192,7 +1199,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupG3MainPhyBand
     # pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_G3_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
-    pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_G3_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC"])
+    pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC"])
     pCoupG3MainPhyBand.setLabel("Phy G3 Band")
     pCoupG3MainPhyBand.setDefaultValue("CEN-A")
     pCoupG3MainPhyBand.setReadOnly(True)
@@ -1270,7 +1277,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupG3AuxPhyBand
     # pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_G3_BAND", pCoupG3RAuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
-    pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_G3_BAND", pCoupG3RAuxBranch, ["None", "CEN-A", "CEN-B", "FCC"])
+    pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_BAND", pCoupG3RAuxBranch, ["None", "CEN-A", "CEN-B", "FCC"])
     pCoupG3AuxPhyBand.setLabel("Phy G3 Band")
     pCoupG3AuxPhyBand.setDefaultValue("None")
     pCoupG3AuxPhyBand.setReadOnly(True)
@@ -1371,10 +1378,17 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPRIMEMenuChn[chn_idx].setDescription("Coupling Settings for channel " + str(chn_idx + 1))
         pCoupPRIMEMenuChn[chn_idx].setVisible(False)
 
-        symbol_id = "SRV_PCOUP_PRIME_CH" + str(chn_idx + 1)
+        symbol_id = "SRV_PCOUP_PRIME_CHN" + str(chn_idx + 1)
+
+        pCoupPRIMENumChnEnable = pCoupComponentCommon.createBooleanSymbol(symbol_id, pCoupPRIMEMenuChn[chn_idx])
+        pCoupPRIMENumChnEnable.setLabel("Channel Enable")
+        pCoupPRIMENumChnEnable.setDefaultValue(False)
+        pCoupPRIMENumChnEnable.setVisible(False)
+
         pCoupPRIMENumTxLvl = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_NUM_TX_LVL", pCoupPRIMEMenuChn[chn_idx])
         pCoupPRIMENumTxLvl.setLabel("Number of TX levels")
         pCoupPRIMENumTxLvl.setDefaultValue(8)
+        pCoupPRIMENumTxLvl.setMax(8)
 
         pCoupPRIMERMSHigh = pCoupComponentCommon.createMenuSymbol(symbol_id + "_RMS_HIGH", pCoupPRIMEMenuChn[chn_idx])
         pCoupPRIMERMSHigh.setLabel("Target RMS high values")
@@ -1430,10 +1444,17 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPRIMEMenu2Chn[chn_idx].setDescription("Coupling Settings for channels " + str(chn_idx + 2) + " - " + str(chn_idx + 3))
         pCoupPRIMEMenu2Chn[chn_idx].setVisible(False)
 
-        symbol_id = "SRV_PCOUP_PRIME_2CH" + str(chn_idx + 2) + str(chn_idx + 3)
+        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(chn_idx + 2) + str(chn_idx + 3)
+
+        pCoupPRIMENum2ChnEnable = pCoupComponentCommon.createBooleanSymbol(symbol_id, pCoupPRIMEMenu2Chn[chn_idx])
+        pCoupPRIMENum2ChnEnable.setLabel("Double Channel Enable")
+        pCoupPRIMENum2ChnEnable.setDefaultValue(False)
+        pCoupPRIMENum2ChnEnable.setVisible(False)
+
         pCoupPRIMENumTxLvl = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_NUM_TX_LVL", pCoupPRIMEMenu2Chn[chn_idx])
         pCoupPRIMENumTxLvl.setLabel("Number of TX levels")
         pCoupPRIMENumTxLvl.setDefaultValue(8)
+        pCoupPRIMENumTxLvl.setMax(8)
 
         pCoupPRIMERMSHigh = pCoupComponentCommon.createMenuSymbol(symbol_id + "_RMS_HIGH", pCoupPRIMEMenu2Chn[chn_idx])
         pCoupPRIMERMSHigh.setLabel("Target RMS high values")

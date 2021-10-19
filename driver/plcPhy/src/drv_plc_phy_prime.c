@@ -104,15 +104,22 @@ uint16_t _DRV_PLC_PHY_COMM_GetDelayUs(DRV_PLC_PHY_ID id)
         switch (id) 
         {
             case PLC_ID_CHANNEL_CFG:
-            delay = 100;
+            delay = 2500;
+            break;
+
+            case PLC_ID_NUM_CHANNELS:
+            delay = 5000;
             break;
 
             case PLC_ID_PREDIST_COEF_TABLE_HI:
             case PLC_ID_PREDIST_COEF_TABLE_LO:
+            case PLC_ID_PREDIST_COEF_TABLE_HI_2:
+            case PLC_ID_PREDIST_COEF_TABLE_LO_2:
             delay = 1000;
             break;
 
             case PLC_ID_PREDIST_COEF_TABLE_VLO:
+            case PLC_ID_PREDIST_COEF_TABLE_VLO_2:
             delay = 2000;
             break;
 
@@ -503,7 +510,7 @@ void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *tra
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
     if (gPlcPhyObj->plcHal->getThermalMonitor()) 
     {
-        /* Check thermal warning (>110�C). Do not transmit and report High Temperature warning. */
+        /* Check thermal warning (>110ºC). Do not transmit and report High Temperature warning. */
         if (gPlcPhyObj->dataCfmCallback)
         {
             cfmObj.rmsCalc = 0;

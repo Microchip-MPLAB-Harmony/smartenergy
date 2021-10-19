@@ -63,7 +63,7 @@
 #define PLC_REG_PKT_SIZE      PLC_DATA_PKT_SIZE
 
 /* Number of transmission buffers */
-#define NUM_TX_BUFFERS                           1
+#define NUM_TX_BUFFERS                             2
 
 /* FLAG MASKs for set events */
 #define DRV_PLC_PHY_EV_FLAG_TX0_CFM_MASK           0x0001

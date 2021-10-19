@@ -242,6 +242,10 @@ def showSleepPin(symbol, event):
     # print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
     symbol.setVisible(event["value"])
 
+def showThermalMonitorPin(symbol, event):
+    # print("[CHRIS_dbg] : showThermalMonitorPin <- " + event["id"])
+    symbol.setVisible(event["value"])
+
 def showG3HighAttenuation(symbol, event):
     global plcDriverMode
     global plcG3Band
@@ -481,13 +485,18 @@ def instantiateComponent(plcComponent):
     plcStbyPin.setDisplayMode("Description")
     plcStbyPin.setVisible(False)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
+    
+    plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
+    plcThermalMonitor.setLabel("Thermal Monitor")
+    plcThermalMonitor.setDefaultValue(False)
+    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
-    plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", None)
+    plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
     plcThMonPin.setLabel("Thermal Monitor Pin")
     plcThMonPin.setDefaultValue(0)
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
-    plcThMonPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
+    plcThMonPin.setDependencies(showThermalMonitorPin, ["DRV_PLC_THERMAL_MONITOR"])
 
     availablePinDictionary = {}
 
@@ -870,20 +879,20 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMEBandAux.setDefaultValue(False)
     plcCoupPRIMEBandAux.setVisible(False)
 
-    plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEDefChannel)
-    plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
-    plcCoupPRIMEChannelWarning.setVisible(True)
-    plcCoupPRIMEChannelWarning.setDependencies(checkPrimeChannelConf, ["DRV_PLC_PRIME_CH1", "DRV_PLC_PRIME_CH2", "DRV_PLC_PRIME_CH3", \
-        "DRV_PLC_PRIME_CH4", "DRV_PLC_PRIME_CH5", "DRV_PLC_PRIME_CH6", "DRV_PLC_PRIME_CH7", "DRV_PLC_PRIME_CH8", "DRV_PLC_PRIME_1CHN_MODE", \
-        "DRV_PLC_PRIME_2CH1", "DRV_PLC_PRIME_2CH2", "DRV_PLC_PRIME_2CH3", "DRV_PLC_PRIME_2CH4", "DRV_PLC_PRIME_2CH5", "DRV_PLC_PRIME_2CH6", \
-        "DRV_PLC_PRIME_2CH7", "DRV_PLC_PRIME_2CHN_MODE", "DRV_PLC_PRIME_DEF_CHN", "DRV_PLC_PRIME_BAND_AUX", "DRV_PLC_MODE"])
-
     global plcCoupPRIMEHighAttenuation
     plcCoupPRIMEHighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_HIGH_ATTENUATION", plcCoupPRIMESettings)
     plcCoupPRIMEHighAttenuation.setLabel("High attenuation branch")
     plcCoupPRIMEHighAttenuation.setDescription("High attenuation branch")
     plcCoupPRIMEHighAttenuation.setVisible(False)
     plcCoupPRIMEHighAttenuation.setDefaultValue(False)
+
+    plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEDefChannel)
+    plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
+    plcCoupPRIMEChannelWarning.setVisible(True)
+    plcCoupPRIMEChannelWarning.setDependencies(checkPrimeChannelConf, ["DRV_PLC_PRIME_CH1", "DRV_PLC_PRIME_CH2", "DRV_PLC_PRIME_CH3", \
+        "DRV_PLC_PRIME_CH4", "DRV_PLC_PRIME_CH5", "DRV_PLC_PRIME_CH6", "DRV_PLC_PRIME_CH7", "DRV_PLC_PRIME_CH8", "DRV_PLC_PRIME_1CHN_MODE", \
+        "DRV_PLC_PRIME_2CH1", "DRV_PLC_PRIME_2CH2", "DRV_PLC_PRIME_2CH3", "DRV_PLC_PRIME_2CH4", "DRV_PLC_PRIME_2CH5", "DRV_PLC_PRIME_2CH6", \
+        "DRV_PLC_PRIME_2CH7", "DRV_PLC_PRIME_2CHN_MODE", "DRV_PLC_PRIME_DEF_CHN", "DRV_PLC_PRIME_BAND_AUX", "DRV_PLC_PRIME_HIGH_ATTENUATION", "DRV_PLC_MODE"])
 
     pCoupPRIMEChannelsSelected = plcComponent.createIntegerSymbol("DRV_PLC_PRIME_CHANNELS_SELECTED", plcCoupPRIMESettings)
     pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
@@ -905,12 +914,6 @@ def instantiateComponent(plcComponent):
     #plcBandInUse.setVisible(False)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND", "DRV_PLC_G3_BAND_AUX_ACTIVE"])
-
-    plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
-    plcThermalMonitor.setLabel("Thermal Monitor")
-    plcThermalMonitor.setDefaultValue(False)
-    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
-    
 
     #### FreeMaker Files ######################################################
 

@@ -180,13 +180,14 @@ typedef enum {
   PLC_ID_PREDIST_COEF_TABLE_VLO_2,
   PLC_ID_NOISE_PER_CARRIER_2,
   PLC_ID_RESET_STATS,
-  PLC_ID_PLC_IC_DRIVER_CFG,
+  PLC_ID_IC_DRIVER_CFG,
   PLC_ID_RX_CHN_EST_REAL,
   PLC_ID_RX_CHN_EST_IMAG,
   PLC_ID_RX_CHN_EST_REAL_2,
   PLC_ID_RX_CHN_EST_IMAG_2,
   PLC_ID_TX_DISABLE,
   PLC_ID_TX_HIGH_TEMP_120,
+  PLC_ID_TX_CANCELLED,
   PLC_ID_OBSOLETE_ID,
   PLC_ID_END_ID,
 } DRV_PLC_PHY_ID;    
@@ -210,7 +211,7 @@ typedef enum {
   SCHEME_D8PSK_C = 6,
   SCHEME_R_DBPSK = 12,
   SCHEME_R_DQPSK = 13,
-}DRV_PLC_PHY_SCH;
+} DRV_PLC_PHY_SCH;
 
 // *****************************************************************************
 /* PRIME Types of PHY frame
@@ -226,7 +227,7 @@ typedef enum {
   FRAME_TYPE_A = 0,
   FRAME_TYPE_B = 2,
   FRAME_TYPE_BC = 3,
-}DRV_PLC_PHY_FRAME_TYPE;
+} DRV_PLC_PHY_FRAME_TYPE;
 
 // *****************************************************************************
 /* PRIME Header Types
@@ -242,7 +243,7 @@ typedef enum {
   HDR_GENERIC = 0,
   HDR_PROMOTION = 1,
   HDR_BEACON = 2,
-}DRV_PLC_PHY_HEADER;
+} DRV_PLC_PHY_HEADER;
 
 // *****************************************************************************
 /* PRIME Internal Buffer identification
@@ -258,7 +259,7 @@ typedef enum {
 typedef enum {
   TX_BUFFER_0 = 0,
   TX_BUFFER_1 = 1,
-}DRV_PLC_PHY_BUFFER_ID;
+} DRV_PLC_PHY_BUFFER_ID;
 
 // *****************************************************************************
 /* PRIME Result values of a previous transmission
@@ -302,7 +303,46 @@ typedef enum {
 </#if>
   /* Transmission result: No transmission ongoing */
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
-}DRV_PLC_PHY_TX_RESULT;
+} DRV_PLC_PHY_TX_RESULT;
+
+/* Noise Capture Mode Bit Mask */
+#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT      0
+#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL            (0xFu << DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT       4
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE        (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_LOW    (0x0u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)  /* Signal mode for low signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_HIGH   (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT) /* Signal mode for high signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT    5
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE          (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_CHN      (0x0u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in Channel Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_FCC      (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in all FCC band Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT    6
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE          (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_ABS      (0x0u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Absolute Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_REL      (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Relative Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_1              0x01
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_2              0x02
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_3              0x03
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_4              0x04
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_5              0x05
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_6              0x06
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_7              0x07
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_8              0x08
+
+/* Noise Capture States */
+typedef enum {
+	SIGNAL_CAPTURE_IDLE,
+	SIGNAL_CAPTURE_RUNNING,
+	SIGNAL_CAPTURE_READY,
+} DRV_PLC_PHY_SIGNAL_CAPTURE_STATE;
+
+/* Structure defining information about Noise Capture */
+typedef struct {
+	uint8_t uc_num_frags;
+	uint8_t uc_status;
+} DRV_PLC_PHY_SIGNAL_CAPTURE_INFO;
+
+#define SIGNAL_CAPTURE_FRAG_SIZE                  255
 
 // *****************************************************************************
 /* PRIME Transmission setup data
@@ -322,7 +362,7 @@ typedef struct __attribute__((packed, aligned(1))) {
   uint16_t dataLength;
   /* Transmission Mode (absolute, relative, cancel, continuous). Constants above */
   uint8_t mode;
-  /* Power to transmit */
+  /* Attenuation level with which the message will be transmitted */
   uint8_t attenuation;
   /* Forced transmission */
   uint8_t forced;
@@ -347,7 +387,7 @@ typedef struct __attribute__((packed, aligned(1))) {
 typedef struct {
   /* Instant when frame transmission started referred to 1us PHY counter */
   uint32_t time;
-  /* RMS_CALC it allows to estimate tx power injected */
+  /* RMS value emitted */
   uint32_t rmsCalc;
   /* PRIME Frame type */
   DRV_PLC_PHY_FRAME_TYPE frameType;
