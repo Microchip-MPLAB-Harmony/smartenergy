@@ -121,15 +121,23 @@
     This enumeration defines the PLC commands used by PLC Phy Sniffer Tool
     provided by Microchip.
 */
+<#if SRV_PSNF_PLC_PROFILE == "4">
 typedef enum
 {
-  /* Receive new PLC message */
-  SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,       
-  /* Set Tone Mask request */ 
-  SRV_PSNIFFER_CMD_SET_TONE_MASK,      
   /* Set PLC Channel */    
-  SRV_PSNIFFER_CMD_SET_CHANNEL,           
-} SRV_PSNIFFER_COMMAND;      
+  SRV_PSNIFFER_CMD_SET_CHANNEL = 2,    
+  /* Enable robust modes of PRIME */
+  SRV_PSNIFFER_CMD_ENABLE_PRIME_PLUS_ROBUST,
+  /* Inject message in PLC */
+  SRV_PSNIFFER_CMD_MESSAGE
+} SRV_PSNIFFER_COMMAND;   
+<#else>
+typedef enum
+{
+  /* Set Tone Mask request */ 
+  SRV_PSNIFFER_CMD_SET_TONE_MASK = 1
+} SRV_PSNIFFER_COMMAND;   
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -139,8 +147,8 @@ typedef enum
 
 SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
 size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc);
-size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pDataCfm);
-void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst);
+size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pCfmObj);
+void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj);
 void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 <#if SRV_PSNF_PLC_PROFILE == "4">

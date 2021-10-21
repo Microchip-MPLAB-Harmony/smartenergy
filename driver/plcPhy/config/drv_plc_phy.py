@@ -496,6 +496,7 @@ def instantiateComponent(plcComponent):
     plcThMonPin.setDefaultValue(0)
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
+    plcThMonPin.setVisible(False)
     plcThMonPin.setDependencies(showThermalMonitorPin, ["DRV_PLC_THERMAL_MONITOR"])
 
     availablePinDictionary = {}

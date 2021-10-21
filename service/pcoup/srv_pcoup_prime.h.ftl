@@ -302,13 +302,13 @@
 // *****************************************************************************
 // *****************************************************************************
 // *****************************************************************************
-/* PLC Phy Coupling Branch definitions
+/* PLC Phy Coupling Channel definitions
 
  Summary:
-    Defines two independent transmission branches.
+    Defines transmission channels.
 
  Description:
-    This will be used to indicate the branch to work with.
+    This will be used to indicate the channel to work with.
 
  Remarks:
     None.
