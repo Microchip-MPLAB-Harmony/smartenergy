@@ -31,7 +31,7 @@ def instantiateComponent(crcComponentCommon):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
-    # USART wrapper Files
+    # CRC wrapper Files
     srvCrcSourceFile = crcComponentCommon.createFileSymbol("SRV_PCRC_SOURCE", None)
     srvCrcSourceFile.setSourcePath("service/pcrc/srv_pcrc.c")
     srvCrcSourceFile.setOutputName("srv_pcrc.c")
@@ -51,3 +51,11 @@ def instantiateComponent(crcComponentCommon):
     srvCrcHeaderFile.setMarkup(False)
     srvCrcHeaderFile.setOverwrite(True)
     srvCrcHeaderFile.setEnabled(True)
+
+    #### FreeMaker System Files ######################################################
+
+    srvCrcSystemDefFile = crcComponentCommon.createFileSymbol("SRV_PCRC_SYSTEM_DEF", None)
+    srvCrcSystemDefFile.setType("STRING")
+    srvCrcSystemDefFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
+    srvCrcSystemDefFile.setSourcePath("service/pcrc/templates/system/system_definitions.h.ftl")
+    srvCrcSystemDefFile.setMarkup(True)

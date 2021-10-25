@@ -9,7 +9,7 @@
 <#if DRV_PLC_SLEEP_MODE == true>
 #define DRV_PLC_STBY_PIN                      ${DRV_PLC_STBY_PIN?string}
 </#if>
-<#if DRV_PLC_MODE == "PL460">
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
 #define DRV_PLC_THMON_PIN                     ${DRV_PLC_THMON_PIN?string}
 </#if>
 
