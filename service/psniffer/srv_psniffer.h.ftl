@@ -134,8 +134,10 @@ typedef enum
 <#else>
 typedef enum
 {
+  /* Receive new PLC message */
+  SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,
   /* Set Tone Mask request */ 
-  SRV_PSNIFFER_CMD_SET_TONE_MASK = 1
+  SRV_PSNIFFER_CMD_SET_TONE_MASK,
 } SRV_PSNIFFER_COMMAND;   
 </#if>
 

@@ -303,3 +303,13 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
 }
 </#if>    
 
+<#if DRV_PLC_MODE == "PL460">
+void DRV_PLC_PHY_Enable_TX( const DRV_HANDLE handle, bool enable )
+{
+     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {
+        /* Set Tx Enable pin */
+        gDrvPlcPhyObj.plcHal->setTxEnable(enable);
+    }
+}
+</#if>   

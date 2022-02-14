@@ -467,11 +467,12 @@ def instantiateComponent(plcComponent):
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
 
-    plcCDPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
-    plcCDPin.setLabel("Carrier Detect Pin")
-    plcCDPin.setDefaultValue(0)
-    plcCDPin.setOutputMode("Key")
-    plcCDPin.setDisplayMode("Description")
+    plcTxEnablePin = plcComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
+    plcTxEnablePin.setLabel("TX Enable Pin")
+    plcTxEnablePin.setDefaultValue(0)
+    plcTxEnablePin.setOutputMode("Key")
+    plcTxEnablePin.setDisplayMode("Description")
+    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
@@ -511,7 +512,7 @@ def instantiateComponent(plcComponent):
         plcExtIntPin.addKey(key, value, description)
         plcResetPin.addKey(key, value, description)
         plcLDOEnPin.addKey(key, value, description)
-        plcCDPin.addKey(key, value, description)
+        plcTxEnablePin.addKey(key, value, description)
         plcStbyPin.addKey(key, value, description)
         plcThMonPin.addKey(key, value, description)
 

@@ -207,11 +207,19 @@ bool DRV_PLC_HAL_GetThermalMonitor(void)
 }
 
 </#if>
-bool DRV_PLC_HAL_GetCarrierDetect(void)
+<#if DRV_PLC_MODE == "PL460"> 
+void DRV_PLC_HAL_SetTxEnable(bool enable)
 {
-    return SYS_PORT_PinRead(sPlcPlib->cdPin);
+    if (enable) {
+        /* Set TX Enable Pin */
+        SYS_PORT_PinSet(sPlcPlib->txEnablePin);
+    } else {
+        /* Clear TX Enable Pin */
+        SYS_PORT_PinClear(sPlcPlib->txEnablePin);
+    }
 }
 
+</#if>
 void DRV_PLC_HAL_Delay(uint64_t delayUs)
 { 
     SYS_TIME_HANDLE tmrHandle = SYS_TIME_HANDLE_INVALID;

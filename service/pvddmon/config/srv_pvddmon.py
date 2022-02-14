@@ -25,6 +25,8 @@ import math
 
 global pPVDDMonHighThrsHex
 global pPVDDMonLowThrsHex
+global pPVDDMonHighThrsHexHyst
+global pPVDDMonLowThrsHexHyst
 
 def handleMessage(messageID, args):
     result_dict = {}
@@ -32,15 +34,27 @@ def handleMessage(messageID, args):
     return result_dict
 
 def getNewADCThresholds(symbol, event):
-    maxValue = pow(2, Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_ADC_BITS")) - 1
-    VoutHigh = Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_HIGH_TH") * 10.0 / (10 + 36)
-    VoutLow = Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_LOW_TH") * 10. / (10 + 36)
+    print("PLC PVDD Monitor Service: Getting new threshold levels")
 
-    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3.3)))
-    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3.3)))
+    maxValue = pow(2, Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_ADC_BITS")) - 1
+
+    HighThrs = Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_HIGH_TH")
+    LowThrs = Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_LOW_TH")
+
+    VoutHigh = HighThrs * 10.0 / (10 + 36)
+    VoutLow = LowThrs * 10.0 / (10 + 36)
+    VoutHighHyst = (HighThrs - 100) * 10.0 / (10 + 36)
+    VoutLowHyst = (LowThrs + 100) * 10.0 / (10 + 36)
+
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3300)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3300)))
+    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / 3300)))
+    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / 3300)))
 
     pPVDDMonHighThrsHex.setValue(HighThresholdHex)
     pPVDDMonLowThrsHex.setValue(LowThresholdHex)
+    pPVDDMonHighThrsHexHyst.setValue(HighThresholdHexHyst)
+    pPVDDMonLowThrsHexHyst.setValue(LowThresholdHexHyst)
 
 
 def setPlibValue(symbol, event):
@@ -48,16 +62,16 @@ def setPlibValue(symbol, event):
 
 def instantiateComponent(pPVDDMonComponent):
     
-    Log.writeInfoMessage("Loading PLC PVDD Monitor Service")
+    print("Loading PLC PVDD Monitor Service")
 
     ############################################################################
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
-    pVddValue = 12
-    pVddHighThrs = 13
-    pVddLowThrs = 10
+    pVddValue = 12000
+    pVddHighThrs = 13000
+    pVddLowThrs = 10000
     pVddResolution = 12
 
     pvddmon_node = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="ADC"]')
@@ -70,17 +84,17 @@ def instantiateComponent(pPVDDMonComponent):
     else:            
         pvddmon_plib = "ADC"
 
-    pPVDDMonVdd = pPVDDMonComponent.createLongSymbol("SRV_PVDDMON_PVDD", None)
-    pPVDDMonVdd.setLabel("Vdd [V]")
+    pPVDDMonVdd = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_PVDD", None)
+    pPVDDMonVdd.setLabel("Vdd [mV]")
     pPVDDMonVdd.setDefaultValue(pVddValue) 
     pPVDDMonVdd.setReadOnly(True)
 
-    pPVDDMonHighThreshold = pPVDDMonComponent.createLongSymbol("SRV_PVDDMON_HIGH_TH", pPVDDMonVdd)
-    pPVDDMonHighThreshold.setLabel("High Threshold [V]")
+    pPVDDMonHighThreshold = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_HIGH_TH", pPVDDMonVdd)
+    pPVDDMonHighThreshold.setLabel("High Threshold [mV]")
     pPVDDMonHighThreshold.setDefaultValue(pVddHighThrs)
 
-    pPVDDMonLowThreshold = pPVDDMonComponent.createLongSymbol("SRV_PVDDMON_LOW_TH", pPVDDMonVdd)
-    pPVDDMonLowThreshold.setLabel("Low Threshold [V]")
+    pPVDDMonLowThreshold = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_LOW_TH", pPVDDMonVdd)
+    pPVDDMonLowThreshold.setLabel("Low Threshold [mV]")
     pPVDDMonLowThreshold.setDefaultValue(pVddLowThrs)
 
     pPVDDMonADCPlib = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_ADC_PLIB", None)
@@ -111,13 +125,15 @@ def instantiateComponent(pPVDDMonComponent):
     
     maxValue = pow(2, pVddResolution) - 1
     VoutHigh = pVddHighThrs * 10.0 / (10 + 36)
-    VoutLow = pVddLowThrs * 10. / (10 + 36)
+    VoutLow = pVddLowThrs * 10.0 / (10 + 36)
+    VoutHighHyst = (pVddHighThrs - 100) * 10.0 / (10 + 36)
+    VoutLowHyst = (pVddLowThrs + 100) * 10.0 / (10 + 36)
 
-    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3.3)))
-    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3.3)))
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3300)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3300)))
+    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / 3300)))
+    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / 3300)))
 
-    # print("[CHRIS_dbg]: HighThresholdHex " + str(HighThresholdHex))
-    
     global pPVDDMonHighThrsHex
     pPVDDMonHighThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_HIGH_THRESHOLD_HEX", None)
     pPVDDMonHighThrsHex.setLabel("High Threshold [Hex]")
@@ -129,7 +145,15 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonLowThrsHex.setLabel("Low Threshold [Hex]")
     pPVDDMonLowThrsHex.setDefaultValue(LowThresholdHex)
 
-
+    global pPVDDMonHighThrsHexHyst
+    pPVDDMonHighThrsHexHyst = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_HIGH_THRESHOLD_HEX_HYST", None)
+    pPVDDMonHighThrsHexHyst.setVisible(False)
+    pPVDDMonHighThrsHexHyst.setDefaultValue(HighThresholdHexHyst)
+    
+    global pPVDDMonLowThrsHexHyst
+    pPVDDMonLowThrsHexHyst = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_LOW_THRESHOLD_HEX_HYST", None)
+    pPVDDMonLowThrsHexHyst.setVisible(False)
+    pPVDDMonLowThrsHexHyst.setDefaultValue(LowThresholdHexHyst)
 
     # PLC PVDD Monitor Files
     pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)

@@ -104,19 +104,20 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     /* Set Free Run reset */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
 
-    /* Set Compare Window Register */
-    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD); 
-
     /* Set Comparison Mode */
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
         emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+        /* Set Compare Window Register */
+        ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD);
     }
     else
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
         emr |= ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+        /* Set Compare Window Register */
+        ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD_HYST) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD_HYST); 
     }
 
     /* Set Comparison Selected Channel */
@@ -161,13 +162,17 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
     /* Set Comparison Mode */
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
     {
-      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
-      emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+        srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
+        emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_OUT;
+        /* Set Compare Window Register */
+        ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD);
     }
     else
     {
-      srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
-      emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+        srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
+        emr = ${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_IN;
+        /* Set Compare Window Register */
+        ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_CWR = ${PVDD_MON_MASK_PREFIX}_CWR_HIGHTHRES(SRV_PVDDMON_HIGH_TRESHOLD_HYST) | ${PVDD_MON_MASK_PREFIX}_CWR_LOWTHRES(SRV_PVDDMON_LOW_TRESHOLD_HYST); 
     }
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= emr;
@@ -191,23 +196,4 @@ void SRV_PVDDMON_RegisterCallback (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t c
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback_fn;
-}
-
-bool SRV_PVDDMON_CheckComparisonInWindow(void)
-{
-    uint16_t adcData;
-    
-    adcData = (uint16_t) ((${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_LCDR & ${PVDD_MON_MASK_PREFIX}_LCDR_LDATA_Msk) >> ${PVDD_MON_MASK_PREFIX}_LCDR_LDATA_Pos);
-    
-    if (adcData > SRV_PVDDMON_HIGH_TRESHOLD)
-    {
-        return false;
-    }
-    
-    if (adcData < SRV_PVDDMON_LOW_TRESHOLD)
-    {
-        return false;
-    }
-    
-    return true;
 }

@@ -212,10 +212,12 @@ typedef struct
     /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
 
-    /* PLC Carrier Detect pin */
-    SYS_PORT_PIN                           cdPin;
+<#if DRV_PLC_MODE == "PL460"> 
+    /* PLC Tx Enable pin */
+    SYS_PORT_PIN                           txEnablePin;
 
-<#if DRV_PLC_SLEEP_MODE == true>       
+</#if>
+<#if DRV_PLC_SLEEP_MODE == true>
     /* PLC StandBy Pin */
     SYS_PORT_PIN                           stByPin;
 
@@ -236,7 +238,7 @@ typedef void (* DRV_PLC_HAL_SETUP)(bool);
 
 typedef void (* DRV_PLC_HAL_RESET)(void);
 
-<#if DRV_PLC_SLEEP_MODE == true>    
+<#if DRV_PLC_SLEEP_MODE == true>
 typedef void (* DRV_PLC_HAL_SET_STBY)(bool);
 
 </#if>
@@ -244,8 +246,10 @@ typedef void (* DRV_PLC_HAL_SET_STBY)(bool);
 typedef bool (* DRV_PLC_HAL_GET_THMON)(void);
 
 </#if>
-typedef bool (* DRV_PLC_HAL_GET_CD)(void);
+<#if DRV_PLC_MODE == "PL460">
+typedef bool (* DRV_PLC_HAL_SET_TXENABLE)(bool);
 
+</#if>
 typedef void (* DRV_PLC_HAL_ENABLE_EXT_INT)(bool);
 
 typedef void (* DRV_PLC_HAL_DELAY)(uint64_t);
@@ -287,14 +291,16 @@ typedef struct
     DRV_PLC_HAL_SET_STBY                     setStandBy;
 
 </#if>
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>        
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
     /* PLC Temperature Monitor */
     DRV_PLC_HAL_GET_THMON                    getThermalMonitor;
 
 </#if>
-    /* PLC HAL Get Carrier Detect or PLC Line Status */
-    DRV_PLC_HAL_GET_CD                       getCarrierDetect;
+<#if DRV_PLC_MODE == "PL460">
+    /* PLC HAL Set Tx Enable pin */
+    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable;
 
+</#if>
     /* PLC HAL Enable/Disable external interrupt */
     DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;
 
@@ -357,14 +363,16 @@ typedef struct
 
 void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib);
 void DRV_PLC_HAL_Reset(void);
-<#if DRV_PLC_SLEEP_MODE == true>       
+<#if DRV_PLC_SLEEP_MODE == true>
 void DRV_PLC_HAL_SetStandBy(bool enable);
 </#if>
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
 bool DRV_PLC_HAL_GetThermalMonitor(void);
 </#if>
 void DRV_PLC_HAL_Setup(bool set16Bits);
-bool DRV_PLC_HAL_GetCarrierDetect(void);
+<#if DRV_PLC_MODE == "PL460">       
+void DRV_PLC_HAL_SetTxEnable(bool enable);
+</#if>
 void DRV_PLC_HAL_EnableInterrupts(bool enable);
 void DRV_PLC_HAL_Delay(uint64_t delayUs);
 void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t address, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd);
