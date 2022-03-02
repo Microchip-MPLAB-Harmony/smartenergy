@@ -49,6 +49,9 @@
 // *****************************************************************************
 // *****************************************************************************
 
+#include <device.h>
+
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -57,26 +60,21 @@
 #endif
 // DOM-IGNORE-END
 
-/* G3 Bandplan */
-#define G3_CEN_A                                   0
-#define G3_CEN_B                                   1
-#define G3_FCC                                     2
-#define G3_ARIB                                    3
-#define G3_INVALID                                 0xFF
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define MAC_RT_REG_CMD_RD               (0)
-#define MAC_RT_REG_CMD_WR               (1)
-
-#define MAC_RT_SPEC_COMPLIANCE_17       (0)
-#define MAC_RT_SPEC_COMPLIANCE_15       (1)
+/* G3 Bandplan */
+#define G3_CEN_A                        0
+#define G3_CEN_B                        1
+#define G3_FCC                          2
+#define G3_ARIB                         3
+#define G3_INVALID                      0xFF
 
 #define MAC_RT_MAX_PAYLOAD_SIZE         (404u)
 #define MAC_RT_FULL_HEADER_SIZE         (32)
+#define MAC_RT_DATA_MAX_SIZE            (MAC_RT_MAX_PAYLOAD_SIZE + MAC_RT_FULL_HEADER_SIZE)
 #define MAC_RT_SECURITY_HEADER_SIZE     (6)
 #define MAC_RT_SEGMENT_CONTROL_SIZE     (3)
 #define MAC_RT_FCS_SIZE                 (2)
@@ -84,7 +82,11 @@
 #define MAC_RT_SHORT_ADDRESS_BROADCAST  (0xFFFFu)
 #define MAC_RT_SHORT_ADDRESS_UNDEFINED  (0xFFFFu)
         
-#define MAC_RT_PIB_MAX_VALUE_LENGTH     (144)        
+#define MAC_RT_PIB_MAX_VALUE_LENGTH     (144)
+#define MAC_RT_PHY_DATA_MAX_SIZE        (494)
+
+#define MAX_PHY_TONES                   72
+#define MAX_PHY_TONE_GROUPS             24
 
 // *****************************************************************************
 // *****************************************************************************
@@ -102,18 +104,26 @@
     None
 */
 typedef enum {
-    MAC_RT_PIB_ACK_WAIT_DURATION = 0x00000040,
     MAC_RT_PIB_MAX_BE = 0x00000047,
+    MAC_RT_PIB_BSN = 0x00000049,
+    MAC_RT_PIB_DSN = 0x0000004C,
     MAC_RT_PIB_MAX_CSMA_BACKOFFS = 0x0000004E,
     MAC_RT_PIB_MIN_BE = 0x0000004F,
     MAC_RT_PIB_PAN_ID = 0x00000050,
+    MAC_RT_PIB_PROMISCUOUS_MODE = 0x00000051,
     MAC_RT_PIB_SHORT_ADDRESS = 0x00000053,
     MAC_RT_PIB_MAX_FRAME_RETRIES = 0x00000059,
+    MAC_RT_PIB_DUPLICATE_DETECTION_TTL = 0x00000078,
     MAC_RT_PIB_HIGH_PRIORITY_WINDOW_SIZE = 0x00000100,
     MAC_RT_PIB_CSMA_NO_ACK_COUNT = 0x00000106,
     MAC_RT_PIB_BAD_CRC_COUNT = 0x00000109,
+    MAC_RT_PIB_NEIGHBOUR_TABLE = 0x0000010A,
     MAC_RT_PIB_CSMA_FAIRNESS_LIMIT = 0x0000010C,
+    MAC_RT_PIB_TMR_TTL = 0x0000010D,
+    MAC_RT_PIB_POS_TABLE_ENTRY_TTL = 0x0000010E,
+    MAC_RT_PIB_RC_COORD = 0x0000010F,
     MAC_RT_PIB_TONE_MASK = 0x00000110,
+    MAC_RT_PIB_BEACON_RANDOMIZATION_WINDOW_LENGTH = 0x00000111,
     MAC_RT_PIB_A = 0x00000112,
     MAC_RT_PIB_K = 0x00000113,
     MAC_RT_PIB_MIN_CW_ATTEMPTS = 0x00000114,
@@ -121,32 +131,76 @@ typedef enum {
     MAC_RT_PIB_FCC_LEGACY_MODE = 0x00000116,
     MAC_RT_PIB_BROADCAST_MAX_CW_ENABLE = 0x0000011E,
     MAC_RT_PIB_TRANSMIT_ATTEN = 0x0000011F,
+    MAC_RT_PIB_POS_TABLE = 0x00000120,
+    MAC_RT_PIB_POS_RECENT_ENTRY_THRESHOLD = 0x00000121,
+    MAC_RT_PIB_POS_RECENT_ENTRIES = 0x00000122,
     /* manufacturer specific */
     /* Extended address of this node. */
     MAC_RT_PIB_MANUF_EXTENDED_ADDRESS = 0x08000001,
+    /* provides access to neighbour table by short address (transmitted as index) */
+    MAC_RT_PIB_MANUF_NEIGHBOUR_TABLE_ELEMENT = 0x08000002,
     /* returns the maximum number of tones used by the band */
     MAC_RT_PIB_MANUF_BAND_INFORMATION = 0x08000003,
-    /* Forces Modulation Scheme in every transmitted frame */
-    /* 0 - Not forced, 1 - Force Differential, 2 - Force Coherent */
+    /* Forces Modulation Scheme in every transmitted frame
+        0 - Not forced, 1 - Force Differential, 2 - Force Coherent */
     MAC_RT_PIB_MANUF_FORCED_MOD_SCHEME = 0x08000007,
-    /* Forces Modulation Type in every transmitted frame */
-    /* 0 - Not forced, 1 - Force BPSK_ROBO, 2 - Force BPSK, 3 - Force QPSK, 4 - Force 8PSK */
+    /* Forces Modulation Type in every transmitted frame
+        0 - Not forced, 1 - Force BPSK_ROBO, 2 - Force BPSK, 3 - Force QPSK, 4 - Force 8PSK */
     MAC_RT_PIB_MANUF_FORCED_MOD_TYPE = 0x08000008,
-    /* Forces ToneMap in every transmitted frame */
-    /* {0} - Not forced, other value will be used as tonemap */
+    /* Forces ToneMap in every transmitted frame
+        {0} - Not forced, other value will be used as tonemap */
     MAC_RT_PIB_MANUF_FORCED_TONEMAP = 0x08000009,
+    /* Forces Modulation Scheme bit in Tone Map Response
+        0 - Not forced, 1 - Force Differential, 2 - Force Coherent */
+    MAC_RT_PIB_MANUF_FORCED_MOD_SCHEME_ON_TMRESPONSE = 0x0800000A,
+    /* Forces Modulation Type bits in Tone Map Response
+        0 - Not forced, 1 - Force BPSK_ROBO, 2 - Force BPSK, 3 - Force QPSK, 4 - Force 8PSK */
+    MAC_RT_PIB_MANUF_FORCED_MOD_TYPE_ON_TMRESPONSE = 0x0800000B,
+    /* Forces ToneMap field Tone Map Response
+        {0} - Not forced, other value will be used as tonemap field */
+    MAC_RT_PIB_MANUF_FORCED_TONEMAP_ON_TMRESPONSE = 0x0800000C,
+    /* Indicates whether an LBP frame for other destination has been received */
+    MAC_RT_PIB_MANUF_LBP_FRAME_RECEIVED = 0x0800000F,
+    /* Indicates whether an LBP frame for other destination has been received */
+    MAC_RT_PIB_MANUF_LNG_FRAME_RECEIVED = 0x08000010,
+    /* Gets number of valid elements in the Neighbour Table */
+    MAC_RT_PIB_MANUF_NEIGHBOUR_TABLE_COUNT = 0x08000012,
+    /* Gets number of discarded packets due to Other Destination */
+    MAC_RT_PIB_MANUF_RX_OTHER_DESTINATION_COUNT = 0x08000013,
+    /* Gets number of discarded packets due to MAC Repetition */
+    MAC_RT_PIB_MANUF_RX_MAC_REPETITION_COUNT = 0x08000015,
     /* Gets number of discarded packets due to Segment Decode Error */
     MAC_RT_PIB_MANUF_RX_SEGMENT_DECODE_ERROR_COUNT = 0x0800001C,
+    /* Enables MAC Sniffer */
+    MAC_RT_PIB_MANUF_ENABLE_MAC_SNIFFER = 0x0800001D,
+    /* Gets number of valid elements in the POS Table */
+    MAC_RT_PIB_MANUF_POS_TABLE_COUNT = 0x0800001E,
     /* Gets or Sets number of retires left before forcing ROBO mode */
     MAC_RT_PIB_MANUF_RETRIES_LEFT_TO_FORCE_ROBO = 0x0800001F,
     /* Gets internal MAC RT version */
     MAC_RT_PIB_MANUF_MAC_RT_INTERNAL_VERSION = 0x08000022,
+    /* Enable/Disable Sleep Mode */
+    MAC_RT_PIB_SLEEP_MODE = 0x08000024,
+    /* Set PLC Debug Mode */
+    MAC_RT_PIB_DEBUG_SET = 0x08000025,
+    /* Read PL360 Debug Information */
+    MAC_RT_PIB_DEBUG_READ = 0x08000026,
+    /* Provides access to POS table by short address (referenced as index) */
+    MAC_RT_PIB_MANUF_POS_TABLE_ELEMENT = 0x08000027,
+    /* Minimum LQI to consider a neighbour for Trickle */
+    MAC_RT_PIB_MANUF_TRICKLE_MIN_LQI = 0x08000028,
+    /* LQI for a given neighbour, which short address will be indicated by index. 8 bits. */
+    MAC_RT_PIB_MANUF_NEIGHBOUR_LQI = 0x08000029,
+    /* Best LQI found in neighbour table. 8 bits. */
+    MAC_RT_PIB_MANUF_BEST_LQI = 0x0800002A,
+    /* Flag to indicate whether next transmission is in High Priority window. 8 bits. */
+    MAC_RT_PIB_TX_HIGH_PRIORITY = 0x0800002B,
     /* IB used to set the complete MIB structure at once */
     MAC_RT_PIB_GET_SET_ALL_MIB = 0x08000100,
-    /* Gets or sets a parameter in Phy layer. Index will be used to contain PHY parameter ID. */
-    /* Check 'MAC_RT_PHY_PIB' below for available Phy parameter IDs */
+    /* Gets or sets a parameter in Phy layer. Index will be used to contain PHY parameter ID.
+       Check 'enum EPhyParam' below for available Phy parameter IDs */
     MAC_RT_PIB_MANUF_PHY_PARAM = 0x08000020
-}MAC_RT_PIB;        
+} MAC_RT_PIB;        
 
 /* G3 PHY Parameters list
 
@@ -157,170 +211,95 @@ typedef enum {
     None
 */
 typedef enum {
-    /* Product Identifier of firmware embedded */
-    PHY_PARAM_PRODID = 0,
-    /* Model Identifier of firmware embedded */
-	PHY_PARAM_MODEL,
-    /* Version number of embedded firmware in string format */
-	PHY_PARAM_VERSION_STR,
-    /* Version number of embedded firmware in hexadecimal format */
-	PHY_PARAM_VERSION_NUM,
-    /* Tone mask for static notching */
-	PHY_PARAM_TONE_MASK,
-    /* Tone Map response data */
-	PHY_PARAM_TONE_MAP_RSP_DATA,
-    /* Number of successfully transmitted PDUs */
-	PHY_PARAM_TX_TOTAL,
-    /* Number of bytes in successfully transmitted PDUs */
-	PHY_PARAM_TX_TOTAL_BYTES,
-    /* Number of unsuccessfully transmitted PDUs */
-	PHY_PARAM_TX_TOTAL_ERRORS,
-    /* Number of times when the device received new data to transmit (send_data)
-     * and there is already data in the TX chain. */
-	PHY_PARAM_TX_BAD_BUSY_TX,
-    /* Number of times when the device received new data to transmit (send_data) 
-     * and the PLC channel is busy */
-	PHY_PARAM_TX_BAD_BUSY_CHANNEL,
-    /* Number of times when the device received new data to transmit (send_data)
-     * and the specified length in transmission parameters is invalid */
-	PHY_PARAM_TX_BAD_LEN,
-    /* Number of times when the device received new data to transmit (send_data) 
-     * and the transmission parameters are not valid */
-	PHY_PARAM_TX_BAD_FORMAT,
-    /* Number of times when the PLC transceiver received new data to transmit 
-     * (send_data) and it cannot transmit data in the specified time provided 
-     * by the transmission parameters */
-	PHY_PARAM_TX_TIMEOUT,
-    /* Number of successfully received PDUs */
-	PHY_PARAM_RX_TOTAL,
-    /* Number of bytes in successfully received PDUs */
-	PHY_PARAM_RX_TOTAL_BYTES,
-    /* Number of corrected errors by RS block in received PDUs */
-	PHY_PARAM_RX_RS_ERRORS,
-    /* Number of time-out errors in received PDUs */
-	PHY_PARAM_RX_EXCEPTIONS,
-    /* Number of errors in FCH length in received PDUs */
-	PHY_PARAM_RX_BAD_LEN,
-    /* Number of errors in FCH CRC in received PDUs */
-	PHY_PARAM_RX_BAD_CRC_FCH,
-    /* Number of errors in PDU synchronization phase */
-	PHY_PARAM_RX_FALSE_POSITIVE,
-    /* Number of errors in modulation type field included in FCH of received 
-     * PDUs */
-	PHY_PARAM_RX_BAD_FORMAT,
-    /* Enable periodic noise auto-detect and adaptation */       
-	PHY_PARAM_ENABLE_AUTO_NOISE_CAPTURE,
-    /* Time in milliseconds between noise captures */
-	PHY_PARAM_TIME_BETWEEN_NOISE_CAPTURES,
-    /* Noise detection timer reloaded after a correct reception */
-	PHY_PARAM_DELAY_NOISE_CAPTURE_AFTER_RX,
-    /* Number of notched frequencies with RRC notch filter */
-	PHY_PARAM_RRC_NOTCH_ACTIVE,
-    /* Array of RRC notch filter index values in format unsigned Q7.8 */
-	PHY_PARAM_RRC_NOTCH_INDEX,
-    /* Indicate noise power in dBuV for the noisier carrier */
-	PHY_PARAM_NOISE_PEAK_POWER,
-    /* Capability to compute Payload CRC in PHY Layer */
-	PHY_PARAM_CRC_TX_RX_CAPABILITY,
-    /* Number of errors in Payload CRC in received PDUs */
-	PHY_PARAM_RX_BAD_CRC_PAY,
-    /* Auto-Detect Impedance Mode */
-	PHY_PARAM_CFG_AUTODETECT_IMPEDANCE,
-    /* Transmission Mode (HIGH, LOW, VERY_LOW) */
-	PHY_PARAM_CFG_IMPEDANCE,
-    /* Estimated last Zero Cross period in microseconds */
-	PHY_PARAM_ZC_PERIOD,
-    /* Number of symbols in Frame Control Header */
-	PHY_PARAM_FCH_SYMBOLS,
-    /* Number of payload symbols in last transmitted message */
-	PHY_PARAM_PAY_SYMBOLS_TX,
-    /* Number of payload symbols in last received message */
-	PHY_PARAM_PAY_SYMBOLS_RX,
-    /* Trigger to start noise analysis */
-	PHY_PARAM_RRC_NOTCH_AUTODETECT,
-    /* Target RMS_CALC in HIGH Tx Mode */
-	PHY_PARAM_MAX_RMS_TABLE_HI,
-    /* Target RMS_CALC in VERY_LOW Tx Mode */
-	PHY_PARAM_MAX_RMS_TABLE_VLO,
-    /* Thresholds table to automatically update Tx Mode */
-	PHY_PARAM_THRESHOLDS_TABLE_HI,
-    /* Thresholds table to automatically update Tx Mode */
-	PHY_PARAM_THRESHOLDS_TABLE_LO,
-    /* Thresholds table to automatically update Tx Mode */
-	PHY_PARAM_THRESHOLDS_TABLE_VLO,
-    /* Equalization Coefficients table in HIGH Tx mode */
-	PHY_PARAM_PREDIST_COEF_TABLE_HI,
-    /* Equalization Coefficients table in LOW Tx mode */
-	PHY_PARAM_PREDIST_COEF_TABLE_LO,
-    /* Equalization Coefficients table in VERY_LOW Tx mode */
-	PHY_PARAM_PREDIST_COEF_TABLE_VLO,
-    /* Gain values table for HIGH Tx Mode */
-	PHY_PARAM_GAIN_TABLE_HI,
-    /* Gain values table for LOW Tx Mode */
-	PHY_PARAM_GAIN_TABLE_LO,
-    /* Gain values table for VERY_LOW Tx Mode */
-	PHY_PARAM_GAIN_TABLE_VLO,
-    /* Configuration values of DACC peripheral according to hardware 
-     * configuration */
-	PHY_PARAM_DACC_TABLE_CFG,
-    /* Reserved for future uses */
-	PHY_PARAM_RSV0,
-    /* Number of Tx attenuation levels (3 dB steps) for normal transmission
-     * behavior */
-	PHY_PARAM_NUM_TX_LEVELS,
-    /* RMS_CALC value obtained in the last transmitted message */
-	PHY_PARAM_CORRECTED_RMS_CALC,
-    /* Activation threshold for narrow band noise */
-	PHY_PARAM_RRC_NOTCH_THR_ON,
-    /* Deactivation threshold for narrow band noise */
-	PHY_PARAM_RRC_NOTCH_THR_OFF,
-    /* Transmission Gain which will be used in the next transmitted message */
-	PHY_PARAM_CURRENT_GAIN,
-    /* Inverted output of Zero-Crossing Detector */
-	PHY_PARAM_ZC_CONF_INV,
-    /* Initial frequency in Hz for Zero-Crossing Detector */
-	PHY_PARAM_ZC_CONF_FREQ,
-    /* Time Delay in microseconds of external Zero-Crossing Detection circuit */
-	PHY_PARAM_ZC_CONF_DELAY,
-    /* Estimation of noise (in dB?V) in each carrier belonging to the 
-     * corresponding band */
-	PHY_PARAM_NOISE_PER_CARRIER,
-    /* Correlation threshold for synchronization (preamble detection) */
-	PHY_PARAM_SYNC_XCORR_THRESHOLD,
-    /* Correlation value in last received PDU */
-	PHY_PARAM_SYNC_XCORR_PEAK_VALUE,
-    /* Threshold for SYNCM detection (once preamble is detected with 
-     * correlation) */
-	PHY_PARAM_SYNC_SYNCM_THRESHOLD,
-    /* Bit-mask to enable/disable modulations for modulation and Tone Map 
-     * selection algorithm */
-	PHY_PARAM_TONE_MAP_RSP_ENABLED_MODS,
-    /* Enable the oscillator clock signal to go out through TXRX1 pad */
-	PHY_PARAM_PPM_CALIB_ON,
-    /* Estimation of clock frequency deviation on last received PDU */
-	PHY_PARAM_SFO_ESTIMATION_LAST_RX,
-    /* PDC value (field in G3 Frame Control Header) corresponding to last 
-     * received PDU */
-	PHY_PARAM_PDC_LAST_RX,
-    /* Parameters for Maximum PSDU length computation */
-	PHY_PARAM_MAX_PSDU_LEN_PARAMS,
-    /* Maximum PSDU length depending on TX parameters */
-	PHY_PARAM_MAX_PSDU_LEN,
-	PHY_PARAM_RESET_STATS,
-	PHY_PARAM_IC_DRIVER_CFG,
-	PHY_PARAM_RX_CHN_EST_REAL,
-	PHY_PARAM_RX_CHN_EST_IMAG,
-    /* Index of the notch filter. 8 bits. */
-    PHY_PARAM_RRC_NOTCH_INDEX_LEGACY = 0x0164,
-    /* Disable PLC Tx/Rx. 8 bits. */
-    PHY_PARAM_PLC_DISABLE = 0x016A,
-    /* LQI value of the last received message */
-    PHY_PARAM_LAST_MSG_LQI = 0x016C,
-    /* LQI value of the last received message */
-    PHY_PARAM_LAST_MSG_RSSI = 0x016D,
-    /* Success transmission of ACK packets */
-    PHY_PARAM_ACK_TX_CFM = 0x016E,
-}MAC_RT_PHY_PIB;
+  /* Phy layer version number. 32 bits. */
+  PHY_PARAM_VERSION = 0x010c,
+  /* Correctly transmitted frame count. 32 bits. */
+  PHY_PARAM_TX_TOTAL = 0x0110,
+  /* Transmitted bytes count. 32 bits. */
+  PHY_PARAM_TX_TOTAL_BYTES = 0x0114,
+  /* Transmission errors count. 32 bits. */
+  PHY_PARAM_TX_TOTAL_ERRORS = 0x0118,
+  /* Transmission failure due to already in transmission. 32 bits. */
+  PHY_PARAM_BAD_BUSY_TX = 0x011C,
+  /* Transmission failure due to busy channel. 32 bits. */
+  PHY_PARAM_TX_BAD_BUSY_CHANNEL = 0x0120,
+  /* Bad len in message (too short - too long). 32 bits. */
+  PHY_PARAM_TX_BAD_LEN = 0x0124,
+  /* Message to transmit in bad format. 32 bits. */
+  PHY_PARAM_TX_BAD_FORMAT = 0x0128,
+  /* Timeout error in transmission. 32 bits. */
+  PHY_PARAM_TX_TIMEOUT = 0x012C,
+  /* Received correctly messages count. 32 bits. */
+  PHY_PARAM_RX_TOTAL = 0x0130,
+  /* Received bytes count. 32 bits. */
+  PHY_PARAM_RX_TOTAL_BYTES = 0x0134,
+  /* Reception RS errors count. 32 bits. */
+  PHY_PARAM_RX_RS_ERRORS = 0x0138,
+  /* Reception Exceptions count. 32 bits. */
+  PHY_PARAM_RX_EXCEPTIONS = 0x013C,
+  /* Bad len in message (too short - too long). 32 bits. */
+  PHY_PARAM_RX_BAD_LEN = 0x0140,
+  /* Bad CRC in received FCH. 32 bits. */
+  PHY_PARAM_RX_BAD_CRC_FCH = 0x0144,
+  /* CRC correct but invalid protocol. 32 bits. */
+  PHY_PARAM_RX_FALSE_POSITIVE = 0x0148,
+  /* Received message in bad format. 32 bits. */
+  PHY_PARAM_RX_BAD_FORMAT = 0x014C,
+  /* Time between noise captures (in ms). 32 bits. */
+  PHY_PARAM_TIME_BETWEEN_NOISE_CAPTURES = 0x0158,
+  /* Auto detect impedance */
+  PHY_PARAM_CFG_AUTODETECT_BRANCH = 0x0161,
+  /* Manual impedance configuration */
+  PHY_PARAM_CFG_IMPEDANCE = 0x0162,
+  /* Indicate if notch filter is active or not. 8 bits. */
+  PHY_PARAM_RRC_NOTCH_ACTIVE = 0x0163,
+  /* Index of the notch filter. 8 bits. */
+  PHY_PARAM_RRC_NOTCH_INDEX = 0x0164,
+  /* Enable periodic noise autodetect and adaptation. 8 bits. */
+  PHY_PARAM_ENABLE_AUTO_NOISE_CAPTURE = 0x0166,
+  /* Noise detection timer reloaded after a correct reception. 8 bits. */
+  PHY_PARAM_DELAY_NOISE_CAPTURE_AFTER_RX = 0x0167,
+  /* Disable PLC Tx/Rx. 8 bits. */
+  PHY_PARAM_PLC_DISABLE = 0x016A,
+  /* Indicate noise power in dBuV for the noisier carrier */
+  PHY_PARAM_NOISE_PEAK_POWER = 0x016B,
+  /* LQI value of the last received message */
+  PHY_PARAM_LAST_MSG_LQI = 0x016C,
+  /* LQI value of the last received message */
+  PHY_PARAM_LAST_MSG_RSSI = 0x016D,
+  /* Success transmission of ACK packets */
+  PHY_PARAM_ACK_TX_CFM = 0x016E,
+  /* Inform PHY layer about enabled modulations on TMR */
+  PHY_PARAM_TONE_MAP_RSP_ENABLED_MODS = 0x0174,
+  /* Reset Phy Statistics */
+  PHY_PARAM_RESET_PHY_STATS = 0x0176
+} MAC_RT_PHY_PIB;
+
+// *****************************************************************************
+/* G3 Tone Map
+
+   Summary
+    Tone Map definition supported by G3 spec.
+
+   Remarks:
+    None
+*/
+typedef struct {
+    uint8_t toneMap[(MAX_PHY_TONE_GROUPS + 7) / 8];
+} MAC_RT_TONE_MAP;
+
+// *****************************************************************************
+/* G3 Tone Mask
+
+   Summary
+    Tone Mask definition supported by G3 spec.
+
+   Remarks:
+    None
+*/
+typedef struct {
+    uint8_t toneMap[(MAX_PHY_TONES + 7) / 8];
+} MAC_RT_TONE_MASK;
 
 // *****************************************************************************
 /* G3 Modulation types
@@ -336,7 +315,8 @@ typedef enum {
     MAC_RT_MOD_BPSK = 0x01,
     MAC_RT_MOD_QPSK = 0x02,
     MAC_RT_MOD_8PSK = 0x03,
-}MAC_RT_MOD_TYPE;
+    MAC_RT_MOD_16QAM = 0x04,
+} MAC_RT_MOD_TYPE;
 
 // *****************************************************************************
 /* G3 Modulation schemes
@@ -350,75 +330,7 @@ typedef enum {
 typedef enum {
     MAC_RT_MOD_SCHEME_DIFFERENTIAL = 0x00,
     MAC_RT_MOD_SCHEME_COHERENT = 0x01
-}MAC_RT_MOD_SCHEME;
-
-// *****************************************************************************
-/* G3 MAC RT Address Mode
-
-   Summary
-    The list of addressing modes supported by G3 spec.
-
-   Remarks:
-    None
-*/
-typedef enum {
-    MAC_RT_NO_ADDRESS = 0x00,
-    MAC_RT_SHORT_ADDRESS = 0x01,
-    MAC_RT_EXTENDED_ADDRESS = 0x02
-}MAC_RT_ADDRESS_MODE;
-
-// *****************************************************************************
-/* G3 MAC RT Status
-
-   Summary
-    The list of status values.
-
-   Remarks:
-    None
-*/
-typedef enum {
-    MAC_RT_STATUS_SUCCESS = 0x00,
-    MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE = 0xE1,
-    MAC_RT_STATUS_DENIED = 0xE2,
-    MAC_RT_STATUS_INVALID_INDEX = 0xF9,
-    MAC_RT_STATUS_INVALID_PARAMETER = 0xE8,
-    MAC_RT_STATUS_NO_ACK = 0xE9,
-    MAC_RT_STATUS_READ_ONLY = 0xFB,
-    MAC_RT_STATUS_TRANSACTION_OVERFLOW = 0xF1,
-    MAC_RT_STATUS_UNSUPPORTED_ATTRIBUTE = 0xF4
-}MAC_RT_STATUS;
-
-// *****************************************************************************
-/* G3 MAC RT State of Transmission
-
-   Summary
-    This list involves all available results from MCHP implementation
-
-   Remarks:
-    None
-*/
-typedef enum {
-    /* Start of transmission */
-    MAC_RT_TX_START,
-    /* Start of CSMA_CA */
-    MAC_RT_TX_CSMA_CA,
-    /* CSMA_CA channel not idle */
-    MAC_RT_TX_FAIL_CSMA_CA,
-    /* Wait until a data request can be issued */
-    MAC_RT_TX_WAIT_SEND,
-    /* Wait for data confirm */
-    MAC_RT_TX_WAIT_CONFIRM,
-    /* Wait for ACK / NAK */
-    MAC_RT_TX_WAIT_ACK,
-    /* Segment send succeeded and positive ACK received / no ACK requested */
-    MAC_RT_TX_SEND_OK,
-    /* No ACK was received */
-    MAC_RT_TX_BIG_FAIL,
-    /* Negative ACK was received */
-    MAC_RT_TX_LITTLE_FAIL,
-    /* Unexpected PHY error */
-    MAC_RT_TX_ABORT
-}MAC_RT_TX_STATE;
+} MAC_RT_MOD_SCHEME;
 
 // *****************************************************************************
 /* G3 Tone map response data
@@ -436,8 +348,35 @@ typedef struct {
     /* Modulation scheme */             
     MAC_RT_MOD_SCHEME modScheme;   
     /* Tone Map */             
-    uint8_t toneMap[3];           
-} MAC_RT_TONE_MAP_RSP;
+    MAC_RT_TONE_MAP toneMap;           
+} MAC_RT_TONE_MAP_RSP_DATA;
+
+// *****************************************************************************
+/* G3 MAC RT Address Mode
+
+   Summary
+    The list of addressing modes supported by G3 spec.
+
+   Remarks:
+    None
+*/
+typedef enum {
+    MAC_RT_NO_ADDRESS = 0x00,
+    MAC_RT_SHORT_ADDRESS = 0x02,
+    MAC_RT_EXTENDED_ADDRESS = 0x03
+} MAC_RT_ADDRESS_MODE;
+
+// *****************************************************************************
+/* G3 MAC RT Extended Address
+
+   Summary
+    This struct includes extended address. 
+
+   Remarks:
+*/
+typedef struct {
+    uint8_t address[8];
+} MAC_RT_EXT_ADDRESS;
 
 // *****************************************************************************
 /* G3 MAC RT Address
@@ -455,9 +394,103 @@ typedef struct {
         /* Short Address */
         uint16_t shortAddress;
         /* Extended Address */
-        uint8_t extendedAddress[8];
+        MAC_RT_EXT_ADDRESS extendedAddress;
     };        
 } MAC_RT_ADDRESS;
+
+// *****************************************************************************
+/* G3 MAC RT Frame Type
+
+   Summary
+    This struct includes frame type. 
+
+   Remarks:
+    The format of the address depends on the addressing mode field.
+*/
+typedef enum {
+    MAC_RT_FRAME_TYPE_BEACON = 0x00,
+    MAC_RT_FRAME_TYPE_DATA = 0x01,
+    MAC_RT_FRAME_TYPE_ACKNOWLEDGMENT = 0x02,
+    MAC_RT_FRAME_TYPE_MAC_COMMAND = 0x03,
+    MAC_RT_FRAME_TYPE_RESERVED_4 = 0x04,
+    MAC_RT_FRAME_TYPE_RESERVED_5 = 0x05,
+    MAC_RT_FRAME_TYPE_RESERVED_6 = 0x06,
+    MAC_RT_FRAME_TYPE_RESERVED_7 = 0x07,
+} MAC_RT_FRAME_TYPE;
+
+// *****************************************************************************
+/* G3 MAC RT Command
+
+   Summary
+    This struct includes mac rt commands. 
+
+   Remarks:
+*/
+typedef enum {
+    MAC_RT_COMMAND_BEACON_REQUEST = 0x07,
+    MAC_RT_COMMAND_TONE_MAP_RESPONSE = 0x0A,
+} MAC_RT_COMMAND;
+
+// *****************************************************************************
+/* G3 MAC RT DSN Table entry
+
+   Summary
+    This struct includes DSN Table entry definition. 
+
+   Remarks:
+*/
+typedef struct {
+    MAC_RT_ADDRESS address;
+    uint8_t dsn;
+    uint8_t dsnValidTime;
+} MAC_RT_DSN_TABLE_ENTRY;
+
+// *****************************************************************************
+/* G3 MAC RT POS entry
+
+   Summary
+    This struct includes POS entry definition. 
+
+   Remarks:
+*/
+typedef struct __attribute__((packed)) {
+    uint16_t shortAddress;
+    uint8_t lqi;
+    uint16_t posValidTime;
+} MAC_RT_POS_ENTRY;
+
+// *****************************************************************************
+/* G3 MAC RT TX coefficients
+
+   Summary
+    This struct includes TX coefficients definition. 
+
+   Remarks:
+*/
+typedef struct {
+    uint8_t txCoef[6];
+} MAC_RT_TX_COEF;
+
+// *****************************************************************************
+/* G3 MAC RT neighbour entry
+
+   Summary
+    This struct includes neighbour entry definition. 
+
+   Remarks:
+*/
+typedef struct __attribute__((packed)) {
+    uint16_t shortAddress;
+    MAC_RT_TONE_MAP toneMap;
+    uint8_t modulationType : 3;
+    uint8_t txGain : 4;
+    uint8_t txRes : 1;
+    MAC_RT_TX_COEF txCoef;
+    uint8_t modulationScheme : 1;
+    uint8_t phaseDifferential : 3;
+    uint8_t lqi;
+    uint16_t tmrValidTime;
+} MAC_RT_NEIGHBOUR_ENTRY;
 
 // *****************************************************************************
 /* G3 Frame Control information
@@ -593,6 +626,28 @@ typedef struct __attribute__((packed, aligned(1))) {
 } MAC_RT_FRAME;
 
 // *****************************************************************************
+/* G3 MAC RT Tone Map response
+
+   Summary
+    This struct includes information related to Tone Map response
+
+   Remarks:
+    For more information, please refer to G3 Specification
+    
+*/
+typedef struct {
+    MAC_RT_MOD_SCHEME modScheme;
+    MAC_RT_MOD_TYPE modType;
+    uint8_t txGain;
+    uint8_t txRes;
+    MAC_RT_TONE_MAP toneMap;
+    uint8_t reserved1;
+    uint8_t lqi;
+    MAC_RT_TX_COEF txCoef;
+    uint8_t reserved2;
+} MAC_RT_TONE_MAP_RESPONSE;
+
+// *****************************************************************************
 /* MAC RT MIB Initialization Data
 
   Summary:
@@ -605,53 +660,50 @@ typedef struct __attribute__((packed, aligned(1))) {
     None.
 */
 typedef struct __attribute__((packed, aligned(1))) {
-    /* Counter of CSMA No ACK */
     uint32_t csmaNoAckCount;
-    /* Counter of CRC errors */
     uint32_t badCrcCount;
-    /* m_u32RxSegmentDecodeErrorCount */
     uint32_t rxSegmentDecodeErrorCount;
-    /* PAN Identification */
+    uint32_t rxMACRepetitionCount;
+    uint32_t rxOtherDestinationCount;
     uint16_t panId;
-    /* Short Address */
     uint16_t shortAddress;
-    /* Tone Mask */
-    uint8_t toneMask[9];
-    /* Extended Address */
-    uint8_t extendedAddress[8];
-    /* Forced Tone Map */
-    uint8_t forcedToneMap[3];
-    /* High Priority Window Size */
+    uint16_t pOSRecentEntries;
+    uint16_t rcCoord;
+    MAC_RT_TONE_MASK toneMask;
+    MAC_RT_EXT_ADDRESS extendedAddress;
+    MAC_RT_TONE_MAP forcedToneMap;
+    MAC_RT_TONE_MAP forcedToneMapOnTMResponse;
     uint8_t highPriorityWindowSize;
-    /* CSMA Fairness Limit */
     uint8_t csmaFairnessLimit;
-    /* A */
     uint8_t A;
-    /* K */
     uint8_t K;
-    /* Min CW Attempts */
     uint8_t minCwAttempts;
-    /* Max Be */
     uint8_t maxBe;
-    /* Max CSMA Backoffs */
+    uint8_t bsn;
+    uint8_t dsn;
     uint8_t maxCsmaBackoffs;
-    /* Max Frame Retries */
     uint8_t maxFrameRetries;
-    /* Min Be */
     uint8_t minBe;
-    /* Forced Mod Scheme */
     uint8_t forcedModScheme;
-    /* Forced Mod Type  */
     uint8_t forcedModType;
-    /* Retries To Force Robo mode */
+    uint8_t forcedModSchemeOnTMResponse;
+    uint8_t forcedModTypeOnTMResponse;
     uint8_t retriesToForceRobo;
-    /* Transmit Attenuation */
     uint8_t transmitAtten;
-    /* Broadcast Max Cw Enable */
+    uint8_t posTableEntryTtl;
+    uint8_t posRecentEntryThreshold;
+    uint8_t trickleMinLQI;
+    uint8_t duplicateDetectionTtl;
+    uint8_t tmrTtl;
+    uint8_t beaconRandomizationWindowLength;
     bool broadcastMaxCwEnable;
-    /* Coordinator Enable */
     bool coordinator;
-}MAC_RT_MIB_INIT_OBJ;
+    bool promiscuousMode;
+    bool macSniffer;
+    bool lbpFrameReceived;
+    bool lngFrameReceived;
+    bool txHighPriority;
+} MAC_RT_MIB_INIT_OBJ;
 
 // *****************************************************************************
 /* G3 MAC RT Information Base (PIB)
@@ -667,7 +719,60 @@ typedef struct {
     uint16_t index;
     uint8_t length;
     uint8_t pData[MAC_RT_PIB_MAX_VALUE_LENGTH];
-}MAC_RT_PIB_OBJ;
+} MAC_RT_PIB_OBJ;
+
+// *****************************************************************************
+/* G3 MAC RT Status
+
+   Summary
+    The list of status values.
+
+   Remarks:
+    None
+*/
+typedef enum {
+    MAC_RT_STATUS_SUCCESS = 0x00,
+    MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE = 0xE1,
+    MAC_RT_STATUS_DENIED = 0xE2,
+    MAC_RT_STATUS_INVALID_INDEX = 0xF9,
+    MAC_RT_STATUS_INVALID_PARAMETER = 0xE8,
+    MAC_RT_STATUS_NO_ACK = 0xE9,
+    MAC_RT_STATUS_READ_ONLY = 0xFB,
+    MAC_RT_STATUS_TRANSACTION_OVERFLOW = 0xF1,
+    MAC_RT_STATUS_UNSUPPORTED_ATTRIBUTE = 0xF4
+} MAC_RT_STATUS;
+
+// *****************************************************************************
+/* G3 MAC RT State of Transmission
+
+   Summary
+    This list involves all available results from MCHP implementation
+
+   Remarks:
+    None
+*/
+typedef enum {
+    /* Start of transmission */
+    MAC_RT_TX_START,
+    /* Start of CSMA_CA */
+    MAC_RT_TX_CSMA_CA,
+    /* CSMA_CA channel not idle */
+    MAC_RT_TX_FAIL_CSMA_CA,
+    /* Wait until a data request can be issued */
+    MAC_RT_TX_WAIT_SEND,
+    /* Wait for data confirm */
+    MAC_RT_TX_WAIT_CONFIRM,
+    /* Wait for ACK / NAK */
+    MAC_RT_TX_WAIT_ACK,
+    /* Segment send succeeded and positive ACK received / no ACK requested */
+    MAC_RT_TX_SEND_OK,
+    /* No ACK was received */
+    MAC_RT_TX_BIG_FAIL,
+    /* Negative ACK was received */
+    MAC_RT_TX_LITTLE_FAIL,
+    /* Unexpected PHY error */
+    MAC_RT_TX_ABORT
+} MAC_RT_TX_STATE;
 
 // *****************************************************************************
 /* G3 MAC RT Transmission setup parameters
@@ -717,8 +822,6 @@ typedef struct __attribute__((packed, aligned(1))) {
     None
 */
 typedef struct __attribute__((packed, aligned(1))) {
-    /* Tone Map request */
-    bool toneMapRequest;
     /* High Priority */
     bool highPriority;
     /* PDU Link Quality */
@@ -730,7 +833,9 @@ typedef struct __attribute__((packed, aligned(1))) {
     /* Modulation Scheme */
     MAC_RT_MOD_SCHEME modScheme;
     /* Tone map */
-    uint8_t toneMap[3];
+    MAC_RT_TONE_MAP toneMap;
+    /* Tone map Response */
+    MAC_RT_TONE_MAP_RSP_DATA toneMapRsp;
 } MAC_RT_RX_PARAMETERS_OBJ;
 
 // *****************************************************************************
@@ -747,8 +852,6 @@ typedef struct {
     MAC_RT_STATUS status;
     /* Flag to indicate Timestamp should be updated */
     bool updateTimestamp;
-    /* Modulation Type */
-    MAC_RT_MOD_TYPE modType;
 } MAC_RT_TX_CFM_OBJ;
 
 // *****************************************************************************

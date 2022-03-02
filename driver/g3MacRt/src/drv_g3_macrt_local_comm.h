@@ -56,22 +56,27 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
-#define PLC_STATUS_LENGTH                  8
-#define DRV_G3_MACRT_DATA_MAX_SIZE         512
-#define DRV_G3_MACRT_MLME_SET_SIZE         sizeof(MAC_RT_TX_PARAMETERS_OBJ)
-#define DRV_G3_MACRT_MLME_GET_SIZE         sizeof(MAC_RT_RX_PARAMETERS_OBJ)
+#define DRV_G3_MACRT_REG_CMD_RD            (0)
+#define DRV_G3_MACRT_REG_CMD_WR            (1)
+
+#define DRV_G3_MACRT_STATUS_LENGTH         8
+#define DRV_G3_MACRT_DATA_MAX_SIZE         MAC_RT_DATA_MAX_SIZE
+#define DRV_G3_MACRT_COMM_STATUS_SIZE      32
 #define DRV_G3_MACRT_TX_CFM_SIZE           sizeof(MAC_RT_TX_CFM_OBJ)
-#define DRV_G3_MACRT_TONEMAP_RSP_SIZE      sizeof(MAC_RT_TONE_MAP_RSP)
-#define DRV_G3_MACRT_REG_PKT_SIZE          156
+#define DRV_G3_MACRT_RX_PAR_SIZE           sizeof(MAC_RT_RX_PARAMETERS_OBJ)
+#define DRV_G3_MACRT_REG_PKT_SIZE          sizeof(MAC_RT_PIB_OBJ)
+
+/* ! Maximum length of PHY message (G3). Worts case: G3-FCC */
+#define DRV_G3_MACRT_PHY_MAX_SIZE          494
 
 /* FLAG MASKs for set events */
-#define DRV_G3_MACRT_EV_TX_CFM_MASK            0x0001
-#define DRV_G3_MACRT_EV_MLME_SET_CFM_MASK      0x0002
-#define DRV_G3_MACRT_EV_DATA_IND_MASK          0x0004
-#define DRV_G3_MACRT_EV_MLME_GET_CFM_MASK      0x0008
-#define DRV_G3_MACRT_EV_REG_RSP_MASK           0x0010
-#define DRV_G3_MACRT_EV_TONMAP_RSP_MASK        0x0020
-#define DRV_G3_MACRT_EV_SNIFFER_MASK           0x0040
+#define DRV_G3_MACRT_EV_TX_CFM_FLAG_MASK                 (1<<0)
+#define DRV_G3_MACRT_EV_DATA_IND_FLAG_MASK               (1<<1)
+#define DRV_G3_MACRT_EV_MAC_SNF_FLAG_MASK                (1<<2)
+#define DRV_G3_MACRT_EV_COMM_STATUS_FLAG_MASK            (1<<3)
+#define DRV_G3_MACRT_EV_RX_PAR_IND_FLAG_MASK             (1<<4)
+#define DRV_G3_MACRT_EV_REG_RSP_MASK                     (1<<5)
+#define DRV_G3_MACRT_EV_PHY_SNF_FLAG_MASK                (1<<6)
 
 // *****************************************************************************
 // *****************************************************************************
@@ -97,22 +102,26 @@ typedef struct {
     uint32_t timerRef;
     /* Received Data length */
     uint16_t rcvDataLength;
+    /* MAC sniffer message length */
+    uint16_t macSnifLength;
+    /* PHY sniffer message length */
+    uint16_t phySnifLength;
     /* Received Register Response length */
     uint16_t regRspLength;
     /* Flag to indicate if TX CONFIRMATION MSG event is enable */
     bool evTxCfm;
     /* Flag to indicate if DATA INDICATION MSG event is enable */
     bool evDataInd;
-    /* Flag to indicate if MLME SET CONFIRM MSG event is enable */
-    bool evMlmeSetCfm;
-    /* Flag to indicate if MLME GET CONFIRM MSG event is enable */
-    bool evMlmeGetCfm;
-    /* Flag to indicate if TONE MAP RESPONSE MSG event is enable */
-    bool evToneMapRsp;
+    /* Flag to indicate if MAC SNIFFER event is enable */
+    bool evMacSniffer;
+    /* Flag to indicate if COMMUNICATION STATUS event is enable */
+    bool evCommStatus;
+    /* Flag to indicate if RX PARAMETERS INDICATION event is enable */
+    bool evRxParInd;
     /* Flag to indicate if REGISTER DATA RESPONSE event is enable */
-    bool evReg;
-    /* Flag to indicate if SNIFFER MSG event is enable */
-    bool evSniffer;
+    bool evRegRsp;
+    /* Flag to indicate if PHY SNIFFER event is enable */
+    bool evPhySniffer;
 } DRV_G3_MACRT_EVENTS_OBJ;
 
 /* G3 MACRT Internal Memory Map
@@ -129,19 +138,16 @@ typedef struct {
 */
 
 typedef enum {
-    STATUS_ID = 0,
-    SET_COORD_ID,
-    SET_SPEC15_ID,
-    TONE_MAP_REQ_ID,
-    TX_REQ_ID,
-    TX_CFM_ID,
-    MLME_SET_ID,
-    MLME_SET_CMF_ID,
-    DATA_IND_ID,
-    MLME_GET_CFM_ID,
-    REG_INFO_ID,
-    SNIFFER_ID,
-    IDS,
+	STATUS_INFO_ID = 0,
+	SET_COORD_ID,
+	TX_REQ_ID,
+	TX_CFM_ID,
+	DATA_IND_ID,
+	MAC_SNIF_ID,
+	COMM_STATUS_ID,
+	RX_PAR_IND_ID,
+	REG_RSP_ID,
+	PHY_SNF_ID
 } DRV_G3_MACRT_MEM_ID;
 
 /****************************** DRV_PLC Interface ***************************/

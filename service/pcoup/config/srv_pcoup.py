@@ -628,10 +628,10 @@ def updateCouplingParameters():
 
     plcProfile = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
 
-    if plcProfile == "G3":
-        updateG3CouplingParameters()
-    elif plcProfile == "PRIME":
+    if plcProfile == "PRIME":
         updatePRIMECouplingParameters()
+    else:
+        updateG3CouplingParameters()    
 
 ############################################################################
 #### G3 function to update the Coupling Parameters ####

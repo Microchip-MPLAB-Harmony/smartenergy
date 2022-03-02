@@ -16,9 +16,7 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
 
     /* G3 MAC RT Number of clients */
     .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  
-
-    /* G3 MAC RT Specification Compliance */
-    .plcSpecification = DRV_G3_MACRT_SPEC_COMPLIANCE,
+    
 <#if DRV_PLC_BIN_STATIC_ADDRESSING == true> 
  
     /* PLC Binary start address */

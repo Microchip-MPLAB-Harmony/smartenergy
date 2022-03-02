@@ -11,7 +11,7 @@
     MAC RT PLC Library Interface header.
 
   Description:
-    The PLC MAC RT Driver Library provides a interface to access the 
+    The G3 MAC RT Driver Library provides a interface to access the 
     PLC transceiver.
 *******************************************************************************/
 
@@ -55,6 +55,7 @@
 #include "system/system.h"
 #include "drv_g3_macrt_comm.h"
 #include "drv_g3_macrt_definitions.h"
+#include "driver/plc/common/drv_plc_hal.h"
 #include "driver/plc/common/drv_plc_boot.h"
 
 // DOM-IGNORE-BEGIN
@@ -74,7 +75,7 @@
 /* DRV_PLC Transfer Errors
 
  Summary:
-    Defines the data type for PLC MAC RT Driver transfer errors.
+    Defines the data type for G3 MAC RT Driver transfer errors.
 
  Description:
     This will be used to indicate the error of the last SPI transfer.
@@ -100,7 +101,7 @@ typedef enum
 } DRV_G3_MACRT_EXCEPTION; 
 
 // *****************************************************************************
-/* PLC MAC RT Driver Transmission Confirm Event Handler Function Pointer
+/* G3 MAC RT Driver Transmission Confirm Event Handler Function Pointer
 
    Summary
     Pointer to a MAC RT Driver Transmission Confirm Event handler function
@@ -119,18 +120,13 @@ typedef enum
     cfmObj -            Pointer to the object containing any data necessary to
                         identify the result of the last transmission.
 
-    context -           Value identifying the context of the application that
-                        registered the event handling function.
-
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyTXCfmEventHandler( MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context )
+    void APP_MyTXCfmEventHandler( MAC_RT_TX_CFM_OBJ *cfmObj )
     {
-        MY_APP_DATA_STRUCT *pAppData = (MY_APP_DATA_STRUCT *) context;
-
         switch(cfmObj->status)
         {
             case MAC_RT_STATUS_SUCCESS:
@@ -152,27 +148,15 @@ typedef enum
 
     - Otherwise, it means that the data was not transferred successfully.
 
-    - The context parameter contains the a handle to the client context,
-      provided at the time the event handling function was registered using the
-      DRV_G3_MACRT_TxCfmCallbackRegister function.  This context handle value is
-      passed back to the client as the "context" parameter.  It can be any value
-      necessary to identify the client context or instance (such as a pointer to
-      the client's data) of the client that made the transfer add request.
-
-    - The event handler function executes in task context of the peripheral.
-      Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
-
 */
 
-typedef void ( *DRV_G3_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj, 
-        uintptr_t context );
+typedef void ( *DRV_G3_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj );
 
 // *****************************************************************************
-/* PLC MAC RT Driver Reception Event Handler Function Pointer
+/* G3 MAC RT Driver Reception Event Handler Function Pointer
 
    Summary
-    Pointer to a PLC MAC RT Driver Reception Event handler function
+    Pointer to a G3 MAC RT Driver Reception Event handler function
 
    Description
     This data type defines the required function signature for the MAC RT driver
@@ -189,18 +173,13 @@ typedef void ( *DRV_G3_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj,
  
     length -            Length of the received data
 
-    context -           Value identifying the context of the application that
-                        registered the event handling function.
-
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyRxEventHandler( uint8_t *pData, uint16_t length, uintptr_t context )
+    void APP_MyRxEventHandler( uint8_t *pData, uint16_t length )
     {
-        MY_APP_DATA_STRUCT *appData = (MY_APP_DATA_STRUCT *) context;
-
         // Check length of the new message
         if (length) {
           // extract data from received message
@@ -208,29 +187,16 @@ typedef void ( *DRV_G3_MACRT_TX_CFM_CALLBACK )( MAC_RT_TX_CFM_OBJ *cfmObj,
         }
     </code>
 
-  Remarks:
-    - The context parameter contains the a handle to the client context,
-      provided at the time the event handling function was registered using the
-      DRV_G3_MACRT_DataIndCallbackRegister function.  This context handle value is
-      passed back to the client as the "context" parameter.  It can be any value
-      necessary to identify the client context or instance (such as a pointer to
-      the client's data) of the client that made the transfer add request.
-
-    - The event handler function executes in task context of the peripheral.
-      Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
-
 */
 
-typedef void ( *DRV_G3_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t length, 
-        uintptr_t context );
+typedef void ( *DRV_G3_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t length );
 
 // *****************************************************************************
-/* PLC MAC RT Driver Event Handler Function Pointer to get parameters from the
+/* G3 MAC RT Driver Event Handler Function Pointer to get parameters from the
    last received message
 
    Summary
-    Pointer to a PLC MAC RT Driver Event handler function to get parameters 
+    Pointer to a G3 MAC RT Driver Event handler function to get parameters 
     from the last received message
 
    Description
@@ -247,45 +213,145 @@ typedef void ( *DRV_G3_MACRT_DATA_IND_CALLBACK )( uint8_t *pData, uint16_t lengt
     pParameters -       Pointer to the characterization parameters of the last 
                         received message
  
-    context -           Value identifying the context of the application that
-                        registered the event handling function.
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyRxParamsHandler( MAC_RT_RX_PARAMETERS_OBJ *pParameters )
+    {
+        // extract all parameters from received message
+        memcpy(appData->rxParams, (uint8_t *)pParameters, sizeof(MAC_RT_RX_PARAMETERS_OBJ));
+        }
+    </code>
+
+*/
+
+typedef void ( *DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *pParameters );
+
+// *****************************************************************************
+/* G3 MAC RT Sniffer Event Handler Function Pointer
+
+   Summary
+    Pointer to a G3 MAC RT Sniffer Reception Event handler function
+
+   Description
+    This data type defines the required function signature for the MAC RT driver
+    sniffer event handling callback function. A client must register a pointer 
+    using the callback register function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    pData -             Pointer to the data content.
+ 
+    length -            Length of the received data
 
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyRxParamsHandler( MAC_RT_RX_PARAMETERS_OBJ *pParameters, uintptr_t context )
+    void APP_MyMacRtMacSnifferHandler( uint8_t *pData, uint16_t length )
     {
-        MY_APP_DATA_STRUCT *appData = (MY_APP_DATA_STRUCT *) context;
-
-        // extract all parameters from received message
-        memcpy(appData->rxParams, (uint8_t *)pParameters, sizeof(MAC_RT_RX_PARAMETERS_OBJ));
+        // Check length of the new PLC message
+        if (length) {
+          // extract data from received message
+          memcpy(appData->dataMacRtMacSnifferBuffer, pData, length);
         }
+    }
     </code>
-
-  Remarks:
-    - The context parameter contains the a handle to the client context,
-      provided at the time the event handling function was registered using the
-      DRV_G3_MACRT_MlmeGetCfmCallbackRegister function.  This context handle value is
-      passed back to the client as the "context" parameter.  It can be any value
-      necessary to identify the client context or instance (such as a pointer to
-      the client's data) of the client that made the transfer add request.
-
-    - The event handler function executes in task context of the peripheral.
-      Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
 
 */
 
-typedef void ( *DRV_G3_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *pParameters, 
-        uintptr_t context );
+typedef void ( *DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK )( uint8_t *pData, uint16_t length );
 
 // *****************************************************************************
-/* PLC MAC RT Driver Exceptions Event Handler Function Pointer
+/* G3 MAC RT Communication Status Handler Function Pointer
 
    Summary
-    Pointer to a PLC MAC RT Driver Exceptions Event handler function
+    Pointer to a G3 MAC RT Communication Status Event handler function
+
+   Description
+    This data type defines the required function signature for the MAC RT driver
+    comm status event handling callback function. A client must register a pointer 
+    using the callback register function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    pData -             Pointer to the data content.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyPLCMacRtCommStatusHandler( uint8_t *pData )
+    {
+        // Check length of the new PLC message
+        if (length) {
+          // extract data from received message
+          memcpy(appData->dataMacCommStatusBuffer, pData, MAC_RT_COMM_STATUS_SIZE));
+        }
+    }
+    </code>
+
+*/
+
+typedef void ( *DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK )( uint8_t *pData );
+
+// *****************************************************************************
+/* G3 MAC RT PHY Sniffer Event Handler Function Pointer
+
+   Summary
+    Pointer to a G3 MAC RT PHY Sniffer Reception Event handler function
+
+   Description
+    This data type defines the required function signature for the MAC RT driver
+    sniffer event handling callback function. A client must register a pointer 
+    using the callback register function whose function signature (parameter 
+    and return value types) match the types specified by this function pointer 
+    in order to receive transfer related event calls back from the driver.
+
+    The parameters and return values are described here and a partial example
+    implementation is provided.
+
+  Parameters:
+    pData -             Pointer to the data content.
+ 
+    length -            Length of the received data
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    void APP_MyMacRtPhySnifferHandler( uint8_t *pData, uint16_t length )
+    {
+        // Check length of the new PLC message
+        if (length) {
+          // extract data from received message
+          memcpy(appData->dataMacRtPhySnifferBuffer, pData, length);
+        }
+    }
+    </code>
+
+*/
+
+typedef void ( *DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK )( uint8_t *pData, uint16_t length );
+
+// *****************************************************************************
+/* G3 MAC RT Driver Exceptions Event Handler Function Pointer
+
+   Summary
+    Pointer to a G3 MAC RT Driver Exceptions Event handler function
 
    Description
     This data type defines the required function signature for the PLC driver
@@ -301,19 +367,13 @@ typedef void ( *DRV_G3_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *
     exception -         Value identifying the exception code which occurs during
                         SPI transfer.
 
-    context -           Value identifying the context of the application that
-                        registered the event handling function.
-
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyExceptionEventHandler( DRV_G3_MACRT_EXCEPTION exception,
-                                   uintptr_t context )
+    void APP_MyExceptionEventHandler( DRV_G3_MACRT_EXCEPTION exception )
     {
-        MY_APP_DATA_STRUCT *pAppData = (MY_APP_DATA_STRUCT *) context;
-
         switch (exceptionObj) 
         {
             case DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY:
@@ -340,78 +400,51 @@ typedef void ( *DRV_G3_MACRT_MLME_GET_CFM_CALLBACK )( MAC_RT_RX_PARAMETERS_OBJ *
     }
     </code>
 
-  Remarks:
-    - The context parameter contains the a handle to the client context,
-      provided at the time the event handling function was registered using the
-      DRV_G3_MACRT_ExceptionCallbackRegister function.  This context handle 
-      value is passed back to the client as the "context" parameter.  It can be 
-      any value necessary to identify the client context or instance (such as 
-      a pointer to the client's data) of the client that made the transfer add 
-      request.
-
-    - The event handler function executes during the last SPI transaction of the 
-      peripheral. Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
-
 */
 
-typedef void ( *DRV_G3_MACRT_EXCEPTION_CALLBACK )( DRV_G3_MACRT_EXCEPTION exception, 
-        uintptr_t context );
+typedef void ( *DRV_G3_MACRT_EXCEPTION_CALLBACK )( DRV_G3_MACRT_EXCEPTION exception );
 
+<#if DRV_PLC_SLEEP_MODE == true> 
 // *****************************************************************************
-/* PLC MAC RT PLC Sniffer Event Handler Function Pointer
+/* G3 MAC RT Sleep Mode Disable Event Handler Function Pointer
 
    Summary
-    Pointer to a PLC MAC RT Sniffer Reception Event handler function
+    Notifies when SLeep Mode is disabled and MAC RT driver is able to be used again.
 
    Description
-    This data type defines the required function signature for the MAC RT driver
-    sniffer event handling callback function. A client must register a pointer 
-    using the callback register function whose function signature (parameter 
-    and return value types) match the types specified by this function pointer 
-    in order to receive transfer related event calls back from the driver.
+    This data type defines the required function signature for the PLC driver
+    sleep mode disable event handling callback function. A client must register 
+	a pointer using the callback register function whose function signature 
+	(parameter and return value types) match the types specified by this function 
+	pointer in order to receive transfer related event calls back from the driver.
 
     The parameters and return values are described here and a partial example
     implementation is provided.
 
   Parameters:
-    context -           Value identifying the context of the application that
-                        registered the event handling function.
 
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyPLCSnifferHandler( uintptr_t context )
+    void APP_MySleepDisableEventHandler( void )
     {
-        MY_APP_DATA_STRUCT *appData = (MY_APP_DATA_STRUCT *) context;
-
-        // Sniffer Data packet is stored in the data buffer configured when
-        // DRV_G3_MACRT_SinfferCallbackRegister has been called
-        appData->snifferBuffer;
+        // Do initial configuration of the application if needed
+		
+        appData.plc_sleep = false;
     }
     </code>
 
-  Remarks:
-    - The context parameter contains the a handle to the client context,
-      provided at the time the event handling function was registered using the
-      DRV_G3_MACRT_SinfferCallbackRegister function.  This context handle value is
-      passed back to the client as the "context" parameter.  It can be any value
-      necessary to identify the client context or instance (such as a pointer to
-      the client's data) of the client that made the transfer add request.
-
-    - The event handler function executes in task context of the peripheral.
-      Hence it is recommended of the application to not perform process
-      intensive or blocking operations with in this function.
-
 */
 
-typedef void ( *DRV_G3_MACRT_SNIFFER_CALLBACK )( uintptr_t context );
+typedef void ( *DRV_G3_MACRT_SLEEP_IND_CALLBACK )( void );
+
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: DRV_PLC MAC RT Driver System Interface Routines
+// Section: DRV MAC RT Driver System Interface Routines
 // *****************************************************************************
 // *****************************************************************************
 
@@ -426,7 +459,7 @@ typedef void ( *DRV_G3_MACRT_SNIFFER_CALLBACK )( uintptr_t context );
     Initializes the MAC RT instance for the specified driver index.
 
   Description:
-    This routine initializes the PLC MAC RT driver making it ready for
+    This routine initializes the G3 MAC RT driver making it ready for
     clients to open and use. The initialization data is specified by the init
     parameter. It is a single instance driver, so this API should be called
     only once.
@@ -492,7 +525,7 @@ typedef void ( *DRV_G3_MACRT_SNIFFER_CALLBACK )( uintptr_t context );
     </code>
 
   Remarks:
-    This routine must be called before any other DRV_PLC_MACRT routine is called.
+    This routine must be called before any other DRV_G3_MACRT routine is called.
     This routine should only be called once during system initialization.
     This routine will block for hardware access.
 */
@@ -594,51 +627,7 @@ void DRV_G3_MACRT_Close(const DRV_HANDLE handle);
 
 // *****************************************************************************
 /* Function:
-    void DRV_G3_MACRT_MlmeSet( const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters )
-
-  Summary:
-    Allows set all parameters and characterize the message to be transmitted.
-
-  Description:
-    This routine sends all TX parameters to MAC RT driver to apply in next transmission.
-
-  Precondition:
-    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
-
-  Parameters:
-    handle -      A valid open-instance handle, returned from the driver's
-                  open routine
-
-    pParameters - Pointer to TX parameters structure.
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // 'handle', returned from the DRV_G3_MACRT_Open
-    
-    MAC_RT_TX_PARAMETERS_OBJ txParamObj;
-
-    // Select modulation type
-    txParamObj.modType = MAC_RT_MOD_DBPSK_BPSK;
-    // Select modulation scheme
-    txParamObj.modScheme = MAC_RT_MOD_SCHEME_DIFFERENTIAL;
- 
-    // Set the rest of parameters to be applied
- 
-    DRV_G3_MACRT_MlmeSet(handle, &txParamObj);
-
-    </code>
-
-  Remarks:
-    None.
-*/
-void DRV_G3_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pParameters);
-
-// *****************************************************************************
-/* Function:
-    void DRV_G3_MACRT_Send( const DRV_HANDLE handle, uint8_t *pData, uint16_t length )
+    void DRV_G3_MACRT_TxRequest( const DRV_HANDLE handle, uint8_t *pData, uint16_t length )
 
   Summary:
     Allows a client to transmit MAC RT data through Power Line (PLC).
@@ -671,14 +660,14 @@ void DRV_G3_MACRT_MlmeSet(const DRV_HANDLE handle, MAC_RT_TX_PARAMETERS_OBJ *pPa
     // Local function implemented in the user application
     _setupTransmissionParameters();
 
-    DRV_G3_MACRT_Send(handle, appData.pData, appData.length);
+    DRV_G3_MACRT_TxRequest(handle, appData.pData, appData.length);
 
     </code>
 
   Remarks:
     None.
 */
-void DRV_G3_MACRT_Send(const DRV_HANDLE handle, uint8_t *pData, uint16_t length);
+void DRV_G3_MACRT_TxRequest(const DRV_HANDLE handle, uint8_t *pData, uint16_t length);
 
 // *****************************************************************************
 /* Function:
@@ -802,114 +791,6 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
 
 // *****************************************************************************
 /* Function:
-    void DRV_G3_MACRT_GetToneMapResponse( const DRV_HANDLE handle,
-    MAC_RT_TONE_MAP_RSP *pParameters )
-
-  Summary:
-    Get information about Tone Map Response from MC RT driver.
-
-  Description:
-    For further information about Tone Map Response, please see G3 specification
-  
-  Precondition:
-    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
-    handle.
-
-  Parameters:
-    handle -       A valid open-instance handle, returned from the driver's
-                   open routine
-    pParameters -  Pointer to MAC_RT_TONE_MAP_RSP structure to fill with tone map
-                   response information obtained from MAC RT driver.
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // 'handle', returned from the DRV_G3_MACRT_Open
-    MAC_RT_TONE_MAP_RSP toneMapResponse;
-
-    DRV_G3_MACRT_GetToneMapResponse(handle, &toneMapResponse);
-
-    </code>
-
-  Remarks:
-    None.
-*/
-void DRV_G3_MACRT_GetToneMapResponse(const DRV_HANDLE handle, 
-        MAC_RT_TONE_MAP_RSP *pParameters);
-
-// *****************************************************************************
-/* Function:
-    void DRV_G3_MACRT_SetCoordinator( const DRV_HANDLE handle )
-
-  Summary:
-    Configure MAC RT driver as G3 coordinator profile
-
-  Description:
-    Enable coordinator capabilities.
-    
-  Precondition:
-    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
-    handle.
-
-  Parameters:
-    handle -    A valid open-instance handle, returned from the driver's
-                open routine
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // 'handle', returned from the DRV_G3_MACRT_Open
-
-    DRV_G3_MACRT_SetCoordinator(handle);
-
-    </code>
-
-  Remarks:
-    None.
-*/
-void DRV_G3_MACRT_SetCoordinator(const DRV_HANDLE handle);
-
-// *****************************************************************************
-/* Function:
-    void DRV_G3_MACRT_SetSpec15Compliance( const DRV_HANDLE handle )
-
-  Summary:
-    Configure MAC RT driver to comply with G3 Specification 15.
-
-  Description:
-    G3 specification 17 is configured by default after start up of MAC RT driver.
-    This function must only be called to be compliant with G3 specification 15.
- 
-  Precondition:
-    DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
-    handle.
-
-  Parameters:
-    handle -    A valid open-instance handle, returned from the driver's
-                open routine
-
-  Returns:
-    None.
-
-  Example:
-    <code>
-    // 'handle', returned from the DRV_G3_MACRT_Open
-
-    DRV_G3_MACRT_SetSpec15Compliance(handle);
-
-    </code>
-
-  Remarks:
-    None.
-*/
-void DRV_G3_MACRT_SetSpec15Compliance(const DRV_HANDLE handle);
-
-// *****************************************************************************
-/* Function:
     uint32_t DRV_G3_MACRT_GetTimerReference( const DRV_HANDLE handle )
 
   Summary:
@@ -950,8 +831,7 @@ uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle);
 /* Function:
     void DRV_G3_MACRT_DataCfmCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
-        const uintptr_t context 
+        const DRV_G3_MACRT_TX_CFM_CALLBACK callback
     );
 
   Summary:
@@ -975,23 +855,14 @@ uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle);
 
     callback - Pointer to the callback function.
 
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
-
   Returns:
     None.
 
   Example:
     <code>
      // Event is received when the transmission is finished
-    void APP_PLC_Tx_Cfm_callback(MAC_RT_TX_CFM_OBJ *cfmObj, uintptr_t context)
+    void APP_PLC_Tx_Cfm_callback(MAC_RT_TX_CFM_OBJ *cfmObj)
     {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ *myAppObj = (MY_APP_OBJ *) context;
-
         if (cfmObj->result == MAC_RT_STATUS_SUCCESS) {
           // This means the data was transferred successfully.
         } else {
@@ -1006,9 +877,9 @@ uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle);
 
     // Client registers a TX confirm callback with driver. This is done once
 
-    DRV_G3_MACRT_TxCfmCallbackRegister( myHandle, APP_PLC_Tx_Cfm_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_TxCfmCallbackRegister( myAppObj.myHandle, APP_PLC_Tx_Cfm_callback );
 
-    DRV_G3_MACRT_Send(myHandle, myAppObj.pData, myAppObj.dataLength);
+    DRV_G3_MACRT_TxRequest(myAppObj.myHandle, myAppObj.pData, myAppObj.dataLength);
    
     </code>
 
@@ -1016,16 +887,14 @@ uint32_t DRV_G3_MACRT_GetTimerReference(const DRV_HANDLE handle);
 
 void DRV_G3_MACRT_TxCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_TX_CFM_CALLBACK callback
 );
 
 // *****************************************************************************
 /* Function:
     void DRV_G3_MACRT_DataIndCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
-        const uintptr_t context 
+        const DRV_G3_MACRT_DATA_IND_CALLBACK callback
     );
 
   Summary:
@@ -1049,23 +918,14 @@ void DRV_G3_MACRT_TxCfmCallbackRegister(
 
     callback - Pointer to the callback function.
 
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
-
   Returns:
     None.
 
   Example:
     <code>
 
-    void APP_PLC_Data_Ind_callback(uint8_t *pData, uint16_t length, uintptr_t context)
+    void APP_PLC_Data_Ind_callback(uint8_t *pData, uint16_t length)
     {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ *myAppObj = (MY_APP_OBJ *) context;
-
         // Reception handling here.
         if (length)
         {
@@ -1082,7 +942,7 @@ void DRV_G3_MACRT_TxCfmCallbackRegister(
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_G3_MACRT_DataIndCallbackRegister( myHandle, APP_PLC_Data_Ind_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_DataIndCallbackRegister( myAppObj.myHandle, APP_PLC_Data_Ind_callback );
 
     // Event is received when PLC data is receiving.
     
@@ -1092,16 +952,14 @@ void DRV_G3_MACRT_TxCfmCallbackRegister(
 
 void DRV_G3_MACRT_DataIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_DATA_IND_CALLBACK callback
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
+    void DRV_G3_MACRT_RxParamsIndCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
-        const uintptr_t context 
+        const DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK callback
     );
 
   Summary:
@@ -1109,7 +967,7 @@ void DRV_G3_MACRT_DataIndCallbackRegister(
     for the driver to call back when a new data message is received.
 
   Description:
-    This function allows a client to register a MAC RT LME get confirm event 
+    This function allows a client to register a MAC RT Rx Params confirm event 
     handling function with the driver to call back when a new data message is 
     received.
 
@@ -1126,26 +984,15 @@ void DRV_G3_MACRT_DataIndCallbackRegister(
 
     callback - Pointer to the callback function.
 
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
-
   Returns:
     None.
 
   Example:
     <code>
 
-    void APP_PLC_Params_Ind_callback(MAC_RT_RX_PARAMETERS_OBJ *pParameters, uintptr_t context)
+    void APP_PLC_Params_Ind_callback(MAC_RT_RX_PARAMETERS_OBJ *pParameters)
     {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ *myAppObj = (MY_APP_OBJ *) context;
-
-        // Reception parameters handling here.
-        
-
+        // Rx Parameters handling here.
     }
       
     // myAppObj is an application specific state data object.
@@ -1155,7 +1002,7 @@ void DRV_G3_MACRT_DataIndCallbackRegister(
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_G3_MACRT_MlmeGetCfmCallbackRegister( myHandle, APP_PLC_Params_Ind_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_RxParamsIndCallbackRegister( myAppObj.myHandle, APP_PLC_Params_Ind_callback );
 
     // Event is received when PLC data is receiving.
     
@@ -1163,28 +1010,26 @@ void DRV_G3_MACRT_DataIndCallbackRegister(
 
 */
 
-void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
+void DRV_G3_MACRT_RxParamsIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK callback
 );
 
 // *****************************************************************************
 /* Function:
-    void DRV_G3_MACRT_SnifferCallbackRegister( 
+    void DRV_G3_MACRT_MacSnifferCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
-        const uint8_t *pSnifferData,
-        const uintptr_t context 
+        const DRV_G3_MACRT_MAC_SNIFFER_CALLBACK callback
+		uint8_t* pDataBuffer
     );
 
   Summary:
-    Allows enable PLC PHY Sniffer capabilities and set the data buffer 
+    Allows enable G3 MAC RT Sniffer capabilities and set the data buffer 
     in which the content of the sniffer packet will be stored when a new PLC
     message is received.
 
   Description:
-    This function allows a client to register a PHY PLC Sniffer event handling 
+    This function allows a client to register a G3 MAC RT Sniffer event handling 
     function with the driver to call back when either a data reception event or 
     confirmation of the last transmission event occurs.
     The content of the sniffer data is compliant with MCHP PLC Sniffer tool 
@@ -1200,13 +1045,9 @@ void DRV_G3_MACRT_MlmeGetCfmCallbackRegister(
     handle   - A valid open-instance handle, returned from the driver's open routine.
 
     callback - Pointer to the callback function.
-
-    pSnifferData - Pointer to the data buffer to store PLC Sniffer packet.
-
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
+	
+	pDataBuffer - Pointer to buffer where sniffer message is stored. Data buffer should be 
+	defined as MAC_RT_PHY_DATA_MAX_SIZE	to avoid memory overlaps.
 
   Returns:
     None.
@@ -1214,14 +1055,12 @@ void DRV_G3_MACRT_MlmeGetCfmCallbackRegister(
   Example:
     <code>
 
-    void APP_PLC_Sniffer_callback(uintptr_t context)
+    void APP_G3_MAC_RT_Mac_Sniffer_callback(uint8_t *pData, uint16_t length)
     {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ *myAppObj = (MY_APP_OBJ *) context;
-
-        // Send Sniffer Data to MCHP PLC Sniffer Tool by USI service.
-        
+        if (length)
+        {
+            // Mac Sniffer data handling here.
+        }
     }
       
     // myAppObj is an application specific state data object.
@@ -1231,28 +1070,153 @@ void DRV_G3_MACRT_MlmeGetCfmCallbackRegister(
 
     // Client registers a sniffer callback with MAC RT driver.
 
-    DRV_G3_MACRT_SnifferCallbackRegister( myHandle, APP_PLC_Sniffer_callback, 
-    myAppObj.pSnifferBuff, *(uintptr_t)&myAppObj );
+    DRV_G3_MACRT_MacSnifferCallbackRegister( myAppObj.myHandle, APP_G3_MAC_RT_Mac_Sniffer_callback,
+		myAppObj.pMacSnfBuffer);
 
-    // Event is received when PLC data is receiving or PLC transmission is completed.
+    // Event is received when PLC data is receiving.
     
     </code>
 
 */
 
-void DRV_G3_MACRT_SnifferCallbackRegister( 
+void DRV_G3_MACRT_MacSnifferCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_SNIFFER_CALLBACK callback, 
-    const uint8_t *pSnifferData,
-    const uintptr_t context 
+    const DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK callback,
+	uint8_t* pDataBuffer
+);
+
+// *****************************************************************************
+/* Function:
+    void DRV_G3_MACRT_CommStatusCallbackRegister( 
+        const DRV_HANDLE handle, 
+        const DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK callback
+    );
+
+  Summary:
+    Allows enable G3 MAC RT Comm Status capabilities and set the data buffer 
+    in which the content of the status packet will be stored.
+
+  Description:
+    This function allows a client to register a G3 MAC RT Comm Status event handling 
+    function with the driver to call back when either a data reception event or 
+    confirmation of the last transmission event occurs.
+
+    The callback once set, persists until the client closes the driver or sets 
+    another callback (which could be a "NULL" pointer to indicate no callback).
+
+  Precondition:
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
+
+  Parameters:
+    handle   - A valid open-instance handle, returned from the driver's open routine.
+
+    callback - Pointer to the callback function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+
+    void APP_G3_MAC_RT_Comm_Status_callback(uint8_t *pData)
+    {
+        // Extract Comm Status Data from data packet.
+        
+    }
+      
+    // myAppObj is an application specific state data object.
+    MY_APP_OBJ myAppObj;
+
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
+
+    // Client registers a Comm Status callback with MAC RT driver.
+
+    DRV_G3_MACRT_CommStatusCallbackRegister( myAppObj.myHandle, APP_G3_MAC_RT_Comm_Status_callback );
+    
+    </code>
+
+*/
+
+void DRV_G3_MACRT_CommStatusCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK callback
+);
+
+// *****************************************************************************
+/* Function:
+    void DRV_G3_MACRT_PhySnifferCallbackRegister( 
+        const DRV_HANDLE handle, 
+        const DRV_G3_MACRT_PHY_SNIFFER_CALLBACK callback,
+		uint8_t* pDataBuffer
+    );
+
+  Summary:
+    Allows enable G3 MAC RT PHY Sniffer capabilities and set the data buffer 
+    in which the content of the sniffer packet will be stored when a new PLC
+    message is received.
+
+  Description:
+    This function allows a client to register a G3 MAC RT PHY Sniffer event handling 
+    function with the driver to call back when either a data reception event or 
+    confirmation of the last transmission event occurs.
+    The content of the sniffer data is compliant with MCHP PLC Sniffer tool 
+    provided by Microchip.
+
+    The callback once set, persists until the client closes the driver or sets 
+    another callback (which could be a "NULL" pointer to indicate no callback).
+
+  Precondition:
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
+
+  Parameters:
+    handle   - A valid open-instance handle, returned from the driver's open routine.
+
+    callback - Pointer to the callback function.
+	
+	pDataBuffer - Pointer to buffer where sniffer message is stored. Data buffer should be 
+	defined as MAC_RT_DATA_MAX_SIZE	to avoid memory overlaps.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+
+    void APP_G3_MAC_RT_Phy_Sniffer_callback(uint8_t *pData, uint16_t length)
+    {
+        if (length)
+        {
+            // Phy Sniffer data handling here.
+        }
+    }
+      
+    // myAppObj is an application specific state data object.
+    MY_APP_OBJ myAppObj;
+
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
+
+    // Client registers a Phy sniffer callback with MAC RT driver.
+
+    DRV_G3_MACRT_PhySnifferCallbackRegister( myAppObj.myHandle, APP_G3_MAC_RT_Phy_Sniffer_callback,
+		myAppObj.pPhySnfBuffer);
+
+    // Event is received when PLC data is receiving.
+    
+    </code>
+
+*/
+
+void DRV_G3_MACRT_PhySnifferCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK callback,
+	uint8_t* pDataBuffer
 );
 
 // *****************************************************************************
 /* Function:
     void DRV_G3_MACRT_ExceptionCallbackRegister( 
         const DRV_HANDLE handle, 
-        const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
-        const uintptr_t context 
+        const DRV_G3_MACRT_EXCEPTION_CALLBACK callback,
     );
 
   Summary:
@@ -1276,23 +1240,14 @@ void DRV_G3_MACRT_SnifferCallbackRegister(
 
     callback - Pointer to the callback function.
 
-    context - The value of parameter will be passed back to the client unchanged, 
-    when the callback function is called.  It can be used to identify any client 
-    specific data object that identifies the instance of the client module (for example, 
-    it may be a pointer to the client module's state structure).
-
   Returns:
     None.
 
   Example:
     <code>
 
-    void APP_PLC_Exception_callback(DRV_G3_MACRT_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
+    void APP_PLC_Exception_callback(DRV_G3_MACRT_EXCEPTION_OBJ *exceptionObj)
     {
-        // The context handle was set to an application specific
-        // object. It is now retrievable easily in the event handler.
-        MY_APP_OBJ *myAppObj = (MY_APP_OBJ *) context;
-
         // Exception handling here.
 
     }
@@ -1304,7 +1259,7 @@ void DRV_G3_MACRT_SnifferCallbackRegister(
 
     // Client registers a data confirm callback with driver. This is done once
 
-    DRV_G3_MACRT_ExceptionCallbackRegister( myHandle, APP_PLC_Exception_callback, (uintptr_t)&myAppObj );
+    DRV_G3_MACRT_ExceptionCallbackRegister( myAppObj.myHandle, APP_PLC_Exception_callback );
 
     // Event is received when PLC data is receiving.
     </code>
@@ -1313,8 +1268,7 @@ void DRV_G3_MACRT_SnifferCallbackRegister(
 
 void DRV_G3_MACRT_ExceptionCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback
 );
 
 // *****************************************************************************
@@ -1343,7 +1297,7 @@ void DRV_G3_MACRT_ExceptionCallbackRegister(
   Example:
     <code>
       
-    // Initialize PLC MAC RT Driver Instance
+    // Initialize G3 MAC RT Driver Instance
     sysObj.drvPLCMacRt = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX, (SYS_MODULE_INIT *)&drvPLCMacRtInitData);
     // Register Callback function to handle PLC interruption
     PIO_PinInterruptCallbackRegister(DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObj.drvPLCMacRt);
@@ -1394,8 +1348,8 @@ void DRV_G3_MACRT_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
 
 SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index );
 
-/***************************************************************************
-  Function:
+//***************************************************************************
+/*  Function:
        void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object )
     
   Summary:
@@ -1430,13 +1384,169 @@ SYS_STATUS DRV_G3_MACRT_Status( const SYS_MODULE_INDEX index );
       called by the system's Tasks routine (SYS_Tasks)
     - This function will never block or access any resources that may cause
       it to block.                        
-  ***************************************************************************/
+  */
 
 void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object );
 
+<#if DRV_PLC_SLEEP_MODE == true> 
+// *****************************************************************************
+/* Function:
+	void DRV_G3_MACRT_SleepDisableCallbackRegister( 
+	    const DRV_HANDLE handle, 
+	    const DRV_G3_MACRT_SLEEP_CALLBACK callback
+    );
+
+  Summary:
+    Allows a client to identify an sleep mode disable event handling function 
+	for the driver to call back when the PLC driver is active again.
+
+  Description:
+    This function allows a client to register a PLC sleep mode disable event handling 
+    function with the driver to call back when sleep mode is disabled and PLC driver 
+	has been restarted.
+
+    The event handler should be set before the client submits any transmission
+    requests that could generate events. The callback once set, persists
+    until the client closes the driver or sets another callback (which
+    could be a "NULL" pointer to indicate no callback).
+
+  Precondition:
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device handle.
+
+  Parameters:
+    handle - A valid open-instance handle, returned from the driver's open routine.
+
+    callback - Pointer to the callback function.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+
+    void APP_PLC_SleepModeDisableCb( void )
+    {
+        // Sleep Disable handling here.
+
+    }
+      
+    // myAppObj is an application specific state data object.
+    MY_APP_OBJ myAppObj;
+
+    // myHandle is the handle returned from DRV_G3_MACRT_Open API.
+
+    // Client registers a data confirm callback with driver. This is done once
+
+    DRV_G3_MACRT_SleepDisableCallbackRegister( myAppObj.myHandle, APP_PLC_SleepModeDisableCb );
+
+    // Event is received when PLC device comes out of sleep mode and becomes active again.
+    </code>
+
+*/
+
+void DRV_G3_MACRT_SleepIndCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_SLEEP_IND_CALLBACK callback
+);
+
+//***************************************************************************
+/*
+  Function:
+       void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable )
+    
+  Summary:
+    PLC Sleep mode management.
+
+  Description:
+    This function disables PLC interrupts before going to sleep, and will leave
+    them disabled upon return. If there is any PLC transmission in progress, 
+    sleep mode will be enabled after the notification of the TX confirmation.
+
+  Precondition:
+    The DRV_G3_MACRT_Initialize routine must have been called for the
+    specified PLC driver instance.
+
+  Parameters:
+    - object -  Object handle for the specified driver instance (returned from
+                DRV_G3_MACRT_Initialize)
+    - enable -  Set True to enter in sleep mode. Set False to exit from sleep mode.
+  Returns:
+    None.
+  Example:
+    <code>
+    SYS_MODULE_OBJ      object;     // Returned from DRV_G3_MACRT_Initialize
+    
+    while (true)
+    {
+      if (sleep_condition)
+      {
+        DRV_G3_MACRT_Sleep (object, true);
+      }
+    }
+    </code>
+
+  Remarks:
+    - This function will never block or access any resources that may cause
+      it to block.                        
+  */
+
+void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
+
+</#if> 
+
+<#if DRV_PLC_MODE == "PL460">
+//***************************************************************************
+/*
+  Function:
+       void DRV_G3_MACRT_Enable_TX( const DRV_HANDLE handle, bool enable )
+    
+  Summary:
+    Enable PLC transmission.
+
+  Description:
+    This function allows a client to enable or disable the PLC tranmission.
+    If there is any transmission on going, it will be cancelled and notified
+    through the TX confirmation callback. 
+    
+  Precondition:
+    The DRV_G3_MACRT_Initialize routine must have been called for the
+    specified PLC driver instance.
+
+  Parameters:
+    - object -  Object handle for the specified driver instance (returned from
+                DRV_G3_MACRT_Initialize)
+    - enable -  Set True to enable PLC tranmission. Set False to disable it.
+  Returns:
+    None.
+  Example:
+    <code>
+    SYS_MODULE_OBJ      object;     // Returned from DRV_G3_MACRT_Initialize
+    
+    while (true)
+    {
+        ...
+        if (cancel_tx)
+        {
+            DRV_G3_MACRT_Enable_TX (object, false);
+        }
+        else
+        {
+            DRV_G3_MACRT_Enable_TX (object, true);
+        }
+        ...
+    }
+    </code>
+                   
+  */
+
+void DRV_G3_MACRT_Enable_TX( const DRV_HANDLE handle, bool enable );
+
+</#if> 
 #ifdef __cplusplus
 }
 #endif
+
+#include "driver/plc/g3MacRt/drv_g3_macrt_local.h"
 
 #endif // #ifndef _DRV_G3_MACRT_H
 /*******************************************************************************

@@ -736,8 +736,6 @@ typedef struct {
     MAC_RT_STATUS status;
     /* Flag to indicate Timestamp should be updated */
     bool updateTimestamp;
-    /* Modulation Type */
-    MAC_RT_MOD_TYPE modType;
 } MAC_RT_TX_CFM_OBJ;
 
 // *****************************************************************************

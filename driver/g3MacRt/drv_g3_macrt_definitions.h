@@ -52,7 +52,6 @@
 #include <device.h>
 #include "driver/plc/common/drv_plc_hal.h"
 
-
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -92,9 +91,6 @@ typedef struct
 
     /* PLC Profile */
     uint8_t                         plcProfile;
-
-    /* Specification Compliance */
-    uint8_t                         plcSpecification;
 
     /* Start Address where PLC binary file is located */
     uint32_t                        binStartAddress;

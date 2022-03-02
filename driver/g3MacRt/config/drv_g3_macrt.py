@@ -36,6 +36,8 @@ global g3MacRtAsmBinFile
 
 global plcBandInUse
 
+gPlcBand = ""
+
 PLC_PROFILE_G3_CEN_A = 1
 PLC_PROFILE_G3_FCC = 2
 PLC_PROFILE_G3_ARIB = 3
@@ -84,34 +86,55 @@ def g3MacRtVisibleEncComment(symbol, event):
     else:
         symbol.setVisible(False)         
 
+def setPlcBandInUse(plcBand):
+    dict = {}
+
+    if (plcBand == "CEN-A"):
+        plcBandInUse.setValue(PLC_PROFILE_G3_CEN_A)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
+    elif (plcBand == "CEN-B"):
+        plcBandInUse.setValue(PLC_PROFILE_G3_CEN_B)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
+    elif (plcBand == "FCC"):
+        plcBandInUse.setValue(PLC_PROFILE_G3_FCC)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_FCC", {})
+    elif (plcBand == "ARIB"):
+        plcBandInUse.setValue(PLC_PROFILE_G3_ARIB)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_ARIB", {})
+
 def setPlcMultiBandInUse(g3_band, g3_aux_band):
+    dict = {}
+
+    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND_AUX_ACTIVE") == True) :
+        g3_aux_band_default = True
+    else:
+        g3_aux_band_default = False
+
     if (g3_band == "FCC"):
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_A)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_B)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
     else:
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_A)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_B)
+            if (g3_aux_band_default == True):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
 
 def removeAllBinFiles():
     print("[CHRIS_dbg] : removeAllBinFiles")
     g3MacRtBinFileCENA.setEnabled(False)
     g3MacRtBinFileCENB.setEnabled(False)
     g3MacRtBinFileFCC.setEnabled(False)
-    g3MacRtBinFileARIB.setEnabled(False)        
-
-def setPlcBandInUse(plcBand):
-    if (plcBand == "CEN-A"):
-        plcBandInUse.setValue(PLC_PROFILE_G3_CEN_A)
-    elif (plcBand == "CEN-B"):
-        plcBandInUse.setValue(PLC_PROFILE_G3_CEN_B)
-    elif (plcBand == "FCC"):
-        plcBandInUse.setValue(PLC_PROFILE_G3_FCC)
-    elif (plcBand == "ARIB"):
-        plcBandInUse.setValue(PLC_PROFILE_G3_ARIB)
+    g3MacRtBinFileARIB.setEnabled(False)
 
 def includeBinFile(plcBand):
     if (plcBand == "CEN-A"):          
@@ -128,6 +151,7 @@ def includeBinFile(plcBand):
         print("[CHRIS_dbg] : includeBinFile ARIB")
 
 def updateBinFiles():
+    dict = {}
     removeAllBinFiles()
     g3_band = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_G3_BAND")
     includeBinFile(g3_band)
@@ -136,6 +160,9 @@ def updateBinFiles():
         g3_aux_band = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_G3_BAND_AUX")
         includeBinFile(g3_aux_band)
         setPlcMultiBandInUse(g3_band, g3_aux_band)
+
+    # Update Coupling Parameters    
+    dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
     
     # Check Internal/External Addressing    
     if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
@@ -146,44 +173,46 @@ def updateBinFiles():
         removeAllBinFiles()
         g3MacRtAsmBinFile.setEnabled(False)
 
-    dict = {}
-    dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PARAMETERS", {})
-    
-def updatePLCBandInUse(symbol, event):
-    print("[CHRIS_dbg] : updatePLCBandInUse <- " + event["id"])
+def updateG3PLCBandInUse(symbol, event):
+    # print("[CHRIS_dbg] : updateG3PLCBandInUse <- " + event["id"])
     updateBinFiles()
 
 def plcBinAddressingMode(symbol, event):
-    print("[CHRIS_dbg] : plcBinAddressingMode <- " + event["id"])
+    # print("[CHRIS_dbg] : plcBinAddressingMode <- " + event["id"])
     symbol.setVisible(event["value"])
     updateBinFiles()
 
 def showPL460Pins(symbol, event):
-    print("[CHRIS_dbg] : showPL460Pins <- " + event["id"])
+    # print("[CHRIS_dbg] : showPL460Pins <- " + event["id"])
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)   
+        symbol.setVisible(False)  
+
+def showSleepPin(symbol, event):
+    # print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
+    symbol.setVisible(event["value"])
+
+def showThermalMonitorPin(symbol, event):
+    # print("[CHRIS_dbg] : showThermalMonitorPin <- " + event["id"])
+    symbol.setVisible(event["value"])
 
 def showG3HighAttenuation(symbol, event):
     global plcDriverMode
+    global plcG3Band
 
-    print("[CHRIS_dbg] : showG3HighAttenuation <- " + event["id"])
-    if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
-        if (plcDriverMode.getValue() == "PL460"):
+    if (plcDriverMode.getValue() == "PL360"):
+        symbol.setVisible(False)
+    else:
+        if (plcG3Band.getValue() == "FCC") or (plcG3Band.getValue() == "ARIB"):
             symbol.setVisible(True)
         else:
             symbol.setVisible(False)
-    else:
-        symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
 
 def showG3InternalDriver(symbol, event):
     global plcDriverMode
 
-    print("[CHRIS_dbg] : showG3InternalDriver <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3InternalDriver <- " + event["id"])
     if (event["symbol"].getValue() == "CEN-B") and plcDriverMode.getValue() == "PL360":
         symbol.setVisible(True)
     else:
@@ -193,7 +222,7 @@ def showG3InternalDriver(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3Multiband(symbol, event):
-    print("[CHRIS_dbg] : showG3Multiband <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3Multiband <- " + event["id"])
     if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
         symbol.setVisible(True)
     else:
@@ -203,17 +232,22 @@ def showG3Multiband(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3AuxBand(symbol, event):
-    print("[CHRIS_dbg] : showG3AuxBand <- " + event["id"])
+    # print("[CHRIS_dbg] : showG3AuxBand <- " + event["id"])
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
     
 def resetPlcBand(symbol, event):  
-    print("[CHRIS_dbg] : resetPlcBand <- " + event["id"])
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
+
+def enablePL460Capabilities(symbol, event):
+    if (event["value"] == "PL460"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
 
 def instantiateComponent(g3MacRtComponent):  
     global isDMAPresent
@@ -235,10 +269,10 @@ def instantiateComponent(g3MacRtComponent):
 
     if Database.getSymbolValue("core", "DMA_ENABLE") == None:
         isDMAPresent = False
-        print("[CHRIS_dbg] : DMA is NOT present")
+        # print("[CHRIS_dbg] : DMA is NOT present")
     else:
         isDMAPresent = True
-        print("[CHRIS_dbg] : DMA is present")
+        # print("[CHRIS_dbg] : DMA is present")
 
     global plcDriverMode
     plcDriverMode = g3MacRtComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
@@ -285,25 +319,38 @@ def instantiateComponent(g3MacRtComponent):
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
 
-    plcCDPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_CD_PIN", None)
-    plcCDPin.setLabel("Carrier Detect Pin")
-    plcCDPin.setDefaultValue(0)
-    plcCDPin.setOutputMode("Key")
-    plcCDPin.setDisplayMode("Description")
+    plcTxEnablePin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
+    plcTxEnablePin.setLabel("TX Enable Pin")
+    plcTxEnablePin.setDefaultValue(0)
+    plcTxEnablePin.setOutputMode("Key")
+    plcTxEnablePin.setDisplayMode("Description")
+    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
-    plcStbyPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", None)
+    plcSleepMode = g3MacRtComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
+    plcSleepMode.setLabel("Sleep Mode")
+    plcSleepMode.setDefaultValue(False)
+    plcSleepMode.setVisible(True)
+
+    plcStbyPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
     plcStbyPin.setLabel("Stand By Pin")
     plcStbyPin.setDefaultValue(0)
     plcStbyPin.setOutputMode("Key")
     plcStbyPin.setDisplayMode("Description")
-    plcStbyPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
+    plcStbyPin.setVisible(False)
+    plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
+    
+    plcThermalMonitor = g3MacRtComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
+    plcThermalMonitor.setLabel("Thermal Monitor")
+    plcThermalMonitor.setDefaultValue(False)
+    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
-    plcThMonPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", None)
+    plcThMonPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
     plcThMonPin.setLabel("Thermal Monitor Pin")
     plcThMonPin.setDefaultValue(0)
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
-    plcThMonPin.setDependencies(showPL460Pins, ["DRV_PLC_MODE"])
+    plcThMonPin.setVisible(False)
+    plcThMonPin.setDependencies(showThermalMonitorPin, ["DRV_PLC_THERMAL_MONITOR"])
 
     availablePinDictionary = {}
 
@@ -317,13 +364,13 @@ def instantiateComponent(g3MacRtComponent):
         plcExtIntPin.addKey(key, value, description)
         plcResetPin.addKey(key, value, description)
         plcLDOEnPin.addKey(key, value, description)
-        plcCDPin.addKey(key, value, description)
+        plcTxEnablePin.addKey(key, value, description)
         plcStbyPin.addKey(key, value, description)
         plcThMonPin.addKey(key, value, description)
 
     plcSymPinConfigComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_PINS_CONFIG_COMMENT", None)
     plcSymPinConfigComment.setVisible(True)
-    plcSymPinConfigComment.setLabel("***Above selected pins must be configured as GPIO Output in Pin Manager***")
+    plcSymPinConfigComment.setLabel("***Above selected pins must be properly configured by Pin Manager***")
     
     ##### Do not modify below symbol names as they are used by Memory Driver #####
 
@@ -331,7 +378,7 @@ def instantiateComponent(g3MacRtComponent):
     plcTXRXDMA = g3MacRtComponent.createBooleanSymbol("DRV_PLC_TX_RX_DMA", None)
     plcTXRXDMA.setLabel("Use DMA for Transmit and Receive?")
     plcTXRXDMA.setDefaultValue(0)
-    plcTXRXDMA.setVisible(False) #### Change to hide it
+    plcTXRXDMA.setVisible(False)
     plcTXRXDMA.setReadOnly(True)
 
     global plcTXDMAChannel
@@ -368,7 +415,7 @@ def instantiateComponent(g3MacRtComponent):
 
     plcStaticAddressing = g3MacRtComponent.createBooleanSymbol("DRV_PLC_BIN_STATIC_ADDRESSING", None)
     plcStaticAddressing.setLabel("Static Bin file Addressing")
-    plcStaticAddressing.setVisible(True)
+    plcStaticAddressing.setVisible(False)
     plcStaticAddressing.setDefaultValue(False)
 
     plcBinaryAddress = g3MacRtComponent.createHexSymbol("DRV_PLC_PLC_BIN_ADDRESS", plcStaticAddressing)
@@ -385,7 +432,7 @@ def instantiateComponent(g3MacRtComponent):
 
     plcSecureMode = g3MacRtComponent.createBooleanSymbol("DRV_PLC_SECURE_MODE", None)
     plcSecureMode.setLabel("PLC Secure Mode")
-    plcSecureMode.setVisible(True)
+    plcSecureMode.setVisible(False)
     plcSecureMode.setDefaultValue(False)
 
     ############################################################################
@@ -438,7 +485,7 @@ def instantiateComponent(g3MacRtComponent):
     plcAsmPathSetting.setCategory("C32-AS")
     plcAsmPathSetting.setKey("extra-include-directories-for-assembler")
     plcAsmPathSetting.setValue("../src/config/" + configName + "/driver/plc/g3MacRt/bin")
-    plcAsmPathSetting.setAppend(True, ";")
+    plcAsmPathSetting.setAppend(False, None)
 
     #### Miscellanea ###########################################################
 
@@ -460,11 +507,12 @@ def instantiateComponent(g3MacRtComponent):
     #### Source and header PLC PHY Files #######################################
 
     g3MacRtHdrFile = g3MacRtComponent.createFileSymbol("MACRT_HEADER", None)
-    g3MacRtHdrFile.setSourcePath("driver/g3MacRt/drv_g3_macrt.h")
+    g3MacRtHdrFile.setSourcePath("driver/g3MacRt/drv_g3_macrt.h.ftl")
     g3MacRtHdrFile.setOutputName("drv_g3_macrt.h")
     g3MacRtHdrFile.setDestPath("driver/plc/g3MacRt")
     g3MacRtHdrFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt")
     g3MacRtHdrFile.setType("HEADER")
+    g3MacRtHdrFile.setMarkup(True)
 
     g3MacRtHdrCommFile = g3MacRtComponent.createFileSymbol("MACRT_HEADER_COMM", None)
     g3MacRtHdrCommFile.setSourcePath("driver/g3MacRt/drv_g3_macrt_comm.h")
@@ -481,25 +529,27 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtHdrDefFile.setType("HEADER")
 
     g3MacRtSrcFile = g3MacRtComponent.createFileSymbol("MACRT_SOURCE", None)
-    g3MacRtSrcFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt.c")
+    g3MacRtSrcFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt.c.ftl")
     g3MacRtSrcFile.setOutputName("drv_g3_macrt.c")
     g3MacRtSrcFile.setDestPath("driver/plc/g3MacRt")
     g3MacRtSrcFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt")
     g3MacRtSrcFile.setType("SOURCE")
+    g3MacRtSrcFile.setMarkup(True)
 
     g3MacRtSrcCommFile = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_COMM", None)
-    g3MacRtSrcCommFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_comm.c")
-    g3MacRtSrcCommFile.setOutputName("drv_g3_macrt_comm.c")
+    g3MacRtSrcCommFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_local_comm.c")
+    g3MacRtSrcCommFile.setOutputName("drv_g3_macrt_local_comm.c")
     g3MacRtSrcCommFile.setDestPath("driver/plc/g3MacRt")
     g3MacRtSrcCommFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt")
     g3MacRtSrcCommFile.setType("SOURCE")
 
     g3MacRtSrcLocalFile = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_LOCAL", None)
-    g3MacRtSrcLocalFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_local.h")
+    g3MacRtSrcLocalFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_local.h.ftl")
     g3MacRtSrcLocalFile.setOutputName("drv_g3_macrt_local.h")
     g3MacRtSrcLocalFile.setDestPath("driver/plc/g3MacRt")
     g3MacRtSrcLocalFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt")
     g3MacRtSrcLocalFile.setType("SOURCE")
+    g3MacRtSrcLocalFile.setMarkup(True)
 
     g3MacRtSrcLocalCommFile = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_LOCAL_COMM", None)
     g3MacRtSrcLocalCommFile.setSourcePath("driver/g3MacRt/src/drv_g3_macrt_local_comm.h")
@@ -519,6 +569,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileCENA.setType("SOURCE")
     g3MacRtBinFileCENA.setEnabled(True)
     g3MacRtBinFileCENA.setVisible(False)
+    g3MacRtBinFileCENA.setOverwrite(True)
 
     global g3MacRtBinFileCENB
     g3MacRtBinFileCENB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_CENB", None)
@@ -529,6 +580,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileCENB.setType("SOURCE")
     g3MacRtBinFileCENB.setEnabled(False)
     g3MacRtBinFileCENB.setVisible(False)
+    g3MacRtBinFileCENB.setOverwrite(True)
 
     global g3MacRtBinFileFCC
     g3MacRtBinFileFCC = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_FCC", None)
@@ -539,6 +591,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileFCC.setType("SOURCE")
     g3MacRtBinFileFCC.setEnabled(False)
     g3MacRtBinFileFCC.setVisible(False)
+    g3MacRtBinFileFCC.setOverwrite(True)
 
     global g3MacRtBinFileARIB
     g3MacRtBinFileARIB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_ARIB", None)
@@ -549,6 +602,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileARIB.setType("SOURCE")
     g3MacRtBinFileARIB.setEnabled(False)
     g3MacRtBinFileARIB.setVisible(False)
+    g3MacRtBinFileARIB.setOverwrite(True)
 
     global g3MacRtAsmBinFile
     g3MacRtAsmBinFile = g3MacRtComponent.createFileSymbol("MACRT_ASM_BIN", None)
@@ -558,18 +612,28 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtAsmBinFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
     g3MacRtAsmBinFile.setType("SOURCE")
     g3MacRtAsmBinFile.setMarkup(True)
+    g3MacRtAsmBinFile.setOverwrite(True)
     
     ##### Coupling Settings : G3  ####################################################
+
+    updBinFilesCtrl = g3MacRtComponent.createBooleanSymbol("DRV_PLC_UPD_BIN_FILES", None)
+    updBinFilesCtrl.setLabel("updBinFilesCtrl")
+    updBinFilesCtrl.setDescription("Auxiliary control")
+    updBinFilesCtrl.setVisible(False)
+    updBinFilesCtrl.setDefaultValue(False)
+
     global plcCoupG3Settings
     plcCoupG3Settings = g3MacRtComponent.createMenuSymbol("DRV_PLC_COUP_G3_SETTING", None)
     plcCoupG3Settings.setLabel("PLC Coupling Settings")
     plcCoupG3Settings.setDescription("Coupling Settings")
     plcCoupG3Settings.setVisible(True)
 
-    plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
-    plcG3Band.setLabel("G3 Phy Band")
+    global plcG3Band
+    # plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
+    plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
+    plcG3Band.setLabel("Main Branch")
     plcG3Band.setDefaultValue("CEN-A")
-    plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
+    # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
 
     plcCoupG3Internal = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_INTERNAL", plcCoupG3Settings)
     plcCoupG3Internal.setLabel("Internal Driver")
@@ -586,7 +650,7 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupGMultiBand.setDependencies(showG3Multiband, ["DRV_PLC_G3_BAND"])
 
     plcG3BandAux = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND_AUX", plcCoupGMultiBand, ["CEN-A", "CEN-B"])
-    plcG3BandAux.setLabel("G3 Phy Auxiliary Band")
+    plcG3BandAux.setLabel("Auxiliary Branch")
     plcG3BandAux.setDefaultValue("CEN-A")
     plcG3BandAux.setVisible(False)
     plcG3BandAux.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
@@ -598,11 +662,11 @@ def instantiateComponent(g3MacRtComponent):
     plcG3BandAuxActive.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcCoupG3HighAttenuation = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_HIGH_ATTENUATION", plcG3Band)
-    plcCoupG3HighAttenuation.setLabel("FCC high attenuation coupling")
+    plcCoupG3HighAttenuation.setLabel("FCC high attenuation branch")
     plcCoupG3HighAttenuation.setDescription("FCC high attenuation")
     plcCoupG3HighAttenuation.setVisible(False)
     plcCoupG3HighAttenuation.setDefaultValue(False)
-    plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND"])
+    plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
     
     ##### Coupling Settings : Generic  ####################################################
 
@@ -612,7 +676,7 @@ def instantiateComponent(g3MacRtComponent):
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
-    plcBandInUse.setDependencies(updatePLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
+    plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
 
     #### FreeMaker Files ######################################################
 
@@ -628,7 +692,7 @@ def instantiateComponent(g3MacRtComponent):
     plcSymSystemDefObjFile.setSourcePath("driver/g3MacRt/templates/system/definitions_objects.h.ftl")
     plcSymSystemDefObjFile.setMarkup(True)
 
-    plcSymSystemConfigFile = g3MacRtComponent.createFileSymbol("DRV_PLC_CONFIGIRUTION", None)
+    plcSymSystemConfigFile = g3MacRtComponent.createFileSymbol("DRV_PLC_CONFIGURATION", None)
     plcSymSystemConfigFile.setType("STRING")
     plcSymSystemConfigFile.setOutputName("core.LIST_SYSTEM_CONFIG_H_DRIVER_CONFIGURATION")
     plcSymSystemConfigFile.setSourcePath("driver/g3MacRt/templates/system/configuration.h.ftl")
@@ -665,10 +729,10 @@ def onAttachmentConnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    print("[CHIRS_dbg] : onAttachmentConnected event - remoteID: " + remoteID.upper())
+    # print("[CHIRS_dbg] : onAttachmentConnected event - remoteID: " + remoteID.upper())
 
     if connectID == "drv_g3_macrt_SPI_dependency" :
-        print("[CHIRS_dbg] : drv_g3_macrt_SPI_dependency")
+        # print("[CHIRS_dbg] : drv_g3_macrt_SPI_dependency")
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValue()
         plibUsed.setValue(remoteID.upper())
@@ -680,7 +744,7 @@ def onAttachmentConnected(source, target):
             plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         plibBaudrate.clearValue()
         plibBaudrate.setValue(8000000)
-        print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
+        # print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
 
         if (isDMAPresent == True):
 
@@ -694,7 +758,7 @@ def onAttachmentConnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(1)
             else:
-                print("[CHIRS_dbg] : DMA ERROR")
+                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -717,7 +781,7 @@ def onAttachmentDisconnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    print("[CHIRS_dbg] : onAttachmentDisconnected event - remoteID: " + remoteID.upper())
+    # print("[CHIRS_dbg] : onAttachmentDisconnected event - remoteID: " + remoteID.upper())
 
     if connectID == "drv_g3_macrt_SPI_dependency" :
         print("[CHIRS_dbg] : drv_g3_macrt_SPI_dependency")
@@ -740,7 +804,7 @@ def onAttachmentDisconnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(0)
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
             else:
-                print("[CHIRS_dbg] : DMA ERROR")
+                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -762,7 +826,7 @@ def requestAndAssignTxDMAChannel(symbol, event):
     dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
     dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
 
-    print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - " + dmaChannelID)
+    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - " + dmaChannelID)
 
     # Clear the DMA symbol. Done for backward compatibility.
     Database.clearSymbolValue("core", dmaRequestID)
@@ -779,7 +843,7 @@ def requestAndAssignTxDMAChannel(symbol, event):
 
     # Get the allocated channel and assign it
     channel = Database.getSymbolValue("core", dmaChannelID)
-    print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - channel " + str(channel))
+    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - channel " + str(channel))
     symbol.setValue(channel)
 
 def requestAndAssignRxDMAChannel(symbol, event):
@@ -790,7 +854,7 @@ def requestAndAssignRxDMAChannel(symbol, event):
     dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
     dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
 
-    print("[CHRIS_dbg] : requestAndAssignRxDMAChannel - " + dmaChannelID)
+    # print("[CHRIS_dbg] : requestAndAssignRxDMAChannel - " + dmaChannelID)
 
     # Clear the DMA symbol. Done for backward compatibility.
     Database.clearSymbolValue("core", dmaRequestID)

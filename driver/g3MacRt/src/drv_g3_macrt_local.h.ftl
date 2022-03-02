@@ -125,12 +125,6 @@ typedef struct
     /* State of the MAC RT driver */
     DRV_G3_MACRT_STATE                        state;
 
-    /* Keep track of the number of clients that have opened this driver */
-    size_t                                    nClients;
-
-    /* Maximum number of clients */
-    size_t                                    nClientsMax;
-
     /* The status of the driver */
     SYS_STATUS                                status;
 
@@ -140,9 +134,6 @@ typedef struct
     /* PLC Profile */
     uint8_t                                   plcProfile;
 
-    /* PLC Specification Compliance */
-    uint8_t                                   plcSpecification;
-    
     /* Size (in Bytes) of the PLC binary file */
     uint32_t                                  binSize;
 
@@ -152,6 +143,11 @@ typedef struct
     /* Secure mode */
     bool                                      secure;
 
+<#if DRV_PLC_SLEEP_MODE == true> 
+    /* Sleep mode */
+    bool                                      sleep;
+
+</#if>
     /* Application Bootloader Data Callback */
     DRV_PLC_BOOT_DATA_CALLBACK                bootDataCallback;
 
@@ -161,56 +157,55 @@ typedef struct
     /* Application Data Indication Callback */
     DRV_G3_MACRT_DATA_IND_CALLBACK            dataIndCallback;
 
-    /* Application MLME Get Confirm Callback */
-    DRV_G3_MACRT_MLME_GET_CFM_CALLBACK        mlmeGetCfmcallback;
+    /* Application RX Parameters Indication Callback */
+    DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK       rxParamsIndCallback;
 
+    /* Application MAC RT Sniffer Indication Callback */
+    DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK     macSnifferIndCallback;
+
+    /* Application Comm Status Indication Callback */
+    DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK     commStatusIndCallback;
+
+    /* Application PLC PHY Sniffer Callback */
+    DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK     phySnifferIndCallback;
+
+<#if DRV_PLC_SLEEP_MODE == true>
+    /* Application Sleep Indication Callback */
+    DRV_G3_MACRT_SLEEP_IND_CALLBACK           sleepIndCallback;
+
+</#if>
     /* Application Exception Callback */
     DRV_G3_MACRT_EXCEPTION_CALLBACK           exceptionCallback;
-
-    /* Application PLC Sniffer Callback */
-    DRV_G3_MACRT_SNIFFER_CALLBACK             snifferDataCallback;
-
-    /* Application context for Transmission Confirm Callback */
-    uintptr_t                                 contextTxCfm;
-
-    /* Application context for Data Indication Callback */
-    uintptr_t                                 contextDataInd;
-
-    /* Application context for MLME Get Confirm Callback */
-    uintptr_t                                 contextMlmeGetCfm;
-
-    /* Application context for Exception Callback */
-    uintptr_t                                 contextExc;
-
-    /* Application context for Bootloader Data Callback */
-    uintptr_t                                 contextBoot;
-
-    /* Application context for PLC Sniffer Data Callback */
-    uintptr_t                                 contextSniffer;
-
-    /* Event detection flag: confirmation of the previous transmission */
-    volatile bool                             evTxCfm;
-
+    
     /* Event detection flag: data of new reception */
     volatile uint16_t                         evDataIndLength;
-
-    /* Event detection flag: parameters of new reception */
-    volatile bool                             evMlmeGetCfm;
-
-    /* Event detection flag: tone map response */
-    volatile bool                             evToneMapRsp;
 
     /* Event detection flag: length of the response with register content */
     volatile uint16_t                         evRegRspLength;
 
-    /* Event detection flag: new PLC sniffer packet */
-    volatile bool                             evSniffer;
+    /* Event detection flag: MAC Sniffer */
+    volatile uint16_t                         evMacSnifLength;
+
+    /* Event detection flag: PHY Sniffer */
+    volatile uint16_t                         evPhySnifLength;
 
     /* Event detection flag: reset waiting tx cfm */
     volatile bool                             evResetTxCfm;
+
+    /* Event detection flag: tx cfm */
+    volatile bool                             evTxCfm;
+
+    /* Event detection flag: Comm Status */
+    volatile bool                             evCommStatus;
+
+    /* Event detection flag: RX parameters */
+    volatile bool                             evRxParams;
     
-    /* Pointer to Sniffer Data Buffer */
-    uint8_t                                   *pDataSniffer;
+    /* Pointer to MAC Sniffer Data Buffer */
+    uint8_t                                   *pMacDataSniffer;
+    
+    /* Pointer to PHY Sniffer Data Buffer */
+    uint8_t                                   *pPhyDataSniffer;
 
 } DRV_G3_MACRT_OBJ;
 

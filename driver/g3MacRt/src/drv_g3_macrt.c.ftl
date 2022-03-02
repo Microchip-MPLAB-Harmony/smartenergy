@@ -85,24 +85,25 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     }
 
     gDrvG3MacRtObj.status                = SYS_STATUS_UNINITIALIZED;
-
     gDrvG3MacRtObj.inUse                 = true;
-    gDrvG3MacRtObj.nClients              = 0;
-
     gDrvG3MacRtObj.plcHal                = g3MacRtInit->plcHal;
-    gDrvG3MacRtObj.nClientsMax           = g3MacRtInit->numClients;
     gDrvG3MacRtObj.plcProfile            = g3MacRtInit->plcProfile;
     gDrvG3MacRtObj.binSize               = g3MacRtInit->binEndAddress - g3MacRtInit->binStartAddress;
     gDrvG3MacRtObj.binStartAddress       = g3MacRtInit->binStartAddress;
     gDrvG3MacRtObj.secure                = g3MacRtInit->secure;
+<#if DRV_PLC_SLEEP_MODE == true>   
+    gDrvG3MacRtObj.sleep                 = false;
+</#if>
     
     /* Callbacks initialization */
-    gDrvG3MacRtObj.bootDataCallback      = 0;
-    gDrvG3MacRtObj.txCfmCallback         = 0;
-    gDrvG3MacRtObj.dataIndCallback       = 0;
-    gDrvG3MacRtObj.mlmeGetCfmcallback    = 0;
-    gDrvG3MacRtObj.exceptionCallback     = 0;
-    gDrvG3MacRtObj.snifferDataCallback   = 0;
+    gDrvG3MacRtObj.bootDataCallback      = NULL;
+    gDrvG3MacRtObj.txCfmCallback         = NULL;
+    gDrvG3MacRtObj.dataIndCallback       = NULL;
+    gDrvG3MacRtObj.rxParamsIndCallback   = NULL;
+    gDrvG3MacRtObj.macSnifferIndCallback = NULL;
+    gDrvG3MacRtObj.commStatusIndCallback = NULL;
+    gDrvG3MacRtObj.phySnifferIndCallback = NULL;
+    gDrvG3MacRtObj.exceptionCallback     = NULL;
 
     /* HAL init */
     gDrvG3MacRtObj.plcHal->init((DRV_PLC_PLIB_INTERFACE *)g3MacRtInit->plcHal->plcPlib);
@@ -140,8 +141,7 @@ DRV_HANDLE DRV_G3_MACRT_Open(
         return DRV_HANDLE_INVALID;
     }
 
-    if ((gDrvG3MacRtObj.status != SYS_STATUS_BUSY) || (gDrvG3MacRtObj.inUse == false) \
-            || (gDrvG3MacRtObj.nClients >= gDrvG3MacRtObj.nClientsMax))
+    if ((gDrvG3MacRtObj.status != SYS_STATUS_BUSY) || (gDrvG3MacRtObj.inUse == false))
     {
         return DRV_HANDLE_INVALID;
     }
@@ -157,10 +157,13 @@ DRV_HANDLE DRV_G3_MACRT_Open(
         bootInfo.bootDataCallback = callback;
         bootInfo.contextBoot = index;
     }
+    else
+    {
+        bootInfo.bootDataCallback = NULL;
+        bootInfo.contextBoot = 0;
+    }
     
     DRV_PLC_BOOT_Start(&bootInfo, gDrvG3MacRtObj.plcHal);
-
-    gDrvG3MacRtObj.nClients++;
 
     return ((DRV_HANDLE)0);
 }
@@ -169,75 +172,91 @@ void DRV_G3_MACRT_Close( const DRV_HANDLE handle )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvG3MacRtObj.nClients--;
         gDrvG3MacRtObj.inUse = false;
+        gDrvG3MacRtObj.status = SYS_STATUS_UNINITIALIZED;
     }
 }
 
 void DRV_G3_MACRT_TxCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_TX_CFM_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_TX_CFM_CALLBACK callback
 )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvG3MacRtObj.txCfmCallback = callback;
-        gDrvG3MacRtObj.contextTxCfm = context;
     }
 }
 
 void DRV_G3_MACRT_DataIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_DATA_IND_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_DATA_IND_CALLBACK callback
 )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvG3MacRtObj.dataIndCallback = callback;
-        gDrvG3MacRtObj.contextDataInd = context;
     }
 }
 
-void DRV_G3_MACRT_MlmeGetCfmCallbackRegister( 
+void DRV_G3_MACRT_RxParamsIndCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_MLME_GET_CFM_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK callback
 )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvG3MacRtObj.mlmeGetCfmcallback = callback;
-        gDrvG3MacRtObj.contextMlmeGetCfm = context;
+        gDrvG3MacRtObj.rxParamsIndCallback = callback;
+    }
+}
+
+void DRV_G3_MACRT_MacSnifferCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK callback,
+	uint8_t* pDataBuffer
+)
+{
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0) && 
+            (pDataBuffer != NULL))
+    {
+        gDrvG3MacRtObj.macSnifferIndCallback = callback;
+        gDrvG3MacRtObj.pMacDataSniffer = pDataBuffer;
+    }
+}
+
+void DRV_G3_MACRT_CommStatusCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK callback
+)
+{
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {
+        gDrvG3MacRtObj.commStatusIndCallback = callback;
+    }
+}
+
+void DRV_G3_MACRT_PhySnifferCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK callback,
+	uint8_t* pDataBuffer
+)
+{
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0) && 
+            (pDataBuffer != NULL))
+    {
+        gDrvG3MacRtObj.phySnifferIndCallback = callback;
+        gDrvG3MacRtObj.pPhyDataSniffer = pDataBuffer;
     }
 }
 
 void DRV_G3_MACRT_ExceptionCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback, 
-    const uintptr_t context 
+    const DRV_G3_MACRT_EXCEPTION_CALLBACK callback
 )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
         gDrvG3MacRtObj.exceptionCallback = callback;
-        gDrvG3MacRtObj.contextExc = context;
-    }
-}
-
-void DRV_G3_MACRT_SnifferCallbackRegister( 
-    const DRV_HANDLE handle, 
-    const DRV_G3_MACRT_SNIFFER_CALLBACK callback,
-    const uint8_t *pSnifferData, 
-    const uintptr_t context 
-)
-{
-    if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
-    {
-        gDrvG3MacRtObj.snifferDataCallback = callback;
-        gDrvG3MacRtObj.contextSniffer = context;
-        gDrvG3MacRtObj.pDataSniffer = (uint8_t *)pSnifferData;
     }
 }
 
@@ -269,6 +288,13 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ hSysObj )
             DRV_G3_MACRT_Init(&gDrvG3MacRtObj);
             gDrvG3MacRtObj.status = SYS_STATUS_READY;
             gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_IDLE;
+<#if DRV_PLC_SLEEP_MODE == true>             
+            /*if (gDrvG3MacRtObj.sleep && gDrvG3MacRtObj.sleepIndCallback)
+            {
+                gDrvG3MacRtObj.sleep = false;
+                gDrvG3MacRtObj.sleepIndCallback(gDrvG3MacRtObj.contextSleep);
+            }*/
+</#if>            
         }
         else
         {
@@ -282,3 +308,54 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ hSysObj )
     }
 }
 
+<#if DRV_PLC_SLEEP_MODE == true> 
+void DRV_G3_MACRT_SleepIndCallbackRegister( 
+    const DRV_HANDLE handle, 
+    const DRV_G3_MACRT_SLEEP_IND_CALLBACK callback
+)
+{
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {
+        gDrvG3MacRtObj.sleepIndCallback = callback;
+    }
+}
+
+void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable )
+{
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {
+        if (gDrvG3MacRtObj.sleep != enable)
+        {
+            if (enable)
+            {
+                /* Disable PLC interrupt */
+                gDrvG3MacRtObj.plcHal->enableExtInt(false);
+                /* Set Stand By pin */
+                gDrvG3MacRtObj.plcHal->setStandBy(true);
+                /* Set Sleep flag */
+                gDrvG3MacRtObj.sleep = true;
+            }
+            else
+            {
+                /* Clear Stand By pin */
+                gDrvG3MacRtObj.plcHal->setStandBy(false);
+                
+                /* Restart from Sleep mode */
+                gDrvG3MacRtObj.status = SYS_STATUS_BUSY;
+                DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_SLEEP);
+            }
+        }
+    }
+}
+</#if>    
+
+<#if DRV_PLC_MODE == "PL460">
+void DRV_G3_MACRT_Enable_TX( const DRV_HANDLE handle, bool enable )
+{
+     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    {
+        /* Set Tx Enable pin */
+        gDrvG3MacRtObj.plcHal->setTxEnable(enable);
+    }
+}
+</#if>   

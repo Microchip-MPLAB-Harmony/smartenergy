@@ -46,18 +46,18 @@ g3_mac_rt_bin_start:
 <#elseif DRV_PLC_BAND_IN_USE == 2 || DRV_PLC_BAND_IN_USE == 5 || DRV_PLC_BAND_IN_USE == 6>
   .incbin "./G3_MAC_RT_FCC.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 3 || DRV_PLC_BAND_IN_USE == 7 || DRV_PLC_BAND_IN_USE == 8>
-  .incbin "./PLC_PHY_G3_ARIB.bin"
+  .incbin "./G3_MAC_RT_G3_ARIB.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 4>
   .incbin "./G3_MAC_RT_CENB.bin"
 </#if>
   .align 8
 g3_mac_rt_bin_end:
-<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
+<#if (DRV_PLC_BAND_IN_USE == 5) || (DRV_PLC_BAND_IN_USE == 7)>
 g3_mac_rt_bin2_start:
   .incbin "./G3_MAC_RT_CENA.bin"
   .align 8
 g3_mac_rt_bin2_end:
-<#elseif (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 9)>
+<#elseif (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
 g3_mac_rt_bin2_start:
   .incbin "./G3_MAC_RT_CENB.bin"
   .align 8
