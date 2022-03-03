@@ -13,10 +13,6 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
 
     /* SPI PLIB API interface*/
     .plcHal = &drvPLCHalAPI,
-
-    /* G3 MAC RT Number of clients */
-    .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  
-    
 <#if DRV_PLC_BIN_STATIC_ADDRESSING == true> 
  
     /* PLC Binary start address */
