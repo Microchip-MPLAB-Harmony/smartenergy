@@ -569,7 +569,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileCENA.setType("SOURCE")
     g3MacRtBinFileCENA.setEnabled(True)
     g3MacRtBinFileCENA.setVisible(False)
-    g3MacRtBinFileCENA.setOverwrite(True)
+    g3MacRtBinFileCENA.setMarkup(False)
 
     global g3MacRtBinFileCENB
     g3MacRtBinFileCENB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_CENB", None)
@@ -580,7 +580,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileCENB.setType("SOURCE")
     g3MacRtBinFileCENB.setEnabled(False)
     g3MacRtBinFileCENB.setVisible(False)
-    g3MacRtBinFileCENB.setOverwrite(True)
+    g3MacRtBinFileCENB.setMarkup(False)
 
     global g3MacRtBinFileFCC
     g3MacRtBinFileFCC = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_FCC", None)
@@ -591,7 +591,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileFCC.setType("SOURCE")
     g3MacRtBinFileFCC.setEnabled(False)
     g3MacRtBinFileFCC.setVisible(False)
-    g3MacRtBinFileFCC.setOverwrite(True)
+    g3MacRtBinFileFCC.setMarkup(False)
 
     global g3MacRtBinFileARIB
     g3MacRtBinFileARIB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_ARIB", None)
@@ -602,7 +602,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileARIB.setType("SOURCE")
     g3MacRtBinFileARIB.setEnabled(False)
     g3MacRtBinFileARIB.setVisible(False)
-    g3MacRtBinFileARIB.setOverwrite(True)
+    g3MacRtBinFileARIB.setMarkup(False)
 
     global g3MacRtAsmBinFile
     g3MacRtAsmBinFile = g3MacRtComponent.createFileSymbol("MACRT_ASM_BIN", None)
@@ -612,7 +612,6 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtAsmBinFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
     g3MacRtAsmBinFile.setType("SOURCE")
     g3MacRtAsmBinFile.setMarkup(True)
-    g3MacRtAsmBinFile.setOverwrite(True)
     
     ##### Coupling Settings : G3  ####################################################
 
