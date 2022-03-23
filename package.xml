@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Package name="smartenergy">
     <Dependencies>
-        <Dependency name="bsp" version="3.11.1"/>
-        <Dependency name="core" version="3.10.1"/>
-        <Dependency name="csp" version="3.11.1"/>
-        <Dependency name="dev_packs" version="3.11.1"/>
+        <Dependency name="bsp" version="3.10.0"/>
+        <Dependency name="core" version="3.10.0"/>
+        <Dependency name="csp" version="3.10.0"/>
+        <Dependency name="dev_packs" version="3.10.0"/>
     </Dependencies>
 </Package>
