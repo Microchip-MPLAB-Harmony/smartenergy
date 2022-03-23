@@ -321,18 +321,6 @@ void DRV_G3_MACRT_Task(void)
         gG3MacRtObj->evTxCfm = false;
     }
     
-    if (gG3MacRtObj->evDataIndLength)
-    {   
-        if (gG3MacRtObj->dataIndCallback)
-        {
-            /* Report to upper layer */
-            gG3MacRtObj->dataIndCallback(gG3RxData, gG3MacRtObj->evDataIndLength);
-        }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evDataIndLength = 0;
-    }
-    
     if (gG3MacRtObj->evRxParams)
     {   
         if (gG3MacRtObj->rxParamsIndCallback)
@@ -343,6 +331,18 @@ void DRV_G3_MACRT_Task(void)
         
         /* Reset event flag */
         gG3MacRtObj->evRxParams = false;
+    }
+    
+    if (gG3MacRtObj->evDataIndLength)
+    {   
+        if (gG3MacRtObj->dataIndCallback)
+        {
+            /* Report to upper layer */
+            gG3MacRtObj->dataIndCallback(gG3RxData, gG3MacRtObj->evDataIndLength);
+        }
+        
+        /* Reset event flag */
+        gG3MacRtObj->evDataIndLength = 0;
     }
     
     if (gG3MacRtObj->evMacSnifLength)
