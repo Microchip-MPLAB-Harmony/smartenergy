@@ -1208,7 +1208,12 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3NumTxLvl.setLabel("Number of TX levels")
     pCoupG3NumTxLvl.setDefaultValue(8)
     # Use an auxiliary control to handle dependencies with drvPlcPhy
-    pCoupG3NumTxLvl.setDependencies(dependenciesHandler, ["drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION", "drvPlcPhy.DRV_PLC_COUP_G3_INTERNAL"])
+    pCoupG3NumTxLvl.setDependencies(dependenciesHandler, ["drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION",
+                                                          "drvPlcPhy.DRV_PLC_COUP_G3_INTERNAL",
+                                                          "drvPlcPhy.DRV_PLC_MODE",
+                                                          "drvG3MacRt.DRV_PLC_COUP_G3_HIGH_ATTENUATION",
+                                                          "drvG3MacRt.DRV_PLC_COUP_G3_INTERNAL",
+                                                          "drvG3MacRt.DRV_PLC_MODE"])
 
     pCoupG3RMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_RMS_HIGH", pCoupG3MainBranch)
     pCoupG3RMSHigh.setLabel("Target RMS high values")
