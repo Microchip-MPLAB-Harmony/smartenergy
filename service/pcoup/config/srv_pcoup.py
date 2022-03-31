@@ -873,9 +873,12 @@ def updateG3CouplingParameters():
     for idx in range(17):
         pCoupG3DACC[idx].setValue(dacc[idx])
 
-    for idx in range(3):
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_" + str(idx), gain_high[idx])
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_" + str(idx), gain_vlow[idx])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_INI", gain_high[0])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_MIN", gain_high[1])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_MAX", gain_high[2])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_INI", gain_vlow[0])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_MIN", gain_vlow[1])
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_MAX", gain_vlow[2])
 
     # Update Values of the Auxiliary Branch in Configuration Window
     if (auxiliaryBand == True):
@@ -894,9 +897,12 @@ def updateG3CouplingParameters():
         for idx in range(17):
             pCoupG3DACCAux[idx].setValue(dacc_aux[idx])
 
-        for idx in range(3):
-            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_HIGH_" + str(idx), gain_high_aux[idx])
-            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_VLOW_" + str(idx), gain_vlow_aux[idx])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_HIGH_INI", gain_high_aux[0])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_HIGH_MIN", gain_high_aux[1])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_HIGH_MAX", gain_high_aux[2])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_VLOW_INI", gain_vlow_aux[0])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_VLOW_MIN", gain_vlow_aux[1])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_GAIN_VLOW_MAX", gain_vlow_aux[2])
 
 ############################################################################
 #### PRIME function to update the Coupling Parameters ####
@@ -1177,6 +1183,12 @@ def handleMessage(messageID, args):
 def dependenciesHandler(symbol, event):
     updateG3CouplingParameters()
 
+def gainUpdMinValue(symbol, event):
+    symbol.setMin(event["value"])
+
+def onAttachmentConnected(source, target):
+    updateCouplingParameters()
+
 def instantiateComponent(pCoupComponentCommon):
     
     Log.writeInfoMessage("Loading PLC Phy Coupling service")
@@ -1200,13 +1212,15 @@ def instantiateComponent(pCoupComponentCommon):
     global pCoupG3MainPhyBand
     # pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_G3_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
     pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC"])
-    pCoupG3MainPhyBand.setLabel("Phy G3 Band")
+    pCoupG3MainPhyBand.setLabel("G3-PLC PHY Band")
     pCoupG3MainPhyBand.setDefaultValue("CEN-A")
     pCoupG3MainPhyBand.setReadOnly(True)
     
     pCoupG3NumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_NUM_TX_LVL", pCoupG3MainBranch)
     pCoupG3NumTxLvl.setLabel("Number of TX levels")
     pCoupG3NumTxLvl.setDefaultValue(8)
+    pCoupG3NumTxLvl.setMin(1)
+    pCoupG3NumTxLvl.setMax(8)
     # Use an auxiliary control to handle dependencies with drvPlcPhy
     pCoupG3NumTxLvl.setDependencies(dependenciesHandler, ["drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION",
                                                           "drvPlcPhy.DRV_PLC_COUP_G3_INTERNAL",
@@ -1216,58 +1230,97 @@ def instantiateComponent(pCoupComponentCommon):
                                                           "drvG3MacRt.DRV_PLC_MODE"])
 
     pCoupG3RMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_RMS_HIGH", pCoupG3MainBranch)
-    pCoupG3RMSHigh.setLabel("Target RMS high values")
+    pCoupG3RMSHigh.setLabel("Target RMS values in HIGH mode for dynamic Tx gain")
     pCoupG3RMSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_RMS_VLOW", pCoupG3MainBranch)
-    pCoupG3RMSVlow.setLabel("Target RMS vlow values")
+    pCoupG3RMSVlow.setLabel("Target RMS values in VLOW mode for dynamic Tx gain")
 
     for idx in range(8):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_RMS_HIGH_" + str(idx), pCoupG3RMSHigh)
         pCoupG3Symbol.setLabel("RMS_HIGH_" + str(idx))
         pCoupG3Symbol.setDefaultValue(rms_high_cena[idx])
+        pCoupG3Symbol.setMin(0)
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_RMS_VLOW_" + str(idx), pCoupG3RMSVlow)
         pCoupG3Symbol.setLabel("RMS_VLOW_" + str(idx))
         pCoupG3Symbol.setDefaultValue(rms_vlow_cena[idx])
+        pCoupG3Symbol.setMin(0)
 
     pCoupG3THRSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_THRS_HIGH", pCoupG3MainBranch)
-    pCoupG3THRSHigh.setLabel("Thresholds to update Tx Mode from HIGH mode")
+    pCoupG3THRSHigh.setLabel("Threshold RMS values in HIGH mode for dynamic Tx mode")
     pCoupG3THRSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_THRS_VLOW", pCoupG3MainBranch)
-    pCoupG3THRSVlow.setLabel("Thresholds to update Tx Mode from VLOW mode")
+    pCoupG3THRSVlow.setLabel("Threshold RMS values in VLOW mode for dynamic Tx mode")
 
     for idx in range(16):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_THRS_HIGH_" + str(idx), pCoupG3THRSHigh)
-        pCoupG3Symbol.setLabel("THRS_HIGH_" + str(idx))
         pCoupG3Symbol.setDefaultValue(thrs_high_cena[idx])
+        pCoupG3Symbol.setMin(0)
+        if (idx < 8):
+            pCoupG3Symbol.setLabel("THRESHOLD_HIGH_LOW_" + str(idx))
+        else:
+            pCoupG3Symbol.setLabel("THRESHOLD_HIGH_VLOW_" + str(idx - 8))
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_THRS_VLOW_" + str(idx), pCoupG3THRSVlow)
-        pCoupG3Symbol.setLabel("THRS_VLOW_" + str(idx))
         pCoupG3Symbol.setDefaultValue(thrs_vlow_cena[idx])
+        pCoupG3Symbol.setMin(0)
+        if (idx < 8):
+            pCoupG3Symbol.setLabel("THRESHOLD_VLOW_LOW_" + str(idx))
+        else:
+            pCoupG3Symbol.setLabel("THRESHOLD_VLOW_HIGH_" + str(idx - 8))
 
     pCoupG3DACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_DACC", pCoupG3MainBranch)
-    pCoupG3DACCMenu.setLabel("DACC Configuration values")
+    pCoupG3DACCMenu.setLabel("PLC DACC peripheral settings")
 
     for idx in range(17):
         pCoupG3DACC.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_G3_DACC_" + str(idx), pCoupG3DACCMenu))
         pCoupG3DACC[idx].setLabel("DACC_" + str(idx))
         pCoupG3DACC[idx].setDefaultValue(dacc_cena[idx])
+        pCoupG3DACC[idx].setMin(0)
+        pCoupG3DACC[idx].setMax(0xFFFFFFFF)
     
     pCoupG3GainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_GAIN_HIGH", pCoupG3MainBranch)
-    pCoupG3GainHigh.setLabel("Gain values for HIGH Tx Mode")
+    pCoupG3GainHigh.setLabel("Tx gain values for HIGH mode")
     pCoupG3GainVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_GAIN_VLOW", pCoupG3MainBranch)
-    pCoupG3GainVlow.setLabel("Gain values for VLOW Tx Mode")
+    pCoupG3GainVlow.setLabel("Tx gain values for VLOW mode")
 
-    for idx in range(3):
-        pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_HIGH_" + str(idx), pCoupG3GainHigh)
-        pCoupG3Symbol.setLabel("GAIN_HIGH_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(gain_high_cena[idx])
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_HIGH_INI", pCoupG3GainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_INI")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[0])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_GAIN_HIGH_MIN"])
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_HIGH_MIN", pCoupG3GainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_MIN")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[1])
+    pCoupG3Symbol.setMin(1)
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_HIGH_MAX", pCoupG3GainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_MAX")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[2])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_GAIN_HIGH_INI"])
+    pCoupG3Symbol.setMax(0xFFFF)
 
-        pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_VLOW_" + str(idx), pCoupG3GainVlow)
-        pCoupG3Symbol.setLabel("GAIN_VLOW_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(gain_vlow_cena[idx])
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_VLOW_INI", pCoupG3GainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_INI")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[0])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_GAIN_VLOW_MIN"])
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_VLOW_MIN", pCoupG3GainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_MIN")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[1])
+    pCoupG3Symbol.setMin(1)
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_GAIN_VLOW_MAX", pCoupG3GainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_MAX")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[2])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_GAIN_VLOW_INI"])
+    pCoupG3Symbol.setMax(0xFFFF)
 
     global pCoupG3LineDriver
     pCoupG3LineDriver = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_LINE_DRIVER", pCoupG3MainBranch)
-    pCoupG3LineDriver.setLabel("Line Driver settings")
+    pCoupG3LineDriver.setLabel("PLC Line Driver settings")
     pCoupG3LineDriver.setDefaultValue(drv_conf_cena)
     pCoupG3LineDriver.setReadOnly(True)
 
@@ -1292,58 +1345,97 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3AuxNumTxLvl.setDefaultValue(8)
    
     pCoupG3AuxRMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_HIGH", pCoupG3RAuxBranch)
-    pCoupG3AuxRMSHigh.setLabel("Target RMS high values")
+    pCoupG3AuxRMSHigh.setLabel("Target RMS values in HIGH mode for dynamic Tx gain")
     pCoupG3AuxRMSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_VLOW", pCoupG3RAuxBranch)
-    pCoupG3AuxRMSVlow.setLabel("Target RMS vlow values")
+    pCoupG3AuxRMSVlow.setLabel("Target RMS values in VLOW mode for dynamic Tx gain")
 
     for idx in range(8):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_RMS_HIGH_" + str(idx), pCoupG3AuxRMSHigh)
         pCoupG3Symbol.setLabel("RMS_HIGH_" + str(idx))
         pCoupG3Symbol.setDefaultValue(rms_high_cena[idx])
+        pCoupG3Symbol.setMin(0)
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_RMS_VLOW_" + str(idx), pCoupG3AuxRMSVlow)
         pCoupG3Symbol.setLabel("RMS_VLOW_" + str(idx))
         pCoupG3Symbol.setDefaultValue(rms_vlow_cena[idx])
+        pCoupG3Symbol.setMin(0)
 
     pCoupG3AuxTHRSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_HIGH", pCoupG3RAuxBranch)
-    pCoupG3AuxTHRSHigh.setLabel("Thresholds to update Tx Mode from HIGH mode")
+    pCoupG3AuxTHRSHigh.setLabel("Threshold RMS values in HIGH mode for dynamic Tx mode")
     pCoupG3AuxTHRSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_VLOW", pCoupG3RAuxBranch)
-    pCoupG3AuxTHRSVlow.setLabel("Thresholds to update Tx Mode from VLOW mode")
+    pCoupG3AuxTHRSVlow.setLabel("Threshold RMS values in VLOW mode for dynamic Tx mode")
 
     for idx in range(16):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_THRS_HIGH_" + str(idx), pCoupG3AuxTHRSHigh)
-        pCoupG3Symbol.setLabel("THRS_HIGH_" + str(idx))
         pCoupG3Symbol.setDefaultValue(thrs_high_cena[idx])
+        pCoupG3Symbol.setMin(0)
+        if (idx < 8):
+            pCoupG3Symbol.setLabel("THRESHOLD_HIGH_LOW_" + str(idx))
+        else:
+            pCoupG3Symbol.setLabel("THRESHOLD_HIGH_VLOW_" + str(idx - 8))
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_THRS_VLOW_" + str(idx), pCoupG3AuxTHRSVlow)
-        pCoupG3Symbol.setLabel("THRS_VLOW_" + str(idx))
         pCoupG3Symbol.setDefaultValue(thrs_vlow_cena[idx])
+        pCoupG3Symbol.setMin(0)
+        if (idx < 8):
+            pCoupG3Symbol.setLabel("THRESHOLD_VLOW_LOW_" + str(idx))
+        else:
+            pCoupG3Symbol.setLabel("THRESHOLD_VLOW_HIGH_" + str(idx - 8))
 
     pCoupG3AuxDACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_DACC", pCoupG3RAuxBranch)
-    pCoupG3AuxDACCMenu.setLabel("DACC Configuration values")
+    pCoupG3AuxDACCMenu.setLabel("PLC DACC peripheral settings")
 
     for idx in range(17):
         pCoupG3DACCAux.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_G3_AUX_DACC_" + str(idx), pCoupG3AuxDACCMenu))
         pCoupG3DACCAux[idx].setLabel("DACC_" + str(idx))
         pCoupG3DACCAux[idx].setDefaultValue(dacc_cena[idx])
+        pCoupG3DACCAux[idx].setMin(0)
+        pCoupG3DACCAux[idx].setMax(0xFFFFFFFF)
     
     pCoupG3AuxGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH", pCoupG3RAuxBranch)
-    pCoupG3AuxGainHigh.setLabel("Gain values for HIGH Tx Mode")
+    pCoupG3AuxGainHigh.setLabel("Tx gain values for HIGH mode")
     pCoupG3AuxGainVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW", pCoupG3RAuxBranch)
-    pCoupG3AuxGainVlow.setLabel("Gain values for VLOW Tx Mode")
+    pCoupG3AuxGainVlow.setLabel("Tx gain values for VLOW mode")
 
-    for idx in range(3):
-        pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH_" + str(idx), pCoupG3AuxGainHigh)
-        pCoupG3Symbol.setLabel("GAIN_HIGH_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(gain_high_cena[idx])
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH_INI", pCoupG3AuxGainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_INI")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[0])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_AUX_GAIN_HIGH_MIN"])
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH_MIN", pCoupG3AuxGainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_MIN")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[1])
+    pCoupG3Symbol.setMin(1)
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH_MAX", pCoupG3AuxGainHigh)
+    pCoupG3Symbol.setLabel("GAIN_HIGH_MAX")
+    pCoupG3Symbol.setDefaultValue(gain_high_cena[2])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_AUX_GAIN_HIGH_INI"])
+    pCoupG3Symbol.setMax(0xFFFF)
 
-        pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW_" + str(idx), pCoupG3AuxGainVlow)
-        pCoupG3Symbol.setLabel("GAIN_VLOW_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(gain_vlow_cena[idx])
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW_INI", pCoupG3AuxGainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_INI")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[0])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_AUX_GAIN_VLOW_MIN"])
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW_MIN", pCoupG3AuxGainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_MIN")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[1])
+    pCoupG3Symbol.setMin(1)
+    pCoupG3Symbol.setMax(0xFFFF)
+    
+    pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW_MAX", pCoupG3AuxGainVlow)
+    pCoupG3Symbol.setLabel("GAIN_VLOW_MAX")
+    pCoupG3Symbol.setDefaultValue(gain_vlow_cena[2])
+    pCoupG3Symbol.setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_AUX_GAIN_VLOW_INI"])
+    pCoupG3Symbol.setMax(0xFFFF)
 
     global pCoupG3AuxLineDriver
     pCoupG3AuxLineDriver = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_LINE_DRIVER", pCoupG3RAuxBranch)
-    pCoupG3AuxLineDriver.setLabel("Line Driver settings")
+    pCoupG3AuxLineDriver.setLabel("PLC Line Driver settings")
     pCoupG3AuxLineDriver.setDefaultValue(0)
     pCoupG3AuxLineDriver.setReadOnly(True)
 
@@ -1559,7 +1651,4 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupSystemDefFile.setType("STRING")
     pCoupSystemDefFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
     pCoupSystemDefFile.setSourcePath("service/pcoup/templates/system/system_definitions.h.ftl")
-    pCoupSystemDefFile.setMarkup(True)
-
-    # Update PLC Profile according to PLC PHY driver configuration
-    updateCouplingParameters()
+    pCoupSystemDefFile.setMarkup(True)    

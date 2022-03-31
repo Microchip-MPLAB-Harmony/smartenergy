@@ -1,5 +1,5 @@
 /*******************************************************************************
-  PLC Coupling Service Library Interface Header File
+  PLC PHY Coupling Service Library Interface Header File
 
   Company
     Microchip Technology Inc.
@@ -14,18 +14,18 @@
     The Microchip G3-PLC and PRIME implementations include default PHY layer 
     configuration values optimized for the Evaluation Kits. With the help of 
     the PHY Calibration Tool it is possible to obtain the optimal configuration 
-    values for the customer´s hardware implementation. Please refer to the 
-    PL360 Host Controller document for more details about the available 
-    configuration values and their purpose. 
+    values for the customer's hardware implementation. Refer to the online
+    documentation for more details about the available configuration values and 
+    their purpose. 
 
   Remarks:
-    This provides the required information to be included on PLC PHY projects 
-    for PL360/PL460 in order to apply the custom calibration.
+    This service provides the required information to be included on PLC 
+    projects for PL360/PL460 in order to apply the custom calibration.
 *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -60,7 +60,11 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "system/system.h"
+<#if (drvPlcPhy)??>
+#include "driver/plc/phy/drv_plc_phy.h"
+<#elseif (drvG3MacRt)??>
+#include "driver/plc/g3MacRt/drv_g3_macrt.h"
+</#if>
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -77,31 +81,33 @@
   <#else>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
   </#if>
+
+/* Maximum value of PLC_ID_NUM_TX_LEVELS */
 <#elseif (drvG3MacRt)??>
   <#if ((drvG3MacRt.DRV_PLC_BAND_IN_USE > 4) && (drvG3MacRt.DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_AUXILIARY_BRANCH
   <#else>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
   </#if>
+
+/* Maximum value of PHY_PIB_NUM_TX_LEVELS */
 </#if>
+/* Number of TX attenuation levels (3 dB step) suppoting automatic TX mode */
+#define SRV_PCOUP_MAX_NUM_TX_LEVELS              8
 
-/* PLC Phy Coupling Configuration Options */
-#define SRV_PCOUP_MAX_NUM_TX_LEVELS              ${SRV_PCOUP_G3_NUM_TX_LVL?string}
-
+/* Equalization number of coefficients (number of carriers) for Main branch */
 <#if SRV_PCOUP_G3_MAIN_BAND == "CEN-A">
-/* Equalization number of coefficients (number of carriers) */
+
 #define SRV_PCOUP_EQU_NUM_COEF                   36
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "CEN-B">
-/* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   16
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "FCC">
-/* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   72
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "ARIB">
-/* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF                   54
 </#if>
 
+/* PLC Tx Coupling Settings for Main branch */
 #define SRV_PCOUP_RMS_HIGH_TBL                   {${SRV_PCOUP_G3_RMS_HIGH_0?string}, ${SRV_PCOUP_G3_RMS_HIGH_1?string}, ${SRV_PCOUP_G3_RMS_HIGH_2?string}, ${SRV_PCOUP_G3_RMS_HIGH_3?string}, ${SRV_PCOUP_G3_RMS_HIGH_4?string}, ${SRV_PCOUP_G3_RMS_HIGH_5?string}, ${SRV_PCOUP_G3_RMS_HIGH_6?string}, ${SRV_PCOUP_G3_RMS_HIGH_7?string}}
 #define SRV_PCOUP_RMS_VLOW_TBL                   {${SRV_PCOUP_G3_RMS_VLOW_0?string}, ${SRV_PCOUP_G3_RMS_VLOW_1?string}, ${SRV_PCOUP_G3_RMS_VLOW_2?string}, ${SRV_PCOUP_G3_RMS_VLOW_3?string}, ${SRV_PCOUP_G3_RMS_VLOW_4?string}, ${SRV_PCOUP_G3_RMS_VLOW_5?string}, ${SRV_PCOUP_G3_RMS_VLOW_6?string}, ${SRV_PCOUP_G3_RMS_VLOW_7?string}}
 #define SRV_PCOUP_THRS_HIGH_TBL                  {${SRV_PCOUP_G3_THRS_HIGH_0?string}, ${SRV_PCOUP_G3_THRS_HIGH_1?string}, ${SRV_PCOUP_G3_THRS_HIGH_2?string}, ${SRV_PCOUP_G3_THRS_HIGH_3?string}, ${SRV_PCOUP_G3_THRS_HIGH_4?string}, ${SRV_PCOUP_G3_THRS_HIGH_5?string}, ${SRV_PCOUP_G3_THRS_HIGH_6?string}, ${SRV_PCOUP_G3_THRS_HIGH_7?string}, ${SRV_PCOUP_G3_THRS_HIGH_8?string}, ${SRV_PCOUP_G3_THRS_HIGH_9?string}, ${SRV_PCOUP_G3_THRS_HIGH_10?string}, ${SRV_PCOUP_G3_THRS_HIGH_11?string}, ${SRV_PCOUP_G3_THRS_HIGH_12?string}, ${SRV_PCOUP_G3_THRS_HIGH_13?string}, ${SRV_PCOUP_G3_THRS_HIGH_14?string}, ${SRV_PCOUP_G3_THRS_HIGH_15?string}}
@@ -109,9 +115,9 @@
 #define SRV_PCOUP_DACC_TBL                       {0x${SRV_PCOUP_G3_DACC_0?string}, 0x${SRV_PCOUP_G3_DACC_1?string}, 0x${SRV_PCOUP_G3_DACC_2?string}, 0x${SRV_PCOUP_G3_DACC_3?string}, 0x${SRV_PCOUP_G3_DACC_4?string}, 0x${SRV_PCOUP_G3_DACC_5?string}, \
                                                  0x${SRV_PCOUP_G3_DACC_6?string}, 0x${SRV_PCOUP_G3_DACC_7?string}, 0x${SRV_PCOUP_G3_DACC_8?string}, 0x${SRV_PCOUP_G3_DACC_9?string}, 0x${SRV_PCOUP_G3_DACC_10?string}, 0x${SRV_PCOUP_G3_DACC_11?string}, \
                                                  0x${SRV_PCOUP_G3_DACC_12?string}, 0x${SRV_PCOUP_G3_DACC_13?string}, 0x${SRV_PCOUP_G3_DACC_14?string}, 0x${SRV_PCOUP_G3_DACC_15?string}, 0x${SRV_PCOUP_G3_DACC_16?string}}
-#define SRV_PCOUP_GAIN_HIGH_TBL                  {${SRV_PCOUP_G3_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_GAIN_HIGH_2?string}}
-#define SRV_PCOUP_GAIN_VLOW_TBL                  {${SRV_PCOUP_G3_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_GAIN_VLOW_2?string}}
-
+#define SRV_PCOUP_GAIN_HIGH_TBL                  {${SRV_PCOUP_G3_GAIN_HIGH_INI?string}, ${SRV_PCOUP_G3_GAIN_HIGH_MIN?string}, ${SRV_PCOUP_G3_GAIN_HIGH_MAX?string}}
+#define SRV_PCOUP_GAIN_VLOW_TBL                  {${SRV_PCOUP_G3_GAIN_VLOW_INI?string}, ${SRV_PCOUP_G3_GAIN_VLOW_MIN?string}, ${SRV_PCOUP_G3_GAIN_VLOW_MAX?string}}
+#define SRV_PCOUP_NUM_TX_LEVELS                  ${SRV_PCOUP_G3_NUM_TX_LVL?string}
 #define SRV_PCOUP_LINE_DRV_CONF                  ${SRV_PCOUP_G3_LINE_DRIVER?string}
 
 <#if (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_MODE == "PL460")) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_MODE == "PL460")))> 
@@ -127,7 +133,7 @@
                                                   0x7FFF, 0x7FFF}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}  
-  <#elseif (SRV_PCOUP_G3_MAIN_BAND == "FCC") || (SRV_PCOUP_G3_MAIN_BAND == "ARIB")>
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "FCC">
     <#if (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION == true)) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_COUP_G3_HIGH_ATTENUATION == true)))> 
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x6FFD, 0x6AD0, 0x65CF, 0x6073, 0x5AF7, 0x5618, 0x5158, 0x4CA7, 0x4869, 0x44EC, 0x4222, 0x3FD7, 0x3E4E, 0x3DB9, \
                                                   0x3DC3, 0x3E05, 0x3E97, 0x3F8B, 0x407B, 0x4130, 0x41D1, 0x4285, 0x4330, 0x4379, 0x4394, 0x43C5, 0x4407, 0x43FA, \
@@ -155,6 +161,15 @@
                                                   0x7348, 0x7371, 0x7453, 0x7566, 0x75C8, 0x764F, 0x77A2, 0x78F2, 0x7929, 0x7990, 0x7AB0, 0x7B90, 0x7B35, 0x7C1E, \
                                                   0x7DE6, 0x7FFF}  
     </#if>
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "ARIB">
+#define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}
+#define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}
   </#if>
 <#else>
   <#if SRV_PCOUP_G3_MAIN_BAND == "CEN-A">
@@ -169,7 +184,7 @@
                                                   0x7FFF, 0x7FFF}
 #define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF}  
-  <#elseif (SRV_PCOUP_G3_MAIN_BAND == "FCC") || (SRV_PCOUP_G3_MAIN_BAND == "ARIB")>
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "FCC">
 #define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
@@ -181,23 +196,29 @@
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
                                                   0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
-                                                  0x7FFF, 0x7FFF}  
+                                                  0x7FFF, 0x7FFF}
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "ARIB">
+#define SRV_PCOUP_PRED_HIGH_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}
+#define SRV_PCOUP_PRED_VLOW_TBL                  {0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, \
+                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}
   </#if>
 </#if>
 
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && 
 (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_COUP_G3_MULTIBAND == true)))>
-/* PLC Phy Coupling Configuration Options */
-#define SRV_PCOUP_AUX_MAX_NUM_TX_LEVELS          ${SRV_PCOUP_G3_AUX_NUM_TX_LVL?string}
-
-<#if SRV_PCOUP_G3_AUX_BAND == "CEN-A">
 /* Equalization number of coefficients (number of carriers) for Auxiliary branch */
+<#if SRV_PCOUP_G3_AUX_BAND == "CEN-A">
 #define SRV_PCOUP_AUX_EQU_NUM_COEF               36
 <#elseif SRV_PCOUP_G3_AUX_BAND == "CEN-B">
-/* Equalization number of coefficients (number of carriers) for Auxiliary branch */
 #define SRV_PCOUP_AUX_EQU_NUM_COEF               16
 </#if>
 
+/* PLC Tx Coupling Settings for Auxiliary branch */
 #define SRV_PCOUP_AUX_RMS_HIGH_TBL               {${SRV_PCOUP_G3_AUX_RMS_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_2?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_3?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_4?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_5?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_6?string}, ${SRV_PCOUP_G3_AUX_RMS_HIGH_7?string}}
 #define SRV_PCOUP_AUX_RMS_VLOW_TBL               {${SRV_PCOUP_G3_AUX_RMS_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_2?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_3?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_4?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_5?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_6?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_7?string}}
 #define SRV_PCOUP_AUX_THRS_HIGH_TBL              {${SRV_PCOUP_G3_AUX_THRS_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_2?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_3?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_4?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_5?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_6?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_7?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_8?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_9?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_10?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_11?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_12?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_13?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_14?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_15?string}}
@@ -205,9 +226,9 @@
 #define SRV_PCOUP_AUX_DACC_TBL                   {0x${SRV_PCOUP_G3_AUX_DACC_0?string}, 0x${SRV_PCOUP_G3_AUX_DACC_1?string}, 0x${SRV_PCOUP_G3_AUX_DACC_2?string}, 0x${SRV_PCOUP_G3_AUX_DACC_3?string}, 0x${SRV_PCOUP_G3_AUX_DACC_4?string}, 0x${SRV_PCOUP_G3_AUX_DACC_5?string}, \
                                                  0x${SRV_PCOUP_G3_AUX_DACC_6?string}, 0x${SRV_PCOUP_G3_AUX_DACC_7?string}, 0x${SRV_PCOUP_G3_AUX_DACC_8?string}, 0x${SRV_PCOUP_G3_AUX_DACC_9?string}, 0x${SRV_PCOUP_G3_AUX_DACC_10?string}, 0x${SRV_PCOUP_G3_AUX_DACC_11?string}, \
                                                  0x${SRV_PCOUP_G3_AUX_DACC_12?string}, 0x${SRV_PCOUP_G3_AUX_DACC_13?string}, 0x${SRV_PCOUP_G3_AUX_DACC_14?string}, 0x${SRV_PCOUP_G3_AUX_DACC_15?string}, 0x${SRV_PCOUP_G3_AUX_DACC_16?string}}
-#define SRV_PCOUP_AUX_GAIN_HIGH_TBL              {${SRV_PCOUP_G3_AUX_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_2?string}}
-#define SRV_PCOUP_AUX_GAIN_VLOW_TBL              {${SRV_PCOUP_G3_AUX_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_2?string}}
-
+#define SRV_PCOUP_AUX_GAIN_HIGH_TBL              {${SRV_PCOUP_G3_AUX_GAIN_HIGH_INI?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_MIN?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_MAX?string}}
+#define SRV_PCOUP_AUX_GAIN_VLOW_TBL              {${SRV_PCOUP_G3_AUX_GAIN_VLOW_INI?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_MIN?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_MAX?string}}
+#define SRV_PCOUP_AUX_NUM_TX_LEVELS              ${SRV_PCOUP_G3_AUX_NUM_TX_LVL?string}
 #define SRV_PCOUP_AUX_LINE_DRV_CONF              ${SRV_PCOUP_G3_AUX_LINE_DRIVER?string}
 
   <#if SRV_PCOUP_G3_AUX_BAND == "CEN-A">  
@@ -231,7 +252,7 @@
 // *****************************************************************************
 // *****************************************************************************
 // *****************************************************************************
-/* PLC Phy Coupling Branch definitions
+/* PLC PHY Coupling Branch definitions
 
  Summary:
     Defines two independent transmission branches.
@@ -254,56 +275,61 @@ typedef enum
 } SRV_PLC_PCOUP_BRANCH;     
 
 // *****************************************************************************
-/* PLC Phy Coupling Interface Data
+/* PLC PHY Tx Coupling Settings Data
 
   Summary:
-    Defines the data required to initialize the PLC PHY Coupling Interface.
+    Defines the data required to set the PLC PHY Coupling parameters.
 
   Description:
-    This data type defines the data required to initialize the PLC PHY Coupling
-    Interface.
+    This data type defines the data required to set the PLC Tx Coupling PHY 
+    parameters.
 
   Remarks:
-    None.
+    Tx equalization coefficients tables are not stored in the struct, just 
+    pointers to them.
 */
 
 typedef struct
 {  
-    /* Target RMS high values for each Transmission */
-    uint32_t                               rmsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS];
-    
-    /* Target RMS very low values for each Transmission */
-    uint32_t                               rmsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS];
-    
-    /* Table of thresholds to automatically update Tx Mode from HIGH mode */
-    uint32_t                               thrsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
-    
-    /* Table of thresholds to automatically update Tx Mode from VLOW mode */
-    uint32_t                               thrsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
-    
-    /* Configuration values of DACC peripheral according to hardware configuration */
-    uint32_t                               daccTable[17];
-    
-    /* Table of gain values for HIGH Tx Mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */
-    uint16_t                               gainHigh[3];
-    
-    /* Table of gain values for VLOW Tx Mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
-    uint16_t                               gainVLow[3];
-    
-    /* Number of Tx attenuation levels (3 dB steps) for normal transmission behavior */
-    uint8_t                                numTxLevels;
-    
-    /* Size of Equalization Coefficients table in Tx mode in bytes. */
-    uint8_t                                equSize;
-    
-    /* Configuration of the embedded PLC Line Driver */
-    uint8_t                                lineDrvConf;
-    
-    /* Equalization Coefficients table in HIGH Tx mode. There is one coefficient for each carrier in the used band */
-    uint16_t                               equHigh[SRV_PCOUP_EQU_NUM_COEF];
-    
-    /* Equalization Coefficients table in VLOW Tx mode. There is one coefficient for each carrier in the used band */
-    uint16_t                               equVlow[SRV_PCOUP_EQU_NUM_COEF];
+    /* Target RMS values in HIGH mode for dynamic Tx gain */
+    uint32_t                         rmsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS];
+
+    /* Target RMS values in VLOW mode for dynamic Tx gain */
+    uint32_t                         rmsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS];
+
+    /* Threshold RMS values in HIGH mode for dynamic Tx mode */
+    uint32_t                         thrsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
+
+    /* Threshold RMS values in VLOW mode for dynamic Tx mode */
+    uint32_t                         thrsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
+
+    /* Values for configuration of PLC DACC peripheral, according to hardware 
+       coupling design and PLC device (PL360/PL460) */
+    uint32_t                         daccTable[17];
+
+    /* Pointer to Tx equalization coefficients table in HIGH mode. 
+       There is one coefficient for each carrier in the used band */
+    const uint16_t *                 equHigh;
+
+    /* Pointer to Tx equalization coefficients table in VLOW mode. 
+       There is one coefficient for each carrier in the used band */
+    const uint16_t *                 equVlow;
+
+    /* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */
+    uint16_t                         gainHigh[3];
+
+    /* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
+    uint16_t                         gainVLow[3];
+
+    /* Number of Tx attenuation levels (3 dB step) suppoting dynamic Tx mode */
+    uint8_t                          numTxLevels;
+
+    /* Size of Tx equalization coefficients table in bytes */
+    uint8_t                          equSize;
+
+    /* Configuration of the PLC Tx Line Driver, according to hardware coupling 
+       design and PLC device (PL360/PL460) */
+    uint8_t                          lineDrvConf;
 
 } SRV_PLC_PCOUP;
 
@@ -318,25 +344,23 @@ typedef struct
     SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
     
   Summary:
-    Get the proper parameters to configure the PLC PHY Coupling according to
-    the customer values.
+    Get the PLC Tx Coupling PHY parameters for the desired transmission branch.
 
   Description:
-    This function is used to Get the proper parameters to configure the 
-    PLC PHY Coupling. This parameters should be sent to the PLC device through
-    PIB interface.
+    This function is used to get the PLC Tx Coupling PHY parameters for the 
+    desired transmission branch. These parameters should be sent to the PLC 
+    device through PLC Driver PIB interface.
 
   Precondition:
     None.
 
   Parameters:
-    pCoupValues        - Pointer to PLC PHY Coupling parameters.
-    branch             - Branch from which the parameters are obtained
+    branch          - Transmission branch for which the parameters are requested
 
   Returns:
-    SYS_STATUS_UNINITIALIZED - Indicates that has been an error in the coupling configuration.
+    NULL - Indicates an error in the PLC PHY Coupling settings.
 
-    Pointer to PLC PHY Coupling parameters to be used.
+    Pointer to PLC Tx Coupling PHY parameters.
 
   Example:
     <code>
@@ -353,13 +377,49 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
 
 /***************************************************************************
   Function:
+    bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch);
+    
+  Summary:
+    Set the PLC Tx Coupling PHY parameters for the desired transmission branch.
+
+  Description:
+    This function is used to set the PLC Tx Coupling PHY parameters for the 
+    desired transmission branch, using the PLC Driver PIB interface.
+
+  Precondition:
+    DRV_PLC_PHY_Open must have been called to obtain a valid driver handle.
+
+  Parameters:
+    handle  - PLC driver handle used to set PIB parameters
+    branch  - Transmission branch for which the parameters will be set
+
+  Returns:
+    true    - Successful configuration
+    false   - Failed configuration
+
+  Example:
+    <code>
+    // 'handle', returned from the DRV_PLC_PHY_Open
+    bool result;
+
+    result = SRV_PCOUP_Set_Config(handle, SRV_PLC_PCOUP_MAIN_BRANCH);
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
+
+bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch);
+
+/***************************************************************************
+  Function:
     SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void )
     
   Summary:
-    Get the transmission branch that is configured by default.
+    Get the default PLC PHY Tx Coupling Branch.
 
   Description:
-    This function is used to Get the default tranmission branch of the 
+    This function is used to get the default tranmission branch of the 
     PLC PHY Coupling.
 
   Precondition:
@@ -377,7 +437,7 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
     SRV_PLC_PCOUP *pCoupValues;
 
     plcDefaultBranch = SRV_PCOUP_Get_Default_Branch();
-    pCoupValues = SRV_PCOUP_Get_Config(plcDefaultBranch);
+    SRV_PCOUP_Set_Config(plcDefaultBranch);
     </code>
 
   Remarks:
@@ -394,14 +454,14 @@ SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void );
     Get the PHY band of the branch that is selected.
 
   Description:
-    This function is used to Get the PHY band linked to the selected branch 
+    This function is used to get the PHY band linked to the selected branch 
     of the PLC PHY Coupling.
 
   Precondition:
     None.
 
   Parameters:
-    branch             - Branch from which the phy band is obtained
+    branch             - Tx branch from which the PHY band is requested
 
   Returns:
     PHY band linked to the coupling branch. See "drv_plc_phy_comm.h" .
@@ -411,7 +471,7 @@ SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void );
     <code>
     uint8_t pCoupPhyBand;
 
-    pCoupPhyBand = SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_MAIN_BRANCH);
+    pCoupPhyBand = SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_MAIN_BRANCH);
 
     if (pCoupPhyBand == G3_CEN_A) {
       // G3 CEN-A band
