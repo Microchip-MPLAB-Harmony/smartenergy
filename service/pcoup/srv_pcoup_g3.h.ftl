@@ -81,19 +81,13 @@
   <#else>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
   </#if>
-
-/* Maximum value of PLC_ID_NUM_TX_LEVELS */
 <#elseif (drvG3MacRt)??>
   <#if ((drvG3MacRt.DRV_PLC_BAND_IN_USE > 4) && (drvG3MacRt.DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_AUXILIARY_BRANCH
   <#else>
 #define SRV_PCOUP_DEFAULT_BRANCH                 SRV_PLC_PCOUP_MAIN_BRANCH
   </#if>
-
-/* Maximum value of PHY_PIB_NUM_TX_LEVELS */
 </#if>
-/* Number of TX attenuation levels (3 dB step) suppoting automatic TX mode */
-#define SRV_PCOUP_MAX_NUM_TX_LEVELS              8
 
 /* Equalization number of coefficients (number of carriers) for Main branch */
 <#if SRV_PCOUP_G3_MAIN_BAND == "CEN-A">
@@ -292,16 +286,16 @@ typedef enum
 typedef struct
 {  
     /* Target RMS values in HIGH mode for dynamic Tx gain */
-    uint32_t                         rmsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS];
+    uint32_t                         rmsHigh[8];
 
     /* Target RMS values in VLOW mode for dynamic Tx gain */
-    uint32_t                         rmsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS];
+    uint32_t                         rmsVLow[8];
 
     /* Threshold RMS values in HIGH mode for dynamic Tx mode */
-    uint32_t                         thrsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
+    uint32_t                         thrsHigh[16];
 
     /* Threshold RMS values in VLOW mode for dynamic Tx mode */
-    uint32_t                         thrsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS << 1];
+    uint32_t                         thrsVLow[16];
 
     /* Values for configuration of PLC DACC peripheral, according to hardware 
        coupling design and PLC device (PL360/PL460) */
