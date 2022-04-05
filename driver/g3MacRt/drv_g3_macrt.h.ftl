@@ -1467,7 +1467,7 @@ void DRV_G3_MACRT_SleepIndCallbackRegister(
   Description:
     This function disables PLC interrupts before going to sleep, and will leave
     them disabled upon return. If there is any PLC transmission in progress, 
-    sleep mode will be enabled after the notification of the TX confirmation.
+    it will be silently discarded before sleep mode is entered.
 
   Precondition:
     The DRV_G3_MACRT_Initialize routine must have been called for the
