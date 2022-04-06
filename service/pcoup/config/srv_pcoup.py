@@ -1181,7 +1181,7 @@ def handleMessage(messageID, args):
 
 
 def dependenciesHandler(symbol, event):
-    updateG3CouplingParameters()
+    updateCouplingParameters()
 
 def gainUpdMinValue(symbol, event):
     symbol.setMin(event["value"])
