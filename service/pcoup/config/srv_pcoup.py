@@ -1450,6 +1450,7 @@ def instantiateComponent(pCoupComponentCommon):
     global pCoupPRIMEChannelsSelected
     pCoupPRIMEChannelsSelected = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_PRIME_CHANNELS_SELECTED", pCoupPRIMETXChannels)
     pCoupPRIMEChannelsSelected.setLabel("Channels selected")
+    pCoupPRIMEChannelsSelected.setReadOnly(True)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
 
     global pCoupPRIMEDACCCENAMenu

@@ -911,6 +911,7 @@ def instantiateComponent(plcComponent):
     pCoupPRIMEChannelsSelected = plcComponent.createIntegerSymbol("DRV_PLC_PRIME_CHANNELS_SELECTED", plcCoupPRIMESettings)
     pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
     pCoupPRIMEChannelsSelected.setVisible(False)
+    pCoupPRIMEChannelsSelected.setReadOnly(True)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
 
     plcPhyKeyCortex = plcComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
