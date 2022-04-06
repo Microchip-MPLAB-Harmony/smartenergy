@@ -114,7 +114,7 @@ rms_vlow_fcc_c11   = rms_vlow_fcc_c06
 thrs_high_fcc_c11  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 thrs_vlow_fcc_c11  = thrs_vlow_fcc_c06
 dacc_fcc_c11       = [0, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC, 0, 0x2A3000FF, 0x1B1B1B1B, 0x10100000, 0x00001100, 0x04380006, 0x000003AA, 0xF0000000, 0x001020FF, 0x000003AA, 0xF0000000, 0x001020FF]
-gain_high_fcc_c11  = [364, 50, 256]
+gain_high_fcc_c11  = [364, 50, 408]
 gain_vlow_fcc_c11  = [364, 50, 408]
 
 rms_high_arib_c11   = rms_vlow_arib_c06
@@ -122,7 +122,7 @@ rms_vlow_arib_c11   = rms_vlow_arib_c06
 thrs_high_arib_c11  = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 thrs_vlow_arib_c11  = thrs_vlow_arib_c06
 dacc_arib_c11       = dacc_fcc_c11
-gain_high_arib_c11  = [120, 60, 281]
+gain_high_arib_c11  = [120, 60, 451]
 gain_vlow_arib_c11  = [403, 200, 451]
 
 ############################################################################
