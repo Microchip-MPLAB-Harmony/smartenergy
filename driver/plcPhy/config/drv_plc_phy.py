@@ -318,7 +318,7 @@ def checkPrimeChannelConf(symbol, event):
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH8") << 7)
 
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CHN_MODE") == True):   
-        # channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH1") << 8)
+        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH1") << 8)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH2") << 9)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH3") << 10)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH4") << 11)
@@ -875,11 +875,10 @@ def instantiateComponent(plcComponent):
         plcCoupPRIME2CH[idx].setDefaultValue(False)
         plcCoupPRIME2CH[idx].setVisible(False)
         plcCoupPRIME2CH[idx].setHelp(plc_phy_helpkeyword)
-        if (idx > 0):
-            plcCoupPRIME2CH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_2CHN_MODE"])
+        plcCoupPRIME2CH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_2CHN_MODE"])
 
     global plcCoupPRIMEDefChannel
-    plcCoupPRIMEDefChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_DEF_CHN", plcCoupPRIMESettings, ["CHN1", "CHN2", "CHN3", "CHN4", "CHN5", "CHN6", "CHN7", "CHN8", "CHN2_CHN3", "CHN3_CHN4", "CHN4_CHN5", "CHN5_CHN6", "CHN6_CHN7", "CHN7_CHN8"])
+    plcCoupPRIMEDefChannel = plcComponent.createComboSymbol("DRV_PLC_PRIME_DEF_CHN", plcCoupPRIMESettings, ["CHN1", "CHN2", "CHN3", "CHN4", "CHN5", "CHN6", "CHN7", "CHN8", "CHN1_CHN2", "CHN2_CHN3", "CHN3_CHN4", "CHN4_CHN5", "CHN5_CHN6", "CHN6_CHN7", "CHN7_CHN8"])
     plcCoupPRIMEDefChannel.setLabel("Default Channel")
     plcCoupPRIMEDefChannel.setDefaultValue("CHN1")
     plcCoupPRIMEDefChannel.setVisible(True)

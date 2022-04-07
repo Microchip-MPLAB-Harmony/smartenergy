@@ -133,6 +133,7 @@ pCoupPRIMEMenuChn = []
 pCoupPRIMEMenu2Chn = []
 pCoupPRIMEDACCCENA = []
 pCoupPRIMEDACCFCC = []
+pCoupPRIMEDACC2CHN = []
 
 thrs_high_dummy = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 thrs_vlow_dummy = [0, 0, 0, 0, 0, 0, 0, 0, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000]
@@ -186,7 +187,7 @@ dacc_chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000
 dacc_chn_fcc_c11      = [0x00000000, 0x21202120, 0x073F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
                          0x10101010, 0x00001111, 0x04380006, 0x00000355, 0x0F000000, 0x001020FF, 0x000003AA, 0xF0000000, 0x001020FF]
 
-dacc_chn_fcc_drv_sb   = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
+dacc_chn_fcc_drv      = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
 				         0x00000000, 0x00000000, 0x00000006, 0x00000355, 0x00000000, 0x001020F0, 0x00000355, 0x00000000, 0x001020FF]
 
 # dacc_chn_fcc_drv_full = [0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
@@ -416,10 +417,8 @@ dacc_2chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x0000
 dacc_2chn_fcc_c11      = [0x00000000, 0x21202120, 0x073F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x17171717, \
 					      0x10101010, 0x00001111, 0x04380006, 0x00000355, 0x0F000000, 0x001020FF, 0x000003AA, 0xF0000000, 0x001020FF]
 
-dacc_2chn_fcc_drv_sb   = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000, 0x00000000, 0xFFFF00FF, 0x17171717, \
+dacc_2chn_fcc_drv      = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000, 0x00000000, 0xFFFF00FF, 0x17171717, \
 						  0x00000000, 0x00000000, 0x00000006, 0x00000355, 0x00000000, 0x001020F0, 0x00000355, 0x00000000, 0x001020FF]
-
-dacc_2chn_fcc_drv_himp = dacc_2chn_fcc_drv_sb
 
 # dacc_chn_fcc_drv_full = [0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
 # 				         0x00002020, 0x00000044, 0x0FD20005, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]  #TBD
@@ -448,6 +447,7 @@ thrs_high_2chn56_c06 = [0, 0, 0, 0, 0, 0, 0, 0, 1119, 995, 887, 791, 704, 629, 5
 thrs_high_2chn67_c06 = [0, 0, 0, 0, 0, 0, 0, 0, 1089, 970, 865, 772, 689, 615, 549, 490]
 thrs_high_2chn78_c06 = [0, 0, 0, 0, 0, 0, 0, 0, 954, 851, 759, 677, 604, 539, 481, 430]
 
+thrs_vlow_2chn12_c06 = thrs_vlow_dummy
 thrs_vlow_2chn23_c06 = thrs_vlow_dummy
 thrs_vlow_2chn34_c06 = thrs_vlow_dummy
 thrs_vlow_2chn45_c06 = thrs_vlow_dummy
@@ -470,12 +470,12 @@ gain_vlow_2chn67_c06 = [256, 128, 256]
 gain_high_2chn78_c06 = [120, 60, 256]
 gain_vlow_2chn78_c06 = [256, 128, 256]
 
-rms_high_2chn_c06 = [rms_high_2chn23_c06, rms_high_2chn34_c06, rms_high_2chn45_c06, rms_high_2chn56_c06, rms_high_2chn67_c06, rms_high_2chn78_c06]
-rms_vlow_2chn_c06 = [rms_vlow_2chn23_c06, rms_vlow_2chn34_c06, rms_vlow_2chn45_c06, rms_vlow_2chn56_c06, rms_vlow_2chn67_c06, rms_vlow_2chn78_c06]
-thrs_high_2chn_c06 = [thrs_high_2chn23_c06, thrs_high_2chn34_c06, thrs_high_2chn45_c06, thrs_high_2chn56_c06, thrs_high_2chn67_c06, thrs_high_2chn78_c06]
-thrs_vlow_2chn_c06 = [thrs_vlow_2chn23_c06, thrs_vlow_2chn34_c06, thrs_vlow_2chn45_c06, thrs_vlow_2chn56_c06, thrs_vlow_2chn67_c06, thrs_vlow_2chn78_c06]
-gain_high_2chn_c06 = [gain_high_2chn23_c06, gain_high_2chn34_c06, gain_high_2chn45_c06, gain_high_2chn56_c06, gain_high_2chn67_c06, gain_high_2chn78_c06]
-gain_vlow_2chn_c06 = [gain_vlow_2chn23_c06, gain_vlow_2chn34_c06, gain_vlow_2chn45_c06, gain_vlow_2chn56_c06, gain_vlow_2chn67_c06, gain_vlow_2chn78_c06]
+rms_high_2chn_c06 = [rms_high_2chn12_c06, rms_high_2chn23_c06, rms_high_2chn34_c06, rms_high_2chn45_c06, rms_high_2chn56_c06, rms_high_2chn67_c06, rms_high_2chn78_c06]
+rms_vlow_2chn_c06 = [rms_vlow_2chn12_c06, rms_vlow_2chn23_c06, rms_vlow_2chn34_c06, rms_vlow_2chn45_c06, rms_vlow_2chn56_c06, rms_vlow_2chn67_c06, rms_vlow_2chn78_c06]
+thrs_high_2chn_c06 = [thrs_high_2chn12_c06, thrs_high_2chn23_c06, thrs_high_2chn34_c06, thrs_high_2chn45_c06, thrs_high_2chn56_c06, thrs_high_2chn67_c06, thrs_high_2chn78_c06]
+thrs_vlow_2chn_c06 = [thrs_vlow_2chn12_c06, thrs_vlow_2chn23_c06, thrs_vlow_2chn34_c06, thrs_vlow_2chn45_c06, thrs_vlow_2chn56_c06, thrs_vlow_2chn67_c06, thrs_vlow_2chn78_c06]
+gain_high_2chn_c06 = [gain_high_2chn12_c06, gain_high_2chn23_c06, gain_high_2chn34_c06, gain_high_2chn45_c06, gain_high_2chn56_c06, gain_high_2chn67_c06, gain_high_2chn78_c06]
+gain_vlow_2chn_c06 = [gain_vlow_2chn12_c06, gain_vlow_2chn23_c06, gain_vlow_2chn34_c06, gain_vlow_2chn45_c06, gain_vlow_2chn56_c06, gain_vlow_2chn67_c06, gain_vlow_2chn78_c06]
 
 rms_high_2chn12_c11 = rms_high_2chn12_c06
 rms_high_2chn23_c11 = rms_high_2chn23_c06
@@ -525,12 +525,12 @@ gain_vlow_2chn56_c11 = gain_vlow_2chn56_c06
 gain_vlow_2chn67_c11 = gain_vlow_2chn67_c06
 gain_vlow_2chn78_c11 = gain_vlow_2chn78_c06
 
-rms_high_2chn_c11 = [rms_high_2chn23_c11, rms_high_2chn34_c11, rms_high_2chn45_c11, rms_high_2chn56_c11, rms_high_2chn67_c11, rms_high_2chn78_c11]
-rms_vlow_2chn_c11 = [rms_vlow_2chn23_c11, rms_vlow_2chn34_c11, rms_vlow_2chn45_c11, rms_vlow_2chn56_c11, rms_vlow_2chn67_c11, rms_vlow_2chn78_c11]
-thrs_high_2chn_c11 = [thrs_high_2chn23_c11, thrs_high_2chn34_c11, thrs_high_2chn45_c11, thrs_high_2chn56_c11, thrs_high_2chn67_c11, thrs_high_2chn78_c11]
-thrs_vlow_2chn_c11 = [thrs_vlow_2chn23_c11, thrs_vlow_2chn34_c11, thrs_vlow_2chn45_c11, thrs_vlow_2chn56_c11, thrs_vlow_2chn67_c11, thrs_vlow_2chn78_c11]
-gain_high_2chn_c11 = [gain_high_2chn23_c11, gain_high_2chn34_c11, gain_high_2chn45_c11, gain_high_2chn56_c11, gain_high_2chn67_c11, gain_high_2chn78_c11]
-gain_vlow_2chn_c11 = [gain_vlow_2chn23_c11, gain_vlow_2chn34_c11, gain_vlow_2chn45_c11, gain_vlow_2chn56_c11, gain_vlow_2chn67_c11, gain_vlow_2chn78_c11]
+rms_high_2chn_c11 = [rms_high_2chn12_c11, rms_high_2chn23_c11, rms_high_2chn34_c11, rms_high_2chn45_c11, rms_high_2chn56_c11, rms_high_2chn67_c11, rms_high_2chn78_c11]
+rms_vlow_2chn_c11 = [rms_vlow_2chn12_c11, rms_vlow_2chn23_c11, rms_vlow_2chn34_c11, rms_vlow_2chn45_c11, rms_vlow_2chn56_c11, rms_vlow_2chn67_c11, rms_vlow_2chn78_c11]
+thrs_high_2chn_c11 = [thrs_high_2chn12_c11, thrs_high_2chn23_c11, thrs_high_2chn34_c11, thrs_high_2chn45_c11, thrs_high_2chn56_c11, thrs_high_2chn67_c11, thrs_high_2chn78_c11]
+thrs_vlow_2chn_c11 = [thrs_vlow_2chn12_c11, thrs_vlow_2chn23_c11, thrs_vlow_2chn34_c11, thrs_vlow_2chn45_c11, thrs_vlow_2chn56_c11, thrs_vlow_2chn67_c11, thrs_vlow_2chn78_c11]
+gain_high_2chn_c11 = [gain_high_2chn12_c11, gain_high_2chn23_c11, gain_high_2chn34_c11, gain_high_2chn45_c11, gain_high_2chn56_c11, gain_high_2chn67_c11, gain_high_2chn78_c11]
+gain_vlow_2chn_c11 = [gain_vlow_2chn12_c11, gain_vlow_2chn23_c11, gain_vlow_2chn34_c11, gain_vlow_2chn45_c11, gain_vlow_2chn56_c11, gain_vlow_2chn67_c11, gain_vlow_2chn78_c11]
 
 rms_high_2chn12_drv_sb = [417, 370, 329, 293, 260, 232, 206, 183]
 rms_high_2chn23_drv_sb = [884, 787, 701, 624, 556, 495, 441, 392]
@@ -579,12 +579,12 @@ gain_vlow_2chn67_drv_sb = [256, 128, 256]
 gain_high_2chn78_drv_sb = [120, 60, 256]
 gain_vlow_2chn78_drv_sb = [256, 128, 256]
 
-rms_high_2chn_drv_sb = [rms_high_2chn23_drv_sb, rms_high_2chn34_drv_sb, rms_high_2chn45_drv_sb, rms_high_2chn56_drv_sb, rms_high_2chn67_drv_sb, rms_high_2chn78_drv_sb]
-rms_vlow_2chn_drv_sb = [rms_vlow_2chn23_drv_sb, rms_vlow_2chn34_drv_sb, rms_vlow_2chn45_drv_sb, rms_vlow_2chn56_drv_sb, rms_vlow_2chn67_drv_sb, rms_vlow_2chn78_drv_sb]
-thrs_high_2chn_drv_sb = [thrs_high_2chn23_drv_sb, thrs_high_2chn34_drv_sb, thrs_high_2chn45_drv_sb, thrs_high_2chn56_drv_sb, thrs_high_2chn67_drv_sb, thrs_high_2chn78_drv_sb]
-thrs_vlow_2chn_drv_sb = [thrs_vlow_2chn23_drv_sb, thrs_vlow_2chn34_drv_sb, thrs_vlow_2chn45_drv_sb, thrs_vlow_2chn56_drv_sb, thrs_vlow_2chn67_drv_sb, thrs_vlow_2chn78_drv_sb]
-gain_high_2chn_drv_sb = [gain_high_2chn23_drv_sb, gain_high_2chn34_drv_sb, gain_high_2chn45_drv_sb, gain_high_2chn56_drv_sb, gain_high_2chn67_drv_sb, gain_high_2chn78_drv_sb]
-gain_vlow_2chn_drv_sb = [gain_vlow_2chn23_drv_sb, gain_vlow_2chn34_drv_sb, gain_vlow_2chn45_drv_sb, gain_vlow_2chn56_drv_sb, gain_vlow_2chn67_drv_sb, gain_vlow_2chn78_drv_sb]
+rms_high_2chn_drv_sb = [rms_high_2chn12_drv_sb, rms_high_2chn23_drv_sb, rms_high_2chn34_drv_sb, rms_high_2chn45_drv_sb, rms_high_2chn56_drv_sb, rms_high_2chn67_drv_sb, rms_high_2chn78_drv_sb]
+rms_vlow_2chn_drv_sb = [rms_vlow_2chn12_drv_sb, rms_vlow_2chn23_drv_sb, rms_vlow_2chn34_drv_sb, rms_vlow_2chn45_drv_sb, rms_vlow_2chn56_drv_sb, rms_vlow_2chn67_drv_sb, rms_vlow_2chn78_drv_sb]
+thrs_high_2chn_drv_sb = [thrs_high_2chn12_drv_sb, thrs_high_2chn23_drv_sb, thrs_high_2chn34_drv_sb, thrs_high_2chn45_drv_sb, thrs_high_2chn56_drv_sb, thrs_high_2chn67_drv_sb, thrs_high_2chn78_drv_sb]
+thrs_vlow_2chn_drv_sb = [thrs_vlow_2chn12_drv_sb, thrs_vlow_2chn23_drv_sb, thrs_vlow_2chn34_drv_sb, thrs_vlow_2chn45_drv_sb, thrs_vlow_2chn56_drv_sb, thrs_vlow_2chn67_drv_sb, thrs_vlow_2chn78_drv_sb]
+gain_high_2chn_drv_sb = [gain_high_2chn12_drv_sb, gain_high_2chn23_drv_sb, gain_high_2chn34_drv_sb, gain_high_2chn45_drv_sb, gain_high_2chn56_drv_sb, gain_high_2chn67_drv_sb, gain_high_2chn78_drv_sb]
+gain_vlow_2chn_drv_sb = [gain_vlow_2chn12_drv_sb, gain_vlow_2chn23_drv_sb, gain_vlow_2chn34_drv_sb, gain_vlow_2chn45_drv_sb, gain_vlow_2chn56_drv_sb, gain_vlow_2chn67_drv_sb, gain_vlow_2chn78_drv_sb]
 
 rms_high_2chn12_drv_himp = rms_high_2chn12_drv_sb
 rms_high_2chn23_drv_himp = rms_high_2chn23_drv_sb
@@ -633,12 +633,12 @@ gain_vlow_2chn67_drv_himp = [256, 128, 256]
 gain_high_2chn78_drv_himp = [120, 60, 256]
 gain_vlow_2chn78_drv_himp = [256, 128, 256]
 
-rms_high_2chn_drv_himp = [rms_high_2chn23_drv_himp, rms_high_2chn34_drv_himp, rms_high_2chn45_drv_himp, rms_high_2chn56_drv_himp, rms_high_2chn67_drv_himp, rms_high_2chn78_drv_himp]
-rms_vlow_2chn_drv_himp = [rms_vlow_2chn23_drv_himp, rms_vlow_2chn34_drv_himp, rms_vlow_2chn45_drv_himp, rms_vlow_2chn56_drv_himp, rms_vlow_2chn67_drv_himp, rms_vlow_2chn78_drv_himp]
-thrs_high_2chn_drv_himp = [thrs_high_2chn23_drv_himp, thrs_high_2chn34_drv_himp, thrs_high_2chn45_drv_himp, thrs_high_2chn56_drv_himp, thrs_high_2chn67_drv_himp, thrs_high_2chn78_drv_himp]
-thrs_vlow_2chn_drv_himp = [thrs_vlow_2chn23_drv_himp, thrs_vlow_2chn34_drv_himp, thrs_vlow_2chn45_drv_himp, thrs_vlow_2chn56_drv_himp, thrs_vlow_2chn67_drv_himp, thrs_vlow_2chn78_drv_himp]
-gain_high_2chn_drv_himp = [gain_high_2chn23_drv_himp, gain_high_2chn34_drv_himp, gain_high_2chn45_drv_himp, gain_high_2chn56_drv_himp, gain_high_2chn67_drv_himp, gain_high_2chn78_drv_himp]
-gain_vlow_2chn_drv_himp = [gain_vlow_2chn23_drv_himp, gain_vlow_2chn34_drv_himp, gain_vlow_2chn45_drv_himp, gain_vlow_2chn56_drv_himp, gain_vlow_2chn67_drv_himp, gain_vlow_2chn78_drv_himp]
+rms_high_2chn_drv_himp = [rms_high_2chn12_drv_himp, rms_high_2chn23_drv_himp, rms_high_2chn34_drv_himp, rms_high_2chn45_drv_himp, rms_high_2chn56_drv_himp, rms_high_2chn67_drv_himp, rms_high_2chn78_drv_himp]
+rms_vlow_2chn_drv_himp = [rms_vlow_2chn12_drv_himp, rms_vlow_2chn23_drv_himp, rms_vlow_2chn34_drv_himp, rms_vlow_2chn45_drv_himp, rms_vlow_2chn56_drv_himp, rms_vlow_2chn67_drv_himp, rms_vlow_2chn78_drv_himp]
+thrs_high_2chn_drv_himp = [thrs_high_2chn12_drv_himp, thrs_high_2chn23_drv_himp, thrs_high_2chn34_drv_himp, thrs_high_2chn45_drv_himp, thrs_high_2chn56_drv_himp, thrs_high_2chn67_drv_himp, thrs_high_2chn78_drv_himp]
+thrs_vlow_2chn_drv_himp = [thrs_vlow_2chn12_drv_himp, thrs_vlow_2chn23_drv_himp, thrs_vlow_2chn34_drv_himp, thrs_vlow_2chn45_drv_himp, thrs_vlow_2chn56_drv_himp, thrs_vlow_2chn67_drv_himp, thrs_vlow_2chn78_drv_himp]
+gain_high_2chn_drv_himp = [gain_high_2chn12_drv_himp, gain_high_2chn23_drv_himp, gain_high_2chn34_drv_himp, gain_high_2chn45_drv_himp, gain_high_2chn56_drv_himp, gain_high_2chn67_drv_himp, gain_high_2chn78_drv_himp]
+gain_vlow_2chn_drv_himp = [gain_vlow_2chn12_drv_himp, gain_vlow_2chn23_drv_himp, gain_vlow_2chn34_drv_himp, gain_vlow_2chn45_drv_himp, gain_vlow_2chn56_drv_himp, gain_vlow_2chn67_drv_himp, gain_vlow_2chn78_drv_himp]
 
 ############################################################################
 # Update PLC Profile according to PLC PHY driver configuration
@@ -930,9 +930,11 @@ def updateG3CouplingParameters():
 def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
     global pCoupPRIMEDACCCENAMenu
     global pCoupPRIMEDACCFCCMenu
+    global pCoupPRIMEDACC2CHNMenu
 
     cen_enable = False
     fcc_enable = False
+    double_chn_enable = False
 
     if (plcDevice == "PL360"):
         if (channels & 1):
@@ -949,6 +951,16 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
             else:
                 # C06
                 dacc_fcc = dacc_chn_fcc_c06
+
+        if (channels & 0x7F00):
+            double_chn_enable = True
+            # Double Channels
+            if (cen_enable == True):
+                # C11
+                dacc_2chn = dacc_2chn_fcc_c11
+            else:
+                # C06
+                dacc_2chn = dacc_2chn_fcc_c06
     else:
         if (channels & 1):
             cen_enable = True
@@ -963,7 +975,13 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
             fcc_enable = True
             # Channels 2 - 8
             # drv_sb / drv_himp
-            dacc_fcc = dacc_chn_fcc_drv_sb
+            dacc_fcc = dacc_chn_fcc_drv
+
+        if (channels & 0x7F00):
+            double_chn_enable = True
+            # Double Channels
+            # drv_sb / drv_himp
+            dacc_2chn = dacc_2chn_fcc_drv
                 
     if (cen_enable == True):
         for idx in range(17):
@@ -973,8 +991,13 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
         for idx in range(17):
             pCoupPRIMEDACCFCC[idx].setValue(dacc_fcc[idx])
 
+    if (double_chn_enable == True):
+        for idx in range(17):
+            pCoupPRIMEDACC2CHN[idx].setValue(dacc_2chn[idx])
+
     pCoupPRIMEDACCCENAMenu.setVisible(cen_enable)
     pCoupPRIMEDACCFCCMenu.setVisible(fcc_enable)
+    pCoupPRIMEDACC2CHNMenu.setVisible(double_chn_enable)
 
 
 def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
@@ -1088,24 +1111,24 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
         if (highImp == True):
             # drv_hmip
             line_drv = 7
-            rms_high  = rms_high_drv_himp[channel]
-            rms_vlow  = rms_vlow_drv_himp[channel]
-            thrs_high = thrs_high_drv_himp[channel]
-            thrs_vlow = thrs_vlow_drv_himp[channel]
-            gain_high = gain_high_drv_himp[channel]
-            gain_vlow = gain_vlow_drv_himp[channel]
+            rms_high  = rms_high_2chn_drv_himp[channel]
+            rms_vlow  = rms_vlow_2chn_drv_himp[channel]
+            thrs_high = thrs_high_2chn_drv_himp[channel]
+            thrs_vlow = thrs_vlow_2chn_drv_himp[channel]
+            gain_high = gain_high_2chn_drv_himp[channel]
+            gain_vlow = gain_vlow_2chn_drv_himp[channel]
         else:
             # drv_sb
             line_drv = 5
-            rms_high  = rms_high_drv_sb[channel]
-            rms_vlow  = rms_vlow_drv_sb[channel]
-            thrs_high = thrs_high_drv_sb[channel]
-            thrs_vlow = thrs_vlow_drv_sb[channel]
-            gain_high = gain_high_drv_sb[channel]
-            gain_vlow = gain_vlow_drv_sb[channel]
+            rms_high  = rms_high_2chn_drv_sb[channel]
+            rms_vlow  = rms_vlow_2chn_drv_sb[channel]
+            thrs_high = thrs_high_2chn_drv_sb[channel]
+            thrs_vlow = thrs_vlow_2chn_drv_sb[channel]
+            gain_high = gain_high_2chn_drv_sb[channel]
+            gain_vlow = gain_vlow_2chn_drv_sb[channel]
 
     # Update Values of the pCoup symbols
-    symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(channel + 2) + str(channel + 3)
+    symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(channel + 1) + str(channel + 2)
     Database.setSymbolValue("srv_pcoup", symbol_id, True)
     Database.setSymbolValue("srv_pcoup", symbol_id + "_LINE_DRIVER", line_drv)
 
@@ -1153,7 +1176,7 @@ def updatePRIMECouplingParameters():
     channels_sel = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_CHANNELS_SELECTED")
     auxBranch = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_BAND_AUX")
     highImp = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_HIGH_ATTENUATION")
-    multiband = (channels_sel & 1) and (channels_sel & 0x00FE)
+    multiband = (channels_sel & 1) and (channels_sel & 0x7FFE)
 
     # Configure DACC
     pCoupConfigureDACC(plcDevice, channels_sel, auxBranch, highImp)
@@ -1170,9 +1193,9 @@ def updatePRIMECouplingParameters():
             Database.setSymbolValue("srv_pcoup", symbol_id, False)
 
     # Configure Double channels selected in PHY driver
-    for idx in range(6):
-        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(idx + 2) + str(idx + 3)
-        if (channels_sel & (1 << (idx + 9))):
+    for idx in range(7):
+        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(idx + 1) + str(idx + 2)
+        if (channels_sel & (1 << (idx + 8))):
             pCoupConfigure2Channel(plcDevice, idx, multiband, highImp)
             pCoupPRIMEMenu2Chn[idx].setVisible(True)
             Database.setSymbolValue("srv_pcoup", symbol_id, True)
@@ -1470,19 +1493,26 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupPRIMEDACCCENAMenu
     pCoupPRIMEDACCCENAMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC_CENA", pCoupPRIMETXChannels)
-    pCoupPRIMEDACCCENAMenu.setLabel("DACC CHANNEL 0")
+    pCoupPRIMEDACCCENAMenu.setLabel("PLC DACC peripheral settings (Channel 1)")
     global pCoupPRIMEDACCFCCMenu
     pCoupPRIMEDACCFCCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC_FCC", pCoupPRIMETXChannels)
-    pCoupPRIMEDACCFCCMenu.setLabel("DACC CHANNEL 3 - CHANNEL 8")
+    pCoupPRIMEDACCFCCMenu.setLabel("PLC DACC peripheral settings (Channel 2 - Channel 8)")
+    global pCoupPRIMEDACC2CHNMenu
+    pCoupPRIMEDACC2CHNMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC_2CHN", pCoupPRIMETXChannels)
+    pCoupPRIMEDACC2CHNMenu.setLabel("PLC DACC peripheral settings (Double Channels)")
 
     for idx in range(17):
         pCoupPRIMEDACCCENA.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_CENA_" + str(idx), pCoupPRIMEDACCCENAMenu))
         pCoupPRIMEDACCCENA[idx].setLabel("DACC_" + str(idx))
-        pCoupPRIMEDACCCENA[idx].setDefaultValue(0)
+        pCoupPRIMEDACCCENA[idx].setDefaultValue(dacc_chn1_drv_aux[idx])
         
         pCoupPRIMEDACCFCC.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_FCC_" + str(idx), pCoupPRIMEDACCFCCMenu))
         pCoupPRIMEDACCFCC[idx].setLabel("DACC_" + str(idx))
-        pCoupPRIMEDACCFCC[idx].setDefaultValue(0)
+        pCoupPRIMEDACCFCC[idx].setDefaultValue(dacc_chn_fcc_drv[idx])
+
+        pCoupPRIMEDACC2CHN.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_2CHN_" + str(idx), pCoupPRIMEDACC2CHNMenu))
+        pCoupPRIMEDACC2CHN[idx].setLabel("DACC_" + str(idx))
+        pCoupPRIMEDACC2CHN[idx].setDefaultValue(dacc_2chn_fcc_drv[idx])
     
     #### Single channel ########################################################
     for chn_idx in range(8):
@@ -1551,13 +1581,13 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPRIMELineDriver.setReadOnly(True)
 
     #### Double channel ########################################################
-    for chn_idx in range(6):
-        pCoupPRIMEMenu2Chn.append(pCoupComponentCommon.createMenuSymbol("DRV_PLC_PRIME_MENU_2CH" + str(chn_idx + 2) + str(chn_idx + 3), pCoupPRIMETXChannels))
-        pCoupPRIMEMenu2Chn[chn_idx].setLabel("Channel " + str(chn_idx + 2) + " - Channel " + str(chn_idx + 3))
-        pCoupPRIMEMenu2Chn[chn_idx].setDescription("Coupling Settings for channels " + str(chn_idx + 2) + " - " + str(chn_idx + 3))
+    for chn_idx in range(7):
+        pCoupPRIMEMenu2Chn.append(pCoupComponentCommon.createMenuSymbol("DRV_PLC_PRIME_MENU_2CH" + str(chn_idx + 1) + str(chn_idx + 2), pCoupPRIMETXChannels))
+        pCoupPRIMEMenu2Chn[chn_idx].setLabel("Channels " + str(chn_idx + 1) + " - " + str(chn_idx + 2))
+        pCoupPRIMEMenu2Chn[chn_idx].setDescription("Coupling Settings for channels " + str(chn_idx + 1) + " - " + str(chn_idx + 2))
         pCoupPRIMEMenu2Chn[chn_idx].setVisible(False)
 
-        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(chn_idx + 2) + str(chn_idx + 3)
+        symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(chn_idx + 1) + str(chn_idx + 2)
 
         pCoupPRIMENum2ChnEnable = pCoupComponentCommon.createBooleanSymbol(symbol_id, pCoupPRIMEMenu2Chn[chn_idx])
         pCoupPRIMENum2ChnEnable.setLabel("Double Channel Enable")
