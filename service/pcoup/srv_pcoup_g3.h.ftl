@@ -109,8 +109,8 @@
 #define SRV_PCOUP_DACC_TBL                       {0x${SRV_PCOUP_G3_DACC_0?string}, 0x${SRV_PCOUP_G3_DACC_1?string}, 0x${SRV_PCOUP_G3_DACC_2?string}, 0x${SRV_PCOUP_G3_DACC_3?string}, 0x${SRV_PCOUP_G3_DACC_4?string}, 0x${SRV_PCOUP_G3_DACC_5?string}, \
                                                  0x${SRV_PCOUP_G3_DACC_6?string}, 0x${SRV_PCOUP_G3_DACC_7?string}, 0x${SRV_PCOUP_G3_DACC_8?string}, 0x${SRV_PCOUP_G3_DACC_9?string}, 0x${SRV_PCOUP_G3_DACC_10?string}, 0x${SRV_PCOUP_G3_DACC_11?string}, \
                                                  0x${SRV_PCOUP_G3_DACC_12?string}, 0x${SRV_PCOUP_G3_DACC_13?string}, 0x${SRV_PCOUP_G3_DACC_14?string}, 0x${SRV_PCOUP_G3_DACC_15?string}, 0x${SRV_PCOUP_G3_DACC_16?string}}
-#define SRV_PCOUP_GAIN_HIGH_TBL                  {${SRV_PCOUP_G3_GAIN_HIGH_INI?string}, ${SRV_PCOUP_G3_GAIN_HIGH_MIN?string}, ${SRV_PCOUP_G3_GAIN_HIGH_MAX?string}}
-#define SRV_PCOUP_GAIN_VLOW_TBL                  {${SRV_PCOUP_G3_GAIN_VLOW_INI?string}, ${SRV_PCOUP_G3_GAIN_VLOW_MIN?string}, ${SRV_PCOUP_G3_GAIN_VLOW_MAX?string}}
+#define SRV_PCOUP_GAIN_HIGH_TBL                  {${SRV_PCOUP_G3_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_GAIN_HIGH_2?string}}
+#define SRV_PCOUP_GAIN_VLOW_TBL                  {${SRV_PCOUP_G3_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_GAIN_VLOW_2?string}}
 #define SRV_PCOUP_NUM_TX_LEVELS                  ${SRV_PCOUP_G3_NUM_TX_LVL?string}
 #define SRV_PCOUP_LINE_DRV_CONF                  ${SRV_PCOUP_G3_LINE_DRIVER?string}
 
@@ -220,8 +220,8 @@
 #define SRV_PCOUP_AUX_DACC_TBL                   {0x${SRV_PCOUP_G3_AUX_DACC_0?string}, 0x${SRV_PCOUP_G3_AUX_DACC_1?string}, 0x${SRV_PCOUP_G3_AUX_DACC_2?string}, 0x${SRV_PCOUP_G3_AUX_DACC_3?string}, 0x${SRV_PCOUP_G3_AUX_DACC_4?string}, 0x${SRV_PCOUP_G3_AUX_DACC_5?string}, \
                                                  0x${SRV_PCOUP_G3_AUX_DACC_6?string}, 0x${SRV_PCOUP_G3_AUX_DACC_7?string}, 0x${SRV_PCOUP_G3_AUX_DACC_8?string}, 0x${SRV_PCOUP_G3_AUX_DACC_9?string}, 0x${SRV_PCOUP_G3_AUX_DACC_10?string}, 0x${SRV_PCOUP_G3_AUX_DACC_11?string}, \
                                                  0x${SRV_PCOUP_G3_AUX_DACC_12?string}, 0x${SRV_PCOUP_G3_AUX_DACC_13?string}, 0x${SRV_PCOUP_G3_AUX_DACC_14?string}, 0x${SRV_PCOUP_G3_AUX_DACC_15?string}, 0x${SRV_PCOUP_G3_AUX_DACC_16?string}}
-#define SRV_PCOUP_AUX_GAIN_HIGH_TBL              {${SRV_PCOUP_G3_AUX_GAIN_HIGH_INI?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_MIN?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_MAX?string}}
-#define SRV_PCOUP_AUX_GAIN_VLOW_TBL              {${SRV_PCOUP_G3_AUX_GAIN_VLOW_INI?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_MIN?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_MAX?string}}
+#define SRV_PCOUP_AUX_GAIN_HIGH_TBL              {${SRV_PCOUP_G3_AUX_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_2?string}}
+#define SRV_PCOUP_AUX_GAIN_VLOW_TBL              {${SRV_PCOUP_G3_AUX_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_2?string}}
 #define SRV_PCOUP_AUX_NUM_TX_LEVELS              ${SRV_PCOUP_G3_AUX_NUM_TX_LVL?string}
 #define SRV_PCOUP_AUX_LINE_DRV_CONF              ${SRV_PCOUP_G3_AUX_LINE_DRIVER?string}
 
