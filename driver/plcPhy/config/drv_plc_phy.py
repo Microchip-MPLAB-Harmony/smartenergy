@@ -27,6 +27,7 @@
 ################################################################################
 
 global sort_alphanumeric
+global plc_phy_helpkeyword
 
 global plcSourceBinFileG3CENA
 global plcSourceBinFileG3CENB
@@ -37,6 +38,7 @@ global plcAssemblyBinFile
 
 global plcBandInUse
 
+plc_phy_helpkeyword = "mcc_h3_plc_phy_driver_configurations"
 gPlcBand = ""
 
 PLC_PROFILE_G3_CEN_A = 1
@@ -426,45 +428,54 @@ def instantiateComponent(plcComponent):
     plcDriverMode = plcComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
     plcDriverMode.setLabel("PLC Driver Mode")
     plcDriverMode.setDefaultValue("PL460")
+    plcDriverMode.setHelp(plc_phy_helpkeyword)
 
     plcPLIB = plcComponent.createStringSymbol("DRV_PLC_PLIB", None)
     plcPLIB.setLabel("PLIB Used")
     plcPLIB.setReadOnly(True)
+    plcPLIB.setHelp(plc_phy_helpkeyword)
 
     plcPLIBCSRIndex = plcComponent.createIntegerSymbol("DRV_PLC_PLIB_CSR_INDEX", None)
     plcPLIBCSRIndex.setLabel("PLIB CSR Index")
     plcPLIBCSRIndex.setReadOnly(True)
+    plcPLIBCSRIndex.setVisible(False)
+    plcPLIBCSRIndex.setHelp(plc_phy_helpkeyword)
 
     plcExtIntPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcExtIntPin.setLabel("External Interrupt Pin")
     plcExtIntPin.setDefaultValue(0)
     plcExtIntPin.setOutputMode("Key")
     plcExtIntPin.setDisplayMode("Description")
+    plcExtIntPin.setHelp(plc_phy_helpkeyword)
 
     plcExtIntSource = plcComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     plcExtIntSource.setLabel("External Interrupt Source")
     plcExtIntSource.setDefaultValue("PIOA_IRQn")
-    plcExtIntSource.setVisible(True)
+    plcExtIntSource.setVisible(False)
     plcExtIntSource.setReadOnly(True)
+    plcExtIntSource.setHelp(plc_phy_helpkeyword)
     plcExtIntSource.setDependencies(plcExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
 
     plcPhyExtIntPioPort = plcComponent.createStringSymbol("DRV_PLC_EXT_INT_PIO_PORT", None)
     plcPhyExtIntPioPort.setLabel("External Interrupt Port")
     plcPhyExtIntPioPort.setDefaultValue("PIO_PORT_A")
-    plcPhyExtIntPioPort.setVisible(True)
+    plcPhyExtIntPioPort.setVisible(False)
     plcPhyExtIntPioPort.setReadOnly(True)
+    plcPhyExtIntPioPort.setHelp(plc_phy_helpkeyword)
     plcPhyExtIntPioPort.setDependencies(plcPhyExternalInterruptPort, ["DRV_PLC_EXT_INT_PIN"])
 
     plcResetPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
     plcResetPin.setLabel("Reset Pin")
     plcResetPin.setDefaultValue(0)
     plcResetPin.setOutputMode("Key")
+    plcResetPin.setHelp(plc_phy_helpkeyword)
     plcResetPin.setDisplayMode("Description")
 
     plcLDOEnPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
     plcLDOEnPin.setLabel("LDO Enable Pin")
     plcLDOEnPin.setDefaultValue(0)
     plcLDOEnPin.setOutputMode("Key")
+    plcLDOEnPin.setHelp(plc_phy_helpkeyword)
     plcLDOEnPin.setDisplayMode("Description")
 
     plcTxEnablePin = plcComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
@@ -472,11 +483,13 @@ def instantiateComponent(plcComponent):
     plcTxEnablePin.setDefaultValue(0)
     plcTxEnablePin.setOutputMode("Key")
     plcTxEnablePin.setDisplayMode("Description")
+    plcTxEnablePin.setHelp(plc_phy_helpkeyword)
     plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
     plcSleepMode.setDefaultValue(False)
+    plcSleepMode.setHelp(plc_phy_helpkeyword)
     plcSleepMode.setVisible(True)
 
     plcStbyPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
@@ -485,11 +498,13 @@ def instantiateComponent(plcComponent):
     plcStbyPin.setOutputMode("Key")
     plcStbyPin.setDisplayMode("Description")
     plcStbyPin.setVisible(False)
+    plcStbyPin.setHelp(plc_phy_helpkeyword)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
     
     plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
+    plcThermalMonitor.setHelp(plc_phy_helpkeyword)
     plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
@@ -498,6 +513,7 @@ def instantiateComponent(plcComponent):
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
     plcThMonPin.setVisible(False)
+    plcThMonPin.setHelp(plc_phy_helpkeyword)
     plcThMonPin.setDependencies(showThermalMonitorPin, ["DRV_PLC_THERMAL_MONITOR"])
 
     availablePinDictionary = {}
@@ -710,59 +726,39 @@ def instantiateComponent(plcComponent):
     #### Binary PHY Files ######################################################
 
     global plcSourceBinFileG3CENA
-    plcSourceBinFileG3CENA = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_CENA", None)
+    plcSourceBinFileG3CENA = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_CENA", None)
     plcSourceBinFileG3CENA.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_CENA.bin")
     plcSourceBinFileG3CENA.setOutputName("PLC_PHY_G3_CENA.bin")
     plcSourceBinFileG3CENA.setDestPath("driver/plc/phy/bin")
-    plcSourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
-    plcSourceBinFileG3CENA.setType("SOURCE")
     plcSourceBinFileG3CENA.setEnabled(True)
-    plcSourceBinFileG3CENA.setVisible(False)
-    plcSourceBinFileG3CENA.setOverwrite(True)
 
     global plcSourceBinFileG3CENB
-    plcSourceBinFileG3CENB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_CENB", None)
+    plcSourceBinFileG3CENB = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_CENB", None)
     plcSourceBinFileG3CENB.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_CENB.bin")
     plcSourceBinFileG3CENB.setOutputName("PLC_PHY_G3_CENB.bin")
     plcSourceBinFileG3CENB.setDestPath("driver/plc/phy/bin")
-    plcSourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
-    plcSourceBinFileG3CENB.setType("SOURCE")
     plcSourceBinFileG3CENB.setEnabled(False)
-    plcSourceBinFileG3CENB.setVisible(False)
-    plcSourceBinFileG3CENB.setOverwrite(True)
 
     global plcSourceBinFileG3FCC
-    plcSourceBinFileG3FCC = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_FCC", None)
+    plcSourceBinFileG3FCC = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_FCC", None)
     plcSourceBinFileG3FCC.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_FCC.bin")
     plcSourceBinFileG3FCC.setOutputName("PLC_PHY_G3_FCC.bin")
     plcSourceBinFileG3FCC.setDestPath("driver/plc/phy/bin")
-    plcSourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
-    plcSourceBinFileG3FCC.setType("SOURCE")
     plcSourceBinFileG3FCC.setEnabled(False)
-    plcSourceBinFileG3FCC.setVisible(False)
-    plcSourceBinFileG3FCC.setOverwrite(True)
 
     global plcSourceBinFileG3ARIB
-    plcSourceBinFileG3ARIB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_ARIB", None)
+    plcSourceBinFileG3ARIB = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_ARIB", None)
     plcSourceBinFileG3ARIB.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_ARIB.bin")
     plcSourceBinFileG3ARIB.setOutputName("PLC_PHY_G3_ARIB.bin")
     plcSourceBinFileG3ARIB.setDestPath("driver/plc/phy/bin")
-    plcSourceBinFileG3ARIB.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
-    plcSourceBinFileG3ARIB.setType("SOURCE")
     plcSourceBinFileG3ARIB.setEnabled(False)
-    plcSourceBinFileG3ARIB.setVisible(False)
-    plcSourceBinFileG3ARIB.setOverwrite(True)
 
     global plcSourceBinFilePRIME
-    plcSourceBinFilePRIME = plcComponent.createFileSymbol("PLC_SOURCE_BIN_PRIME", None)
+    plcSourceBinFilePRIME = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_PRIME", None)
     plcSourceBinFilePRIME.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_PRIME_2CHN.bin")
     plcSourceBinFilePRIME.setOutputName("PLC_PHY_PRIME_2CHN.bin")
     plcSourceBinFilePRIME.setDestPath("driver/plc/phy/bin")
-    plcSourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
-    plcSourceBinFilePRIME.setType("SOURCE")
     plcSourceBinFilePRIME.setEnabled(False)
-    plcSourceBinFilePRIME.setVisible(False)
-    plcSourceBinFilePRIME.setOverwrite(True)
 
     global plcAssemblyBinFile
     plcAssemblyBinFile = plcComponent.createFileSymbol("PLC_ASSEMBLY_BIN", None)
@@ -779,6 +775,7 @@ def instantiateComponent(plcComponent):
     plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3", "PRIME"])
     plcProfile.setLabel("PLC Profile")
     plcProfile.setDefaultValue("G3")
+    plcProfile.setHelp(plc_phy_helpkeyword)
 
     ##### Coupling Settings : G3  ####################################################
 
@@ -794,12 +791,14 @@ def instantiateComponent(plcComponent):
     plcCoupG3Settings.setLabel("PLC Coupling Settings")
     plcCoupG3Settings.setDescription("Coupling Settings")
     plcCoupG3Settings.setVisible(True)
+    plcCoupG3Settings.setHelp(plc_phy_helpkeyword)
 
     global plcG3Band
     # plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
     plcG3Band = plcComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
     plcG3Band.setLabel("Main Branch")
     plcG3Band.setDefaultValue("CEN-A")
+    plcG3Band.setHelp(plc_phy_helpkeyword)
     # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
 
     plcCoupG3Internal = plcComponent.createBooleanSymbol("DRV_PLC_COUP_G3_INTERNAL", plcCoupG3Settings)
@@ -807,6 +806,7 @@ def instantiateComponent(plcComponent):
     plcCoupG3Internal.setDescription("Internal Driver")
     plcCoupG3Internal.setVisible(False)
     plcCoupG3Internal.setDefaultValue(False)
+    plcCoupG3Internal.setHelp(plc_phy_helpkeyword)
     plcCoupG3Internal.setDependencies(showG3InternalDriver, ["DRV_PLC_G3_BAND"])
 
     plcCoupGMultiBand = plcComponent.createBooleanSymbol("DRV_PLC_COUP_G3_MULTIBAND", plcCoupG3Settings)
@@ -814,18 +814,21 @@ def instantiateComponent(plcComponent):
     plcCoupGMultiBand.setDescription("Multiband")
     plcCoupGMultiBand.setVisible(False)
     plcCoupGMultiBand.setDefaultValue(False)
+    plcCoupGMultiBand.setHelp(plc_phy_helpkeyword)
     plcCoupGMultiBand.setDependencies(showG3Multiband, ["DRV_PLC_G3_BAND"])
 
     plcG3BandAux = plcComponent.createComboSymbol("DRV_PLC_G3_BAND_AUX", plcCoupGMultiBand, ["CEN-A", "CEN-B"])
     plcG3BandAux.setLabel("Auxiliary Branch")
     plcG3BandAux.setDefaultValue("CEN-A")
     plcG3BandAux.setVisible(False)
+    plcG3BandAux.setHelp(plc_phy_helpkeyword)
     plcG3BandAux.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcG3BandAuxActive = plcComponent.createBooleanSymbol("DRV_PLC_G3_BAND_AUX_ACTIVE", plcCoupGMultiBand)
     plcG3BandAuxActive.setLabel("Set as default branch")
     plcG3BandAuxActive.setDefaultValue(False)
     plcG3BandAuxActive.setVisible(False)
+    plcG3BandAuxActive.setHelp(plc_phy_helpkeyword)
     plcG3BandAuxActive.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcCoupG3HighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_COUP_G3_HIGH_ATTENUATION", plcG3Band)
@@ -833,6 +836,7 @@ def instantiateComponent(plcComponent):
     plcCoupG3HighAttenuation.setDescription("FCC high attenuation")
     plcCoupG3HighAttenuation.setVisible(False)
     plcCoupG3HighAttenuation.setDefaultValue(False)
+    plcCoupG3HighAttenuation.setHelp(plc_phy_helpkeyword)
     plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
     
     ##### Coupling Settings : PRIME  ####################################################
@@ -841,16 +845,19 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMESettings.setLabel("PLC Coupling Settings")
     plcCoupPRIMESettings.setDescription("Coupling Settings")
     plcCoupPRIMESettings.setVisible(False)
+    plcCoupPRIMESettings.setHelp(plc_phy_helpkeyword)
 
     plcCoupPRIME1ChnMode = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_1CHN_MODE", plcCoupPRIMESettings)
     plcCoupPRIME1ChnMode.setLabel("Single Channel Mode")
     plcCoupPRIME1ChnMode.setDescription("Single Channel Mode")
     plcCoupPRIME1ChnMode.setDefaultValue(False)
+    plcCoupPRIME1ChnMode.setHelp(plc_phy_helpkeyword)
 
     plcCoupPRIME2ChnMode = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_2CHN_MODE", plcCoupPRIMESettings)
     plcCoupPRIME2ChnMode.setLabel("Double Channel Mode")
     plcCoupPRIME2ChnMode.setDescription("Double Channel Mode")
     plcCoupPRIME2ChnMode.setDefaultValue(False)
+    plcCoupPRIME2ChnMode.setHelp(plc_phy_helpkeyword)
 
     for idx in range(8):
         plcCoupPRIMECH.append(plcComponent.createBooleanSymbol("DRV_PLC_PRIME_CH" + str(idx + 1), plcCoupPRIME1ChnMode))
@@ -859,6 +866,7 @@ def instantiateComponent(plcComponent):
         plcCoupPRIMECH[idx].setVisible(False)
         plcCoupPRIMECH[idx].setDefaultValue(False)
         plcCoupPRIMECH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_1CHN_MODE"])
+        plcCoupPRIMECH[idx].setHelp(plc_phy_helpkeyword)
 
     for idx in range(7):
         plcCoupPRIME2CH.append(plcComponent.createBooleanSymbol("DRV_PLC_PRIME_2CH" + str(idx + 1), plcCoupPRIME2ChnMode))
@@ -866,6 +874,7 @@ def instantiateComponent(plcComponent):
         plcCoupPRIME2CH[idx].setDescription("Channel " + str(idx + 1))
         plcCoupPRIME2CH[idx].setDefaultValue(False)
         plcCoupPRIME2CH[idx].setVisible(False)
+        plcCoupPRIME2CH[idx].setHelp(plc_phy_helpkeyword)
         if (idx > 0):
             plcCoupPRIME2CH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_2CHN_MODE"])
 
@@ -874,12 +883,14 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMEDefChannel.setLabel("Default Channel")
     plcCoupPRIMEDefChannel.setDefaultValue("CHN1")
     plcCoupPRIMEDefChannel.setVisible(True)
+    plcCoupPRIMEDefChannel.setHelp(plc_phy_helpkeyword)
 
     global plcCoupPRIMEBandAux
     plcCoupPRIMEBandAux = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_BAND_AUX", plcCoupPRIMECH[0])
     plcCoupPRIMEBandAux.setLabel("Use Auxiliary Branch")
     plcCoupPRIMEBandAux.setDefaultValue(False)
     plcCoupPRIMEBandAux.setVisible(False)
+    plcCoupPRIMEBandAux.setHelp(plc_phy_helpkeyword)
 
     global plcCoupPRIMEHighAttenuation
     plcCoupPRIMEHighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_HIGH_ATTENUATION", plcCoupPRIMESettings)
@@ -887,6 +898,7 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMEHighAttenuation.setDescription("High attenuation branch")
     plcCoupPRIMEHighAttenuation.setVisible(False)
     plcCoupPRIMEHighAttenuation.setDefaultValue(False)
+    plcCoupPRIMEHighAttenuation.setHelp(plc_phy_helpkeyword)
 
     plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEDefChannel)
     plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
@@ -898,7 +910,7 @@ def instantiateComponent(plcComponent):
 
     pCoupPRIMEChannelsSelected = plcComponent.createIntegerSymbol("DRV_PLC_PRIME_CHANNELS_SELECTED", plcCoupPRIMESettings)
     pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
-    pCoupPRIMEChannelsSelected.setVisible(True)   # Cambiar a False
+    pCoupPRIMEChannelsSelected.setVisible(False)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
 
     plcPhyKeyCortex = plcComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
@@ -913,7 +925,7 @@ def instantiateComponent(plcComponent):
     plcBandInUse = plcComponent.createIntegerSymbol("DRV_PLC_BAND_IN_USE", None)
     plcBandInUse.setLabel("PLC Band in use")
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
-    #plcBandInUse.setVisible(False)
+    plcBandInUse.setVisible(False)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_PROFILE", "DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND", "DRV_PLC_G3_BAND_AUX_ACTIVE"])
 
