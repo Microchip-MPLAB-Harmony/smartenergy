@@ -69,6 +69,10 @@ def instantiateComponent(pPVDDMonComponent):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
+    pPVDDMonPlib = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_PLIB", None)
+    pPVDDMonPlib.setLabel("Peripheral lib")
+    pPVDDMonPlib.setReadOnly(True)
+
     pVddValue = 12000
     pVddHighThrs = 13000
     pVddLowThrs = 10000
@@ -97,24 +101,24 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonLowThreshold.setLabel("Low Threshold [mV]")
     pPVDDMonLowThreshold.setDefaultValue(pVddLowThrs)
 
-    pPVDDMonADCPlib = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_ADC_PLIB", None)
-    pPVDDMonADCPlib.setLabel("Peripheral lib")
-    pPVDDMonADCPlib.setDefaultValue(pvddmon_plib)
-    pPVDDMonADCPlib.setReadOnly(True)
+    # pPVDDMonADCPlib = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_ADC_PLIB", None)
+    # pPVDDMonADCPlib.setLabel("Peripheral lib")
+    # pPVDDMonADCPlib.setDefaultValue(pvddmon_plib)
+    # pPVDDMonADCPlib.setReadOnly(True)
 
-    pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonADCPlib)
+    pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
     pPVDDMonADCChannel.setLabel("Channel")
     pPVDDMonADCChannel.setDefaultValue(0)
 
-    pPVDDMonADCResolution = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_BITS", pPVDDMonADCPlib)
+    pPVDDMonADCResolution = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_BITS", pPVDDMonPlib)
     pPVDDMonADCResolution.setLabel("Result Resolution bits")
     pPVDDMonADCResolution.setDefaultValue(pVddResolution)
 
-    pPVDDMonADCComment1 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT1", pPVDDMonADCPlib)
+    pPVDDMonADCComment1 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT1", pPVDDMonPlib)
     pPVDDMonADCComment1.setLabel("**** " + pvddmon_plib + " will be configured in FreeRun mode.")
     pPVDDMonADCComment1.setVisible(True)
 
-    pPVDDMonADCComment2 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT2", pPVDDMonADCPlib)
+    pPVDDMonADCComment2 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT2", pPVDDMonPlib)
     pPVDDMonADCComment2.setLabel("**** Enable manually " + pvddmon_plib + " End of conversion interrupt in the " + pvddmon_plib + " channel configuration.")
     pPVDDMonADCComment2.setVisible(True)
 
@@ -177,3 +181,27 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonSystemDefIncFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
     pPVDDMonSystemDefIncFile.setSourcePath("service/pvddmon/templates/system/system_definitions.h.ftl")
     pPVDDMonSystemDefIncFile.setMarkup(True)
+
+################################################################################
+#### Business Logic ####
+################################################################################  
+def onAttachmentConnected(source, target):
+    localComponent = source["component"]
+    remoteComponent = target["component"]
+    remoteID = remoteComponent.getID()
+    connectID = source["id"]
+
+    if connectID == "srv_pvddmon_ADC_dependency" :
+        plibUsed = localComponent.getSymbolByID("SRV_PVDDMON_PLIB")
+        plibUsed.clearValue()
+        plibUsed.setValue(remoteID.upper())
+
+def onAttachmentDisconnected(source, target):
+    localComponent = source["component"]
+    remoteComponent = target["component"]
+    remoteID = remoteComponent.getID()
+    connectID = source["id"]
+
+    if connectID == "srv_pvddmon_ADC_dependency" :
+        localComponent.getSymbolByID("SRV_PVDDMON_PLIB").clearValue()
+        dummyDict = {}

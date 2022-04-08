@@ -60,4 +60,5 @@ def loadModule():
 
 	## PLC PVDD Monitor Service (True Random Generator Service)
 	srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD MONITOR", "/SmartEnergy/PLC/Services/", "service/pvddmon/config/srv_pvddmon.py")
+	srvPVDDMonitorComponent.addDependency("srv_pvddmon_ADC_dependency", "ADC", False, False)
 	srvPVDDMonitorComponent.setDisplayType("PLC PVDD Monitor Service")
