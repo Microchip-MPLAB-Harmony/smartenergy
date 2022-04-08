@@ -1505,7 +1505,7 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
 //***************************************************************************
 /*
   Function:
-       void DRV_G3_MACRT_Enable_TX( const DRV_HANDLE handle, bool enable )
+       void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable )
     
   Summary:
     Enables/Disables PLC transmission.
@@ -1534,11 +1534,11 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
         ...
         if (cancel_tx)
         {
-            DRV_G3_MACRT_Enable_TX (object, false);
+            DRV_G3_MACRT_EnableTX (object, false);
         }
         else
         {
-            DRV_G3_MACRT_Enable_TX (object, true);
+            DRV_G3_MACRT_EnableTX (object, true);
         }
         ...
     }
@@ -1546,7 +1546,7 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
                    
   */
 
-void DRV_G3_MACRT_Enable_TX( const DRV_HANDLE handle, bool enable );
+void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable );
 
 </#if> 
 #ifdef __cplusplus

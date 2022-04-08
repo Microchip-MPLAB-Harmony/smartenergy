@@ -99,7 +99,7 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
 </#if>
     
     /* Callbacks initialization */
-    gDrvPlcPhyObj.dataCfmCallback       = 0;
+    gDrvPlcPhyObj.txCfmCallback         = 0;
     gDrvPlcPhyObj.dataIndCallback       = 0;
     gDrvPlcPhyObj.exceptionCallback     = 0;
     gDrvPlcPhyObj.bootDataCallback      = 0;
@@ -179,15 +179,15 @@ void DRV_PLC_PHY_Close( const DRV_HANDLE handle )
     }
 }
 
-void DRV_PLC_PHY_DataCfmCallbackRegister( 
+void DRV_PLC_PHY_TxCfmCallbackRegister( 
     const DRV_HANDLE handle, 
-    const DRV_PLC_PHY_DATA_CFM_CALLBACK callback, 
+    const DRV_PLC_PHY_TX_CFM_CALLBACK callback, 
     const uintptr_t context 
 )
 {
     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvPlcPhyObj.dataCfmCallback = callback;
+        gDrvPlcPhyObj.txCfmCallback = callback;
         gDrvPlcPhyObj.contextCfm = context;
     }
 }
@@ -304,7 +304,7 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
 </#if>    
 
 <#if DRV_PLC_MODE == "PL460">
-void DRV_PLC_PHY_Enable_TX( const DRV_HANDLE handle, bool enable )
+void DRV_PLC_PHY_EnableTX( const DRV_HANDLE handle, bool enable )
 {
      if((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
