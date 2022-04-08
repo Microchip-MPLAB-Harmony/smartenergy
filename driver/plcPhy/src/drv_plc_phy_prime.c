@@ -104,10 +104,6 @@ uint16_t _DRV_PLC_PHY_COMM_GetDelayUs(DRV_PLC_PHY_ID id)
         switch (id) 
         {
             case PLC_ID_CHANNEL_CFG:
-            delay = 2500;
-            break;
-
-            case PLC_ID_NUM_CHANNELS:
             delay = 5000;
             break;
 
