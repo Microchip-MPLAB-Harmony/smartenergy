@@ -246,6 +246,37 @@ typedef enum {
 } DRV_PLC_PHY_HEADER;
 
 // *****************************************************************************
+/* PRIME Channel definitions
+
+ Summary:
+    List of PRIME PHY channels. The PHY PLC_ID_CHANNEL_CFG uses these values.
+
+ Remarks:
+    8 single channels and 7 double channels.
+*/
+
+typedef enum
+{
+    /* Single Channels */
+    CHN1 = 1,
+    CHN2 = 2,
+    CHN3 = 3,
+    CHN4 = 4,
+    CHN5 = 5,
+    CHN6 = 6,
+    CHN7 = 7,
+    CHN8 = 8,
+    /* Double Channels */
+    CHN1_CHN2 = 9,
+    CHN2_CHN3 = 10,
+    CHN3_CHN4 = 11,
+    CHN4_CHN5 = 12,
+    CHN5_CHN6 = 13,
+    CHN6_CHN7 = 14,
+    CHN7_CHN8 = 15
+} DRV_PLC_PHY_CHANNEL;
+
+// *****************************************************************************
 /* PRIME Internal Buffer identification
 
    Summary

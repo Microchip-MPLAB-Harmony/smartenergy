@@ -341,12 +341,12 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA * srvPlcCoupChnData[16] = {
 // *****************************************************************************
 // *****************************************************************************
 
-SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void )
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void )
 {
   return SRV_PCOUP_DEFAULT_CHANNEL;
 }
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel)
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
 {
     if ((channel >= CHN1) && (channel <= CHN7_CHN8))
     {
@@ -358,7 +358,7 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL 
     }
 }
 
-bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel)
+bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 {
   SRV_PLC_PCOUP_CHANNEL_DATA *pCoupValues;
   DRV_PLC_PHY_PIB_OBJ pibObj;

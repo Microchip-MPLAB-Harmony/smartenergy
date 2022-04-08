@@ -319,38 +319,6 @@
 // *****************************************************************************
 // *****************************************************************************
 // *****************************************************************************
-/* PLC Phy Coupling Channel definitions
-
- Summary:
-    Defines transmission channels.
-
- Description:
-    This will be used to indicate the channel to work with.
-
- Remarks:
-    None.
-*/
-
-typedef enum
-{
-    CHN1 = 1,
-    CHN2,
-    CHN3,
-    CHN4,
-    CHN5,
-    CHN6,
-    CHN7,
-    CHN8,
-    CHN1_CHN2 = 9,
-    CHN2_CHN3,
-    CHN3_CHN4,
-    CHN4_CHN5,
-    CHN5_CHN6,
-    CHN6_CHN7,
-    CHN7_CHN8
-} SRV_PLC_PCOUP_CHANNEL;     
-
-// *****************************************************************************
 /* PLC Phy Coupling Interface Data
 
   Summary:
@@ -409,7 +377,7 @@ typedef struct
 
 /***************************************************************************
   Function:
-    SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel(void)
+    DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel(void)
     
   Summary:
     Get the transmission channel which has been configured by default.
@@ -425,11 +393,11 @@ typedef struct
     None.
 
   Returns:
-    SRV_PLC_PCOUP_CHANNEL - Indicates the tranmission channel by default.
+    DRV_PLC_PHY_CHANNEL - Indicates the tranmission channel by default.
 
   Example:
     <code>
-    SRV_PLC_PCOUP_CHANNEL plcDefaultChannel;
+    DRV_PLC_PHY_CHANNEL plcDefaultChannel;
     SRV_PLC_PCOUP_CHANNEL_DATA *pCoupChannelData;
 
     plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();
@@ -440,11 +408,11 @@ typedef struct
     None.
   ***************************************************************************/
 
-SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
 
 /***************************************************************************
   Function:
-    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel)
+    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
     
   Summary:
     Get the proper parameters to configure the PLC PHY Coupling according to
@@ -478,11 +446,11 @@ SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     None.
   ***************************************************************************/
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel);
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel);
 
 /***************************************************************************
   Function:
-    bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel);
+    bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
     
   Summary:
     Set the PLC Tx Coupling PHY parameters for the desired transmission channel.
@@ -514,7 +482,7 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL 
     None.
   ***************************************************************************/
 
-bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel);
+bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
