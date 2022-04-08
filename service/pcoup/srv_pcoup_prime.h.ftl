@@ -433,7 +433,7 @@ typedef struct
     SRV_PLC_PCOUP_CHANNEL_DATA *pCoupChannelData;
 
     plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();
-    pCoupChannelData = SRV_PCOUP_Get_Channel_Data(plcDefaultChannel);
+    pCoupChannelData = SRV_PCOUP_Get_Channel_Config(plcDefaultChannel);
     </code>
 
   Remarks:
@@ -444,7 +444,7 @@ SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
 
 /***************************************************************************
   Function:
-    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Data(SRV_PLC_PCOUP_CHANNEL channel)
+    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel)
     
   Summary:
     Get the proper parameters to configure the PLC PHY Coupling according to
@@ -471,14 +471,14 @@ SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     <code>
     SRV_PLC_PCOUP_CHANNEL_DATA *pCoupChannelData;
 
-    pCoupChannelData = SRV_PCOUP_Get_Channel_Data(SRV_PCOUP_DEFAULT_CHANNEL);
+    pCoupChannelData = SRV_PCOUP_Get_Channel_Config(SRV_PCOUP_DEFAULT_CHANNEL);
     </code>
 
   Remarks:
     None.
   ***************************************************************************/
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Data(SRV_PLC_PCOUP_CHANNEL channel);
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

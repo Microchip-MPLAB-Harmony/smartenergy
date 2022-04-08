@@ -346,7 +346,7 @@ SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void )
   return SRV_PCOUP_DEFAULT_CHANNEL;
 }
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Data(SRV_PLC_PCOUP_CHANNEL channel)
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel)
 {
     if ((channel >= CHN1) && (channel <= CHN7_CHN8))
     {

@@ -90,7 +90,7 @@ static const uint16_t srvPlcCoupAuxPredistCoefVLow[SRV_PCOUP_AUX_EQU_NUM_COEF] =
     Values are defined in srv_pcoup.h file
  */
 
-static const SRV_PLC_PCOUP srvPlcCoup = {
+static const SRV_PLC_PCOUP_DATA srvPlcCoup = {
   SRV_PCOUP_RMS_HIGH_TBL, SRV_PCOUP_RMS_VLOW_TBL,
   SRV_PCOUP_THRS_HIGH_TBL, SRV_PCOUP_THRS_VLOW_TBL,
   SRV_PCOUP_DACC_TBL,
@@ -101,7 +101,7 @@ static const SRV_PLC_PCOUP srvPlcCoup = {
 };
 
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-static const SRV_PLC_PCOUP srvPlcCoupAux = {
+static const SRV_PLC_PCOUP_DATA srvPlcCoupAux = {
   SRV_PCOUP_AUX_RMS_HIGH_TBL, SRV_PCOUP_AUX_RMS_VLOW_TBL,
   SRV_PCOUP_AUX_THRS_HIGH_TBL, SRV_PCOUP_AUX_THRS_VLOW_TBL,
   SRV_PCOUP_AUX_DACC_TBL,
@@ -117,18 +117,18 @@ static const SRV_PLC_PCOUP srvPlcCoupAux = {
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
+SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 {
   if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
   {
     /* PLC Tx Coupling PHY parameters for Main transmission branch */
-    return (SRV_PLC_PCOUP *)&srvPlcCoup;
+    return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
   }
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
   else if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
   {
     /* PLC Tx Coupling PHY parameters for Auxiliary transmission branch */
-    return (SRV_PLC_PCOUP *)&srvPlcCoupAux;
+    return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
   }
 </#if>
 
@@ -138,7 +138,7 @@ SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 
 bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
 {
-  SRV_PLC_PCOUP *pCoupValues;
+  SRV_PLC_PCOUP_DATA *pCoupValues;
 <#if (drvPlcPhy)??>
   DRV_PLC_PHY_PIB_OBJ pibObj;
   bool result;  

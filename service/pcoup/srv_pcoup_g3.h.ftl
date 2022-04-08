@@ -325,7 +325,7 @@ typedef struct
        design and PLC device (PL360/PL460) */
     uint8_t                          lineDrvConf;
 
-} SRV_PLC_PCOUP;
+} SRV_PLC_PCOUP_DATA;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -335,7 +335,7 @@ typedef struct
 
 /***************************************************************************
   Function:
-    SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
+    SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
     
   Summary:
     Get the PLC Tx Coupling PHY parameters for the desired transmission branch.
@@ -358,7 +358,7 @@ typedef struct
 
   Example:
     <code>
-    SRV_PLC_PCOUP *pCoupValues;
+    SRV_PLC_PCOUP_DATA *pCoupValues;
 
     pCoupValues = SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_MAIN_BRANCH);
     </code>
@@ -367,7 +367,7 @@ typedef struct
     None.
   ***************************************************************************/
 
-SRV_PLC_PCOUP * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
+SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
 
 /***************************************************************************
   Function:
@@ -428,7 +428,7 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch);
   Example:
     <code>
     SRV_PLC_PCOUP_BRANCH plcDefaultBranch;
-    SRV_PLC_PCOUP *pCoupValues;
+    SRV_PLC_PCOUP_DATA *pCoupValues;
 
     plcDefaultBranch = SRV_PCOUP_Get_Default_Branch();
     SRV_PCOUP_Set_Config(plcDefaultBranch);
