@@ -480,6 +480,42 @@ SRV_PLC_PCOUP_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
 
 SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL channel);
 
+/***************************************************************************
+  Function:
+    bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel);
+    
+  Summary:
+    Set the PLC Tx Coupling PHY parameters for the desired transmission channel.
+
+  Description:
+    This function is used to set the PLC Tx Coupling PHY parameters for the 
+    desired transmission channel, using the PLC Driver PIB interface.
+
+  Precondition:
+    DRV_PLC_PHY_Open must have been called to obtain a valid driver handle.
+
+  Parameters:
+    handle  - PLC driver handle used to set PIB parameters
+    channel  - Transmission channel for which the parameters will be set
+
+  Returns:
+    true    - Successful configuration
+    false   - Failed configuration
+
+  Example:
+    <code>
+    // 'handle', returned from the DRV_PLC_PHY_Open
+    bool result;
+
+    result = SRV_PCOUP_Set_Channel_Config(handle, CHN5);
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
+
+bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel);
+
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
 

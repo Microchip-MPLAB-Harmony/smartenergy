@@ -357,3 +357,85 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(SRV_PLC_PCOUP_CHANNEL 
         return NULL;
     }
 }
+
+bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_CHANNEL channel)
+{
+  SRV_PLC_PCOUP_CHANNEL_DATA *pCoupValues;
+  DRV_PLC_PHY_PIB_OBJ pibObj;
+  bool result;  
+
+  /* Get PLC Tx Coupling PHY parameters for the desired transmission channel */
+  pCoupValues = SRV_PCOUP_Get_Channel_Config(channel);
+
+  if (pCoupValues == NULL)
+  {
+    /* Transmission channel not recognized */
+    return false;
+  }
+
+  /* Set PLC Tx Coupling PHY parameters */
+  pibObj.id = PLC_ID_IC_DRIVER_CFG;
+  pibObj.length = 1;
+  pibObj.pData = &pCoupValues->lineDrvConf;
+  result = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_NUM_TX_LEVELS;
+  pibObj.pData = &pCoupValues->numTxLevels;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_DACC_TABLE_CFG;
+  pibObj.length = 17 << 2;
+  pibObj.pData = (uint8_t *)pCoupValues->daccTable;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);  
+
+  pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
+  pibObj.length = sizeof(pCoupValues->rmsHigh);
+  pibObj.pData = (uint8_t *)pCoupValues->rmsHigh;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_MAX_RMS_TABLE_VLO;
+  pibObj.pData = (uint8_t *)pCoupValues->rmsVLow;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_THRESHOLDS_TABLE_HI;
+  pibObj.length = sizeof(pCoupValues->thrsHigh);
+  pibObj.pData = (uint8_t *)pCoupValues->thrsHigh;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_THRESHOLDS_TABLE_VLO;
+  pibObj.pData = (uint8_t *)pCoupValues->thrsVLow;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_GAIN_TABLE_HI;
+  pibObj.length = sizeof(pCoupValues->gainHigh);
+  pibObj.pData = (uint8_t *)pCoupValues->gainHigh;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_GAIN_TABLE_VLO;
+  pibObj.pData = (uint8_t *)pCoupValues->gainVLow;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
+  pibObj.length = SRV_PCOUP_EQU_NUM_COEF_CHN << 1;
+  pibObj.pData = (uint8_t *)pCoupValues->equHigh;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
+  pibObj.pData = (uint8_t *)pCoupValues->equVlow;
+  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+<#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
+  if (channel >= CHN1_CHN2)
+  {
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI_2;
+    pibObj.pData = (uint8_t *)(&pCoupValues->equHigh[SRV_PCOUP_EQU_NUM_COEF_CHN]);
+    result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO_2;
+    pibObj.pData = (uint8_t *)(&pCoupValues->equVlow[SRV_PCOUP_EQU_NUM_COEF_CHN]);
+    result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+  }
+
+</#if>
+  return result;
+}
