@@ -54,15 +54,15 @@
 #include "service/pcoup/srv_pcoup.h"
 
 // *****************************************************************************
-/* PLC PHY Tx Coupling Equalization Data
+/* PLC PHY Coupling equalization data
 
   Summary:
     Holds the Tx equalization coefficients tables.
 
   Description:
-    Predistorsion applies specific gain for each carrier, which can be used to 
-    compensate the hardware coupling filter frequency response, equalizing the 
-    PLC transmission frequency response.
+    Pre-distorsion applies specific gain factor for each carrier, compensating 
+    the frequency response of the external analog filter, and equalizing the 
+    the transmitted signal.
 
   Remarks:
     Values are defined in srv_pcoup.h file. Different values for HIGH and VLOW 
@@ -77,14 +77,14 @@ static const uint16_t srvPlcCoupAuxPredistCoefHigh[SRV_PCOUP_AUX_EQU_NUM_COEF] =
 static const uint16_t srvPlcCoupAuxPredistCoefVLow[SRV_PCOUP_AUX_EQU_NUM_COEF] = SRV_PCOUP_AUX_PRED_VLOW_TBL;
 </#if>
 
-/* PLC PHY Tx Coupling Settings Data
+/* PLC PHY Coupling data
 
   Summary:
-    Holds the data required to set the PLC PHY Coupling parameters.
+    PLC PHY Coupling data.
 
   Description:
-    This structure holds the data required to set the PLC Tx Coupling PHY 
-    parameters.
+    This structure(s) contains all the data required to set the PLC PHY 
+    Coupling parameters, for each transmission branch.
 
   Remarks:
     Values are defined in srv_pcoup.h file
@@ -121,13 +121,13 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 {
   if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
   {
-    /* PLC Tx Coupling PHY parameters for Main transmission branch */
+    /* PLC PHY Coupling parameters for Main transmission branch */
     return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
   }
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
   else if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
   {
-    /* PLC Tx Coupling PHY parameters for Auxiliary transmission branch */
+    /* PLC PHY Coupling parameters for Auxiliary transmission branch */
     return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
   }
 </#if>
@@ -147,7 +147,7 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
   MAC_RT_STATUS result;
 </#if>
 
-  /* Get PLC Tx Coupling PHY parameters for the desired transmission branch */
+  /* Get PLC PHY Coupling parameters for the desired transmission branch */
   pCoupValues = SRV_PCOUP_Get_Config(branch);
 
   if (pCoupValues == NULL)
@@ -156,7 +156,7 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
     return false;
   }
 
-  /* Set PLC Tx Coupling PHY parameters */
+  /* Set PLC PHY Coupling parameters */
 <#if (drvPlcPhy)??>  
   pibObj.id = PLC_ID_IC_DRIVER_CFG;
   pibObj.length = 1;
@@ -284,18 +284,19 @@ uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
 <#else>
     return G3_ARIB;
 </#if>
-  } 
-  else 
+  }
+<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
+  else if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
   {
-    /* PHY band for Auxiliary transmission branch */
-<#if (SRV_PCOUP_G3_AUX_BAND != "None")>    
+    /* PHY band for Main Auxiliary branch */
   <#if (SRV_PCOUP_G3_AUX_BAND == "CEN-A")>
     return G3_CEN_A;
   <#else>
     return G3_CEN_B;
   </#if>
-<#else>
-    return G3_INVALID;
-</#if>
   }
+</#if>
+
+  /* Transmission branch not recognized */
+  return G3_INVALID;
 }
