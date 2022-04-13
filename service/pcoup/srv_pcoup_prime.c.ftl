@@ -12,12 +12,13 @@
 
   Description:
     This file contains the source code for the implementation of the
-    PLC PHY Cpupling service.
+    PLC PHY Cpupling service. It helps to configure the PLC PHY Coupling 
+    parameters through PLC Driver PIB interface.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -49,7 +50,22 @@
 #include "configuration.h"
 #include "service/pcoup/srv_pcoup.h"
 
-/* Specific gain for each carrier to equalize transmission and compensate HW filter frequency response. */
+// *****************************************************************************
+/* PLC PHY Coupling equalization data
+
+  Summary:
+    Holds the Tx equalization coefficients tables.
+
+  Description:
+    Pre-distorsion applies specific gain factor for each carrier, compensating 
+    the frequency response of the external analog filter, and equalizing the 
+    the transmitted signal.
+
+  Remarks:
+    Values are defined in srv_pcoup.h file. Different values for HIGH and VLOW 
+    modes
+ */
+
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
 static const uint16_t srvPlcCoupPredistCoefChn1High[SRV_PCOUP_EQU_NUM_COEF_CHN] = SRV_PCOUP_PRED_CHN1_HIGH_TBL;
 static const uint16_t srvPlcCoupPredistCoefChn1Low[SRV_PCOUP_EQU_NUM_COEF_CHN] = SRV_PCOUP_PRED_CHN1_VLOW_TBL;
@@ -77,17 +93,17 @@ static const uint32_t srvPlcCoupDaccTable2Chn[17] = SRV_PCOUP_DACC_2CHN_TBL;
 
 </#if>
 
-// *****************************************************************************
-/* PLC Coupling configuration data
+/* PLC PHY Coupling data
 
   Summary:
-    Holds PLC configuration data
+    PLC PHY Coupling data.
 
   Description:
-    This structure holds the PLC coupling configuration data.
+    This structure contains all the data required to set the PLC PHY Coupling 
+    parameters, for each PRIME channel.
 
   Remarks:
-    Parameters are defined in srv_pcoup.h file
+    Values are defined in srv_pcoup.h file
  */
 
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
@@ -364,7 +380,7 @@ bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel
   DRV_PLC_PHY_PIB_OBJ pibObj;
   bool result;  
 
-  /* Get PLC Tx Coupling PHY parameters for the desired transmission channel */
+  /* Get PLC PHY Coupling parameters for the desired transmission channel */
   pCoupValues = SRV_PCOUP_Get_Channel_Config(channel);
 
   if (pCoupValues == NULL)
@@ -373,7 +389,7 @@ bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel
     return false;
   }
 
-  /* Set PLC Tx Coupling PHY parameters */
+  /* Set PLC PHY Coupling parameters */
   pibObj.id = PLC_ID_IC_DRIVER_CFG;
   pibObj.length = 1;
   pibObj.pData = &pCoupValues->lineDrvConf;

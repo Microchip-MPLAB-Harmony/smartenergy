@@ -1,5 +1,5 @@
 /*******************************************************************************
-  PLC Coupling Service Library Interface Header File
+  PLC PHY Coupling Service Library Interface Header File
 
   Company
     Microchip Technology Inc.
@@ -14,18 +14,18 @@
     The Microchip G3-PLC and PRIME implementations include default PHY layer 
     configuration values optimized for the Evaluation Kits. With the help of 
     the PHY Calibration Tool it is possible to obtain the optimal configuration 
-    values for the customer´s hardware implementation. Please refer to the 
-    PL360 Host Controller document for more details about the available 
-    configuration values and their purpose. 
+    values for the customer's hardware implementation. Refer to the online
+    documentation for more details about the available configuration values and 
+    their purpose.
 
   Remarks:
-    This provides the required information to be included on PLC PHY projects 
-    for PL360/PL460 in order to apply the custom calibration.
+    This service provides the required information to be included on PLC 
+    projects for PL360/PL460 in order to apply the custom calibration.
 *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -71,7 +71,7 @@
 #endif
 // DOM-IGNORE-END
 
-/* PLC Phy Default Channel */
+/* PLC PRIME PHY default channel */
 #define SRV_PCOUP_DEFAULT_CHANNEL                ${drvPlcPhy.DRV_PLC_PRIME_DEF_CHN?string}
 
 /* Equalization number of coefficients (number of carriers) */
@@ -80,7 +80,7 @@
 #define SRV_PCOUP_EQU_NUM_COEF_2_CHN             (SRV_PCOUP_EQU_NUM_COEF_CHN << 1)
 </#if>
 
-/* Specific gain for each carrier to equalize transmission and compensate HW filter frequency response */
+/* Equalization coefficients tables */
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
 #define SRV_PCOUP_PRED_CHN1_HIGH_TBL             {0x756E, 0x7396, 0x730A, 0x72EB, 0x72B2, 0x7433, 0x755E, 0x75D7, 0x769E, 0x76A4, 0x77C3, 0x7851, 0x7864, 0x78A0, \
 					                             0x78BA, 0x7918, 0x79B6, 0x79E9, 0x7ACC, 0x7B06, 0x7B30, 0x7B27, 0x7C1E, 0x7B96, 0x7A76, 0x7B12, 0x7AFD, 0x7C40, \
@@ -126,7 +126,7 @@
                                                  0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}
 
 </#if>
-/* DACC configuration */
+/* DACC configuration tables */
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
 #define SRV_PCOUP_DACC_CENA_TBL                  {0x${SRV_PCOUP_DACC_CENA_0?string}, 0x${SRV_PCOUP_DACC_CENA_1?string}, 0x${SRV_PCOUP_DACC_CENA_2?string}, 0x${SRV_PCOUP_DACC_CENA_3?string}, 0x${SRV_PCOUP_DACC_CENA_4?string}, 0x${SRV_PCOUP_DACC_CENA_5?string}, \
                                                  0x${SRV_PCOUP_DACC_CENA_6?string}, 0x${SRV_PCOUP_DACC_CENA_7?string}, 0x${SRV_PCOUP_DACC_CENA_8?string}, 0x${SRV_PCOUP_DACC_CENA_9?string}, 0x${SRV_PCOUP_DACC_CENA_10?string}, 0x${SRV_PCOUP_DACC_CENA_11?string}, \
@@ -146,7 +146,7 @@
 
 </#if>
 
-/* Channel Configurations */
+/* PLC PHY Coupling parameters for each PRIME channel */
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
 #define SRV_PCOUP_CHN1_RMS_HIGH_TBL              {${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_0?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_1?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_2?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_3?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_4?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_5?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_6?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_HIGH_7?string}}
 #define SRV_PCOUP_CHN1_RMS_VLOW_TBL              {${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_0?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_1?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_2?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_3?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_4?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_5?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_6?string}, ${SRV_PCOUP_PRIME_CHN1_RMS_VLOW_7?string}}
@@ -319,52 +319,59 @@
 // *****************************************************************************
 // *****************************************************************************
 // *****************************************************************************
-/* PLC Phy Coupling Interface Data
+
+/* PLC PHY Coupling data
 
   Summary:
-    Defines the data required to initialize the PLC PHY Coupling Interface.
+    PLC PHY Coupling data.
 
   Description:
-    This data type defines the data required to initialize the PLC PHY Coupling
-    Interface.
+    This structure contains all the data required to set the PLC PHY Coupling 
+    parameters, for a specific PRIME channel.
 
   Remarks:
-    None.
+    Equalization coefficients and DACC table are not stored in the structure, 
+    just pointers to arrays were they are actually stored. This allows to use 
+    the same type for different PRIME channels.
 */
 
 typedef struct
 {  
-    /* Target RMS high values for each Transmission */
+    /* Target RMS values in HIGH mode for dynamic Tx gain */
     uint32_t rmsHigh[8];
     
-    /* Target RMS very low values for each Transmission */
+    /* Target RMS values in VLOW mode for dynamic Tx gain */
     uint32_t rmsVLow[8];
     
-    /* Table of thresholds to automatically update Tx Mode from HIGH mode */
+    /* Threshold RMS values in HIGH mode for dynamic Tx mode */
     uint32_t thrsHigh[16];
     
-    /* Table of thresholds to automatically update Tx Mode from VLOW mode */
+    /* Threshold RMS values in VLOW mode for dynamic Tx mode */
     uint32_t thrsVLow[16];
 
-    /* Configuration values of DACC peripheral according to hardware configuration */
+    /* Pointer to values for configuration of PLC DACC peripheral, according to 
+       hardware coupling design and PLC device (PL360/PL460) */
     const uint32_t * daccTable;
     
-    /* Pointer to equalization Coefficients table in HIGH Tx mode. There is one coefficient for each carrier in the used band */
+    /* Pointer to Tx equalization coefficients table in HIGH mode. 
+       There is one coefficient for each carrier in the used band */
     const uint16_t * equHigh;
     
-    /* Pointer to equalization Coefficients table in VLOW Tx mode. There is one coefficient for each carrier in the used band */
+    /* Pointer to Tx equalization coefficients table in VLOW mode. 
+       There is one coefficient for each carrier in the used band */
     const uint16_t * equVlow;
     
-    /* Table of gain values for HIGH Tx Mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */
+    /* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */
     uint16_t gainHigh[3];
     
-    /* Table of gain values for VLOW Tx Mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
+    /* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
     uint16_t gainVLow[3];
     
-    /* Number of Tx attenuation levels (3 dB steps) for normal transmission behavior */
+    /* Number of Tx attenuation levels (1 dB step) suppoting dynamic Tx mode */
     uint8_t numTxLevels;
     
-    /* Configuration of the embedded PLC Line Driver */
+    /* Configuration of the PLC Tx Line Driver, according to hardware coupling 
+       design and PLC device (PL360/PL460) */
     uint8_t lineDrvConf;
 
 } SRV_PLC_PCOUP_CHANNEL_DATA;
@@ -380,11 +387,10 @@ typedef struct
     DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel(void)
     
   Summary:
-    Get the transmission channel which has been configured by default.
+    Get the default PRIME channel.
 
   Description:
-    This function is used to Get the default tranmission channel of the 
-    PLC PHY Coupling.
+    This function allows to get the PRIME channel used by default.
 
   Precondition:
     None.
@@ -393,15 +399,21 @@ typedef struct
     None.
 
   Returns:
-    DRV_PLC_PHY_CHANNEL - Indicates the tranmission channel by default.
+    Default PRIME channel.
 
   Example:
     <code>
     DRV_PLC_PHY_CHANNEL plcDefaultChannel;
-    SRV_PLC_PCOUP_CHANNEL_DATA *pCoupChannelData;
+    DRV_PLC_PHY_PIB_OBJ pibObj;
 
     plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();
-    pCoupChannelData = SRV_PCOUP_Get_Channel_Config(plcDefaultChannel);
+
+    pibObj.id = PLC_ID_CHANNEL_CFG;
+    pibObj.length = 1;
+    pibObj.pData = &plcDefaultChannel;
+    DRV_PLC_PHY_PIBSet(handle, &pibObj);
+                
+    SRV_PCOUP_Set_Channel_Config(handle, plcDefaultChannel);
     </code>
 
   Remarks:
@@ -415,25 +427,24 @@ DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
     
   Summary:
-    Get the proper parameters to configure the PLC PHY Coupling according to
-    the customer values.
+    Get the PLC PHY Coupling parameters for the specified PRIME channel.
 
   Description:
-    This function is used to Get the proper parameters to configure the 
-    PLC PHY Coupling. This parameters should be sent to the PLC device through
-    PIB interface.
+    This function allows to get the PLC PHY Coupling parameters for the 
+    specified PRIME channel. These parameters can be sent to the PLC device 
+    through PLC Driver PIB interface (DRV_PLC_PHY_PIBSet).
 
   Precondition:
     None.
 
   Parameters:
-    channel   - Channel from which the parameters are obtained
+    channel   - PRIME channel for which the parameters are requested
 
   Returns:
-    NULL      - Indicates that the channel has not been selected in the configuration of the application and
-                its configuration is not available.
-
-    Pointer to PLC PHY Coupling parameters to be used.
+    - Pointer to PLC PHY Coupling parameters
+      - if channel parameter is valid
+    - *NULL*
+      - if channel parameter is not valid
 
   Example:
     <code>
@@ -443,7 +454,8 @@ DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     </code>
 
   Remarks:
-    None.
+    If SRV_PCOUP_Set_Channel_Config is used to set the PLC PHY Coupling 
+    parameters, this function is not needed.
   ***************************************************************************/
 
 SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel);
@@ -453,26 +465,31 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL ch
     bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
     
   Summary:
-    Set the PLC Tx Coupling PHY parameters for the desired transmission channel.
+    Set the PLC PHY Coupling parameters for the specified PRIME channel.
 
   Description:
-    This function is used to set the PLC Tx Coupling PHY parameters for the 
-    desired transmission channel, using the PLC Driver PIB interface.
+    This function allows to set the PLC PHY Coupling parameters for the 
+    specified PRIME channel, using the PLC Driver PIB interface 
+    (DRV_PLC_PHY_PIBSet).
 
   Precondition:
-    DRV_PLC_PHY_Open must have been called to obtain a valid driver handle.
+    DRV_PLC_PHY_Open must have been called to obtain a valid opened device 
+    handle.
 
   Parameters:
-    handle  - PLC driver handle used to set PIB parameters
-    channel  - Transmission channel for which the parameters will be set
+    handle   - A valid instance handle, returned from DRV_PLC_PHY_Open
+    channel  - PRIME channel for which the parameters will be set
 
   Returns:
-    true    - Successful configuration
-    false   - Failed configuration
+    - true
+      - Successful configuration
+    - false
+      - if channel parameter is not valid
+      - if there is an error when using the PLC Driver PIB interface
 
   Example:
     <code>
-    // 'handle', returned from the DRV_PLC_PHY_Open
+    // 'handle', returned from DRV_PLC_PHY_Open
     bool result;
 
     result = SRV_PCOUP_Set_Channel_Config(handle, CHN5);
