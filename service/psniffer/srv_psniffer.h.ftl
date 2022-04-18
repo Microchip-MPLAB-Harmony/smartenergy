@@ -174,7 +174,7 @@ typedef enum
     <code>
     SRV_PSNIFFER_COMMAND command;
 
-    /* Process received message from Sniffer Tool */
+    // Process received message from Sniffer Tool
     command = SRV_PSNIFFER_GetCommand(pData);
     </code>
 
@@ -215,16 +215,16 @@ SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
     <code>
     static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
     {
-      /* Report RX Symbols */
+      // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      /* Serialize received message */
+      // Serialize received message
       length = SRV_PSNIFFER_SerialRxMessage(appData.pSerialData, indObj);
-      /* Send through USI */
+      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -269,16 +269,16 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     <code>
     static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj)
     {
-      /* Report TX Symbols */
+      // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      /* Serialize transmitted message */
+      // Serialize transmitted message
       length = SRV_PSNIFFER_SerialCfmMessage(appData.pSerialData, pCfmObj);
-      /* Send through USI */
+      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -318,10 +318,10 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     <code>
     static void APP_PLCTxFrame(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj)
     {
-      /* Give transmission object to Sniffer */
+      // Give transmission object to Sniffer
       SRV_PSNIFFER_SetTxMessage(pTxObj);
-      /* Send PLC frame through PHY Driver */
-      /* DRV_PLC_PHY_xxx(pTxObj); */
+      // Send PLC frame through PHY Driver
+      // DRV_PLC_PHY_xxx(pTxObj);
     }
     </code>
 
@@ -357,16 +357,16 @@ void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj);
     <code>
     static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
     {
-      /* Report RX Symbols */
+      // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      /* Serialize received message */
+      // Serialize received message
       length = SRV_PSNIFFER_SerialRxMessage(appData.pSerialData, indObj);
-      /* Send through USI */
+      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -404,16 +404,16 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
     <code>
     static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj)
     {
-      /* Report TX Symbols */
+      // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      /* Serialize transmitted message */
+      // Serialize transmitted message
       length = SRV_PSNIFFER_SerialCfmMessage(appData.pSerialData, pCfmObj);
-      /* Send through USI */
+      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -462,18 +462,18 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
             {
                 appData.channel = channel;
                 
-                /* Set channel configuration */
+                // Set channel configuration
                 appData.plcPIB.id = PLC_ID_CHANNEL_CFG;
                 appData.plcPIB.length = 1;
                 *appData.plcPIB.pData = channel;
                 DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
-                /* Update channel in PSniffer */
+                // Update channel in PSniffer
                 SRV_PSNIFFER_SetPLCChannel(appData.channel);
             }
         }
         break;
 
-        /* ... */
+        // ...
     }
     </code>
 
@@ -517,17 +517,17 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
 	  switch (command) {
         case SRV_PSNIFFER_CMD_SET_TONE_MASK:
         {
-            /* Convert ToneMask from Sniffer Tool to PLC phy layer */
+            // Convert ToneMask from Sniffer Tool to PLC phy layer
             SRV_PSNIFFER_ConvertToneMask(appData.plcPIB.pData, pData + 1);
 
-            /* Send data to PLC */
+            // Send data to PLC
             appData.plcPIB.id = PLC_ID_TONE_MASK;
             appData.plcPIB.length = PSNIFFER_CARRIERS_SIZE;
             DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
         }
         break;
 
-        /* ... */
+        // ...
     }
     </code>
 
