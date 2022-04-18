@@ -482,7 +482,7 @@ void DRV_PLC_PHY_Task(void)
     }
 }
 
-void DRV_PLC_PHY_Send(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *transmitObj)
+void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ *transmitObj)
 {    
     DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
 
