@@ -53,11 +53,6 @@ def loadModule():
 	srvPSNIFFERComponent.addCapability("libsrvPSniffer", "PSNF", "PSNF", True)
 	srvPSNIFFERComponent.setDisplayType("PLC Service")
 
-	## PLC TRNG Service (True Random Generator Service)
-	srvPTRNGomponent = Module.CreateComponent("srv_ptrng", "PLC TRNG", "/SmartEnergy/PLC/Services/", "service/ptrng/config/srv_ptrng.py")
-	srvPTRNGomponent.addCapability("libsrvPTrng", "PTRNG", "PTRNG", True)
-	srvPTRNGomponent.setDisplayType("PLC TRNG Service")
-
 	## PLC PVDD Monitor Service (True Random Generator Service)
 	srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD MONITOR", "/SmartEnergy/PLC/Services/", "service/pvddmon/config/srv_pvddmon.py")
 	srvPVDDMonitorComponent.addDependency("srv_pvddmon_ADC_dependency", "ADC", False, False)
