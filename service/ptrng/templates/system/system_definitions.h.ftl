@@ -1,1 +1,0 @@
-#include "service/ptrng/srv_ptrng.h"
