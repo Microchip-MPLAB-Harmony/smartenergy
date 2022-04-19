@@ -351,7 +351,7 @@ typedef struct
   Description:
     This function allows to get the PLC PHY Coupling parameters for the 
     specified transmission branch. These parameters can be sent to the PLC 
-    device through PLC Driver PIB interface (${SRV_PCOUP_PIB_SET?string}).
+    device through PLC Driver PIB interface (${SRV_PCOUP_PIB_SET}).
 
   Precondition:
     None.
@@ -389,14 +389,14 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
   Description:
     This function allows to set the PLC PHY Coupling parameters for the 
     specified transmission branch, using the PLC Driver PIB 
-    interface (${SRV_PCOUP_PIB_SET?string}).
+    interface (${SRV_PCOUP_PIB_SET}).
 
   Precondition:
-    (${SRV_PCOUP_DRV_OPEN?string}) must have been called to obtain a valid 
+    ${SRV_PCOUP_DRV_OPEN} must have been called to obtain a valid 
     opened device handle.
 
   Parameters:
-    handle  - A valid instance handle, returned from ${SRV_PCOUP_DRV_OPEN?string}
+    handle  - A valid instance handle, returned from ${SRV_PCOUP_DRV_OPEN}
     branch  - Transmission branch for which the parameters will be set
 
   Returns:
@@ -404,11 +404,11 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
       - Successful configuration
     - false
       - if branch parameter is not valid
-      - if there is an error when calling ${SRV_PCOUP_PIB_SET?string}
+      - if there is an error when calling ${SRV_PCOUP_PIB_SET}
 
   Example:
     <code>
-    // 'handle', returned from ${SRV_PCOUP_DRV_OPEN?string
+    // 'handle', returned from ${SRV_PCOUP_DRV_OPEN}
     bool result;
 
     result = SRV_PCOUP_Set_Config(handle, SRV_PLC_PCOUP_MAIN_BRANCH);
@@ -472,7 +472,7 @@ SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void );
 
   Returns:
     G3-PLC PHY band associated to the specified transmission branch
-    (see ${SRV_PCOUP_COMM_H?string}):
+    (see ${SRV_PCOUP_COMM_H}):
     - 0: G3_CEN_A
     - 1: G3_CEN_B
     - 2: G3_FCC
