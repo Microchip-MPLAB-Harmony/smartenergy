@@ -67,13 +67,11 @@
 const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
 {
     .usiDevice                  = SRV_USI_DEV_USART,
-    .intent                     = DRV_IO_INTENT_READWRITE,
     .init                       = USI_USART_Initialize,
     .open                       = USI_USART_Open,
     .setReadCallback            = USI_USART_RegisterCallback,
     .write                      = USI_USART_Write,
     .task                       = USI_USART_Tasks,
-    .flush                      = USI_USART_Flush,
     .close                      = USI_USART_Close,
     .status                     = USI_USART_Status,
 };
@@ -408,11 +406,6 @@ void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc,
     
     /* Launch reception */
     dObj->plib->read(&dObj->rcvChar, 1);
-}
-
-void USI_USART_Flush(uint32_t index)
-{
-    (void)index;
 }
 
 void USI_USART_Close(uint32_t index)

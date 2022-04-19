@@ -222,8 +222,6 @@ typedef void (*SRV_USI_TASK_FPTR) (uint32_t index);
 
 typedef SRV_USI_STATUS (*SRV_USI_STATUS_FPTR) (uint32_t index);
 
-typedef void (*SRV_USI_FLUSH_FPTR) (uint32_t index);
-
 typedef void (*SRV_USI_CLOSE) (uint32_t index);
 
 // *****************************************************************************
@@ -244,8 +242,6 @@ typedef struct
 {
     SRV_USI_DEVICE usiDevice;
 
-    DRV_IO_INTENT intent;
-
     SRV_USI_INIT_FPTR init;
 
     SRV_USI_OPEN_FPTR open;
@@ -255,8 +251,6 @@ typedef struct
     SRV_USI_WRITE_FPTR write;
 
     SRV_USI_TASK_FPTR task;
-
-    SRV_USI_FLUSH_FPTR flush;
 
     SRV_USI_CLOSE close;
 
@@ -452,8 +446,7 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
 
   Remarks:
     The handle returned is valid until the SRV_USI_Close routine is called.
-    This routine will NEVER block waiting for hardware. If the requested intent
-    flags are not supported, the routine will return SRV_USI_HANDLE_INVALID. 
+    This routine will NEVER block waiting for hardware.
 */
 
 SRV_USI_HANDLE SRV_USI_Open( const SYS_MODULE_INDEX index );

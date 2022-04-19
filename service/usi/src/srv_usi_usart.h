@@ -146,8 +146,6 @@ size_t USI_USART_Write(uint32_t index, void* pData, size_t length);
 
 void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc, uintptr_t context);
 
-void USI_USART_Flush(uint32_t index);
-
 void USI_USART_Close(uint32_t index);
 
 SRV_USI_STATUS USI_USART_Status(uint32_t index);
