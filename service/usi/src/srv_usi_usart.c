@@ -66,7 +66,6 @@
 /* This is the service instance object array. */
 const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
 {
-    .usiDevice                  = SRV_USI_DEV_USART,
     .init                       = USI_USART_Initialize,
     .open                       = USI_USART_Open,
     .setReadCallback            = USI_USART_RegisterCallback,

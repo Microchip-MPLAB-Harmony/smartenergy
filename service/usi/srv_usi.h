@@ -169,31 +169,6 @@ typedef uintptr_t SRV_USI_HANDLE;
 
 typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
-
-// *****************************************************************************
-/*  USI device enumeration
-
-  Summary:
-    Lists the available USI devices.
-
-  Description:
-    This enumeration lists all of the available USI devices. A USI
-    device is a physical peripheral used by the USI service to send
-    and receive data.
-
-  Remarks:
-    None.
-*/
-typedef enum
-{
-    SRV_USI_DEV_USART,
-
-    SRV_USI_DEV_USB_CDC,
-
-    SRV_USI_DEV_MAX,
-
-} SRV_USI_DEVICE;
-
 // *****************************************************************************
 /*  USI device descriptor function prototypes
 
@@ -240,8 +215,6 @@ typedef void (*SRV_USI_CLOSE) (uint32_t index);
 */
 typedef struct
 {
-    SRV_USI_DEVICE usiDevice;
-
     SRV_USI_INIT_FPTR init;
 
     SRV_USI_OPEN_FPTR open;

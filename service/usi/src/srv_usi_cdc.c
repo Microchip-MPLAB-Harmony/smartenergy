@@ -69,7 +69,6 @@
 /* This is the service instance object array. */
 const SRV_USI_DEV_DESC srvUSICDCDevDesc =
 {
-    .usiDevice                  = SRV_USI_DEV_USB_CDC,
     .init                       = USI_CDC_Initialize,
     .open                       = USI_CDC_Open,
     .setReadCallback            = USI_CDC_RegisterCallback,
