@@ -69,7 +69,6 @@ static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
 // Section: PLC PVDD Monitor Service Implementation
 // *****************************************************************************
 // *****************************************************************************
-/* Objects to hold callback function and context */
 static SRV_PVDDMON_CALLBACK ${PVDD_MON_ADC_INSTANCE}_CompareCallback = NULL;
 
 static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
@@ -83,7 +82,6 @@ static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_
     }
 }
 
-/* Start PLC PVDD Monitor */
 void SRV_PVDDMON_Initialize (void)
 {
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
@@ -95,7 +93,6 @@ void SRV_PVDDMON_Initialize (void)
     ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable(channelMsk);
 }
 
-/* Start PLC PVDD Monitor */
 void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr = 0;
@@ -147,7 +144,6 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_ADC_INSTANCE}_ConversionStart();
 }
 
-/* Restart PLC PVDD Monitor */
 void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr;
@@ -191,9 +187,9 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IER |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
 }
 
-void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback_fn, uintptr_t context)
+void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t context)
 {
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
-    ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback_fn;
+    ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback;
 }
