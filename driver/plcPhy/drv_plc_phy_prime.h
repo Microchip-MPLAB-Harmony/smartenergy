@@ -188,7 +188,8 @@ typedef enum {
   PLC_ID_TX_DISABLE,
   PLC_ID_TX_HIGH_TEMP_120,
   PLC_ID_TX_CANCELLED,
-  PLC_ID_OBSOLETE_ID,
+  PLC_ID_RX_CD_INFO,
+  PLC_ID_SFO_ESTIMATION_LAST_RX,
   PLC_ID_END_ID,
 } DRV_PLC_PHY_ID;    
 
@@ -473,6 +474,41 @@ typedef struct __attribute__((packed, aligned(1))) {
   /* Percentage of symbols affected by impulsive noise */
   uint8_t impNoisePercent;
 } DRV_PLC_PHY_RECEPTION_OBJ;
+
+/* Rx state values for CD info */
+typedef enum {
+  CD_RX_IDLE = 0,
+  CD_RX_PREAMBLE_1_2 = 1,
+  CD_RX_PREAMBLE_2_3 = 2,
+  CD_RX_PREAMBLE = 3,
+  CD_RX_HEADER = 4,
+  CD_RX_PAYLOAD = 5,
+} DRV_PLC_PHY_CD_RX_STATE;
+
+// *****************************************************************************
+/* Structure defining PRIME CD information
+
+   Summary
+    This struct includes the Carrier Detect related information for
+    a PLC frame reception.
+
+   Remarks:
+    This struct is related to PLC_ID_RX_CD_INFO
+*/
+typedef struct {
+  /* Reception time (message end or header end if message length is not known yet) referred to 1us PHY counter */
+  uint32_t rx_time_end;
+  /* Current time referred to 1us PHY counter */
+  uint32_t current_time;
+  /* Correlation peak value */
+  uint16_t corr_peak_value;
+  /* Average RSSI (Received Signal Strength Indication) in dBuV */
+  uint8_t rssi_avg;
+  /* Reception state. Similar to header from PRIME spec, but extra values for preamble */
+  DRV_PLC_PHY_CD_RX_STATE cd_rx_state;
+  /* Type A, Type B or Type BC  */
+  DRV_PLC_PHY_FRAME_TYPE frame_type;
+} DRV_PLC_PHY_CD_INFO;
 
 // *****************************************************************************
 /* PRIME PHY Information Base (PIB)
