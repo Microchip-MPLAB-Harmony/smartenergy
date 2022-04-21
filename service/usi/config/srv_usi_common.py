@@ -30,42 +30,30 @@ def handleMessage(messageID, args):
 
     result_dict = {}
 
-    usi_usart_connections = usiSymNumUsart.getValue()
-    usi_cdc_connections = usiSymNumCdc.getValue()
-
-    if (messageID == "USI_ADD_USART_API"):
-        usi_usart_connections += 1
-    elif (messageID == "USI_REMOVE_USART_API"):
-        usi_usart_connections -= 1
-    elif (messageID == "USI_ADD_CDC_API"):
-        usi_cdc_connections += 1
-    elif (messageID == "USI_REMOVE_CDC_API"):
-        usi_cdc_connections -= 1
-
-    usiSymNumUsart.setValue(usi_usart_connections)
-    usiSymNumCdc.setValue(usi_cdc_connections)
-
-    if (usi_usart_connections):
-        usiSymUsartAPI.setValue(True)
-    else:
-        usiSymUsartAPI.setValue(False)
-
-    if (usi_cdc_connections):
-        usiSymCdcAPI.setValue(True)
-    else:
-        usiSymCdcAPI.setValue(False)
-
     usiInstances = filter(lambda k: "srv_usi_" in k, Database.getActiveComponentIDs())
 
     uart_count = 0
     usb_count = 0
     for usiInstance in sorted(usiInstances):
         if Database.getSymbolValue(usiInstance, "SRV_USI_DEVICE_SET") == "UART":
-            Database.setSymbolValue(usiInstance, "SRV_USI_USART_API_INDEX", uart_count, 1)
+            Database.setSymbolValue(usiInstance, "SRV_USI_USART_API_INDEX", uart_count)
             uart_count += 1
         if Database.getSymbolValue(usiInstance, "SRV_USI_DEVICE_SET") == "USB_CDC":
-            Database.setSymbolValue(usiInstance, "SRV_USI_CDC_API_INDEX", usb_count, 1)
+            Database.setSymbolValue(usiInstance, "SRV_USI_CDC_API_INDEX", usb_count)
             usb_count += 1
+
+    usiSymNumUsart.setValue(uart_count)
+    usiSymNumCdc.setValue(usb_count)
+
+    if (uart_count > 0):
+        usiSymUsartAPI.setValue(True)
+    else:
+        usiSymUsartAPI.setValue(False)
+
+    if (usb_count > 0):
+        usiSymCdcAPI.setValue(True)
+    else:
+        usiSymCdcAPI.setValue(False)
 
     return result_dict
 
@@ -101,7 +89,7 @@ def instantiateComponent(usiComponentCommon):
 
     global usiSymUsartAPI
     usiSymUsartAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_USART_API", None)
-    usiSymUsartAPI.setLabel("USART API")
+    usiSymUsartAPI.setLabel("UART API")
     usiSymUsartAPI.setReadOnly(True)
     usiSymUsartAPI.setDefaultValue(False)
     usiSymUsartAPI.setVisible(True)
@@ -115,15 +103,17 @@ def instantiateComponent(usiComponentCommon):
 
     global usiSymNumUsart
     usiSymNumUsart = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_USART", usiSymUsartAPI)
-    usiSymNumUsart.setLabel("USART Connections")
+    usiSymNumUsart.setLabel("UART Connections")
     usiSymNumUsart.setDefaultValue(0)
     usiSymNumUsart.setVisible(True)
+    usiSymNumUsart.setReadOnly(True)
 
     global usiSymNumCdc
     usiSymNumCdc = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_CDC", usiSymCdcAPI)
     usiSymNumCdc.setLabel("CDC Connections")
     usiSymNumCdc.setDefaultValue(0)
     usiSymNumCdc.setVisible(True)
+    usiSymNumCdc.setReadOnly(True)
 
     ##### USI Files  ####################################################
 
@@ -209,5 +199,3 @@ def destroyComponent(usiComponentCommon):
     Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":False})
     Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":False})
 
-    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
-        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":False})

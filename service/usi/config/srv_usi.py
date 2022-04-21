@@ -54,31 +54,34 @@ def instantiateComponent(usiComponent, index):
     usiSymDeviceSet.setLabel("Device Set")
     usiSymDeviceSet.setDefaultValue("")
     usiSymDeviceSet.setDependencies(selectDeviceSet, ["SRV_USI_DEVICE"])
+    usiSymDeviceSet.setVisible(False)
 
     usiSymUsartAPI = usiComponent.createIntegerSymbol("SRV_USI_USART_API_INDEX", None)
     usiSymUsartAPI.setLabel("USART API INDEX")
     usiSymUsartAPI.setDefaultValue(0)
-    usiSymUsartAPI.setVisible(True)
-    usiSymUsartAPI.setUseSingleDynamicValue(True)
+    usiSymUsartAPI.setVisible(False)
 
     usiSymCdcAPI = usiComponent.createIntegerSymbol("SRV_USI_CDC_API_INDEX", None)
     usiSymCdcAPI.setLabel("CDC API INDEX")
     usiSymCdcAPI.setDefaultValue(0)
-    usiSymCdcAPI.setVisible(True)
-    usiSymCdcAPI.setUseSingleDynamicValue(True)
+    usiSymCdcAPI.setVisible(False)
 
     usiSymDeviceIndex = usiComponent.createIntegerSymbol("SRV_USI_CDC_DEVICE_INDEX", None)
     usiSymDeviceIndex.setLabel("CDC Device Index")
-    usiSymDeviceIndex.setVisible(True)
+    usiSymDeviceIndex.setVisible(False)
     usiSymDeviceIndex.setDefaultValue(0)
 
     usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_RD_BUF_SIZE", None)
     usiSymReadBufferSize.setLabel("Read Buffer Size")
     usiSymReadBufferSize.setDefaultValue(1024)
+    usiSymReadBufferSize.setMin(8)
+    usiSymReadBufferSize.setMax(32*1024)
 
     usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_WR_BUF_SIZE", None)
     usiSymReadBufferSize.setLabel("Write Buffer Size")
     usiSymReadBufferSize.setDefaultValue(1024)
+    usiSymReadBufferSize.setMin(8)
+    usiSymReadBufferSize.setMax(32*1024)
 
     ############################################################################
     #### Code Generation ####
@@ -151,7 +154,19 @@ def onAttachmentDisconnected(source, target):
     if connectID == "srv_usi_USART_dependency":
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
         dict = Database.sendMessage("srv_usi", "USI_REMOVE_USART_API", {})
+        dict = Database.sendMessage(remoteID, "UART_NON_BLOCKING_MODE", {"isReadOnly":False})
     
     if connectID == "srv_usi_CDC_dependency":
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
         dict = Database.sendMessage("srv_usi", "USI_REMOVE_CDC_API", {})
+
+def handleMessage(messageID, args):
+
+    result_dict = {}
+
+    if (messageID == "REQUEST_CONFIG_PARAMS"):
+        if args.get("localComponentID") != None:
+            result_dict = Database.sendMessage(args["localComponentID"], "UART_NON_BLOCKING_MODE", {"isEnabled":True, "isReadOnly":True})
+
+    return result_dict
+
