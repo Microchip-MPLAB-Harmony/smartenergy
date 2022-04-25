@@ -22,6 +22,10 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+global pserial_helpkeyword
+
+pserial_helpkeyword = "srv_pserial_configurations"
+
 def isKeyPresent(symbol, key):
     for i in range(symbol.getKeyCount()):
         if symbol.getKey(i) == key:
@@ -93,6 +97,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialPLCProfile.setDisplayMode("Description")
     pSerialPLCProfile.setOutputMode("Value")
     pSerialPLCProfile.setDefaultValue(0)
+    pSerialPLCProfile.setHelp(pserial_helpkeyword)
 
     # Phy Serial Files
     global pSerialSourceFileG3

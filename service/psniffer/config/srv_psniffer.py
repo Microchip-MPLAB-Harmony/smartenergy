@@ -21,6 +21,11 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+
+global psniffer_helpkeyword
+
+psniffer_helpkeyword = "srv_psniffer_configurations"
+
 def isKeyPresent(symbol, key):
     for i in range(symbol.getKeyCount()):
         if symbol.getKey(i) == key:
@@ -90,6 +95,7 @@ def instantiateComponent(pSnifferComponentCommon):
     pSnifferPLCProfile.setDisplayMode("Description")
     pSnifferPLCProfile.setOutputMode("Value")
     pSnifferPLCProfile.setDefaultValue(0)
+    pSnifferPLCProfile.setHelp(psniffer_helpkeyword)
 
     # Phy Serial Files
     global pSnifferSourceFileG3
