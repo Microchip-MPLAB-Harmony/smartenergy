@@ -67,14 +67,14 @@
 /* USI Service Serial Protocol Identifiers
 
   Summary:
-    Defines the identifier to use for each USI serial protocol
+    List of available USI protocols.
 
   Description:
-    This data type defines the identifier required to specify the
-    serial protocol to use by USI service.
+    This data type defines the identifier required to specify the protocol to 
+    use by USI service.
 
   Remarks:
-    Do not rely on the underlying type as it may change in different versions.
+    None.
 */
 
 typedef enum
@@ -137,7 +137,20 @@ typedef enum
     SRV_USI_PROT_ID_INVALID                   = 0xFF
 
 } SRV_USI_PROTOCOL_ID;
-        
+
+// *****************************************************************************
+/* USI Service Serial Protocol Identifiers
+
+  Summary:
+    List of possible values of USI status.
+
+  Description:
+    This type defines the possible return values for SRV_USI_Status function.
+
+  Remarks:
+    None.
+*/
+
 typedef enum
 {
     SRV_USI_STATUS_UNINITIALIZED,
