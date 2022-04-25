@@ -70,8 +70,6 @@
 #endif
 // DOM-IGNORE-END
 
-typedef uintptr_t USI_DEVICE_INDEX;
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Data Types
@@ -256,7 +254,7 @@ typedef struct
     const SRV_USI_DEV_DESC*                  devDesc;
 
     /* Device index */
-    USI_DEVICE_INDEX                         devIndex;
+    uint32_t                                 devIndex;
 
     /* Identifies the USI callback object */
     SRV_USI_CALLBACK*                        callback;
@@ -295,7 +293,7 @@ typedef struct
 
     const SRV_USI_DEV_DESC* consDevDesc;
 
-    USI_DEVICE_INDEX deviceIndex;
+    uint32_t deviceIndex;
     
     void* pWrBuffer;
     
