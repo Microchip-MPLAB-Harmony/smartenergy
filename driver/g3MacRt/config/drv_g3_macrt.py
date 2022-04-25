@@ -27,6 +27,7 @@
 ################################################################################
 
 global sort_alphanumeric
+global plc_mac_rt_helpkeyword
 
 global g3MacRtBinFileCENA
 global g3MacRtBinFileCENB
@@ -36,6 +37,7 @@ global g3MacRtAsmBinFile
 
 global plcBandInUse
 
+plc_mac_rt_helpkeyword = "drv_g3_macrt_configurations"
 gPlcBand = ""
 
 PLC_PROFILE_G3_CEN_A = 1
@@ -278,26 +280,31 @@ def instantiateComponent(g3MacRtComponent):
     plcDriverMode = g3MacRtComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
     plcDriverMode.setLabel("PLC Driver Mode")
     plcDriverMode.setDefaultValue("PL460")
+    plcDriverMode.setHelp(plc_mac_rt_helpkeyword)
 
     plcPLIB = g3MacRtComponent.createStringSymbol("DRV_PLC_PLIB", None)
     plcPLIB.setLabel("PLIB Used")
     plcPLIB.setReadOnly(True)
+    plcPLIB.setHelp(plc_mac_rt_helpkeyword)
 
     plcPLIBCSRIndex = g3MacRtComponent.createIntegerSymbol("DRV_PLC_PLIB_CSR_INDEX", None)
     plcPLIBCSRIndex.setLabel("PLIB CSR Index")
     plcPLIBCSRIndex.setReadOnly(True)
+    plcPLIBCSRIndex.setHelp(plc_mac_rt_helpkeyword)
 
     plcExtIntPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcExtIntPin.setLabel("External Interrupt Pin")
     plcExtIntPin.setDefaultValue(0)
     plcExtIntPin.setOutputMode("Key")
     plcExtIntPin.setDisplayMode("Description")
+    plcExtIntPin.setHelp(plc_mac_rt_helpkeyword)
 
     plcExtIntSource = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     plcExtIntSource.setLabel("External Interrupt Source")
     plcExtIntSource.setDefaultValue("PIOA_IRQn")
     plcExtIntSource.setVisible(True)
     plcExtIntSource.setReadOnly(True)
+    plcExtIntSource.setHelp(plc_mac_rt_helpkeyword)
     plcExtIntSource.setDependencies(g3MacRtExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
 
     plcExtIntPioPort = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_PIO_PORT", None)
@@ -305,6 +312,7 @@ def instantiateComponent(g3MacRtComponent):
     plcExtIntPioPort.setDefaultValue("PIO_PORT_A")
     plcExtIntPioPort.setVisible(True)
     plcExtIntPioPort.setReadOnly(True)
+    plcExtIntPioPort.setHelp(plc_mac_rt_helpkeyword)
     plcExtIntPioPort.setDependencies(g3MacRtExternalInterruptPort, ["DRV_PLC_EXT_INT_PIN"])
 
     plcResetPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_RESET_PIN", None)
@@ -312,24 +320,28 @@ def instantiateComponent(g3MacRtComponent):
     plcResetPin.setDefaultValue(0)
     plcResetPin.setOutputMode("Key")
     plcResetPin.setDisplayMode("Description")
+    plcResetPin.setHelp(plc_mac_rt_helpkeyword)
 
     plcLDOEnPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
     plcLDOEnPin.setLabel("LDO Enable Pin")
     plcLDOEnPin.setDefaultValue(0)
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
+    plcLDOEnPin.setHelp(plc_mac_rt_helpkeyword)
 
     plcTxEnablePin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")
     plcTxEnablePin.setDefaultValue(0)
     plcTxEnablePin.setOutputMode("Key")
     plcTxEnablePin.setDisplayMode("Description")
+    plcTxEnablePin.setHelp(plc_mac_rt_helpkeyword)
     plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcSleepMode = g3MacRtComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
     plcSleepMode.setDefaultValue(False)
     plcSleepMode.setVisible(True)
+    plcSleepMode.setHelp(plc_mac_rt_helpkeyword)
 
     plcStbyPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
     plcStbyPin.setLabel("Stand By Pin")
@@ -337,11 +349,13 @@ def instantiateComponent(g3MacRtComponent):
     plcStbyPin.setOutputMode("Key")
     plcStbyPin.setDisplayMode("Description")
     plcStbyPin.setVisible(False)
+    plcStbyPin.setHelp(plc_mac_rt_helpkeyword)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
     
     plcThermalMonitor = g3MacRtComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
+    plcThermalMonitor.setHelp(plc_mac_rt_helpkeyword)
     plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
 
     plcThMonPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
@@ -350,6 +364,7 @@ def instantiateComponent(g3MacRtComponent):
     plcThMonPin.setOutputMode("Key")
     plcThMonPin.setDisplayMode("Description")
     plcThMonPin.setVisible(False)
+    plcThMonPin.setHelp(plc_mac_rt_helpkeyword)
     plcThMonPin.setDependencies(showThermalMonitorPin, ["DRV_PLC_THERMAL_MONITOR"])
 
     availablePinDictionary = {}
@@ -610,12 +625,14 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupG3Settings.setLabel("PLC Coupling Settings")
     plcCoupG3Settings.setDescription("Coupling Settings")
     plcCoupG3Settings.setVisible(True)
+    plcCoupG3Settings.setHelp(plc_mac_rt_helpkeyword)
 
     global plcG3Band
     # plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
     plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
     plcG3Band.setLabel("Main Branch")
     plcG3Band.setDefaultValue("CEN-A")
+    plcG3Band.setHelp(plc_mac_rt_helpkeyword)
     # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
 
     plcCoupG3Internal = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_INTERNAL", plcCoupG3Settings)
@@ -623,6 +640,7 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupG3Internal.setDescription("Internal Driver")
     plcCoupG3Internal.setVisible(False)
     plcCoupG3Internal.setDefaultValue(False)
+    plcCoupG3Internal.setHelp(plc_mac_rt_helpkeyword)
     plcCoupG3Internal.setDependencies(showG3InternalDriver, ["DRV_PLC_G3_BAND"])
 
     plcCoupGMultiBand = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_MULTIBAND", plcCoupG3Settings)
@@ -630,18 +648,21 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupGMultiBand.setDescription("Multiband")
     plcCoupGMultiBand.setVisible(False)
     plcCoupGMultiBand.setDefaultValue(False)
+    plcCoupGMultiBand.setHelp(plc_mac_rt_helpkeyword)
     plcCoupGMultiBand.setDependencies(showG3Multiband, ["DRV_PLC_G3_BAND"])
 
     plcG3BandAux = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND_AUX", plcCoupGMultiBand, ["CEN-A", "CEN-B"])
     plcG3BandAux.setLabel("Auxiliary Branch")
     plcG3BandAux.setDefaultValue("CEN-A")
     plcG3BandAux.setVisible(False)
+    plcG3BandAux.setHelp(plc_mac_rt_helpkeyword)
     plcG3BandAux.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcG3BandAuxActive = g3MacRtComponent.createBooleanSymbol("DRV_PLC_G3_BAND_AUX_ACTIVE", plcCoupGMultiBand)
     plcG3BandAuxActive.setLabel("Set as default branch")
     plcG3BandAuxActive.setDefaultValue(False)
     plcG3BandAuxActive.setVisible(False)
+    plcG3BandAuxActive.setHelp(plc_mac_rt_helpkeyword)
     plcG3BandAuxActive.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
 
     plcCoupG3HighAttenuation = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_HIGH_ATTENUATION", plcG3Band)
@@ -649,6 +670,7 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupG3HighAttenuation.setDescription("FCC high attenuation")
     plcCoupG3HighAttenuation.setVisible(False)
     plcCoupG3HighAttenuation.setDefaultValue(False)
+    plcCoupG3HighAttenuation.setHelp(plc_mac_rt_helpkeyword)
     plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
     
     ##### Coupling Settings : Generic  ####################################################
@@ -659,6 +681,7 @@ def instantiateComponent(g3MacRtComponent):
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
     #plcBandInUse.setVisible(True)
     plcBandInUse.setReadOnly(True)
+    plcBandInUse.setHelp(plc_mac_rt_helpkeyword)
     plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
 
     #### FreeMaker Files ######################################################
