@@ -22,6 +22,9 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+global srv_usi_helpkeyword
+srv_usi_helpkeyword = "mcc_h3_srv_usi_configurations"
+
 def handleMessage(messageID, args):
     global usiSymUsartAPI
     global usiSymCdcAPI
@@ -86,6 +89,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymMsgPoolSize.setMin(1)
     usiSymMsgPoolSize.setMax(10)
     usiSymMsgPoolSize.setDefaultValue(5)
+    usiSymMsgPoolSize.setHelp(srv_usi_helpkeyword)
 
     global usiSymUsartAPI
     usiSymUsartAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_USART_API", None)
@@ -93,6 +97,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymUsartAPI.setReadOnly(True)
     usiSymUsartAPI.setDefaultValue(False)
     usiSymUsartAPI.setVisible(True)
+    usiSymUsartAPI.setHelp(srv_usi_helpkeyword)
 
     global usiSymCdcAPI
     usiSymCdcAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_CDC_API", None)
@@ -100,6 +105,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymCdcAPI.setReadOnly(True)
     usiSymCdcAPI.setDefaultValue(False)
     usiSymCdcAPI.setVisible(True)
+    usiSymCdcAPI.setHelp(srv_usi_helpkeyword)
 
     global usiSymNumUsart
     usiSymNumUsart = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_USART", usiSymUsartAPI)
@@ -107,6 +113,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymNumUsart.setDefaultValue(0)
     usiSymNumUsart.setVisible(True)
     usiSymNumUsart.setReadOnly(True)
+    usiSymNumUsart.setHelp(srv_usi_helpkeyword)
 
     global usiSymNumCdc
     usiSymNumCdc = usiComponentCommon.createIntegerSymbol("SRV_USI_NUM_CDC", usiSymCdcAPI)
@@ -114,6 +121,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymNumCdc.setDefaultValue(0)
     usiSymNumCdc.setVisible(True)
     usiSymNumCdc.setReadOnly(True)
+    usiSymNumCdc.setHelp(srv_usi_helpkeyword)
 
     ##### USI Files  ####################################################
 

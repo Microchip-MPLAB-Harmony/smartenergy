@@ -22,6 +22,9 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+global srv_usi_helpkeyword
+srv_usi_helpkeyword = "mcc_h3_srv_usi_configurations"
+
 def selectDeviceSet(symbol, event):
     symbol.clearValue()
     if ("USART" in event["value"]) or ("UART" in event["value"]) or ("SERCOM" in event["value"]) or ("FLEXCOM" in event["value"]):
@@ -49,6 +52,7 @@ def instantiateComponent(usiComponent, index):
     usiSymDevice.setLabel("Device Used")
     usiSymDevice.setReadOnly(True)
     usiSymDevice.setDefaultValue("")
+    usiSymDevice.setHelp(srv_usi_helpkeyword)
 
     usiSymDeviceSet = usiComponent.createStringSymbol("SRV_USI_DEVICE_SET", None)
     usiSymDeviceSet.setLabel("Device Set")
@@ -76,12 +80,14 @@ def instantiateComponent(usiComponent, index):
     usiSymReadBufferSize.setDefaultValue(1024)
     usiSymReadBufferSize.setMin(8)
     usiSymReadBufferSize.setMax(32*1024)
+    usiSymReadBufferSize.setHelp(srv_usi_helpkeyword)
 
     usiSymReadBufferSize = usiComponent.createIntegerSymbol("SRV_USI_WR_BUF_SIZE", None)
     usiSymReadBufferSize.setLabel("Write Buffer Size")
     usiSymReadBufferSize.setDefaultValue(1024)
     usiSymReadBufferSize.setMin(8)
     usiSymReadBufferSize.setMax(32*1024)
+    usiSymReadBufferSize.setHelp(srv_usi_helpkeyword)
 
     ############################################################################
     #### Code Generation ####
