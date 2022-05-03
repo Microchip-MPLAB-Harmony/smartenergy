@@ -235,6 +235,8 @@ global pPVDDMonLowThrsHex
 global pPVDDMonHighThrsHexHyst
 global pPVDDMonLowThrsHexHyst
 
+srv_pvddmon_helpkeyword = "mcc_h3_srv_pvddmon_configurations"
+
 def handleMessage(messageID, args):
     result_dict = {}
 
@@ -282,6 +284,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonPlib = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_PLIB", None)
     pPVDDMonPlib.setLabel("Peripheral lib")
     pPVDDMonPlib.setReadOnly(True)
+    pPVDDMonPlib.setHelp(srv_pvddmon_helpkeyword)
 
     pVddHighThrs = 13000
     pVddLowThrs = 10000
@@ -303,10 +306,12 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
     pPVDDMonADCChannel.setLabel("Channel")
     pPVDDMonADCChannel.setDefaultValue(0)
+    pPVDDMonADCChannel.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonADCResolution = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_BITS", pPVDDMonPlib)
     pPVDDMonADCResolution.setLabel("Result Resolution bits")
     pPVDDMonADCResolution.setDefaultValue(pVddResolution)
+    pPVDDMonADCChannel.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonADCComment1 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT1", pPVDDMonPlib)
     pPVDDMonADCComment1.setLabel("**** ADC must be manually configured in FreeRun mode.")
@@ -358,30 +363,37 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonComWinRes = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_RES", None)
     pPVDDMonComWinRes.setLabel("Voltage Monitor scheme")
     pPVDDMonComWinRes.setVisible(True)
+    pPVDDMonComWinRes.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonComWinResUp = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_RES_UP", pPVDDMonComWinRes)
     pPVDDMonComWinResUp.setLabel("Resistor Up [Ohms]")
     pPVDDMonComWinResUp.setDefaultValue(ResUp)
+    pPVDDMonComWinResUp.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonComWinResDown = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_RES_DOWN", pPVDDMonComWinRes)
     pPVDDMonComWinResDown.setLabel("Resistor Down [Ohms]")
     pPVDDMonComWinResDown.setDefaultValue(ResDown)
+    pPVDDMonComWinResDown.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonComWinThrs = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_PVDD", None)
     pPVDDMonComWinThrs.setLabel("Comparison Window thresholds")
     pPVDDMonComWinThrs.setVisible(True)
+    pPVDDMonComWinThrs.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonHighThreshold = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_HIGH_TH", pPVDDMonComWinThrs)
     pPVDDMonHighThreshold.setLabel("High Threshold [mV]")
     pPVDDMonHighThreshold.setDefaultValue(pVddHighThrs)
+    pPVDDMonHighThreshold.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonLowThreshold = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_LOW_TH", pPVDDMonComWinThrs)
     pPVDDMonLowThreshold.setLabel("Low Threshold [mV]")
     pPVDDMonLowThreshold.setDefaultValue(pVddLowThrs)
+    pPVDDMonLowThreshold.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonHisteresys = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_HIST", pPVDDMonComWinThrs)
     pPVDDMonHisteresys.setLabel("Histeresys level [mV]")
     pPVDDMonHisteresys.setDefaultValue(Hysteresis)
+    pPVDDMonHisteresys.setHelp(srv_pvddmon_helpkeyword)
 
     # PLC PVDD Monitor Files
     pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
