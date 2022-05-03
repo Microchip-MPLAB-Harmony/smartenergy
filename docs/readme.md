@@ -26,8 +26,7 @@ reference information.
 
 | Folder     | Description                                                           |
 |------------|-----------------------------------------------------------------------|
-| apps       | Example applications for PLC library components                       |
-| driver     | Drivers for PLC modems                                                |
+| driver     | Drivers for PLC and RF devices                                        |
 | service    | Common PLC services for communication stacks (G3, PRIME)              |
 | docs       | PLC library help documentation                                        |
 
