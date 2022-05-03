@@ -116,18 +116,18 @@ typedef enum
         
         if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
         {
-            /* PLC Transmission is not permitted */
+            // PLC Transmission is not permitted
             DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);
             appPlc.pvddMonTxEnable = false;
-            /* Restart PVDD Monitor to check when VDD is within the comparison window */
+            // Restart PVDD Monitor to check when VDD is within the comparison window
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);
         }
         else
         {
-            /* PLC Transmission is permitted again */
+            // PLC Transmission is permitted again
             DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
             appPlc.pvddMonTxEnable = true;
-            /* Restart PVDD Monitor to check when VDD is out of the comparison window */
+            // Restart PVDD Monitor to check when VDD is out of the comparison window
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);
         }
     }
@@ -168,7 +168,7 @@ typedef void (*SRV_PVDDMON_CALLBACK)( SRV_PVDDMON_CMP_MODE cmpMode, uintptr_t co
 
   Example:
     <code>
-    /* Init PVDD Monitor service */
+    // Init PVDD Monitor service
     SRV_PVDDMON_Initialize();
     </code>
 
@@ -204,9 +204,9 @@ void SRV_PVDDMON_Initialize (void);
 
   Example:
     <code>
-    /* Enable PLC PVDD Monitor Service */
+    // Enable PLC PVDD Monitor Service 
     SRV_PVDDMON_CallbackRegister(APP_PLC_PVDDMonitorCb, 0);
-    /* Notify when PVDD level leaves the comparison window */
+    // Notify when PVDD level leaves the comparison window 
     SRV_PVDDMON_Start(SRV_PVDDMON_CMP_MODE_OUT);
     </code>
 
@@ -248,18 +248,18 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode);
         
         if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
         {
-            /* PLC Transmission is not permitted */
+            // PLC Transmission is not permitted 
             DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);
             appPlc.pvddMonTxEnable = false;
-            /* Restart PVDD Monitor to check when VDD is within the comparison window */
+            // Restart PVDD Monitor to check when VDD is within the comparison window 
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);
         }
         else
         {
-            /* PLC Transmission is permitted again */
+            // PLC Transmission is permitted again 
             DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
             appPlc.pvddMonTxEnable = true;
-            /* Restart PVDD Monitor to check when VDD is out of the comparison window */
+            // Restart PVDD Monitor to check when VDD is out of the comparison window 
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);
         }
     }
@@ -300,9 +300,9 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode);
 
   Example:
     <code>
-    /* Enable PLC PVDD Monitor Service */
+    // Enable PLC PVDD Monitor Service 
     SRV_PVDDMON_CallbackRegister(APP_PLC_PVDDMonitorCb, 0);
-    /* Notify when PVDD level leaves the comparison window */
+    // Notify when PVDD level leaves the comparison window
     SRV_PVDDMON_Start(SRV_PVDDMON_CMP_MODE_OUT);
     </code>
 
