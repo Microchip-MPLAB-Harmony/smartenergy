@@ -132,7 +132,6 @@ def setPlcMultiBandInUse(g3_band, g3_aux_band):
                 dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
 
 def removeAllBinFiles():
-    print("[CHRIS_dbg] : removeAllBinFiles")
     g3MacRtBinFileCENA.setEnabled(False)
     g3MacRtBinFileCENB.setEnabled(False)
     g3MacRtBinFileFCC.setEnabled(False)
@@ -141,16 +140,12 @@ def removeAllBinFiles():
 def includeBinFile(plcBand):
     if (plcBand == "CEN-A"):          
         g3MacRtBinFileCENA.setEnabled(True)
-        print("[CHRIS_dbg] : includeBinFile CEN-A")
     elif (plcBand == "CEN-B"):            
         g3MacRtBinFileCENB.setEnabled(True)
-        print("[CHRIS_dbg] : includeBinFile CEN-B")
     elif (plcBand == "FCC"):            
         g3MacRtBinFileFCC.setEnabled(True)
-        print("[CHRIS_dbg] : includeBinFile FCC")
     elif (plcBand == "ARIB"):           
         g3MacRtBinFileARIB.setEnabled(True) 
-        print("[CHRIS_dbg] : includeBinFile ARIB")
 
 def updateBinFiles():
     dict = {}
@@ -176,27 +171,22 @@ def updateBinFiles():
         g3MacRtAsmBinFile.setEnabled(False)
 
 def updateG3PLCBandInUse(symbol, event):
-    # print("[CHRIS_dbg] : updateG3PLCBandInUse <- " + event["id"])
     updateBinFiles()
 
 def plcBinAddressingMode(symbol, event):
-    # print("[CHRIS_dbg] : plcBinAddressingMode <- " + event["id"])
     symbol.setVisible(event["value"])
     updateBinFiles()
 
 def showPL460Pins(symbol, event):
-    # print("[CHRIS_dbg] : showPL460Pins <- " + event["id"])
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)  
 
 def showSleepPin(symbol, event):
-    # print("[CHRIS_dbg] : showSleepPin <- " + event["id"])
     symbol.setVisible(event["value"])
 
 def showThermalMonitorPin(symbol, event):
-    # print("[CHRIS_dbg] : showThermalMonitorPin <- " + event["id"])
     symbol.setVisible(event["value"])
 
 def showG3HighAttenuation(symbol, event):
@@ -214,7 +204,6 @@ def showG3HighAttenuation(symbol, event):
 def showG3InternalDriver(symbol, event):
     global plcDriverMode
 
-    # print("[CHRIS_dbg] : showG3InternalDriver <- " + event["id"])
     if (event["symbol"].getValue() == "CEN-B") and plcDriverMode.getValue() == "PL360":
         symbol.setVisible(True)
     else:
@@ -224,7 +213,6 @@ def showG3InternalDriver(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3Multiband(symbol, event):
-    # print("[CHRIS_dbg] : showG3Multiband <- " + event["id"])
     if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
         symbol.setVisible(True)
     else:
@@ -234,7 +222,6 @@ def showG3Multiband(symbol, event):
         # symbol.setReadOnly(False)
 
 def showG3AuxBand(symbol, event):
-    # print("[CHRIS_dbg] : showG3AuxBand <- " + event["id"])
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
@@ -271,10 +258,8 @@ def instantiateComponent(g3MacRtComponent):
 
     if Database.getSymbolValue("core", "DMA_ENABLE") == None:
         isDMAPresent = False
-        # print("[CHRIS_dbg] : DMA is NOT present")
     else:
         isDMAPresent = True
-        # print("[CHRIS_dbg] : DMA is present")
 
     global plcDriverMode
     plcDriverMode = g3MacRtComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
@@ -287,9 +272,12 @@ def instantiateComponent(g3MacRtComponent):
     plcPLIB.setReadOnly(True)
     plcPLIB.setHelp(plc_mac_rt_helpkeyword)
 
-    plcPLIBCSRIndex = g3MacRtComponent.createIntegerSymbol("DRV_PLC_PLIB_CSR_INDEX", None)
-    plcPLIBCSRIndex.setLabel("PLIB CSR Index")
-    plcPLIBCSRIndex.setReadOnly(True)
+    plcPLIBCSRIndex = g3MacRtComponent.createIntegerSymbol("DRV_PLC_PLIB_CS_INDEX", plcPLIB)
+    plcPLIBCSRIndex.setLabel("PLIB Chip Select Index")
+    plcPLIBCSRIndex.setMin(0)
+    plcPLIBCSRIndex.setMax(3)
+    plcPLIBCSRIndex.setDefaultValue(0)
+    plcPLIBCSRIndex.setVisible(False)
     plcPLIBCSRIndex.setHelp(plc_mac_rt_helpkeyword)
 
     plcExtIntPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
@@ -302,7 +290,7 @@ def instantiateComponent(g3MacRtComponent):
     plcExtIntSource = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_SRC", None)
     plcExtIntSource.setLabel("External Interrupt Source")
     plcExtIntSource.setDefaultValue("PIOA_IRQn")
-    plcExtIntSource.setVisible(True)
+    plcExtIntSource.setVisible(False)
     plcExtIntSource.setReadOnly(True)
     plcExtIntSource.setHelp(plc_mac_rt_helpkeyword)
     plcExtIntSource.setDependencies(g3MacRtExternalInterruptTrigger, ["DRV_PLC_EXT_INT_PIN"])
@@ -310,7 +298,7 @@ def instantiateComponent(g3MacRtComponent):
     plcExtIntPioPort = g3MacRtComponent.createStringSymbol("DRV_PLC_EXT_INT_PIO_PORT", None)
     plcExtIntPioPort.setLabel("External Interrupt Port")
     plcExtIntPioPort.setDefaultValue("PIO_PORT_A")
-    plcExtIntPioPort.setVisible(True)
+    plcExtIntPioPort.setVisible(False)
     plcExtIntPioPort.setReadOnly(True)
     plcExtIntPioPort.setHelp(plc_mac_rt_helpkeyword)
     plcExtIntPioPort.setDependencies(g3MacRtExternalInterruptPort, ["DRV_PLC_EXT_INT_PIN"])
@@ -402,9 +390,8 @@ def instantiateComponent(g3MacRtComponent):
     plcTXDMAChannel.setDefaultValue(0)
     plcTXDMAChannel.setVisible(False)
     plcTXDMAChannel.setReadOnly(True)
-    plcTXDMAChannel.setDependencies(requestAndAssignTxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+    plcTXDMAChannel.setDependencies(requestAndAssignDMAChannel, ["DRV_PLC_TX_RX_DMA"])
 
-    global plcTXDMAChannelComment
     plcTXDMAChannelComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_TX_DMA_CH_COMMENT", None)
     plcTXDMAChannelComment.setLabel("Warning!!! Couldn't Allocate DMA Channel for Transmit. Check DMA manager.")
     plcTXDMAChannelComment.setVisible(False)
@@ -416,7 +403,7 @@ def instantiateComponent(g3MacRtComponent):
     plcRXDMAChannel.setDefaultValue(1)
     plcRXDMAChannel.setVisible(False)
     plcRXDMAChannel.setReadOnly(True)
-    plcRXDMAChannel.setDependencies(requestAndAssignRxDMAChannel, ["DRV_PLC_TX_RX_DMA"])
+    plcRXDMAChannel.setDependencies(requestAndAssignDMAChannel, ["DRV_PLC_TX_RX_DMA"])
 
     global plcRXDMAChannelComment
     plcRXDMAChannelComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_RX_DMA_CH_COMMENT", None)
@@ -679,7 +666,7 @@ def instantiateComponent(g3MacRtComponent):
     plcBandInUse = g3MacRtComponent.createIntegerSymbol("DRV_PLC_BAND_IN_USE", None)
     plcBandInUse.setLabel("PLC Band in use")
     plcBandInUse.setDefaultValue(PLC_PROFILE_G3_CEN_A)
-    #plcBandInUse.setVisible(True)
+    plcBandInUse.setVisible(False)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setHelp(plc_mac_rt_helpkeyword)
     plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
@@ -735,13 +722,12 @@ def onAttachmentConnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    # print("[CHIRS_dbg] : onAttachmentConnected event - remoteID: " + remoteID.upper())
-
     if connectID == "drv_g3_macrt_SPI_dependency" :
-        # print("[CHIRS_dbg] : drv_g3_macrt_SPI_dependency")
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValue()
         plibUsed.setValue(remoteID.upper())
+        
+        # localComponent.getSymbolByID("DRV_PLC_PLIB_CS_INDEX").setVisible(True)
 
         # Set SPI baudrate
         if "FLEXCOM" in remoteID.upper():
@@ -750,10 +736,8 @@ def onAttachmentConnected(source, target):
             plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         plibBaudrate.clearValue()
         plibBaudrate.setValue(8000000)
-        # print("[CHIRS_dbg] : Set SPI baudrate: 8000000")
 
         if (isDMAPresent == True):
-
             dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
             dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
 
@@ -764,7 +748,6 @@ def onAttachmentConnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(False)
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(1)
             else:
-                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -787,19 +770,12 @@ def onAttachmentDisconnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    # print("[CHIRS_dbg] : onAttachmentDisconnected event - remoteID: " + remoteID.upper())
-
     if connectID == "drv_g3_macrt_SPI_dependency" :
-        print("[CHIRS_dbg] : drv_g3_macrt_SPI_dependency")
-
-        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
-
         dummyDict = {}
         dummyDict = Database.sendMessage(remoteID, "SPI_MASTER_MODE", {"isReadOnly":False})
         dummyDict = Database.sendMessage(remoteID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":False})
 
         if (isDMAPresent == True):
-
             dmaChannelSym = Database.getSymbolValue("core", "DMA_CH_FOR_" + remoteID.upper() + "_Transmit")
             dmaRequestSym = Database.getSymbolValue("core", "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Transmit")
 
@@ -810,7 +786,6 @@ def onAttachmentDisconnected(source, target):
                 localComponent.getSymbolByID("DRV_PLC_TX_RX_DMA").setValue(0)
                 localComponent.getSymbolByID("DRV_PLC_DEPENDENCY_DMA_COMMENT").setVisible(True)
             else:
-                # print("[CHIRS_dbg] : DMA ERROR")
                 localComponent.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(True)
                 localComponent.getSymbolByID("DRV_PLC_RX_DMA_CH_COMMENT").setVisible(True)
         else:
@@ -822,62 +797,41 @@ def onAttachmentDisconnected(source, target):
                 remoteSym.clearValue()
                 remoteSym.setReadOnly(False)
 
-        
+        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
+        # localComponent.getSymbolByID("DRV_PLC_PLIB_CS_INDEX").setVisible(False)
 
-def requestAndAssignTxDMAChannel(symbol, event):
-    global plcTXDMAChannelComment
+def requestAndAssignDMAChannel(symbol, event):
 
-    spiPeripheral = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_PLIB")
+    component = symbol.getComponent()
 
-    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
-    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+    spiPeripheral = component.getSymbolByID("DRV_PLC_PLIB").getValue()
 
-    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - " + dmaChannelID)
+    if symbol.getID() == "DRV_PLC_TX_DMA_CHANNEL":
+        dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Transmit"
+        dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Transmit"
+    else:
+        dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
+        dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
 
-    # Clear the DMA symbol. Done for backward compatibility.
-    Database.clearSymbolValue("core", dmaRequestID)
-
+    # Control visibility
+    symbol.setVisible(event["value"])
+    component.getSymbolByID("DRV_PLC_TX_DMA_CH_COMMENT").setVisible(event["value"])
+    
     dummyDict = {}
 
     if event["value"] == False:
         dummyDict = Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
-        plcTXDMAChannelComment.setVisible(False)
-        symbol.setVisible(False)
     else:
-        symbol.setVisible(True)
         dummyDict = Database.sendMessage("core", "DMA_CHANNEL_ENABLE", {"dma_channel":dmaRequestID})
 
     # Get the allocated channel and assign it
     channel = Database.getSymbolValue("core", dmaChannelID)
-    # print("[CHRIS_dbg] : requestAndAssignTxDMAChannel - channel " + str(channel))
-    symbol.setValue(channel)
+    if channel != None:
+        symbol.setValue(channel)
 
-def requestAndAssignRxDMAChannel(symbol, event):
-    global plcRXDMAChannelComment
-
-    spiPeripheral = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_PLIB")
-
-    dmaChannelID = "DMA_CH_FOR_" + str(spiPeripheral) + "_Receive"
-    dmaRequestID = "DMA_CH_NEEDED_FOR_" + str(spiPeripheral) + "_Receive"
-
-    # print("[CHRIS_dbg] : requestAndAssignRxDMAChannel - " + dmaChannelID)
-
-    # Clear the DMA symbol. Done for backward compatibility.
-    Database.clearSymbolValue("core", dmaRequestID)
-
-    dummyDict = {}
-
-    if event["value"] == False:
-        dummyDict = Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
-        plcRXDMAChannelComment.setVisible(False)
-        symbol.setVisible(False)
-    else:
-        symbol.setVisible(True)
-        dummyDict = Database.sendMessage("core", "DMA_CHANNEL_ENABLE", {"dma_channel":dmaRequestID})
-
-    # Get the allocated channel and assign it
-    channel = Database.getSymbolValue("core", dmaChannelID)
-    symbol.setValue(channel)
+    # Enable "System DMA" option in MHC
+    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
+        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":event["value"]})
 
 def requestDMAComment(symbol, event):
     global plcTXRXDMA
@@ -892,6 +846,3 @@ def destroyComponent(g3MacRtComponent):
     Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":False})
     Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":False})
     Database.sendMessage("HarmonyCore", "ENABLE_SYS_PORTS", {"isEnabled":False})
-
-    if Database.getSymbolValue("core", "DMA_ENABLE") != None:
-        Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":False})
