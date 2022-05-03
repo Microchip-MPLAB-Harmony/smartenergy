@@ -12,6 +12,7 @@ const SRV_USI_USART_INTERFACE srvUsi${INDEX?string}InitData${SRV_USI_DEVICE?stri
     .read = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Read,
     .write = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Write,
     .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_WriteIsBusy,
+    .intSource = ${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_IRQn,
 };
 
 const USI_USART_INIT_DATA srvUsi${INDEX?string}InitData = {

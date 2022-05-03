@@ -113,14 +113,17 @@ static void _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
             case USI_CDC_RCV:
                 if (*pData == USI_ESC_KEY_7E)
                 {
-                    /* Report via USI callback */
-                    if (dObj->cbFunc)
+                    if (dObj->usiNumBytesRead)
                     {
-                        dObj->cbFunc(dObj->usiRdOutIndex, dObj->usiNumBytesRead, dObj->context);
-                    }
+                        /* Report via USI callback */
+                        if (dObj->cbFunc)
+                        {
+                            dObj->cbFunc(dObj->usiRdOutIndex, dObj->usiNumBytesRead, dObj->context);
+                        }
 
-                    /* Update Out Pointer */
-                    dObj->usiRdOutIndex += dObj->usiNumBytesRead;
+                        /* Update Out Pointer */
+                        dObj->usiRdOutIndex += dObj->usiNumBytesRead;
+                    }
                     
                     /* End of USI Message */
                     dObj->devStatus = USI_CDC_IDLE;

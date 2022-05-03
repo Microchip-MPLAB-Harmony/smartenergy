@@ -81,6 +81,8 @@ static USI_USART_MSG_QUEUE gUsiUsartMsgQueue[SRV_USI_USART_CONNECTIONS] = {NULL}
 
 #define USI_USART_GET_INSTANCE(index)    (index >= SRV_USI_USART_CONNECTIONS)? NULL : &gUsiUsartOBJ[index]
 
+static uint32_t usiUsartCounterDiscardMsg;
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
@@ -150,31 +152,47 @@ static void _USI_USART_ABORT_MSG_IN_QUEUE( USI_USART_OBJ* dObj )
 {
     USI_USART_MSG_QUEUE* dObjQueue;
     USI_USART_MSG* pMsgTmp;
+    USI_USART_MSG* pMsgPrev;
     
     /* Get Queue */
     dObjQueue = dObj->pMsgQueue;
     
-    if (dObjQueue->front == NULL)
-    {   /* Queue is empty */
+    /* Get first element in queue */
+    pMsgTmp = dObjQueue->front;
+    
+    if (pMsgTmp == dObj->pRcvMsg)
+    {
+        /* Empty queue */
+        /* Update buffer in use. Return it to pool */
+        pMsgTmp->inUse = false;
+        dObjQueue->front = NULL;
+        dObjQueue->rear = NULL;
         return;
     }
     
-    /* Find previous element in queue */
-    pMsgTmp = dObjQueue->front;
+    /* Get Prev message in queue */
+    pMsgPrev = pMsgTmp;
+    
+    /* Check next element */
+    pMsgTmp = (USI_USART_MSG*)pMsgTmp->next;
+    
     while (pMsgTmp != NULL)
     {
-        if (pMsgTmp->next == (struct USI_USART_MSG*)dObjQueue->rear)
+        if (pMsgTmp == dObj->pRcvMsg)
         {
+            /* Found message to be discarded */
             /* Update buffer in use. Return it to pool */
-            dObjQueue->rear->inUse = false;
+            pMsgTmp->inUse = false;
             /* Update last link */
             pMsgTmp->next = NULL;
             /* Update queue to the previous element */
-            dObjQueue->rear = pMsgTmp;            
+            dObjQueue->rear = pMsgPrev;            
             return;
         }
+        /* Get Prev message in queue */
+        pMsgPrev = pMsgTmp;
         /* Check next element */
-        pMsgTmp = (USI_USART_MSG*)pMsgTmp->next;        
+        pMsgTmp = (USI_USART_MSG*)pMsgTmp->next;     
     }
 }
 
@@ -206,27 +224,44 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 /* Create new message */
                 pMsg = _USI_USART_PUT_MSG_TO_QUEUE(dObj);
                 
-                /* Fill in the message */  
-                pData = (uint8_t *)(dObj->pRdBuffer);
-                pMsg->pMessage = pData + dObj->byteCount;
-                pMsg->pDataRd = pMsg->pMessage;
-                pMsg->length = 0;    
-                
-                /* Update Msg in reception data */
-                dObj->pRcvMsg = pMsg;
-                        
+                if (pMsg)
+                {
+                    /* Fill in the message */  
+                    pData = (uint8_t *)(dObj->pRdBuffer);
+                    pMsg->pMessage = pData + dObj->byteCount;
+                    pMsg->pDataRd = pMsg->pMessage;
+                    pMsg->length = 0;    
+
+                    /* Update Msg in reception data */
+                    dObj->pRcvMsg = pMsg;
+                }
+
                 /* New Message, start reception */
                 dObj->devStatus = USI_USART_RCV;
+                /* Start Counter to discard uncompleted Message */
+                usiUsartCounterDiscardMsg = 0x10000;
             }            
             break;
             
         case USI_USART_RCV:
+            if (dObj->pRcvMsg == NULL)
+            {
+                if (dObj->rcvChar == USI_ESC_KEY_7E)
+                {
+                    dObj->devStatus = USI_USART_IDLE;
+                }
+                break;
+            }
+            
             if (dObj->rcvChar == USI_ESC_KEY_7E)
             {
                 /* End of Message */
                 pMsg->length = pMsg->pDataRd - pMsg->pMessage;
                 dObj->pRcvMsg = NULL;
                 dObj->devStatus = USI_USART_IDLE;
+				
+                /* Stop Counter to discard uncompleted Message */
+                usiUsartCounterDiscardMsg = 0;
             }              
             else if (dObj->rcvChar == USI_ESC_KEY_7D)
             {
@@ -447,6 +482,8 @@ void USI_USART_Tasks (uint32_t index)
 {
     USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     USI_USART_MSG* pMsg;
+    bool interruptState;
+    INT_SOURCE aSrcId;
     
     /* Check handler */    
     if (dObj == NULL)
@@ -464,16 +501,35 @@ void USI_USART_Tasks (uint32_t index)
         return;
     }
     
+    if (usiUsartCounterDiscardMsg)
+    {
+        if (--usiUsartCounterDiscardMsg == 0)
+        {
+            /* Discard incomplete message */
+            _USI_USART_ABORT_MSG_IN_QUEUE(dObj);
+            dObj->pRcvMsg = NULL;
+            dObj->devStatus = USI_USART_IDLE;
+        }
+    }
+    
     /* Handle callback functions */
     pMsg = dObj->pMsgQueue->front;
-    if ((pMsg != NULL) && (pMsg->length > 0))
+    if ((pMsg != NULL) && (pMsg != dObj->pRcvMsg))
     {        
-        if (dObj->cbFunc)
+        if ((dObj->cbFunc) && (pMsg->length > 0))
         {
             dObj->cbFunc(pMsg->pMessage, pMsg->length, dObj->context);
         }
-        
+
+        /* Critical Section */
+        /* Save global interrupt state and disable interrupt */
+        aSrcId = (INT_SOURCE)dObj->plib->intSource;
+        interruptState = SYS_INT_SourceDisable(aSrcId);
+
         /* Remove Message from Queue */
         _USI_USART_GET_MSG_FROM_QUEUE(dObj);
+        
+        /* Restore interrupt state */
+        SYS_INT_SourceRestore(aSrcId, interruptState);
     }
 }

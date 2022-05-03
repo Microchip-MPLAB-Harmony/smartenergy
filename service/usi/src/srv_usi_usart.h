@@ -106,6 +106,7 @@ typedef struct
     USI_USART_PLIB_WRRD read;
     USI_USART_PLIB_WRRD write;
     USI_USART_PLIB_WRITE_ISBUSY writeIsBusy;
+    IRQn_Type intSource;
 } SRV_USI_USART_INTERFACE;
 
 typedef struct
