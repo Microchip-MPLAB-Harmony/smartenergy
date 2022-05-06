@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="How the Library Works" />
+<meta name="DC.relation" scheme="URI" content="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="how-the-library-works" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>How the Library Works</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-how-the-library-works" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-81475CB9-3097-4C2B-BA9F-D58AF46781CC"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="how-the-library-works">
+<h1 class="title topictitle1" id="ariaid-title1">How the Library Works</h1><div class="body"></div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html">PLC PHY Sniffer Service</a></div>
+</div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="plc-phy-frames-serialization"><h2 class="title topictitle2" id="ariaid-title2">PLC PHY Frames Serialization</h2><div class="body"><p class="p">PLC Sniffer mission is to provide information about every frame present in the PLC medium.
+This information includes the frame itself and some parameters related to PLC communications.
+Sniffer library provides functions which perform the encoding of the frames along with their related parameters and store them in a buffer that can be later sent through a Serial interface.
+On the other side of this interface, the <em class="ph i">Microchip PLC Sniffer Tool</em> will receive the encapsulated packets, process and present them on a GUI to ease visualization and further analysis. This allows monitoring the PLC medium in real time.</p>
+<p class="p">Library provides separate functions to be called either when frames are transmitted, and when are received by a device. This leads to 2 different modes of operation for the PLC Sniffer:</p>
+<ul class="ul"><li class="li"><p class="p">Stand-alone Sniffer. A device which runs an application with the only purpose of acting as a sniffer. In this case, device wil never send any frame, and thus only the received frames serialization will be used.</p>
+</li>
+<li class="li"><p class="p">Embedded Sniffer. This mode is used when a regular device embeds sniffer capabilities. In this case, received frames will be serialized (after sending them to upper layers for regular processing), and also transmitted frames will be sent to the sniffer library so they are serialized (to simulate reception of own frames).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title3" id="parameters-encoded-with-frames-for-serialization"><h2 class="title topictitle2" id="ariaid-title3">Parameters Encoded with Frames for Serialization</h2><div class="body"><p class="p">The parameters included to provide additional information of the PLC frames depend on the used PLC profile, G3 or PRIME.</p>
+</div>
+<div class="topic nested2" aria-labelledby="ariaid-title4" id="g3-parameters"><h3 class="title topictitle3" id="ariaid-title4">G3 parameters</h3><div class="body">
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e51"><span>Parameter</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e53"><span>Description</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Modulation Type/Scheme</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Modulation in which PLC frame is encoded (Fixed to '0' for ACK frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Tone Map</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Bitmap indicating which frquencies are used for Payload encoding (Fixed to '0' for ACK frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Num Symbols</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Number of OFDM symbols that frame payload consists of (Fixed to '0' for ACK frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>SNR</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Indicator of frame reception quality (Fixed to '0xFF' for ACK frames and Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Delimiter Type</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Field to indicate frame type (Data with or without ACK request, ACK, NACK)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Time Ini</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Timestamp for the start of frame in line</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Time End</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Timestamp for the end of frame in line</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>RSSI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Received Signal Strength Indicator (Fixed to '0xFFFF' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Length</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Frame lenght</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>PDU</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Frame buffer</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><em class="ph i">Note: Number of symbols have to be provided to sniffer library, by means of a dedicated function, before calling encoding functions.</em></p>
+</div>
+</div>
+<div class="topic nested2" aria-labelledby="ariaid-title5" id="prime-parameters"><h3 class="title topictitle3" id="ariaid-title5">PRIME parameters</h3><div class="body">
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e119"><span>Parameter</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e121"><span>Description</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Modulation Scheme</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Modulation in which PLC frame is encoded</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Num Symbols</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Number of OFDM symbols that frame payload consists of</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>SNR</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Indicator of frame reception quality (Fixed to '7' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>CINR Average</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Auxiliary indicator of frame reception quality (averaged) (Fixed to '60' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>CINR Min</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Auxiliary indicator of frame reception quality (minimum) (Fixed to '0xFF' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Channel</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>PLC Channel in which device is operating</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>BER Average</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Bit Error Rate estimation (averaged) (Fixed to '0' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>BER Max</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Bit Error Rate estimation (maximum) (Fixed to '0' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Time Ini</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Timestamp for the start of frame in line</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Time End</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Timestamp for the end of frame in line</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>RSSI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Received Signal Strength Indicator (Fixed to '140' for Transmitted frames)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Length</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Frame lenght</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>PDU</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Frame buffer</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><em class="ph i">Note: Number of symbols have to be provided to sniffer library, by means of a dedicated function, before calling encoding functions.</em></p>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title6" id="plc-phy-sniffer-configuration"><h2 class="title topictitle2" id="ariaid-title6">PLC PHY Sniffer Configuration</h2><div class="body"><p class="p">There are some parameters that have to be correctly configured in a device in order to communicate with other peers in the network.
+These parameters can be configured on the Sniffer library so frames are correctly received and/or parameters correctly computed. Parameter difer depending on the used PLC profile, G3 or PRIME.</p>
+</div>
+<div class="topic nested2" aria-labelledby="ariaid-title7" id="g3-configuration-params"><h3 class="title topictitle3" id="ariaid-title7">G3 configuration params</h3><div class="body"><p class="p">G3 has one configuration parameter that, if different between 2 devices, blocks communication.
+This parameter is the <strong class="ph b">Tone Mask</strong> and it indicates which tones are used for frame encoding/decoding in the working band and which ones are not.
+Sniffer library provides a dedicated function <a class="xref" href="GUID-033E46F6-14A5-4DD2-9BFC-BDA2AE973092.html"><em class="ph i">SRV_PSNIFFER_ConvertToneMask</em></a> to convert a Tone Mask configuration received from the <em class="ph i">Microchip PLC Sniffer Tool</em> and then write it to the corresponding PLC PHY IB to be used for encoding/decoding.</p>
+</div>
+</div>
+<div class="topic nested2" aria-labelledby="ariaid-title8" id="prime-configuration-params"><h3 class="title topictitle3" id="ariaid-title8">PRIME configuration params</h3><div class="body"><p class="p">PRIME has one configuration parameter that, if different between 2 devices, blocks communication.
+This parameter is the <strong class="ph b">PLC Channel</strong> and it indicates which subband is being used inside the available band.
+Sniffer library provides a dedicated function <a class="xref" href="GUID-BCB28663-4E3B-4C51-8F7D-A9495FB0A16A.html"><em class="ph i">SRV_PSNIFFER_SetPLCChannel</em></a> to set the configuration received from the <em class="ph i">Microchip PLC Sniffer Tool</em> and then write it to the corresponding PLC PHY IB.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

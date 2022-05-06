@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="How the Library Works" />
+<meta name="DC.relation" scheme="URI" content="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="how-the-library-works" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>How the Library Works</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-how-the-library-works" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-93466C84-5C2E-4AA6-A8AB-812D804F9074"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="how-the-library-works">
+<h1 class="title topictitle1" id="ariaid-title1">How the Library Works</h1><div class="body"><p class="p">The G3 PLC MAC RT firmware communicates with a PLC transceiver using an SPI port.The PLC transceiver performs PHY and MAC RT (Real Time) duties of the communication protocol, thus allowing a high latency attendance from the host MCU.MAC duties performed by the library are:</p>
+<ul class="ul"><li class="li"><p class="p">Frame filtering so only frames to be processed are sent to upper layers.</p>
+</li>
+<li class="li"><p class="p">Acknowledgement generation and reception, including frame retries when an expected ACK is not received.</p>
+</li>
+<li class="li"><p class="p">Segmentation and reassembly of MAC frames.</p>
+</li>
+<li class="li"><p class="p">Neighbour maintenance and link parameters negotiation (modulation scheme and used tones) on both forward and reverse direction.</p>
+</li>
+<li class="li"><p class="p">POS (Personal Operating Space) maintenance by storing information of every heard node before filtering.</p>
+</li>
+<li class="li"><p class="p">Beacon generation upon Beacon Request frames reception.</p>
+</li>
+</ul>
+<p class="p">The G3 PLC MAC RT library offers the necessary functions to control the transceiver, which include:</p>
+<ul class="ul"><li class="li"><p class="p">Library initialization</p>
+</li>
+<li class="li"><p class="p">Transmitting and Receiving PLC frames</p>
+</li>
+<li class="li"><p class="p">Accessing PLC Information Base to get/set configuration parameters</p>
+</li>
+<li class="li"><p class="p">Enabling/Disabling transceiver Sleep Mode</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">PLC Transceiver Interrupt mapping</strong></p>
+<p class="p">PLC transceiver events have to be notified to MCU in which MAC RT Driver is running.This is done using a physical connection between the transceiver and an interrupt-capable PIO in MCU.The library implements <a class="xref" href="GUID-0582DE0E-C854-4C96-BA08-C165BF90A15F.html"><em class="ph i">DRV_G3_MACRT_ExternalInterruptHandler</em></a> function, which is set as callback to be invoked when the interrupt is triggered on PIO.This function then reads information from the transceiver and performs the required operations.</p>
+<p class="p"><strong class="ph b">Driver Initialization and instance opening</strong></p>
+<p class="p">First of all, driver has to be initialized by calling <a class="xref" href="GUID-8D6705DB-D96A-4786-9724-F6B586F876B7.html"><em class="ph i">DRV_G3_MACRT_Initialize</em></a> to get a valid handle.Then, when an instance is opened by calling <a class="xref" href="GUID-CFC0A3D7-6B3D-4D47-A061-7314346BFFCF.html"><em class="ph i">DRV_G3_MACRT_Open</em></a>, the library loads a binary file onto the PLC transceiver. This is done using an iternal transfer protocol through SPI port. After binary loading, the library manages the reset and startup of the transceiver. This task is transparent to the user, and the library is not available until binary file is transferred and thus PLC transceiver is ready to operate.At this point, driver is ready to be configured and used.</p>
+<p class="p"><strong class="ph b">Data Service Functions</strong></p>
+<p class="p">PLC communication capabilities are provided by the following functions:</p>
+<ul class="ul"><li class="li"><p class="p">Frame Transmission. Frames are trasnmitted to PLC using <a class="xref" href="GUID-0C474247-A02D-4DAA-B7CA-976F25A16403.html"><em class="ph i">DRV_G3_MACRT_TxRequest</em></a> function. This function expects a valid standard IEEE 802.15.4 frame (including its MAC Header) as parameter, otherwise frame will not be correctly transmitted.</p>
+</li>
+<li class="li"><p class="p">Transmission result is reported by library through the configured callback function set on <a class="xref" href="GUID-7696B688-2CF7-4EC3-BAA2-FE442F8A9CA3.html"><em class="ph i">DRV_G3_MACRT_TxCfmCallbackRegister</em></a>.</p>
+</li>
+<li class="li"><p class="p">Frame reception is reported by library in 2 steps. First, reception parameters are received in the configured callback function set on <a class="xref" href="GUID-292AE054-43EB-4942-A030-F4D2A2F55F87.html"><em class="ph i">DRV_G3_MACRT_RxParamsIndCallbackRegister</em></a>. Second, frame itself is received through the configured callback function set on <a class="xref" href="GUID-E254FA9C-1F59-4868-98F7-97FC767992D1.html"><em class="ph i">DRV_G3_MACRT_DataIndCallbackRegister</em></a>. Reception buffer will contain a valid standard IEEE 802.15.4 frame (including its MAC Header) for further processing.</p>
+</li>
+</ul>
+<div class="p">Following figures ilustrate transmission request and following callback generation for both acknowledged and non-acknowledged transmissions.<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>MAC RT Trasnsmission and related events (ACK requested)</div><img class="image" src="GUID-1148B707-471D-4621-8F75-43E0DCFA3050-low.png" alt="MACRT_acknowledged_transmission" /><br /></div>
+
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 2. </span>MAC RT Trasnsmission and related events (ACK not requested)</div><img class="image" src="GUID-9B945C78-A4F3-498E-BFD6-50B11CE595D5-low.png" alt="MACRT_non_acknowledged_transmission" /><br /></div>
+</div>
+<p class="p">Apart from receiving frames to be processed, MAC RT driver can act as a sniffer (if configured to) at 2 levels:</p>
+<ul class="ul"><li class="li"><p class="p">MAC RT. Where every valid MAC RT frame will be reported before performing any filtering. As in Data Indication callback, a valid standard IEEE 802.15.4 frame (including its MAC Header) is received.</p>
+</li>
+<li class="li"><p class="p">PHY. Where every PHY frame will be reported, before filtering and reassembling, even before CRC checking so invalid MAC frames are also received. The content of the sniffer data is compliant with MCHP PLC Sniffer tool provided by Microchip.
+The sniffed frames are reported on the configured callback functions set on <a class="xref" href="GUID-D8DBD579-20F6-4CBF-BA28-FCB386F1E9B8.html"><em class="ph i">DRV_G3_MACRT_MacSnifferCallbackRegister</em></a> and <a class="xref" href="GUID-791DBB8A-FE97-43D1-AD04-41B7AE192649.html"><em class="ph i">DRV_G3_MACRT_PhySnifferCallbackRegister</em></a> respectively.</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Management Functions</strong></p>
+<p class="p">G3 MAC RT library includes management functions to configure it and to retrieve information about the library, transceiver, and PLC medium status.Management functions include:</p>
+<ul class="ul"><li class="li"><p class="p">Information Base Access. There are several parameters at both MAC RT and PHY levels that can be written/read to change behaviour and get information to/from the library. In order to get/set these parameters, <a class="xref" href="GUID-39692EBF-C9ED-41F6-A1BB-52B76247E293.html"><em class="ph i">DRV_G3_MACRT_PIBGet</em></a> and <a class="xref" href="GUID-C38AD3F4-CA6C-48DE-A6A1-28C18B778318.html"><em class="ph i">DRV_G3_MACRT_PIBSet</em></a> functions are used. Available parameters are listed on <a class="xref" href="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A.html"><em class="ph i">MAC_RT_PIB Enum</em></a> and <a class="xref" href="GUID-DCDFA2E5-435B-474F-9824-D4D6B42D70DF.html"><em class="ph i">MAC_RT_PHY_PIB Enum</em></a>.</p>
+</li>
+<li class="li"><p class="p">Sleep Mode. <a class="xref" href="GUID-93531DF8-21C2-4F4D-9540-60E4867FAF8F.html"><em class="ph i">DRV_G3_MACRT_Sleep</em></a> function allows entering/exitting PLC transceiver Sleep mode. In case Sleep mode is exited due to an external event, it is reported by the library by invoking the callback function set in <a class="xref" href="GUID-1D099440-709D-4D2E-AE2C-163F5D2415CE.html"><em class="ph i">DRV_G3_MACRT_SleepIndCallbackRegister</em></a>.</p>
+</li>
+<li class="li"><p class="p">PLC Transceiver Timer Referece. Every PLC transmission and reception timestamp is referenced to an interal microseconds counter. The current value of such counter can be retrieved using <a class="xref" href="GUID-F3DA568F-1791-4DD6-9397-5528439DEEEE.html"><em class="ph i">DRV_G3_MACRT_GetTimerReference</em></a>.</p>
+</li>
+<li class="li"><p class="p">PLC Transceiver Error handling. Errors in the PLC transceiver (here called "exceptions") are reported by the library invoking the callback function set in <a class="xref" href="GUID-517695B0-A450-411B-8033-B8B837C26FD3.html"><em class="ph i">DRV_G3_MACRT_ExceptionCallbackRegister</em></a>. Exceptions are described in <a class="xref" href="GUID-55498A05-5BFD-4A23-8F82-57F0C6736476.html"><em class="ph i">DRV_G3_MACRT_EXCEPTION Enum</em></a>.</p>
+</li>
+<li class="li"><p class="p">PLC Transceiver Status. <a class="xref" href="GUID-96988540-2CDE-43E3-B49A-FED2B49DEA37.html"><em class="ph i">DRV_G3_MACRT_Status</em></a> provides the current status of PLC Transceiver and may be used to verify whether it is ready to accept requests from MAC RT driver.</p>
+</li>
+<li class="li"><p class="p">PLC Transmission Enabling/Disabling. Sometimes it is required to inhibit MAC RT driver to transmit frames to PLC medium, but keeping everything else on the driver running and maintaining the Information Base. <a class="xref" href="GUID-C878A278-A038-469F-AA4E-717F236F2131.html"><em class="ph i">DRV_G3_MACRT_EnableTX</em></a> function allow to disable PLC transmissions and later enabling them back, keeping other driver mechanisms active, as well as its state machine.</p>
+</li>
+</ul>
+</div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html">G3 MAC RT Driver</a></div>
+</div>
+</div></body>
+</html>

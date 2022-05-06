@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="Configuring The Library" />
+<meta name="DC.relation" scheme="URI" content="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="configuring-the-library" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Configuring The Library</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-configuring-the-library" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="configuring-the-library">
+<h1 class="title topictitle1" id="ariaid-title1">Configuring The Library</h1><div class="body"><p class="p">USI Service is configured via MCC. The following snapshots show the MCC configuration window for USI Service and brief description.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>USI Service common configuration options for all instances</div><img class="image" src="GUID-4723EBC7-E7BD-45DF-A415-877591516D28-low.png" alt="SRV_USI_mcc_usi" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Received Message Pool Size</strong></p>
+<ul class="ul"><li class="li"><p class="p">Specifies the maximum number of received USI messages (of any length) that can be stored, without calling <a class="xref" href="GUID-E0E5E6A7-18F0-4315-B9C1-E4D3011230A8.html"><em class="ph i">SRV_USI_Tasks</em></a>, for all instances using UART (not used for instances using USB CDC)</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">UART API</strong></p>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">UART Connections</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the number of USI instances using UART</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">CDC API</strong></p>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">CDC Connections</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the number of USI instances using USB CDC</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="p">Each USI instance can be connected to:</p>
+<ul class="ul"><li class="li"><p class="p">Peripheral Library with <strong class="ph b">UART</strong> capability (UART/USART/FLEXCOM/SERCOM)</p>
+</li>
+<li class="li"><p class="p">USB CDC Function Driver (<strong class="ph b">USB_DEVICE_CDC</strong> capability)</p>
+</li>
+</ul>
+<p class="p">The user must connect only one dependency to each USI instance. Altough it is allowed in MCC to connect an instance to both UART and USB_DEVICE_CDC, it is not supported by the library and the code will not be generated properly.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 2. </span>USI Service configuration options for UART instance</div><img class="image" src="GUID-CACA8649-7E51-4726-8F73-96A32701B8FE-low.png" alt="SRV_USI_mcc_usi_uart" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Device Used</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the hardware PLIB instance used by the corresponding instance of USI Service.</p>
+</li>
+<li class="li"><p class="p">The underlying PLIB is automatically configured in <strong class="ph b">Non-blocking mode</strong>, as shown in the figure below</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Read Buffer Size</strong></p>
+<ul class="ul"><li class="li"><p class="p">Size in bytes of the buffer used by the corresponding USI instance for message reception</p>
+</li>
+<li class="li"><p class="p">Note that the buffer can store more than one received message (<strong class="ph b">Received Message Pool Size</strong>) if a new message is received before calling <a class="xref" href="GUID-E0E5E6A7-18F0-4315-B9C1-E4D3011230A8.html"><em class="ph i">SRV_USI_Tasks</em></a></p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Write Buffer Size</strong></p>
+<ul class="ul"><li class="li"><p class="p">Size in bytes of the buffer used by the corresponding USI instance for message transmission</p>
+</li>
+<li class="li"><p class="p">Note that USI adds overhead (start/end marks, USI header, escaped characters) to the message sent to <a class="xref" href="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html"><em class="ph i">SRV_USI_Send_Message</em></a></p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 3. </span>UART Peripheral configuration</div><img class="image" src="GUID-83E2EA1C-492C-4DF0-8466-E9C5410CBBBD-low.png" alt="SRV_USI_mcc_uart" /><br /></div>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 4. </span>USI Service configuration options for USB CDC instance</div><img class="image" src="GUID-536D4849-94B1-4399-9F71-7331A8D82351-low.png" alt="SRV_USI_mcc_usi_cdc" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Device Used</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the USB CDC Instance used by the corresponding instance of USI Service.</p>
+</li>
+<li class="li"><p class="p">The user should configure <strong class="ph b">cdc_com_port_single_demo</strong> in the USB Device Layer module, as shown in the figure below</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Read Buffer Size</strong></p>
+<ul class="ul"><li class="li"><p class="p">Size in bytes of the buffer used by the corresponding USI instance for message reception</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Write Buffer Size</strong></p>
+<ul class="ul"><li class="li"><p class="p">Size in bytes of the buffer used by the corresponding USI instance for message transmission</p>
+</li>
+<li class="li"><p class="p">Note that USI adds overhead (start/end marks, USI header, escaped characters) to the message sent to <a class="xref" href="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html"><em class="ph i">SRV_USI_Send_Message</em></a></p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 5. </span>USB Device Layer configuration</div><img class="image" src="GUID-6CF62397-359E-4201-8207-A593F05DC261-low.png" alt="SRV_USI_mcc_cdc" /><br /></div>
+</div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html">USI Service</a></div>
+</div>
+</div></body>
+</html>

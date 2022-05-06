@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="G3 MAC RT IBs" />
+<meta name="DC.relation" scheme="URI" content="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="g3-mac-rt-ibs" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>G3 MAC RT IBs</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-g3-mac-rt-ibs" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-3F0A0B53-ED4C-474E-8255-0416500DEB0B"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="g3-mac-rt-ibs">
+<h1 class="title topictitle1" id="ariaid-title1">G3 MAC RT IBs</h1><div class="body"></div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A.html">MAC_RT_PIB Enum</a></div>
+</div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="mac-rt-pib-max-be-0x00000047"><h2 class="title topictitle2" id="ariaid-title2">MAC_RT_PIB_MAX_BE (0x00000047)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum value of back-off exponent. It should always be greater than macMinBE.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 8.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title3" id="mac-rt-pib-bsn-0x00000049"><h2 class="title topictitle2" id="ariaid-title3">MAC_RT_PIB_BSN (0x00000049)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Beacon frame sequence number.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> Random.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title4" id="mac-rt-pib-dsn-0x0000004c"><h2 class="title topictitle2" id="ariaid-title4">MAC_RT_PIB_DSN (0x0000004C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Data frame sequence number.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> Random.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title5" id="mac-rt-pib-max-csma-backoffs-0x0000004e"><h2 class="title topictitle2" id="ariaid-title5">MAC_RT_PIB_MAX_CSMA_BACKOFFS (0x0000004E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum number of back-off attempts.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 50.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title6" id="mac-rt-pib-min-be-0x0000004f"><h2 class="title topictitle2" id="ariaid-title6">MAC_RT_PIB_MIN_BE (0x0000004F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Minimum value of back-off exponent.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 3.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="mac-rt-pib-pan-id-0x00000050"><h2 class="title topictitle2" id="ariaid-title7">MAC_RT_PIB_PAN_ID (0x00000050)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> PAN ID of the network.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0xFFFF.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="mac-rt-pib-promiscuous-mode-0x00000051"><h2 class="title topictitle2" id="ariaid-title8">MAC_RT_PIB_PROMISCUOUS_MODE (0x00000051)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Promiscuous mode enabled as defined in IEEE 802.15.4 specification.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title9" id="mac-rt-pib-short-address-0x00000053"><h2 class="title topictitle2" id="ariaid-title9">MAC_RT_PIB_SHORT_ADDRESS (0x00000053)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Device short address.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0xFFFF.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title10" id="mac-rt-pib-max-frame-retries-0x00000059"><h2 class="title topictitle2" id="ariaid-title10">MAC_RT_PIB_MAX_FRAME_RETRIES (0x00000059)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum number of retransmission.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 5.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title11" id="mac-rt-pib-duplicate-detection-ttl-0x00000078"><h2 class="title topictitle2" id="ariaid-title11">MAC_RT_PIB_DUPLICATE_DETECTION_TTL (0x00000078)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Time a received tuple <span class="xref"></span> is retained for duplicate frame detection, in seconds.
+This value should be greater than (1 + MAC_RT_PIB_MAX_FRAME_RETRIES) * aEIFS.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 3.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title12" id="mac-rt-pib-high-priority-window-size-0x00000100"><h2 class="title topictitle2" id="ariaid-title12">MAC_RT_PIB_HIGH_PRIORITY_WINDOW_SIZE (0x00000100)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> The high priority contention window size, in number of slots.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 7.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title13" id="mac-rt-pib-csma-no-ack-count-0x00000106"><h2 class="title topictitle2" id="ariaid-title13">MAC_RT_PIB_CSMA_NO_ACK_COUNT (0x00000106)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Statistic counter of the number of times an ACK is not received after transmitting a unicast data frame.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title14" id="mac-rt-pib-bad-crc-count-0x00000109"><h2 class="title topictitle2" id="ariaid-title14">MAC_RT_PIB_BAD_CRC_COUNT (0x00000109)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Statistic counter of the number of frames received with bad CRC.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title15" id="mac-rt-pib-neighbour-table-0x0000010a"><h2 class="title topictitle2" id="ariaid-title15">MAC_RT_PIB_NEIGHBOUR_TABLE (0x0000010A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> The neighbour table as defined in G3-PLC Specification.</p>
+<p class="p">To get all the active entries, the first step is to get the number of such active entries by means of MAC_WRP_PIB_MANUF_NEIGHBOUR_TABLE_COUNT (0x08000012). Then, because the table is ordered, all the entries can be obtained by iterating from 0 to the number of active entries.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 19-byte entries as defined in the following structure:</p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e314', this);">Copy</button><code id="d36492e314" content="typedef struct __attribute__((packed)) {&#xA;  uint16_t shortAddress;&#xA;  MAC_RT_TONE_MAP toneMap;&#xA;  uint8_t modulationType : 3;&#xA;  uint8_t txGain : 4;&#xA;  uint8_t txRes : 1;&#xA;  MAC_RT_TX_COEF txCoef;&#xA;  uint8_t modulationScheme : 1;&#xA;  uint8_t phaseDifferential : 3;&#xA;  uint8_t lqi;&#xA;  uint16_t tmrValidTime;&#xA;} MAC_RT_NEIGHBOUR_ENTRY;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
+  uint16_t shortAddress<span class="ph token punctuation">;</span>
+  MAC_RT_TONE_MAP toneMap<span class="ph token punctuation">;</span>
+  uint8_t modulationType <span class="ph token operator">:</span> <span class="ph token number">3</span><span class="ph token punctuation">;</span>
+  uint8_t txGain <span class="ph token operator">:</span> <span class="ph token number">4</span><span class="ph token punctuation">;</span>
+  uint8_t txRes <span class="ph token operator">:</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
+  MAC_RT_TX_COEF txCoef<span class="ph token punctuation">;</span>
+  uint8_t modulationScheme <span class="ph token operator">:</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
+  uint8_t phaseDifferential <span class="ph token operator">:</span> <span class="ph token number">3</span><span class="ph token punctuation">;</span>
+  uint8_t lqi<span class="ph token punctuation">;</span>
+  uint16_t tmrValidTime<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span> MAC_RT_NEIGHBOUR_ENTRY<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title16" id="mac-rt-pib-csma-fairness-limit-0x0000010c"><h2 class="title topictitle2" id="ariaid-title16">MAC_RT_PIB_CSMA_FAIRNESS_LIMIT (0x0000010C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Channel access fairness limit. Specifies after how many failed back-off attempts, back-off exponent is set to minBE. Should be at least (2 * (MAC_RT_PIB_MAX_BE - MAC_RT_PIB_MIN_BE)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 25.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title17" id="mac-rt-pib-tmr-ttl-0x0000010d"><h2 class="title topictitle2" id="ariaid-title17">MAC_RT_PIB_TMR_TTL (0x0000010D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum time to live for an entry in the neighbor table, in minutes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 10.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title18" id="mac-rt-pib-pos-table-entry-ttl-0x0000010e"><h2 class="title topictitle2" id="ariaid-title18">MAC_RT_PIB_POS_TABLE_ENTRY_TTL (0x0000010E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum time to live for an entry in the POS table, in minutes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 255.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title19" id="mac-rt-pib-rc-coord-0x0000010f"><h2 class="title topictitle2" id="ariaid-title19">MAC_RT_PIB_RC_COORD (0x0000010F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Route cost to coordinator to be used in the beacon payload as RC_COORD.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0xFFFF.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title20" id="mac-rt-pib-tone-mask-0x00000110"><h2 class="title topictitle2" id="ariaid-title20">MAC_RT_PIB_TONE_MASK (0x00000110)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Defines the tone mask to use during symbol formation. It is represented using one bit per carrier. Holds up to 72 carriers (for FCC) so its size is 9 bytes. Bits set indicate carrier used; bits cleared indicate carrier masked. Depending on the band used, a different number of bits are taken into account. This PIB is a 9-byte array coded little endian (LSB first). In the Cenelec-A band, the carriers are placed as shown in the figure:</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>Tone Mask representation for Cenelec-A</div><img class="image" src="GUID-CB43D9BE-422D-4ED3-A167-1522BF451FF9-low.png" alt="MAC_PIB_TONE_MASK1" /><br /></div>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 0x00-0xFF for each of 9 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> All bytes set to 0xFF (All carriers are enabled).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title21" id="mac-rt-pib-beacon-randomization-window-length-0x00000111"><h2 class="title topictitle2" id="ariaid-title21">MAC_RT_PIB_BEACON_RANDOMIZATION_WINDOW_LENGTH (0x00000111)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Duration time in seconds for beacon randomization.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 12.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title22" id="mac-rt-pib-a-0x00000112"><h2 class="title topictitle2" id="ariaid-title22">MAC_RT_PIB_A (0x00000112)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This parameter controls the adaptive CW linear decrease.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 8.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title23" id="mac-rt-pib-k-0x00000113"><h2 class="title topictitle2" id="ariaid-title23">MAC_RT_PIB_K (0x00000113)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Rate adaptation factor for channel access fairness limit.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 5.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title24" id="mac-rt-pib-min-cw-attempts-0x00000114"><h2 class="title topictitle2" id="ariaid-title24">MAC_RT_PIB_MIN_CW_ATTEMPTS (0x00000114)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of consecutive attempts while using minimum CW.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 255.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title25" id="mac-rt-pib-cenelec-legacy-mode-0x00000115"><h2 class="title topictitle2" id="ariaid-title25">MAC_RT_PIB_CENELEC_LEGACY_MODE (0x00000115)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This read only attribute indicates the capability of the node.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title26" id="mac-rt-pib-fcc-legacy-mode-0x00000116"><h2 class="title topictitle2" id="ariaid-title26">MAC_RT_PIB_FCC_LEGACY_MODE (0x00000116)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This read only attribute indicates the capability of the node.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title27" id="mac-rt-pib-broadcast-max-cw-enable-0x0000011e"><h2 class="title topictitle2" id="ariaid-title27">MAC_RT_PIB_BROADCAST_MAX_CW_ENABLE (0x0000011E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> If enabled, MAC uses maximum contention window for Broadcast frames.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title28" id="mac-rt-pib-transmit-atten-0x0000011f"><h2 class="title topictitle2" id="ariaid-title28">MAC_RT_PIB_TRANSMIT_ATTEN (0x0000011F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Attenuation of the output level in dB.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title29" id="mac-rt-pib-pos-table-0x00000120"><h2 class="title topictitle2" id="ariaid-title29">MAC_RT_PIB_POS_TABLE (0x00000120)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> The POS table as defined in G3-PLC Specification.</p>
+<p class="p">To get all the active entries, the first step is to get the number of such active entries by means of MAC_WRP_PIB_MANUF_POS_TABLE_COUNT (0x0800001E). Then, because the table is ordered, all the entries can be obtained by iterating from 0 to the number of active entries.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 5-byte entries as defined in the following structure:</p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e710', this);">Copy</button><code id="d36492e710" content="typedef struct __attribute__((packed)) {&#xA;  uint16_t shortAddress;&#xA;  uint8_t lqi;&#xA;  uint16_t posValidTime;&#xA;} MAC_RT_POS_ENTRY;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
+  uint16_t shortAddress<span class="ph token punctuation">;</span>
+  uint8_t lqi<span class="ph token punctuation">;</span>
+  uint16_t posValidTime<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span> MAC_RT_POS_ENTRY<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title30" id="mac-rt-pib-pos-recent-entry-threshold-0x00000121"><h2 class="title topictitle2" id="ariaid-title30">MAC_RT_PIB_POS_RECENT_ENTRY_THRESHOLD (0x00000121)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Threshold in minutes below which POS table entries are considered as recently refreshed.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 120.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title31" id="mac-rt-pib-pos-recent-entries-0x00000122"><h2 class="title topictitle2" id="ariaid-title31">MAC_RT_PIB_POS_RECENT_ENTRIES (0x00000122)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of POS table entries having been refreshed recently and which LQI is above adpTrickleMinLQI Value.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title32" id="mac-rt-pib-manuf-extended-address-0x08000001"><h2 class="title topictitle2" id="ariaid-title32">MAC_RT_PIB_MANUF_EXTENDED_ADDRESS (0x08000001)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Extended address of this node.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 8 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> All bytes set to 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title33" id="mac-rt-pib-manuf-neighbour-table-element-0x08000002"><h2 class="title topictitle2" id="ariaid-title33">MAC_RT_PIB_MANUF_NEIGHBOUR_TABLE_ELEMENT (0x08000002)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This object has the same content as the neighbour table, but it is retrieved using the short address of the node, instead of the index inside the table. To do so, set the short address in the index field in the Get IB function.
+Refer to MAC_RT_PIB_NEIGHBOUR_TABLE (0x0000010A).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 19-byte entries.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title34" id="mac-rt-pib-manuf-band-information-0x08000003"><h2 class="title topictitle2" id="ariaid-title34">MAC_RT_PIB_MANUF_BAND_INFORMATION (0x08000003)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This read only object returns information about the band.
+The intention of this IB is more internal than for G3 user. It is used by G3 stack to perform calculations based on these parameters.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 10-byte entries.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title35" id="mac-rt-pib-manuf-forced-mod-scheme-0x08000007"><h2 class="title topictitle2" id="ariaid-title35">MAC_RT_PIB_MANUF_FORCED_MOD_SCHEME (0x08000007)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces Modulation Scheme in every transmitted frame, instead of using neighbour table info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<ul class="ul"><li class="li"><p class="p">0 - Not forced</p>
+</li>
+<li class="li"><p class="p">1 - Force Differential</p>
+</li>
+<li class="li"><p class="p">2 - Force Coherent</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title36" id="mac-rt-pib-manuf-forced-mod-type-0x08000008"><h2 class="title topictitle2" id="ariaid-title36">MAC_RT_PIB_MANUF_FORCED_MOD_TYPE (0x08000008)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces Modulation Type in every transmitted frame, instead of using neighbour table info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<ul class="ul"><li class="li"><p class="p">0 - Not forced</p>
+</li>
+<li class="li"><p class="p">1 - Force BPSK_ROBO</p>
+</li>
+<li class="li"><p class="p">2 - Force BPSK</p>
+</li>
+<li class="li"><p class="p">3 - Force QPSK</p>
+</li>
+<li class="li"><p class="p">4 - Force 8PSK</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title37" id="mac-rt-pib-manuf-forced-tonemap-0x08000009"><h2 class="title topictitle2" id="ariaid-title37">MAC_RT_PIB_MANUF_FORCED_TONEMAP (0x08000009)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces ToneMap in every transmitted frame, instead of using neighbour table info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 3 bytes.</p>
+<ul class="ul"><li class="li"><p class="p">{0xXX, 0xXX, 0xXX} - ToneMap to be used in subsequent transmissions</p>
+</li>
+<li class="li"><p class="p">{0x00, 0x00, 0x00} - Not forced, other value will be used as tonemap</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> All bytes set to 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title38" id="mac-rt-pib-manuf-forced-mod-scheme-on-tmresponse-0x0800000a"><h2 class="title topictitle2" id="ariaid-title38">MAC_RT_PIB_MANUF_FORCED_MOD_SCHEME_ON_TMRESPONSE (0x0800000A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces Modulation Scheme bit in Tone Map Response, instead of using PHY layer estimation info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<ul class="ul"><li class="li"><p class="p">0 - Not forced</p>
+</li>
+<li class="li"><p class="p">1 - Force Differential</p>
+</li>
+<li class="li"><p class="p">2 - Force Coherent</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title39" id="mac-rt-pib-manuf-forced-mod-type-on-tmresponse-0x0800000b"><h2 class="title topictitle2" id="ariaid-title39">MAC_RT_PIB_MANUF_FORCED_MOD_TYPE_ON_TMRESPONSE (0x0800000B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces Modulation Type bits in Tone Map Response, instead of using PHY layer estimation info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<ul class="ul"><li class="li"><p class="p">0 - Not forced</p>
+</li>
+<li class="li"><p class="p">1 - Force BPSK_ROBO</p>
+</li>
+<li class="li"><p class="p">2 - Force BPSK</p>
+</li>
+<li class="li"><p class="p">3 - Force QPSK</p>
+</li>
+<li class="li"><p class="p">4 - Force 8PSK</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title40" id="mac-rt-pib-manuf-forced-tonemap-on-tmresponse-0x0800000c"><h2 class="title topictitle2" id="ariaid-title40">MAC_RT_PIB_MANUF_FORCED_TONEMAP_ON_TMRESPONSE (0x0800000C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Forces ToneMap field Tone Map Response, instead of using PHY layer estimation info. For testing purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 3 bytes.</p>
+<ul class="ul"><li class="li"><p class="p">{0xXX, 0xXX, 0xXX} - ToneMap to be used in subsequent transmissions</p>
+</li>
+<li class="li"><p class="p">{0x00, 0x00, 0x00} - Not forced, other value will be used as tonemap</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Default Value:</strong> All bytes set to 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title41" id="mac-rt-pib-manuf-lbp-frame-received-0x0800000f"><h2 class="title topictitle2" id="ariaid-title41">MAC_RT_PIB_MANUF_LBP_FRAME_RECEIVED (0x0800000F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Indicates whether an LBP frame for other destination has been received. For internal G3 stack purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title42" id="mac-rt-pib-manuf-lng-frame-received-0x08000010"><h2 class="title topictitle2" id="ariaid-title42">MAC_RT_PIB_MANUF_LNG_FRAME_RECEIVED (0x08000010)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Indicates whether an LNG frame for other destination has been received. For internal G3 stack purposes.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title43" id="mac-rt-pib-manuf-neighbour-table-count-0x08000012"><h2 class="title topictitle2" id="ariaid-title43">MAC_RT_PIB_MANUF_NEIGHBOUR_TABLE_COUNT (0x08000012)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets number of valid elements in the Neighbour Table.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title44" id="mac-rt-pib-manuf-rx-other-destination-count-0x08000013"><h2 class="title topictitle2" id="ariaid-title44">MAC_RT_PIB_MANUF_RX_OTHER_DESTINATION_COUNT (0x08000013)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets number of discarded packets due to Other Destination.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title45" id="mac-rt-pib-manuf-rx-mac-repetition-count-0x08000015"><h2 class="title topictitle2" id="ariaid-title45">MAC_RT_PIB_MANUF_RX_MAC_REPETITION_COUNT (0x08000015)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets number of discarded packets due to MAC Repetition.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title46" id="mac-rt-pib-manuf-rx-segment-decode-error-count-0x0800001c"><h2 class="title topictitle2" id="ariaid-title46">MAC_RT_PIB_MANUF_RX_SEGMENT_DECODE_ERROR_COUNT (0x0800001C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets number of discarded packets due to Segment Decode Error.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title47" id="mac-rt-pib-manuf-enable-mac-sniffer-0x0800001d"><h2 class="title topictitle2" id="ariaid-title47">MAC_RT_PIB_MANUF_ENABLE_MAC_SNIFFER (0x0800001D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Enables MAC Sniffer.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title48" id="mac-rt-pib-manuf-pos-table-count-0x0800001e"><h2 class="title topictitle2" id="ariaid-title48">MAC_RT_PIB_MANUF_POS_TABLE_COUNT (0x0800001E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets number of valid elements in the POS Table.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title49" id="mac-rt-pib-manuf-retries-left-to-force-robo-0x0800001f"><h2 class="title topictitle2" id="ariaid-title49">MAC_RT_PIB_MANUF_RETRIES_LEFT_TO_FORCE_ROBO (0x0800001F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets or Sets number of retires left before forcing ROBO mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title50" id="mac-rt-pib-manuf-mac-rt-internal-version-0x08000022"><h2 class="title topictitle2" id="ariaid-title50">MAC_RT_PIB_MANUF_MAC_RT_INTERNAL_VERSION (0x08000022)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets internal MAC RT version.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 6 bytes as defined in the following structure:</p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e1265', this);">Copy</button><code id="d36492e1265" content="typedef struct {&#xA;  uint8_t major;&#xA;  uint8_t minor;&#xA;  uint8_t revision;&#xA;  uint8_t year; // year since 2000&#xA;  uint8_t month;&#xA;  uint8_t day;&#xA;} MAC_RT_INTERNAL_VERSION;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
+  uint8_t major<span class="ph token punctuation">;</span>
+  uint8_t minor<span class="ph token punctuation">;</span>
+  uint8_t revision<span class="ph token punctuation">;</span>
+  uint8_t year<span class="ph token punctuation">;</span> <span class="ph token comment">// year since 2000</span>
+  uint8_t month<span class="ph token punctuation">;</span>
+  uint8_t day<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span> MAC_RT_INTERNAL_VERSION<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title51" id="mac-rt-pib-sleep-mode-0x08000024"><h2 class="title topictitle2" id="ariaid-title51">MAC_RT_PIB_SLEEP_MODE (0x08000024)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Enable/Disable Sleep Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title52" id="mac-rt-pib-debug-set-0x08000025"><h2 class="title topictitle2" id="ariaid-title52">MAC_RT_PIB_DEBUG_SET (0x08000025)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Set PLC Debug Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Write-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title53" id="mac-rt-pib-debug-read-0x08000026"><h2 class="title topictitle2" id="ariaid-title53">MAC_RT_PIB_DEBUG_READ (0x08000026)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Read PL360 Debug Information.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title54" id="mac-rt-pib-manuf-pos-table-element-0x08000027"><h2 class="title topictitle2" id="ariaid-title54">MAC_RT_PIB_MANUF_POS_TABLE_ELEMENT (0x08000027)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This object has the same content as the POS table, but it is retrieved using the short address of the node, instead of the index inside the table. To do so, set the short address in the index field in the Get IB function.
+Refer to MAC_RT_PIB_POS_TABLE (0x00000120).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 5-byte entries.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title55" id="mac-rt-pib-manuf-trickle-min-lqi-0x08000028"><h2 class="title topictitle2" id="ariaid-title55">MAC_RT_PIB_MANUF_TRICKLE_MIN_LQI (0x08000028)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Minimum LQI to consider a neighbour for Trickle.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 60.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title56" id="mac-rt-pib-manuf-neighbour-lqi-0x08000029"><h2 class="title topictitle2" id="ariaid-title56">MAC_RT_PIB_MANUF_NEIGHBOUR_LQI (0x08000029)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> LQI for a given neighbour, which short address will be indicated by index.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title57" id="mac-rt-pib-manuf-best-lqi-0x0800002a"><h2 class="title topictitle2" id="ariaid-title57">MAC_RT_PIB_MANUF_BEST_LQI (0x0800002A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Best LQI found in neighbour table.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title58" id="mac-rt-pib-tx-high-priority-0x0800002b"><h2 class="title topictitle2" id="ariaid-title58">MAC_RT_PIB_TX_HIGH_PRIORITY (0x0800002B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Flag to indicate whether next transmission is in High Priority window.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title59" id="mac-rt-pib-get-set-all-mib-0x08000100"><h2 class="title topictitle2" id="ariaid-title59">MAC_RT_PIB_GET_SET_ALL_MIB (0x08000100)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> IB used to ge/set the complete MIB structure at once.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> Entire IB Table size.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title60" id="mac-rt-pib-manuf-phy-param-0x08000020"><h2 class="title topictitle2" id="ariaid-title60">MAC_RT_PIB_MANUF_PHY_PARAM (0x08000020)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets or sets a parameter in Phy layer. Index will be used to contain PHY parameter ID.</p>
+<p class="p">A detailed description of the G3 PHY objects is available in <a class="xref" href="GUID-D271D58D-4E8B-4AF0-B031-70E9C8E0D23F.html"><em class="ph i">G3 DRV_PLC_PHY_IDs</em></a>.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> N/A.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+</div>
+</div>
+</body>
+</html>

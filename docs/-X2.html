@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="DRV_PLC_HAL_INTERFACE Struct" />
+<meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="drv-plc-hal-interface-struct" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_HAL_INTERFACE Struct</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-hal-interface-struct" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-559A006E-859E-45E8-BB5A-70CE63853872"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="drv-plc-hal-interface-struct">
+<h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_HAL_INTERFACE Struct</h1><div class="body"></div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
+</div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d2465e27', this);">Copy</button><code id="d2465e27" content="typedef struct&#xA;{&#xA;    /* PLC PLIB Interface */&#xA;    DRV_PLC_PLIB_INTERFACE                   *plcPlib;&#xA;&#xA;    /* PLC HAL init */&#xA;    DRV_PLC_HAL_INIT                         init;&#xA;&#xA;    /* PLC HAL setup */&#xA;    DRV_PLC_HAL_SETUP                        setup;&#xA;&#xA;    /* PLC HAL reset device */&#xA;    DRV_PLC_HAL_RESET                        reset;&#xA;     &#xA;    /* PLC low power management */&#xA;    DRV_PLC_HAL_SET_STBY                     setStandBy; /* Only visible if SLEEP MODE is enabled on Driver Configuration */&#xA;&#xA;    /* PLC Temperature Monitor */&#xA;    DRV_PLC_HAL_GET_THMON                    getThermalMonitor; /* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */&#xA;&#xA;    /* PLC HAL Set Tx Enable pin */&#xA;    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable; /* Only visible if PL460 Driver is used */&#xA;&#xA;    /* PLC HAL Enable/Disable external interrupt */&#xA;    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;&#xA;&#xA;    /* PLC HAL delay function */&#xA;    DRV_PLC_HAL_DELAY                        delay;&#xA;&#xA;    /* PLC HAL Transfer Bootloader Command */&#xA;    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd;&#xA;&#xA;    /* PLC HAL Transfer Write/Read Command */&#xA;    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd;&#xA;&#xA;} DRV_PLC_HAL_INTERFACE;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span>
+<span class="ph token punctuation">{</span>
+    <span class="ph token comment">/* PLC PLIB Interface */</span>
+    DRV_PLC_PLIB_INTERFACE                   <span class="ph token operator">*</span>plcPlib<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL init */</span>
+    DRV_PLC_HAL_INIT                         init<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL setup */</span>
+    DRV_PLC_HAL_SETUP                        setup<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL reset device */</span>
+    DRV_PLC_HAL_RESET                        reset<span class="ph token punctuation">;</span>
+     
+    <span class="ph token comment">/* PLC low power management */</span>
+    DRV_PLC_HAL_SET_STBY                     setStandBy<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if SLEEP MODE is enabled on Driver Configuration */</span>
+
+    <span class="ph token comment">/* PLC Temperature Monitor */</span>
+    DRV_PLC_HAL_GET_THMON                    getThermalMonitor<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */</span>
+
+    <span class="ph token comment">/* PLC HAL Set Tx Enable pin */</span>
+    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used */</span>
+
+    <span class="ph token comment">/* PLC HAL Enable/Disable external interrupt */</span>
+    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL delay function */</span>
+    DRV_PLC_HAL_DELAY                        delay<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL Transfer Bootloader Command */</span>
+    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* PLC HAL Transfer Write/Read Command */</span>
+    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd<span class="ph token punctuation">;</span>
+
+<span class="ph token punctuation">}</span> DRV_PLC_HAL_INTERFACE<span class="ph token punctuation">;</span></code></pre></div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains the data required to initialize the PLC driver HAL Interface.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title4" id="description"><h2 class="title topictitle2" id="ariaid-title4">Description</h2><div class="body"><p class="p">This structure contains the objects needed to initialize the driver access to PLC transceiver.</p>
+<p class="p">Field description:</p>
+<ul class="ul"><li class="li"><p class="p">plcPlib. Pointer to <a class="xref" href="GUID-50946BC4-586A-4660-A918-D3CED116127A.html"><em class="ph i">DRV_PLC_PLIB_INTERFACE Struct</em></a> which defines the SPI and Control Lines to access PLC transceiver.</p>
+</li>
+<li class="li"><p class="p">init. Pointer to Hardware Initialization function.</p>
+</li>
+<li class="li"><p class="p">setup. Pointer to transceiver Setup function.</p>
+</li>
+<li class="li"><p class="p">reset. Pointer to transceiver Reset function.</p>
+</li>
+<li class="li"><p class="p">setStandBy. Pointer to transceiver Standby (Sleep) management function. Only available if SLEEP MODE is enabled on Driver Configuration.</p>
+</li>
+<li class="li"><p class="p">getThermalMonitor. Pointer to transceiver Thermal Monitor status function. Only available if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration.</p>
+</li>
+<li class="li"><p class="p">setTxEnable. Pointer to transceiver Tx Enable control function. Only available if PL460 Driver is used.</p>
+</li>
+<li class="li"><p class="p">enableExtInt. Pointer to external interrupt (triggered by transceiver) management function.</p>
+</li>
+<li class="li"><p class="p">delay. Pointer to driver's implementation of Delay function.</p>
+</li>
+<li class="li"><p class="p">sendBootCmd. Pointer to driver's function to send a Boot Command to transceiver.</p>
+</li>
+<li class="li"><p class="p">sendWrRdCmd. Pointer to driver's function to send a Read/write Command to transceiver.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title5" id="remarks"><h2 class="title topictitle2" id="ariaid-title5">Remarks</h2><div class="body"><p class="p">None.</p>
+</div>
+</div>
+</body>
+</html>

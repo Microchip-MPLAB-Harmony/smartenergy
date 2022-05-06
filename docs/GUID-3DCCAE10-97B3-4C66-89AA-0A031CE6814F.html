@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="Using The Library" />
+<meta name="DC.relation" scheme="URI" content="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="using-the-library" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Using The Library</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-using-the-library" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="using-the-library">
+<h1 class="title topictitle1" id="ariaid-title1">Using The Library</h1><div class="body"><p class="p">The G3 PLC MACRT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with Data transmission and reception functions and configuration parameters that can be read/written.</p>
+<p class="p">Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let library provide communication events to the user.Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.</p>
+<p class="p"><strong class="ph b">Example application to send data through PLC and wait for a response</strong></p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d1292e21', this);">Copy</button><code id="d1292e21" content="APP_PLC_DATA appPlc;&#xA;bool txConfirmed;&#xA;bool frameReceived;&#xA;uint8_t txBuffer[MAC_RT_MAX_PAYLOAD_SIZE];&#xA;uint16_t txLength;&#xA;&#xA;static void APP_PLC_SendData ( uint8_t* pData, uint16_t length )&#xA;{&#xA;    uint8_t *pFrame;&#xA;    uint8_t headerLen;&#xA;    &#xA;    if (length &gt; MAC_RT_MAX_PAYLOAD_SIZE) {&#xA;        return;&#xA;    }&#xA;    &#xA;    pFrame = appPlcTx.pTxFrame;&#xA;    &#xA;    /* Build MAC RT Frame */&#xA;    headerLen = APP_PLC_BuildMacRTHeader(pFrame, &amp;appPlcTx.txHeader);&#xA;    pFrame += headerLen;&#xA;    &#xA;    /* Fill Payload */&#xA;    memcpy(pFrame, pData, length);&#xA;    pFrame += length;&#xA;&#xA;    /* Send MAC RT Frame */&#xA;    txConfirmed = false;&#xA;    DRV_G3_MACRT_TxRequest(appPlc.drvPl360Handle, appPlcTx.pTxFrame, &#xA;            pFrame - appPlcTx.pTxFrame);&#xA;}&#xA;&#xA;static void APP_PLC_DataCfmCb( MAC_RT_TX_CFM_OBJ *cfmObj )&#xA;{&#xA;    /* Update flag */&#xA;    txConfirmed = true;&#xA;}&#xA;&#xA;static void APP_PLC_DataIndCb( uint8_t *pData, uint16_t length )&#xA;{&#xA;    /* Do whatever with received frame */&#xA;    frameReceived = true;&#xA;}&#xA;&#xA;static void APP_PLC_RxParamsIndCb( MAC_RT_RX_PARAMETERS_OBJ *pParameters )&#xA;{&#xA;    /* Store Rx Parameters here */&#xA;}&#xA;&#xA;void APP_PLC_Initialize ( void )&#xA;{&#xA;    /* Init PLC data buffers */&#xA;    appPlcTx.pTxFrame = appPlcTxFrameBuffer;&#xA;    appPlcTx.pRxFrame = appPlcRxFrameBuffer;&#xA;    &#xA;    /* Set PLC state */&#xA;    appPlc.state = APP_PLC_STATE_IDLE;&#xA;}&#xA;&#xA;void APP_PLC_Tasks ( void )&#xA;{   &#xA;    /* Check the application's current state. */&#xA;    switch ( appPlc.state )&#xA;    {&#xA;        case APP_PLC_STATE_IDLE:&#xA;        {&#xA;            /* Initialize PLC driver */&#xA;            appPlc.state = APP_PLC_STATE_INIT;&#xA;        }&#xA;        break;&#xA;&#xA;        case APP_PLC_STATE_INIT:&#xA;        {&#xA;            /* Open PLC driver */&#xA;            appPlc.drvPl360Handle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL);&#xA;&#xA;            if (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)&#xA;            {&#xA;                appPlc.state = APP_PLC_STATE_OPEN;&#xA;            }&#xA;            else&#xA;            {&#xA;                appPlc.state = APP_PLC_STATE_ERROR;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_OPEN:&#xA;        {&#xA;            /* Check PLC transceiver */&#xA;            if (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_0) == SYS_STATUS_READY)&#xA;            {&#xA;                /* Configure PLC callbacks */&#xA;                DRV_G3_MACRT_TxCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb);&#xA;                DRV_G3_MACRT_DataIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataIndCb);&#xA;                DRV_G3_MACRT_RxParamsIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_RxParamsIndCb);&#xA;                &#xA;                /* Apply PLC initial configuration */&#xA;                APP_PLC_SetInitialConfiguration();&#xA;                &#xA;                /* Enable PLC Transmission */&#xA;                DRV_G3_MACRT_EnableTX(appPlc.drvPl360Handle, true);&#xA;                &#xA;                /* Set PLC state to transmit a frame */&#xA;                appPlc.state = APP_PLC_STATE_TX_REQUEST;&#xA;            }&#xA;        }&#xA;        break;&#xA;&#xA;        case APP_PLC_STATE_TX_REQUEST:&#xA;        {&#xA;            /* Build a frame in buffer and set length before calling SendData */&#xA;            APP_PLC_SendData(txBuffer, txLength);&#xA;            appPlc.state = APP_PLC_STATE_WAITING_TX_CFM;&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_WAITING:&#xA;        {&#xA;            if (frameReceived)&#xA;            {&#xA;                frameReceived = false;&#xA;                /* Send another frame */&#xA;                appPlc.state = APP_PLC_STATE_TX_REQUEST;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_WAITING_TX_CFM:&#xA;        {&#xA;            if (txConfirmed)&#xA;            {&#xA;                frameReceived = false;&#xA;                appPlc.state = APP_PLC_STATE_WAITING;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        /* The default state should never be executed. */&#xA;        default:&#xA;        {&#xA;            /* Handle error in application's state machine. */&#xA;            break;&#xA;        }&#xA;    }&#xA;}&#xA;">APP_PLC_DATA appPlc<span class="ph token punctuation">;</span>
+bool txConfirmed<span class="ph token punctuation">;</span>
+bool frameReceived<span class="ph token punctuation">;</span>
+uint8_t txBuffer<span class="ph token punctuation">[</span>MAC_RT_MAX_PAYLOAD_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+uint16_t txLength<span class="ph token punctuation">;</span>
+
+<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> APP_PLC_SendData <span class="ph token punctuation">(</span> uint8_t<span class="ph token operator">*</span> pData<span class="ph token punctuation">,</span> uint16_t length <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>
+    uint8_t <span class="ph token operator">*</span>pFrame<span class="ph token punctuation">;</span>
+    uint8_t headerLen<span class="ph token punctuation">;</span>
+    
+    <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>length <span class="ph token operator">&gt;</span> MAC_RT_MAX_PAYLOAD_SIZE<span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
+        <span class="ph token keyword">return</span><span class="ph token punctuation">;</span>
+    <span class="ph token punctuation">}</span>
+    
+    pFrame <span class="ph token operator">=</span> appPlcTx<span class="ph token punctuation">.</span>pTxFrame<span class="ph token punctuation">;</span>
+    
+    <span class="ph token comment">/* Build MAC RT Frame */</span>
+    headerLen <span class="ph token operator">=</span> <span class="ph token function">APP_PLC_BuildMacRTHeader</span><span class="ph token punctuation">(</span>pFrame<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appPlcTx<span class="ph token punctuation">.</span>txHeader<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    pFrame <span class="ph token operator">+=</span> headerLen<span class="ph token punctuation">;</span>
+    
+    <span class="ph token comment">/* Fill Payload */</span>
+    <span class="ph token function">memcpy</span><span class="ph token punctuation">(</span>pFrame<span class="ph token punctuation">,</span> pData<span class="ph token punctuation">,</span> length<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    pFrame <span class="ph token operator">+=</span> length<span class="ph token punctuation">;</span>
+
+    <span class="ph token comment">/* Send MAC RT Frame */</span>
+    txConfirmed <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
+    <span class="ph token function">DRV_G3_MACRT_TxRequest</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> appPlcTx<span class="ph token punctuation">.</span>pTxFrame<span class="ph token punctuation">,</span> 
+            pFrame <span class="ph token operator">-</span> appPlcTx<span class="ph token punctuation">.</span>pTxFrame<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span>
+
+<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataCfmCb</span><span class="ph token punctuation">(</span> MAC_RT_TX_CFM_OBJ <span class="ph token operator">*</span>cfmObj <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>
+    <span class="ph token comment">/* Update flag */</span>
+    txConfirmed <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span>
+
+<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataIndCb</span><span class="ph token punctuation">(</span> uint8_t <span class="ph token operator">*</span>pData<span class="ph token punctuation">,</span> uint16_t length <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>
+    <span class="ph token comment">/* Do whatever with received frame */</span>
+    frameReceived <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span>
+
+<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_RxParamsIndCb</span><span class="ph token punctuation">(</span> MAC_RT_RX_PARAMETERS_OBJ <span class="ph token operator">*</span>pParameters <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>
+    <span class="ph token comment">/* Store Rx Parameters here */</span>
+<span class="ph token punctuation">}</span>
+
+<span class="ph token keyword">void</span> APP_PLC_Initialize <span class="ph token punctuation">(</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>
+    <span class="ph token comment">/* Init PLC data buffers */</span>
+    appPlcTx<span class="ph token punctuation">.</span>pTxFrame <span class="ph token operator">=</span> appPlcTxFrameBuffer<span class="ph token punctuation">;</span>
+    appPlcTx<span class="ph token punctuation">.</span>pRxFrame <span class="ph token operator">=</span> appPlcRxFrameBuffer<span class="ph token punctuation">;</span>
+    
+    <span class="ph token comment">/* Set PLC state */</span>
+    appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_IDLE<span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span>
+
+<span class="ph token keyword">void</span> APP_PLC_Tasks <span class="ph token punctuation">(</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">)</span>
+<span class="ph token punctuation">{</span>   
+    <span class="ph token comment">/* Check the application's current state. */</span>
+    <span class="ph token keyword">switch</span> <span class="ph token punctuation">(</span> appPlc<span class="ph token punctuation">.</span>state <span class="ph token punctuation">)</span>
+    <span class="ph token punctuation">{</span>
+        <span class="ph token keyword">case</span> APP_PLC_STATE_IDLE<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token comment">/* Initialize PLC driver */</span>
+            appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_INIT<span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+
+        <span class="ph token keyword">case</span> APP_PLC_STATE_INIT<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token comment">/* Open PLC driver */</span>
+            appPlc<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">=</span> <span class="ph token function">DRV_G3_MACRT_Open</span><span class="ph token punctuation">(</span>DRV_G3_MACRT_INDEX_0<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+
+            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">!=</span> DRV_HANDLE_INVALID<span class="ph token punctuation">)</span>
+            <span class="ph token punctuation">{</span>
+                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_OPEN<span class="ph token punctuation">;</span>
+            <span class="ph token punctuation">}</span>
+            <span class="ph token keyword">else</span>
+            <span class="ph token punctuation">{</span>
+                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_ERROR<span class="ph token punctuation">;</span>
+            <span class="ph token punctuation">}</span>
+            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+
+        <span class="ph token keyword">case</span> APP_PLC_STATE_OPEN<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token comment">/* Check PLC transceiver */</span>
+            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_G3_MACRT_Status</span><span class="ph token punctuation">(</span>DRV_G3_MACRT_INDEX_0<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SYS_STATUS_READY<span class="ph token punctuation">)</span>
+            <span class="ph token punctuation">{</span>
+                <span class="ph token comment">/* Configure PLC callbacks */</span>
+                <span class="ph token function">DRV_G3_MACRT_TxCfmCallbackRegister</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> APP_PLC_DataCfmCb<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <span class="ph token function">DRV_G3_MACRT_DataIndCallbackRegister</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> APP_PLC_DataIndCb<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <span class="ph token function">DRV_G3_MACRT_RxParamsIndCallbackRegister</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> APP_PLC_RxParamsIndCb<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                
+                <span class="ph token comment">/* Apply PLC initial configuration */</span>
+                <span class="ph token function">APP_PLC_SetInitialConfiguration</span><span class="ph token punctuation">(</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                
+                <span class="ph token comment">/* Enable PLC Transmission */</span>
+                <span class="ph token function">DRV_G3_MACRT_EnableTX</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> true<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                
+                <span class="ph token comment">/* Set PLC state to transmit a frame */</span>
+                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_TX_REQUEST<span class="ph token punctuation">;</span>
+            <span class="ph token punctuation">}</span>
+        <span class="ph token punctuation">}</span>
+        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+
+        <span class="ph token keyword">case</span> APP_PLC_STATE_TX_REQUEST<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token comment">/* Build a frame in buffer and set length before calling SendData */</span>
+            <span class="ph token function">APP_PLC_SendData</span><span class="ph token punctuation">(</span>txBuffer<span class="ph token punctuation">,</span> txLength<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+            appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_WAITING_TX_CFM<span class="ph token punctuation">;</span>
+            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+
+        <span class="ph token keyword">case</span> APP_PLC_STATE_WAITING<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>frameReceived<span class="ph token punctuation">)</span>
+            <span class="ph token punctuation">{</span>
+                frameReceived <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
+                <span class="ph token comment">/* Send another frame */</span>
+                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_TX_REQUEST<span class="ph token punctuation">;</span>
+            <span class="ph token punctuation">}</span>
+            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+
+        <span class="ph token keyword">case</span> APP_PLC_STATE_WAITING_TX_CFM<span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>txConfirmed<span class="ph token punctuation">)</span>
+            <span class="ph token punctuation">{</span>
+                frameReceived <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
+                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_WAITING<span class="ph token punctuation">;</span>
+            <span class="ph token punctuation">}</span>
+            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+
+        <span class="ph token comment">/* The default state should never be executed. */</span>
+        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
+        <span class="ph token punctuation">{</span>
+            <span class="ph token comment">/* Handle error in application's state machine. */</span>
+            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <span class="ph token punctuation">}</span>
+    <span class="ph token punctuation">}</span>
+<span class="ph token punctuation">}</span>
+</code></pre></div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html">G3 MAC RT Driver</a></div>
+</div>
+</div></body>
+</html>

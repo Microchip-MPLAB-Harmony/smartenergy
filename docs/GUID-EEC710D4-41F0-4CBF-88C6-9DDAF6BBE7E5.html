@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="Configuring The Library" />
+<meta name="DC.relation" scheme="URI" content="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="configuring-the-library" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Configuring The Library</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-configuring-the-library" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-EEC710D4-41F0-4CBF-88C6-9DDAF6BBE7E5"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="configuring-the-library">
+<h1 class="title topictitle1" id="ariaid-title1">Configuring The Library</h1><div class="body"><p class="p"><strong class="ph b">G3 PLC MACRT Driver Specific User Configurations</strong></p>
+<p class="p">G3 PLC MACRT Driver library is configured via MCC. Below is the Snapshot of the MCC configuration window for G3 PLC MACRT driver and brief description.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>G3 PLC MACRT Driver configuration options</div><img class="image" src="GUID-5FCDF91F-2AD4-4462-A76A-79F9D96C4C1B-low.png" alt="G3_MACRT_mcc_configuration" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">PLC Driver Mode Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Specifies the PLC device physically connected</p>
+</li>
+<li class="li"><p class="p">The pins in use will vary depending on the device selected</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Configuration for PL460 device</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 2. </span>PL460 configuration options</div><img class="image" src="GUID-64043C7B-3D15-4D24-B172-439593EE42CF-low.png" alt="G3_MACRT_mcc_pl460_pins" /><br /></div>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Configuration for PL360 device</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 3. </span>PL360 configuration options</div><img class="image" src="GUID-2D506C7E-7D15-46C4-9AF0-13FCB8FABA6E-low.png" alt="G3_MACRT_mcc_pl360_pins" /><br /></div>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver Peripheral Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the SPI peripheral instance used by the G3 PLC MACRT driver</p>
+</li>
+<li class="li"><p class="p">The name of the peripheral will vary from device to device</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver Chip Select Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Indicates the SPI CS line to which PLC transceiver is connected to</p>
+</li>
+<li class="li"><p class="p">This option may vary from device to device</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver External Interrupt Pin Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to be used as external interrupt interface (active low)</p>
+</li>
+<li class="li"><p class="p">This pin automatically indicates that the firmware running in the PLC device has one or more pending events to be handled</p>
+</li>
+<li class="li"><p class="p">Pin selection automatically updates <em class="ph i">External Interrupt Source</em> and <em class="ph i">External Interrupt Port</em> fields</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO input in "Pin Settings" configuration. Set Pull Down configuration.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 4. </span>PLC PIO Interrupt settings</div><img class="image" src="GUID-793D702F-0AF1-4AE0-BB53-CBFAC90BEE73-low.png" alt="PLC_PHY_mcc_pl460_INT_pin_settings" /><br /></div>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver Reset Pin Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to be used as reset (active low)</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO output in "Pin Settings" configuration</p>
+</li>
+<li class="li"><p class="p">This pin resets the core and the peripherals of the PLC device</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver LDO Enable Pin Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to be used as LDO enable (active high)</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO output in "Pin Settings" configuration</p>
+</li>
+<li class="li"><p class="p">This pin provides power to the core voltage regulator embedded in the PLC device</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver TX Enable Pin Used (PL460 mode):</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to allow PLC transmissions (active high)</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO output in "Pin Settings" configuration</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Sleep Mode:</strong></p>
+<ul class="ul"><li class="li"><p class="p">In Sleep mode, the core of the device and the peripherals are reset reducing power consumption</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver Standby Pin Used:</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to be used as sleep mode enable (active high)</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO output in "Pin Settings" configuration</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Thermal Monitor (PL460 mode):</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Thermal Monitor interface</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Driver Thermal Monitor Pin Used (PL460 mode):</strong></p>
+<ul class="ul"><li class="li"><p class="p">GPIO Pin to check the status of the Thermal monitor</p>
+</li>
+<li class="li"><p class="p">This pin must be configured as GPIO output in "Pin Settings" configuration</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PLC Coupling Settings:</strong></p>
+<ul class="ul"><li class="li"><p class="p">PLC Driver mode must have been selected before to obtain a valid PLC coupling settings for each mode</p>
+</li>
+<li class="li"><p class="p">Used to establish the hardware configuration associated to the PLC frequency bands to use</p>
+</li>
+<li class="li"><p class="p">The options of this configuration will vary depending on the PLC Driver Mode selected</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PL460:</strong></p>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Main Branch:</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 5. </span>PL460: Hardware blocks in a single band</div><img class="image" src="GUID-3589B1EC-2383-4A38-BCDA-0CB041AA1A3A-low.png" alt="PLC_PHY_mcc_pl460_main_branch" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">The main transmission branch uses the embedded class-D PLC line driver to optimize performance in terms of efficiency and EMC compliance while reducing BOM cost and PCB complexity.</p>
+</li>
+<li class="li"><p class="p">This is the default branch for single-band applications either in CEN-A, CEN-B or FCC bands.</p>
+</li>
+</ul>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 6. </span>G3 frequency table</div><img class="image" src="GUID-9E828134-6FAF-401F-9600-8FA2993DB195-low.png" alt="PLC_PHY_mcc_G3_frequencies" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">FCC high attenuation branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">This option is visible only for FCC configured as the main branch.</p>
+</li>
+<li class="li"><p class="p">The PL460 is capable of automatically managing two external filters in the filtering stage, each filter associated to an ASOx line.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Multiband:</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 7. </span>PL460: Hardware blocks in multiband</div><img class="image" src="GUID-1E79F037-F4FF-4887-A496-1B4DB0EFC836-low.png" alt="PLC_PHY_mcc_pl460_aux_branch" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">This option is visible only for FCC as main branch.</p>
+</li>
+<li class="li"><p class="p">Used to select CEN-A or CEN-B as the auxiliary PLC phy band.</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Auxiliary Branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">The Auxiliary Transmission Branch can provide an additional output bit-stream, if required.</p>
+</li>
+<li class="li"><p class="p">The Auxiliary Transmission path cannot use the embedded PLC driver in the PL460 and requires an external circuit for signal amplification, in addition to the standard filtering and coupling stages.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Set as default branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to establish Auxiliary branch in the intialization of the PHY PLC driver.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">PL360:</strong></p>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Main Branch:</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 8. </span>PL360: Hardware blocks in a single band with external coupling</div><img class="image" src="GUID-384C8A79-E1C3-475B-BCF1-11DA9356AF8E-low.png" alt="PLC_PHY_mcc_pl360_main_branch" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">This is the default branch for single-band applications either in CEN-A, CEN-B or FCC bands.</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">FCC high attenuation branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">This option is visible only for FCC configured as the main branch</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Internal Driver:</strong></p>
+<ul class="ul"><li class="li"><p class="p">This option is visible only for PL360 driver mode and CEN-B configured as the main branch</p>
+</li>
+</ul>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 9. </span>PL360: Hardware blocks in a single band with internal coupling</div><img class="image" src="GUID-7BF5CAFB-DBB5-49A4-87EE-B1270C94DB3C-low.png" alt="PLC_PHY_mcc_pl360_main_branch_internal" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">In case of using a coupling with internal driver, only one branch is allowed and all the four EMIT pins must be connected to the same point and transmission control is indicated by TXRX0.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Multiband:</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 10. </span>PL360: Hardware blocks in multiband with external coupling</div><img class="image" src="GUID-A567142A-D3B5-4DE6-866C-5D11768F98B9-low.png" alt="PLC_PHY_mcc_pl360_aux_branch" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">This option is visible only for FCC as main branch.</p>
+</li>
+<li class="li"><p class="p">Used to select CEN-A or CEN-B as the auxiliary PLC phy band</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Auxiliary Branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">The Auxiliary Transmission Branch can provide an additional output bit-stream, if required.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Set as default branch:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to establish Auxiliary branch in the intialization of the PHY PLC driver.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="p"><strong class="ph b">NVIC Configurations</strong></p>
+<ul class="ul"><li class="li"><p class="p">The G3 PLC MACRT driver has a strong dependency on a delay function defined in the HAL module. This delay function is called from the PIO Handler associated with the External Interrupt pin.</p>
+</li>
+<li class="li"><p class="p">Applications designed in MCHP used as PLC examples use the Timer module as the delay interface, so the priority of the Timer interrupt must be higher that the rest of interrupts in order to ensure the correct operation.</p>
+</li>
+</ul>
+</div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html">G3 MAC RT Driver</a></div>
+</div>
+</div></body>
+</html>

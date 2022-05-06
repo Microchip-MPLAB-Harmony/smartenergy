@@ -1,0 +1,1566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="DRV_PLC_PHY_IDs" />
+<meta name="DC.relation" scheme="URI" content="GUID-FB84DD36-66A1-4AC7-8809-C528890A4B16.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="drv-plc-phy-ids" />
+<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_IDs</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-ids" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+        function cpy(id, button) {
+        
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                    button.textContent = "Copy";
+                    button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+              console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-D271D58D-4E8B-4AF0-B031-70E9C8E0D23F"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style></head>
+<body id="drv-plc-phy-ids">
+<h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_IDs</h1><div class="body"></div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-FB84DD36-66A1-4AC7-8809-C528890A4B16.html">DRV_PLC_PHY_ID Enum</a></div>
+</div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="plc-id-host-description-id-0x0100"><h2 class="title topictitle2" id="ariaid-title2">PLC_ID_HOST_DESCRIPTION_ID (0x0100)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Name of MCU, in string format, where PL360 Host Controller is running.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 10 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> "SAME70" or "PIC32CX".</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title3" id="plc-id-host-model-id-0x010a"><h2 class="title topictitle2" id="ariaid-title3">PLC_ID_HOST_MODEL_ID (0x010A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Model identification number of the PL360 Host Controller.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x0002.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title4" id="plc-id-host-phy-id-0x010c"><h2 class="title topictitle2" id="ariaid-title4">PLC_ID_HOST_PHY_ID (0x010C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Physical identification number of the PL360 Host Controller. It is composed of PLC_ID_HOST_VERSION_ID (0x0112) + PLC_ID_HOST_BAND_ID (0x0116).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x36010104 (CENELEC-A), 0x36020104 (FCC) or 0x36040104 (CENELEC-B).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title5" id="plc-id-host-product-id-0x0110"><h2 class="title topictitle2" id="ariaid-title5">PLC_ID_HOST_PRODUCT_ID (0x0110)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Product identification number of the PL360 Host Controller.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x3601.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title6" id="plc-id-host-version-id-0x0112"><h2 class="title topictitle2" id="ariaid-title6">PLC_ID_HOST_VERSION_ID (0x0112)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Version number of the PL360 Host Controller.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x36010200.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="plc-id-host-band-id-0x0116"><h2 class="title topictitle2" id="ariaid-title7">PLC_ID_HOST_BAND_ID (0x0116)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Workband identification number of the PL360 Host Controller.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1: CENELEC A, 2: FCC, 4: CENELEC B.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="plc-id-time-ref-id-0x0200"><h2 class="title topictitle2" id="ariaid-title8">PLC_ID_TIME_REF_ID (0x0200)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Time reference in microseconds from the last reset of the PL360 device.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> Not applicable.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title9" id="plc-id-prodid-0x4000"><h2 class="title topictitle2" id="ariaid-title9">PLC_ID_PRODID (0x4000)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Product Identifier of firmware embedded in PL360 device.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 8 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> "ATPL360B".</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title10" id="plc-id-model-0x4001"><h2 class="title topictitle2" id="ariaid-title10">PLC_ID_MODEL (0x4001)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Model Identifier of firmware embedded in PL360 device.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x3601.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title11" id="plc-id-version-str-0x4002"><h2 class="title topictitle2" id="ariaid-title11">PLC_ID_VERSION_STR (0x4002)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Version number of PL360 PHY embedded firmware in string format. The format is "AA.BB.CC.DD", where:</p>
+<ul class="ul"><li class="li"><p class="p">AA: Corresponds to device model ("36")</p>
+</li>
+<li class="li"><p class="p">BB: Corresponds to G3 band <span class="xref"></span></p>
+</li>
+<li class="li"><p class="p">CC: Major version number</p>
+</li>
+<li class="li"><p class="p">DD: Minor version number</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 11 bytes.</p>
+<p class="p"><strong class="ph b">Example Value:</strong> "36.01.05.04".</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title12" id="plc-id-version-num-0x4003"><h2 class="title topictitle2" id="ariaid-title12">PLC_ID_VERSION_NUM (0x4003)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Version number of PL360 PHY embedded firmware in hexadecimal format. The format is 0xAABBCCDD, where:</p>
+<ul class="ul"><li class="li"><p class="p">AA: Corresponds to device model (0x36)</p>
+</li>
+<li class="li"><p class="p">BB: Corresponds to G3 band <span class="xref"></span></p>
+</li>
+<li class="li"><p class="p">CC: Major version number</p>
+</li>
+<li class="li"><p class="p">DD: Minor version number</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Example Value:</strong> 0x36010504.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title13" id="plc-id-tone-mask-0x4004"><h2 class="title topictitle2" id="ariaid-title13">PLC_ID_TONE_MASK (0x4004)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Configure Tone Mask (Static Notching). For each carrier in the corresponding G3-PLC band, there is one byte indicating whether the carrier is used <span class="xref"></span> or masked <span class="xref"></span>. The minimum number of used carriers is 6.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 36 bytes (CENELEC-A), 72 bytes (FCC) or 16 bytes (CENELEC-B).</p>
+<p class="p"><strong class="ph b">Default Value:</strong> All 0s.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title14" id="plc-id-tone-map-rsp-data-0x4005"><h2 class="title topictitle2" id="ariaid-title14">PLC_ID_TONE_MAP_RSP_DATA (0x4005)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Tone Map response data is the best modulation and Tone Map combination to maximize baud rate and minimize frame error rate. It is calculated by the selection algorithm, based on the signal quality of the last received message. See PLC_ID_TONE_MAP_RSP_ENABLED_MODS (0x403E) to enable/disable the different modulations for the selection algorithm. The format is defined by the structure shown below:</p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d50951e302', this);">Copy</button><code id="d50951e302" content="typedef struct {&#xA;  // Modulation type&#xA;  DRV_PLC_PHY_MOD_TYPE modType;&#xA;  // Modulation scheme&#xA;  DRV_PLC_PHY_MOD_SCHEME modScheme;&#xA;  // Tone Map&#xA;  uint8_t toneMap[TONE_MAP_SIZE_MAX];&#xA;} DRV_PLC_PHY_TONE_MAP_RSP;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
+  <span class="ph token comment">// Modulation type</span>
+  DRV_PLC_PHY_MOD_TYPE modType<span class="ph token punctuation">;</span>
+  <span class="ph token comment">// Modulation scheme</span>
+  DRV_PLC_PHY_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
+  <span class="ph token comment">// Tone Map</span>
+  uint8_t toneMap<span class="ph token punctuation">[</span>TONE_MAP_SIZE_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span> DRV_PLC_PHY_TONE_MAP_RSP<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 5 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> BPSK Robust modulation type (0x04), differential modulation scheme (0x00) and full tone map (0x3F0000 in CENELEC-A; 0x0F0000 in CENELEC-B; 0xFFFFFF in FCC).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title15" id="plc-id-tx-total-0x4006"><h2 class="title topictitle2" id="ariaid-title15">PLC_ID_TX_TOTAL (0x4006)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of successfully transmitted PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title16" id="plc-id-tx-total-bytes-0x4007"><h2 class="title topictitle2" id="ariaid-title16">PLC_ID_TX_TOTAL_BYTES (0x4007)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of bytes in successfully transmitted PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title17" id="plc-id-tx-total-errors-0x4008"><h2 class="title topictitle2" id="ariaid-title17">PLC_ID_TX_TOTAL_ERRORS (0x4008)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of unsuccessfully transmitted PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title18" id="plc-id-tx-bad-busy-tx-0x4009"><h2 class="title topictitle2" id="ariaid-title18">PLC_ID_TX_BAD_BUSY_TX (0x4009)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of times when the PL360 device received new data to transmit (send_data) and there is already data in the TX chain.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title19" id="plc-id-tx-bad-busy-channel-0x400a"><h2 class="title topictitle2" id="ariaid-title19">PLC_ID_TX_BAD_BUSY_CHANNEL (0x400A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of times when the PL360 device received new data to transmit (send_data) and the PLC channel is busy.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title20" id="plc-id-tx-bad-len-0x400b"><h2 class="title topictitle2" id="ariaid-title20">PLC_ID_TX_BAD_LEN (0x400B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of times when the PL360 device received new data to transmit (send_data) and the specified length in transmission parameters is invalid.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title21" id="plc-id-tx-bad-format-0x400c"><h2 class="title topictitle2" id="ariaid-title21">PLC_ID_TX_BAD_FORMAT (0x400C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of times when the PL360 device received new data to transmit (send_data) and the transmission parameters are not valid.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title22" id="plc-id-tx-timeout-0x400d"><h2 class="title topictitle2" id="ariaid-title22">PLC_ID_TX_TIMEOUT (0x400D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of times when the PL360 device received new data to transmit (send_data) and it cannot transmit data in the specified time provided by the transmission parameters.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title23" id="plc-id-rx-total-0x400e"><h2 class="title topictitle2" id="ariaid-title23">PLC_ID_RX_TOTAL (0x400E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of successfully received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title24" id="plc-id-rx-total-bytes-0x400f"><h2 class="title topictitle2" id="ariaid-title24">PLC_ID_RX_TOTAL_BYTES (0x400F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of bytes in successfully received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title25" id="plc-id-rx-rs-errors-0x4010"><h2 class="title topictitle2" id="ariaid-title25">PLC_ID_RX_RS_ERRORS (0x4010)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of corrected errors by RS block in received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title26" id="plc-id-rx-exceptions-0x4011"><h2 class="title topictitle2" id="ariaid-title26">PLC_ID_RX_EXCEPTIONS (0x4011)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of time-out errors in received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title27" id="plc-id-rx-bad-len-0x4012"><h2 class="title topictitle2" id="ariaid-title27">PLC_ID_RX_BAD_LEN (0x4012)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of errors in FCH length in received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title28" id="plc-id-rx-bad-crc-fch-0x4013"><h2 class="title topictitle2" id="ariaid-title28">PLC_ID_RX_BAD_CRC_FCH (0x4013)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of errors in FCH CRC in received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title29" id="plc-id-rx-false-positive-0x4014"><h2 class="title topictitle2" id="ariaid-title29">PLC_ID_RX_FALSE_POSITIVE (0x4014)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of errors in PDU synchronization phase.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title30" id="plc-id-rx-bad-format-0x4015"><h2 class="title topictitle2" id="ariaid-title30">PLC_ID_RX_BAD_FORMAT (0x4015)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of errors in modulation type field included in FCH of received PDUs.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title31" id="plc-id-enable-auto-noise-capture-0x4016"><h2 class="title topictitle2" id="ariaid-title31">PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Flag to indicate if automatic noise analyzer is enabled in the reception chain. If Auto-mode is enabled, notch filter parameters (PLC_ID_RRC_NOTCH_ACTIVE (0x4019), PLC_ID_RRC_NOTCH_INDEX (0x401A)) cannot be modified by the user. See PLC_ID_TIME_BETWEEN_NOISE_CAPTURES (0x4017), PLC_ID_RRC_NOTCH_THR_ON (0x4034), PLC_ID_RRC_NOTCH_THR_OFF (0x4035) to configure parameters related to the Auto-mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title32" id="plc-id-time-between-noise-captures-0x4017"><h2 class="title topictitle2" id="ariaid-title32">PLC_ID_TIME_BETWEEN_NOISE_CAPTURES (0x4017)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Time in milliseconds between noise captures.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1000 (1 second).</p>
+<p class="p"><em class="ph i">CAUTION: It is recommended that the default value of this parameter be kept. If reduced, the power consumption could increase. The default value is optimum for power consumption and performance of noise detection.</em></p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title33" id="plc-id-delay-noise-capture-after-rx-0x4018"><h2 class="title topictitle2" id="ariaid-title33">PLC_ID_DELAY_NOISE_CAPTURE_AFTER_RX (0x4018)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Time in microseconds to start a new noise capture after PDU reception/transmission.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 3000 (3 milliseconds).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title34" id="plc-id-rrc-notch-active-0x4019"><h2 class="title topictitle2" id="ariaid-title34">PLC_ID_RRC_NOTCH_ACTIVE (0x4019)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of notched frequencies with RRC notch filter. For CENELEC-A and FCC bands, up to 5 notched frequencies are allowed. For CENELEC-B band, only one notched frequency is allowed.</p>
+<p class="p"><strong class="ph b">Access:</strong> Depends on noise analyzer mode PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016) value:</p>
+<ul class="ul"><li class="li"><p class="p">Auto-mode (1): Read-only</p>
+</li>
+<li class="li"><p class="p">Manual-mode (0): Read-write</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0 (No notched frequencies).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title35" id="plc-id-rrc-notch-index-0x401a"><h2 class="title topictitle2" id="ariaid-title35">PLC_ID_RRC_NOTCH_INDEX (0x401A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Array of RRC notch filter index values. There is one index for each notched frequency. The format of each index is uQ7.8 (2 bytes, where MSB must be 0). The 7 integer bits indicate the carrier index <span class="xref"></span> for which the notch filter is applied. The 8 decimal bits can apply the notch filter to a frequency that is between two consecutive carriers. To convert the notch index to frequency (in Hz), the following formula is applied:</p>
+<p class="p">F = INDEX * Fs / 65536 , where Fs is the sampling rate in Hz:</p>
+<ul class="ul"><li class="li"><p class="p">CENELEC-A, CENELEC-B bands: Fs = 400000 Hz</p>
+</li>
+<li class="li"><p class="p">FCC band: Fs = 1200000 Hz</p>
+</li>
+</ul>
+<p class="p">For example:</p>
+<ul class="ul"><li class="li"><p class="p">CENELEC-A, INDEX = 8192 (0x2000): F = 8192 * 400000 / 65536 = 50000 Hz</p>
+</li>
+<li class="li"><p class="p">FCC, INDEX = 20544 (0x5040): F = 20544 * 1200000 / 65536 = 376172 Hz</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Depends on noise analyzer mode PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016) value:</p>
+<ul class="ul"><li class="li"><p class="p">1 (Auto-mode): Read-only</p>
+</li>
+<li class="li"><p class="p">0 (Manual-mode): Read-write</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Value Range:</strong> 10 bytes (CENELEC-A, FCC bands) or 2 bytes (CENELEC-B band). Each group of 2 bytes corresponds to one notched frequency (Integer part: 0 - 127, Decimal part: 0-255). Number of valid values depends on PLC_ID_RRC_NOTCH_ACTIVE (0x4019).</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title36" id="plc-id-noise-peak-power-0x401b"><h2 class="title topictitle2" id="ariaid-title36">PLC_ID_NOISE_PEAK_POWER (0x401B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Estimation of noise level, in dBµV, for the carrier with highest noise power. It is actually the maximum value of the PIB described in PLC_ID_NOISE_PER_CARRIER (0x403A). The value is updated only if noise analyzer Auto-mode is enabled (PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016)) or if noise capture is triggered manually (PLC_ID_RRC_NOTCH_AUTODETECT (0x4024)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title37" id="plc-id-crc-tx-rx-capability-0x401c"><h2 class="title topictitle2" id="ariaid-title37">PLC_ID_CRC_TX_RX_CAPABILITY (0x401C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> CRC computation capability. If it is enabled, 16-bit CRC is computed in transmitted and received PDUs. The CRC format is the same that uses the G3-PLC stack, which is described in the IEEE 802.15.4 standard. In transmission, when it is enabled, padding and CRC are added to the data automatically. In order to ensure that all OFDM symbols are filled with data, a zero-padding is inserted after data payload (if it is needed). The padding guarantees that the last 16 bits in reception correspond to the 16-bit CRC. The 16-bit CRC is added after the padding.
+In reception, when it is enabled, CRC is computed over the received PDU and it is compared to the last 16 bits of the data (corresponding to the CRC of the message) to check the integrity of the message. These two bytes are not included in the data buffer containing the received frame reported in <em class="ph i">DRV_PLC_PHY_RECEPTION_OBJ</em>. The field <em class="ph i">crcOk</em> in <em class="ph i">DRV_PLC_PHY_RECEPTION_OBJ</em> shows whether the CRC is correct or not. Microchip G3-PLC stack implementation does not use this functionality, since CRC is computed in MAC layer instead of PHY layer. The aim of this PIB is to make it easier for customers to build applications over PHY layer.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title38" id="plc-id-rx-bad-crc-pay-0x401d"><h2 class="title topictitle2" id="ariaid-title38">PLC_ID_RX_BAD_CRC_PAY (0x401D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of errors in payload CRC in received PDUs. It is only updated if CRC capability is enabled (see PLC_ID_CRC_TX_RX_CAPABILITY (0x401C)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title39" id="plc-id-cfg-autodetect-impedance-0x401e"><h2 class="title topictitle2" id="ariaid-title39">PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Auto-Detect Impedance Mode. Transmission Automatic Gain Control (Tx AGC) and Automatic Transmission Mode Control (ATMC) can be enabled/disabled. There are 3 available modes:</p>
+<ul class="ul"><li class="li"><p class="p">OFF <span class="xref"></span>: Tx AGC disabled. ATMC disabled.</p>
+</li>
+<li class="li"><p class="p">ON <span class="xref"></span>: Tx AGC enabled. ATMC enabled.</p>
+</li>
+<li class="li"><p class="p">AGC <span class="xref"></span>: Tx AGC enabled. ATMC disabled.</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title40" id="plc-id-cfg-impedance-0x401f"><h2 class="title topictitle2" id="ariaid-title40">PLC_ID_CFG_IMPEDANCE (0x401F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Transmission Mode (HIGH, LOW, VERY_LOW). It is automatically updated if ATMC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title41" id="plc-id-zc-period-0x4020"><h2 class="title topictitle2" id="ariaid-title41">PLC_ID_ZC_PERIOD (0x4020)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Last estimation of the mains Zero-Crossing period, in microseconds.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title42" id="plc-id-fch-symbols-0x4021"><h2 class="title topictitle2" id="ariaid-title42">PLC_ID_FCH_SYMBOLS (0x4021)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of symbols in Frame Control Header. Depends on the G3 band in use and Tone Mask (see PLC_ID_TONE_MASK (0x4004)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 13 (CENELEC-A), 12 (FCC), 30 (CENELEC-B).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title43" id="plc-id-pay-symbols-tx-0x4022"><h2 class="title topictitle2" id="ariaid-title43">PLC_ID_PAY_SYMBOLS_TX (0x4022)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of payload symbols in the last requested transmission.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title44" id="plc-id-pay-symbols-rx-0x4023"><h2 class="title topictitle2" id="ariaid-title44">PLC_ID_PAY_SYMBOLS_RX (0x4023)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of payload symbols in last received message.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title45" id="plc-id-rrc-notch-autodetect-0x4024"><h2 class="title topictitle2" id="ariaid-title45">PLC_ID_RRC_NOTCH_AUTODETECT (0x4024)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Trigger to start noise analysis. If noise analyzer Manual-mode is enabled (see PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016)), noise capture can be triggered through this PIB by writing 1. Writing 0 has no effect. If noise analyzer Auto-mode is enabled, writing any value has no effect.</p>
+<p class="p"><strong class="ph b">Access:</strong> Write-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte. <span class="xref"></span></p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title46" id="plc-id-max-rms-table-hi-0x4025"><h2 class="title topictitle2" id="ariaid-title46">PLC_ID_MAX_RMS_TABLE_HI (0x4025)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Target value of RMS_CALC in HIGH Tx Mode (see PLC_ID_CFG_IMPEDANCE (0x401F)). RMS_CALC will tend to this value by automatically adjusting the gain after every transmission (see PLC_ID_CURRENT_GAIN (0x4036)). These parameters are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 32 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1100"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1102"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1104"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1106"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1108"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1110"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1112"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1114"><span>Byte 28-31</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1100 "><span>RMS_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1102 "><span>RMS_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1104 "><span>RMS_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1106 "><span>RMS_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1108 "><span>RMS_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1110 "><span>RMS_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1112 "><span>RMS_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1114 "><span>RMS_HI_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">where RMS_HI_x: Target value of RMS_CALC in mode of transmission HIGH for the attenuation level x (attenuation levels in 3dB steps)</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1152"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1154"><span>RMS_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1156"><span>RMS_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1158"><span>RMS_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1160"><span>RMS_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1162"><span>RMS_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1164"><span>RMS_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1166"><span>RMS_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1168"><span>RMS_HI_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1991</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>1381</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>976</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>695</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>495</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>351</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>250</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>179</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1355</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>960</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>681</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>485</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>345</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>246</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>177</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>129</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1133</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>793</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>559</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>396</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>280</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>199</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>143</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>108</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title47" id="plc-id-max-rms-table-vlo-0x4026"><h2 class="title topictitle2" id="ariaid-title47">PLC_ID_MAX_RMS_TABLE_VLO (0x4026)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Target value of RMS_CALC in VERY_LOW Tx Mode (see PLC_ID_CFG_IMPEDANCE (0x401F)). RMS_CALC will tend to this value by automatically adjusting the gain after every transmission (see PLC_ID_CURRENT_GAIN (0x4036)). These parameters are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 32 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1256"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1258"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1260"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1262"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1264"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1266"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1268"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1270"><span>Byte 28-31</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1256 "><span>RMS_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1258 "><span>RMS_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1260 "><span>RMS_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1262 "><span>RMS_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1264 "><span>RMS_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1266 "><span>RMS_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1268 "><span>RMS_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1270 "><span>RMS_VLO_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">where: RMS_HI_x: Target value of RMS_CALC in mode of transmission VERY_LOW for the attenuation level x (attenuation levels in 3dB steps)</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1308"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1310"><span>RMS_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1312"><span>RMS_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1314"><span>RMS_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1316"><span>RMS_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1318"><span>RMS_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1320"><span>RMS_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1322"><span>RMS_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1324"><span>RMS_VLO_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>6356</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>4706</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>3317</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>2308</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>1602</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>1112</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>778</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>546</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>5656</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>4174</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>2877</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>1987</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>1413</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>1020</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>736</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>532</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>2871</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>2120</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>1498</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>1054</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>740</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>519</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>366</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>259</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title48" id="plc-id-thresholds-table-hi-0x4027"><h2 class="title topictitle2" id="ariaid-title48">PLC_ID_THRESHOLDS_TABLE_HI (0x4027)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Table of thresholds to automatically update Tx Mode (see PLC_ID_CFG_IMPEDANCE (0x401F)) from HIGH mode. These parameters are only used if ATMC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)). Corrected RMS_CALC (see PLC_ID_CORRECTED_RMS_CALC (0x4033)) is compared with these thresholds after every transmission to select Tx Mode for next transmission. The decision is taken following the steps shown below:</p>
+<ol class="ol"><li class="li"><span class="indent-level-default">1.</span><p class="p">If corrected RMS_CALC is below TH_HI_VLO_x, Tx Mode will be updated to VERY_LOW mode</p>
+</li>
+<li class="li"><span class="indent-level-default">2.</span><p class="p">Else if corrected RMS_CALC is below TH_HI_LO_x, Tx Mode will be updated to LOW mode</p>
+</li>
+<li class="li"><span class="indent-level-default">3.</span><p class="p">Else Tx Mode will remain in HIGH mode</p>
+</li>
+</ol>
+<p class="p">where:</p>
+<ul class="ul"><li class="li"><p class="p">TH_HI_VLO_x: Threshold to change from HIGH to VERY_LOW mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+<li class="li"><p class="p">TH_HI_LO_x: Threshold to change from HIGH to LOW mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1431"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1433"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1435"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1437"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1439"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1441"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1443"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1445"><span>Byte 28-31</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1431 "><span>TH_HI_LO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1433 "><span>TH_HI_LO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1435 "><span>TH_HI_LO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1437 "><span>TH_HI_LO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1439 "><span>TH_HI_LO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1441 "><span>TH_HI_LO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1443 "><span>TH_HI_LO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1445 "><span>TH_HI_LO_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1477"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1479"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1481"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1483"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1485"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1487"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1489"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1491"><span>Byte 60-63</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1477 "><span>TH_HI_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1479 "><span>TH_HI_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1481 "><span>TH_HI_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1483 "><span>TH_HI_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1485 "><span>TH_HI_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1487 "><span>TH_HI_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1489 "><span>TH_HI_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1491 "><span>TH_HI_VLO_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1527"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1529"><span>TH_HI_LO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1531"><span>TH_HI_LO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1533"><span>TH_HI_LO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1535"><span>TH_HI_LO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1537"><span>TH_HI_LO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1539"><span>TH_HI_LO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1541"><span>TH_HI_LO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1543"><span>TH_HI_LO_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1616"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1618"><span>TH_HI_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1620"><span>TH_HI_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1622"><span>TH_HI_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1624"><span>TH_HI_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1626"><span>TH_HI_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1628"><span>TH_HI_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1630"><span>TH_HI_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1632"><span>TH_HI_VLO_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>1685</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>1173</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>828</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>589</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>419</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>298</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>212</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>151</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>1147</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>811</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>576</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>409</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>291</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>208</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>150</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>109</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>950</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>667</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>471</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>334</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>238</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>169</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>122</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>90</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title49" id="plc-id-thresholds-table-lo-0x4028"><h2 class="title topictitle2" id="ariaid-title49">PLC_ID_THRESHOLDS_TABLE_LO (0x4028)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Table of thresholds to automatically update Tx Mode (see PLC_ID_CFG_IMPEDANCE (0x401F)) from LOW mode. These parameters are only used if ATMC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)). Corrected RMS_CALC (see PLC_ID_CORRECTED_RMS_CALC (0x4033)) is compared with these thresholds after every transmission to select Tx Mode for next transmission. The decision is taken following the steps shown below:</p>
+<ol class="ol"><li class="li"><span class="indent-level-default">1.</span><p class="p">If corrected RMS_CALC is below TH_LO_VLO_x, Tx Mode will be updated to VERY_LOW mode</p>
+</li>
+<li class="li"><span class="indent-level-default">2.</span><p class="p">Else if corrected RMS_CALC is above TH_LO_HI_x, Tx Mode will be updated to HIGH mode</p>
+</li>
+<li class="li"><span class="indent-level-default">3.</span><p class="p">Else Tx Mode will remain in LOW mode</p>
+</li>
+</ol>
+<p class="p">where:</p>
+<ul class="ul"><li class="li"><p class="p">TH_LO_VLO_x: Threshold to change from LOW to VERY_LOW mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+<li class="li"><p class="p">TH_LO_HI_x: Threshold to change from LOW to HIGH mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1739"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1741"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1743"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1745"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1747"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1749"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1751"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1753"><span>Byte 28-31</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1739 "><span>TH_LO_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1741 "><span>TH_LO_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1743 "><span>TH_LO_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1745 "><span>TH_LO_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1747 "><span>TH_LO_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1749 "><span>TH_LO_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1751 "><span>TH_LO_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1753 "><span>TH_LO_HI_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1785"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1787"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1789"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1791"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1793"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1795"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1797"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1799"><span>Byte 60-63</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1785 "><span>TH_LO_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1787 "><span>TH_LO_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1789 "><span>TH_LO_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1791 "><span>TH_LO_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1793 "><span>TH_LO_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1795 "><span>TH_LO_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1797 "><span>TH_LO_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1799 "><span>TH_LO_VLO_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1835"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1837"><span>TH_LO_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1839"><span>TH_LO_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1841"><span>TH_LO_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1843"><span>TH_LO_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1845"><span>TH_LO_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1847"><span>TH_LO_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1849"><span>TH_LO_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1851"><span>TH_LO_HI_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1924"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1926"><span>TH_LO_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1928"><span>TH_LO_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1930"><span>TH_LO_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1932"><span>TH_LO_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1934"><span>TH_LO_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1936"><span>TH_LO_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1938"><span>TH_LO_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1940"><span>TH_LO_VLO_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title50" id="plc-id-thresholds-table-vlo-0x4029"><h2 class="title topictitle2" id="ariaid-title50">PLC_ID_THRESHOLDS_TABLE_VLO (0x4029)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Table of thresholds to automatically update Tx Mode (see PLC_ID_CFG_IMPEDANCE (0x401F)) from VERY_LOW mode. These parameters are only used if ATMC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)). Corrected RMS_CALC (see  PLC_ID_CORRECTED_RMS_CALC (0x4033)) is compared with these thresholds after every transmission to select Tx Mode for next transmission. The decision is taken following the steps shown below:</p>
+<ol class="ol"><li class="li"><span class="indent-level-default">1.</span><p class="p">If corrected RMS_CALC is below TH_VLO_VLO_x, Tx Mode will remain in VERY_LOW mode</p>
+</li>
+<li class="li"><span class="indent-level-default">2.</span><p class="p">Else if corrected RMS_CALC is above TH_VLO_HI_x, Tx Mode will be updated to HIGH mode</p>
+</li>
+<li class="li"><span class="indent-level-default">3.</span><p class="p">Else Tx Mode will be updated to LOW mode</p>
+</li>
+</ol>
+<p class="p">where:</p>
+<ul class="ul"><li class="li"><p class="p">TH_VLO_VLO_x: Threshold to remain Tx mode in VERY_LOW mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+<li class="li"><p class="p">TH_VLO_HI_x: Threshold to change from VERY_LOW to HIGH mode for Tx attenuation level x (3 dB steps)</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2047"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2049"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2051"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2053"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2055"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2057"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2059"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2061"><span>Byte 28-31</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2047 "><span>TH_VLO_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2049 "><span>TH_VLO_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2051 "><span>TH_VLO_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2053 "><span>TH_VLO_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2055 "><span>TH_VLO_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2057 "><span>TH_VLO_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2059 "><span>TH_VLO_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2061 "><span>TH_VLO_HI_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2093"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2095"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2097"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2099"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2101"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2103"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2105"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2107"><span>Byte 60-63</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2093 "><span>TH_VLO_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2095 "><span>TH_VLO_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2097 "><span>TH_VLO_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2099 "><span>TH_VLO_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2101 "><span>TH_VLO_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2103 "><span>TH_VLO_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2105 "><span>TH_VLO_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2107 "><span>TH_VLO_VLO_7</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2143"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2145"><span>TH_VLO_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2147"><span>TH_VLO_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2149"><span>TH_VLO_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2151"><span>TH_VLO_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2153"><span>TH_VLO_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2155"><span>TH_VLO_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2157"><span>TH_VLO_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2159"><span>TH_VLO_HI_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2232"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2234"><span>TH_VLO_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2236"><span>TH_VLO_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2238"><span>TH_VLO_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2240"><span>TH_VLO_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2242"><span>TH_VLO_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2244"><span>TH_VLO_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2246"><span>TH_VLO_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2248"><span>TH_VLO_VLO_7</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>8988</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>6370</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>4466</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>3119</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>2171</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>1512</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>1061</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>752</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>8153</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>5718</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>4007</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>2871</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>2080</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>1506</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>1083</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>778</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>3878</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>2749</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>1935</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>1362</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>965</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>686</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>493</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>353</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title51" id="plc-id-predist-coef-table-hi-0x402a"><h2 class="title topictitle2" id="ariaid-title51">PLC_ID_PREDIST_COEF_TABLE_HI (0x402A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Equalization Coefficients table in HIGH Tx mode. There is one coefficient for each carrier in the used band. The format of each coefficient is uQ0.16 (2 bytes). PL360 firmware compensates the total gain internally, so modifying the digital gain (see PLC_ID_GAIN_TABLE_HI (0x402D)) is not needed when equalization is modified.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 72 bytes (CENELEC-A), 32 bytes (CENELEC-B) or 144 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+<p class="p">CENELEC-A:</p>
+<p class="p">{0x670A, 0x660F, 0x676A, 0x6A6B, 0x6F3F, 0x7440, 0x74ED, 0x7792, 0x762D, 0x7530, 0x7938,
+0x7C0A, 0x7C2A, 0x7B0E, 0x7AF2, 0x784B, 0x7899, 0x76F9, 0x76D6, 0x769F, 0x775D, 0x70C0,
+0x6EB9, 0x6F18, 0x6F1E, 0x6FA2, 0x6862, 0x67C9, 0x68F9, 0x68A5, 0x6CA3, 0x7153, 0x7533,
+0x750B, 0x7B59, 0x7FFF}</p>
+<p class="p">FCC:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+<p class="p">CENELEC-B:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title52" id="plc-id-predist-coef-table-lo-0x402b"><h2 class="title topictitle2" id="ariaid-title52">PLC_ID_PREDIST_COEF_TABLE_LO (0x402B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Equalization Coefficients table in LOW Tx mode. There is one coefficient for each carrier in the used band. The format of each coefficient is uQ0.16 (2 bytes). PL360 firmware compensates the total gain internally, so modifying the gain it is not needed (see PLC_ID_GAIN_TABLE_LO (0x402E)) when equalization is modified.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 72 bytes (CENELEC-A), 32 bytes (CENELEC-B) or 144 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+<p class="p">CENELEC-A:</p>
+<p class="p">{0x7FFF, 0x7DB1, 0x7CE6, 0x7B36, 0x772F, 0x7472, 0x70AA, 0x6BC2, 0x682D, 0x6618, 0x6384,
+0x6210, 0x61D7, 0x6244, 0x6269, 0x63A8, 0x6528, 0x65CC, 0x67F6, 0x693B, 0x6B13, 0x6C29,
+0x6D43, 0x6E26, 0x6D70, 0x6C94, 0x6BB5, 0x6AC9, 0x6A5F, 0x6B65, 0x6B8C, 0x6A62, 0x6CEC,
+0x6D5A, 0x6F9D, 0x6FD3}</p>
+<p class="p">FCC:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+<p class="p">CENELEC-B:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title53" id="plc-id-predist-coef-table-vlo-0x402c"><h2 class="title topictitle2" id="ariaid-title53">PLC_ID_PREDIST_COEF_TABLE_VLO (0x402C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Equalization Coefficients table in VERY_LOW Tx mode. There is one coefficient for each carrier in the used band. The format of each coefficient is uQ0.16 (2 bytes). PL360 firmware compensates the total gain internally, so modifying the gain is not needed (see PLC_ID_GAIN_TABLE_VLO (0x402F)) when equalization is modified.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 72 bytes (CENELEC-A), 32 bytes (CENELEC-B) or 144 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+<p class="p">CENELEC-A:</p>
+<p class="p">{0x7FFF, 0x7DB1, 0x7CE6, 0x7B36, 0x772F, 0x7472, 0x70AA, 0x6BC2, 0x682D, 0x6618, 0x6384,
+0x6210, 0x61D7, 0x6244, 0x6269, 0x63A8, 0x6528, 0x65CC, 0x67F6, 0x693B, 0x6B13, 0x6C29,
+0x6D43, 0x6E26, 0x6D70, 0x6C94, 0x6BB5, 0x6AC9, 0x6A5F, 0x6B65, 0x6B8C, 0x6A62, 0x6CEC,
+0x6D5A, 0x6F9D, 0x6FD3}</p>
+<p class="p">FCC:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+<p class="p">CENELEC-B:</p>
+<p class="p">{0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF,
+0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF, 0x7FFF}</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title54" id="plc-id-gain-table-hi-0x402d"><h2 class="title topictitle2" id="ariaid-title54">PLC_ID_GAIN_TABLE_HI (0x402D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Table of gain values for HIGH Tx Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 6 bytes</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2425"><span>Byte 0-1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2427"><span>Byte 2-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2429"><span>Byte 4-5</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2425 "><span>GAIN_HI_INI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2427 "><span>GAIN_HI_MIN</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2429 "><span>GAIN_HI_MAX</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">where:</p>
+<ul class="ul"><li class="li"><p class="p">GAIN_HI_INI: Initial gain value in HIGH Tx Mode. The minimum value is GAIN_HI_MIN.</p>
+</li>
+<li class="li"><p class="p">GAIN_HI_MIN: Minimum gain value in HIGH Tx Mode. The minimum value is 1.</p>
+</li>
+<li class="li"><p class="p">GAIN_HI_MAX: Maximum gain value in HIGH Tx Mode. The minimum value is GAIN_HI_INI.</p>
+</li>
+</ul>
+<p class="p">GAIN_HI_MIN and GAIN_HI_MAX are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2464"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2466"><span>GAIN_HI_INI</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2468"><span>GAIN_HI_MIN</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2470"><span>GAIN_HI_MAX</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>CENELEC-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>142</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>70</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>336</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>109</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>50</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>256</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>CENELEC-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>248</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>119</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>496</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title55" id="plc-id-gain-table-lo-0x402e"><h2 class="title topictitle2" id="ariaid-title55">PLC_ID_GAIN_TABLE_LO (0x402E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gain value in LOW Tx Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes. The minimum value is 1.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> CENELEC-A: 474; FCC: 364; CENELEC-B: 701.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title56" id="plc-id-gain-table-vlo-0x402f"><h2 class="title topictitle2" id="ariaid-title56">PLC_ID_GAIN_TABLE_VLO (0x402F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Table of gain values for VERY_LOW Tx Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 6 bytes.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2543"><span>Byte 0-1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2545"><span>Byte 2-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2547"><span>Byte 4-5</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2543 "><span>GAIN_VLO_INI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2545 "><span>GAIN_VLO_MIN</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2547 "><span>GAIN_VLO_MAX</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">where:</p>
+<ul class="ul"><li class="li"><p class="p">GAIN_VLO_INI: Initial gain value in VERY_LOW Tx Mode. The minimum value is GAIN_VLO_MIN.</p>
+</li>
+<li class="li"><p class="p">GAIN_VLO_MIN: Minimum gain value in VERY_LOW Tx Mode. The minimum value is 1.</p>
+</li>
+<li class="li"><p class="p">GAIN_VLO_MAX: Maximum gain value in VERY_LOW Tx Mode. The minimum value is GAIN_VLO_INI.</p>
+</li>
+</ul>
+<p class="p">GAIN_VLO_MIN and GAIN_VLO_MAX are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2582"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2584"><span>GAIN_VLO_INI</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2586"><span>GAIN_VLO_MIN</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2588"><span>GAIN_VLO_MAX</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>CENELEC-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>474</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>230</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>597</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>364</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>180</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>408</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>CENELEC-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>701</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>350</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>883</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title57" id="plc-id-dacc-table-cfg-0x4030"><h2 class="title topictitle2" id="ariaid-title57">PLC_ID_DACC_TABLE_CFG (0x4030)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Configuration values of DACC peripheral according to hardware configuration.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 68 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong></p>
+<p class="p">CENELEC-A:</p>
+<p class="p">{0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0x610800FF,
+0x14141414, 0x00002020, 0x00000044, 0x0FD20004, 0x00000355, 0x0F000000, 0x001020F0,
+0x00000355, 0x0F000000, 0x001020FF}</p>
+<p class="p">FCC:</p>
+<p class="p">{0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0x2A3000FF,
+0x1B1B1B1B, 0x10101010, 0x00001111, 0x04380006, 0x000003AA, 0xF0000000, 0x001020F0,
+0x00000355, 0x0F000000, 0x001020FF}</p>
+<p class="p">CENELEC-B:</p>
+<p class="p">{0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0x58CA00FF,
+0x19191919, 0x00002020, 0x00000044, 0x0FD20004, 0x00000355, 0x0F000000, 0x001020F0,
+0x00000355, 0x0F000000, 0x001020FF}</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title58" id="plc-id-num-tx-levels-0x4032"><h2 class="title topictitle2" id="ariaid-title58">PLC_ID_NUM_TX_LEVELS (0x4032)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of Tx attenuation levels (3 dB steps) for normal transmission behavior. When <em class="ph i">attenuation</em> field (see <em class="ph i">DRV_PLC_PHY_TRANSMISSION_OBJ</em>) is higher than or equal to the number of Tx attenuation levels, Tx Mode is internally forced by the PL360 device to LOW mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 8.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title59" id="plc-id-corrected-rms-calc-0x4033"><h2 class="title topictitle2" id="ariaid-title59">PLC_ID_CORRECTED_RMS_CALC (0x4033)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> RMS_CALC value obtained in the last transmitted message, compensated with gain applied by Tx AGC algorithm (see PLC_ID_CURRENT_GAIN (0x4036)). This is the value which is actually compared with thresholds (PLC_ID_THRESHOLDS_TABLE_VLO (0x4029), PLC_ID_THRESHOLDS_TABLE_HI (0x4027)) to automatically update Tx Mode.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title60" id="plc-id-rrc-notch-thr-on-0x4034"><h2 class="title topictitle2" id="ariaid-title60">PLC_ID_RRC_NOTCH_THR_ON (0x4034)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Activation threshold for narrow/broad-band noise detection, in dBµV with uQ14.2 format.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 270 (67.5 dBµV; CENELEC-A), 281 (70.25 dBµV; CENELEC-B) or 258 (64.5 dBµV; FCC).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title61" id="plc-id-rrc-notch-thr-off-0x4035"><h2 class="title topictitle2" id="ariaid-title61">PLC_ID_RRC_NOTCH_THR_OFF (0x4035)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Deactivation threshold for narrow band noise (in dBμV quarters, uQ14.2).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 254 (63.5 dBµV; CENELEC-A), 265 (66.25 dBµV; CENELEC-B) or 242 (60.5 dBµV; FCC).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title62" id="plc-id-current-gain-0x4036"><h2 class="title topictitle2" id="ariaid-title62">PLC_ID_CURRENT_GAIN (0x4036)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Transmission Gain which will be used in the next transmitted message. It can vary after every transmission if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)). Maximum and minimum Gain values can be set in PLC_ID_GAIN_TABLE_HI (0x402D) and PLC_ID_GAIN_TABLE_VLO (0x402F).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 142 (CENELEC-A), 109 (FCC) or 248 (CENELEC-B).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title63" id="plc-id-zc-conf-inv-0x4037"><h2 class="title topictitle2" id="ariaid-title63">PLC_ID_ZC_CONF_INV (0x4037)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Polarity of the pulse generated by the external Zero-Crossing detection circuit. For further information, refer to Zero-Crossing Configuration.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 1.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title64" id="plc-id-zc-conf-freq-0x4038"><h2 class="title topictitle2" id="ariaid-title64">PLC_ID_ZC_CONF_FREQ (0x4038)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Initial frequency, in Hz, for the mains Zero-Crossing detection algorithm. For further information, refer to Zero-Crossing Configuration.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 50.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title65" id="plc-id-zc-conf-delay-0x4039"><h2 class="title topictitle2" id="ariaid-title65">PLC_ID_ZC_CONF_DELAY (0x4039)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Time Delay, in microseconds, of the external mains Zero-Crossing Detection circuit. For further information, refer to Zero-Crossing Configuration.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> -350.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title66" id="plc-id-noise-per-carrier-0x403a"><h2 class="title topictitle2" id="ariaid-title66">PLC_ID_NOISE_PER_CARRIER (0x403A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Estimation of noise level, in dBµV, for each carrier in the working band. This information is used internally by the PL360 PHY for narrow/broad-band noise detection and notch filter activation. The value is updated only if Auto-mode is enabled (PLC_ID_ENABLE_AUTO_NOISE_CAPTURE (0x4016)) or noise capture is triggered through PLC_ID_RRC_NOTCH_AUTODETECT (0x4024).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 36 bytes (CENELEC-A), 16 bytes (CENELEC-B) or 72 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default Value:</strong> All 0s.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title67" id="plc-id-sync-xcorr-threshold-0x403b"><h2 class="title topictitle2" id="ariaid-title67">PLC_ID_SYNC_XCORR_THRESHOLD (0x403B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Correlation threshold for synchronization (preamble detection). The format is uQ0.16. It represents percentage with respect to the maximum ideal value of correlation (computed internally in PL360).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0x7400 (45.3%).</p>
+<p class="p"><em class="ph i">CAUTION It is recommended to keep the default value of this parameter in order to maintain expected reception performance.</em></p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title68" id="plc-id-sync-xcorr-peak-value-0x403c"><h2 class="title topictitle2" id="ariaid-title68">PLC_ID_SYNC_XCORR_PEAK_VALUE (0x403C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Correlation value in last received PDU. The format is the same described in PLC_ID_SYNC_XCORR_THRESHOLD (0x403B).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title69" id="plc-id-sync-syncm-threshold-0x403d"><h2 class="title topictitle2" id="ariaid-title69">PLC_ID_SYNC_SYNCM_THRESHOLD (0x403D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Threshold for SYNCM detection (once preamble is detected with correlation).</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 15299.</p>
+<p class="p"><em class="ph i">CAUTION It is recommended to keep the default value of this parameter in order to maintain expected reception performance.</em></p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title70" id="plc-id-tone-map-rsp-enabled-mods-0x403e"><h2 class="title topictitle2" id="ariaid-title70">PLC_ID_TONE_MAP_RSP_ENABLED_MODS (0x403E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Bitmask to enable/disable the available modulations for the algorithm to select modulation and Tone Map (see PLC_ID_TONE_MAP_RSP_DATA (0x4005)). Each bit corresponds to a combination of modulation type and modulation scheme. The modulation is enabled if the corresponding bit is 1.</p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2931"><span>Bit 7 (MSB)</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2933"><span>Bit 6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2935"><span>Bit 5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2937"><span>Bit 4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2939"><span>Bit 3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2941"><span>Bit 2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2943"><span>Bit 1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2945"><span>Bit 0 (LSB)</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2931 "><span>8PSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2933 "><span>8PSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2935 "><span>QPSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2937 "><span>QPSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2939 "><span>BPSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2941 "><span>BPSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2943 "><span>ROBO_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2945 "><span>ROBO_C</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte (1-255).</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0xFF (All modulations enabled).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title71" id="plc-id-ppm-calib-on-0x403f"><h2 class="title topictitle2" id="ariaid-title71">PLC_ID_PPM_CALIB_ON (0x403F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Enable the oscillator clock signal to go out through TXRX1 pad. This is useful to measure clock frequency deviation.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title72" id="plc-id-sfo-estimation-last-rx-0x4040"><h2 class="title topictitle2" id="ariaid-title72">PLC_ID_SFO_ESTIMATION_LAST_RX (0x4040)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Estimation of the double-sided (between transmitter and receiver) clock frequency deviation for the last received PDU. The value is signed and the unit is 0.001 ppm. To convert to ppm, the read value has to be divided by 1000.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title73" id="plc-id-pdc-last-rx-0x4041"><h2 class="title topictitle2" id="ariaid-title73">PLC_ID_PDC_LAST_RX (0x4041)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> PDC value coming in the FCH of the last received PDU.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title74" id="plc-id-max-psdu-len-params-0x4042"><h2 class="title topictitle2" id="ariaid-title74">PLC_ID_MAX_PSDU_LEN_PARAMS (0x4042)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Parameters used for the computation of the maximum PDU length (see PLC_ID_MAX_PSDU_LEN (0x4043)). The format is defined by the structure shown below:</p>
+<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d50951e3051', this);">Copy</button><code id="d50951e3051" content="typedef struct {&#xA;  // Modulation type&#xA;  DRV_PLC_PHY_MOD_TYPE modType;&#xA;  // Modulation scheme&#xA;  DRV_PLC_PHY_MOD_SCHEME modScheme;&#xA;  // Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC)&#xA;  uint8_t rs2Blocks;&#xA;  // Tone Map&#xA;  uint8_t toneMap[TONE_MAP_SIZE_MAX];&#xA;} DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
+  <span class="ph token comment">// Modulation type</span>
+  DRV_PLC_PHY_MOD_TYPE modType<span class="ph token punctuation">;</span>
+  <span class="ph token comment">// Modulation scheme</span>
+  DRV_PLC_PHY_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
+  <span class="ph token comment">// Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC)</span>
+  uint8_t rs2Blocks<span class="ph token punctuation">;</span>
+  <span class="ph token comment">// Tone Map</span>
+  uint8_t toneMap<span class="ph token punctuation">[</span>TONE_MAP_SIZE_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+<span class="ph token punctuation">}</span> DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 6 bytes.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> BPSK Robust modulation type (0x04), differential modulation scheme (0x00), 1 Reed Solomon block (0x00) and full tone map (0x3F0000, in CENELEC-A; 0x0F0000, in CENELEC-B; 0xFFFFFF, in FCC) .</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title75" id="plc-id-max-psdu-len-0x4043"><h2 class="title topictitle2" id="ariaid-title75">PLC_ID_MAX_PSDU_LEN (0x4043)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Maximum PDU length allowed by PHY layer depending on Modulation type, Modulation scheme, Tone map and number of Reed-Solomon blocks (see PLC_ID_MAX_PSDU_LEN_PARAMS (0x4042) to configure these parameters). If CRC capability is enabled (see PLC_ID_CRC_TX_RX_CAPABILITY (0x401C)), the final result does not include the 2 bytes of the 16-bit CRC computed by the PL360.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 2 bytes (CENELEC-A, CENELEC-B: 0-239; FCC: 0-494).</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 133 (CENELEC-A); 54 (CENELEC-B); 247 (FCC).</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title76" id="plc-id-reset-stats-0x4044"><h2 class="title topictitle2" id="ariaid-title76">PLC_ID_RESET_STATS (0x4044)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Writing any value (1 - 255) causes all PHY statistics (PLC_ID_TX_TOTAL, PLC_ID_RX_TOTAL, etc.) to be reset to 0.</p>
+<p class="p"><strong class="ph b">Access:</strong> Write-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default Value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title77" id="plc-id-ic-driver-cfg-0x4045"><h2 class="title topictitle2" id="ariaid-title77">PLC_ID_IC_DRIVER_CFG (0x4045)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This parameter configures the Transmission PLC Driver. It must be configured according to the PLC device used. There are four available modes, one for PL360 or PL485, and three for PL460:</p>
+<ul class="ul"><li class="li"><p class="p">PL360 <span class="xref"></span>: Configured for PL360 or PL485.</p>
+</li>
+<li class="li"><p class="p">PL460_MAIN_BRANCH_1F <span class="xref"></span>: Configured for PL460 using Main Transmission Branch with a single external filter. When transmitting, both ASO pins are activated simultaneously for all Tx Modes.</p>
+</li>
+<li class="li"><p class="p">PL460_MAIN_BRANCH_2F <span class="xref"></span>: Configured for PL460 using Main Transmission Branch with two external filters. When transmitting, ASO0 is activated if HIGH Tx mode and ASO1 is activated if LOW / VERY_LOW Tx mode (see PLC_ID_CFG_IMPEDANCE (0x401F)).</p>
+</li>
+<li class="li"><p class="p">PL460_AUX_BRANCH <span class="xref"></span>: Configured for PL460 using Auxiliary Transmission Branch.</p>
+</li>
+</ul>
+<p class="p">For further information, refer to the PL460 data sheet.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title78" id="plc-id-rx-chn-est-real-0x4046"><h2 class="title topictitle2" id="ariaid-title78">PLC_ID_RX_CHN_EST_REAL (0x4046)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Real part of Channel Estimation of the last received PDU. For each carrier in the working band, there is one 2-byte signed value. The PL360 PHY layer computes the Channel Estimation from the preamble and FCH symbols, which is used for the demodulation of payload symbols. The value has no unit and the scale does not reflect the real received signal level, although the RSSI (<em class="ph i">rssi</em> in <em class="ph i">DRV_PLC_PHY_RECEPTION_OBJ</em>) could be used to scale the Channel Estimation and obtain the RSSI per carrier in the working band.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 72 bytes (CENELEC-A), 32 bytes (CENELEC-B) or 144 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default value:</strong> All 0s.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title79" id="plc-id-rx-chn-est-imag-0x4047"><h2 class="title topictitle2" id="ariaid-title79">PLC_ID_RX_CHN_EST_IMAG (0x4047)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Imaginary part of Channel Estimation of the last received PDU. For each carrier in the working band, there is one 2-byte signed value. See PLC_ID_RX_CHN_EST_REAL (0x4046) for more information.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 72 bytes (CENELEC-A), 32 bytes (CENELEC-B) or 144 bytes (FCC).</p>
+<p class="p"><strong class="ph b">Default value:</strong> All 0s.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title80" id="plc-id-tx-disable-0x4048"><h2 class="title topictitle2" id="ariaid-title80">PLC_ID_TX_DISABLE (0x4048)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> This parameter allows disabling of transmissions. If disabled, ongoing/programmed transmission (if any) will be aborted and subsequent requests will be denied, reporting the transmission result <em class="ph i">DRV_PLC_PHY_TX_CANCELLED</em>.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title81" id="plc-id-tx-high-temp-120-0x4049"><h2 class="title topictitle2" id="ariaid-title81">PLC_ID_TX_HIGH_TEMP_120 (0x4049)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of unsuccessful transmissions because of high temperature (&gt;120ºC) error, i.e., with transmission result <em class="ph i">DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_120</em>. This transmission error is only available in PL460.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title82" id="plc-id-tx-cancelled-0x404a"><h2 class="title topictitle2" id="ariaid-title82">PLC_ID_TX_CANCELLED (0x404A)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of canceled transmissions, i.e., with transmission result <em class="ph i">DRV_PLC_PHY_TX_CANCELLED</em>. Transmissions can be canceled by:</p>
+<ul class="ul"><li class="li"><p class="p"><em class="ph i">TX_MODE_CANCEL</em> bit in <em class="ph i">mode</em> parameter (see <em class="ph i">DRV_PLC_PHY_TRANSMISSION_OBJ</em>)</p>
+</li>
+<li class="li"><p class="p">PLC_ID_TX_DISABLE (0x4048)</p>
+</li>
+<li class="li"><p class="p">Tx Enable pin, only available in PL460</p>
+</li>
+</ul>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title83" id="plc-id-zc-value-0x404b"><h2 class="title topictitle2" id="ariaid-title83">PLC_ID_ZC_VALUE (0x404B)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets last deteced Zero-Crossing value in microseconds.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title84" id="plc-id-pdc-rx-last-rx-0x404c"><h2 class="title topictitle2" id="ariaid-title84">PLC_ID_PDC_RX_LAST_RX (0x404C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets computed Rx PDC for last received frame.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title85" id="plc-id-pdc-zc-time-last-rx-0x404d"><h2 class="title topictitle2" id="ariaid-title85">PLC_ID_PDC_ZC_TIME_LAST_RX (0x404D)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets last measured Zero-Cross time when last frame was received.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title86" id="plc-id-pdc-zc-period-last-rx-0x404e"><h2 class="title topictitle2" id="ariaid-title86">PLC_ID_PDC_ZC_PERIOD_LAST_RX (0x404E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets last estimated Zero-Cross period when last frame was received.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 4 bytes.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 0.</p>
+</div>
+</div>
+<div class="topic nested1" aria-labelledby="ariaid-title87" id="plc-id-preamble-num-syncp-0x404f"><h2 class="title topictitle2" id="ariaid-title87">PLC_ID_PREAMBLE_NUM_SYNCP (0x404F)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Number of SYNCP symbols present on PLC frames preamble. It is used on both Tx for generation and Rx for validation.</p>
+<p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<p class="p"><strong class="ph b">Value Range:</strong> 1 byte <span class="xref"></span>.</p>
+<p class="p"><strong class="ph b">Default value:</strong> 8.</p>
+</div>
+</div>
+</body>
+</html>
