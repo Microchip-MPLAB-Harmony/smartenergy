@@ -29,7 +29,6 @@ nav_order: 99
 
 - **Applications**
   - MPLAB Harmony provides large number of application examples to accelerate learning and reduce the development cycles for your embedded systems with reusable software components. The application examples are available in the respective [product family specific repository](apps/readme.md).
-  - All MPLAB X applications are updated to work with both MHC and MCC tools.
 
 ### KNOWN ISSUES
 
