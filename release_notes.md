@@ -32,7 +32,7 @@ nav_order: 99
 
 ### KNOWN ISSUES
 
-* No known issues
+* Error in serialization of PHY TESTER TOOL G3-PLC on SNR Worst Symbol.
 
 ### DEVELOPMENT TOOLS
 
