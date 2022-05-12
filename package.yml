@@ -1,0 +1,15 @@
+package:
+  format-version: "1.0.0"
+  name: "smartenergy"
+  version: "v1.0.0"
+  type: "api"
+  status: "production"
+  required: true
+
+  dependencies:
+    - name: "core"
+      type: "package"
+      version: "v3.10.0"
+    - name: "csp"
+      type: "package"
+      version: "v3.12.0"
