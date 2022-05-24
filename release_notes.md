@@ -1,8 +1,3 @@
----
-title: Release notes
-nav_order: 99
----
-
 ![Microchip logo](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_logo.png)
 ![Harmony logo small](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_mplab_harmony_logo_small.png)
 
@@ -12,7 +7,7 @@ nav_order: 99
 
 ### NEW FEATURES
 
-- **New part support** - This release introduces initial support for [PL360B](https://www.microchip.com/wwwproducts/en/PL360B) providing functionality for G3 PLC/PRIME physical layer and G3 PLC MAC RT layer.
+- **New part support** - This release introduces initial support for [PL360B](https://www.microchip.com/wwwproducts/en/PL360B) and [MPL460A](https://www.microchip.com/en-us/product/mpl460a) providing functionality for G3 PLC/PRIME physical layer and G3 PLC MAC RT layer.
 
 - **Smart Energy Library** - The following table provides the list of Smart Energy Library components and Applications.
 
@@ -32,12 +27,12 @@ nav_order: 99
 
 ### KNOWN ISSUES
 
-* Error in serialization of PHY TESTER TOOL G3-PLC on SNR Worst Symbol.
+* None.
 
 ### DEVELOPMENT TOOLS
 
   - [MPLAB® X IDE v6.00](https://www.microchip.com/mplab/mplab-x-ide)
-  - [MPLAB® XC32 C/C++ Compiler v4.00](https://www.microchip.com/mplab/compilers)
+  - [MPLAB® XC32 C/C++ Compiler v4.10](https://www.microchip.com/mplab/compilers)
   - MPLAB® X IDE plug-ins:
     - MPLAB® Code Configurator 5.1.4
 
