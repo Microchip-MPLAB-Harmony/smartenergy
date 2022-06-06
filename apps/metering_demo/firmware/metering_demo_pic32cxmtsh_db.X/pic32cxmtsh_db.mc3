@@ -672,7 +672,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;845&quot; canvasWidth=&quot;682&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;GraphSettings canvasHeight=&quot;779&quot; canvasWidth=&quot;682&quot; dnOrder=&quot;0&quot;/&gt;
     &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;FreeRTOS&quot; x=&quot;349&quot; y=&quot;177&quot;/&gt;
@@ -692,7 +692,7 @@
         &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc1&quot; x=&quot;513&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sys_command&quot; x=&quot;351&quot; y=&quot;270&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sys_console&quot; x=&quot;184&quot; y=&quot;232&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_fs&quot; x=&quot;540&quot; y=&quot;466&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;540&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
@@ -2562,7 +2562,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory&gt;
   &lt;drv_memory dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_COMMON_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_memory&gt;
 &lt;/drv_memory&gt;
@@ -2619,7 +2619,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory_0&gt;
   &lt;drv_memory_0 dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory_0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory_0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_memory_0&gt;
 &lt;/drv_memory_0&gt;
@@ -3897,7 +3897,6 @@
       &lt;MultiCapability dnOrder=&quot;0&quot; id=&quot;sys_fs_DRV_MEDIA_dependency&quot;&gt;
         &lt;TargetAttachments dnOrder=&quot;0&quot;&gt;
           &lt;TargetAttachment dnOrder=&quot;0&quot; targetAttachmentID=&quot;drv_media&quot; targetComponentID=&quot;drv_sdspi_0&quot;/&gt;
-          &lt;TargetAttachment dnOrder=&quot;1&quot; targetAttachmentID=&quot;drv_media&quot; targetComponentID=&quot;drv_memory_0&quot;/&gt;
         &lt;/TargetAttachments&gt;
       &lt;/MultiCapability&gt;
     &lt;/Attachments&gt;
@@ -4011,7 +4010,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_INSTANCES_NUMBER&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4060,7 +4059,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_1_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda1&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4083,7 +4082,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_2_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda2&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4105,7 +4104,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_3_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda3&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka3&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4127,7 +4126,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_4_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda4&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka4&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4149,7 +4148,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_MOUNT_1_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sst26vf&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sdcard&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4171,7 +4170,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_TYPE_DEFINE_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SPIFLASH&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SD_CARD&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -4929,7 +4928,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>96e5329ea0ae5210078b1fcea7aa6934409e6b3daa5b54755e37aefa00d84b14</hash>
+         <hash>59773737fed5af93eeb8c6c5e72d22c98fe976650078c867067e7db10048d96d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi.c</file>
@@ -5037,7 +5036,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>4ea6524ae8d0e75a7cfed32b2decb846a94e84fa52a641871ba97f7fe83ab629</hash>
+         <hash>fe61ed9a0180857cd690efe9b32a769e537cdd3ec8858ec0affd17531f2f30b0</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -5058,10 +5057,6 @@
       <entry>
          <file>..\src\config\pic32cxmtsh_db\osal\osal_freertos.c</file>
          <hash>6f35cfd335587dd112d0ac648ae99539a5acbb98ba80ce6e8c7c855e7b8d7465</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory_file_system.c</file>
-         <hash>c268294079df93d6e75e17b812ca99fa9d08a4cfb592c8ddd0ca1402a5dd590e</hash>
       </entry>
       <entry>
          <file>..\src\app_events.h</file>
@@ -5341,7 +5336,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ffconf.h</file>
-         <hash>fbf2e6a69c373f38dd0ba9c98001d8ed44d9061c934cc3968cae98fd6588af71</hash>
+         <hash>8f1f7779dc16a7bd079a602581b243349faf4ee755b799656fac84133fd01cac</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\list.c</file>

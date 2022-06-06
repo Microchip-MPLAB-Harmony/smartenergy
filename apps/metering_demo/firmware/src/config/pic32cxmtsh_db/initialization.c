@@ -188,8 +188,7 @@ const DRV_MEMORY_INIT drvMemory0InitData =
     .memoryDevice               = &drvMemory0DeviceAPI,
     .isMemDevInterruptEnabled   = false,
     .memDevStatusPollUs         = 500,
-    .isFsEnabled                = true,
-    .deviceMediaType            = (uint8_t)SYS_FS_MEDIA_TYPE_SPIFLASH,
+    .isFsEnabled                = false,
     .ewBuffer                   = &gDrvMemory0EraseBuffer[0],
     .clientObjPool              = (uintptr_t)&gDrvMemory0ClientObject[0],
     .nClientsMax                = DRV_MEMORY_CLIENTS_NUMBER_IDX0
@@ -220,12 +219,6 @@ const SYS_FS_MEDIA_MOUNT_DATA sysfsMountTable[SYS_FS_VOLUME_NUMBER] =
         .devName   = SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0,
         .mediaType = SYS_FS_MEDIA_TYPE_IDX0,
         .fsType   = SYS_FS_TYPE_IDX0
-    },
-    {
-        .mountName = SYS_FS_MEDIA_IDX1_MOUNT_NAME_VOLUME_IDX0,
-        .devName   = SYS_FS_MEDIA_IDX1_DEVICE_NAME_VOLUME_IDX0,
-        .mediaType = SYS_FS_MEDIA_TYPE_IDX1,
-        .fsType   = SYS_FS_TYPE_IDX1
     },
 };
 

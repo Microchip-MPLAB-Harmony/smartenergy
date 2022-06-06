@@ -331,7 +331,6 @@
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory.c</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory_file_system.c</itemPath>
             </logicalFolder>
             <logicalFolder name="sdspi" displayName="sdspi" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_driver_interface.c</itemPath>

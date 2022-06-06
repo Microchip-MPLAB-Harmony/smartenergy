@@ -35,8 +35,8 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define DATALOG_MOUNT_NAME          SYS_FS_MEDIA_IDX1_MOUNT_NAME_VOLUME_IDX0
-#define DATALOG_DEVICE_NAME         SYS_FS_MEDIA_IDX1_DEVICE_NAME_VOLUME_IDX0
+#define DATALOG_MOUNT_NAME          SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0
+#define DATALOG_DEVICE_NAME         SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0
 #define DATALOG_TST_FILE_NAME       "test_log.txt"
 
 #define TEST_LOG_LEN                10

@@ -224,7 +224,7 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             
             // Get Week Day
             data = argv[3];
-            sysTime.tm_wday = ((data[0] - '0') * 10 + (data[1] - '0')) - 1;
+            sysTime.tm_wday = (data[0] - '0') - 1;
             
             // Get Time
             data = argv[4];
@@ -277,7 +277,7 @@ static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_RFC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    SYS_CMD_MESSAGE("Read File Content\n\r");
+    SYS_CMD_MESSAGE("Read File Content   \n\r");
     
     
 }
