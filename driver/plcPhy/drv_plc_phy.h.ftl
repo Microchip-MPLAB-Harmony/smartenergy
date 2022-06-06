@@ -409,8 +409,7 @@ typedef void ( *DRV_PLC_PHY_SLEEP_CALLBACK )( uintptr_t context );
         .dmaChannelRx  = SYS_DMA_CHANNEL_0,
         .spiAddressTx =  (void *)&(SPI0_REGS->SPI_TDR),
         .spiAddressRx  = (void *)&(SPI0_REGS->SPI_RDR),
-        .spiMR  = (void *)&(SPI0_REGS->SPI_MR),
-        .spiCSR  = (void *)&(SPI0_REGS->SPI_CSR),
+        .spiCSR  = (void *)&(SPI0_REGS->SPI_CSR[1]),
         .spiClockFrequency = DRV_PLC_SPI_CLK,
         .ldoPin = DRV_PLC_LDO_EN_PIN, 
         .resetPin = DRV_PLC_RESET_PIN,
@@ -973,7 +972,51 @@ void DRV_PLC_PHY_SleepDisableCallbackRegister(
     const uintptr_t context 
 );
 
-</#if> 
+</#if>
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+// *****************************************************************************
+/* Function:
+    void DRV_PLC_PHY_ExternalInterruptHandler( 
+        const uintptr_t context 
+    );
+
+  Summary:
+    Allows application to register callback for PLC Interrupt pin.
+
+  Description:
+    This function allows a client to register a callback function to handle 
+    PLC interrupt.
+    
+  Precondition:
+    DRV_PLC_PHY_Initialize must have been called to obtain a valid system object.
+
+  Returns:
+    None.
+
+  Remarks:
+    None.
+
+  Example:
+    <code>
+      
+    // Initialize PLC Driver Instance
+    sysObj.drvPLC = DRV_PLC_PHY_Initialize(DRV_PLC_PHY_INDEX, (SYS_MODULE_INIT *)&drvPlcPhyInitData);
+    // Register Callback function to handle PLC interruption
+    EIC_CallbackRegister(DRV_PLC_EXT_INT_PIN, DRV_PLC_PHY_ExternalInterruptHandler, sysObj.drvPLC);
+
+    </code>
+
+*/
+
+void DRV_PLC_PHY_ExternalInterruptHandler( uintptr_t context );
+<#else>
 // *****************************************************************************
 /* Function:
     void DRV_PLC_PHY_ExternalInterruptHandler( 
@@ -1010,6 +1053,7 @@ void DRV_PLC_PHY_SleepDisableCallbackRegister(
 */
 
 void DRV_PLC_PHY_ExternalInterruptHandler( PIO_PIN pin, uintptr_t context );
+</#if> 
 
 // *************************************************************************
 /* Function:

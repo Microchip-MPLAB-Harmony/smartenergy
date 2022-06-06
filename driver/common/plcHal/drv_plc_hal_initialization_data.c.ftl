@@ -24,39 +24,69 @@
 -->
 // <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    <#assign SPI_PREFFIX = "SPI">
+<#elseif SPI_PLIB?lower_case[0..*7] == "flexcom">
+    <#assign SPI_PREFFIX = "FLEX_SPI">
+<#elseif SPI_PLIB?lower_case[0..*3] == "spi">
+    <#assign SPI_PREFFIX = "SPI">
+</#if>
 /* HAL Interface Initialization for PLC transceiver */
 DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
- <#if DRV_PLC_TX_RX_DMA == true> 
     /* SPI Transfer Setup */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
 
+<#if (core.DMA_ENABLE?has_content == false) || (DRV_PLC_PLIB == "SRV_SPISPLIT")>
+    /* SPI Is Busy */
+    .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsTransmitterBusy,
+
+</#if>
+<#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (DRV_PLC_SPI_NUM_CSR != 0)>
+    /* SPI Set Chip Select */
+    .spiSetChipSelect = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_ChipSelectSetup,
+
+</#if>
+<#if core.DMA_ENABLE?has_content>
     /* DMA Channel for Transmit */
     .dmaChannelTx = SYS_DMA_CHANNEL_${DRV_PLC_TX_DMA_CHANNEL?string},
 
     /* DMA Channel for Receive */
     .dmaChannelRx  = SYS_DMA_CHANNEL_${DRV_PLC_RX_DMA_CHANNEL?string},
 
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
     /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_TDR),
+    .spiAddressTx =  (void *)&(${SPI_PLIB}_REGS->SPIM.SERCOM_DATA),
 
     /* SPI Receive Register */
-    .spiAddressRx  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_RDR),
+    .spiAddressRx  = (void *)&(${SPI_PLIB}_REGS->SPIM.SERCOM_DATA),
 
-    /* SPI MR register address. */
-    .spiMR  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_MR),
-
-    /* SPI CSR register address. */
-    .spiCSR  = (void *)&(${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_CSR),
 <#else>
-    /* SPI Transfer Setup */
-    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
+    /* SPI Transmit Register */
+    .spiAddressTx =  (void *)&(${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_TDR),
 
+    /* SPI Receive Register */
+    .spiAddressRx  = (void *)&(${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_RDR),
+
+</#if>
+<#else>
     /* SPI Write/Read */
-    .spiWriteRead = ${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_WriteRead,
-    
-    /* SPI Is Busy */
-    .spiIsBusy = ${.vars["${DRV_PLC_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsBusy,
+    .spiWriteRead = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_WriteRead,
+
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    /* SPI Chip select pin */
+    .spiCSPin = DRV_PLC_SPI_CS_PIN,
+<#else>
+    /* SPI CSR register address. */
+    .spiCSR  = (void *)&(${SPI_PLIB?upper_case}_REGS->${SPI_PREFFIX}_CSR[DRV_PLC_CSR_INDEX]),
 </#if>
     
     /* SPI clock frequency */
@@ -85,6 +115,19 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     /* PLC External Interrupt Pin */
     .thMonPin = DRV_PLC_THMON_PIN,
     
+</#if>
+<#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (drvRf215)??>
+    /* Interrupt source ID for RF external interrupt */
+    .rfExtIntSource = PIO${drvRf215.DRV_RF215_EXT_INT_PIN[14]}_IRQn,
+
+    /* Interrupt source ID for DMA */
+    .dmaIntSource = ${core.DMA_INSTANCE_NAME}_IRQn,
+
+<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+    /* Interrupt source ID for SYS_TIME */
+    .sysTimeIntSource = ${.vars["${sys_time.SYS_TIME_PLIB?lower_case}"].IRQ_ENUM_NAME},
+
+</#if>
 </#if>
 };
 

@@ -24,8 +24,20 @@
 -->
 /* PLC MAC RT Configuration Options */
 #define DRV_PLC_SECURE                        ${DRV_PLC_SECURE_MODE?string}
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+#define DRV_PLC_SPI_CS_PIN                    ${DRV_PLC_SPI_CS_PIN?string}
+#define DRV_PLC_EXT_INT_SRC                   EIC_IRQn
+<#else>
 #define DRV_PLC_EXT_INT_PIO_PORT              ${DRV_PLC_EXT_INT_PIO_PORT?string}
 #define DRV_PLC_EXT_INT_SRC                   ${DRV_PLC_EXT_INT_SRC?string}
+</#if>
 #define DRV_PLC_EXT_INT_PIN                   ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_RESET_PIN                     ${DRV_PLC_RESET_PIN?string}
 #define DRV_PLC_LDO_EN_PIN                    ${DRV_PLC_LDO_EN_PIN?string}
@@ -37,6 +49,12 @@
 </#if>
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
 #define DRV_PLC_THMON_PIN                     ${DRV_PLC_THMON_PIN?string}
+</#if>
+<#if DRV_PLC_SPI_NUM_CSR != 0>
+#define DRV_PLC_CSR_INDEX                     ${DRV_PLC_SPI_NPCS}
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+#define DRV_PLC_SPI_CHIP_SELECT               SPI_CHIP_SELECT_NPCS${DRV_PLC_SPI_NPCS}
+</#if>
 </#if>
 
 #define DRV_PLC_SPI_CLK                      8000000

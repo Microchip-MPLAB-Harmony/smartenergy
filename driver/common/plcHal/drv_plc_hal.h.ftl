@@ -54,6 +54,26 @@
 <#if core.DMA_ENABLE?has_content>
 #include "system/dma/sys_dma.h"
 </#if>
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+<#if (drvRf215)??>
+#include "system/int/sys_int.h"
+</#if>
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    <#assign SPI_PREFFIX = "SPI">
+#include "peripheral/sercom/spi_master/plib_sercom_spi_master_common.h"
+<#elseif SPI_PLIB?lower_case[0..*7] == "flexcom">
+    <#assign SPI_PREFFIX = "FLEXCOM_SPI">
+#include "peripheral/flexcom/spi/master/plib_flexcom_spi_master_common.h"
+<#elseif SPI_PLIB?lower_case[0..*3] == "spi">
+    <#assign SPI_PREFFIX = "SPI">
+#include "peripheral/spi/spi_master/plib_spi_master_common.h"
+</#if>
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -103,48 +123,58 @@
 // *****************************************************************************
 
 typedef bool (* DRV_PLC_SPI_PLIB_TRANSFER_SETUP)(uintptr_t, uint32_t);
- <#if DRV_PLC_TX_RX_DMA == false> 
+<#if core.DMA_ENABLE?has_content == false>
 typedef bool (* DRV_PLC_SPI_WRITE_READ)( void * pTransmitData, size_t txSize, 
         void * pReceiveData, size_t rxSize );
+</#if>
+<#if (core.DMA_ENABLE?has_content == false) || (DRV_PLC_PLIB == "SRV_SPISPLIT")>
 typedef bool (* DRV_PLC_SPI_ISBUSY)( void );
- </#if>
-
- typedef enum
-{
-    DRV_PLC_SPI_CLOCK_PHASE_TRAILING_EDGE = 0 << SPI_CSR_NCPHA_Pos,
-    DRV_PLC_SPI_CLOCK_PHASE_LEADING_EDGE = 1 << SPI_CSR_NCPHA_Pos,
-
-    /* Force the compiler to reserve 32-bit space for each enum value */
-    DRV_PLC_SPI_CLOCK_PHASE_INVALID = 0xFFFFFFFF
-
-}DRV_PLC_SPI_CLOCK_PHASE;
+</#if>
+<#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (DRV_PLC_SPI_NUM_CSR != 0)>
+typedef void (* DRV_PLC_SPI_SET_CS)( ${SPI_PREFFIX}_CHIP_SELECT chipSelect );
+</#if>
 
 typedef enum
 {
-    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_LOW = 0 << SPI_CSR_CPOL_Pos,
-    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_HIGH = 1 << SPI_CSR_CPOL_Pos,
+    DRV_PLC_SPI_CLOCK_PHASE_TRAILING_EDGE = ${SPI_PREFFIX}_CLOCK_PHASE_TRAILING_EDGE,
+    DRV_PLC_SPI_CLOCK_PHASE_LEADING_EDGE = ${SPI_PREFFIX}_CLOCK_PHASE_LEADING_EDGE,
 
     /* Force the compiler to reserve 32-bit space for each enum value */
-    DRV_PLC_SPI_CLOCK_POLARITY_INVALID = 0xFFFFFFFF
+    DRV_PLC_SPI_CLOCK_PHASE_INVALID = ${SPI_PREFFIX}_CLOCK_PHASE_INVALID
 
-}DRV_PLC_SPI_CLOCK_POLARITY;
+} DRV_PLC_SPI_CLOCK_PHASE;
 
 typedef enum
 {
-    DRV_PLC_SPI_DATA_BITS_8 = SPI_CSR_BITS_8_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_9 = SPI_CSR_BITS_9_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_10 = SPI_CSR_BITS_10_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_11 = SPI_CSR_BITS_11_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_12 = SPI_CSR_BITS_12_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_13 = SPI_CSR_BITS_13_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_14 = SPI_CSR_BITS_14_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_15 = SPI_CSR_BITS_15_BIT_Val << SPI_CSR_BITS_Pos,
-    DRV_PLC_SPI_DATA_BITS_16 = SPI_CSR_BITS_16_BIT_Val << SPI_CSR_BITS_Pos,
+    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_LOW = ${SPI_PREFFIX}_CLOCK_POLARITY_IDLE_LOW,
+    DRV_PLC_SPI_CLOCK_POLARITY_IDLE_HIGH = ${SPI_PREFFIX}_CLOCK_POLARITY_IDLE_HIGH,
 
     /* Force the compiler to reserve 32-bit space for each enum value */
-    DRV_PLC_SPI_DATA_BITS_INVALID = 0xFFFFFFFF
+    DRV_PLC_SPI_CLOCK_POLARITY_INVALID = ${SPI_PREFFIX}_CLOCK_POLARITY_INVALID
 
-}DRV_PLC_SPI_DATA_BITS;
+} DRV_PLC_SPI_CLOCK_POLARITY;
+
+typedef enum
+{
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    DRV_PLC_SPI_DATA_BITS_8 = ${SPI_PREFFIX}_DATA_BITS_8,
+    DRV_PLC_SPI_DATA_BITS_9 = ${SPI_PREFFIX}_DATA_BITS_9,
+<#else>
+    DRV_PLC_SPI_DATA_BITS_8 = ${SPI_PREFFIX}_DATA_BITS_8,
+    DRV_PLC_SPI_DATA_BITS_9 = ${SPI_PREFFIX}_DATA_BITS_9, 
+    DRV_PLC_SPI_DATA_BITS_10 = ${SPI_PREFFIX}_DATA_BITS_10,
+    DRV_PLC_SPI_DATA_BITS_11 = ${SPI_PREFFIX}_DATA_BITS_11,
+    DRV_PLC_SPI_DATA_BITS_12 = ${SPI_PREFFIX}_DATA_BITS_12,
+    DRV_PLC_SPI_DATA_BITS_13 = ${SPI_PREFFIX}_DATA_BITS_13,
+    DRV_PLC_SPI_DATA_BITS_14 = ${SPI_PREFFIX}_DATA_BITS_14,
+    DRV_PLC_SPI_DATA_BITS_15 = ${SPI_PREFFIX}_DATA_BITS_15,
+    DRV_PLC_SPI_DATA_BITS_16 = ${SPI_PREFFIX}_DATA_BITS_16,
+</#if>
+
+    /* Force the compiler to reserve 32-bit space for each enum value */
+    DRV_PLC_SPI_DATA_BITS_INVALID = ${SPI_PREFFIX}_DATA_BITS_INVALID
+
+} DRV_PLC_SPI_DATA_BITS;
 
 typedef struct
 {
@@ -153,7 +183,7 @@ typedef struct
     DRV_PLC_SPI_CLOCK_POLARITY clockPolarity;
     DRV_PLC_SPI_DATA_BITS   dataBits;
 
-}DRV_PLC_SPI_TRANSFER_SETUP;
+} DRV_PLC_SPI_TRANSFER_SETUP;
 
 // *****************************************************************************
 /* PLC Driver PLIB Interface Data
@@ -174,7 +204,17 @@ typedef struct
     /* PLC SPI PLIB Transfer Setup */
     DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup;
 
- <#if DRV_PLC_TX_RX_DMA == true> 
+<#if (core.DMA_ENABLE?has_content == false) || (DRV_PLC_PLIB == "SRV_SPISPLIT")>
+    /* SPI Is Busy */
+    DRV_PLC_SPI_ISBUSY                     spiIsBusy;
+
+</#if>
+<#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (DRV_PLC_SPI_NUM_CSR != 0)>
+    /* SPI Set Chip Select */
+    DRV_PLC_SPI_SET_CS                     spiSetChipSelect;
+
+</#if>
+<#if core.DMA_ENABLE?has_content>
     /* SPI transmit DMA channel. */
     SYS_DMA_CHANNEL                        dmaChannelTx;
 
@@ -187,19 +227,20 @@ typedef struct
     /* SPI receive register address used for DMA operation. */
     void                                   *spiAddressRx;
 
-    /* SPI MR register address. */
-    uint32_t                               *spiMR;
-
-    /* SPI MR register address. */
-    uint32_t                               *spiCSR;
 <#else>
     /* SPI Write/Read */
     DRV_PLC_SPI_WRITE_READ                 spiWriteRead;
-    
-    /* SPI Is Busy */
-    DRV_PLC_SPI_ISBUSY                     spiIsBusy;
- </#if>
 
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    /* SPI Chip select pin */
+    SYS_PORT_PIN                           spiCSPin;
+    
+<#else>
+    /* SPI CSR register address. */
+    uint32_t                               *spiCSR;
+
+</#if>
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;
 
@@ -227,7 +268,19 @@ typedef struct
     SYS_PORT_PIN                           thMonPin;
 
 </#if>
+<#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (drvRf215)??>
+    /* Interrupt source ID for RF external interrupt */
+    INT_SOURCE                             rfExtIntSource;
 
+    /* Interrupt source ID for DMA */
+    INT_SOURCE                             dmaIntSource;
+
+<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+    /* Interrupt source ID for SYS_TIME */
+    INT_SOURCE                             sysTimeIntSource;
+
+</#if>
+</#if>
 } DRV_PLC_PLIB_INTERFACE;
 
 // *****************************************************************************

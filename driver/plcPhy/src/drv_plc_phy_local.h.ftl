@@ -121,7 +121,11 @@ typedef struct
     /* Flag to indicate this object is in use  */
     bool                            inUse;
 
-    DRV_PLC_PHY_STATE               state;
+<#if (DRV_PLC_PROFILE == "G3")>
+    DRV_PLC_PHY_STATE               state[1];
+<#else>
+    DRV_PLC_PHY_STATE               state[2];
+</#if>
 
     /* Keep track of the number of clients that have opened this driver */
     size_t                          nClients;
@@ -187,7 +191,11 @@ typedef struct
     uintptr_t                       contextBoot;
 
     /* Event detection flag: confirmation of the previous transmission */
+<#if (DRV_PLC_PROFILE == "G3")>
+    volatile bool                   evTxCfm[1];
+<#else>
     volatile bool                   evTxCfm[2];
+</#if>
 
     /* Event detection flag: parameters of new reception */
     volatile bool                   evRxPar;

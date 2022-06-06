@@ -225,7 +225,7 @@ static void _DRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
     pRxObj->payloadNoisedSymbols = (uint16_t)*pSrc++;
     pRxObj->payloadNoisedSymbols += (uint16_t)*pSrc++ << 8;
     pRxObj->payloadSnrWorstCarrier = *pSrc++;
-    pRxObj->payloadSnrWorstSymbol  = *pSrc++;
+    pRxObj->payloadSnrWorstSymbol = *pSrc++;
     pRxObj->payloadSnrImpulsive = *pSrc++;
     pRxObj->payloadSnrBand = *pSrc++;
     pRxObj->payloadSnrBackground = *pSrc++;
@@ -274,7 +274,7 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         }
 
         /* Check if there is any tx_cfm pending to be reported */
-        if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
+        if (gPlcPhyObj->state[0] == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
         {
             gPlcPhyObj->evResetTxCfm = true;
         }
@@ -453,7 +453,7 @@ void DRV_PLC_PHY_Task(void)
         if (gPlcPhyObj->evResetTxCfm)
         {
             gPlcPhyObj->evResetTxCfm = false;
-            gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
+            gPlcPhyObj->state[0] = DRV_PLC_PHY_STATE_IDLE;
             
             cfmObj.rmsCalc = 0;
             cfmObj.time = 0;
@@ -527,7 +527,8 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
     }
 
 </#if>  
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0) && (gPlcPhyObj->state == DRV_PLC_PHY_STATE_IDLE))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0) &&
+            ((gPlcPhyObj->state[0] == DRV_PLC_PHY_STATE_IDLE) || ((transmitObj->mode & TX_MODE_CANCEL) != 0)))
     {
         size_t size_params;
         
@@ -535,8 +536,11 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
         
         if (size_params)
         {
-            /* Update PLC state: transmitting */
-            gPlcPhyObj->state = DRV_PLC_PHY_STATE_TX;
+            if ((transmitObj->mode & TX_MODE_CANCEL) == 0)
+            {
+                /* Update PLC state: transmitting */
+                gPlcPhyObj->state[0] = DRV_PLC_PHY_STATE_TX;
+            }
             
             /* Send TX parameters */
             _DRV_PLC_PHY_COMM_SpiWriteCmd(TX_PAR_ID, sDataTxPar, size_params);
@@ -545,13 +549,13 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
             gPlcPhyObj->plcHal->delay(200);
             
             /* Send TX data */
-            if (gPlcPhyObj->state == DRV_PLC_PHY_STATE_TX)
+            if (gPlcPhyObj->state[0] == DRV_PLC_PHY_STATE_TX)
             {
                 /* Send TX data content */
                 _DRV_PLC_PHY_COMM_SpiWriteCmd(TX_DAT_ID, transmitObj->pTransmitData, transmitObj->dataLength);
             
                 /* Update PLC state: waiting confirmation */
-                gPlcPhyObj->state = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
+                gPlcPhyObj->state[0] = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
             }
         }
         else
@@ -661,27 +665,35 @@ bool DRV_PLC_PHY_PIBGet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
                     
                 case PLC_ID_HOST_MODEL_ID:
                     value = DRV_PLC_PHY_HOST_MODEL;
-                    memcpy(pibObj->pData, (uint8_t*)&value, 2);
+                    pibObj->pData[0] = (uint8_t)value;
+                    pibObj->pData[1] = (uint8_t)(value >> 8);
                     break;
                     
                 case PLC_ID_HOST_PHY_ID:
                     value = DRV_PLC_PHY_HOST_PHY;
-                    memcpy(pibObj->pData, (uint8_t*)&value, 4);
+                    pibObj->pData[0] = (uint8_t)value;
+                    pibObj->pData[1] = (uint8_t)(value >> 8);
+                    pibObj->pData[2] = (uint8_t)(value >> 16);
+                    pibObj->pData[3] = (uint8_t)(value >> 24);
                     break;
                     
                 case PLC_ID_HOST_PRODUCT_ID:
                     value = DRV_PLC_PHY_HOST_PRODUCT;
-                    memcpy(pibObj->pData, (uint8_t*)&value, 2);
+                    pibObj->pData[0] = (uint8_t)value;
+                    pibObj->pData[1] = (uint8_t)(value >> 8);
                     break;
                     
                 case PLC_ID_HOST_VERSION_ID:
                     value = DRV_PLC_PHY_HOST_VERSION;
-                    memcpy(pibObj->pData, (uint8_t*)&value, 4);
+                    pibObj->pData[0] = (uint8_t)value;
+                    pibObj->pData[1] = (uint8_t)(value >> 8);
+                    pibObj->pData[2] = (uint8_t)(value >> 16);
+                    pibObj->pData[3] = (uint8_t)(value >> 24);
                     break;
                     
                 case PLC_ID_HOST_BAND_ID:
                     value = DRV_PLC_PHY_HOST_BAND;
-                    memcpy(pibObj->pData, (uint8_t*)&value, 1);
+                    pibObj->pData[0] = (uint8_t)value;
                     break;
                     
                 default:
@@ -768,12 +780,27 @@ bool DRV_PLC_PHY_PIBSet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
     return false;
 }
 
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+void DRV_PLC_PHY_ExternalInterruptHandler(uintptr_t context)
+<#else>
 void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
+</#if>
 {   
     /* Avoid warning */
     (void)context;
-
+	
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    if (gPlcPhyObj)
+<#else>
     if ((gPlcPhyObj) && (pin == (PIO_PIN)gPlcPhyObj->plcHal->plcPlib->extIntPin))
+</#if>
     {
         DRV_PLC_PHY_EVENTS_OBJ evObj;
         
@@ -790,7 +817,7 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             /* update event flag */
             gPlcPhyObj->evTxCfm[0] = true;
             /* Update PLC state: idle */
-            gPlcPhyObj->state = DRV_PLC_PHY_STATE_IDLE;
+            gPlcPhyObj->state[0] = DRV_PLC_PHY_STATE_IDLE;
         }
         
         /* Check received new parameters event (First event in RX) */
@@ -820,7 +847,13 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         /* Time guard */
         gPlcPhyObj->plcHal->delay(50);
     }
+<#if SPI_PLIB?lower_case[0..*6] != "sercom">
     
-    /* PORTD Interrupt Status Clear */
+    /* PORT Interrupt Status Clear */
+<#if (PLC_PIO_ID??) && (PLC_PIO_ID == 11264)>
+    (&(PIO0_REGS->PIO_GROUP[DRV_PLC_EXT_INT_PIO_PORT]))->PIO_ISR;
+<#else>
     ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
+</#if>
+</#if>
 }

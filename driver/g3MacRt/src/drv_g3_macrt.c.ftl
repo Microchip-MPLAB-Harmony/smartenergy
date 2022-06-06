@@ -96,6 +96,7 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
 </#if>
     
     /* Callbacks initialization */
+    gDrvG3MacRtObj.initCallback          = NULL;
     gDrvG3MacRtObj.bootDataCallback      = NULL;
     gDrvG3MacRtObj.txCfmCallback         = NULL;
     gDrvG3MacRtObj.dataIndCallback       = NULL;
@@ -104,6 +105,9 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     gDrvG3MacRtObj.commStatusIndCallback = NULL;
     gDrvG3MacRtObj.phySnifferIndCallback = NULL;
     gDrvG3MacRtObj.exceptionCallback     = NULL;
+    
+    /* Clear PHY Sniffer Data Buffer */
+    gDrvG3MacRtObj.pPhyDataSniffer       = NULL;
 
     /* HAL init */
     gDrvG3MacRtObj.plcHal->init((DRV_PLC_PLIB_INTERFACE *)g3MacRtInit->plcHal->plcPlib);
@@ -172,8 +176,22 @@ void DRV_G3_MACRT_Close( const DRV_HANDLE handle )
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0))
     {
-        gDrvG3MacRtObj.inUse = false;
-        gDrvG3MacRtObj.status = SYS_STATUS_UNINITIALIZED;
+        /* Go back to status of the initialization routine */
+        gDrvG3MacRtObj.status = SYS_STATUS_BUSY;
+        
+        gDrvG3MacRtObj.plcHal->enableExtInt(false);
+    }
+}
+
+void DRV_G3_MACRT_InitCallbackRegister( 
+    const SYS_MODULE_INDEX index, 
+    const DRV_G3_MACRT_INIT_CALLBACK callback
+)
+{
+    /* Validate the request */
+    if (index < DRV_G3_MACRT_INSTANCES_NUMBER)
+    {
+        gDrvG3MacRtObj.initCallback = callback;
     }
 }
 
@@ -295,11 +313,20 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ hSysObj )
                 gDrvG3MacRtObj.sleepIndCallback(gDrvG3MacRtObj.contextSleep);
             }*/
 </#if>            
+            if (gDrvG3MacRtObj.initCallback)
+            {
+                gDrvG3MacRtObj.initCallback(true);
+            }
         }
         else
         {
             gDrvG3MacRtObj.status = SYS_STATUS_ERROR;
             gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_ERROR;
+            
+            if (gDrvG3MacRtObj.initCallback)
+            {
+                gDrvG3MacRtObj.initCallback(false);
+            }
         }
     } 
     else

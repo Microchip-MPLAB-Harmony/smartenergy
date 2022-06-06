@@ -239,8 +239,12 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
         {
             DRV_PLC_PHY_Init(&gDrvPlcPhyObj);
             gDrvPlcPhyObj.status = SYS_STATUS_READY;
-            gDrvPlcPhyObj.state = DRV_PLC_PHY_STATE_IDLE;
-<#if DRV_PLC_SLEEP_MODE == true>             
+            gDrvPlcPhyObj.state[0] = DRV_PLC_PHY_STATE_IDLE;
+<#if (DRV_PLC_PROFILE == "PRIME")>
+            gDrvPlcPhyObj.state[1] = DRV_PLC_PHY_STATE_IDLE;
+</#if>
+<#if DRV_PLC_SLEEP_MODE == true>
+
             if (gDrvPlcPhyObj.sleep && gDrvPlcPhyObj.sleepDisableCallback)
             {
                 gDrvPlcPhyObj.sleep = false;
@@ -251,7 +255,10 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
         else
         {
             gDrvPlcPhyObj.status = SYS_STATUS_ERROR;
-            gDrvPlcPhyObj.state = DRV_PLC_PHY_STATE_ERROR;
+            gDrvPlcPhyObj.state[0] = DRV_PLC_PHY_STATE_IDLE;
+<#if (DRV_PLC_PROFILE == "PRIME")>
+            gDrvPlcPhyObj.state[1] = DRV_PLC_PHY_STATE_IDLE;
+</#if>
         }
     } 
     else
