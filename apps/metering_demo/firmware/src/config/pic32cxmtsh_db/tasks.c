@@ -64,7 +64,7 @@ void _DRV_SDSPI_0_Tasks(  void *pvParameters  )
     while(1)
     {
         DRV_SDSPI_Tasks(sysObj.drvSDSPI0);
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
@@ -96,7 +96,7 @@ void _APP_METROLOGY_Tasks(  void *pvParameters  )
     while(1)
     {
         APP_METROLOGY_Tasks();
-        vTaskDelay(50 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
 /* Handle for the APP_CONSOLE_Tasks. */
@@ -110,14 +110,14 @@ void _APP_CONSOLE_Tasks(  void *pvParameters  )
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
-/* Handle for the APP_DATA_LOG_Tasks. */
-TaskHandle_t xAPP_DATA_LOG_Tasks;
+/* Handle for the APP_DATALOG_Tasks. */
+TaskHandle_t xAPP_DATALOG_Tasks;
 
-void _APP_DATA_LOG_Tasks(  void *pvParameters  )
+void _APP_DATALOG_Tasks(  void *pvParameters  )
 {   
     while(1)
     {
-        APP_DATA_LOG_Tasks();
+        APP_DATALOG_Tasks();
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
@@ -129,6 +129,18 @@ void _APP_DISPLAY_Tasks(  void *pvParameters  )
     while(1)
     {
         APP_DISPLAY_Tasks();
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+}
+/* Handle for the APP_EVENTS_Tasks. */
+TaskHandle_t xAPP_EVENTS_Tasks;
+
+void _APP_EVENTS_Tasks(  void *pvParameters  )
+{   
+    while(1)
+    {
+        APP_EVENTS_Tasks();
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -184,6 +196,7 @@ void SYS_Tasks ( void )
 
 
 
+
     /* Maintain Middleware & Other Libraries */
     
 
@@ -204,13 +217,13 @@ void SYS_Tasks ( void )
                 1,
                 &xAPP_CONSOLE_Tasks);
 
-    /* Create OS Thread for APP_DATA_LOG_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_DATA_LOG_Tasks,
-                "APP_DATA_LOG_Tasks",
+    /* Create OS Thread for APP_DATALOG_Tasks. */
+    xTaskCreate((TaskFunction_t) _APP_DATALOG_Tasks,
+                "APP_DATALOG_Tasks",
                 1024,
                 NULL,
                 1,
-                &xAPP_DATA_LOG_Tasks);
+                &xAPP_DATALOG_Tasks);
 
     /* Create OS Thread for APP_DISPLAY_Tasks. */
     xTaskCreate((TaskFunction_t) _APP_DISPLAY_Tasks,
@@ -219,6 +232,14 @@ void SYS_Tasks ( void )
                 NULL,
                 1,
                 &xAPP_DISPLAY_Tasks);
+
+    /* Create OS Thread for APP_EVENTS_Tasks. */
+    xTaskCreate((TaskFunction_t) _APP_EVENTS_Tasks,
+                "APP_EVENTS_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_EVENTS_Tasks);
 
 
 

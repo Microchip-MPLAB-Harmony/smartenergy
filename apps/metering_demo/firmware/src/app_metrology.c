@@ -28,12 +28,17 @@
 // *****************************************************************************
 
 #include "app_metrology.h"
+#include "definitions.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+/* Define a switch detection semaphore to signal the Metrology to process new 
+ * measurements */
+OSAL_SEM_DECLARE(metSemaphore);
 
 // *****************************************************************************
 /* Application Data
@@ -50,7 +55,7 @@
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_METROLOGY_DATA app_metrologyData;
+APP_METROLOGY_DATA CACHE_ALIGN app_metrologyData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -58,8 +63,33 @@ APP_METROLOGY_DATA app_metrologyData;
 // *****************************************************************************
 // *****************************************************************************
 
-/* TODO:  Add any necessary callback functions.
-*/
+void IPC0_Handler(void)
+{
+    uint32_t status = IPC0_REGS->IPC_ISR;
+    
+    if (status & IPC_ISR_IRQ20_Msk)
+    {
+        app_metrologyData.ipc_init = true;
+    }
+    
+    if (status & IPC_ISR_IRQ5_Msk)
+    {
+        app_metrologyData.ipc_half_cycle = true;
+    }
+    
+    if (status & IPC_ISR_IRQ4_Msk)
+    {
+        app_metrologyData.ipc_full_cycle = true;
+    }
+    
+    if (status & IPC_ISR_IRQ0_Msk)
+    {
+        app_metrologyData.ipc_integration = true;
+    }
+    
+    /* Signal Display thread to modify visualization. */
+    OSAL_SEM_PostISR(&metSemaphore);
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -92,10 +122,11 @@ void APP_METROLOGY_Initialize ( void )
     app_metrologyData.state = APP_METROLOGY_STATE_INIT;
 
 
-
-    /* TODO: Initialize your application's state machine and other
-     * parameters.
-     */
+    /* Create the Switches Semaphore. */
+    if (OSAL_SEM_Create(&metSemaphore, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
+    {
+        /* Handle error condition. Not sufficient memory to create semaphore */
+    }
 }
 
 
@@ -129,7 +160,9 @@ void APP_METROLOGY_Tasks ( void )
 
         case APP_METROLOGY_STATE_SERVICE_TASKS:
         {
-
+            /* Wait for the switches semaphore to modify the visualization. */
+            OSAL_SEM_Pend(&metSemaphore, OSAL_WAIT_FOREVER);
+            
             break;
         }
 

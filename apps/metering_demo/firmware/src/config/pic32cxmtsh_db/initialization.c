@@ -147,6 +147,55 @@ const DRV_SPI_INIT drvSPI0InitData =
 };
 
 // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="DRV_SST26 Initialization Data">
+
+const DRV_SST26_PLIB_INTERFACE drvSST26PlibAPI = {
+    .CommandWrite   = QSPI_CommandWrite,
+    .RegisterRead   = QSPI_RegisterRead,
+    .RegisterWrite  = QSPI_RegisterWrite,
+    .MemoryRead     = QSPI_MemoryRead,
+    .MemoryWrite    = QSPI_MemoryWrite
+};
+
+const DRV_SST26_INIT drvSST26InitData =
+{
+    .sst26Plib      = &drvSST26PlibAPI,
+};
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="DRV_MEMORY Instance 0 Initialization Data">
+
+static uint8_t gDrvMemory0EraseBuffer[DRV_SST26_ERASE_BUFFER_SIZE] CACHE_ALIGN;
+
+static DRV_MEMORY_CLIENT_OBJECT gDrvMemory0ClientObject[DRV_MEMORY_CLIENTS_NUMBER_IDX0];
+
+
+const DRV_MEMORY_DEVICE_INTERFACE drvMemory0DeviceAPI = {
+    .Open               = DRV_SST26_Open,
+    .Close              = DRV_SST26_Close,
+    .Status             = DRV_SST26_Status,
+    .SectorErase        = DRV_SST26_SectorErase,
+    .Read               = DRV_SST26_Read,
+    .PageWrite          = DRV_SST26_PageWrite,
+    .EventHandlerSet    = NULL,
+    .GeometryGet        = (DRV_MEMORY_DEVICE_GEOMETRY_GET)DRV_SST26_GeometryGet,
+    .TransferStatusGet  = (DRV_MEMORY_DEVICE_TRANSFER_STATUS_GET)DRV_SST26_TransferStatusGet
+};
+
+const DRV_MEMORY_INIT drvMemory0InitData =
+{
+    .memDevIndex                = DRV_SST26_INDEX,
+    .memoryDevice               = &drvMemory0DeviceAPI,
+    .isMemDevInterruptEnabled   = false,
+    .memDevStatusPollUs         = 500,
+    .isFsEnabled                = true,
+    .deviceMediaType            = (uint8_t)SYS_FS_MEDIA_TYPE_SPIFLASH,
+    .ewBuffer                   = &gDrvMemory0EraseBuffer[0],
+    .clientObjPool              = (uintptr_t)&gDrvMemory0ClientObject[0],
+    .nClientsMax                = DRV_MEMORY_CLIENTS_NUMBER_IDX0
+};
+
+// </editor-fold>
 
 
 // *****************************************************************************
@@ -171,6 +220,12 @@ const SYS_FS_MEDIA_MOUNT_DATA sysfsMountTable[SYS_FS_VOLUME_NUMBER] =
         .devName   = SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0,
         .mediaType = SYS_FS_MEDIA_TYPE_IDX0,
         .fsType   = SYS_FS_TYPE_IDX0
+    },
+    {
+        .mountName = SYS_FS_MEDIA_IDX1_MOUNT_NAME_VOLUME_IDX0,
+        .devName   = SYS_FS_MEDIA_IDX1_DEVICE_NAME_VOLUME_IDX0,
+        .mediaType = SYS_FS_MEDIA_TYPE_IDX1,
+        .fsType   = SYS_FS_TYPE_IDX1
     },
 };
 
@@ -331,20 +386,25 @@ void SYS_Initialize ( void* data )
 
     FLEXCOM5_SPI_Initialize();
 
+    RTC_Initialize();
+
  
     TC0_CH0_TimerInitialize(); 
      
     
-    RTC_Initialize();
-
     FLEXCOM0_USART_Initialize();
 
+    QSPI_Initialize();
 
     /* Initialize SDSPI0 Driver Instance */
     sysObj.drvSDSPI0 = DRV_SDSPI_Initialize(DRV_SDSPI_INDEX_0, (SYS_MODULE_INIT *)&drvSDSPI0InitData);
 
     /* Initialize SPI0 Driver Instance */
     sysObj.drvSPI0 = DRV_SPI_Initialize(DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPI0InitData);
+    sysObj.drvSST26 = DRV_SST26_Initialize((SYS_MODULE_INDEX)DRV_SST26_INDEX, (SYS_MODULE_INIT *)&drvSST26InitData);
+
+    sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
+
 
     SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
@@ -358,8 +418,9 @@ void SYS_Initialize ( void* data )
 
     APP_METROLOGY_Initialize();
     APP_CONSOLE_Initialize();
-    APP_DATA_LOG_Initialize();
+    APP_DATALOG_Initialize();
     APP_DISPLAY_Initialize();
+    APP_EVENTS_Initialize();
 
 
     NVIC_Initialize();

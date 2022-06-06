@@ -69,7 +69,7 @@ void FLEXCOM5_SPI_Initialize ( void )
     FLEXCOM5_REGS->FLEX_SPI_MR = FLEX_SPI_MR_MSTR_Msk | FLEX_SPI_MR_BRSRCCLK_PERIPH_CLK | FLEX_SPI_MR_DLYBCS(0) | FLEX_SPI_MR_PCS(FLEXCOM_SPI_CHIP_SELECT_NPCS0) | FLEX_SPI_MR_MODFDIS_Msk;
 
     /* Set up clock Polarity, data phase, Communication Width, Baud Rate */
-    FLEXCOM5_REGS->FLEX_SPI_CSR[0]= FLEX_SPI_CSR_CPOL(0) | FLEX_SPI_CSR_NCPHA(1) | FLEX_SPI_CSR_BITS_8_BIT | FLEX_SPI_CSR_SCBR(240) | FLEX_SPI_CSR_DLYBS(0) | FLEX_SPI_CSR_DLYBCT(0) | FLEX_SPI_CSR_CSAAT_Msk;
+    FLEXCOM5_REGS->FLEX_SPI_CSR[0]= FLEX_SPI_CSR_CPOL(0) | FLEX_SPI_CSR_NCPHA(1) | FLEX_SPI_CSR_BITS_8_BIT | FLEX_SPI_CSR_SCBR(100) | FLEX_SPI_CSR_DLYBS(0) | FLEX_SPI_CSR_DLYBCT(0) | FLEX_SPI_CSR_CSAAT_Msk;
 
 
 
@@ -185,7 +185,7 @@ bool FLEXCOM5_SPI_TransferSetup (FLEXCOM_SPI_TRANSFER_SETUP * setup, uint32_t sp
     if(spiSourceClock == 0)
     {
         // Fetch Master Clock Frequency directly
-        spiSourceClock = 240000000;
+        spiSourceClock = 100000000;
     }
 
     scbr = spiSourceClock/setup->clockFrequency;

@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app_metrology.h
+    app_datalog.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -13,13 +13,13 @@
   Description:
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
-    "APP_METROLOGY_Initialize" and "APP_METROLOGY_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_METROLOGY_STATES" definition).  Both
+    "APP_DATALOG_Initialize" and "APP_DATALOG_Tasks" prototypes) and some of them are only used
+    internally by the application (such as the "APP_DATALOG_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef _APP_METROLOGY_H
-#define _APP_METROLOGY_H
+#ifndef _APP_DATALOG_H
+#define _APP_DATALOG_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -32,6 +32,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "configuration.h"
+#include "definitions.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -60,12 +61,53 @@ extern "C" {
 
 typedef enum
 {
-    /* Application's state machine's initial state. */
-    APP_METROLOGY_STATE_INIT=0,
-    APP_METROLOGY_STATE_SERVICE_TASKS,
-    /* TODO: Define states used by the application state machine. */
+    /* Wait for disk Mount */
+    APP_DATALOG_MOUNT_WAIT = 0,
 
-} APP_METROLOGY_STATES;
+    /* The app formats the disk. */
+    APP_DATALOG_FORMAT_DISK,
+
+    /* The app opens the file */
+    APP_DATALOG_OPEN_FILE,
+
+    /* The app writes data to the file */
+    APP_DATALOG_WRITE_TO_FILE,
+
+    /* The app performs a file sync operation. */
+    APP_DATALOG_FLUSH_FILE,
+
+    /* The app checks the file status */
+    APP_DATALOG_READ_FILE_STAT,
+
+    /* The app checks the file size */
+    APP_DATALOG_READ_FILE_SIZE,
+
+    /* The app does a file seek to the end of the file. */
+    APP_DATALOG_DO_FILE_SEEK,
+
+    /* The app checks for EOF */
+    APP_DATALOG_CHECK_EOF,
+
+    /* The app does another file seek, to move file pointer to the beginning of
+     * the file. */
+    APP_DATALOG_DO_ANOTHER_FILE_SEEK,
+
+    /* The app reads and verifies the written data. */
+    APP_DATALOG_READ_FILE_CONTENT,
+
+    /* The app closes the file. */
+    APP_DATALOG_CLOSE_FILE,
+
+    /* The app unmounts the disk. */
+    APP_DATALOG_UNMOUNT_DISK,
+
+    /* The app idles */
+    APP_DATALOG_IDLE,
+
+    /* An app error has occurred */
+    APP_DATALOG_ERROR
+
+} APP_DATALOG_STATES;
 
 
 // *****************************************************************************
@@ -84,17 +126,20 @@ typedef enum
 typedef struct
 {
     /* The application's current state */
-    APP_METROLOGY_STATES state;
+    APP_DATALOG_STATES state;
+    
+    SYS_FS_HANDLE fileHandle;
+    
+    SYS_FS_FSTAT fileStatus;
+    
+    long fileSize;
 
-    bool ipc_init;
-    
-    bool ipc_half_cycle;
-    
-    bool ipc_full_cycle;
-    
-    bool ipc_integration;
+    bool diskMounted;
 
-} APP_METROLOGY_DATA;
+    bool diskFormatRequired;
+    
+
+} APP_DATALOG_DATA;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -112,7 +157,7 @@ typedef struct
 
 /*******************************************************************************
   Function:
-    void APP_METROLOGY_Initialize ( void )
+    void APP_DATALOG_Initialize ( void )
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -120,7 +165,7 @@ typedef struct
   Description:
     This function initializes the Harmony application.  It places the
     application in its initial state and prepares it to run so that its
-    APP_METROLOGY_Tasks function can be called.
+    APP_DATALOG_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -134,19 +179,19 @@ typedef struct
 
   Example:
     <code>
-    APP_METROLOGY_Initialize();
+    APP_DATALOG_Initialize();
     </code>
 
   Remarks:
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_METROLOGY_Initialize ( void );
+void APP_DATALOG_Initialize ( void );
 
 
 /*******************************************************************************
   Function:
-    void APP_METROLOGY_Tasks ( void )
+    void APP_DATALOG_Tasks ( void )
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -167,14 +212,14 @@ void APP_METROLOGY_Initialize ( void );
 
   Example:
     <code>
-    APP_METROLOGY_Tasks();
+    APP_DATALOG_Tasks();
     </code>
 
   Remarks:
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_METROLOGY_Tasks( void );
+void APP_DATALOG_Tasks( void );
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
@@ -182,7 +227,7 @@ void APP_METROLOGY_Tasks( void );
 #endif
 //DOM-IGNORE-END
 
-#endif /* _APP_METROLOGY_H */
+#endif /* _APP_DATALOG_H */
 
 /*******************************************************************************
  End of File

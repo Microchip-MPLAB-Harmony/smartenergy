@@ -60,13 +60,14 @@ void RTC_Initialize( void )
 {
     RTC_REGS->RTC_MR = RTC_MR_PERSIAN( 0U ) | RTC_MR_OUT1_NO_WAVE | RTC_MR_OUT0_NO_WAVE | RTC_MR_TPERIOD_P_1S | RTC_MR_THIGH_H_31MS | RTC_MR_UTC(0) | RTC_MR_HRMOD(0U);
 
-    RTC_REGS->RTC_CR = RTC_CR_TIMEVSEL_MINUTE | RTC_CR_CALEVSEL_WEEK;
+    RTC_REGS->RTC_CR = RTC_CR_TIMEVSEL_MINUTE | RTC_CR_CALEVSEL_MONTH;
 
     // disable all interrupts
     RTC_REGS->RTC_IDR = RTC_IDR_Msk;
 
     // clear any stale interrupts
     RTC_REGS->RTC_SCCR = RTC_SCCR_Msk;
+    RTC_REGS->RTC_TCR = RTC_TCR_TAMPCLR_Msk;
 }
 
 bool RTC_TimeSet( struct tm * sysTime )
@@ -213,11 +214,11 @@ void RTC_InterruptHandler( void )
 
     if( (rtc_status & enabledInterrupts) != 0U )
     {
-        RTC_REGS->RTC_SCCR |= enabledInterrupts;
-
         if( rtc.callback != NULL )
         {
             rtc.callback( rtc_status, rtc.context );
         }
+        
+        RTC_REGS->RTC_SCCR = rtc_status;
     }
 }

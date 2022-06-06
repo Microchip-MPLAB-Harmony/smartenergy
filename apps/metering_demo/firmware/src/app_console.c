@@ -39,6 +39,8 @@
 #define CONSOLE_HEADER   "\r\n-- Microchip Demo Meter --\r\n" \
 	"-- Compiled: "__DATE__ " "__TIME__ " -- \r\n"
 
+#define CONSOLE_PWD   "PIC"
+
 // *****************************************************************************
 /* Application Data
 
@@ -54,7 +56,11 @@
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_CONSOLE_DATA app_consoleData;
+APP_CONSOLE_DATA CACHE_ALIGN app_consoleData;
+
+/* Work buffer used by Console to build command responses */
+#define BUFFER_CMD_RSP_SIZE   (255U)
+static char CACHE_ALIGN cmdRsp[BUFFER_CMD_RSP_SIZE];
 
 // *****************************************************************************
 // *****************************************************************************
@@ -68,7 +74,18 @@ static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    SYS_CMD_MESSAGE("Command_CAL\n\r");
+    int temp;
+    char *dbg;
+    char buf[32];
+    
+    temp = argc;
+    dbg = argv[2];
+    dbg = argv[0];
+    dbg = argv[1];
+    
+    sprintf(buf, "Command_CAL %d %s\n\r", temp, dbg);
+    SYS_CMD_MESSAGE(buf);
+    
 }
 
 static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
@@ -173,12 +190,69 @@ static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    SYS_CMD_MESSAGE("Command_RTCR\n\r");
+    struct tm sysTime;
+    
+    SYS_CMD_MESSAGE("Present RTC is(yy-mm-dd w hh:mm:ss):\n\r");
+    
+    RTC_TimeGet(&sysTime);
+    
+    sprintf(cmdRsp, "%02u-%02u-%02u %u %02u:%02u:%02u\r\n",
+            sysTime.tm_year + 1900 - 2000, sysTime.tm_mon + 1, sysTime.tm_mday, 
+            sysTime.tm_wday + 1, sysTime.tm_hour, sysTime.tm_min, sysTime.tm_sec);
+        
+    SYS_CMD_MESSAGE(cmdRsp);
+
 }
 
 static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    SYS_CMD_MESSAGE("Command_RTCW\n\r");
+    if (argc == 5)
+    {
+        if (memcmp(argv[1], CONSOLE_PWD, 3) == 0)
+        {
+            struct tm sysTime;
+            char *data;
+            
+            // Get Date
+            data = argv[2];
+            // Year
+            sysTime.tm_year = ((data[0] - '0') * 10 + (data[1] - '0')) + 2000 - 1900;
+            // Month
+            sysTime.tm_mon = ((data[3] - '0') * 10 + (data[4] - '0')) - 1;
+            // Day
+            sysTime.tm_mday = (data[6] - '0') * 10 + (data[7] - '0');
+            
+            // Get Week Day
+            data = argv[3];
+            sysTime.tm_wday = ((data[0] - '0') * 10 + (data[1] - '0')) - 1;
+            
+            // Get Time
+            data = argv[4];
+            // Hour
+            sysTime.tm_hour = (data[0] - '0') * 10 + (data[1] - '0');
+            // Minute
+            sysTime.tm_min = (data[3] - '0') * 10 + (data[4] - '0');
+            // Second
+            sysTime.tm_sec = (data[6] - '0') * 10 + (data[7] - '0');    
+            
+            if (RTC_TimeSet(&sysTime))
+            {
+                SYS_CMD_MESSAGE("Set RTC is ok!\n\r");
+            }
+            else
+            {
+                SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+            }
+        }
+        else
+        {
+            SYS_CMD_MESSAGE("Password Error !\n\r");
+        }
+    }
+    else
+    {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+    }
 }
 
 static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
@@ -199,6 +273,13 @@ static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     SYS_CMD_MESSAGE("Command_RLD\n\r");
+}
+
+static void Command_RFC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    SYS_CMD_MESSAGE("Read File Content\n\r");
+    
+    
 }
 
 // *****************************************************************************
@@ -236,7 +317,8 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
     {"TOUR",Command_TOUR, ": Read meter TOU"},
     {"TOUW",Command_TOUW, ": Write meter TOU"},
     {"RST", Command_RST, ": System reset"},
-    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"}
+    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"},
+    {"RFC", Command_RFC, ": Read File Content"},
 };
 
 

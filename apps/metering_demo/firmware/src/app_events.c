@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app_data_log.c
+    app_events.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -27,7 +27,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "app_data_log.h"
+#include "app_events.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -45,12 +45,12 @@
     This structure holds the application's data.
 
   Remarks:
-    This structure should be initialized by the APP_DATA_LOG_Initialize function.
+    This structure should be initialized by the APP_EVENTS_Initialize function.
 
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_DATA_LOG_DATA app_data_logData;
+APP_EVENTS_DATA app_eventsData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -80,16 +80,16 @@ APP_DATA_LOG_DATA app_data_logData;
 
 /*******************************************************************************
   Function:
-    void APP_DATA_LOG_Initialize ( void )
+    void APP_EVENTS_Initialize ( void )
 
   Remarks:
-    See prototype in app_data_log.h.
+    See prototype in app_events.h.
  */
 
-void APP_DATA_LOG_Initialize ( void )
+void APP_EVENTS_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
-    app_data_logData.state = APP_DATA_LOG_STATE_INIT;
+    app_eventsData.state = APP_EVENTS_STATE_INIT;
 
 
 
@@ -101,20 +101,20 @@ void APP_DATA_LOG_Initialize ( void )
 
 /******************************************************************************
   Function:
-    void APP_DATA_LOG_Tasks ( void )
+    void APP_EVENTS_Tasks ( void )
 
   Remarks:
-    See prototype in app_data_log.h.
+    See prototype in app_events.h.
  */
 
-void APP_DATA_LOG_Tasks ( void )
+void APP_EVENTS_Tasks ( void )
 {
 
     /* Check the application's current state. */
-    switch ( app_data_logData.state )
+    switch ( app_eventsData.state )
     {
         /* Application's initial state. */
-        case APP_DATA_LOG_STATE_INIT:
+        case APP_EVENTS_STATE_INIT:
         {
             bool appInitialized = true;
 
@@ -122,12 +122,12 @@ void APP_DATA_LOG_Tasks ( void )
             if (appInitialized)
             {
 
-                app_data_logData.state = APP_DATA_LOG_STATE_SERVICE_TASKS;
+                app_eventsData.state = APP_EVENTS_STATE_SERVICE_TASKS;
             }
             break;
         }
 
-        case APP_DATA_LOG_STATE_SERVICE_TASKS:
+        case APP_EVENTS_STATE_SERVICE_TASKS:
         {
 
             break;

@@ -101,8 +101,8 @@ extern "C" {
 
 /* File System Service Configuration */
 
-#define SYS_FS_MEDIA_NUMBER               1
-#define SYS_FS_VOLUME_NUMBER              1
+#define SYS_FS_MEDIA_NUMBER               2
+#define SYS_FS_VOLUME_NUMBER              2
 
 #define SYS_FS_AUTOMOUNT_ENABLE           true
 #define SYS_FS_CLIENT_NUMBER              1
@@ -126,11 +126,17 @@ extern "C" {
 
 
 
-#define SYS_FS_MEDIA_TYPE_IDX0 				SYS_FS_MEDIA_TYPE_SD_CARD
+#define SYS_FS_MEDIA_TYPE_IDX0 				SYS_FS_MEDIA_TYPE_SPIFLASH
 #define SYS_FS_TYPE_IDX0 					FAT
 					
-#define SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0 			"/mnt/datalogdrive"
-#define SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0			"/dev/mmcblka1"
+#define SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0 			"/mnt/sst26vf"
+#define SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0			"/dev/mtda1"
+								
+#define SYS_FS_MEDIA_TYPE_IDX1 				SYS_FS_MEDIA_TYPE_SD_CARD
+#define SYS_FS_TYPE_IDX1 					FAT
+					
+#define SYS_FS_MEDIA_IDX1_MOUNT_NAME_VOLUME_IDX0 			"/mnt/sd"
+#define SYS_FS_MEDIA_IDX1_DEVICE_NAME_VOLUME_IDX0			"/dev/mmcblka1"
 								
 
 #define SYS_CONSOLE_DEVICE_MAX_INSTANCES   			1
@@ -164,12 +170,31 @@ extern "C" {
 #define DRV_SDSPI_STACK_SIZE_IDX0               256
 #define DRV_SDSPI_PRIORITY_IDX0                     1
 
+/* Memory Driver Global Configuration Options */
+#define DRV_MEMORY_INSTANCES_NUMBER          1
 /* SPI Driver Instance 0 Configuration Options */
 #define DRV_SPI_INDEX_0                       0
 #define DRV_SPI_CLIENTS_NUMBER_IDX0           1
 
 /* SDSPI Driver Common Configuration Options */
 #define DRV_SDSPI_INSTANCES_NUMBER              1
+
+/* SST26 Driver Instance Configuration */
+#define DRV_SST26_INDEX                 0
+#define DRV_SST26_CLIENTS_NUMBER        1
+#define DRV_SST26_START_ADDRESS         0x0
+#define DRV_SST26_PAGE_SIZE             256
+#define DRV_SST26_ERASE_BUFFER_SIZE     4096
+
+
+/* Memory Driver Instance 0 Configuration */
+#define DRV_MEMORY_INDEX_0                   0
+#define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
+
+/* Memory Driver Instance 0 RTOS Configurations*/
+#define DRV_MEMORY_STACK_SIZE_IDX0           1024
+#define DRV_MEMORY_PRIORITY_IDX0             1
+#define DRV_MEMORY_RTOS_DELAY_IDX0                         10
 
 /* SPI Driver Common Configuration Options */
 #define DRV_SPI_INSTANCES_NUMBER              1

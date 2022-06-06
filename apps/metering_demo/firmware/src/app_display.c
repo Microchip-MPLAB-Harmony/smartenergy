@@ -36,10 +36,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* Define a switch detection semaphore to signal the Display to select new 
- * measurement to visualize. */
-OSAL_SEM_DECLARE(switchesSemaphore);
-
 // *****************************************************************************
 /* Application Data
 
@@ -55,7 +51,7 @@ OSAL_SEM_DECLARE(switchesSemaphore);
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_DISPLAY_DATA app_displayData;
+APP_DISPLAY_DATA CACHE_ALIGN app_displayData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -65,15 +61,11 @@ APP_DISPLAY_DATA app_displayData;
 static void APP_DISPLAY_ScrollUp_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrup_pressed = true;
-    /* Signal Display thread to modify visualization. */
-    OSAL_SEM_PostISR(&switchesSemaphore);
 }
 
 static void APP_DISPLAY_ScrollDown_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrdown_pressed = true;
-    /* Signal Display thread to modify visualization. */
-    OSAL_SEM_PostISR(&switchesSemaphore);
 }
 
 // *****************************************************************************
@@ -108,12 +100,6 @@ void APP_DISPLAY_Initialize ( void )
 
     app_displayData.scrdown_pressed = false;
     app_displayData.scrup_pressed = false;
-    
-    /* Create the Switches Semaphore. */
-    if (OSAL_SEM_Create(&switchesSemaphore, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
-    {
-        /* Handle error condition. Not sufficient memory to create semaphore */
-    }
 }
 
 
@@ -146,9 +132,6 @@ void APP_DISPLAY_Tasks ( void )
 
         case APP_DISPLAY_STATE_SERVICE_TASKS:
         {
-            /* Wait for the switches semaphore to modify the visualization. */
-            OSAL_SEM_Pend(&switchesSemaphore, OSAL_WAIT_FOREVER);
-            
             if (app_displayData.scrup_pressed)
             {
                 LED_RED_Set();

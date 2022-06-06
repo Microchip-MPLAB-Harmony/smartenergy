@@ -1,26 +1,24 @@
 /*******************************************************************************
-  FLEXCOM0 USART PLIB
+Interface definition of QSPI PLIB.
 
-  Company
+ Company:
     Microchip Technology Inc.
 
-  File Name
-    plib_flexcom0_usart.h
+ File Name:
+    plib_qspi.h
 
-  Summary
-    FLEXCOM0 USART peripheral library interface.
+ Summary:
+    Interface definition of the Quad Serial Peripheral Interface Plib (QSPI).
 
-  Description
-    This file defines the interface to the FLEXCOM0 USART peripheral library. This
-    library provides access to and control of the associated peripheral
-    instance.
-
-  Remarks:
-    None.
+ Description:
+    This file defines the interface for the QSPI Plib.
+    It allows user to setup QSPI and transfer data to and from slave devices
+    attached.
 *******************************************************************************/
 
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -41,9 +39,10 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+// DOM-IGNORE-END
 
-#ifndef PLIB_FLEXCOM0_USART_H // Guards against multiple inclusion
-#define PLIB_FLEXCOM0_USART_H
+#ifndef PLIB_QSPI_H // Guards against multiple inclusion
+#define PLIB_QSPI_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -51,16 +50,23 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/* This section lists the other files that are included in this file.
+*/
+
 #include "device.h"
-#include "plib_flexcom_usart_local.h"
+#include "plib_qspi_common.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus // Provide C++ Compatibility
-
-	extern "C" {
-
+    extern "C" {
 #endif
 // DOM-IGNORE-END
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
 
 // *****************************************************************************
 // *****************************************************************************
@@ -68,51 +74,24 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#define FLEXCOM0_USART_FrequencyGet()    (uint32_t)(100000000UL)
+void QSPI_Initialize( void );
 
-/****************************** FLEXCOM0 USART API *********************************/
-void FLEXCOM0_USART_Initialize( void );
+void QSPI_EndTransfer( void );
 
-bool FLEXCOM0_USART_SerialSetup( FLEXCOM_USART_SERIAL_SETUP* setup, uint32_t srcClkFreq );
+bool QSPI_CommandWrite( qspi_command_xfer_t *qspi_command_xfer, uint32_t address );
 
-FLEXCOM_USART_ERROR FLEXCOM0_USART_ErrorGet( void );
+bool QSPI_RegisterRead( qspi_register_xfer_t *qspi_register_xfer, uint32_t *rx_data, uint8_t rx_data_length );
 
-size_t FLEXCOM0_USART_Write(uint8_t* pWrBuffer, const size_t size );
+bool QSPI_RegisterWrite( qspi_register_xfer_t *qspi_register_xfer, uint32_t *tx_data, uint8_t tx_data_length );
 
-size_t FLEXCOM0_USART_WriteCountGet(void);
+bool QSPI_MemoryRead( qspi_memory_xfer_t *qspi_memory_xfer, uint32_t *rx_data, uint32_t rx_data_length, uint32_t address );
 
-size_t FLEXCOM0_USART_WriteFreeBufferCountGet(void);
-
-size_t FLEXCOM0_USART_WriteBufferSizeGet(void);
-
-bool FLEXCOM0_USART_TransmitComplete(void);
-
-bool FLEXCOM0_USART_WriteNotificationEnable(bool isEnabled, bool isPersistent);
-
-void FLEXCOM0_USART_WriteThresholdSet(uint32_t nBytesThreshold);
-
-void FLEXCOM0_USART_WriteCallbackRegister( FLEXCOM_USART_RING_BUFFER_CALLBACK callback, uintptr_t context);
-
-size_t FLEXCOM0_USART_Read(uint8_t* pRdBuffer, const size_t size);
-
-size_t FLEXCOM0_USART_ReadCountGet(void);
-
-size_t FLEXCOM0_USART_ReadFreeBufferCountGet(void);
-
-size_t FLEXCOM0_USART_ReadBufferSizeGet(void);
-
-bool FLEXCOM0_USART_ReadNotificationEnable(bool isEnabled, bool isPersistent);
-
-void FLEXCOM0_USART_ReadThresholdSet(uint32_t nBytesThreshold);
-
-void FLEXCOM0_USART_ReadCallbackRegister( FLEXCOM_USART_RING_BUFFER_CALLBACK callback, uintptr_t context);
+bool QSPI_MemoryWrite( qspi_memory_xfer_t *qspi_memory_xfer, uint32_t *tx_data, uint32_t tx_data_length, uint32_t address );
 
 // DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
+#ifdef __cplusplus // Provide C++ Compatibility
+}
 #endif
 // DOM-IGNORE-END
 
-#endif //PLIB_FLEXCOM0_USART_H
+#endif /* PLIB_QSPI_H */
