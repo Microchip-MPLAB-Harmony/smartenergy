@@ -40,6 +40,11 @@ def loadModule():
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
 	drvG3MacRTComponent.addDependency("drv_g3_macrt_CouplingDependency", "PCOUP", "PCOUP", True, False)
 	drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
+	
+	## Metrology Driver
+	drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Metrology/", "driver/metrology/config/drv_metrology.py")
+	drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)	
+	drvMetrologyComponent.setDisplayType("Metrology")
 
 	## PCOUP Service (PHY PLC Coupling Settings)
 	srvPhyCouplingComponent = Module.CreateComponent("srv_pcoup", "PLC PHY Coupling", "/SmartEnergy/PLC/Services/", "service/pcoup/config/srv_pcoup.py")

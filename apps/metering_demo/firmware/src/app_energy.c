@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app_events.c
+    app_energy.c
 
   Summary:
     This file contains the source code for the MPLAB Harmony application.
@@ -27,13 +27,17 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "app_events.h"
+#include "definitions.h"
+#include "app_energy.h"
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+/* Define a semaphore to signal the Energy Tasks to process new measurements */
+OSAL_SEM_DECLARE(energySemaphore);
 
 // *****************************************************************************
 /* Application Data
@@ -45,12 +49,12 @@
     This structure holds the application's data.
 
   Remarks:
-    This structure should be initialized by the APP_EVENTS_Initialize function.
+    This structure should be initialized by the APP_ENERGY_Initialize function.
 
     Application strings and buffers are be defined outside this structure.
 */
 
-APP_EVENTS_DATA app_eventsData;
+APP_ENERGY_DATA app_energyData;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -80,55 +84,63 @@ APP_EVENTS_DATA app_eventsData;
 
 /*******************************************************************************
   Function:
-    void APP_EVENTS_Initialize ( void )
+    void APP_ENERGY_Initialize ( void )
 
   Remarks:
-    See prototype in app_events.h.
+    See prototype in app_energy.h.
  */
 
-void APP_EVENTS_Initialize ( void )
+void APP_ENERGY_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
-    app_eventsData.state = APP_EVENTS_STATE_INIT;
+    app_energyData.state = APP_ENERGY_STATE_INIT;
+    
+    /* TOU Initialization */
+    
+    /* Demand Initialization */
+    
+    /* Energy Initialization */
+    
+    /* Met Events Initialization */
 
-
-
-    /* TODO: Initialize your application's state machine and other
-     * parameters.
-     */
+    /* Create the Switches Semaphore. */
+    if (OSAL_SEM_Create(&energySemaphore, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
+    {
+        /* Handle error condition. Not sufficient memory to create semaphore */
+    }
 }
 
 
 /******************************************************************************
   Function:
-    void APP_EVENTS_Tasks ( void )
+    void APP_ENERGY_Tasks ( void )
 
   Remarks:
-    See prototype in app_events.h.
+    See prototype in app_energy.h.
  */
 
-void APP_EVENTS_Tasks ( void )
+void APP_ENERGY_Tasks ( void )
 {
 
     /* Check the application's current state. */
-    switch ( app_eventsData.state )
+    switch ( app_energyData.state )
     {
         /* Application's initial state. */
-        case APP_EVENTS_STATE_INIT:
+        case APP_ENERGY_STATE_INIT:
         {
-            bool appInitialized = true;
+            /* TOU Management */
 
+            app_energyData.state = APP_ENERGY_STATE_RUNNING;
 
-            if (appInitialized)
-            {
-
-                app_eventsData.state = APP_EVENTS_STATE_SERVICE_TASKS;
-            }
             break;
         }
 
-        case APP_EVENTS_STATE_SERVICE_TASKS:
+        case APP_ENERGY_STATE_RUNNING:
         {
+             /* Wait for the switches semaphore to modify the visualization. */
+            OSAL_SEM_Pend(&energySemaphore, OSAL_WAIT_FOREVER);
+            
+            
 
             break;
         }

@@ -51,9 +51,9 @@ typedef struct pmc_pll_cfg_tag {
 
 static const pmc_pll_cfg_t plla_cfg = {
     .ctrl0   = (PMC_PLL_CTRL0_ENLOCK_Msk | PMC_PLL_CTRL0_ENPLL_Msk | PMC_PLL_CTRL0_PLLMS(0U)
-               | PMC_PLL_CTRL0_ENPLLO1_Msk | PMC_PLL_CTRL0_DIVPMC1(1U)| PMC_PLL_CTRL0_ENPLLO0_Msk | PMC_PLL_CTRL0_DIVPMC0(19U)),
-    .ctrl1   = PMC_PLL_CTRL1_MUL(12206U),
-    .ctrl2   = PMC_PLL_CTRL2_FRACR(131072U),
+               | PMC_PLL_CTRL0_ENPLLO1_Msk | PMC_PLL_CTRL0_DIVPMC1(1U)| PMC_PLL_CTRL0_ENPLLO0_Msk | PMC_PLL_CTRL0_DIVPMC0(57U)),
+    .ctrl1   = PMC_PLL_CTRL1_MUL(14499U),
+    .ctrl2   = PMC_PLL_CTRL2_FRACR(0U),
     .ssr     = 0U,
     .acr     = PLLA_RECOMMENDED_ACR,
     .stuptim = PLLA_UPDT_STUPTIM_VAL
@@ -64,13 +64,24 @@ static const pmc_pll_cfg_t plla_cfg = {
 static const pmc_pll_cfg_t pllb_cfg = {
     .ctrl0   = (PMC_PLL_CTRL0_ENLOCK_Msk | PMC_PLL_CTRL0_ENPLL_Msk | PMC_PLL_CTRL0_PLLMS(0U)
                | PMC_PLL_CTRL0_ENPLLO0_Msk | PMC_PLL_CTRL0_DIVPMC0(1U)),
-    .ctrl1   = PMC_PLL_CTRL1_MUL(23U),
-    .ctrl2   = PMC_PLL_CTRL2_FRACR(0U),
+    .ctrl1   = PMC_PLL_CTRL1_MUL(47U),
+    .ctrl2   = PMC_PLL_CTRL2_FRACR(3473408U),
     .ssr     = 0U,
     .acr     = PLLB_RECOMMENDED_ACR,
     .stuptim = PLLB_UPDT_STUPTIM_VAL
 };
 
+
+
+static const pmc_pll_cfg_t pllc_cfg = {
+    .ctrl0   = (PMC_PLL_CTRL0_ENLOCK_Msk | PMC_PLL_CTRL0_ENPLL_Msk | PMC_PLL_CTRL0_PLLMS(0U)
+               | PMC_PLL_CTRL0_ENPLLO0_Msk | PMC_PLL_CTRL0_DIVPMC0(41U)),
+    .ctrl1   = PMC_PLL_CTRL1_MUL(41U),
+    .ctrl2   = PMC_PLL_CTRL2_FRACR(0U),
+    .ssr     = 0U,
+    .acr     = PLLC_RECOMMENDED_ACR,
+    .stuptim = PLLC_UPDT_STUPTIM_VAL
+};
 
 
 /*********************************************************************************
@@ -162,7 +173,7 @@ static void CPUClockInitialize(void)
     reg = (PMC_REGS->PMC_CPU_CKR & ~(PMC_CPU_CKR_CSS_Msk |
                                      PMC_CPU_CKR_RATIO_MCK0DIV_Msk |
                                      PMC_CPU_CKR_RATIO_MCK0DIV2_Msk));
-    reg |= (PMC_CPU_CKR_CSS_PLLACK1 | PMC_CPU_CKR_RATIO_MCK0DIV_Msk );
+    reg |= (PMC_CPU_CKR_CSS_PLLBCK | PMC_CPU_CKR_RATIO_MCK0DIV_Msk );
     PMC_REGS->PMC_CPU_CKR = reg;
     while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk)
     {
@@ -171,7 +182,7 @@ static void CPUClockInitialize(void)
 
     /* Program PMC_CPU_CKR.CPCSS and Wait for PMC_SR.CPMCKRDY to be set    */
     reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPCSS_Msk);
-    PMC_REGS->PMC_CPU_CKR = (reg | PMC_CPU_CKR_CPCSS_PLLBCK);
+    PMC_REGS->PMC_CPU_CKR = (reg | PMC_CPU_CKR_CPCSS_PLLACK1);
     while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
     {
         /* Wait for status CPMCKRDY */
@@ -188,6 +199,24 @@ static void CPUClockInitialize(void)
 
     /* Enable co-processor bus clock  */
     PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
+}
+
+
+/*********************************************************************************
+                        Initialize Programmable clocks
+*********************************************************************************/
+static void PCKInitialize(void)
+{
+    /* Turn off all PCK clocks */
+    PMC_REGS->PMC_SCDR |= PMC_SCDR_PCK0_Msk | PMC_SCDR_PCK1_Msk | PMC_SCDR_PCK2_Msk;
+    /* Enable PCK2 */
+    PMC_REGS->PMC_PCK[2] = PMC_PCK_CSS_PLLCCK | PMC_PCK_PRES(1);
+    PMC_REGS->PMC_SCER |= PMC_SCDR_PCK2_Msk;
+    while ((PMC_REGS->PMC_SR & PMC_SR_PCKRDY2_Msk) != PMC_SR_PCKRDY2_Msk)
+    {
+        /* Wait for PCK2 to be ready */
+    }
+
 }
 
 
@@ -212,9 +241,15 @@ static void PeripheralClockInitialize(void)
 
         { ID_QSPI, 1U, 1U, 0x3U, 9U},
 
+        { ID_IPC0, 1U, 0U, 0U, 0U},
+
         { ID_TC0_CHANNEL0, 1U, 0U, 0U, 0U},
 
         { ID_PIOD, 1U, 0U, 0U, 0U},
+
+        { ID_IPC1, 1U, 0U, 0U, 0U},
+
+        { ID_SRAM1, 1U, 0U, 0U, 0U},
 
         { ID_PERIPH_MAX + 1, 0, 0, 0, 0}//end of list marker
     };
@@ -260,11 +295,17 @@ void CLK_Initialize( void )
     /* Initialize PLLB */
     PLLInitialize(PLLB, &pllb_cfg);
 
+    /* Initialize PLLC */
+    PLLInitialize(PLLC, &pllc_cfg);
+
     /* Apply flash patch */
     ApplyFlashPatch();
 
     /* Initialize CPU clock */
     CPUClockInitialize();
+
+    /* Initialize Programmable clock */
+    PCKInitialize();
 
     /* Initialize Peripheral clock */
     PeripheralClockInitialize();

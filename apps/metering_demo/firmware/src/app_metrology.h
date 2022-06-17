@@ -31,7 +31,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include "configuration.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -46,7 +45,31 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
+// Waveform capture buffer length register offset
+#define MET_CAPTURE_BUFF_LENGTH_OFFSET      46
+// Waveform capture buffer address register offset
+#define MET_CAPTURE_ADDR_OFFSET             47
+// Waveform capture buffer length
+#define MET_CAPTURE_BUFF_LEN                8000
 
+
+
+uint32_t MetrologyInit(void);
+void MetrologyLoadDefault(void);
+void MetrologyRefreshCrtl(void);
+uint16_t MetrologyUpdateExtMem(void);
+void MetrologyCalibMeterInit(void);
+void MetrologyCalibMeter(void);
+void MetrologyProcess(void);
+void MetrologySetHarmonicOrder(uint8_t order);
+uint8_t MetrologyGetHarmonicOrder(void);
+uint8_t MetrologyHarmonicIsReady(void);
+void MetrologyHarmonicsProcess(void);
+//void MetrologySetHarmonicsCallback(pf_har_callback har_cb);
+//void MetrologySetCalibrationCallback(pf_cal_callback cal_cb);
+
+uint32_t MetrologyGetCaptureData(int32_t **data);
+    
 // *****************************************************************************
 /* Application states
 
@@ -62,8 +85,9 @@ typedef enum
 {
     /* Application's state machine's initial state. */
     APP_METROLOGY_STATE_INIT=0,
-    APP_METROLOGY_STATE_SERVICE_TASKS,
-    /* TODO: Define states used by the application state machine. */
+    APP_METROLOGY_STATE_START,
+    APP_METROLOGY_STATE_RUNNING,
+    APP_METROLOGY_STATE_ERROR
 
 } APP_METROLOGY_STATES;
 
@@ -85,14 +109,10 @@ typedef struct
 {
     /* The application's current state */
     APP_METROLOGY_STATES state;
-
-    bool ipc_init;
     
-    bool ipc_half_cycle;
-    
-    bool ipc_full_cycle;
-    
-    bool ipc_integration;
+    MET_CONTROL *        pMetControl;
+    MET_ACCUMULATORS *   pMetAccData;
+    MET_HARMONICS *      pMetHarData;
 
 } APP_METROLOGY_DATA;
 

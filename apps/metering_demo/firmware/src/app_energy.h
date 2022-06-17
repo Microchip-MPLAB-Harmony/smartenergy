@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name:
-    app_events.h
+    app_energy.h
 
   Summary:
     This header file provides prototypes and definitions for the application.
@@ -13,13 +13,13 @@
   Description:
     This header file provides function prototypes and data type definitions for
     the application.  Some of these are required by the system (such as the
-    "APP_EVENTS_Initialize" and "APP_EVENTS_Tasks" prototypes) and some of them are only used
-    internally by the application (such as the "APP_EVENTS_STATES" definition).  Both
+    "APP_ENERGY_Initialize" and "APP_ENERGY_Tasks" prototypes) and some of them are only used
+    internally by the application (such as the "APP_ENERGY_STATES" definition).  Both
     are defined here for convenience.
 *******************************************************************************/
 
-#ifndef _APP_EVENTS_H
-#define _APP_EVENTS_H
+#ifndef _APP_ENERGY_H
+#define _APP_ENERGY_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -61,11 +61,12 @@ extern "C" {
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_EVENTS_STATE_INIT=0,
-    APP_EVENTS_STATE_SERVICE_TASKS,
-    /* TODO: Define states used by the application state machine. */
+    APP_ENERGY_STATE_INIT = 0,
+    APP_ENERGY_STATE_START,
+    APP_ENERGY_STATE_RUNNING,
+    APP_ENERGY_STATE_ERROR
 
-} APP_EVENTS_STATES;
+} APP_ENERGY_STATES;
 
 
 // *****************************************************************************
@@ -84,11 +85,11 @@ typedef enum
 typedef struct
 {
     /* The application's current state */
-    APP_EVENTS_STATES state;
+    APP_ENERGY_STATES state;
 
     /* TODO: Define any additional data used by the application. */
 
-} APP_EVENTS_DATA;
+} APP_ENERGY_DATA;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -106,7 +107,7 @@ typedef struct
 
 /*******************************************************************************
   Function:
-    void APP_EVENTS_Initialize ( void )
+    void APP_ENERGY_Initialize ( void )
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -114,7 +115,7 @@ typedef struct
   Description:
     This function initializes the Harmony application.  It places the
     application in its initial state and prepares it to run so that its
-    APP_EVENTS_Tasks function can be called.
+    APP_ENERGY_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -128,19 +129,19 @@ typedef struct
 
   Example:
     <code>
-    APP_EVENTS_Initialize();
+    APP_ENERGY_Initialize();
     </code>
 
   Remarks:
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_EVENTS_Initialize ( void );
+void APP_ENERGY_Initialize ( void );
 
 
 /*******************************************************************************
   Function:
-    void APP_EVENTS_Tasks ( void )
+    void APP_ENERGY_Tasks ( void )
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -161,14 +162,14 @@ void APP_EVENTS_Initialize ( void );
 
   Example:
     <code>
-    APP_EVENTS_Tasks();
+    APP_ENERGY_Tasks();
     </code>
 
   Remarks:
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_EVENTS_Tasks( void );
+void APP_ENERGY_Tasks( void );
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
@@ -176,7 +177,7 @@ void APP_EVENTS_Tasks( void );
 #endif
 //DOM-IGNORE-END
 
-#endif /* _APP_EVENTS_H */
+#endif /* _APP_ENERGY_H */
 
 /*******************************************************************************
  End of File

@@ -4,7 +4,7 @@
 
 
 project: metering_demo
-creation_date: 2022-06-06T10:33:26.735+02:00[Europe/Berlin]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2022-06-17T12:59:52.487+02:00[Europe/Berlin]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mhc_mode: Standalone            # [IDE|Standalone|Headless]
 mhc_version: v3.8.5
@@ -16,5 +16,6 @@ modules:
     - {name: "core", version: "v3.10.0"}
     - {name: "csp", version: "unknown"}
     - {name: "dev_packs", version: "unknown"}
+    - {name: "smartenergy", version: "unknown"}
     - {name: "CMSIS-FreeRTOS", version: "v10.3.1"}
 

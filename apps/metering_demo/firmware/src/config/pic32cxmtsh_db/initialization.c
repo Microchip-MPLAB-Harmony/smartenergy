@@ -100,6 +100,58 @@ const DRV_SDSPI_INIT drvSDSPI0InitData =
 
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="DRV_MEMORY Instance 0 Initialization Data">
+
+static uint8_t gDrvMemory0EraseBuffer[DRV_SST26_ERASE_BUFFER_SIZE] CACHE_ALIGN;
+
+static DRV_MEMORY_CLIENT_OBJECT gDrvMemory0ClientObject[DRV_MEMORY_CLIENTS_NUMBER_IDX0];
+
+
+const DRV_MEMORY_DEVICE_INTERFACE drvMemory0DeviceAPI = {
+    .Open               = DRV_SST26_Open,
+    .Close              = DRV_SST26_Close,
+    .Status             = DRV_SST26_Status,
+    .SectorErase        = DRV_SST26_SectorErase,
+    .Read               = DRV_SST26_Read,
+    .PageWrite          = DRV_SST26_PageWrite,
+    .EventHandlerSet    = NULL,
+    .GeometryGet        = (DRV_MEMORY_DEVICE_GEOMETRY_GET)DRV_SST26_GeometryGet,
+    .TransferStatusGet  = (DRV_MEMORY_DEVICE_TRANSFER_STATUS_GET)DRV_SST26_TransferStatusGet
+};
+
+const DRV_MEMORY_INIT drvMemory0InitData =
+{
+    .memDevIndex                = DRV_SST26_INDEX,
+    .memoryDevice               = &drvMemory0DeviceAPI,
+    .isMemDevInterruptEnabled   = false,
+    .memDevStatusPollUs         = 500,
+    .isFsEnabled                = false,
+    .ewBuffer                   = &gDrvMemory0EraseBuffer[0],
+    .clientObjPool              = (uintptr_t)&gDrvMemory0ClientObject[0],
+    .nClientsMax                = DRV_MEMORY_CLIENTS_NUMBER_IDX0
+};
+
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="DRV_METROLOGY Initialization Data">
+
+extern uint8_t met_bin_start;
+extern uint8_t met_bin_end;
+
+/* Metrology Driver Initialization Data */
+DRV_METROLOGY_INIT drvMetrologyInitData = {
+
+    /* MET bin destination address */
+    .regBaseAddress = DRV_METROLOGY_REG_BASE_ADDRESS,
+
+    /* MET Binary start address */
+    .binStartAddress = (uint32_t)&met_bin_start,
+    
+    /* MET Binary end address */
+    .binEndAddress = (uint32_t)&met_bin_end,
+    
+};
+
+// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="DRV_SPI Instance 0 Initialization Data">
 
 /* SPI Client Objects Pool */
@@ -163,38 +215,6 @@ const DRV_SST26_INIT drvSST26InitData =
 };
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="DRV_MEMORY Instance 0 Initialization Data">
-
-static uint8_t gDrvMemory0EraseBuffer[DRV_SST26_ERASE_BUFFER_SIZE] CACHE_ALIGN;
-
-static DRV_MEMORY_CLIENT_OBJECT gDrvMemory0ClientObject[DRV_MEMORY_CLIENTS_NUMBER_IDX0];
-
-
-const DRV_MEMORY_DEVICE_INTERFACE drvMemory0DeviceAPI = {
-    .Open               = DRV_SST26_Open,
-    .Close              = DRV_SST26_Close,
-    .Status             = DRV_SST26_Status,
-    .SectorErase        = DRV_SST26_SectorErase,
-    .Read               = DRV_SST26_Read,
-    .PageWrite          = DRV_SST26_PageWrite,
-    .EventHandlerSet    = NULL,
-    .GeometryGet        = (DRV_MEMORY_DEVICE_GEOMETRY_GET)DRV_SST26_GeometryGet,
-    .TransferStatusGet  = (DRV_MEMORY_DEVICE_TRANSFER_STATUS_GET)DRV_SST26_TransferStatusGet
-};
-
-const DRV_MEMORY_INIT drvMemory0InitData =
-{
-    .memDevIndex                = DRV_SST26_INDEX,
-    .memoryDevice               = &drvMemory0DeviceAPI,
-    .isMemDevInterruptEnabled   = false,
-    .memDevStatusPollUs         = 500,
-    .isFsEnabled                = false,
-    .ewBuffer                   = &gDrvMemory0EraseBuffer[0],
-    .clientObjPool              = (uintptr_t)&gDrvMemory0ClientObject[0],
-    .nClientsMax                = DRV_MEMORY_CLIENTS_NUMBER_IDX0
-};
-
-// </editor-fold>
 
 
 // *****************************************************************************
@@ -281,14 +301,6 @@ const SYS_FS_REGISTRATION_TABLE sysFSInit [ SYS_FS_MAX_FILE_SYSTEM_TYPE ] =
 // Section: System Initialization
 // *****************************************************************************
 // *****************************************************************************
-
-const SYS_CMD_INIT sysCmdInit =
-{
-    .moduleInit = {0},
-    .consoleCmdIOParam = SYS_CMD_SINGLE_CHARACTER_READ_CONSOLE_IO_PARAM,
-	.consoleIndex = 0,
-};
-
 // <editor-fold defaultstate="collapsed" desc="SYS_TIME Initialization Data">
 
 const SYS_TIME_PLIB_INTERFACE sysTimePlibAPI = {
@@ -339,6 +351,14 @@ const SYS_CONSOLE_INIT sysConsole0Init =
 
 
 // </editor-fold>
+
+
+const SYS_CMD_INIT sysCmdInit =
+{
+    .moduleInit = {0},
+    .consoleCmdIOParam = SYS_CMD_SINGLE_CHARACTER_READ_CONSOLE_IO_PARAM,
+	.consoleIndex = 0,
+};
 
 
 
@@ -392,17 +412,20 @@ void SYS_Initialize ( void* data )
     /* Initialize SDSPI0 Driver Instance */
     sysObj.drvSDSPI0 = DRV_SDSPI_Initialize(DRV_SDSPI_INDEX_0, (SYS_MODULE_INIT *)&drvSDSPI0InitData);
 
+    sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
+
+    /* Initialize Metrology Driver Instance */
+    DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
+    
     /* Initialize SPI0 Driver Instance */
     sysObj.drvSPI0 = DRV_SPI_Initialize(DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPI0InitData);
     sysObj.drvSST26 = DRV_SST26_Initialize((SYS_MODULE_INDEX)DRV_SST26_INDEX, (SYS_MODULE_INIT *)&drvSST26InitData);
 
-    sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
-
-
-    SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
     sysObj.sysConsole0 = SYS_CONSOLE_Initialize(SYS_CONSOLE_INDEX_0, (SYS_MODULE_INIT *)&sysConsole0Init);
+
+    SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
 
     /*** File System Service Initialization Code ***/
@@ -413,7 +436,7 @@ void SYS_Initialize ( void* data )
     APP_CONSOLE_Initialize();
     APP_DATALOG_Initialize();
     APP_DISPLAY_Initialize();
-    APP_EVENTS_Initialize();
+    APP_ENERGY_Initialize();
 
 
     NVIC_Initialize();

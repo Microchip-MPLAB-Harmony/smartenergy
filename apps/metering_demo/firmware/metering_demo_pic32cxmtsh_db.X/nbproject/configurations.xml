@@ -14,6 +14,11 @@
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory_definitions.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory_local.h</itemPath>
             </logicalFolder>
+            <logicalFolder name="metrology" displayName="metrology" projectFiles="true">
+              <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_regs.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_definitions.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="sdspi" displayName="sdspi" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_local.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_driver_interface.h</itemPath>
@@ -308,7 +313,7 @@
       <itemPath>../src/app_metrology.h</itemPath>
       <itemPath>../src/app_display.h</itemPath>
       <itemPath>../src/app_datalog.h</itemPath>
-      <itemPath>../src/app_events.h</itemPath>
+      <itemPath>../src/app_energy.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -331,6 +336,12 @@
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="metrology" displayName="metrology" projectFiles="true">
+              <logicalFolder name="bin" displayName="bin" projectFiles="true">
+                <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/bin/met_bin.S</itemPath>
+              </logicalFolder>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology.c</itemPath>
             </logicalFolder>
             <logicalFolder name="sdspi" displayName="sdspi" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_driver_interface.c</itemPath>
@@ -467,7 +478,7 @@
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/app_display.c</itemPath>
       <itemPath>../src/app_datalog.c</itemPath>
-      <itemPath>../src/app_events.c</itemPath>
+      <itemPath>../src/app_energy.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -490,8 +501,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
         <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.37"/>
+        <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -534,7 +545,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
-        <property key="make-warnings-into-errors" value="false"/>
+        <property key="make-warnings-into-errors" value="true"/>
         <property key="optimization-level" value=""/>
         <property key="place-data-into-section" value="true"/>
         <property key="post-instruction-scheduling" value="default"/>
@@ -553,11 +564,13 @@
         <property key="additional-options-chop-files" value="false"/>
       </C32-AR>
       <C32-AS>
+        <property key="appendMe" value=""/>
         <property key="assembler-symbols" value=""/>
         <property key="enable-symbols" value="true"/>
         <property key="exclude-floating-point-library" value="false"/>
         <property key="expand-macros" value="false"/>
-        <property key="extra-include-directories-for-assembler" value=""/>
+        <property key="extra-include-directories-for-assembler"
+                  value="../src/config/pic32cxmtsh_db/driver/metrology/bin"/>
         <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="false-conditionals" value="false"/>
         <property key="generate-16-bit-code" value="false"/>
