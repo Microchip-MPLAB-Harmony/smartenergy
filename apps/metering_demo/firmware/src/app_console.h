@@ -62,11 +62,38 @@ typedef enum
 {
     /* Application's state machine's initial state. */
     APP_CONSOLE_STATE_INIT=0,
-    APP_CONSOLE_STATE_SERVICE_TASKS,
-    /* TODO: Define states used by the application state machine. */
-
+    APP_CONSOLE_STATE_IDLE,
+    APP_CONSOLE_STATE_READ_CONTROL_REG,
+    APP_CONSOLE_STATE_WRITE_CONTROL_REG,
+    APP_CONSOLE_STATE_READ_ALL_CONTROL_REGS,
+    APP_CONSOLE_STATE_READ_ACCUM_REG,
+    APP_CONSOLE_STATE_READ_ALL_ACCUM_REGS,
+    APP_CONSOLE_STATE_READ_STATUS_REG,
+    APP_CONSOLE_STATE_READ_ALL_STATUS_REGS,
+    APP_CONSOLE_STATE_READ_HARMONICS_REG,
+    APP_CONSOLE_STATE_READ_ALL_HARMONICS_REGS,
+    APP_CONSOLE_STATE_READ_METER_ID,
+    APP_CONSOLE_STATE_READ_TOU,
+    APP_CONSOLE_STATE_READ_RTC,
+    APP_CONSOLE_STATE_PRINT_HRR,
+    APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY,
+    APP_CONSOLE_STATE_PRINT_EVENT,
+    APP_CONSOLE_STATE_PRINT_MAX_DEMAND,
+    APP_CONSOLE_STATE_PRINT_VOLTAGE,
+    APP_CONSOLE_STATE_PRINT_CURRENT,
+    APP_CONSOLE_STATE_PRINT_ACTIVE_POWER,
+    APP_CONSOLE_STATE_PRINT_REACTIVE_POWER,
+    APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA,
 } APP_CONSOLE_STATES;
 
+
+#define APP_CONSOLE_MAX_REGS   64
+
+typedef struct
+{
+    uint32_t value;
+    uint8_t index;
+} APP_CONSOLE_REG;
 
 // *****************************************************************************
 /* Application Data
@@ -85,9 +112,13 @@ typedef struct
 {
     /* The application's current state */
     APP_CONSOLE_STATES state;
-
-    /* TODO: Define any additional data used by the application. */
-
+    uint8_t ctrlRegToRead;
+    uint8_t accumRegToRead;
+    uint8_t statusRegToRead;
+    uint8_t harRegToRead;
+    uint32_t *rawData;
+    uint16_t rawDataLen;
+    APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************

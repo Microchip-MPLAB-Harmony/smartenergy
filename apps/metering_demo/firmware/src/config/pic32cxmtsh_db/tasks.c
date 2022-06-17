@@ -107,7 +107,6 @@ void _APP_CONSOLE_Tasks(  void *pvParameters  )
     while(1)
     {
         APP_CONSOLE_Tasks();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
 /* Handle for the APP_DATALOG_Tasks. */
