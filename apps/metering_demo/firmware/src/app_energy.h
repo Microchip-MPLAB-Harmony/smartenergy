@@ -46,6 +46,48 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
+    
+typedef struct {
+	uint32_t energy;
+	uint32_t Pt;
+} APP_ENERGY_QUEUE_DATA;
+
+typedef enum {
+	TOU_RATE_1 = 0,
+	TOU_RATE_2,
+	TOU_RATE_3,
+	TOU_RATE_4,
+	TOU_ALL_RATES,
+	INVALID_RATE = 0xFF
+} APP_ENERGY_TOU_RATE;
+
+typedef struct {
+	APP_ENERGY_TOU_RATE rate;
+	uint8_t hour;
+	uint8_t minute;
+} APP_ENERGY_TOU_TIME_ZONE;
+
+#define APP_ENERGY_TOU_MAX_ZONES             8
+
+typedef struct {
+	APP_ENERGY_TOU_TIME_ZONE timeZone[APP_ENERGY_TOU_MAX_ZONES];
+    uint32_t currentZone;
+    uint32_t usedZones;
+} APP_ENERGY_TOU;
+
+typedef struct {
+    uint32_t value;
+    uint8_t hour;
+	uint8_t minute;
+}APP_ENERGY_DEMAND_MAX;
+
+typedef struct {
+    APP_ENERGY_DEMAND_MAX demandMax[APP_ENERGY_TOU_MAX_ZONES];
+    uint32_t window[60];
+} APP_ENERGY_DEMAND;
+
+/* Energy threshold to update energy register stored in external memory */
+#define APP_ENERGY_TOU_THRESHOLD  10000 // 0.01kWh (Units: 10^-4 Wh)
 
 // *****************************************************************************
 /* Application states
@@ -61,8 +103,10 @@ extern "C" {
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_ENERGY_STATE_INIT = 0,
-    APP_ENERGY_STATE_START,
+    APP_ENERGY_STATE_INIT_RTC = 0,
+    APP_ENERGY_STATE_INIT_TOU,
+    APP_ENERGY_STATE_INIT_DEMAND,
+    APP_ENERGY_STATE_INIT_EVENTS,
     APP_ENERGY_STATE_RUNNING,
     APP_ENERGY_STATE_ERROR
 
@@ -86,8 +130,22 @@ typedef struct
 {
     /* The application's current state */
     APP_ENERGY_STATES state;
+    
+    APP_ENERGY_QUEUE_DATA newQueuedData;
 
-    /* TODO: Define any additional data used by the application. */
+    uint32_t energyThreshold;
+    
+	APP_ENERGY_TOU tou;
+    
+    APP_ENERGY_DEMAND demand;
+    
+    uint64_t energyAccumulator[APP_ENERGY_TOU_MAX_ZONES];
+    
+    uint32_t demandAccumulator;
+    
+    bool eventMinute;
+    
+    bool eventMonth;
 
 } APP_ENERGY_DATA;
 

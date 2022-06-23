@@ -156,39 +156,39 @@ typedef union {
 } MET_AFE_EVENTS;
 
 typedef enum {
-	UA = 0,
-	UB,
-	UC,
-	IA,
-	IB,
-	IC,
-	INI,
-	INM,
-	INMI,
-	PT,
-	PA,
-	PB,
-	PC,
-	QT,
-	QA,
-	QB,
-	QC,
-	ST,
-	SA,
-	SB,
-	SC,
-	FREQ,
-	ANGLEA,
-	ANGLEB,
-	ANGLEC,
-	ANGLEN,
-	RMSTYPENUM
+	RMS_UA = 0,
+	RMS_UB,
+	RMS_UC,
+	RMS_IA,
+	RMS_IB,
+	RMS_IC,
+	RMS_INI,
+	RMS_INM,
+	RMS_INMI,
+	RMS_PT,
+	RMS_PA,
+	RMS_PB,
+	RMS_PC,
+	RMS_QT,
+	RMS_QA,
+	RMS_QB,
+	RMS_QC,
+	RMS_ST,
+	RMS_SA,
+	RMS_SB,
+	RMS_SC,
+	RMS_FREQ,
+	RMS_ANGLEA,
+	RMS_ANGLEB,
+	RMS_ANGLEC,
+	RMS_ANGLEN,
+	RMS_TYPE_NUM
 } MET_RMS_TYPE;
 
 typedef struct {
 	uint32_t energy;
 	MET_AFE_EVENTS afeEvents;
-	uint32_t RMS[RMSTYPENUM];
+	uint32_t RMS[RMS_TYPE_NUM];
 } MET_AFE_DATA;
 
 typedef enum {
@@ -274,7 +274,7 @@ typedef struct
     SYS_STATUS                      status;
 
     /* State of the metrology driver  */
-    DRV_METROLOGY_STATE             state;
+    volatile DRV_METROLOGY_STATE    state;
 
     /* Size (in Bytes) of the PLC binary file */
     uint32_t                        binSize;

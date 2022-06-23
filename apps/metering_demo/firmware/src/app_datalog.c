@@ -41,22 +41,6 @@
 
 #define TEST_LOG_LEN                10
 
-#define BUILD_TIME_HOUR     ((__TIME__[0] - '0') * 10 + __TIME__[1] - '0')
-#define BUILD_TIME_MIN      ((__TIME__[3] - '0') * 10 + __TIME__[4] - '0')
-#define BUILD_TIME_SEC      ((__TIME__[6] - '0') * 10 + __TIME__[7] - '0')
-
-
-#define BUILD_DATE_YEAR     ((__DATE__[7] - '0') * 1000 + \
-                             (__DATE__[8] - '0') * 100 + \
-                             (__DATE__[9] - '0') * 10  + \
-                             (__DATE__[10] - '0'))
-
-#define BUILD_DATE_DAY      (((__DATE__[4] == 0x20)? 0:(__DATE__[4] - '0') * 10) + \
-                             (__DATE__[5] - '0'))
-
-const uint8_t Month_DayTable[12] = {0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 0x31, 0x30, 0x31, 0x30, 0x31};
-const char Months_DateTable[12][3] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-const uint8_t Day_weekTableD[12] = {6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 
 // *****************************************************************************
 /* Application Data
@@ -82,30 +66,7 @@ QueueHandle_t CACHE_ALIGN app_datalogQueue = NULL;
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
-uint32_t int_cnt = 0;
-uint32_t last_sec = 0;
-void RTC_callback(uint32_t int_cause, uintptr_t context)
-{
-    if (int_cause & RTC_SR_SEC_Msk)
-    {
-        if (app_datalogData.state == APP_DATALOG_IDLE)
-        {
-            struct tm rtcTime;
-            LED_RED_Toggle();
-            RTC_TimeGet(&rtcTime);
-            int_cnt++;
-            if ((rtcTime.tm_sec == 0) || ((rtcTime.tm_sec % 10) == 0))
-            {
-                if (last_sec != rtcTime.tm_sec)
-                {
-                    // Write on Test File (Send to Queue)
-                    xQueueSendFromISR(app_datalogQueue, &rtcTime, NULL);
-                    last_sec = rtcTime.tm_sec;
-                }
-            }
-        }
-    }
-}
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -176,19 +137,13 @@ static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event,void* eventData,uin
 
 void APP_DATALOG_Initialize ( void )
 {
-    struct tm sysTime;
-    char dateBuff[12];
-	uint16_t y, d;
-	uint8_t mon, uc_idx;
-	uint8_t a, m;
-    
     // Place the App state machine in its initial state.
     app_datalogData.state = APP_DATALOG_MOUNT_WAIT;
     
     // Set the handling function of the File System
     SYS_FS_EventHandlerSet(APP_DATALOG_SysFSEventHandler,(uintptr_t)NULL);
     
-    // Create a queue capable of containing 10 unsigned long values.
+    // Create a queue capable of containing 5 unsigned long values.
     app_datalogQueue = xQueueCreate( 5, sizeof( struct tm ) );
 
     if( app_datalogQueue == NULL )
@@ -197,39 +152,7 @@ void APP_DATALOG_Initialize ( void )
         app_datalogData.state = APP_DATALOG_ERROR;
         return;
     }
-    
-    // RTC Configuration
-    // Get Time info from Build Time
-    sysTime.tm_hour = BUILD_TIME_HOUR;
-    sysTime.tm_min = BUILD_TIME_MIN;
-    sysTime.tm_sec = BUILD_TIME_SEC;
-    sysTime.tm_year = BUILD_DATE_YEAR - 1900;
-    sysTime.tm_mday = BUILD_DATE_DAY;
-    
-    sprintf(dateBuff, "%s", __DATE__);
-    sysTime.tm_mon = 0;
-	for (uc_idx = 0; uc_idx < 12; uc_idx++) {
-		if (memcmp(&Months_DateTable[uc_idx], dateBuff, 3) == 0) {
-			sysTime.tm_mon = uc_idx;
-			break;
-		}
-	}
-    
-	// Get day of the week
-    mon = sysTime.tm_mon + 1;
-	a = (14 - mon) / 12;
-	y = BUILD_DATE_YEAR - ((14 - mon) / 12);
-	m = mon + (12 * a) - 2;
-	d = sysTime.tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
-	sysTime.tm_wday = (d % 7) - 1;
-    
-    // Set RTC Time to current system time.
-    RTC_TimeSet(&sysTime);
-    RTC_CallbackRegister(RTC_callback, 0);
-    //RTC_InterruptEnable(RTC_INT_SECOND);
-
 }
-
 
 /******************************************************************************
   Function:
@@ -310,7 +233,7 @@ void APP_DATALOG_Tasks ( void )
                     }
                     
                     /* The test was successful. Lets idle. */
-                    SYS_CONSOLE_PRINT("Write Test File Done!!! - %u\r\n\r\n", int_cnt);
+                    SYS_CONSOLE_PRINT("Write Test File Done!!! \r\n\r\n");
                 }
             }
             break;

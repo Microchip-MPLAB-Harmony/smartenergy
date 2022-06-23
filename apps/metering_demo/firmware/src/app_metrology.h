@@ -51,24 +51,187 @@ extern "C" {
 #define MET_CAPTURE_ADDR_OFFSET             47
 // Waveform capture buffer length
 #define MET_CAPTURE_BUFF_LEN                8000
+    
+typedef enum
+{
+    CONTROL_STATE_CTRL = 0,         
+    CONTROL_FEATURE_CTRL0_ID,      
+    CONTROL_FEATURE_CTRL1_ID,      
+    CONTROL_METER_TYPE_ID,         
+    CONTROL_M_ID,                  
+    CONTROL_N_MAX_ID,              
+    CONTROL_PULSE0_CTRL_ID,        
+    CONTROL_PULSE1_CTRL_ID,        
+    CONTROL_PULSE2_CTRL_ID,        
+    CONTROL_P_K_t_ID,              
+    CONTROL_Q_K_t_ID,              
+    CONTROL_I_K_t_ID,              
+    CONTROL_CREEP_THRESHOLD_P_ID,  
+    CONTROL_CREEP_THRESHOLD_Q_ID,  
+    CONTROL_CREEP_THRESHOLD_I_ID,  
+    CONTROL_POWER_OFFSET_CTRL_ID,  
+    CONTROL_POWER_OFFSET_P_ID,     
+    CONTROL_POWER_OFFSET_Q_ID,     
+    CONTROL_SWELL_THRESHOLD_VA_ID, 
+    CONTROL_SWELL_THRESHOLD_VB_ID, 
+    CONTROL_SWELL_THRESHOLD_VC_ID, 
+    CONTROL_SAG_THRESHOLD_VA_ID,   
+    CONTROL_SAG_THRESHOLD_VB_ID,   
+    CONTROL_SAG_THRESHOLD_VC_ID,   
+    CONTROL_K_IA_ID,               
+    CONTROL_K_VA_ID,               
+    CONTROL_K_IB_ID,               
+    CONTROL_K_VB_ID,               
+    CONTROL_K_IC_ID,               
+    CONTROL_K_VC_ID,               
+    CONTROL_K_IN_ID,               
+    CONTROL_CAL_M_IA_ID,           
+    CONTROL_CAL_M_VA_ID,           
+    CONTROL_CAL_M_IB_ID,           
+    CONTROL_CAL_M_VB_ID,           
+    CONTROL_CAL_M_IC_ID,           
+    CONTROL_CAL_M_VC_ID,           
+    CONTROL_CAL_M_IN_ID,           
+    CONTROL_CAL_PH_IA_ID,          
+    CONTROL_CAL_PH_VA_ID,          
+    CONTROL_CAL_PH_IB_ID,          
+    CONTROL_CAL_PH_VB_ID,          
+    CONTROL_CAL_PH_IC_ID,          
+    CONTROL_CAL_PH_VC_ID,          
+    CONTROL_CAL_PH_IN_ID,          
+    CONTROL_CAPTURE_CTRL_ID,       
+    CONTROL_CAPTURE_BUFF_SIZE_ID,  
+    CONTROL_CAPTURE_ADDR_ID,       
+    CONTROL_RES1_ID,
+    CONTROL_RES2_ID,
+    CONTROL_RES3_ID,
+    CONTROL_ATSENSE_CTRL_20_23_ID, 
+    CONTROL_ATSENSE_CTRL_24_27_ID, 
+    CONTROL_ATSENSE_CTRL_28_2B_ID, 
+    CONTROL_RES4_ID,
+    CONTROL_POWER_OFFSET_P_A_ID,   
+    CONTROL_POWER_OFFSET_P_B_ID,   
+    CONTROL_POWER_OFFSET_P_C_ID,   
+    CONTROL_POWER_OFFSET_Q_A_ID,   
+    CONTROL_POWER_OFFSET_Q_B_ID,   
+    CONTROL_POWER_OFFSET_Q_C_ID,
+    CONTROL_REG_NUM,
+} CONTROL_REG_ID;
 
+typedef enum
+{
+    STATUS_VERSION_ID = 0,          
+    STATUS_STATUS_ID,           
+    STATUS_STATE_FLAG_ID,       
+    STATUS_CAPTURE_STATUS_ID,   
+    STATUS_INTERVAL_NUM_ID,     
+    STATUS_N_ID,                
+    STATUS_PH_OFFSET_ID,        
+    STATUS_FREQ_ID,             
+    STATUS_FREQ_VA_ID,          
+    STATUS_FREQ_VB_ID,          
+    STATUS_FREQ_VC_ID,          
+    STATUS_RES1_ID,  
+    STATUS_TEMPERATURE_ID,      
+    STATUS_I_A_MAX_ID,          
+    STATUS_I_B_MAX_ID,          
+    STATUS_I_C_MAX_ID,          
+    STATUS_I_Ni_MAX_ID,         
+    STATUS_I_Nm_MAX_ID,         
+    STATUS_V_A_MAX_ID,          
+    STATUS_V_B_MAX_ID,          
+    STATUS_V_C_MAX_ID,          
+    STATUS_FEATURES_ID,         
+    STATUS_RES2_ID,     
+    STATUS_RES3_ID,     
+    STATUS_RES4_ID,     
+    STATUS_RES5_ID,     
+    STATUS_RES6_ID,     
+    STATUS_RES7_ID,     
+    STATUS_RES8_ID,     
+    STATUS_RES9_ID,  
+    STATUS_ZC_N_VA_ID,          
+    STATUS_ZC_N_VB_ID,          
+    STATUS_ZC_N_VC_ID,          
+    STATUS_ATSENSE_CAL_41_44_ID,
+    STATUS_ATSENSE_CAL_45_48_ID,
+    STATUS_REG_NUM,
+} STATUS_REG_ID;
 
+typedef enum
+{
+    ACCUMULATOR_I_A_ID = 0,           
+    ACCUMULATOR_I_B_ID,           
+    ACCUMULATOR_I_C_ID,           
+    ACCUMULATOR_I_Ni_ID,          
+    ACCUMULATOR_I_Nm_ID,          
+    ACCUMULATOR_I_A_F_ID,         
+    ACCUMULATOR_I_B_F_ID,         
+    ACCUMULATOR_I_C_F_ID,         
+    ACCUMULATOR_I_Nmi_ID,
+    ACCUMULATOR_RES1_ID,
+    ACCUMULATOR_RES2_ID,
+    ACCUMULATOR_RES3_ID,
+    ACCUMULATOR_RES4_ID,
+    ACCUMULATOR_RES5_ID,
+    ACCUMULATOR_RES6_ID,
+    ACCUMULATOR_P_A_ID,           
+    ACCUMULATOR_P_B_ID,           
+    ACCUMULATOR_P_C_ID,           
+    ACCUMULATOR_P_A_F_ID,         
+    ACCUMULATOR_P_B_F_ID,         
+    ACCUMULATOR_P_C_F_ID,         
+    ACCUMULATOR_P_N_ID,           
+    ACCUMULATOR_P_N_F_ID,   
+    ACCUMULATOR_RES7_ID,    
+    ACCUMULATOR_Q_A_ID,           
+    ACCUMULATOR_Q_B_ID,           
+    ACCUMULATOR_Q_C_ID,           
+    ACCUMULATOR_Q_A_F_ID,         
+    ACCUMULATOR_Q_B_F_ID,         
+    ACCUMULATOR_Q_C_F_ID,         
+    ACCUMULATOR_Q_N_ID,           
+    ACCUMULATOR_Q_N_F_ID,    
+    ACCUMULATOR_RES8_ID,
+    ACCUMULATOR_V_A_ID,           
+    ACCUMULATOR_V_B_ID,           
+    ACCUMULATOR_V_C_ID,      
+    ACCUMULATOR_RES9_ID,
+    ACCUMULATOR_V_A_F_ID,         
+    ACCUMULATOR_V_B_F_ID,         
+    ACCUMULATOR_V_C_F_ID,
+    ACCUMULATOR_RES10_ID,
+    ACCUMULATOR_V_AB_ID,          
+    ACCUMULATOR_V_BC_ID,          
+    ACCUMULATOR_V_CA_ID,          
+    ACCUMULATOR_V_AB_F_ID,        
+    ACCUMULATOR_V_BC_F_ID,        
+    ACCUMULATOR_V_CA_F_ID, 
+    ACCUMULATOR_RES11_ID,
+    ACCUMULATOR_RES12_ID,
+    ACCUMULATOR_RES13_ID,
+    ACCUMULATOR_ACC_T0_ID,        
+    ACCUMULATOR_ACC_T1_ID,        
+    ACCUMULATOR_ACC_T2_ID,
+    ACCUMULATOR_REG_NUM,
+} ACCUMULATOR_REG_ID;
 
-uint32_t MetrologyInit(void);
-void MetrologyLoadDefault(void);
-void MetrologyRefreshCrtl(void);
-uint16_t MetrologyUpdateExtMem(void);
-void MetrologyCalibMeterInit(void);
-void MetrologyCalibMeter(void);
-void MetrologyProcess(void);
-void MetrologySetHarmonicOrder(uint8_t order);
-uint8_t MetrologyGetHarmonicOrder(void);
-uint8_t MetrologyHarmonicIsReady(void);
-void MetrologyHarmonicsProcess(void);
-//void MetrologySetHarmonicsCallback(pf_har_callback har_cb);
-//void MetrologySetCalibrationCallback(pf_cal_callback cal_cb);
-
-uint32_t MetrologyGetCaptureData(int32_t **data);
+typedef enum
+{
+    HARMONICS_I_A_m_R_ID = 0,
+    HARMONICS_V_A_m_R_ID,
+    HARMONICS_I_B_m_R_ID,
+    HARMONICS_V_B_m_R_ID,
+    HARMONICS_I_C_m_R_ID,
+    HARMONICS_V_C_m_R_ID,
+    HARMONICS_I_A_m_I_ID,
+    HARMONICS_V_A_m_I_ID,
+    HARMONICS_I_B_m_I_ID,
+    HARMONICS_V_B_m_I_ID,
+    HARMONICS_I_C_m_I_ID,
+    HARMONICS_V_C_m_I_ID,
+    HARMONICS_REG_NUM,
+} HARMONICS_REG_ID;
     
 // *****************************************************************************
 /* Application states
@@ -111,6 +274,7 @@ typedef struct
     APP_METROLOGY_STATES state;
     
     MET_CONTROL *        pMetControl;
+    MET_STATUS *         pMetStatus;
     MET_ACCUMULATORS *   pMetAccData;
     MET_HARMONICS *      pMetHarData;
 
@@ -195,6 +359,18 @@ void APP_METROLOGY_Initialize ( void );
  */
 
 void APP_METROLOGY_Tasks( void );
+
+
+
+
+uint32_t APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId );
+bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value );
+uint32_t APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId );
+uint64_t APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId );
+uint32_t APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId );
+
+uint32_t APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId );
+
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

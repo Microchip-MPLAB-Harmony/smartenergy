@@ -40,7 +40,7 @@
  * data */
 OSAL_SEM_DECLARE(metrologySemaphore);
 
-extern OSAL_SEM_DECLARE(energySemaphore);
+extern QueueHandle_t CACHE_ALIGN app_energyQueue;
 
 // *****************************************************************************
 /* Application Data
@@ -130,7 +130,8 @@ void APP_METROLOGY_Initialize ( void )
 //uint32_t counter = 0;
 void APP_METROLOGY_Tasks ( void )
 {
-
+    APP_ENERGY_QUEUE_DATA newMetrologyData;
+    
     /* Check the application's current state. */
     switch ( app_metrologyData.state )
     {
@@ -180,7 +181,7 @@ void APP_METROLOGY_Tasks ( void )
 //                }
 //                else
 //                {
-//                    /* Store Metrology Control Configuration in Data Log */
+//                    /* Store Metrology Control Configuration in Data Log: Used values by default */
 //                    APP_DATALOG_Write(ID_MET_CONTROL, app_metrologyData.pMetControl, sizeof(MET_CONTROL));
 //                }
                 
@@ -212,8 +213,10 @@ void APP_METROLOGY_Tasks ( void )
             DRV_METROLOGY_UpdateMeasurements();
             GPIODBG_Clear();
             
-            /* Signal Energy thread to process energy values */
-            OSAL_SEM_Post(&energySemaphore);
+            // Write the new Energy value to the Energy Queue to be processed by the Energy Task
+            newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
+            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
+            xQueueSend(app_energyQueue, &newMetrologyData, ( TickType_t ) 0);
             
             break;
         }
@@ -227,6 +230,65 @@ void APP_METROLOGY_Tasks ( void )
         }
     }
 }
+
+uint32_t APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId )
+{
+    uint32_t *pData;
+    
+    pData = (uint32_t *)app_metrologyData.pMetControl;
+    pData += regId;
+    return *pData;
+    
+}
+
+bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value )
+{
+    uint32_t *pData;
+    
+    pData = (uint32_t *)app_metrologyData.pMetControl;
+    pData += regId;
+    
+    if (regId < CONTROL_REG_NUM)
+    {
+        *pData = value;
+        return true;
+    }
+    
+    return false;
+}
+
+uint32_t APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId )
+{
+    uint32_t *pData;
+    
+    pData = (uint32_t *)app_metrologyData.pMetStatus;
+    pData += regId;
+    return *pData;
+}
+
+uint64_t APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId )
+{
+    uint64_t *pData;
+    
+    pData = (uint64_t *)app_metrologyData.pMetAccData;
+    pData += regId;
+    return *pData;
+}
+
+uint32_t APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId )
+{
+    uint32_t *pData;
+    
+    pData = (uint32_t *)app_metrologyData.pMetHarData;
+    pData += regId;
+    return *pData;
+}
+
+uint32_t APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId )
+{
+    return DRV_METROLOGY_GetRMSValue(rmsId);
+}
+
 
 
 /*******************************************************************************

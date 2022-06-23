@@ -491,6 +491,9 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize ( const SYS_MODULE_INIT * const init, ui
     gDrvMetObj.status = SYS_STATUS_READY;
     gDrvMetObj.newIntegrationCallback = NULL;
     
+    /* Disable IPC interrupts */
+    SYS_INT_SourceDisable(IPC1_IRQn);
+    
     /* Configure IPC peripheral */
     _DRV_Metrology_IpcInitialize();
     
@@ -510,6 +513,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open ( DRV_METROLOGY_START_MODE mode )
     }
     
     /* Enable IPC1 Interrupt Source */
+    SYS_INT_SourceStatusClear(IPC1_IRQn);
     SYS_INT_SourceEnable(IPC1_IRQn);
     
     if (mode == DRV_METROLOGY_START_HARD)
@@ -572,6 +576,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister ( DRV_METROLOGY_C
 MET_CONTROL * DRV_METROLOGY_GetControl ( void )
 {
     return &gDrvMetObj.metRegisters->MET_CONTROL;
+}
+
+MET_CONTROL * DRV_METROLOGY_GetControlByDefault ( void )
+{
+    return (MET_CONTROL *)&gDrvMetControlDefault;
 }
 
 MET_ACCUMULATORS * DRV_METROLOGY_GetAccData ( void )
@@ -654,53 +663,70 @@ void DRV_METROLOGY_UpdateMeasurements( void )
     /* Update RMS values */
     afeRMS = gDrvMetObj.metAFEData.RMS;
     
-    afeRMS[UA] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_A, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
-    afeRMS[UB] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_B, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
-    afeRMS[UC] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_C, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    afeRMS[RMS_UA] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_A, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_UB] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_B, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_UC] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.V_C, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
     
-    afeRMS[IA] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA);
-    afeRMS[IB] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB);
-    afeRMS[IC] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC);
+    afeRMS[RMS_IA] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA);
+    afeRMS[RMS_IB] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB);
+    afeRMS[RMS_IC] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC);
     
-    afeRMS[INI] = _DRV_Metrology_GetInxRMS(gDrvMetObj.metAccData.I_Ni);
-    afeRMS[INM] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_Nm, gDrvMetObj.metRegisters->MET_CONTROL.K_IN);
-    afeRMS[INMI] = _DRV_Metrology_GetInxRMS(gDrvMetObj.metAccData.I_Nmi);
+    afeRMS[RMS_INI] = _DRV_Metrology_GetInxRMS(gDrvMetObj.metAccData.I_Ni);
+    afeRMS[RMS_INM] = _DRV_Metrology_GetVIRMS(gDrvMetObj.metAccData.I_Nm, gDrvMetObj.metRegisters->MET_CONTROL.K_IN);
+    afeRMS[RMS_INMI] = _DRV_Metrology_GetInxRMS(gDrvMetObj.metAccData.I_Nmi);
     
-    afeRMS[PA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_PA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
     gDrvMetObj.metAFEData.afeEvents.BIT.paDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A);
-    afeRMS[PB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_PB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
     gDrvMetObj.metAFEData.afeEvents.BIT.pbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B);
-    afeRMS[PC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    afeRMS[RMS_PC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
     gDrvMetObj.metAFEData.afeEvents.BIT.pcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C);
     
-    afeRMS[QA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_QA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
     gDrvMetObj.metAFEData.afeEvents.BIT.qaDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A);
-    afeRMS[QB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_QB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
     gDrvMetObj.metAFEData.afeEvents.BIT.qbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B);
-    afeRMS[QC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    afeRMS[RMS_QC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
     gDrvMetObj.metAFEData.afeEvents.BIT.qcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C);
     
-    afeRMS[SA]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
-    afeRMS[SB]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
-    afeRMS[SC]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
+    afeRMS[RMS_SA]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
+    afeRMS[RMS_SB]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
+    afeRMS[RMS_SC]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
     
-    afeRMS[PT]  = afeRMS[PA] + afeRMS[PB] + afeRMS[PC];
+    afeRMS[RMS_PT]  = afeRMS[RMS_PA] + afeRMS[RMS_PB] + afeRMS[RMS_PC];
     gDrvMetObj.metAFEData.afeEvents.BIT.ptDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.P_C);
     
-    afeRMS[QT]  = afeRMS[QA] + afeRMS[QB] + afeRMS[QC];
+    afeRMS[RMS_QT]  = afeRMS[RMS_QA] + afeRMS[RMS_QB] + afeRMS[RMS_QC];
     gDrvMetObj.metAFEData.afeEvents.BIT.qtDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metAccData.Q_C);
     
-    afeRMS[ST]  = afeRMS[SA] + afeRMS[SB] + afeRMS[SC];
+    afeRMS[RMS_ST]  = afeRMS[RMS_SA] + afeRMS[RMS_SB] + afeRMS[RMS_SC];
     
-    afeRMS[FREQ]  = (gDrvMetObj.metRegisters->MET_STATUS.FREQ * 100) >> FREQ_Q;
+    afeRMS[RMS_FREQ]  = (gDrvMetObj.metRegisters->MET_STATUS.FREQ * 100) >> FREQ_Q;
     
-    afeRMS[ANGLEA]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
-    afeRMS[ANGLEB]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
-    afeRMS[ANGLEC]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C);
-    afeRMS[ANGLEN]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_N, gDrvMetObj.metAccData.Q_N);
+    afeRMS[RMS_ANGLEA]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
+    afeRMS[RMS_ANGLEB]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
+    afeRMS[RMS_ANGLEC]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C);
+    afeRMS[RMS_ANGLEN]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_N, gDrvMetObj.metAccData.Q_N);
     
     gDrvMetObj.metAFEData.energy += _DRV_Metrology_GetPQEnergy(PENERGY, ABS);
     
+}
+
+uint32_t DRV_METROLOGY_GetEnergyValue( bool restartEnergy )
+{
+    uint32_t energy = gDrvMetObj.metAFEData.energy;
+    
+    if (restartEnergy)
+    {
+        gDrvMetObj.metAFEData.energy = 0;
+    }
+            
+    return energy;
+}
+
+uint32_t DRV_METROLOGY_GetRMSValue( MET_RMS_TYPE type )
+{
+    return gDrvMetObj.metAFEData.RMS[type];
 }
 
 

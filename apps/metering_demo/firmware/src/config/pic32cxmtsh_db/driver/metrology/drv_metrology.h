@@ -101,10 +101,13 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Start ( void );
 DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister ( DRV_METROLOGY_CALLBACK callback);
 DRV_METROLOGY_STATE DRV_METROLOGY_GetState ( void );
 MET_CONTROL * DRV_METROLOGY_GetControl ( void );
+MET_CONTROL * DRV_METROLOGY_GetControlByDefault ( void );
 MET_ACCUMULATORS * DRV_METROLOGY_GetAccData ( void );
 MET_HARMONICS * DRV_METROLOGY_GetHarData ( void );
 void DRV_METROLOGY_SetControl ( MET_CONTROL * pControl );
 void DRV_METROLOGY_UpdateMeasurements( void );
+uint32_t DRV_METROLOGY_GetEnergyValue( bool restartEnergy );
+uint32_t DRV_METROLOGY_GetRMSValue( MET_RMS_TYPE type );
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }
