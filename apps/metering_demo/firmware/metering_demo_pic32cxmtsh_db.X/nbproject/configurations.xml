@@ -314,6 +314,7 @@
       <itemPath>../src/app_display.h</itemPath>
       <itemPath>../src/app_datalog.h</itemPath>
       <itemPath>../src/app_energy.h</itemPath>
+      <itemPath>../src/app_events.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -479,6 +480,7 @@
       <itemPath>../src/app_display.c</itemPath>
       <itemPath>../src/app_datalog.c</itemPath>
       <itemPath>../src/app_energy.c</itemPath>
+      <itemPath>../src/app_events.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -501,7 +503,7 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.37"/>
+        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.38"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
       </packs>
       <ScriptingSettings>
@@ -519,6 +521,10 @@
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
+          <score>
+            <scdebug>false</scdebug>
+            <scname>S1</scname>
+          </score>
         </subordinates>
       </compileType>
       <makeCustomizationType>
@@ -545,7 +551,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
-        <property key="make-warnings-into-errors" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
         <property key="optimization-level" value=""/>
         <property key="place-data-into-section" value="true"/>
         <property key="post-instruction-scheduling" value="default"/>
@@ -705,7 +711,7 @@
         <property key="script.has_reset" value="true"/>
         <property key="script.log_level" value="1"/>
         <property key="script.reset_delay" value="0"/>
-        <property key="script.show_output" value="false"/>
+        <property key="script.show_output" value="true"/>
       </Tool>
       <j32>
         <property key="AutoSelectMemRanges" value="auto"/>
@@ -737,7 +743,7 @@
         <property key="script.has_reset" value="true"/>
         <property key="script.log_level" value="1"/>
         <property key="script.reset_delay" value="0"/>
-        <property key="script.show_output" value="false"/>
+        <property key="script.show_output" value="true"/>
       </j32>
     </conf>
   </confs>
