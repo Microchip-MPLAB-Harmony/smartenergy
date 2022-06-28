@@ -123,7 +123,7 @@ extern "C" {
 #define SYS_FS_STACK_SIZE                 1024
 #define SYS_FS_PRIORITY                   1
 
-#define SYS_FS_FAT_VERSION                "v0.14a"
+#define SYS_FS_FAT_VERSION                "v0.14b"
 #define SYS_FS_FAT_READONLY               false
 #define SYS_FS_FAT_CODE_PAGE              437
 #define SYS_FS_FAT_MAX_SS                 SYS_FS_MEDIA_MAX_BLOCK_SIZE
@@ -141,7 +141,7 @@ extern "C" {
 #define SYS_CONSOLE_DEVICE_MAX_INSTANCES   			1
 #define SYS_CONSOLE_UART_MAX_INSTANCES 	   			1
 #define SYS_CONSOLE_USB_CDC_MAX_INSTANCES 	   		0
-#define SYS_CONSOLE_PRINT_BUFFER_SIZE        		256
+#define SYS_CONSOLE_PRINT_BUFFER_SIZE        		512
 
 
 

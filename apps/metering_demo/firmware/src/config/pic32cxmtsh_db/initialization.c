@@ -383,6 +383,8 @@ const SYS_CMD_INIT sysCmdInit =
 
 void SYS_Initialize ( void* data )
 {
+    /* MISRAC 2012 deviation block start */
+    /* MISRA C-2012 Rule 2.2 deviated in this file.  Deviation record ID -  H3_MISRAC_2012_R_2_2_DR_1 */
 
 
     SEFC0_Initialize();
@@ -399,12 +401,12 @@ void SYS_Initialize ( void* data )
 
     FLEXCOM5_SPI_Initialize();
 
+    RTC_Initialize();
+
  
     TC0_CH0_TimerInitialize(); 
      
     
-    RTC_Initialize();
-
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();
@@ -442,6 +444,7 @@ void SYS_Initialize ( void* data )
 
     NVIC_Initialize();
 
+    /* MISRAC 2012 deviation block end */
 }
 
 

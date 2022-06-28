@@ -76,7 +76,7 @@ void RSTC_Reset (RSTC_RESET_TYPE type)
 }
 
 
-uint32_t RSTC_ResetCauseGet (void)
+RSTC_RESET_CAUSE RSTC_ResetCauseGet (void)
 {
     return (RSTC_REGS->RSTC_SR & RSTC_SR_RSTTYP_Msk);
 }
