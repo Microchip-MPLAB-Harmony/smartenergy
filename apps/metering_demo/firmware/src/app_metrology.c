@@ -280,6 +280,7 @@ void APP_METROLOGY_Initialize ( void )
     
     /* Get Pointers to metrology data regions */
     app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
+    app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
     app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
     app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     
@@ -423,7 +424,7 @@ bool APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId, uint32_t * regValue
     
     if (regName)
     {
-        memcpy(regName, _met_control_desc[regId], strlen(_met_control_desc[regId]));
+        sprintf(regName,"%s",_met_control_desc[regId]);
     }
     
     return true;
@@ -461,7 +462,7 @@ bool APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId, uint32_t * regValue, 
     
     if (regName)
     {
-        memcpy(regName, _met_status_desc[regId], strlen(_met_status_desc[regId]));
+        sprintf(regName,"%s",_met_status_desc[regId]);
     }
     
     return true;
@@ -482,7 +483,7 @@ bool APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId, uint64_t * 
     
     if (regName)
     {
-        memcpy(regName, _met_acc_desc[regId], strlen(_met_acc_desc[regId]));
+        sprintf(regName,"%s",_met_acc_desc[regId]);
     }
     
     return true;
@@ -503,17 +504,22 @@ bool APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId, uint32_t * regV
     
     if (regName)
     {
-        memcpy(regName, _met_har_desc[regId], strlen(_met_har_desc[regId]));
+        sprintf(regName,"%s",_met_har_desc[regId]);
     }
     
     return true;
 }
 
-bool APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId, uint32_t * rmsValue )
+bool APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign )
 {
     if (rmsId >= RMS_TYPE_NUM)
     {
         return false;
+    }
+    
+    if (sign != NULL)
+    {
+        *sign = DRV_METROLOGY_GetRMSSign(rmsId);
     }
     
     *rmsValue = DRV_METROLOGY_GetRMSValue(rmsId);

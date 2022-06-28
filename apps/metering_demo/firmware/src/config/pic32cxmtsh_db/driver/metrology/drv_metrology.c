@@ -573,6 +573,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister ( DRV_METROLOGY_C
     return DRV_METROLOGY_SUCCESS;
 }
 
+MET_STATUS * DRV_METROLOGY_GetStatus ( void )
+{
+    return &gDrvMetObj.metRegisters->MET_STATUS;
+}
+
 MET_CONTROL * DRV_METROLOGY_GetControl ( void )
 {
     return &gDrvMetObj.metRegisters->MET_CONTROL;
@@ -727,6 +732,52 @@ uint32_t DRV_METROLOGY_GetEnergyValue( bool restartEnergy )
 uint32_t DRV_METROLOGY_GetRMSValue( MET_RMS_TYPE type )
 {
     return gDrvMetObj.metAFEData.RMS[type];
+}
+
+DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign( MET_RMS_TYPE type )
+{
+    DRV_METROLOGY_RMS_SIGN sign;
+    
+    sign = RMS_SIGN_POSITIVE;
+    
+    if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.BIT.paDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PB) && (gDrvMetObj.metAFEData.afeEvents.BIT.pbDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PC) && (gDrvMetObj.metAFEData.afeEvents.BIT.pcDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PT) && (gDrvMetObj.metAFEData.afeEvents.BIT.ptDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QA) && (gDrvMetObj.metAFEData.afeEvents.BIT.qaDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QB) && (gDrvMetObj.metAFEData.afeEvents.BIT.qbDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QC) && (gDrvMetObj.metAFEData.afeEvents.BIT.qcDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.BIT.qtDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type >= RMS_ANGLEA) && (gDrvMetObj.metAFEData.RMS[type] & 0x80000000))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    
+    return sign;
 }
 
 

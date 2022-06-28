@@ -434,6 +434,12 @@ void APP_ENERGY_Tasks ( void )
         {
             if (xQueueReceive(app_energyQueue, &app_energyData.newQueuedData, portMAX_DELAY))
             {
+                /* Update Energy Accumulator */
+                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff] += app_energyData.newQueuedData.energy;
+                
+                /* Update Demand Accumulator */
+                app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
+                
                 /* Check TIME Event (minute) */
                 if (app_energyData.eventMinute)
                 {
@@ -465,12 +471,6 @@ void APP_ENERGY_Tasks ( void )
                         }   
 //                    }
                 }
-                
-                /* Update Energy Accumulator */
-                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff] += app_energyData.newQueuedData.energy;
-                
-                /* Update Demand Accumulator */
-                app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
                 
                 /* Check CALENDAR Event (month) */
                 if (app_energyData.eventMonth)

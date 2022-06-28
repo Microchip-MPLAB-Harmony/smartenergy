@@ -78,6 +78,8 @@ static char metPwd[6] = APP_CONSOLE_DEFAULT_PWD;
 // Last Times Event requested
 static uint8_t lastTimesEvent;
 
+static char sign[2] = {' ', '-'};
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -1160,26 +1162,60 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 2) {
+    bool wakeup = false;
+    
+    if (argc == 2) 
+    {
         // Extract data to retrieve from parameters
-        if (strcmp(argv[1], "U") == 0) {
+        if (strcmp(argv[1], "U") == 0) 
+        {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_VOLTAGE;
+            wakeup = true;
         }
-        else if (strcmp(argv[1], "I") == 0) {
+        else if (strcmp(argv[1], "I") == 0) 
+        {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_CURRENT;
+            wakeup = true;
         }
-        else if (strcmp(argv[1], "P") == 0) {
+        else if (strcmp(argv[1], "P") == 0) 
+        {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_ACTIVE_POWER;
+            wakeup = true;
         }
-        else if (strcmp(argv[1], "Q") == 0) {
+        else if (strcmp(argv[1], "Q") == 0) 
+        {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_REACTIVE_POWER;
+            wakeup = true;
         }
-        else {
+        else if (strcmp(argv[1], "S") == 0) 
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_APARENT_POWER;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "F") == 0) 
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_FREQUENCY;
+            wakeup = true;
+        }
+        else if (strcmp(argv[1], "A") == 0) 
+        {
+            app_consoleData.state = APP_CONSOLE_STATE_PRINT_ANGLE;
+            wakeup = true;
+        }
+        else 
+        {
             // Invalid Command
             SYS_CMD_MESSAGE("Unsupported Command !\n\r");
         }
+        
+        if (wakeup)
+        {
+            // Post semaphore to wakeup task
+            OSAL_SEM_Post(&appConsoleSemID);
+        }
     }
-    else {
+    else 
+    {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
     }
@@ -1864,12 +1900,11 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t va, vb, vc;
             
-            APP_METROLOGY_GetRMS(RMS_UA, &va);
-            APP_METROLOGY_GetRMS(RMS_UB, &vb);
-            APP_METROLOGY_GetRMS(RMS_UC, &vc);
+            APP_METROLOGY_GetRMS(RMS_UA, &va, 0);
+            APP_METROLOGY_GetRMS(RMS_UB, &vb, 0);
+            APP_METROLOGY_GetRMS(RMS_UC, &vc, 0);
             // Show received data on console
-            SYS_CMD_MESSAGE("Present voltage is :\n\r");
-            SYS_CMD_PRINT("Ua=%fV Ub=%fV Uc=%fV\n\r",va, vb, vc);
+            SYS_CMD_PRINT("Present voltage is :\n\rUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)va/10000, (float)vc/10000);
             
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -1881,16 +1916,16 @@ void APP_CONSOLE_Tasks ( void )
             uint32_t ia, ib, ic;
             uint32_t ini, inm, inmi;
             
-            APP_METROLOGY_GetRMS(RMS_IA, &ia);
-            APP_METROLOGY_GetRMS(RMS_IB, &ib);
-            APP_METROLOGY_GetRMS(RMS_IC, &ic);
-            APP_METROLOGY_GetRMS(RMS_INI, &ini);
-            APP_METROLOGY_GetRMS(RMS_INM, &inm);
-            APP_METROLOGY_GetRMS(RMS_INMI, &inmi);
+            APP_METROLOGY_GetRMS(RMS_IA, &ia, 0);
+            APP_METROLOGY_GetRMS(RMS_IB, &ib, 0);
+            APP_METROLOGY_GetRMS(RMS_IC, &ic, 0);
+            APP_METROLOGY_GetRMS(RMS_INI, &ini, 0);
+            APP_METROLOGY_GetRMS(RMS_INM, &inm, 0);
+            APP_METROLOGY_GetRMS(RMS_INMI, &inmi, 0);
             // Show received data on console
-            SYS_CMD_MESSAGE("Present current is :\n\r");
-            SYS_CMD_PRINT("Ia=%fA Ib=%fA Ic=%fA Ini=%fA Inm=%fA Inmi=%fA\n\r",
-                    ia, ib, ic, ini, inm, inmi);
+            SYS_CMD_PRINT("Present current is :\n\rIa=%fA Ib=%fA Ic=%fA Ini=%fA Inm=%fA Inmi=%fA\n\r",
+                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)ini/10000, 
+                    (float)inm/10000, (float)inmi/10000);
             
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -1899,15 +1934,17 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_ACTIVE_POWER:
         {
-            uint32_t pa, pb, pc;
+            uint32_t pt, pa, pb, pc;
+            DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
             
-            APP_METROLOGY_GetRMS(RMS_PA, &pa);
-            APP_METROLOGY_GetRMS(RMS_PB, &pb);
-            APP_METROLOGY_GetRMS(RMS_PC, &pc);
+            APP_METROLOGY_GetRMS(RMS_PT, &pt, &signt);
+            APP_METROLOGY_GetRMS(RMS_PA, &pa, &signa);
+            APP_METROLOGY_GetRMS(RMS_PB, &pb, &signb);
+            APP_METROLOGY_GetRMS(RMS_PC, &pc, &signc);
             // Show received data on console
-            SYS_CMD_MESSAGE("Present active power is :\n\r");
-            SYS_CMD_PRINT("Pt=%fW Pa=%fW Pb=%fW Pc=%fW\n\r",
-                    pa + pb + pc, pa, pb, pc);
+            SYS_CMD_PRINT("Present active power is :\n\rPt=%c%.1fW Pa=%c%.1fW Pb=%c%.1fW Pc=%c%.1fW\r\n",
+                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb], 
+                    (float)pb/10, sign[signc], (float)pc/10);
             
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -1916,15 +1953,66 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_REACTIVE_POWER:
         {
-            uint32_t qa, qb, qc;
+            uint32_t qt, qa, qb, qc;
+            DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
             
-            APP_METROLOGY_GetRMS(RMS_QA, &qa);
-            APP_METROLOGY_GetRMS(RMS_QB, &qb);
-            APP_METROLOGY_GetRMS(RMS_QC, &qc);
+            APP_METROLOGY_GetRMS(RMS_QT, &qt, &signt);
+            APP_METROLOGY_GetRMS(RMS_QA, &qa, &signa);
+            APP_METROLOGY_GetRMS(RMS_QB, &qb, &signb);
+            APP_METROLOGY_GetRMS(RMS_QC, &qc, &signc);
             // Show received data on console
-            SYS_CMD_MESSAGE("Present reactive power is :\n\r");
-            SYS_CMD_PRINT("Qt=%fVar Qa=%fVar Qb=%fVar Qc=%fVar\n\r",
-                    qa + qb + qc, qa, qb, qc);
+            SYS_CMD_PRINT("Present reactive power is :\n\rQt=%c%.1fW Qa=%c%.1fW Qb=%c%.1fW qc=%c%.1fW\r\n",
+                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb], 
+                    (float)qb/10, sign[signc], (float)qc/10);
+            
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_APARENT_POWER:
+        {
+            uint32_t st, sa, sb, sc;
+            
+            APP_METROLOGY_GetRMS(RMS_ST, &st, 0);
+            APP_METROLOGY_GetRMS(RMS_SA, &sa, 0);
+            APP_METROLOGY_GetRMS(RMS_SB, &sb, 0);
+            APP_METROLOGY_GetRMS(RMS_SC, &sc, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Present apparent power is :\n\rSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
+                   (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
+            
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_FREQUENCY:
+        {
+            uint32_t freq;
+            
+            APP_METROLOGY_GetRMS(RMS_FREQ, &freq, 0);
+            // Show received data on console
+            SYS_CMD_PRINT("Present apparent power is :\n\rPresent frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/10);
+            
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_ANGLE:
+        {
+            uint32_t aa, ab, ac, an;
+            DRV_METROLOGY_RMS_SIGN signn, signa, signb, signc;
+            
+            APP_METROLOGY_GetRMS(RMS_ANGLEA, &aa, &signa);
+            APP_METROLOGY_GetRMS(RMS_ANGLEB, &ab, &signb);
+            APP_METROLOGY_GetRMS(RMS_ANGLEC, &ac, &signc);
+            APP_METROLOGY_GetRMS(RMS_ANGLEN, &an, &signn);
+            // Show received data on console
+            SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f Angle_N=%c%.3f\r\n",
+                    sign[signa], (float)(aa & 0xFFFFF)/1000, sign[signb], (float)(ab & 0xFFFFF)/1000, 
+                    sign[signc], ((float)(ac & 0xFFFFF)/1000, sign[signn], (float)(an & 0xFFFFF)/1000));
             
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

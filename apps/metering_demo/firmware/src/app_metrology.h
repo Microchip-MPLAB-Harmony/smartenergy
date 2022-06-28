@@ -369,7 +369,7 @@ bool APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId, uint32_t * regValue, 
 bool APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId, uint64_t * regValue, char *regName );
 bool APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId, uint32_t * regValue, char *regName );
 
-bool APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId, uint32_t * rmsValue );
+bool APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign );
 
 
 //DOM-IGNORE-BEGIN

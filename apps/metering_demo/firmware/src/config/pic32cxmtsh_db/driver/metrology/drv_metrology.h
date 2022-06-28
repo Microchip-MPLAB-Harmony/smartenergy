@@ -86,8 +86,15 @@ typedef enum
 
 } DRV_METROLOGY_START_MODE;  
 
-
-
+typedef enum
+{
+    // Positive Value
+    RMS_SIGN_POSITIVE = 0,
+            
+    //  Negative Value
+    RMS_SIGN_NEGATIVE = 1,
+            
+} DRV_METROLOGY_RMS_SIGN;  
 
 // *****************************************************************************
 // *****************************************************************************
@@ -100,6 +107,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open ( DRV_METROLOGY_START_MODE mode );
 DRV_METROLOGY_RESULT DRV_METROLOGY_Start ( void );
 DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister ( DRV_METROLOGY_CALLBACK callback);
 DRV_METROLOGY_STATE DRV_METROLOGY_GetState ( void );
+MET_STATUS * DRV_METROLOGY_GetStatus ( void );
 MET_CONTROL * DRV_METROLOGY_GetControl ( void );
 MET_CONTROL * DRV_METROLOGY_GetControlByDefault ( void );
 MET_ACCUMULATORS * DRV_METROLOGY_GetAccData ( void );
@@ -108,6 +116,7 @@ void DRV_METROLOGY_SetControl ( MET_CONTROL * pControl );
 void DRV_METROLOGY_UpdateMeasurements( void );
 uint32_t DRV_METROLOGY_GetEnergyValue( bool restartEnergy );
 uint32_t DRV_METROLOGY_GetRMSValue( MET_RMS_TYPE type );
+DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign( MET_RMS_TYPE type );
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }
