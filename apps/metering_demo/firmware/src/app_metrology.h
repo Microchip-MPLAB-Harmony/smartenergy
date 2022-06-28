@@ -363,13 +363,13 @@ void APP_METROLOGY_Tasks( void );
 
 
 
-uint32_t APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId );
+bool APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId, uint32_t * regValue, char *regName );
 bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value );
-uint32_t APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId );
-uint64_t APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId );
-uint32_t APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId );
+bool APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId, uint32_t * regValue, char *regName );
+bool APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId, uint64_t * regValue, char *regName );
+bool APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId, uint32_t * regValue, char *regName );
 
-uint32_t APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId );
+bool APP_METROLOGY_GetRMS( MET_RMS_TYPE rmsId, uint32_t * rmsValue );
 
 
 //DOM-IGNORE-BEGIN
