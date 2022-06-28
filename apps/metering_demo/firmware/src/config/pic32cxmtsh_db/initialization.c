@@ -399,12 +399,12 @@ void SYS_Initialize ( void* data )
 
     FLEXCOM5_SPI_Initialize();
 
-    RTC_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
     
+    RTC_Initialize();
+
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();
@@ -437,6 +437,7 @@ void SYS_Initialize ( void* data )
     APP_DATALOG_Initialize();
     APP_DISPLAY_Initialize();
     APP_ENERGY_Initialize();
+    APP_EVENTS_Initialize();
 
 
     NVIC_Initialize();

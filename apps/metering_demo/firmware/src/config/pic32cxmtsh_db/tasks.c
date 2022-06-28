@@ -121,6 +121,16 @@ void _APP_ENERGY_Tasks(  void *pvParameters  )
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
+/* Handle for the APP_EVENTS_Tasks. */
+TaskHandle_t xAPP_EVENTS_Tasks;
+
+void _APP_EVENTS_Tasks(  void *pvParameters  )
+{   
+    while(1)
+    {
+        APP_EVENTS_Tasks();
+    }
+}
 
 void _SYS_CMD_Tasks(  void *pvParameters  )
 {
@@ -238,6 +248,14 @@ void SYS_Tasks ( void )
                 NULL,
                 1,
                 &xAPP_ENERGY_Tasks);
+
+    /* Create OS Thread for APP_EVENTS_Tasks. */
+    xTaskCreate((TaskFunction_t) _APP_EVENTS_Tasks,
+                "APP_EVENTS_Tasks",
+                1024,
+                NULL,
+                1,
+                &xAPP_EVENTS_Tasks);
 
 
 
