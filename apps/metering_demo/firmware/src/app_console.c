@@ -39,6 +39,14 @@
 #define CONSOLE_HEADER   "\r\n-- Microchip Demo Meter --\r\n" \
 	"-- Compiled: "__DATE__ " "__TIME__ " -- \r\n"
 
+/* Structure containing data to be stored in non volatile memory */
+typedef struct
+{
+    /* Meter ID */
+    char meterID[6];
+    
+} APP_CONSOLE_STORAGE_DATA;
+
 
 // *****************************************************************************
 /* Application Data
@@ -57,8 +65,16 @@
 
 APP_CONSOLE_DATA CACHE_ALIGN app_consoleData;
 
+/* Local variable to hold a duplicate of storage data */
+APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_consoleStorageData;
+/* Constant conaining default value for storage data */
+const APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_defaultConsoleStorageData = {{'1', '2', '3', '4', '\0', '\0'}};
+
 /* Semaphore to stay idle until a new command is received */
 OSAL_SEM_HANDLE_TYPE appConsoleSemID;
+
+/* Semaphore to wait until data is read from storage */
+OSAL_SEM_HANDLE_TYPE appConsoleStorageSemID;
 
 /* Local storage objects */
 static APP_ENERGY_ACCUMULATORS energyLocalObject;
@@ -71,8 +87,16 @@ static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
 //API static DRV_MET_ACTIVE_POWER_OBJECT activePowerLocalObject;
 //API static DRV_MET_REACTIVE_POWER_OBJECT reactivePowerLocalObject;
 
+/* Local Queue element to request Datalog operations */
+APP_DATALOG_QUEUE_DATA datalogQueueElement;
+
+/* Reference to datalog queue */
+extern QueueHandle_t CACHE_ALIGN app_datalogQueue;
+
+/* Local DateTime struct */
+static struct tm sysTime;
+
 #define APP_CONSOLE_DEFAULT_PWD   "PIC"
-static char meterID[6];
 static char metPwd[6] = APP_CONSOLE_DEFAULT_PWD;
 
 // Last Times Event requested
@@ -85,6 +109,22 @@ static char sign[2] = {' ', '-'};
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
+
+static void _consoleReadStorage(APP_DATALOG_RESULT result)
+{
+    // Check result and go to corresponding state
+    if (result == APP_DATALOG_RESULT_SUCCESS)
+    {
+        app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE_OK;
+    }
+    else
+    {
+        app_consoleStorageData = app_defaultConsoleStorageData;
+        app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE_ERROR;
+    }
+    // Post semaphore to wakeup task
+    OSAL_SEM_Post(&appConsoleStorageSemID);
+}
 
 //API static void _hrrCallback(DRV_MET_HRR_OBJECT *hrrObj)
 //API {
@@ -921,7 +961,6 @@ static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    struct tm sysTime;
     uint8_t monthIndex;
     
     if (argc == 2) {
@@ -1088,14 +1127,18 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Check password from parameters
         if (strcmp(argv[1], metPwd) == 0) {
             // Correct password, write Meter ID
-//API             if (DRV_MET_WriteMeterID(argv[2]) == DRV_MET_RESULT_SUCCESS) {
-//API                 // Show response on console
-//API                 SYS_CMD_MESSAGE("Set Meter ID is Ok\n\r");
-//API             }
-//API             else {
-//API                 // Cannot write ID
-//API                 SYS_CMD_MESSAGE("Could not set Meter ID\n\r");
-//API             }
+            memcpy(&app_consoleStorageData.meterID, argv[2], sizeof(app_consoleStorageData.meterID));
+            // Build queue element to write it to storage
+            RTC_TimeGet(&sysTime);
+            datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
+            datalogQueueElement.operation = APP_DATALOG_WRITE;
+            datalogQueueElement.endCallback = NULL;
+            datalogQueueElement.sysTime = sysTime;
+            datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
+            datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
+            // Put it in queue
+            xQueueSend(app_datalogQueue, &datalogQueueElement, (TickType_t)0);
+            SYS_CMD_MESSAGE("Set Meter ID is Ok\n\r");
         }
         else {
             // Invalid password
@@ -1131,7 +1174,6 @@ static void Command_MDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    struct tm sysTime;
     uint8_t monthIndex;
 
     if (argc == 2) {
@@ -1241,7 +1283,6 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         if (strcmp(argv[1], metPwd) == 0)
         {
-            struct tm sysTime;
             char *p;
             
             // Get Date
@@ -1491,11 +1532,10 @@ void APP_CONSOLE_Initialize ( void )
 
 void APP_CONSOLE_Tasks ( void )
 {
-    char regName[16];
-    uint32_t regValue32;
-    uint64_t regValue64;
-    char meterID[6];
-    struct tm sysTime;
+    char regName[4][18];
+    uint32_t regValue32[4];
+    uint64_t regValue64[4];
+    uint8_t numRegsPending;
 
     /* Check the application's current state. */
     switch ( app_consoleData.state )
@@ -1513,10 +1553,57 @@ void APP_CONSOLE_Tasks ( void )
 //API                 DRV_MET_EventCallbackRegister(_eventCallback);
 //API                 DRV_MET_WaveformDataCallbackRegister(_waveformDataCallback);
 //API                 memset(touObject, 0xFF, sizeof(touObject)); /* 0xFF means invalid tariff */
-                if (OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) {
-                    app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
+                    (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) {
+                    app_consoleData.state = APP_CONSOLE_STATE_WAIT_STORAGE_READY;
                 }
             }
+            break;
+        }
+
+        case APP_CONSOLE_STATE_WAIT_STORAGE_READY:
+        {
+            if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY) {
+               app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE;
+            }
+            else
+            {
+                vTaskDelay(100 / portTICK_PERIOD_MS);
+            }
+            break;
+        }
+
+        case APP_CONSOLE_STATE_READ_STORAGE:
+        {
+            // Build queue element
+            RTC_TimeGet(&sysTime);
+            datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
+            datalogQueueElement.operation = APP_DATALOG_READ;
+            datalogQueueElement.endCallback = _consoleReadStorage;
+            datalogQueueElement.sysTime = sysTime;
+            datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
+            datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
+            // Put it in queue
+            xQueueSend(app_datalogQueue, &datalogQueueElement, (TickType_t)0);
+            // Wait for data to be read (semaphore is released in callback)
+            OSAL_SEM_Pend(&appConsoleStorageSemID, OSAL_WAIT_FOREVER);
+            // Data read, depending on read result, state has changed to READ_OK or READ_ERROR
+            break;
+        }
+
+        case APP_CONSOLE_STATE_READ_STORAGE_OK:
+        {
+            SYS_CMD_MESSAGE("Storage Successfully Read\n\r");
+            // Go to Idle state
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_READ_STORAGE_ERROR:
+        {
+            SYS_CMD_MESSAGE("No Console Data found in Storage\n\r");
+            // Go to Idle state
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
         }
 
@@ -1529,9 +1616,8 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_CONTROL_REG:
         {
             // Read register value
-            if (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32, regName)) {
-                SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.ctrlRegToRead, regName);
-                SYS_CMD_PRINT("%08X\n\r", regValue32);
+            if (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0])) {
+                SYS_CMD_PRINT("%s\n\r%X\n\r", regName[0], regValue32[0]);
             }
             else {
                 // Cannot read register
@@ -1577,33 +1663,88 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_ALL_CONTROL_REGS:
         {
-            if (app_consoleData.ctrlRegToRead < CONTROL_REG_NUM) {
-                // Read register value
-                if (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32, regName)) {
-                    SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.ctrlRegToRead, regName);
-                    SYS_CMD_PRINT("%08X\n\r", regValue32);
+            if (app_consoleData.ctrlRegToRead < CONTROL_REG_NUM)
+            {
+                if (app_consoleData.ctrlRegToRead == 0)
+                {
+                    SYS_CMD_MESSAGE("\n\r");
                 }
-                else {
-                    // Cannot read register
-                    SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.ctrlRegToRead);
+
+                // Check how many registers are pending to print, to format line
+                numRegsPending = CONTROL_REG_NUM - app_consoleData.ctrlRegToRead;
+                // Read and print register values
+                if (numRegsPending >= 4)
+                {
+                    if ((APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 2, &regValue32[2], regName[2])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 3, &regValue32[3], regName[3]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2], regName[3]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.ctrlRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.ctrlRegToRead += 4;
                 }
-                // Advance to next register
-                app_consoleData.ctrlRegToRead++;
+                else if (numRegsPending == 3)
+                {
+                    if ((APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 2, &regValue32[2], regName[2]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.ctrlRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.ctrlRegToRead += 3;
+                }
+                else if (numRegsPending == 2)
+                {
+                    if ((APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead + 1, &regValue32[1], regName[1]))) {
+                        SYS_CMD_PRINT("%-19s%-19s\n\r", regName[0], regName[1]);
+                        SYS_CMD_PRINT("%-19X%-19X\n\r", regValue32[0], regValue32[1]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.ctrlRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.ctrlRegToRead += 2;
+                }
+                else if (numRegsPending == 1)
+                {
+                    if ((APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0]))) {
+                        SYS_CMD_PRINT("%-19s\n\r", regName[0]);
+                        SYS_CMD_PRINT("%-19X\n\r", regValue32[0]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.ctrlRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.ctrlRegToRead += 1;
+                }
             }
             else {
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(30 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_CONSOLE_STATE_READ_ACCUM_REG:
         {
             // Read register value
-            if (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64, regName)) {
-                SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.accumRegToRead, regName);
-                SYS_CMD_PRINT("%16X\n\r", regValue64);
+            if (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) {
+                SYS_CMD_PRINT("%s\n\r%X\n\r", regName[0], regValue64[0]);
             }
             else {
                 // Cannot read register
@@ -1617,32 +1758,86 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_ALL_ACCUM_REGS:
         {
             if (app_consoleData.accumRegToRead < ACCUMULATOR_REG_NUM) {
-                // Read register value
-                if (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64, regName)) {
-                    SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.accumRegToRead, regName);
-                    SYS_CMD_PRINT("%16X\n\r", regValue64);
+                if (app_consoleData.accumRegToRead == 0)
+                {
+                    SYS_CMD_MESSAGE("\n\r");
                 }
-                else {
-                    // Cannot read register
-                    SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.accumRegToRead);
+
+                // Check how many registers are pending to print, to format line
+                numRegsPending = ACCUMULATOR_REG_NUM - app_consoleData.accumRegToRead;
+                // Read and print register values
+                if (numRegsPending >= 4)
+                {
+                    if ((APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 1, &regValue64[1], regName[1])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 2, &regValue64[2], regName[2])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 3, &regValue64[3], regName[3]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2], regName[3]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\n\r", regValue64[0], regValue64[1], regValue64[2], regValue64[3]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.accumRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.accumRegToRead += 4;
                 }
-                // Advance to next register
-                app_consoleData.accumRegToRead++;
+                else if (numRegsPending == 3)
+                {
+                    if ((APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 1, &regValue64[1], regName[1])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 2, &regValue64[2], regName[2]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X\n\r", regValue64[0], regValue64[1], regValue64[2]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.accumRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.accumRegToRead += 3;
+                }
+                else if (numRegsPending == 2)
+                {
+                    if ((APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) &&
+                        (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 1, &regValue64[1], regName[1]))) {
+                        SYS_CMD_PRINT("%-19s%-19s\n\r", regName[0], regName[1]);
+                        SYS_CMD_PRINT("%-19X%-19X\n\r", regValue64[0], regValue64[1]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.accumRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.accumRegToRead += 2;
+                }
+                else if (numRegsPending == 1)
+                {
+                    if ((APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0]))) {
+                        SYS_CMD_PRINT("%-19s\n\r", regName[0]);
+                        SYS_CMD_PRINT("%-19X\n\r", regValue64[0]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.accumRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.accumRegToRead += 1;
+                }
             }
             else {
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(30 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_CONSOLE_STATE_READ_STATUS_REG:
         {
             // Read register value
-            if (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32, regName)) {
-                SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.statusRegToRead, regName);
-                SYS_CMD_PRINT("%08X\n\r", regValue32);
+            if (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0])) {
+                SYS_CMD_PRINT("%s\n\r%X\n\r", regName[0], regValue32[0]);
             }
             else {
                 // Cannot read register
@@ -1656,32 +1851,86 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_ALL_STATUS_REGS:
         {
             if (app_consoleData.statusRegToRead < STATUS_REG_NUM) {
-                // Read register value
-                if (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32, regName)) {
-                    SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.statusRegToRead, regName);
-                    SYS_CMD_PRINT("%08X\n\r", regValue32);
+                if (app_consoleData.statusRegToRead == 0)
+                {
+                    SYS_CMD_MESSAGE("\n\r");
                 }
-                else {
-                    // Cannot read register
-                    SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.statusRegToRead);
+
+                // Check how many registers are pending to print, to format line
+                numRegsPending = STATUS_REG_NUM - app_consoleData.statusRegToRead;
+                // Read and print register values
+                if (numRegsPending >= 4)
+                {
+                    if ((APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 2, &regValue32[2], regName[2])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 3, &regValue32[3], regName[3]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2], regName[3]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.statusRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.statusRegToRead += 4;
                 }
-                // Advance to next register
-                app_consoleData.statusRegToRead++;
+                else if (numRegsPending == 3)
+                {
+                    if ((APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 2, &regValue32[2], regName[2]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.statusRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.statusRegToRead += 3;
+                }
+                else if (numRegsPending == 2)
+                {
+                    if ((APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead + 1, &regValue32[1], regName[1]))) {
+                        SYS_CMD_PRINT("%-19s%-19s\n\r", regName[0], regName[1]);
+                        SYS_CMD_PRINT("%-19X%-19X\n\r", regValue32[0], regValue32[1]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.statusRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.statusRegToRead += 2;
+                }
+                else if (numRegsPending == 1)
+                {
+                    if ((APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0]))) {
+                        SYS_CMD_PRINT("%-19s\n\r", regName[0]);
+                        SYS_CMD_PRINT("%-19X\n\r", regValue32[0]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.statusRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.statusRegToRead += 1;
+                }
             }
             else {
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(30 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_CONSOLE_STATE_READ_HARMONICS_REG:
         {
             // Read register value
-            if (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32, regName)) {
-                SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.harRegToRead, regName);
-                SYS_CMD_PRINT("%08X\n\r", regValue32);
+            if (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0])) {
+                SYS_CMD_PRINT("%s\n\r%X\n\r", regName[0], regValue32[0]);
             }
             else {
                 // Cannot read register
@@ -1695,37 +1944,86 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_ALL_HARMONICS_REGS:
         {
             if (app_consoleData.harRegToRead < HARMONICS_REG_NUM) {
-                // Read register value
-                if (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32, regName)) {
-                    SYS_CMD_PRINT("%02d %s\n\r", app_consoleData.harRegToRead, regName);
-                    SYS_CMD_PRINT("%08X\n\r", regValue32);
+                if (app_consoleData.harRegToRead == 0)
+                {
+                    SYS_CMD_MESSAGE("\n\r");
                 }
-                else {
-                    // Cannot read register
-                    SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.harRegToRead);
+
+                // Check how many registers are pending to print, to format line
+                numRegsPending = HARMONICS_REG_NUM - app_consoleData.harRegToRead;
+                // Read and print register values
+                if (numRegsPending >= 4)
+                {
+                    if ((APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 2, &regValue32[2], regName[2])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 3, &regValue32[3], regName[3]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2], regName[3]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2], regValue32[3]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.harRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.harRegToRead += 4;
                 }
-                // Advance to next register
-                app_consoleData.harRegToRead++;
+                else if (numRegsPending == 3)
+                {
+                    if ((APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 1, &regValue32[1], regName[1])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 2, &regValue32[2], regName[2]))) {
+                        SYS_CMD_PRINT("%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2]);
+                        SYS_CMD_PRINT("%-19X%-19X%-19X\n\r", regValue32[0], regValue32[1], regValue32[2]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.harRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.harRegToRead += 3;
+                }
+                else if (numRegsPending == 2)
+                {
+                    if ((APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0])) &&
+                        (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead + 1, &regValue32[1], regName[1]))) {
+                        SYS_CMD_PRINT("%-19s%-19s\n\r", regName[0], regName[1]);
+                        SYS_CMD_PRINT("%-19X%-19X\n\r", regValue32[0], regValue32[1]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.harRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.harRegToRead += 2;
+                }
+                else if (numRegsPending == 1)
+                {
+                    if ((APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0]))) {
+                        SYS_CMD_PRINT("%-19s\n\r", regName[0]);
+                        SYS_CMD_PRINT("%-19X\n\r", regValue32[0]);
+                    }
+                    else {
+                        // Cannot read register
+                        SYS_CMD_PRINT("Could not read register %02d\n\r", app_consoleData.harRegToRead);
+                    }
+                    // Advance to next register group
+                    app_consoleData.harRegToRead += 1;
+                }
             }
             else {
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(30 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_CONSOLE_STATE_READ_METER_ID:
         {
-//API             if (DRV_MET_ReadMeterID(meterID) == DRV_MET_RESULT_SUCCESS) {
-//API                 // Show response on console
-//API                 SYS_CMD_MESSAGE("Meter ID is :\n\r");
-//API                 SYS_CMD_PRINT("%s\n\r", meterID);
-//API             }
-//API             else {
-//API                 // Cannot read ID
-//API                 SYS_CMD_MESSAGE("Could not read Meter ID\n\r");
-//API             }
+            // Show response on console
+            SYS_CMD_MESSAGE("Meter ID is :\n\r");
+            SYS_CMD_PRINT("%s\n\r", app_consoleStorageData.meterID);
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
