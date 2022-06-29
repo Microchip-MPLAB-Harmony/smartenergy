@@ -62,52 +62,155 @@ extern "C" {
 typedef enum
 {
     /* Wait for disk Mount */
-    APP_DATALOG_MOUNT_WAIT = 0,
+    APP_DATALOG_STATE_MOUNT_WAIT = 0,
 
     /* The app formats the disk. */
-    APP_DATALOG_FORMAT_DISK,
+    APP_DATALOG_STATE_FORMAT_DISK,
 
-    /* The app opens the file */
-    APP_DATALOG_OPEN_FILE,
+    /* The app checks directories for storage. */
+    APP_DATALOG_STATE_CHECK_DIRECTORIES,
 
-    /* The app writes data to the file */
-    APP_DATALOG_WRITE_TO_FILE,
+    /* The app reads data from file */
+    APP_DATALOG_STATE_READ_FROM_FILE,
 
-    /* The app performs a file sync operation. */
-    APP_DATALOG_FLUSH_FILE,
-
-    /* The app checks the file status */
-    APP_DATALOG_READ_FILE_STAT,
-
-    /* The app checks the file size */
-    APP_DATALOG_READ_FILE_SIZE,
-
-    /* The app does a file seek to the end of the file. */
-    APP_DATALOG_DO_FILE_SEEK,
-
-    /* The app checks for EOF */
-    APP_DATALOG_CHECK_EOF,
-
-    /* The app does another file seek, to move file pointer to the beginning of
-     * the file. */
-    APP_DATALOG_DO_ANOTHER_FILE_SEEK,
-
-    /* The app reads and verifies the written data. */
-    APP_DATALOG_READ_FILE_CONTENT,
+    /* The app writes data to a file from the beginning */
+    APP_DATALOG_STATE_WRITE_TO_FILE,
 
     /* The app closes the file. */
-    APP_DATALOG_CLOSE_FILE,
+    APP_DATALOG_STATE_CLOSE_FILE,
 
-    /* The app unmounts the disk. */
-    APP_DATALOG_UNMOUNT_DISK,
+    /* The app reports the result from file operation. */
+    APP_DATALOG_STATE_REPORT_RESULT,
 
-    /* The app idles */
-    APP_DATALOG_IDLE,
+    /* The app is ready to accept requests */
+    APP_DATALOG_STATE_READY,
 
     /* An app error has occurred */
-    APP_DATALOG_ERROR
+    APP_DATALOG_STATE_ERROR
 
 } APP_DATALOG_STATES;
+
+
+// *****************************************************************************
+/* Application Datalog Users
+
+  Summary:
+    Potential Datalog Users enumeration
+
+  Description:
+    This enumeration defines the different users of the datalog service in
+    order to tag the store queue elements by their requester.
+*/
+
+typedef enum
+{
+    /* Energy module */
+    APP_DATALOG_USER_ENERGY = 0,
+
+    /* TOU module */
+    APP_DATALOG_USER_TOU,
+
+    /* Events module */
+    APP_DATALOG_USER_EVENTS,
+
+    /* Demand module */
+    APP_DATALOG_USER_DEMAND,
+
+    /* History module */
+    APP_DATALOG_USER_HISTORY,
+
+    /* Console module */
+    APP_DATALOG_USER_CONSOLE,
+
+    /* Last value used to get number of Users */
+    APP_DATALOG_USER_NUM
+
+} APP_DATALOG_USER;
+
+
+// *****************************************************************************
+/* Application Datalog Available Operations
+
+  Summary:
+    List of Operations to perform by Datalog
+
+*/
+
+typedef enum
+{
+    /* Read operation */
+    APP_DATALOG_READ = 0,
+
+    /* Append operation */
+    APP_DATALOG_APPEND,
+
+    /* Read operation */
+    APP_DATALOG_WRITE
+
+} APP_DATALOG_OPERATION;
+
+
+// *****************************************************************************
+/* Application Datalog Possible results
+
+  Summary:
+    List of possible results for Datalog Operations
+
+*/
+
+typedef enum
+{
+    /* Result Success */
+    APP_DATALOG_RESULT_SUCCESS = 0,
+
+    /* Result Error */
+    APP_DATALOG_RESULT_ERROR
+
+} APP_DATALOG_RESULT;
+
+
+// *****************************************************************************
+/* Callback to report Datalog Operation end and its result
+
+*/
+typedef void (*APP_DATALOG_END_CALLBACK)(APP_DATALOG_RESULT result);
+
+
+// *****************************************************************************
+/* Application Queue Data
+
+  Summary:
+    Defines data to store in the Datalog Queue
+
+  Description:
+    This structure will be used by any module willing to use the Datalog service
+    to indicate data to be stored.
+
+  Remarks:
+    None.
+ */
+
+typedef struct
+{
+  // Datalog User ID
+  APP_DATALOG_USER userId;
+
+  // Read/ReadPrevious/Write/Append operation
+  APP_DATALOG_OPERATION operation;
+  
+  // Callback to be invoked at the end of Datalog operation
+  APP_DATALOG_END_CALLBACK endCallback;
+  
+  // Date Time to index the proper file to read/write
+  struct tm sysTime;
+  
+  // Length of data to be read/written
+	uint16_t dataLen;
+  
+  // Pointer to data to be written or to store read data
+	uint8_t *pData;
+
+} APP_DATALOG_QUEUE_DATA;
 
 
 // *****************************************************************************
@@ -127,18 +230,25 @@ typedef struct
 {
     /* The application's current state */
     APP_DATALOG_STATES state;
-    
-    SYS_FS_HANDLE fileHandle;
-    
-    SYS_FS_FSTAT fileStatus;
-    
-    long fileSize;
 
+    /* Element from Queue */
+    APP_DATALOG_QUEUE_DATA newQueueData;
+    
+    /* Current File Handle */
+    SYS_FS_HANDLE fileHandle;
+
+    /* Current File Name */
+    char fileName[32];
+
+    /* Result from file operation */
+    APP_DATALOG_RESULT result;
+
+    /* Flag to indicate whether disk is mounted */
     bool diskMounted;
 
+    /* Flag to indicate whether disk needs format */
     bool diskFormatRequired;
     
-
 } APP_DATALOG_DATA;
 
 // *****************************************************************************
@@ -186,7 +296,7 @@ typedef struct
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_DATALOG_Initialize ( void );
+void APP_DATALOG_Initialize(void);
 
 
 /*******************************************************************************
@@ -219,7 +329,41 @@ void APP_DATALOG_Initialize ( void );
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_DATALOG_Tasks( void );
+void APP_DATALOG_Tasks(void);
+
+
+/*******************************************************************************
+  Function:
+    APP_DATALOG_STATES APP_DATALOG_GetStatus(void)
+
+  Summary:
+    Provides current state of Datalog module.
+
+  Description:
+    This routine provides the current state of Datalog module.
+    Available states are defined by APP_DATALOG_STATES Enum.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    Datalog module state as defined in APP_DATALOG_STATES Enum.
+
+  Example:
+    <code>
+    if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
+      // Store last metrology data
+    }
+    </code>
+
+  Remarks:
+    None.
+ */
+
+APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
