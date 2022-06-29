@@ -4855,6 +4855,17 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_command" name="SYS_COMMAND_MAX_CMD_LENGTH"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
+  &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_MAX_CMD_LENGTH&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;100&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/sys_command&gt;
+&lt;/sys_command&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_command" name="SYS_COMMAND_PRINT_BUFFER_SIZE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
   &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_PRINT_BUFFER_SIZE&quot;&gt;
@@ -4870,7 +4881,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
   &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_RTOS_USE_DELAY&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_command&gt;
 &lt;/sys_command&gt;
@@ -5861,7 +5872,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\task.h</file>
-         <hash>2bdfb8e3c1a76a5ccacb1b7815ca9acb63d1ba1f1bd29e5a75757d5e186c5056</hash>
+         <hash>92be703de6e6050ff127659213b1f102c6590d6d2fd19942c7dee62249b1ff74</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\supc.h</file>
@@ -5873,11 +5884,11 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\timers.c</file>
-         <hash>0d16405e621a2c4b003b5f0324b9713cd4865364133df6f742f482a6b2dbc773</hash>
+         <hash>f770bb39240f3492ee492f94f0d9c1505af096e345a7f5440b9f8c7de66aede8</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stream_buffer.h</file>
-         <hash>0607fcca1927ba782a29a3814481d69db3569e6e53a68ebf2c01f5598a3af2b8</hash>
+         <hash>31f401efe48fce16452757e1a06ad2196a793b0f107fcd4e36b23149c8e79a15</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\met_bin.S</file>
@@ -5897,11 +5908,11 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
-         <hash>f9b239f168976f7b167e054fa72616826f55ae4d74d76b87c9e70b2df079363f</hash>
+         <hash>18ec859f5f9798912d3bb3097cc40c7eceb86cb2f265a1bfd7e5d959b50b907a</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\croutine.h</file>
-         <hash>8df4c5eec7eb30262f09b7c47fc2eb0534a27721293b0d260a3398846494f9ac</hash>
+         <hash>655316c3bf41e8e820ef4f1922dabe0f63034bbec13f4e8113b9a133298cc80d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\hardware_access\diskio.c</file>
@@ -5989,7 +6000,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\mpu_prototypes.h</file>
-         <hash>3fafd21399ef619a55b2f8112750d750685c8ae1cb458363d21ee37a105ac6e7</hash>
+         <hash>3ef2e6c9b670ca0c9c2b1eb43b1403197d8aa392eec6de8aa43754ecd941dd05</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\qspi\plib_qspi_common.h</file>
@@ -6033,7 +6044,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\FreeRTOS.h</file>
-         <hash>b7a81501c3f4ff9537df5c9a5e0231f37638cdc8324965ae10064128fded840f</hash>
+         <hash>a06e10aa59989f373fcfe8fd9c0dad611050b88c6c48cc1a51138a2134df9ecc</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\rstc.h</file>
@@ -6109,7 +6120,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\deprecated_definitions.h</file>
-         <hash>382f8a7a0e00240fb69911dff8d8515248beb9dadfe77c22c4e5544f49cc76eb</hash>
+         <hash>d73bcf22067c64422181153859296508e05a7f13637631a463899eea011f969d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\acc.h</file>
@@ -6145,7 +6156,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\timers.h</file>
-         <hash>cfd11f78d92b398e8347f2b55dc1e79dffce83f63f7e570c6fc821334681ad12</hash>
+         <hash>89c019c114013981703f9f64b8adc0eb1d0ff4e6255d51375e3a42d1e3315e54</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\pio1.h</file>
@@ -6217,7 +6228,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\portable\MemMang\heap_1.c</file>
-         <hash>6d8eb84e5171bce4d5cde80abc575ebd7d81ac007b7733f34d5032bac93f1748</hash>
+         <hash>0c24c86e2af937acf1f945de685f41faab80b987205b75379220ca827bb8c13d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi.c</file>
@@ -6237,7 +6248,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stack_macros.h</file>
-         <hash>7d1d30b6c9ae34bebb26b14402f78a59a35ae826f460a1ad28534c9590b32151</hash>
+         <hash>0f1f08069bc9e983c00966f4101f78957067ef9123a20fc9c197d38e081d9f95</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cmcc1.h</file>
@@ -6293,7 +6304,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\queue.c</file>
-         <hash>06a153c1ce111213af32dfc8797bd2e5c7819e264dfa338b4049f058dc1edb11</hash>
+         <hash>5d5eb57f9026b1ae201a384baed69c7ce4711fc8bbef8f644a9788d70772c401</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\console\src\sys_console_uart.c</file>
@@ -6329,7 +6340,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\portable\GCC\SAM\ARM_CM4F\port.c</file>
-         <hash>89f24a509ec85bf502724334c2607eeb7a432e1f26afbc9b7291254b8f7971dc</hash>
+         <hash>b97a569188f16537059b8a89f8560e2fc927e2a7d0ddc36f2f1619e9c1c0767f</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\slcdc.h</file>
@@ -6445,7 +6456,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\croutine.c</file>
-         <hash>e31cd1c9c280c919a92edc28885e9bebce589d4cfab71cefab832a73683200fb</hash>
+         <hash>5ea3641532256a88739a1d75e9356613c001021a9df71fcc0cad397550eeec2a</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\sefc.h</file>
@@ -6473,7 +6484,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\portable.h</file>
-         <hash>39795c8dded505f24f53646ecd8192251851c74f366d2a5b0aae3fbfa68c191b</hash>
+         <hash>f86b7db1eb380ebb61e96053ae0155f38035b54d67b1d5de929c0b762fc4dbfc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ffconf.h</file>
@@ -6481,7 +6492,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\list.c</file>
-         <hash>e735517f308fad5dd77d03b6858c16bdbc937bb9d0754735849fc7799ebe2b59</hash>
+         <hash>f48d5d50ccba81a57cd4cebd297f3f6aa8d6828ca0e1c6a92bf2b78bf0e85e13</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\flexcom4.h</file>
@@ -6505,7 +6516,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\tasks.c</file>
-         <hash>10044982cb15a0581154f2f683841509b94d44ae73f9fe7feed787dbfb426b84</hash>
+         <hash>54744a4bec920287bf5368613bd69f1acbe48011bac339146bcfc48785a84518</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\tc.h</file>
@@ -6573,7 +6584,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\queue.h</file>
-         <hash>39d58a203f1b67fdb1099293914a2af9722d223586cfc5ff06e230e047919dea</hash>
+         <hash>dab8b8c0d37a49b93dadde87ba536b24e86d44878e16cf6de897c8be2d45d759</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\exceptions.c</file>
@@ -6665,15 +6676,15 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\semphr.h</file>
-         <hash>b9b2ff28a0c80fa21443690bb28de64c8b9451cccd57e484de0bcf02fc367575</hash>
+         <hash>8ef5048532881d228813a989f503108427090e2e7b71d3be79917194a33d4143</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\FreeRTOS_tasks.c</file>
-         <hash>8cb1eabe18f130b2b8980e880847f773fb12a4071c763d26c51624223b32a3a4</hash>
+         <hash>78c2c0bb93e9dcab4037456c58d09acdea01200ef5469931514fd5f47d6e5cf1</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\event_groups.c</file>
-         <hash>a72063c3977fad098a87a5430e04e9fc5b892d703e01fbe09ea907f67aacf20e</hash>
+         <hash>b970937fd80ff996252851d09fced9e94ecbb35f34270d89b6f7b8a244a83c4d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\pio\pic32cx2051mtsh128.h</file>
@@ -6761,11 +6772,11 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\projdefs.h</file>
-         <hash>399814721d9735e91d74ca07be3974edb20639acb46a6792230ff9f61f67b353</hash>
+         <hash>33368a5fc2048a9e678a3009a0242c060282e92932e0aaa9992bf385c8eb7e68</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\message_buffer.h</file>
-         <hash>504a77558f13b66fd1eec5adf4d81e274f0b54c12880424833c24f577be0800a</hash>
+         <hash>ae081791b6624c03e76a107c5cd6b7e332315789e3aa79265eaa4ae38f5ef5f7</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\system_module.h</file>
@@ -6785,7 +6796,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\event_groups.h</file>
-         <hash>3b9cbd64db721c4317544700fff4e42ac68d989f71b7d610b31087bb19175839</hash>
+         <hash>ee4f735ce2b76e34749490ac4d86d106ab9a75211fd3f24439b61ffe8ef0d901</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\spi\master\plib_flexcom5_spi_master.h</file>
@@ -6797,7 +6808,7 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\mpu_wrappers.h</file>
-         <hash>c1fc47acdb79efb0fb8a0fb8a169ae4423fdc3a6d820b2f81d49e8e077c1ed48</hash>
+         <hash>05973619a4ed9a4dae0066e7fbe1c70b03e2eac67dfa09bc65b2b765369dd71d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\matrix2.h</file>
@@ -6869,11 +6880,11 @@
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\stream_buffer.c</file>
-         <hash>4376714fecad0f72dc4c8b45236591a7e0ffe24dd018382f56e8b0dfc2230b28</hash>
+         <hash>ba7497d0c92ab4839c39658241e59b5f07a12f50ef9b728b26ad41c617584a30</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\portable\GCC\SAM\ARM_CM4F\portmacro.h</file>
-         <hash>356ce2ec084883d8fc41d380910f828aee559f140e877629974752ea26a89792</hash>
+         <hash>b4b2cb6fa21c793f0707db64c3ac10a74b37e2a63d6a9e77a39a1918d2cd6f8a</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cpkcc.h</file>
