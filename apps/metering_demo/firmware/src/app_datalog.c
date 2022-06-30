@@ -38,6 +38,9 @@
 #define DATALOG_MOUNT_NAME          SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0
 #define DATALOG_DEVICE_NAME         SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0
 
+#define DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY   100
+#define DATALOG_TASK_DELAY_MS_BETWEEN_STATES            10
+
 
 // *****************************************************************************
 /* Application Data
@@ -60,7 +63,7 @@ APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 QueueHandle_t CACHE_ALIGN app_datalogQueue = NULL;
 
 /* Buffer to get a string name from User IDs */
-static char *userToString[APP_DATALOG_USER_NUM] = {"energy", "tou", "events", "demand", "history", "console"};
+static char *userToString[APP_DATALOG_USER_NUM] = {"energy", "tou", "rtc", "events", "demand", "console"};
 
 // *****************************************************************************
 // *****************************************************************************
@@ -122,16 +125,24 @@ static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, u
 
 static void APP_DATALOG_GetFileNameByDate(struct tm sysTime, APP_DATALOG_USER userId, char* fileName)
 {
-    // Adjust month to range 1 - 12
-    sysTime.tm_mon++;
-    // Remove century for 20xx years
-    if (sysTime.tm_year > 99)
+    // Some User IDs use a unique file, not depending on date
+    if ((userId == APP_DATALOG_USER_TOU) || (userId == APP_DATALOG_USER_RTC))
     {
-        sysTime.tm_year -= 100;
+        sprintf(fileName, "%s/%s", userToString[userId], userToString[userId]);
     }
+    else
+    {
+        // Adjust month to range 1 - 12
+        sysTime.tm_mon++;
+        // Remove century for 20xx years
+        if (sysTime.tm_year > 99)
+        {
+            sysTime.tm_year -= 100;
+        }
 
-    // Build name
-    sprintf(fileName, "%s/%02d%02d", userToString[userId], sysTime.tm_year, sysTime.tm_mon);
+        // Build name
+        sprintf(fileName, "%s/%02d%02d", userToString[userId], sysTime.tm_year, sysTime.tm_mon);
+    }
 }
 
 
@@ -152,6 +163,43 @@ static void APP_DATALOG_GetFileNameByDate(struct tm sysTime, APP_DATALOG_USER us
 APP_DATALOG_STATES APP_DATALOG_GetStatus(void)
 {
     return app_datalogData.state;
+}
+
+/*******************************************************************************
+  Function:
+    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+
+  Remarks:
+    See prototype in app_datalog.h.
+ */
+
+bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+{
+    SYS_FS_HANDLE fileHandle;
+
+    // If Filesystem not yet ready, return false
+    if (app_datalogData.state <= APP_DATALOG_STATE_CHECK_DIRECTORIES)
+    {
+        return false;
+    }
+
+    // Get file name from parameters
+    APP_DATALOG_GetFileNameByDate(sysTime, userId, app_datalogData.fileName);
+
+    // Check whether file exist trying to open it
+    fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
+
+    if (fileHandle != SYS_FS_HANDLE_INVALID)
+    {
+        // File exists, close it and return true
+        SYS_FS_FileClose(fileHandle);
+        return true;
+    }
+    else
+    {
+        // File does not exist, return false
+        return false;
+    }
 }
 
 /*******************************************************************************
@@ -209,6 +257,9 @@ void APP_DATALOG_Tasks(void)
                 // Mount was successful. Check directories.
                 app_datalogData.state = APP_DATALOG_STATE_CHECK_DIRECTORIES;
             }
+
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY / portTICK_PERIOD_MS);
             
             break;
         }
@@ -236,6 +287,9 @@ void APP_DATALOG_Tasks(void)
             }
             // Ready to accept accesses
             app_datalogData.state = APP_DATALOG_STATE_READY;
+
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
             
             break;
         }
@@ -270,6 +324,9 @@ void APP_DATALOG_Tasks(void)
                 }
             }
 
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+
             break;
         }
 
@@ -303,6 +360,9 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
+            
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }
@@ -365,6 +425,9 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
+            
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }
@@ -382,6 +445,9 @@ void APP_DATALOG_Tasks(void)
                 // Go to Error state
                 app_datalogData.state = APP_DATALOG_STATE_ERROR;
             }
+            
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }
@@ -395,6 +461,9 @@ void APP_DATALOG_Tasks(void)
             }
             // Go back to Ready state
             app_datalogData.state = APP_DATALOG_STATE_READY;
+            
+            // Yield to other tasks
+            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }

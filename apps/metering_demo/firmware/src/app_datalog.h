@@ -110,14 +110,14 @@ typedef enum
     /* TOU module */
     APP_DATALOG_USER_TOU,
 
+    /* RTC module */
+    APP_DATALOG_USER_RTC,
+
     /* Events module */
     APP_DATALOG_USER_EVENTS,
 
     /* Demand module */
     APP_DATALOG_USER_DEMAND,
-
-    /* History module */
-    APP_DATALOG_USER_HISTORY,
 
     /* Console module */
     APP_DATALOG_USER_CONSOLE,
@@ -364,6 +364,41 @@ void APP_DATALOG_Tasks(void);
  */
 
 APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
+
+
+/*******************************************************************************
+  Function:
+    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+
+  Summary:
+    Checks whether a file exists.
+
+  Description:
+    This routine returns whether a file exists in synchronous mode,
+    filename is obtained given its parameters.
+
+  Precondition:
+    None.
+
+  Parameters:
+    userId - ID of module to which file is associated to.
+    sysTime - DateTime structure to derive filename from.
+
+  Returns:
+    True if file exists. Otherwise False.
+
+  Example:
+    <code>
+    if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, dateTime))
+      // Put element in Datalog queue for file read/write operation
+    }
+    </code>
+
+  Remarks:
+    None.
+ */
+
+bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
