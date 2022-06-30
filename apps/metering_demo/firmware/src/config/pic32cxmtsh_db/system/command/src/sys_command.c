@@ -958,7 +958,7 @@ static int StringToArgs(char *str, char *argv[], size_t argvSize)
         }
 
         // parse until quote
-        while((pTkn = strtok(str, " \t,")) != 0)
+        while((pTkn = strtok(str, " \t,;[]()")) != 0)
         {
             str = 0;
             if(nArgs < argvSize)
