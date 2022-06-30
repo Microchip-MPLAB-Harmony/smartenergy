@@ -43,9 +43,15 @@
 typedef struct
 {
     /* Meter ID */
-    char meterID[6];
+    char meterID[7];
     
 } APP_CONSOLE_STORAGE_DATA;
+
+#define CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY      100
+#define CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES   10
+#define CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT       30
+
+#define CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY        2000
 
 
 // *****************************************************************************
@@ -68,7 +74,7 @@ APP_CONSOLE_DATA CACHE_ALIGN app_consoleData;
 /* Local variable to hold a duplicate of storage data */
 APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_consoleStorageData;
 /* Constant conaining default value for storage data */
-const APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_defaultConsoleStorageData = {{'1', '2', '3', '4', '\0', '\0'}};
+const APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_defaultConsoleStorageData = {{'1', '2', '3', '4', '\0', '\0', '\0'}};
 
 /* Semaphore to stay idle until a new command is received */
 OSAL_SEM_HANDLE_TYPE appConsoleSemID;
@@ -99,8 +105,11 @@ static struct tm sysTime;
 #define APP_CONSOLE_DEFAULT_PWD   "PIC"
 static char metPwd[6] = APP_CONSOLE_DEFAULT_PWD;
 
-// Last Times Event requested
+/* Last Times Event requested */
 static uint8_t lastTimesEvent;
+
+/* Control max wait for Datalog ready */
+static uint32_t currentWaitForDatalogReady = 0;
 
 static char sign[2] = {' ', '-'};
 
@@ -119,7 +128,6 @@ static void _consoleReadStorage(APP_DATALOG_RESULT result)
     }
     else
     {
-        app_consoleStorageData = app_defaultConsoleStorageData;
         app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE_ERROR;
     }
     // Post semaphore to wakeup task
@@ -1289,10 +1297,20 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             p = argv[2];
             // Year
             sysTime.tm_year = (uint8_t)strtol(p, NULL, 10) + 2000 - 1900;
-            // Month
-            sysTime.tm_mon = (uint8_t)strtol(p, NULL, 10) - 1;
-            // Day
-            sysTime.tm_mday = (uint8_t)strtol(p, NULL, 10);
+            // Look for "-" char and advance to next char
+            p = strstr(p, "-");
+            if (p != NULL) {
+                p++;
+                // Month
+                sysTime.tm_mon = (uint8_t)strtol(p, NULL, 10) - 1;
+                // Look for "-" char and advance to next char
+                p = strstr(p, "-");
+                if (p != NULL) {
+                    p++;
+                    // Day
+                    sysTime.tm_mday = (uint8_t)strtol(p, NULL, 10);
+                }
+            }
             
             // Get Week Day
             p = argv[3];
@@ -1302,10 +1320,20 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             p = argv[4];
             // Hour
             sysTime.tm_hour = (uint8_t)strtol(p, NULL, 10);
-            // Minute
-            sysTime.tm_min = (uint8_t)strtol(p, NULL, 10);
-            // Second
-            sysTime.tm_sec = (uint8_t)strtol(p, NULL, 10);    
+            // Look for ":" char and advance to next char
+            p = strstr(p, ":");
+            if (p != NULL) {
+                p++;
+                // Minute
+                sysTime.tm_min = (uint8_t)strtol(p, NULL, 10);
+                // Look for ":" char and advance to next char
+                p = strstr(p, ":");
+                if (p != NULL) {
+                    p++;
+                    // Second
+                    sysTime.tm_sec = (uint8_t)strtol(p, NULL, 10);
+                }
+            }
             
             if (RTC_TimeSet(&sysTime))
             {
@@ -1557,6 +1585,8 @@ void APP_CONSOLE_Tasks ( void )
                     (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) {
                     app_consoleData.state = APP_CONSOLE_STATE_WAIT_STORAGE_READY;
                 }
+                // Set default console storage data just in case it cannot be read later
+                app_consoleStorageData = app_defaultConsoleStorageData;
             }
             break;
         }
@@ -1568,7 +1598,12 @@ void APP_CONSOLE_Tasks ( void )
             }
             else
             {
-                vTaskDelay(100 / portTICK_PERIOD_MS);
+                vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
+                currentWaitForDatalogReady += CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY;
+                if (currentWaitForDatalogReady > CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY) {
+                    // Go to Datalog not ready state
+                    app_consoleData.state = APP_CONSOLE_STATE_DATALOG_NOT_READY;
+                }
             }
             break;
         }
@@ -1602,6 +1637,14 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_STORAGE_ERROR:
         {
             SYS_CMD_MESSAGE("No Console Data found in Storage\n\r");
+            // Go to Idle state
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_DATALOG_NOT_READY:
+        {
+            SYS_CMD_MESSAGE("Datalog Service not ready!\n\rApplication will run without storage capabilities\n\r");
             // Go to Idle state
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -1655,7 +1698,7 @@ void APP_CONSOLE_Tasks ( void )
                     break;
                 }
                 if ((idx % 10) == 0) {
-                    vTaskDelay(10 / portTICK_PERIOD_MS);
+                    vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
                 }
             }
             break;
@@ -1736,7 +1779,7 @@ void APP_CONSOLE_Tasks ( void )
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(30 / portTICK_PERIOD_MS);
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
             break;
         }
 
@@ -1829,7 +1872,7 @@ void APP_CONSOLE_Tasks ( void )
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(30 / portTICK_PERIOD_MS);
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
             break;
         }
 
@@ -1922,7 +1965,7 @@ void APP_CONSOLE_Tasks ( void )
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(30 / portTICK_PERIOD_MS);
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
             break;
         }
 
@@ -2015,7 +2058,7 @@ void APP_CONSOLE_Tasks ( void )
                 // All registers have been read
                 app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             }
-            vTaskDelay(30 / portTICK_PERIOD_MS);
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
             break;
         }
 
@@ -2334,7 +2377,7 @@ void APP_CONSOLE_Tasks ( void )
                     break;
                 }
             }
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
             break;
         }
 
