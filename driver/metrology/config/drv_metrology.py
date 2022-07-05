@@ -21,6 +21,17 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
+srv_met_helpkeyword = "mcc_h3_metrology_driver_configuration"
+
+def showWaveformCapture(symbol, event):
+    symbol.setVisible(event["value"])
+
+def setWaveformCaptureSize(symbol, event):
+    global srvMetCaptureNumChannels
+    global srvMetCaptureBufSizeChn
+
+    symbol.setValue(srvMetCaptureNumChannels.getValue() * srvMetCaptureBufSizeChn.getValue())
+
 
 def instantiateComponent(metComponentCommon):
     
@@ -36,27 +47,54 @@ def instantiateComponent(metComponentCommon):
     srvMetRegBaseAddress.setVisible(True)
     srvMetRegBaseAddress.setDefaultValue(0x20088000)
     srvMetRegBaseAddress.setReadOnly(True)
+    srvMetRegBaseAddress.setHelp(srv_met_helpkeyword)
     
+    srvMetWaveformCapture = metComponentCommon.createBooleanSymbol("DRV_MET_WAVEFORM_CAPTURE", None)
+    srvMetWaveformCapture.setLabel("Waveform Capture")
+    srvMetWaveformCapture.setDefaultValue(False)
+    srvMetWaveformCapture.setHelp(srv_met_helpkeyword)
+
+    global srvMetCaptureNumChannels
+    srvMetCaptureNumChannels = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_NUM_CHANNELS", srvMetWaveformCapture)
+    srvMetCaptureNumChannels.setLabel("Capture Num Channels")
+    srvMetCaptureNumChannels.setVisible(False)
+    srvMetCaptureNumChannels.setDefaultValue(1)
+    srvMetCaptureNumChannels.setMin(1)
+    srvMetCaptureNumChannels.setMax(6)
+    srvMetCaptureNumChannels.setDependencies(showWaveformCapture, ["DRV_MET_WAVEFORM_CAPTURE"])
+    srvMetCaptureNumChannels.setHelp(srv_met_helpkeyword)
+
+    global srvMetCaptureBufSizeChn
+    srvMetCaptureBufSizeChn = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_BUF_SIZE_CHN", srvMetWaveformCapture)
+    srvMetCaptureBufSizeChn.setLabel("Capture Size per Channel")
+    srvMetCaptureBufSizeChn.setVisible(False)
+    srvMetCaptureBufSizeChn.setDefaultValue(8000)
+    srvMetCaptureBufSizeChn.setDependencies(showWaveformCapture, ["DRV_MET_WAVEFORM_CAPTURE"])
+    srvMetCaptureBufSizeChn.setHelp(srv_met_helpkeyword)
+
     srvMetCaptureBufSize = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_BUF_SIZE", None)
-    srvMetCaptureBufSize.setLabel("Capture Buffer Size")
-    srvMetCaptureBufSize.setVisible(True)
+    srvMetCaptureBufSize.setLabel("Capture Size per Channel")
+    srvMetCaptureBufSize.setVisible(False)
     srvMetCaptureBufSize.setDefaultValue(8000)
+    srvMetCaptureBufSize.setDependencies(setWaveformCaptureSize, ["DRV_MET_CAPTURE_NUM_CHANNELS", "DRV_MET_CAPTURE_BUF_SIZE_CHN"])
 
     srvMetSourceFile = metComponentCommon.createFileSymbol("DRV_MET_SOURCE", None)
-    srvMetSourceFile.setSourcePath("driver/metrology/drv_metrology.c")
+    srvMetSourceFile.setSourcePath("driver/metrology/drv_metrology.c.ftl")
     srvMetSourceFile.setOutputName("drv_metrology.c")
     srvMetSourceFile.setDestPath("driver/metrology")
     srvMetSourceFile.setProjectPath("config/" + configName + "/driver/metrology/")
     srvMetSourceFile.setType("SOURCE")
     srvMetSourceFile.setOverwrite(True)
+    srvMetSourceFile.setMarkup(True)
 
     srvMetHeaderFile = metComponentCommon.createFileSymbol("DRV_MET_HEADER", None)
-    srvMetHeaderFile.setSourcePath("driver/metrology/drv_metrology.h")
+    srvMetHeaderFile.setSourcePath("driver/metrology/drv_metrology.h.ftl")
     srvMetHeaderFile.setOutputName("drv_metrology.h")
     srvMetHeaderFile.setDestPath("driver/metrology")
     srvMetHeaderFile.setProjectPath("config/" + configName + "/driver/metrology/")
     srvMetHeaderFile.setType("HEADER")
     srvMetHeaderFile.setOverwrite(True)
+    srvMetHeaderFile.setMarkup(True)
 
     srvMetHeaderFileDefs = metComponentCommon.createFileSymbol("DRV_MET_HEADER_DEFINITIONS", None)
     srvMetHeaderFileDefs.setSourcePath("driver/metrology/drv_metrology_definitions.h")

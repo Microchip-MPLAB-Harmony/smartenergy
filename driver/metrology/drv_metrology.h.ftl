@@ -53,8 +53,10 @@
     extern "C" {
 #endif
 
+<#if DRV_MET_WAVEFORM_CAPTURE == true>    
 #define MET_CAPTURE_BUF_SIZE     DRV_METROLOGY_CAPTURE_BUF_SIZE
 
+</#if>
 // *****************************************************************************
 /* Metrology Driver Result
 

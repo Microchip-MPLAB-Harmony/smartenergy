@@ -182,7 +182,7 @@ extern "C" {
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
 /* Metrology Capture Buffer Size */
-#define DRV_METROLOGY_CAPTURE_BUF_SIZE        8000
+#define DRV_METROLOGY_CAPTURE_BUF_SIZE        32000
 
 /* SPI Driver Common Configuration Options */
 #define DRV_SPI_INSTANCES_NUMBER              1
