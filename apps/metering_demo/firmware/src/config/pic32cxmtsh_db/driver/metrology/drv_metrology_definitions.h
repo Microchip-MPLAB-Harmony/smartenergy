@@ -11,7 +11,7 @@
     Metrology Library Definitions Interface header.
 
   Description:
-    The Metrology Library provides a interface to access the metrology data 
+    The Metrology Library provides a interface to access the metrology data
     provided by the application running on Core 1.
 *******************************************************************************/
 
@@ -67,8 +67,8 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-typedef void ( * DRV_METROLOGY_CALLBACK ) ( void );
-        
+typedef void (* DRV_METROLOGY_CALLBACK)(void);
+
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
 
@@ -81,125 +81,164 @@ typedef void ( * DRV_METROLOGY_CALLBACK ) ( void );
 #define  RMS_Q          40
 #define  RMS_DIV_Q      0x10000000000  /* (1<<RMS_Q) */
 #define  RMS_Inx_Q      (20)
-#define  RMS_DIV_Inx_Q  0x100000 /* (1<< RMS_Inx_Q ) */
+#define  RMS_DIV_Inx_Q  0x100000 /* (1<< RMS_Inx_Q) */
 #define  RMS_PQ_SYMB    0x8000000000000000       /* p/q symbol bit */
 #define  RMS_HARMONIC   0x80000000
 #define  CONST_Pi       3.1415926
 
 typedef enum {
-	CT        = 0,
-	SHUNT     = 1,
-	ROGOWSKI  = 2
-} MET_SENSOR_TYPE;
+    // Current Transformer
+    SENSOR_CT        = 0,
+    // Shunt resistor
+    SENSOR_SHUNT     = 1,
+    // Rogowski Coil
+    SENSOR_ROGOWSKI  = 2,
+
+    SENSOR_NUM_TYPE
+} DRV_METROLOGY_SENSOR_TYPE;
+
+typedef enum
+{
+    GAIN_1        = 0,
+    GAIN_2        = 1,
+    GAIN_4        = 2,
+    GAIN_8        = 3,
+    GAIN_NUM_TYPE
+} DRV_METROLOGY_GAIN_TYPE;
 
 typedef struct {
-	uint32_t lineId;
-	uint32_t mc;        
-	uint32_t featureCtrl0Copy;
-	uint32_t freq;      
-	uint32_t gain_i;    
-	uint32_t k_i;       
-	uint32_t rl;        
-	uint32_t k_u;       
-	uint32_t aimVA;    
-	uint32_t aimIA;    
-	uint32_t angleA;   
-	uint32_t aimVB;    
-	uint32_t aimIB;    
-	uint32_t angleB;   
-	uint32_t aimVC;    
-	uint32_t aimIC;    
-	uint32_t angleC;   
-	uint32_t dspUpdateNum;
-	uint64_t dspAccIa;
-	uint64_t dspAccIb;
-	uint64_t dspAccIc;
-	uint64_t dspAccIn;
-	uint64_t dspAccUa;
-	uint64_t dspAccUb;
-	uint64_t dspAccUc;
-	uint64_t dspAccUn;
-	int64_t  dspAccPa;
-	int64_t  dspAccPb;
-	int64_t  dspAccPc;
-	int64_t  dspAccQa;
-	int64_t  dspAccQb;
-	int64_t  dspAccQc;
-	MET_SENSOR_TYPE sensorType;
-	uint8_t  harmonicOrder;
-	uint8_t  state;
-} MET_CALIBRATION;
+  uint32_t lineId;
+  uint32_t meterConst;
+  uint32_t featureCtrl0Copy;
+  double freq;
+  uint32_t gain_i;
+  double transfRatio;
+  double resLoad;
+  uint32_t vDivRatio;
+  uint32_t aimVA;
+  uint32_t aimIA;
+  uint32_t angleA;
+  uint32_t aimVB;
+  uint32_t aimIB;
+  uint32_t angleB;
+  uint32_t aimVC;
+  uint32_t aimIC;
+  uint32_t angleC;
+  uint32_t dspUpdateNum;
+  uint64_t dspAccIa;
+  uint64_t dspAccIb;
+  uint64_t dspAccIc;
+  uint64_t dspAccIn;
+  uint64_t dspAccUa;
+  uint64_t dspAccUb;
+  uint64_t dspAccUc;
+  uint64_t dspAccUn;
+  int64_t  dspAccPa;
+  int64_t  dspAccPb;
+  int64_t  dspAccPc;
+  int64_t  dspAccQa;
+  int64_t  dspAccQb;
+  int64_t  dspAccQc;
+  DRV_METROLOGY_SENSOR_TYPE st;
+  uint8_t  harmonicOrder;
+  uint8_t  state;
+} DRV_METROLOGY_CALIBRATION;
 
 typedef union {
-	uint32_t WORD;
-	struct {
-		uint32_t paDir : 1;
-		uint32_t pbDir : 1;
-		uint32_t pcDir : 1;
-		uint32_t ptDir : 1;
-		uint32_t qaDir : 1;
-		uint32_t qbDir : 1;
-		uint32_t qcDir : 1;
-		uint32_t qtDir : 1;
-		uint32_t sagB : 1;
-		uint32_t sagC : 1;
-		uint32_t reserved1 : 1;
-		uint32_t swellA : 1;
-		uint32_t swellB : 1;
-		uint32_t swellC : 1;
-		uint32_t paRev : 1;
-		uint32_t pbRev : 1;
-		uint32_t pcRev : 1;
-		uint32_t ptRev : 1;
-		uint32_t reserved2 : 13;
-	} BIT;
-} MET_AFE_EVENTS;
+  uint32_t WORD;
+  struct {
+    uint32_t paDir : 1;
+    uint32_t pbDir : 1;
+    uint32_t pcDir : 1;
+    uint32_t ptDir : 1;
+    uint32_t qaDir : 1;
+    uint32_t qbDir : 1;
+    uint32_t qcDir : 1;
+    uint32_t qtDir : 1;
+    uint32_t sagB : 1;
+    uint32_t sagC : 1;
+    uint32_t reserved1 : 1;
+    uint32_t swellA : 1;
+    uint32_t swellB : 1;
+    uint32_t swellC : 1;
+    uint32_t paRev : 1;
+    uint32_t pbRev : 1;
+    uint32_t pcRev : 1;
+    uint32_t ptRev : 1;
+    uint32_t reserved2 : 13;
+  } BIT;
+} DRV_METROLOGY_AFE_EVENTS;
 
 typedef enum {
-	RMS_UA = 0,
-	RMS_UB,
-	RMS_UC,
-	RMS_IA,
-	RMS_IB,
-	RMS_IC,
-	RMS_INI,
-	RMS_INM,
-	RMS_INMI,
-	RMS_PT,
-	RMS_PA,
-	RMS_PB,
-	RMS_PC,
-	RMS_QT,
-	RMS_QA,
-	RMS_QB,
-	RMS_QC,
-	RMS_ST,
-	RMS_SA,
-	RMS_SB,
-	RMS_SC,
-	RMS_FREQ,
-	RMS_ANGLEA,
-	RMS_ANGLEB,
-	RMS_ANGLEC,
-	RMS_ANGLEN,
-	RMS_TYPE_NUM
-} MET_RMS_TYPE;
+  RMS_UA = 0,
+  RMS_UB,
+  RMS_UC,
+  RMS_IA,
+  RMS_IB,
+  RMS_IC,
+  RMS_INI,
+  RMS_INM,
+  RMS_INMI,
+  RMS_PT,
+  RMS_PA,
+  RMS_PB,
+  RMS_PC,
+  RMS_QT,
+  RMS_QA,
+  RMS_QB,
+  RMS_QC,
+  RMS_ST,
+  RMS_SA,
+  RMS_SB,
+  RMS_SC,
+  RMS_FREQ,
+  RMS_ANGLEA,
+  RMS_ANGLEB,
+  RMS_ANGLEC,
+  RMS_ANGLEN,
+  RMS_TYPE_NUM
+} DRV_METROLOGY_RMS_TYPE;
 
 typedef struct {
-	uint32_t energy;
-	MET_AFE_EVENTS afeEvents;
-	uint32_t RMS[RMS_TYPE_NUM];
-} MET_AFE_DATA;
+  uint32_t energy;
+  DRV_METROLOGY_AFE_EVENTS afeEvents;
+  uint32_t RMS[RMS_TYPE_NUM];
+} DRV_METROLOGY_AFE_DATA;
 
 typedef enum {
-	PENERGY = 0,
-	QENERGY = 1,
-} MET_ENERGY_TYPE;
+  PENERGY = 0,
+  QENERGY = 1,
+} DRV_METROLOGY_ENERGY_TYPE;
 
 typedef enum {
-	ABS = 0,
-	ALG = 1
-} MET_ENERGY_MODE;
+  ABS = 0,
+  ALG = 1
+} DRV_METROLOGY_ENERGY_MODE;
+
+typedef struct
+{
+    /* Meter Constant */
+    uint32_t mc;
+
+    /* Mains frequency */
+    double freq;
+
+    /* Transformer ratio */
+    double tr;
+
+    /* Resistor load */
+    double rl;
+
+    /* Voltage divider ratio */
+    uint32_t ku;
+
+    /* Sensor type */
+    DRV_METROLOGY_SENSOR_TYPE st;
+
+    /* Programmable gain amplifier of the AFE */
+    DRV_METROLOGY_GAIN_TYPE gain;
+
+} DRV_METROLOGY_CONFIGURATION;
 
 // *****************************************************************************
 /* DRV_PLC_PHY Transfer Object State
@@ -281,24 +320,24 @@ typedef struct
 
     /* Address where PLC binary file is located */
     uint32_t                        binStartAddress;
-    
+
     /* Flag to indicate new integration period has been completed */
     bool                            newMetData;
-    
+
     /* Metrology Control interface */
     MET_REGISTERS *                 metRegisters;
-    
+
     /* Metrology Accumulated Output Data */
-    MET_ACCUMULATORS                metAccData;
-    
+    DRV_METROLOGY_ACCUMULATORS      metAccData;
+
     /* Metrology Harmonic Analysis Output Data */
-    MET_HARMONICS                   metHarData;
-    
+    DRV_METROLOGY_HARMONICS         metHarData;
+
     /* Metrology Analog Front End Data */
-    MET_AFE_DATA                    metAFEData;
-    
+    DRV_METROLOGY_AFE_DATA          metAFEData;
+
     /* Metrology Calibration interface */
-    MET_CALIBRATION                 metCalibration;
+    DRV_METROLOGY_CALIBRATION       metCalibration;
 
     /* IPC metrology lib integration Callback */
     DRV_METROLOGY_CALLBACK          newIntegrationCallback;

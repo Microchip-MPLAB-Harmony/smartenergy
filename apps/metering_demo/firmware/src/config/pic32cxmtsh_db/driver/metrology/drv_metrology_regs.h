@@ -780,15 +780,15 @@
 #define STATUS_STATUS_Pos                           _UINT32_(0)                       /* (STATUS) Metrology status Position */
 #define STATUS_STATUS_Msk                           (_UINT32_(0x0F) << STATUS_STATUS_Pos)      /* (STATUS) Metrology status Mask */
 #define STATUS_STATUS(value)                        (STATUS_STATUS_Msk & (_UINT32_(value) << STATUS_STATUS_Pos))
-#define   STATUS_STATUS_HALT					      _UINT32_(0x0)                   /* (STATUS) Metrology module is halted */
-#define   STATUS_STATUS_RESET					      _UINT32_(0x1)                   /* (STATUS) Resetting metrology module */ 
-#define   STATUS_STATUS_INIT_DSP			          _UINT32_(0x2)                   /* (STATUS) Initializing DSP filters */
-#define   STATUS_STATUS_DSP_READY			          _UINT32_(0x3)                   /* (STATUS) DSP filters have been initialized */
-#define   STATUS_STATUS_INIT_ATSENSE	              _UINT32_(0x4)                   /* (STATUS) Initializing ATSENSE */
-#define   STATUS_STATUS_ATSENSE_READY	              _UINT32_(0x5)                   /* (STATUS) ATSENSE has been initialized */
-#define   STATUS_STATUS_READY					      _UINT32_(0x6)                   /* (STATUS) ATSENSE temperature configuration & calibration data has been copied into output registers */
-#define   STATUS_STATUS_DSP_SETTLING	              _UINT32_(0x7)                   /* (STATUS) Waiting for DSP filters to stabilize to full accuracy */
-#define   STATUS_STATUS_DSP_RUNNING		              _UINT32_(0x8)                   /* (STATUS) DSP filters have stabilized to full accuracy */
+#define   STATUS_STATUS_HALT                        _UINT32_(0x0)                   /* (STATUS) Metrology module is halted */
+#define   STATUS_STATUS_RESET                       _UINT32_(0x1)                   /* (STATUS) Resetting metrology module */
+#define   STATUS_STATUS_INIT_DSP                    _UINT32_(0x2)                   /* (STATUS) Initializing DSP filters */
+#define   STATUS_STATUS_DSP_READY                   _UINT32_(0x3)                   /* (STATUS) DSP filters have been initialized */
+#define   STATUS_STATUS_INIT_ATSENSE                _UINT32_(0x4)                   /* (STATUS) Initializing ATSENSE */
+#define   STATUS_STATUS_ATSENSE_READY               _UINT32_(0x5)                   /* (STATUS) ATSENSE has been initialized */
+#define   STATUS_STATUS_READY                       _UINT32_(0x6)                   /* (STATUS) ATSENSE temperature configuration & calibration data has been copied into output registers */
+#define   STATUS_STATUS_DSP_SETTLING                _UINT32_(0x7)                   /* (STATUS) Waiting for DSP filters to stabilize to full accuracy */
+#define   STATUS_STATUS_DSP_RUNNING                 _UINT32_(0x8)                   /* (STATUS) DSP filters have stabilized to full accuracy */
 
 /* -------- STATUS : (MET_STATUS Offset: 0x08) (R/W  32) Metrology state flags -------- */
 #define STATUS_STATE_FLAG_PH_A_ACTIVE_Pos           _UINT32_(0)                       /* (STATUS) Phase A active Position */
@@ -1001,44 +1001,44 @@
 #define V_C_MAX(value)                   (V_C_MAX_Msk & (_UINT32_(value) << V_C_MAX_Pos))
 
 /* -------- FEATURES : (MET_STATUS Offset: 0x54) (R/W  32) Compiled feature indicator -------- */
-#define FEATURES_DEBUG_MODES_Pos                    _UINT32_(0) 
-#define FEATURES_DEBUG_MODES_Msk                    (_UINT32_(0x1) << FEATURES_DEBUG_MODES_Pos) 
+#define FEATURES_DEBUG_MODES_Pos                    _UINT32_(0)
+#define FEATURES_DEBUG_MODES_Msk                    (_UINT32_(0x1) << FEATURES_DEBUG_MODES_Pos)
 #define FEATURES_DEBUG_MODES(value)                 (FEATURES_DEBUG_MODES_Msk & (_UINT32_(value) << FEATURES_DEBUG_MODES_Pos))
-#define FEATURES_ATSENSE_HALF_CLK_Pos               _UINT32_(1)                   
-#define FEATURES_ATSENSE_HALF_CLK_Msk               (_UINT32_(0x1) << FEATURES_ATSENSE_HALF_CLK_Pos)      
+#define FEATURES_ATSENSE_HALF_CLK_Pos               _UINT32_(1)
+#define FEATURES_ATSENSE_HALF_CLK_Msk               (_UINT32_(0x1) << FEATURES_ATSENSE_HALF_CLK_Pos)
 #define FEATURES_ATSENSE_HALF_CLK(value)            (FEATURES_ATSENSE_HALF_CLK_Msk & (_UINT32_(value) << FEATURES_ATSENSE_HALF_CLK_Pos))
-#define FEATURES_ATSENSE_SYNTHESIZE_Pos             _UINT32_(2)                     
-#define FEATURES_ATSENSE_SYNTHESIZE_Msk             (_UINT32_(0x1) << FEATURES_ATSENSE_SYNTHESIZE_Pos)         
+#define FEATURES_ATSENSE_SYNTHESIZE_Pos             _UINT32_(2)
+#define FEATURES_ATSENSE_SYNTHESIZE_Msk             (_UINT32_(0x1) << FEATURES_ATSENSE_SYNTHESIZE_Pos)
 #define FEATURES_ATSENSE_SYNTHESIZE(value)          (FEATURES_ATSENSE_SYNTHESIZE_Msk & (_UINT32_(value) << FEATURES_ATSENSE_SYNTHESIZE_Pos))
-#define FEATURES_DUPLICATE_V1_Pos                   _UINT32_(3)                    
+#define FEATURES_DUPLICATE_V1_Pos                   _UINT32_(3)
 #define FEATURES_DUPLICATE_V1_Msk                   (_UINT32_(0x1) << FEATURES_DUPLICATE_V1_Pos)
 #define FEATURES_DUPLICATE_V1(value)                (FEATURES_DUPLICATE_V1_Msk & (_UINT32_(value) << FEATURES_DUPLICATE_V1_Pos))
-#define FEATURES_FIXED_VREF_Pos                     _UINT32_(4)                     
-#define FEATURES_FIXED_VREF_Msk                     (_UINT32_(0x1) << FEATURES_FIXED_VREF_Pos)      
+#define FEATURES_FIXED_VREF_Pos                     _UINT32_(4)
+#define FEATURES_FIXED_VREF_Msk                     (_UINT32_(0x1) << FEATURES_FIXED_VREF_Pos)
 #define FEATURES_FIXED_VREF(value)                  (FEATURES_FIXED_VREF_Msk & (_UINT32_(value) << FEATURES_FIXED_VREF_Pos))
-#define FEATURES_DEBUG_CONST_PWM_PD18_Pos           _UINT32_(5)                 
-#define FEATURES_DEBUG_CONST_PWM_PD18_Msk           (_UINT32_(0x1) << FEATURES_DEBUG_CONST_PWM_PD18_Pos)  
+#define FEATURES_DEBUG_CONST_PWM_PD18_Pos           _UINT32_(5)
+#define FEATURES_DEBUG_CONST_PWM_PD18_Msk           (_UINT32_(0x1) << FEATURES_DEBUG_CONST_PWM_PD18_Pos)
 #define FEATURES_DEBUG_CONST_PWM_PD18(value)        (FEATURES_DEBUG_CONST_PWM_PD18_Msk & (_UINT32_(value) << FEATURES_DEBUG_CONST_PWM_PD18_Pos))
-#define FEATURES_DEBUG_DAC_PD19_Pos                 _UINT32_(6)                  
-#define FEATURES_DEBUG_DAC_PD19_Msk                 (_UINT32_(0x1) << FEATURES_DEBUG_DAC_PD19_Pos) 
+#define FEATURES_DEBUG_DAC_PD19_Pos                 _UINT32_(6)
+#define FEATURES_DEBUG_DAC_PD19_Msk                 (_UINT32_(0x1) << FEATURES_DEBUG_DAC_PD19_Pos)
 #define FEATURES_DEBUG_DAC_PD19(value)              (FEATURES_DEBUG_DAC_PD19_Msk & (_UINT32_(value) << FEATURES_DEBUG_DAC_PD19_Pos))
-#define FEATURES_DEBUG_FLEX_PC0_PC22_Pos            _UINT32_(7)                     
-#define FEATURES_DEBUG_FLEX_PC0_PC22_Msk            (_UINT32_(0x1) << FEATURES_DEBUG_FLEX_PC0_PC22_Pos)  
+#define FEATURES_DEBUG_FLEX_PC0_PC22_Pos            _UINT32_(7)
+#define FEATURES_DEBUG_FLEX_PC0_PC22_Msk            (_UINT32_(0x1) << FEATURES_DEBUG_FLEX_PC0_PC22_Pos)
 #define FEATURES_DEBUG_FLEX_PC0_PC22(value)         (FEATURES_DEBUG_FLEX_PC0_PC22_Msk & (_UINT32_(value) << FEATURES_DEBUG_FLEX_PC0_PC22_Pos))
-#define FEATURES_HALF_COPROC_CLK_Pos                _UINT32_(8)                     
-#define FEATURES_HALF_COPROC_CLK_Msk                (_UINT32_(0x1) << FEATURES_HALF_COPROC_CLK_Pos)  
+#define FEATURES_HALF_COPROC_CLK_Pos                _UINT32_(8)
+#define FEATURES_HALF_COPROC_CLK_Msk                (_UINT32_(0x1) << FEATURES_HALF_COPROC_CLK_Pos)
 #define FEATURES_HALF_COPROC_CLK(value)             (FEATURES_HALF_COPROC_CLK_Msk & (_UINT32_(value) << FEATURES_HALF_COPROC_CLK_Pos))
-#define FEATURES_I_N_MUXING_Pos                     _UINT32_(9)                     
-#define FEATURES_I_N_MUXING_Msk                     (_UINT32_(0x1) << FEATURES_I_N_MUXING_Pos)  
+#define FEATURES_I_N_MUXING_Pos                     _UINT32_(9)
+#define FEATURES_I_N_MUXING_Msk                     (_UINT32_(0x1) << FEATURES_I_N_MUXING_Pos)
 #define FEATURES_I_N_MUXING(value)                  (FEATURES_I_N_MUXING_Msk & (_UINT32_(value) << FEATURES_I_N_MUXING_Pos))
-#define FEATURES_PQ_OFFSET_X_Pos                     _UINT32_(10)                     
-#define FEATURES_PQ_OFFSET_X_Msk                    (_UINT32_(0x1) << FEATURES_PQ_OFFSET_X_Pos)  
+#define FEATURES_PQ_OFFSET_X_Pos                     _UINT32_(10)
+#define FEATURES_PQ_OFFSET_X_Msk                    (_UINT32_(0x1) << FEATURES_PQ_OFFSET_X_Pos)
 #define FEATURES_PQ_OFFSET_X(value)                 (FEATURES_PQ_OFFSET_X_Msk & (_UINT32_(value) << FEATURES_PQ_OFFSET_X_Pos))
-#define FEATURES_RZC_DETECT_Pos                     _UINT32_(11)                     
-#define FEATURES_RZC_DETECT_Msk                     (_UINT32_(0x1) << FEATURES_RZC_DETECT_Pos)  
+#define FEATURES_RZC_DETECT_Pos                     _UINT32_(11)
+#define FEATURES_RZC_DETECT_Msk                     (_UINT32_(0x1) << FEATURES_RZC_DETECT_Pos)
 #define FEATURES_RZC_DETECT(value)                  (FEATURES_RZC_DETECT_Msk & (_UINT32_(value) << FEATURES_RZC_DETECT_Pos))
-#define FEATURES_CORE_CLK_SPEED_Pos                 _UINT32_(12)                     
-#define FEATURES_CORE_CLK_SPEED_Msk                 (_UINT32_(0xF) << FEATURES_CORE_CLK_SPEED_Pos)  
+#define FEATURES_CORE_CLK_SPEED_Pos                 _UINT32_(12)
+#define FEATURES_CORE_CLK_SPEED_Msk                 (_UINT32_(0xF) << FEATURES_CORE_CLK_SPEED_Pos)
 #define FEATURES_CORE_CLK_SPEED(value)              (FEATURES_CORE_CLK_SPEED_Msk & (_UINT32_(value) << FEATURES_CORE_CLK_SPEED_Pos))
 #define   FEATURES_CORE_CLK_SPEED_UNDEFINED_Val       _UINT32_(0x0)                   /* (FEATURES) Compiled to be used with Core-0 clock = undefined  */
 #define   FEATURES_CORE_CLK_SPEED_102_Val             _UINT32_(0x1)                   /* (FEATURES) Compiled to be used with Core-0 clock = 102.400MHz */
@@ -1048,105 +1048,105 @@
 #define   FEATURES_CORE_CLK_SPEED_118_Val             _UINT32_(0x5)                   /* (FEATURES) Compiled to be used with Core-0 clock = 118.784MHz */
 #define   FEATURES_CORE_CLK_SPEED_240_Val             _UINT32_(0x6)                   /* (FEATURES) Compiled to be used with Core-0 clock = 240.000MHz */
 #define   FEATURES_CORE_CLK_SPEED_237_Val             _UINT32_(0x7)                   /* (FEATURES) Compiled to be used with Core-0 clock = 237.568MHz */
-#define FEATURES_DFT_ENABLED_Pos                    _UINT32_(16)                     
-#define FEATURES_DFT_ENABLED_Msk                    (_UINT32_(0x1) << FEATURES_DFT_ENABLED_Pos)  
+#define FEATURES_DFT_ENABLED_Pos                    _UINT32_(16)
+#define FEATURES_DFT_ENABLED_Msk                    (_UINT32_(0x1) << FEATURES_DFT_ENABLED_Pos)
 #define FEATURES_DFT_ENABLED(value)                 (FEATURES_DFT_ENABLED_Msk & (_UINT32_(value) << FEATURES_DFT_ENABLED_Pos))
-#define FEATURES_CREEP_Pos                          _UINT32_(17)                     
-#define FEATURES_CREEP_Msk                          (_UINT32_(0x1) << FEATURES_CREEP_Pos)  
+#define FEATURES_CREEP_Pos                          _UINT32_(17)
+#define FEATURES_CREEP_Msk                          (_UINT32_(0x1) << FEATURES_CREEP_Pos)
 #define FEATURES_CREEP(value)                       (FEATURES_CREEP_Msk & (_UINT32_(value) << FEATURES_CREEP_Pos))
-#define FEATURES_CAPTURE_Pos                        _UINT32_(18)                     
-#define FEATURES_CAPTURE_Msk                        (_UINT32_(0x1) << FEATURES_CAPTURE_Pos)  
+#define FEATURES_CAPTURE_Pos                        _UINT32_(18)
+#define FEATURES_CAPTURE_Msk                        (_UINT32_(0x1) << FEATURES_CAPTURE_Pos)
 #define FEATURES_CAPTURE(value)                     (FEATURES_CAPTURE_Msk & (_UINT32_(value) << FEATURES_CAPTURE_Pos))
-#define FEATURES_ROGOWSKI_DC_REMOVE_Pos             _UINT32_(19)                     
-#define FEATURES_ROGOWSKI_DC_REMOVE_Msk             (_UINT32_(0x1) << FEATURES_ROGOWSKI_DC_REMOVE_Pos)  
+#define FEATURES_ROGOWSKI_DC_REMOVE_Pos             _UINT32_(19)
+#define FEATURES_ROGOWSKI_DC_REMOVE_Msk             (_UINT32_(0x1) << FEATURES_ROGOWSKI_DC_REMOVE_Pos)
 #define FEATURES_ROGOWSKI_DC_REMOVE(value)          (FEATURES_ROGOWSKI_DC_REMOVE_Msk & (_UINT32_(value) << FEATURES_ROGOWSKI_DC_REMOVE_Pos))
-#define FEATURES_NUM_PULSES_Pos                     _UINT32_(20)                     
-#define FEATURES_NUM_PULSES_Msk                     (_UINT32_(0x3) << FEATURES_NUM_PULSES_Pos)  
+#define FEATURES_NUM_PULSES_Pos                     _UINT32_(20)
+#define FEATURES_NUM_PULSES_Msk                     (_UINT32_(0x3) << FEATURES_NUM_PULSES_Pos)
 #define FEATURES_NUM_PULSES(value)                  (FEATURES_NUM_PULSES_Msk & (_UINT32_(value) << FEATURES_NUM_PULSES_Pos))
-#define FEATURES_ATSENSE_LOC_Pos                    _UINT32_(22)                     
-#define FEATURES_ATSENSE_LOC_Msk                    (_UINT32_(0x1) << FEATURES_ATSENSE_LOC_Pos)  
+#define FEATURES_ATSENSE_LOC_Pos                    _UINT32_(22)
+#define FEATURES_ATSENSE_LOC_Msk                    (_UINT32_(0x1) << FEATURES_ATSENSE_LOC_Pos)
 #define FEATURES_ATSensE_LOC(value)                 (FEATURES_ATSENSE_LOC_Msk & (_UINT32_(value) << FEATURES_ATSENSE_LOC_Pos))
-#define FEATURES_MODIFY_CHIPID_Pos                  _UINT32_(23)                     
-#define FEATURES_MODIFY_CHIPID_Msk                  (_UINT32_(0x1) << FEATURES_MODIFY_CHIPID_Pos)  
+#define FEATURES_MODIFY_CHIPID_Pos                  _UINT32_(23)
+#define FEATURES_MODIFY_CHIPID_Msk                  (_UINT32_(0x1) << FEATURES_MODIFY_CHIPID_Pos)
 #define FEATURES_MODIFY_CHIPID(value)               (FEATURES_MODIFY_CHIPID_Msk & (_UINT32_(value) << FEATURES_MODIFY_CHIPID_Pos))
-#define FEATURES_Fs_SAMPLE_RATE_Pos                 _UINT32_(24)                     
-#define FEATURES_Fs_SAMPLE_RATE_Msk                 (_UINT32_(0x1) << FEATURES_Fs_SAMPLE_RATE_Pos)  
+#define FEATURES_Fs_SAMPLE_RATE_Pos                 _UINT32_(24)
+#define FEATURES_Fs_SAMPLE_RATE_Msk                 (_UINT32_(0x1) << FEATURES_Fs_SAMPLE_RATE_Pos)
 #define FEATURES_Fs_SAMPLE_RATE(value)              (FEATURES_Fs_SAMPLE_RATE_Msk & (_UINT32_(value) << FEATURES_Fs_SAMPLE_RATE_Pos))
 #define   FEATURES_Fs_SAMPLE_RATE_4MHz_Val            _UINT32_(0x0)                   /* (FEATURES) Baseband sample rate FS = 4.000KHz  */
 #define   FEATURES_Fs_SAMPLE_RATE_8MHz_Val            _UINT32_(0x1)                   /* (FEATURES) Baseband sample rate FS = 8.000KHz  */
-#define FEATURES_I_Ni_SOURCE_Pos                    _UINT32_(25)                     
-#define FEATURES_I_Ni_SOURCE_Msk                    (_UINT32_(0x1) << FEATURES_I_Ni_SOURCE_Pos)  
+#define FEATURES_I_Ni_SOURCE_Pos                    _UINT32_(25)
+#define FEATURES_I_Ni_SOURCE_Msk                    (_UINT32_(0x1) << FEATURES_I_Ni_SOURCE_Pos)
 #define FEATURES_I_Ni_SOURCE(value)                 (FEATURES_I_Ni_SOURCE_Msk & (_UINT32_(value) << FEATURES_I_Ni_SOURCE_Pos))
-#define FEATURES_RCZ_OUT_Pos                        _UINT32_(26)                     
-#define FEATURES_RCZ_OUT_Msk                        (_UINT32_(0x1) << FEATURES_RCZ_OUT_Pos)  
+#define FEATURES_RCZ_OUT_Pos                        _UINT32_(26)
+#define FEATURES_RCZ_OUT_Msk                        (_UINT32_(0x1) << FEATURES_RCZ_OUT_Pos)
 #define FEATURES_RCZ_OUT(value)                     (FEATURES_RCZ_OUT_Msk & (_UINT32_(value) << FEATURES_RCZ_OUT_Pos))
-#define FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Pos    _UINT32_(27)                     
-#define FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Msk    (_UINT32_(0x1) << FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Pos)  
+#define FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Pos    _UINT32_(27)
+#define FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Msk    (_UINT32_(0x1) << FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Pos)
 #define FEATURES_DEBUG_ENABLE_VREF_TEST_DATA(value) (FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Msk & (_UINT32_(value) << FEATURES_DEBUG_ENABLE_VREF_TEST_DATA_Pos))
-#define FEATURES_METER_TYPE_10_Pos                  _UINT32_(28)                     
-#define FEATURES_METER_TYPE_10_Msk                  (_UINT32_(0x1) << FEATURES_METER_TYPE_10_Pos)  
+#define FEATURES_METER_TYPE_10_Pos                  _UINT32_(28)
+#define FEATURES_METER_TYPE_10_Msk                  (_UINT32_(0x1) << FEATURES_METER_TYPE_10_Pos)
 #define FEATURES_METER_TYPE_10(value)               (FEATURES_METER_TYPE_10_Msk & (_UINT32_(value) << FEATURES_METER_TYPE_10_Pos))
-#define FEATURES_METER_TYPE_09_Pos                  _UINT32_(29)                     
-#define FEATURES_METER_TYPE_09_Msk                  (_UINT32_(0x1) << FEATURES_METER_TYPE_09_Pos)  
+#define FEATURES_METER_TYPE_09_Pos                  _UINT32_(29)
+#define FEATURES_METER_TYPE_09_Msk                  (_UINT32_(0x1) << FEATURES_METER_TYPE_09_Pos)
 #define FEATURES_METER_TYPE_09(value)               (FEATURES_METER_TYPE_09_Msk & (_UINT32_(value) << FEATURES_METER_TYPE_09_Pos))
-#define FEATURES_SINGLEPHASE_Pos                    _UINT32_(30)                     
-#define FEATURES_SINGLEPHASE_Msk                    (_UINT32_(0x1) << FEATURES_SINGLEPHASE_Pos)  
+#define FEATURES_SINGLEPHASE_Pos                    _UINT32_(30)
+#define FEATURES_SINGLEPHASE_Msk                    (_UINT32_(0x1) << FEATURES_SINGLEPHASE_Pos)
 #define FEATURES_SINGLEPHASE(value)                 (FEATURES_SINGLEPHASE_Msk & (_UINT32_(value) << FEATURES_SINGLEPHASE_Pos))
-#define FEATURES_POLYPHASE_Pos                      _UINT32_(31)                     
-#define FEATURES_POLYPHASE_Msk                      (_UINT32_(0x1) << FEATURES_POLYPHASE_Pos)  
+#define FEATURES_POLYPHASE_Pos                      _UINT32_(31)
+#define FEATURES_POLYPHASE_Msk                      (_UINT32_(0x1) << FEATURES_POLYPHASE_Pos)
 #define FEATURES_POLYPHASE(value)                   (FEATURES_POLYPHASE_Msk & (_UINT32_(value) << FEATURES_POLYPHASE_Pos))
 
 /* -------- ZC_N_VA : (MET_STATUS Offset: 0x78) (R/W  32) Zero-crossing sample number of phase-A voltage (uQ20.12) -------- */
-#define ZC_N_VA_Pos                    _UINT32_(0) 
-#define ZC_N_VA_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VA_Pos) 
+#define ZC_N_VA_Pos                    _UINT32_(0)
+#define ZC_N_VA_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VA_Pos)
 #define ZC_N_VA(value)                 (ZC_N_VA_Msk & (_UINT32_(value) << ZC_N_VA_Pos))
 
 /* -------- ZC_N_VB : (MET_STATUS Offset: 0x7C) (R/W  32) Zero-crossing sample number of phase-B voltage (uQ20.12) -------- */
-#define ZC_N_VB_Pos                    _UINT32_(0) 
-#define ZC_N_VB_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VB_Pos) 
+#define ZC_N_VB_Pos                    _UINT32_(0)
+#define ZC_N_VB_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VB_Pos)
 #define ZC_N_VB(value)                 (ZC_N_VB_Msk & (_UINT32_(value) << ZC_N_VB_Pos))
 
 /* -------- ZC_N_VC : (MET_STATUS Offset: 0x80) (R/W  32) Zero-crossing sample number of phase-C voltage (uQ20.12) -------- */
-#define ZC_N_VC_Pos                    _UINT32_(0) 
-#define ZC_N_VC_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VC_Pos) 
+#define ZC_N_VC_Pos                    _UINT32_(0)
+#define ZC_N_VC_Msk                    (_UINT32_(0xFFFFFF) << ZC_N_VC_Pos)
 #define ZC_N_VC(value)                 (ZC_N_VC_Msk & (_UINT32_(value) << ZC_N_VC_Pos))
 
 /* -------- ATSENSE_CAL_41_44 : (MET_STATUS Offset: 0x84) (R/W  32) ATSENSE Calibration Trim Data, Registers: 0x41 ? 0x44 -------- */
-#define ATSENSE_CAL_41_44_REF_TL_11_8_Pos                   _UINT32_(0) 
-#define ATSENSE_CAL_41_44_REF_TL_11_8_Msk                   (_UINT32_(0xF) << ATSENSE_CAL_41_44_REF_TL_11_8_Pos) 
+#define ATSENSE_CAL_41_44_REF_TL_11_8_Pos                   _UINT32_(0)
+#define ATSENSE_CAL_41_44_REF_TL_11_8_Msk                   (_UINT32_(0xF) << ATSENSE_CAL_41_44_REF_TL_11_8_Pos)
 #define ATSENSE_CAL_41_44_REF_TL_11_8(value)                (ATSENSE_CAL_41_44_REF_TL_11_8_Msk & (_UINT32_(value) << ATSENSE_CAL_41_44_REF_TL_11_8_Pos))
-#define ATSENSE_CAL_41_44_REF_TL_0_7_Pos                    _UINT32_(8) 
-#define ATSENSE_CAL_41_44_REF_TL_0_7_Msk                    (_UINT32_(0xFF) << ATSENSE_CAL_41_44_REF_TL_0_7_Pos) 
+#define ATSENSE_CAL_41_44_REF_TL_0_7_Pos                    _UINT32_(8)
+#define ATSENSE_CAL_41_44_REF_TL_0_7_Msk                    (_UINT32_(0xFF) << ATSENSE_CAL_41_44_REF_TL_0_7_Pos)
 #define ATSENSE_CAL_41_44_REF_TL_0_7(value)                 (ATSENSE_CAL_41_44_REF_TL_0_7_Msk & (_UINT32_(value) << ATSENSE_CAL_41_44_REF_TL_0_7_Pos))
-#define ATSENSE_CAL_41_44_TEMP_TL_11_8_Pos                  _UINT32_(16) 
-#define ATSENSE_CAL_41_44_TEMP_TL_11_8_Msk                  (_UINT32_(0xF) << ATSENSE_CAL_41_44_TEMP_TL_11_8_Pos) 
+#define ATSENSE_CAL_41_44_TEMP_TL_11_8_Pos                  _UINT32_(16)
+#define ATSENSE_CAL_41_44_TEMP_TL_11_8_Msk                  (_UINT32_(0xF) << ATSENSE_CAL_41_44_TEMP_TL_11_8_Pos)
 #define ATSENSE_CAL_41_44_TEMP_TL_11_8(value)               (ATSENSE_CAL_41_44_TEMP_TL_11_8_Msk & (_UINT32_(value) << ATSENSE_CAL_41_44_TEMP_TL_11_8_Pos))
-#define ATSENSE_CAL_41_44_TEMP_TL_0_7_Pos                   _UINT32_(24) 
-#define ATSENSE_CAL_41_44_TEMP_TL_0_7_Msk                   (_UINT32_(0xFF) << ATSENSE_CAL_41_44_TEMP_TL_0_7_Pos) 
+#define ATSENSE_CAL_41_44_TEMP_TL_0_7_Pos                   _UINT32_(24)
+#define ATSENSE_CAL_41_44_TEMP_TL_0_7_Msk                   (_UINT32_(0xFF) << ATSENSE_CAL_41_44_TEMP_TL_0_7_Pos)
 #define ATSENSE_CAL_41_44_TEMP_TL_0_7(value)                (ATSENSE_CAL_41_44_TEMP_TL_0_7_Msk & (_UINT32_(value) << ATSENSE_CAL_41_44_TEMP_TL_0_7_Pos))
 
 /* -------- ATSENSE_CAL_45_48 : (MET_STATUS Offset: 0x88) (R/W  32) ATSENSE Calibration Trim Data, Registers: 0x45 ? 0x48 -------- */
-#define ATSENSE_CAL_45_48_REF_TH_11_8_Pos                   _UINT32_(0) 
-#define ATSENSE_CAL_45_48_REF_TH_11_8_Msk                   (_UINT32_(0xF) << ATSENSE_CAL_45_48_REF_TH_11_8_Pos) 
+#define ATSENSE_CAL_45_48_REF_TH_11_8_Pos                   _UINT32_(0)
+#define ATSENSE_CAL_45_48_REF_TH_11_8_Msk                   (_UINT32_(0xF) << ATSENSE_CAL_45_48_REF_TH_11_8_Pos)
 #define ATSENSE_CAL_45_48_REF_TH_11_8(value)                (ATSENSE_CAL_45_48_REF_TH_11_8_Msk & (_UINT32_(value) << ATSENSE_CAL_45_48_REF_TH_11_8_Pos))
-#define ATSENSE_CAL_45_48_REF_TH_0_7_Pos                    _UINT32_(8) 
-#define ATSENSE_CAL_45_48_REF_TH_0_7_Msk                    (_UINT32_(0xFF) << ATSENSE_CAL_45_48_REF_TH_0_7_Pos) 
+#define ATSENSE_CAL_45_48_REF_TH_0_7_Pos                    _UINT32_(8)
+#define ATSENSE_CAL_45_48_REF_TH_0_7_Msk                    (_UINT32_(0xFF) << ATSENSE_CAL_45_48_REF_TH_0_7_Pos)
 #define ATSENSE_CAL_45_48_REF_TH_0_7(value)                 (ATSENSE_CAL_45_48_REF_TH_0_7_Msk & (_UINT32_(value) << ATSENSE_CAL_45_48_REF_TH_0_7_Pos))
-#define ATSENSE_CAL_45_48_TEMP_TH_11_8_Pos                  _UINT32_(16) 
-#define ATSENSE_CAL_45_48_TEMP_TH_11_8_Msk                  (_UINT32_(0xF) << ATSENSE_CAL_45_48_TEMP_TH_11_8_Pos) 
+#define ATSENSE_CAL_45_48_TEMP_TH_11_8_Pos                  _UINT32_(16)
+#define ATSENSE_CAL_45_48_TEMP_TH_11_8_Msk                  (_UINT32_(0xF) << ATSENSE_CAL_45_48_TEMP_TH_11_8_Pos)
 #define ATSENSE_CAL_45_48_TEMP_TH_11_8(value)               (ATSENSE_CAL_45_48_TEMP_TH_11_8_Msk & (_UINT32_(value) << ATSENSE_CAL_45_48_TEMP_TH_11_8_Pos))
-#define ATSENSE_CAL_45_48_TEMP_TH_0_7_Pos                   _UINT32_(24) 
-#define ATSENSE_CAL_45_48_TEMP_TH_0_7_Msk                   (_UINT32_(0xFF) << ATSENSE_CAL_45_48_TEMP_TH_0_7_Pos) 
+#define ATSENSE_CAL_45_48_TEMP_TH_0_7_Pos                   _UINT32_(24)
+#define ATSENSE_CAL_45_48_TEMP_TH_0_7_Msk                   (_UINT32_(0xFF) << ATSENSE_CAL_45_48_TEMP_TH_0_7_Pos)
 #define ATSENSE_CAL_45_48_TEMP_TH_0_7(value)                (ATSENSE_CAL_45_48_TEMP_TH_0_7_Msk & (_UINT32_(value) << ATSENSE_CAL_45_48_TEMP_TH_0_7_Pos))
 
 
 /** \brief Metrology Harmonic Analysis Output register API structure */
 typedef struct
 {
-    __I  uint32_t I_A_m_R;            /**< Offset: 0x00 (R/  32) The real part of DFT result for current, phase-A, m-th harmonics (sQ25.6) */           
-    __I  uint32_t V_A_m_R;            /**< Offset: 0x04 (R/  32) The real part of DFT result for voltage, phase-A, m-th harmonics (sQ25.6) */           
-    __I  uint32_t I_B_m_R;            /**< Offset: 0x08 (R/  32) The real part of DFT result for current, phase-B, m-th harmonics (sQ25.6) */     
-    __I  uint32_t V_B_m_R;            /**< Offset: 0x0C (R/  32) The real part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */         
+    __I  uint32_t I_A_m_R;            /**< Offset: 0x00 (R/  32) The real part of DFT result for current, phase-A, m-th harmonics (sQ25.6) */
+    __I  uint32_t V_A_m_R;            /**< Offset: 0x04 (R/  32) The real part of DFT result for voltage, phase-A, m-th harmonics (sQ25.6) */
+    __I  uint32_t I_B_m_R;            /**< Offset: 0x08 (R/  32) The real part of DFT result for current, phase-B, m-th harmonics (sQ25.6) */
+    __I  uint32_t V_B_m_R;            /**< Offset: 0x0C (R/  32) The real part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
     __I  uint32_t I_C_m_R;            /**< Offset: 0x10 (R/  32) The real part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
     __I  uint32_t V_C_m_R;            /**< Offset: 0x14 (R/  32) The real part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
     __I  uint32_t I_A_m_I;            /**< Offset: 0x18 (R/  32) The imaginary part of DFT result for current, phase-A, m-th harmonics (sQ25.6) */
@@ -1155,42 +1155,42 @@ typedef struct
     __I  uint32_t V_B_m_I;            /**< Offset: 0x24 (R/  32) The imaginary part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
     __I  uint32_t I_C_m_I;            /**< Offset: 0x28 (R/  32) The imaginary part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
     __I  uint32_t V_C_m_I;            /**< Offset: 0x2C (R/  32) The imaginary part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
-    __I  uint32_t Reserved1[3];   
-} MET_HARMONICS;
+    __I  uint32_t Reserved1[3];
+} DRV_METROLOGY_HARMONICS;
 
 /** \brief Metrology Accumulated Output register API structure */
 typedef struct
 {
-    __I  uint64_t I_A;               /**< Offset: 0x08  (R/  32) Amp-squared-samples, phase-A, fundamental + harmonics (uQ24.40) */  
+    __I  uint64_t I_A;               /**< Offset: 0x08  (R/  32) Amp-squared-samples, phase-A, fundamental + harmonics (uQ24.40) */
     __I  uint64_t I_B;               /**< Offset: 0x10  (R/  32) Amp-squared-samples, phase-B, fundamental + harmonics (uQ24.40) */
     __I  uint64_t I_C;               /**< Offset: 0x18  (R/  32) Amp-squared-samples, phase-C, fundamental + harmonics (uQ24.40) */
-    __I  uint64_t I_Ni;              /**< Offset: 0x20  (R/  32) Amp-squared-samples, phase-N inputed, fundamental + harmonics (uQ44.20) */  
-    __I  uint64_t I_Nm;              /**< Offset: 0x28  (R/  32) Amp-squared-samples, phase-N measured, fundamental + harmonics (uQ44.20) */  
-    __I  uint64_t I_A_F;             /**< Offset: 0x30  (R/  32) Amp-squared-samples, phase-A, fundamental only (uQ24.40) */  
+    __I  uint64_t I_Ni;              /**< Offset: 0x20  (R/  32) Amp-squared-samples, phase-N inputed, fundamental + harmonics (uQ44.20) */
+    __I  uint64_t I_Nm;              /**< Offset: 0x28  (R/  32) Amp-squared-samples, phase-N measured, fundamental + harmonics (uQ44.20) */
+    __I  uint64_t I_A_F;             /**< Offset: 0x30  (R/  32) Amp-squared-samples, phase-A, fundamental only (uQ24.40) */
     __I  uint64_t I_B_F;             /**< Offset: 0x38  (R/  32) Amp-squared-samples, phase-B, fundamental only (uQ24.40) */
     __I  uint64_t I_C_F;             /**< Offset: 0x40  (R/  32) Amp-squared-samples, phase-C, fundamental only (uQ24.40) */
-    __I  uint64_t I_Nmi;             /**< Offset: 0x48  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ44.20) */  
-    __I  uint64_t Reserved1[6];                          
-    __I  int64_t  P_A;               /**< Offset: 0x78  (R/  32) Watt-samples, phase-A, fundamental + harmonics (sQ23.40) */   
+    __I  uint64_t I_Nmi;             /**< Offset: 0x48  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ44.20) */
+    __I  uint64_t Reserved1[6];
+    __I  int64_t  P_A;               /**< Offset: 0x78  (R/  32) Watt-samples, phase-A, fundamental + harmonics (sQ23.40) */
     __I  int64_t  P_B;               /**< Offset: 0x80  (R/  32) Watt-samples, phase-B, fundamental + harmonics (sQ23.40) */
     __I  int64_t  P_C;               /**< Offset: 0x88  (R/  32) Watt-samples, phase-C, fundamental + harmonics (sQ23.40) */
-    __I  int64_t  P_A_F;             /**< Offset: 0x90  (R/  32) Watt-samples, phase-A, fundamental only (sQ23.40) */ 
-    __I  int64_t  P_B_F;             /**< Offset: 0x98  (R/  32) Watt-samples, phase-B, fundamental only (sQ23.40) */ 
-    __I  int64_t  P_C_F;             /**< Offset: 0xA0  (R/  32) Watt-samples, phase-C, fundamental only (sQ23.40) */  
-    __I  int64_t  P_N;               /**< Offset: 0xA8  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */  
-    __I  int64_t  P_N_F;             /**< Offset: 0xB0  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */ 
-    __I  uint64_t Reserved2;                        
-    __I  int64_t  Q_A;               /**< Offset: 0xC0  (R/  32) VAR-samples, phase-A, fundamental + harmonics (sQ23.40) */         
-    __I  int64_t  Q_B;               /**< Offset: 0xC8  (R/  32) VAR-samples, phase-B, fundamental + harmonics (sQ23.40) */         
+    __I  int64_t  P_A_F;             /**< Offset: 0x90  (R/  32) Watt-samples, phase-A, fundamental only (sQ23.40) */
+    __I  int64_t  P_B_F;             /**< Offset: 0x98  (R/  32) Watt-samples, phase-B, fundamental only (sQ23.40) */
+    __I  int64_t  P_C_F;             /**< Offset: 0xA0  (R/  32) Watt-samples, phase-C, fundamental only (sQ23.40) */
+    __I  int64_t  P_N;               /**< Offset: 0xA8  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */
+    __I  int64_t  P_N_F;             /**< Offset: 0xB0  (R/  32) Watt-samples, phase-N, fundamental only (sQ23.40) */
+    __I  uint64_t Reserved2;
+    __I  int64_t  Q_A;               /**< Offset: 0xC0  (R/  32) VAR-samples, phase-A, fundamental + harmonics (sQ23.40) */
+    __I  int64_t  Q_B;               /**< Offset: 0xC8  (R/  32) VAR-samples, phase-B, fundamental + harmonics (sQ23.40) */
     __I  int64_t  Q_C;               /**< Offset: 0xD0  (R/  32) VAR-samples, phase-C, fundamental + harmonics (sQ23.40) */
-    __I  int64_t  Q_A_F;             /**< Offset: 0xD8  (R/  32) VAR-samples, phase-A, fundamental only (sQ23.40) */ 
-    __I  int64_t  Q_B_F;             /**< Offset: 0xE0  (R/  32) VAR-samples, phase-B, fundamental only (sQ23.40) */ 
-    __I  int64_t  Q_C_F;             /**< Offset: 0xE8  (R/  32) VAR-samples, phase-C, fundamental only (sQ23.40) */ 
-    __I  int64_t  Q_N;               /**< Offset: 0xF0  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */ 
-    __I  int64_t  Q_N_F;             /**< Offset: 0xF8  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */ 
+    __I  int64_t  Q_A_F;             /**< Offset: 0xD8  (R/  32) VAR-samples, phase-A, fundamental only (sQ23.40) */
+    __I  int64_t  Q_B_F;             /**< Offset: 0xE0  (R/  32) VAR-samples, phase-B, fundamental only (sQ23.40) */
+    __I  int64_t  Q_C_F;             /**< Offset: 0xE8  (R/  32) VAR-samples, phase-C, fundamental only (sQ23.40) */
+    __I  int64_t  Q_N;               /**< Offset: 0xF0  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */
+    __I  int64_t  Q_N_F;             /**< Offset: 0xF8  (R/  32) VAR-samples, phase-N, fundamental only (sQ23.40) */
     __I  uint64_t Reserved3;
-    __I  uint64_t V_A;               /**< Offset: 0x108 (R/  32) Volt-square-samples, phase-A, fundamental + harmonics (sQ24.40) */ 
-    __I  uint64_t V_B;               /**< Offset: 0x110 (R/  32) Volt-square-samples, phase-B, fundamental + harmonics (sQ24.40) */ 
+    __I  uint64_t V_A;               /**< Offset: 0x108 (R/  32) Volt-square-samples, phase-A, fundamental + harmonics (sQ24.40) */
+    __I  uint64_t V_B;               /**< Offset: 0x110 (R/  32) Volt-square-samples, phase-B, fundamental + harmonics (sQ24.40) */
     __I  uint64_t V_C;               /**< Offset: 0x118 (R/  32) Volt-square-samples, phase-C, fundamental + harmonics (sQ24.40) */
     __I  uint64_t Reserved4;
     __I  uint64_t V_A_F;             /**< Offset: 0x128 (R/  32) Volt-square-samples, phase-A, fundamental only (uQ24.40) */
@@ -1207,41 +1207,41 @@ typedef struct
     __I  int64_t  ACC_T0;            /**< Offset: 0x190 (R/  32) Total accumulated quantities specified by PC0_TYPE (sQ33.30) */
     __I  int64_t  ACC_T1;            /**< Offset: 0x198 (R/  32) Total accumulated quantities specified by PC1_TYPE (sQ33.30) */
     __I  int64_t  ACC_T2;            /**< Offset: 0x1A0 (R/  32) Total accumulated quantities specified by PC2_TYPE (sQ33.30) */
-    __I  uint64_t Reserved7[2];  
-} MET_ACCUMULATORS;
+    __I  uint64_t Reserved7[2];
+} DRV_METROLOGY_ACCUMULATORS;
 
 /** \brief Metrology Status register API structure */
 typedef struct
 {
-    __I  uint32_t VERSION;                 /**< Offset: 0x00 (R/  32) Metrology firmware version */           
-    __I  uint32_t STATUS;                  /**< Offset: 0x04 (R/  32) Metrology status register */           
-    __I  uint32_t STATE_FLAG;              /**< Offset: 0x08 (R/  32) Metrology state flags register */           
-    __I  uint32_t CAPTURE_STATUS;          /**< Offset: 0x0C (R/  32) Waveform Capture Function Status */           
-    __I  uint32_t INTERVAL_NUM;            /**< Offset: 0x10 (R/  32) Interval number */           
-    __I  uint32_t N;                       /**< Offset: 0x14 (R/  32) Number of Samples in the Last Measurement Interval (uQ16.0) */           
-    __I  uint32_t PH_OFFSET;               /**< Offset: 0x18 (R/  32) Phase Correction Filter Offset (sQ0.31) */           
-    __I  uint32_t FREQ;                    /**< Offset: 0x1C (R/  32) Active Line Voltage Fundamental Harmonic Frequency (uQ20.12) */           
-    __I  uint32_t FREQ_VA;                 /**< Offset: 0x20 (R/  32) Frequency of fundamental harmonic, VA (uQ20.12) */           
-    __I  uint32_t FREQ_VB;                 /**< Offset: 0x24 (R/  32) Frequency of fundamental harmonic, VB (uQ20.12) */           
-    __I  uint32_t FREQ_VC;                 /**< Offset: 0x28 (R/  32) Frequency of fundamental harmonic, VC (uQ20.12) */           
-    __I  uint32_t Reserved1;  
-    __I  uint32_t TEMPERATURE;             /**< Offset: 0x30 (R/  32) Sensor Temperature (sQ23.8) */           
-    __I  uint32_t I_A_MAX;                 /**< Offset: 0x34 (R/  32) Phase A Current Peak (sQ2.29) */           
-    __I  uint32_t I_B_MAX;                 /**< Offset: 0x38 (R/  32) Phase B Current Peak (sQ2.29) */           
-    __I  uint32_t I_C_MAX;                 /**< Offset: 0x3C (R/  32) Phase C Current Peak (sQ2.29) */           
-    __I  uint32_t I_Ni_MAX;                /**< Offset: 0x40 (R/  32) Neutral Current Peak (sQ16.15) */           
-    __I  uint32_t I_Nm_MAX;                /**< Offset: 0x44 (R/  32) Neutral Current Peak (sQ16.15) */   
-    __I  uint32_t V_A_MAX;                 /**< Offset: 0x48 (R/  32) Max phase-A measured current during measurement interval (sQ2.29)*/           
-    __I  uint32_t V_B_MAX;                 /**< Offset: 0x4C (R/  32) Max phase-B measured current during measurement interval (sQ2.29)*/           
-    __I  uint32_t V_C_MAX;                 /**< Offset: 0x50 (R/  32) Max phase-C measured current during measurement interval (sQ2.29)*/           
-    __I  uint32_t FEATURES;                /**< Offset: 0x54 (R/  32) Compiled feature indicator */           
-    __I  uint32_t Reserved2[8];  
-    __I  uint32_t ZC_N_VA;                 /**< Offset: 0x78 (R/  32) Zero-crossing sample number of phase-A voltage (uQ20.12) */           
-    __I  uint32_t ZC_N_VB;                 /**< Offset: 0x7C (R/  32) Zero-crossing sample number of phase-B voltage (uQ20.12) */           
-    __I  uint32_t ZC_N_VC;                 /**< Offset: 0x80 (R/  32) Zero-crossing sample number of phase-C voltage (uQ20.12) */           
-    __I  uint32_t ATSENSE_CAL_41_44;       /**< Offset: 0x84 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x41 ? 0x44 */           
-    __I  uint32_t ATSENSE_CAL_45_48;       /**< Offset: 0x88 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x45 ? 0x48 */           
-} MET_STATUS;
+    __I  uint32_t VERSION;                 /**< Offset: 0x00 (R/  32) Metrology firmware version */
+    __I  uint32_t STATUS;                  /**< Offset: 0x04 (R/  32) Metrology status register */
+    __I  uint32_t STATE_FLAG;              /**< Offset: 0x08 (R/  32) Metrology state flags register */
+    __I  uint32_t CAPTURE_STATUS;          /**< Offset: 0x0C (R/  32) Waveform Capture Function Status */
+    __I  uint32_t INTERVAL_NUM;            /**< Offset: 0x10 (R/  32) Interval number */
+    __I  uint32_t N;                       /**< Offset: 0x14 (R/  32) Number of Samples in the Last Measurement Interval (uQ16.0) */
+    __I  uint32_t PH_OFFSET;               /**< Offset: 0x18 (R/  32) Phase Correction Filter Offset (sQ0.31) */
+    __I  uint32_t FREQ;                    /**< Offset: 0x1C (R/  32) Active Line Voltage Fundamental Harmonic Frequency (uQ20.12) */
+    __I  uint32_t FREQ_VA;                 /**< Offset: 0x20 (R/  32) Frequency of fundamental harmonic, VA (uQ20.12) */
+    __I  uint32_t FREQ_VB;                 /**< Offset: 0x24 (R/  32) Frequency of fundamental harmonic, VB (uQ20.12) */
+    __I  uint32_t FREQ_VC;                 /**< Offset: 0x28 (R/  32) Frequency of fundamental harmonic, VC (uQ20.12) */
+    __I  uint32_t Reserved1;
+    __I  uint32_t TEMPERATURE;             /**< Offset: 0x30 (R/  32) Sensor Temperature (sQ23.8) */
+    __I  uint32_t I_A_MAX;                 /**< Offset: 0x34 (R/  32) Phase A Current Peak (sQ2.29) */
+    __I  uint32_t I_B_MAX;                 /**< Offset: 0x38 (R/  32) Phase B Current Peak (sQ2.29) */
+    __I  uint32_t I_C_MAX;                 /**< Offset: 0x3C (R/  32) Phase C Current Peak (sQ2.29) */
+    __I  uint32_t I_Ni_MAX;                /**< Offset: 0x40 (R/  32) Neutral Current Peak (sQ16.15) */
+    __I  uint32_t I_Nm_MAX;                /**< Offset: 0x44 (R/  32) Neutral Current Peak (sQ16.15) */
+    __I  uint32_t V_A_MAX;                 /**< Offset: 0x48 (R/  32) Max phase-A measured current during measurement interval (sQ2.29)*/
+    __I  uint32_t V_B_MAX;                 /**< Offset: 0x4C (R/  32) Max phase-B measured current during measurement interval (sQ2.29)*/
+    __I  uint32_t V_C_MAX;                 /**< Offset: 0x50 (R/  32) Max phase-C measured current during measurement interval (sQ2.29)*/
+    __I  uint32_t FEATURES;                /**< Offset: 0x54 (R/  32) Compiled feature indicator */
+    __I  uint32_t Reserved2[8];
+    __I  uint32_t ZC_N_VA;                 /**< Offset: 0x78 (R/  32) Zero-crossing sample number of phase-A voltage (uQ20.12) */
+    __I  uint32_t ZC_N_VB;                 /**< Offset: 0x7C (R/  32) Zero-crossing sample number of phase-B voltage (uQ20.12) */
+    __I  uint32_t ZC_N_VC;                 /**< Offset: 0x80 (R/  32) Zero-crossing sample number of phase-C voltage (uQ20.12) */
+    __I  uint32_t ATSENSE_CAL_41_44;       /**< Offset: 0x84 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x41 ? 0x44 */
+    __I  uint32_t ATSENSE_CAL_45_48;       /**< Offset: 0x88 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x45 ? 0x48 */
+} DRV_METROLOGY_STATUS;
 
 /** \brief Metrology Control register API structure */
 typedef struct
@@ -1307,15 +1307,15 @@ typedef struct
    __IO  uint32_t POWER_OFFSET_Q_A;        /**< Offset: 0xE8 (R/W  32) Phase-A reactive power offset (sQ9.40) */
    __IO  uint32_t POWER_OFFSET_Q_B;        /**< Offset: 0xEC (R/W  32) Phase-B reactive power offset (sQ9.40) */
    __IO  uint32_t POWER_OFFSET_Q_C;        /**< Offset: 0xF0 (R/W  32) Phase-C reactive power offset (sQ9.40) */
-} MET_CONTROL;
+} DRV_METROLOGY_CONTROL;
 
 /** \brief METROLOGY register API structure */
 typedef struct
 {
-    MET_CONTROL       MET_CONTROL;         /**< Offset: 0x0000 (R/W  32) Metrology Control Registers */
-    MET_STATUS        MET_STATUS;          /**< Offset: 0x00F4 (R/   32) Metrology Status Registers */
-    MET_ACCUMULATORS  MET_ACCUMULATORS;    /**< Offset: 0x0180 (R/   32) Metrology Accumulated Output Registers */
-    MET_HARMONICS     MET_HARMONICS;       /**< Offset: 0x0338 (R/   32) Metrology Harmonic Analysis Output Registers */
+    DRV_METROLOGY_CONTROL       MET_CONTROL;         /**< Offset: 0x0000 (R/W  32) Metrology Control Registers */
+    DRV_METROLOGY_STATUS        MET_STATUS;          /**< Offset: 0x00F4 (R/   32) Metrology Status Registers */
+    DRV_METROLOGY_ACCUMULATORS  MET_ACCUMULATORS;    /**< Offset: 0x0180 (R/   32) Metrology Accumulated Output Registers */
+    DRV_METROLOGY_HARMONICS     MET_HARMONICS;       /**< Offset: 0x0338 (R/   32) Metrology Harmonic Analysis Output Registers */
 } MET_REGISTERS;
 
 

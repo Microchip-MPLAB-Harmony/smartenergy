@@ -54,7 +54,7 @@
 #endif
 
 #define MET_CAPTURE_BUF_SIZE     DRV_METROLOGY_CAPTURE_BUF_SIZE
-        
+
 // *****************************************************************************
 /* Metrology Driver Result
 
@@ -73,7 +73,7 @@ typedef enum
     // Invalid handle or operation failed.
     DRV_METROLOGY_ERROR
 
-} DRV_METROLOGY_RESULT;  
+} DRV_METROLOGY_RESULT;
 
 
 typedef enum
@@ -84,17 +84,17 @@ typedef enum
     // Invalid handle or operation failed.
     DRV_METROLOGY_START_HARD
 
-} DRV_METROLOGY_START_MODE;  
+} DRV_METROLOGY_START_MODE;
 
 typedef enum
 {
     // Positive Value
     RMS_SIGN_POSITIVE = 0,
-            
+
     //  Negative Value
     RMS_SIGN_NEGATIVE = 1,
-            
-} DRV_METROLOGY_RMS_SIGN;  
+
+} DRV_METROLOGY_RMS_SIGN;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -102,21 +102,23 @@ typedef enum
 // *****************************************************************************
 // *****************************************************************************
 
-SYS_MODULE_OBJ DRV_METROLOGY_Initialize ( const SYS_MODULE_INIT * const init, uint32_t resetValue  );
-DRV_METROLOGY_RESULT DRV_METROLOGY_Open ( DRV_METROLOGY_START_MODE mode );
-DRV_METROLOGY_RESULT DRV_METROLOGY_Start ( void );
-DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister ( DRV_METROLOGY_CALLBACK callback);
-DRV_METROLOGY_STATE DRV_METROLOGY_GetState ( void );
-MET_STATUS * DRV_METROLOGY_GetStatus ( void );
-MET_CONTROL * DRV_METROLOGY_GetControl ( void );
-MET_CONTROL * DRV_METROLOGY_GetControlByDefault ( void );
-MET_ACCUMULATORS * DRV_METROLOGY_GetAccData ( void );
-MET_HARMONICS * DRV_METROLOGY_GetHarData ( void );
-void DRV_METROLOGY_SetControl ( MET_CONTROL * pControl );
-void DRV_METROLOGY_UpdateMeasurements( void );
-uint32_t DRV_METROLOGY_GetEnergyValue( bool restartEnergy );
-uint32_t DRV_METROLOGY_GetRMSValue( MET_RMS_TYPE type );
-DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign( MET_RMS_TYPE type );
+SYS_MODULE_OBJ DRV_METROLOGY_Initialize(const SYS_MODULE_INIT * const init, uint32_t resetValue);
+DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode);
+DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
+DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister(DRV_METROLOGY_CALLBACK callback);
+DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
+DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
+DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl(void);
+DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
+DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
+DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData(void);
+void DRV_METROLOGY_SetControl(DRV_METROLOGY_CONTROL * pControl);
+void DRV_METROLOGY_UpdateMeasurements(void);
+uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
+uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type);
+DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
+
+void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }
