@@ -118,7 +118,6 @@ void _APP_ENERGY_Tasks(  void *pvParameters  )
     while(1)
     {
         APP_ENERGY_Tasks();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
 /* Handle for the APP_EVENTS_Tasks. */
@@ -215,7 +214,7 @@ void SYS_Tasks ( void )
                 "APP_METROLOGY_Tasks",
                 1024,
                 NULL,
-                2,
+                1,
                 &xAPP_METROLOGY_Tasks);
 
     /* Create OS Thread for APP_CONSOLE_Tasks. */
