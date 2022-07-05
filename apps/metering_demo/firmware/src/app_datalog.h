@@ -403,6 +403,39 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
 
 bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime);
 
+
+/*******************************************************************************
+  Function:
+    void APP_DATALOG_ClearData(APP_DATALOG_USER userId)
+
+  Summary:
+    Clears all stored data for a given user (module).
+
+  Description:
+    This routine clears all data for a given user id.
+    As users ids have their own directory, it clear all files in it.
+
+  Precondition:
+    None.
+
+  Parameters:
+    userId - ID of module to clear data.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    // Clear all stored energy data
+    APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY)
+    </code>
+
+  Remarks:
+    None.
+ */
+
+void APP_DATALOG_ClearData(APP_DATALOG_USER userId);
+
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }
