@@ -104,23 +104,26 @@ typedef enum
 
 typedef enum
 {
-    /* Energy module */
-    APP_DATALOG_USER_ENERGY = 0,
+    /* Metrology data */
+    APP_DATALOG_USER_METROLOGY = 0,
 
-    /* TOU module */
+    /* TOU data */
     APP_DATALOG_USER_TOU,
 
-    /* RTC module */
+    /* RTC data */
     APP_DATALOG_USER_RTC,
 
-    /* Events module */
+    /* Console data */
+    APP_DATALOG_USER_CONSOLE,
+
+    /* Energy data */
+    APP_DATALOG_USER_ENERGY,
+
+    /* Events data */
     APP_DATALOG_USER_EVENTS,
 
-    /* Demand module */
+    /* Demand data */
     APP_DATALOG_USER_DEMAND,
-
-    /* Console module */
-    APP_DATALOG_USER_CONSOLE,
 
     /* Last value used to get number of Users */
     APP_DATALOG_USER_NUM
@@ -192,23 +195,23 @@ typedef void (*APP_DATALOG_END_CALLBACK)(APP_DATALOG_RESULT result);
 
 typedef struct
 {
-  // Datalog User ID
-  APP_DATALOG_USER userId;
+    // Datalog User ID
+    APP_DATALOG_USER userId;
 
-  // Read/ReadPrevious/Write/Append operation
-  APP_DATALOG_OPERATION operation;
-  
-  // Callback to be invoked at the end of Datalog operation
-  APP_DATALOG_END_CALLBACK endCallback;
-  
-  // Date Time to index the proper file to read/write
-  struct tm sysTime;
-  
-  // Length of data to be read/written
-	uint16_t dataLen;
-  
-  // Pointer to data to be written or to store read data
-	uint8_t *pData;
+    // Read/ReadPrevious/Write/Append operation
+    APP_DATALOG_OPERATION operation;
+
+    // Callback to be invoked at the end of Datalog operation
+    APP_DATALOG_END_CALLBACK endCallback;
+
+    // Date Time to index the proper file to read/write
+    struct tm sysTime;
+
+    // Length of data to be read/written
+    uint16_t dataLen;
+
+    // Pointer to data to be written or to store read data
+    uint8_t *pData;
 
 } APP_DATALOG_QUEUE_DATA;
 
@@ -233,7 +236,7 @@ typedef struct
 
     /* Element from Queue */
     APP_DATALOG_QUEUE_DATA newQueueData;
-    
+
     /* Current File Handle */
     SYS_FS_HANDLE fileHandle;
 
@@ -248,7 +251,7 @@ typedef struct
 
     /* Flag to indicate whether disk needs format */
     bool diskFormatRequired;
-    
+
 } APP_DATALOG_DATA;
 
 // *****************************************************************************

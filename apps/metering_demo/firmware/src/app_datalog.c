@@ -60,10 +60,10 @@
 APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 
 /* Define a queue to signal the Datalog Tasks to store data */
-QueueHandle_t CACHE_ALIGN app_datalogQueue = NULL;
+QueueHandle_t CACHE_ALIGN appDatalogQueueID = NULL;
 
 /* Buffer to get a string name from User IDs */
-static char *userToString[APP_DATALOG_USER_NUM] = {"energy", "tou", "rtc", "events", "demand", "console"};
+static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "tou", "rtc", "console", "energy", "events", "demand"};
 
 // *****************************************************************************
 // *****************************************************************************
@@ -126,22 +126,14 @@ static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, u
 static void APP_DATALOG_GetFileNameByDate(struct tm sysTime, APP_DATALOG_USER userId, char* fileName)
 {
     // Some User IDs use a unique file, not depending on date
-    if ((userId == APP_DATALOG_USER_TOU) || (userId == APP_DATALOG_USER_RTC))
+    if (userId < APP_DATALOG_USER_ENERGY)
     {
         sprintf(fileName, "%s/%s", userToString[userId], userToString[userId]);
     }
     else
     {
-        // Adjust month to range 1 - 12
-        sysTime.tm_mon++;
-        // Remove century for 20xx years
-        if (sysTime.tm_year > 99)
-        {
-            sysTime.tm_year -= 100;
-        }
-
-        // Build name
-        sprintf(fileName, "%s/%02d%02d", userToString[userId], sysTime.tm_year, sysTime.tm_mon);
+        // Build name. Adjust month to range 1 - 12. Year from 2000.
+        sprintf(fileName, "%s/%02d%02d", userToString[userId], sysTime.tm_year - 100, sysTime.tm_mon + 1);
     }
 }
 
@@ -214,14 +206,14 @@ void APP_DATALOG_Initialize ( void )
 {
     // Place the App state machine in its initial state.
     app_datalogData.state = APP_DATALOG_STATE_MOUNT_WAIT;
-    
+
     // Set the handling function of the File System
     SYS_FS_EventHandlerSet(APP_DATALOG_SysFSEventHandler,(uintptr_t)NULL);
-    
-    // Create a queue capable of containing 5 Datalog queue data elements.
-    app_datalogQueue = xQueueCreate(5, sizeof(APP_DATALOG_QUEUE_DATA));
 
-    if (app_datalogQueue == NULL)
+    // Create a queue capable of containing 5 Datalog queue data elements.
+    appDatalogQueueID = xQueueCreate(5, sizeof(APP_DATALOG_QUEUE_DATA));
+
+    if (appDatalogQueueID == NULL)
     {
         // Queue was not created and must not be used.
         app_datalogData.state = APP_DATALOG_STATE_ERROR;
@@ -253,17 +245,17 @@ void APP_DATALOG_Tasks(void)
             {
                 // Set current drive to access files directly without path
                 SYS_FS_CurrentDriveSet(DATALOG_MOUNT_NAME);
-                
+
                 // Mount was successful. Check directories.
                 app_datalogData.state = APP_DATALOG_STATE_CHECK_DIRECTORIES;
             }
 
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY / portTICK_PERIOD_MS);
-            
+
             break;
         }
-        
+
         case APP_DATALOG_STATE_CHECK_DIRECTORIES:
         {
             uint8_t idx;
@@ -290,22 +282,22 @@ void APP_DATALOG_Tasks(void)
 
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-            
+
             break;
         }
-        
+
         case APP_DATALOG_STATE_FORMAT_DISK:
         {
             SYS_CONSOLE_PRINT("APP_DATALOG_STATE_FORMAT_DISK!!!\r\n\r\n");
             app_datalogData.state = APP_DATALOG_STATE_ERROR;
-            
+
             break;
         }
 
         case APP_DATALOG_STATE_READY:
         {
             // Wait messages in queue
-            if (xQueueReceive(app_datalogQueue, &app_datalogData.newQueueData, portMAX_DELAY))
+            if (xQueueReceive(appDatalogQueueID, &app_datalogData.newQueueData, portMAX_DELAY))
             {
                 // Get file name
                 APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.sysTime, app_datalogData.newQueueData.userId, app_datalogData.fileName);
@@ -334,6 +326,7 @@ void APP_DATALOG_Tasks(void)
         {
             if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
             {
+                SYS_CMD_PRINT("DATALOG Read File: %s\n\r", app_datalogData.fileName);
                 // Read operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
@@ -360,7 +353,7 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
-            
+
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
@@ -371,6 +364,7 @@ void APP_DATALOG_Tasks(void)
         {
             if (app_datalogData.newQueueData.operation == APP_DATALOG_APPEND)
             {
+                SYS_CMD_PRINT("DATALOG Append File: %s\n\r", app_datalogData.fileName);
                 // Append operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_APPEND));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
@@ -399,6 +393,7 @@ void APP_DATALOG_Tasks(void)
             }
             else if (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE)
             {
+                SYS_CMD_PRINT("DATALOG Write File: %s\n\r", app_datalogData.fileName);
                 // Write operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_WRITE));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
@@ -425,7 +420,7 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
-            
+
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
@@ -445,7 +440,7 @@ void APP_DATALOG_Tasks(void)
                 // Go to Error state
                 app_datalogData.state = APP_DATALOG_STATE_ERROR;
             }
-            
+
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
@@ -461,7 +456,7 @@ void APP_DATALOG_Tasks(void)
             }
             // Go back to Ready state
             app_datalogData.state = APP_DATALOG_STATE_READY;
-            
+
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
@@ -471,7 +466,7 @@ void APP_DATALOG_Tasks(void)
         case APP_DATALOG_STATE_ERROR:
         {
             SYS_CONSOLE_PRINT("APP_DATALOG_STATE_ERROR!!!\r\n\r\n");
-            
+
             break;
         }
 
