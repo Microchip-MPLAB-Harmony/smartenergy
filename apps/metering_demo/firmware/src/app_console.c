@@ -37,14 +37,14 @@
 // *****************************************************************************
 
 #define CONSOLE_HEADER   "\r\n-- Microchip Demo Meter --\r\n" \
-	"-- Compiled: "__DATE__ " "__TIME__ " -- \r\n"
+  "-- Compiled: "__DATE__ " "__TIME__ " -- \r\n"
 
 /* Structure containing data to be stored in non volatile memory */
 typedef struct
 {
     /* Meter ID */
     char meterID[7];
-    
+
 } APP_CONSOLE_STORAGE_DATA;
 
 #define CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY      100
@@ -97,7 +97,7 @@ static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
 
 /* Reference to datalog queue */
-extern QueueHandle_t CACHE_ALIGN app_datalogQueue;
+extern QueueHandle_t CACHE_ALIGN appDatalogQueueID;
 
 /* Local DateTime struct */
 static struct tm sysTime;
@@ -142,7 +142,7 @@ static void _consoleReadStorage(APP_DATALOG_RESULT result)
 //API     // Post semaphore to wakeup task
 //API     OSAL_SEM_Post(&appConsoleSemID);
 //API }
-//API 
+//API
 static void _monthlyEnergyCallback(uint8_t month)
 {
     app_consoleData.energyMonth = month;
@@ -150,7 +150,7 @@ static void _monthlyEnergyCallback(uint8_t month)
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
 }
-//API 
+//API
 //API static void _eventCallback(DRV_MET_EVENT_OBJECT *eventObj)
 //API {
 //API     // Copy event object to local variable and go to corresponding state
@@ -159,16 +159,16 @@ static void _monthlyEnergyCallback(uint8_t month)
 //API     // Post semaphore to wakeup task
 //API     OSAL_SEM_Post(&appConsoleSemID);
 //API }
-//API 
+//API
 static void _maxDemandCallback( uint8_t month )
 {
     app_consoleData.maxDemandMonth = month;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MAX_DEMAND;
-    
+
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
 }
-//API 
+//API
 //API static void _calibrationCallback(bool calibrationDone)
 //API {
 //API     if (calibrationDone) {
@@ -178,7 +178,7 @@ static void _maxDemandCallback( uint8_t month )
 //API         SYS_CMD_MESSAGE("Calibration Failed!\n\r");
 //API     }
 //API }
-//API 
+//API
 //API static void _waveformDataCallback(uint32_t *rawData, uint16_t dataSize)
 //API {
 //API     SYS_CMD_MESSAGE("Waveform Capture Data:\n\r");
@@ -545,157 +545,165 @@ static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-//API     DRV_MET_CONF_OBJECT newConf;
+    DRV_METROLOGY_CONFIGURATION newConf;
     uint8_t idx, value;
     char *p;
     bool parseError = false;
 
-    if (argc == 8) {
+    if (argc == 8)
+    {
         // Parse arguments
-        for (idx = 1; idx < argc; idx++) {
-            if (strncmp(argv[idx], "MC", 2) == 0) {
+        for (idx = 1; idx < argc; idx++)
+        {
+            if (strncmp(argv[idx], "MC", 2) == 0)
+            {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
-                if (p != NULL) {
+                if (p != NULL)
+                {
                     // Advance ptr to ignore '=' and extract value
                     p++;
-//API                     newConf.meterConstant = strtol(p, NULL, 10);
+                    newConf.mc = strtol(p, NULL, 10);
                 }
-                else {
+                else
+                {
                     parseError = true;
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "ST", 2) == 0) {
+            else if (strncmp(argv[idx], "ST", 2) == 0)
+            {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
-                if (p != NULL) {
-                    // Advance ptr to ignore '=' and extract value
-                    p++;
-                    value = strtol(p, NULL, 10);
-                    switch (value) {
-                    case 0:
-//API                         newConf.sensorType = DRV_MET_SENSOR_CURRENT_TRANFORMER;
-                        break;
-                    case 1:
-//API                         newConf.sensorType = DRV_MET_SENSOR_SHUNT_RESISTOR;
-                        break;
-                    case 2:
-//API                         newConf.sensorType = DRV_MET_SENSOR_ROGOWSKI_COIL;
-                        break;
-                    default:
-                        parseError = true;
-                        break;
-                    }
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            else if (strncmp(argv[idx], "F", 1) == 0) {
-                // Get substring after '=' char
-                p = strstr(argv[idx], "=");
-                if (p != NULL) {
-                    // Advance ptr to ignore '=' and extract value
-                    p++;
-//API                     newConf.mainsFrequency = strtod(p, NULL);
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            else if (strncmp(argv[idx], "G", 1) == 0) {
-                // Get substring after '=' char
-                p = strstr(argv[idx], "=");
-                if (p != NULL) {
+                if (p != NULL)
+                {
                     // Advance ptr to ignore '=' and extract value
                     p++;
                     value = strtol(p, NULL, 10);
-                    switch (value) {
-                    case 1:
-//API                         newConf.pgaValue = DRV_MET_PGA_1;
-                        break;
-                    case 2:
-//API                         newConf.pgaValue = DRV_MET_PGA_2;
-                        break;
-                    case 4:
-//API                         newConf.pgaValue = DRV_MET_PGA_4;
-                        break;
-                    case 8:
-//API                         newConf.pgaValue = DRV_MET_PGA_8;
-                        break;
-                    default:
+                    if (value < SENSOR_NUM_TYPE)
+                    {
+                        newConf.st = (DRV_METROLOGY_SENSOR_TYPE)value;
+                    }
+                    else
+                    {
                         parseError = true;
-                        break;
                     }
                 }
-                else {
+                else
+                {
                     parseError = true;
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Tr", 2) == 0) {
+            else if (strncmp(argv[idx], "F", 1) == 0)
+            {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
-                if (p != NULL) {
+                if (p != NULL)
+                {
                     // Advance ptr to ignore '=' and extract value
                     p++;
-//API                     newConf.trafoSpec = strtod(p, NULL);
+                    newConf.freq = strtod(p, NULL);
                 }
-                else {
+                else
+                {
                     parseError = true;
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Rl", 2) == 0) {
+            else if (strncmp(argv[idx], "G", 1) == 0)
+            {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
-                if (p != NULL) {
+                if (p != NULL)
+                {
                     // Advance ptr to ignore '=' and extract value
                     p++;
-//API                     newConf.resistorValue = strtod(p, NULL);
+                    value = strtol(p, NULL, 10);
+                    if (value < GAIN_NUM_TYPE)
+                    {
+                        newConf.gain = (DRV_METROLOGY_GAIN_TYPE)value;
+                    }
+                    else
+                    {
+                        parseError = true;
+                    }
                 }
-                else {
+                else
+                {
                     parseError = true;
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Ku", 2) == 0) {
+            else if (strncmp(argv[idx], "Tr", 2) == 0)
+            {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
-                if (p != NULL) {
+                if (p != NULL)
+                {
                     // Advance ptr to ignore '=' and extract value
                     p++;
-//API                     newConf.voltageDividerRatio = strtol(p, NULL, 10);
+                    newConf.tr = strtod(p, NULL);
                 }
-                else {
+                else
+                {
                     parseError = true;
                     break;
                 }
             }
-            else {
+            else if (strncmp(argv[idx], "Rl", 2) == 0)
+            {
+                // Get substring after '=' char
+                p = strstr(argv[idx], "=");
+                if (p != NULL)
+                {
+                    // Advance ptr to ignore '=' and extract value
+                    p++;
+                    newConf.rl = strtod(p, NULL);
+                }
+                else
+                {
+                    parseError = true;
+                    break;
+                }
+            }
+            else if (strncmp(argv[idx], "Ku", 2) == 0)
+            {
+                // Get substring after '=' char
+                p = strstr(argv[idx], "=");
+                if (p != NULL)
+                {
+                    // Advance ptr to ignore '=' and extract value
+                    p++;
+                    newConf.ku = strtol(p, NULL, 10);
+                }
+                else
+                {
+                    parseError = true;
+                    break;
+                }
+            }
+            else
+            {
                 parseError = true;
                 break;
             }
         }
     }
-    else {
+    else
+    {
         // Incorrect parameter number
         parseError = true;
     }
 
-    if (parseError) {
+    if (parseError)
+    {
         SYS_CMD_MESSAGE("Unsupported Command !\n\r");
     }
-    else {
-//API         if (DRV_MET_WriteConfiguration(&newConf) == DRV_MET_RESULT_SUCCESS) {
-//API             SYS_CMD_MESSAGE("Configure Meter is Ok !\n\r");
-//API         }
-//API         else {
-//API             SYS_CMD_MESSAGE("Could not write Configuration\n\r");
-//API         }
+    else
+    {
+        APP_METROLOGY_SetConfiguration(&newConf);
+        SYS_CMD_MESSAGE("Configure Meter is Ok !\n\r");
     }
 }
 
@@ -703,7 +711,7 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
-    if (argc == 1) 
+    if (argc == 1)
     {
         // Read all metrology accumulator registers
         app_consoleData.accumRegToRead = 0;
@@ -711,11 +719,11 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
     }
-    else if (argc == 2) 
+    else if (argc == 2)
     {
         // Extract register index from parameters
         idx = (uint8_t)strtol(argv[1], NULL, 10);
-        if (idx < ACCUMULATOR_REG_NUM) 
+        if (idx < ACCUMULATOR_REG_NUM)
         {
             // Read register value
             app_consoleData.accumRegToRead = idx;
@@ -723,13 +731,13 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
         }
-        else 
+        else
         {
             // Invalid index
             SYS_CMD_MESSAGE("Invalid register index\n\r");
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -738,13 +746,13 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 1) 
+    if (argc == 1)
     {
         SYS_CMD_MESSAGE("Entering Low Power\n\r");
         // Go to Low Power mode
 //API         DRV_MET_SetLowPowerMode();
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -753,13 +761,13 @@ static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_DCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 1) 
+    if (argc == 1)
     {
         SYS_CMD_MESSAGE("Load Default Is Ok !\n\r");
         // Set default control register values
-//API         DRV_MET_SetControlRegsToDefault();
+        APP_METROLOGY_SetControlByDefault();
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -773,31 +781,31 @@ static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     char *p;
     bool parseError = false;
 
-    if (argc > 1) 
+    if (argc > 1)
     {
         // Each argument includes reg index and value
         numRegsToWrite = (argc - 1);
-        for (i = 0; i < numRegsToWrite; i++) 
+        for (i = 0; i < numRegsToWrite; i++)
         {
             // Extract register index and value from argument
             p = argv[i + 1];
             app_consoleData.regsToModify[i].index = (uint8_t)strtol(p, NULL, 10);
             // Look for ":" char and advance to next char
             p = strstr(p, ":");
-            if (p != NULL) 
+            if (p != NULL)
             {
                 p++;
                 app_consoleData.regsToModify[i].value = (uint32_t)strtol(p, NULL, 16);
             }
-            else 
+            else
             {
                 SYS_CMD_MESSAGE("Unsupported Command !\n\r");
                 parseError = true;
                 break;
             }
         }
-        
-        if (!parseError) 
+
+        if (!parseError)
         {
             // Write invalid values after last, to later detect it
             app_consoleData.regsToModify[i].index = 0xFF;
@@ -808,7 +816,7 @@ static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -819,7 +827,7 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
-    if (argc == 1) 
+    if (argc == 1)
     {
         // Read all metrology control registers
         app_consoleData.ctrlRegToRead = 0;
@@ -827,11 +835,11 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
     }
-    else if (argc == 2) 
+    else if (argc == 2)
     {
         // Extract register index from parameters
         idx = (uint8_t)strtol(argv[1], NULL, 10);
-        if (idx < CONTROL_REG_NUM) 
+        if (idx < CONTROL_REG_NUM)
         {
             // Read register value
             app_consoleData.ctrlRegToRead = idx;
@@ -839,13 +847,13 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
         }
-        else 
+        else
         {
             // Invalid index
             SYS_CMD_MESSAGE("Invalid register index\n\r");
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -854,13 +862,13 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_DCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 1) 
+    if (argc == 1)
     {
         SYS_CMD_MESSAGE("Save Data Is Ok !\n\r");
-        // Save Metrology Constants to NVM
-//API         DRV_MET_SaveMetrologyConstants();
+        // Save Metrology Constants and configuration settings to NVM
+        APP_METROLOGY_StoreMetrologyData();
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -872,33 +880,33 @@ static void Command_DCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     uint8_t idx;
     uint32_t regValue;
 
-    if (argc == 3) 
+    if (argc == 3)
     {
         // Extract register index from parameters
         idx = (uint8_t)strtol(argv[1], NULL, 10);
-        if (idx < CONTROL_REG_NUM) 
+        if (idx < CONTROL_REG_NUM)
         {
             // Extract register value
             regValue = (uint32_t)strtol(argv[2], NULL, 16);
             // Write register value
-            if (APP_METROLOGY_SetControlRegister((CONTROL_REG_ID)idx, regValue)) 
+            if (APP_METROLOGY_SetControlRegister((CONTROL_REG_ID)idx, regValue))
             {
                 // Show response on console
                 SYS_CMD_MESSAGE("Set Is Ok !\n\r");
             }
-            else 
+            else
             {
                 // Cannot write register
                 SYS_CMD_PRINT("Could not write register %02d\n\r", idx);
             }
         }
-        else 
+        else
         {
             // Invalid index
             SYS_CMD_MESSAGE("Invalid register index\n\r");
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -909,7 +917,7 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
-    if (argc == 1) 
+    if (argc == 1)
     {
         // Read all metrology status registers
         app_consoleData.statusRegToRead = 0;
@@ -917,11 +925,11 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
     }
-    else if (argc == 2) 
+    else if (argc == 2)
     {
         // Extract register index from parameters
         idx = (uint8_t)strtol(argv[1], NULL, 10);
-        if (idx < STATUS_REG_NUM) 
+        if (idx < STATUS_REG_NUM)
         {
             // Read register value
             app_consoleData.statusRegToRead = idx;
@@ -929,13 +937,13 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
         }
-        else 
+        else
         {
             // Invalid index
             SYS_CMD_MESSAGE("Invalid register index\n\r");
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -944,23 +952,23 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 2) 
+    if (argc == 2)
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strcmp(argv[1], metPwd) == 0)
         {
             // Correct password, Clear Energy records
             APP_ENERGY_ClearEnergy();
             // Show response on console
             SYS_CMD_MESSAGE("Clear Energy is ok !\n\r");
         }
-        else 
+        else
         {
             // Invalid password
             SYS_CMD_MESSAGE("Invalid password\n\r");
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -970,7 +978,7 @@ static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t monthIndex;
-    
+
     if (argc == 2) {
         RTC_TimeGet(&sysTime);
         // Extract month index from parameters
@@ -981,7 +989,7 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             sysTime.tm_mon += 12;
         }
         monthIndex = sysTime.tm_mon - monthIndex;
-        
+
         // Get monthly energy from energy app
         if (APP_ENERGY_GetMonthEnergy(monthIndex) == false)
         {
@@ -990,7 +998,7 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         }
         // Response will be provided on _monthlyEnergyCallback function
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -1049,7 +1057,7 @@ static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 //API         else if (strcmp(argv[1], "Pc") == 0) {
 //API             eventId = DRV_MET_POW_UC_EVENT;
 //API         }
-//API 
+//API
 //API         if (eventId != DRV_MET_INVALID_EVENT) {
 //API             // Get monthly energy from metrology driver
 //API             DRV_MET_GetEvent(eventId, lastTimesEvent);
@@ -1137,15 +1145,14 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Correct password, write Meter ID
             memcpy(&app_consoleStorageData.meterID, argv[2], sizeof(app_consoleStorageData.meterID));
             // Build queue element to write it to storage
-            RTC_TimeGet(&sysTime);
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_WRITE;
             datalogQueueElement.endCallback = NULL;
-            datalogQueueElement.sysTime = sysTime;
+            datalogQueueElement.sysTime = sysTime; /* Don't need to be updated, not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            xQueueSend(app_datalogQueue, &datalogQueueElement, (TickType_t)0);
+            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
             SYS_CMD_MESSAGE("Set Meter ID is Ok\n\r");
         }
         else {
@@ -1194,7 +1201,7 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             sysTime.tm_mon += 12;
         }
         monthIndex = sysTime.tm_mon - monthIndex;
-        
+
         // Get max demand from energy app
         if (APP_ENERGY_GetMonthMaxDemand(monthIndex) == false)
         {
@@ -1203,7 +1210,7 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         }
         // Response will be provided on _maxDemandCallback function
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -1213,58 +1220,58 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     bool wakeup = false;
-    
-    if (argc == 2) 
+
+    if (argc == 2)
     {
         // Extract data to retrieve from parameters
-        if (strcmp(argv[1], "U") == 0) 
+        if (strcmp(argv[1], "U") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_VOLTAGE;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "I") == 0) 
+        else if (strcmp(argv[1], "I") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_CURRENT;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "P") == 0) 
+        else if (strcmp(argv[1], "P") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_ACTIVE_POWER;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "Q") == 0) 
+        else if (strcmp(argv[1], "Q") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_REACTIVE_POWER;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "S") == 0) 
+        else if (strcmp(argv[1], "S") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_APARENT_POWER;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "F") == 0) 
+        else if (strcmp(argv[1], "F") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_FREQUENCY;
             wakeup = true;
         }
-        else if (strcmp(argv[1], "A") == 0) 
+        else if (strcmp(argv[1], "A") == 0)
         {
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_ANGLE;
             wakeup = true;
         }
-        else 
+        else
         {
             // Invalid Command
             SYS_CMD_MESSAGE("Unsupported Command !\n\r");
         }
-        
+
         if (wakeup)
         {
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -1292,7 +1299,7 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         if (strcmp(argv[1], metPwd) == 0)
         {
             char *p;
-            
+
             // Get Date
             p = argv[2];
             // Year
@@ -1311,11 +1318,11 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     sysTime.tm_mday = (uint8_t)strtol(p, NULL, 10);
                 }
             }
-            
+
             // Get Week Day
             p = argv[3];
             sysTime.tm_wday = (uint8_t)strtol(p, NULL, 10) - 1;
-            
+
             // Get Time
             p = argv[4];
             // Hour
@@ -1334,7 +1341,7 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     sysTime.tm_sec = (uint8_t)strtol(p, NULL, 10);
                 }
             }
-            
+
             if (RTC_TimeSet(&sysTime))
             {
                 SYS_CMD_MESSAGE("Set RTC is ok!\n\r");
@@ -1376,13 +1383,13 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     uint8_t idx, argIdx;
     bool parseError = false;
 
-    if ((argc > 3) && ((argc - 2) % 2 == 0)) 
+    if ((argc > 3) && ((argc - 2) % 2 == 0))
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strcmp(argv[1], metPwd) == 0)
         {
              // Correct password, write TOW
-             for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++) 
+             for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++)
              {
                 // Check whether there are arguments left to write
                 argIdx = ((idx << 1) + 2);
@@ -1419,23 +1426,23 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                 }
              }
         }
-        else 
+        else
         {
             // Invalid password
             parseError = true;
         }
     }
-    else 
+    else
     {
         // Incorrect parameter number
         parseError = true;
     }
 
-    if (parseError) 
+    if (parseError)
     {
         SYS_CMD_MESSAGE("Unsupported Command !\n\r");
     }
-    else 
+    else
     {
         APP_ENERGY_SetTOUTimeZone(timeZone);
         SYS_CMD_MESSAGE("Set TOU is Ok !\n\r");
@@ -1611,15 +1618,14 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_STORAGE:
         {
             // Build queue element
-            RTC_TimeGet(&sysTime);
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_READ;
             datalogQueueElement.endCallback = _consoleReadStorage;
-            datalogQueueElement.sysTime = sysTime;
+            datalogQueueElement.sysTime = sysTime; /* Don't need to be updated, not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            xQueueSend(app_datalogQueue, &datalogQueueElement, (TickType_t)0);
+            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
             // Wait for data to be read (semaphore is released in callback)
             OSAL_SEM_Pend(&appConsoleStorageSemID, OSAL_WAIT_FOREVER);
             // Data read, depending on read result, state has changed to READ_OK or READ_ERROR
@@ -2078,7 +2084,7 @@ void APP_CONSOLE_Tasks ( void )
             RTC_TimeGet(&sysTime);
             SYS_CMD_MESSAGE("Present RTC is(yy-mm-dd w hh:mm:ss):\n\r");
             SYS_CMD_PRINT("%02u-%02u-%02u %u %02u:%02u:%02u\r\n",
-                    sysTime.tm_year + 1900 - 2000, sysTime.tm_mon + 1, sysTime.tm_mday, 
+                    sysTime.tm_year + 1900 - 2000, sysTime.tm_mon + 1, sysTime.tm_mday,
                     sysTime.tm_wday + 1, sysTime.tm_hour, sysTime.tm_min, sysTime.tm_sec);
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2089,13 +2095,13 @@ void APP_CONSOLE_Tasks ( void )
         {
             APP_ENERGY_TOU_TIME_ZONE * timeZone;
             uint8_t idx;
-            
+
             timeZone = APP_ENERGY_GetTOUTimeZone();
-            
+
             SYS_CMD_MESSAGE("TOU table is :\n\r");
-            for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++, timeZone++) 
+            for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++, timeZone++)
             {
-                if (timeZone->tariff != TARIFF_INVALID) 
+                if (timeZone->tariff != TARIFF_INVALID)
                 {
                     SYS_CMD_PRINT("T%d=%02d:%02d %d ",
                         (idx + 1), timeZone->hour, timeZone->minute, timeZone->tariff);
@@ -2112,25 +2118,25 @@ void APP_CONSOLE_Tasks ( void )
         {
             // Show received data on console
             SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\n\r");
-//API 
+//API
 //API             SYS_CMD_MESSAGE("Irms_Har_A(A)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_A);
-//API             
+//API
 //API             SYS_CMD_MESSAGE("Irms_Har_B(A)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_B);
-//API             
+//API
 //API             SYS_CMD_MESSAGE("Irms_Har_C(A)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_C);
-//API             
+//API
 //API             SYS_CMD_MESSAGE("Vrms_Har_A(V)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_A);
-//API             
+//API
 //API             SYS_CMD_MESSAGE("Vrms_Har_B(V)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_B);
-//API             
+//API
 //API             SYS_CMD_MESSAGE("Vrms_Har_C(V)\n\r");
 //API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_C);
-//API             
+//API
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2146,7 +2152,7 @@ void APP_CONSOLE_Tasks ( void )
 //API                 energyLocalObject.energyPerTariff[1],
 //API                 energyLocalObject.energyPerTariff[2],
 //API                 energyLocalObject.energyPerTariff[3]);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2184,7 +2190,7 @@ void APP_CONSOLE_Tasks ( void )
 //API                 eventLocalObject.dateTimeEnd.tm_mday,
 //API                 eventLocalObject.dateTimeEnd.tm_hour,
 //API                 eventLocalObject.dateTimeEnd.tm_min);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2192,46 +2198,23 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MAX_DEMAND:
         {
-            uint8_t idx;
-            APP_ENERGY_DEMAND_DATA *pData;
-            
-            
-            // Show received data on console
-            SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", app_consoleData.maxDemandMonth);
-           
-            pData = &maxDemandLocalObject.maxDemad;
-            SYS_CMD_PRINT("TT=%fkW %d-%d %02d:%02d ", pData->value, pData->month, pData->day, pData->hour, pData->minute);
-            for (idx = 0; idx < TARIFF_MAX_NUM; idx++)
-            {
+            APP_ENERGY_DEMAND_DATA *pDataMax;
+            APP_ENERGY_DEMAND_DATA *pDataTariff;
 
-            }
-//            SYS_CMD_PRINT("TT=%fkW %d-%d %02d:%02d T1=%fkW %d-%d %02d:%02d T2=%fkW %d-%d %02d:%02d T3=%fkW %d-%d %02d:%02d T4=%fkW %d-%d %02d:%02d\n\r",
-//                 maxDemandLocalObject.maxDemand = 2,
-//                 maxDemandLocalObject.dateTimePeak.tm_mon,
-//                 maxDemandLocalObject.dateTimePeak.tm_mday,
-//                 maxDemandLocalObject.dateTimePeak.tm_hour,
-//                 maxDemandLocalObject.dateTimePeak.tm_min,
-//                 maxDemandLocalObject.maxDemandPerTariff[0],
-//                 maxDemandLocalObject.dateTimePeakPerTariff[0].tm_mon,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[0].tm_mday,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[0].tm_hour,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[0].tm_min,
-//                 maxDemandLocalObject.maxDemandPerTariff[1],
-//                 maxDemandLocalObject.dateTimePeakPerTariff[1].tm_mon,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[1].tm_mday,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[1].tm_hour,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[1].tm_min,
-//                 maxDemandLocalObject.maxDemandPerTariff[2],
-//                 maxDemandLocalObject.dateTimePeakPerTariff[2].tm_mon,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[2].tm_mday,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[2].tm_hour,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[2].tm_min,
-//                 maxDemandLocalObject.maxDemandPerTariff[3],
-//                 maxDemandLocalObject.dateTimePeakPerTariff[3].tm_mon,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[3].tm_mday,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[3].tm_hour,
-//                 maxDemandLocalObject.dateTimePeakPerTariff[3].tm_min);
-            
+            RTC_TimeGet(&sysTime);
+
+            // Show received data on console
+            SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", sysTime.tm_mon - app_consoleData.maxDemandMonth);
+
+            pDataMax = &maxDemandLocalObject.maxDemad;
+            pDataTariff = &maxDemandLocalObject.tariff[0];
+            SYS_CMD_PRINT("TT=%fkW %d-%d %02d:%02d T1=%fkW %d-%d %02d:%02d T2=%fkW %d-%d %02d:%02d T3=%fkW %d-%d %02d:%02d T4=%fkW %d-%d %02d:%02d\n\r",
+                    pDataMax->value, pDataMax->month, pDataMax->day, pDataMax->hour, pDataMax->minute,
+                    pDataTariff->value, pDataTariff->month, pDataTariff->day, pDataTariff->hour, pDataTariff->minute,
+                    (pDataTariff + 1)->value, (pDataTariff + 1)->month, (pDataTariff + 1)->day, (pDataTariff + 1)->hour, (pDataTariff + 1)->minute,
+                    (pDataTariff + 2)->value, (pDataTariff + 2)->month, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
+                    (pDataTariff + 3)->value, (pDataTariff + 3)->month, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2240,13 +2223,13 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_VOLTAGE:
         {
             uint32_t va, vb, vc;
-            
+
             APP_METROLOGY_GetRMS(RMS_UA, &va, 0);
             APP_METROLOGY_GetRMS(RMS_UB, &vb, 0);
             APP_METROLOGY_GetRMS(RMS_UC, &vc, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present voltage is :\n\rUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)va/10000, (float)vc/10000);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2256,7 +2239,7 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t ia, ib, ic;
             uint32_t ini, inm, inmi;
-            
+
             APP_METROLOGY_GetRMS(RMS_IA, &ia, 0);
             APP_METROLOGY_GetRMS(RMS_IB, &ib, 0);
             APP_METROLOGY_GetRMS(RMS_IC, &ic, 0);
@@ -2265,9 +2248,9 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetRMS(RMS_INMI, &inmi, 0);
             // Show received data on console
             SYS_CMD_PRINT("Present current is :\n\rIa=%fA Ib=%fA Ic=%fA Ini=%fA Inm=%fA Inmi=%fA\n\r",
-                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)ini/10000, 
+                    (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)ini/10000,
                     (float)inm/10000, (float)inmi/10000);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2277,16 +2260,16 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t pt, pa, pb, pc;
             DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
-            
+
             APP_METROLOGY_GetRMS(RMS_PT, &pt, &signt);
             APP_METROLOGY_GetRMS(RMS_PA, &pa, &signa);
             APP_METROLOGY_GetRMS(RMS_PB, &pb, &signb);
             APP_METROLOGY_GetRMS(RMS_PC, &pc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present active power is :\n\rPt=%c%.1fW Pa=%c%.1fW Pb=%c%.1fW Pc=%c%.1fW\r\n",
-                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb], 
+                   sign[signt], (float)pt/10, sign[signa], (float)pa/10, sign[signb],
                     (float)pb/10, sign[signc], (float)pc/10);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2296,16 +2279,16 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t qt, qa, qb, qc;
             DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
-            
+
             APP_METROLOGY_GetRMS(RMS_QT, &qt, &signt);
             APP_METROLOGY_GetRMS(RMS_QA, &qa, &signa);
             APP_METROLOGY_GetRMS(RMS_QB, &qb, &signb);
             APP_METROLOGY_GetRMS(RMS_QC, &qc, &signc);
             // Show received data on console
             SYS_CMD_PRINT("Present reactive power is :\n\rQt=%c%.1fW Qa=%c%.1fW Qb=%c%.1fW qc=%c%.1fW\r\n",
-                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb], 
+                   sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
                     (float)qb/10, sign[signc], (float)qc/10);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2314,7 +2297,7 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_APARENT_POWER:
         {
             uint32_t st, sa, sb, sc;
-            
+
             APP_METROLOGY_GetRMS(RMS_ST, &st, 0);
             APP_METROLOGY_GetRMS(RMS_SA, &sa, 0);
             APP_METROLOGY_GetRMS(RMS_SB, &sb, 0);
@@ -2322,7 +2305,7 @@ void APP_CONSOLE_Tasks ( void )
             // Show received data on console
             SYS_CMD_PRINT("Present apparent power is :\n\rSt=%.1fVA Sa=%.1fVA Sb=%.1fVA Sc=%.1fVA\r\n",
                    (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
-            
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2331,11 +2314,11 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_FREQUENCY:
         {
             uint32_t freq;
-            
+
             APP_METROLOGY_GetRMS(RMS_FREQ, &freq, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present apparent power is :\n\rPresent frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/10);
-            
+            SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/10);
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2343,18 +2326,17 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_ANGLE:
         {
-            uint32_t aa, ab, ac, an;
-            DRV_METROLOGY_RMS_SIGN signn, signa, signb, signc;
-            
+            uint32_t aa, ab, ac;
+            DRV_METROLOGY_RMS_SIGN signa, signb, signc;
+
             APP_METROLOGY_GetRMS(RMS_ANGLEA, &aa, &signa);
             APP_METROLOGY_GetRMS(RMS_ANGLEB, &ab, &signb);
             APP_METROLOGY_GetRMS(RMS_ANGLEC, &ac, &signc);
-            APP_METROLOGY_GetRMS(RMS_ANGLEN, &an, &signn);
             // Show received data on console
-            SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f Angle_N=%c%.3f\r\n",
-                    sign[signa], (float)(aa & 0xFFFFF)/1000, sign[signb], (float)(ab & 0xFFFFF)/1000, 
-                    sign[signc], ((float)(ac & 0xFFFFF)/1000, sign[signn], (float)(an & 0xFFFFF)/1000));
-            
+            SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f\r\n",
+                    sign[signa], (float)(aa & 0xFFFFF)/1000, sign[signb], (float)(ab & 0xFFFFF)/1000,
+                    sign[signc], (float)(ac & 0xFFFFF)/1000);
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;

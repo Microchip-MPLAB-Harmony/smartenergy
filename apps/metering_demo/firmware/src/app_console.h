@@ -118,7 +118,6 @@ typedef struct
 
 typedef struct
 {
-    /* The application's current state */
     APP_CONSOLE_STATES state;
     uint8_t ctrlRegToRead;
     uint8_t accumRegToRead;
