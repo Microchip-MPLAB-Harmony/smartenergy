@@ -124,7 +124,7 @@ typedef struct
     uint8_t statusRegToRead;
     uint8_t harRegToRead;
     uint32_t *rawData;
-    uint16_t rawDataLen;
+    size_t rawDataLen;
     APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
     bool dataValid;
     struct tm timeRequest;

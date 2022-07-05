@@ -299,13 +299,13 @@ static void _APP_METROLOGY_StoreDataInMemory(void)
 
 /*******************************************************************************
   Function:
-    void APP_METROLOGY_Initialize ( void )
+    void APP_METROLOGY_Initialize (void)
 
   Remarks:
     See prototype in app_metrology.h.
  */
 
-void APP_METROLOGY_Initialize ( void )
+void APP_METROLOGY_Initialize (void)
 {
     /* Place the App state machine in its initial state. */
     app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
@@ -329,7 +329,7 @@ void APP_METROLOGY_Initialize ( void )
 
 /******************************************************************************
   Function:
-    void APP_METROLOGY_Tasks ( void )
+    void APP_METROLOGY_Tasks (void)
 
   Remarks:
     See prototype in app_metrology.h.
@@ -338,12 +338,12 @@ void APP_METROLOGY_Initialize ( void )
 //extern uint32_t counterIPC20;
 //extern uint32_t counterIPC0;
 //uint32_t counter = 0;
-void APP_METROLOGY_Tasks ( void )
+void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
 
     /* Check the application's current state. */
-    switch ( app_metrologyData.state )
+    switch (app_metrologyData.state)
     {
         /* Application's initial state. */
         case APP_METROLOGY_STATE_WAITING_DATALOG:
@@ -450,7 +450,7 @@ void APP_METROLOGY_Tasks ( void )
             if (freeNum)
             {
 //                SYS_CONSOLE_PRINT("METROLOGY Queue free: %u\r\n", freeNum);
-                xQueueSend(appEnergyQueueID, &newMetrologyData, ( TickType_t ) 0);
+                xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
             }
             else
             {
@@ -471,7 +471,7 @@ void APP_METROLOGY_Tasks ( void )
     }
 }
 
-bool APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId, uint32_t * regValue, char *regName )
+bool APP_METROLOGY_GetControlRegister(CONTROL_REG_ID regId, uint32_t * regValue, char *regName)
 {
     uint32_t *pData;
 
@@ -493,7 +493,7 @@ bool APP_METROLOGY_GetControlRegister( CONTROL_REG_ID regId, uint32_t * regValue
 
 }
 
-bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value )
+bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value)
 {
     uint32_t *pData;
 
@@ -501,7 +501,7 @@ bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value )
     {
         return false;
     }
-
+    
     pData = (uint32_t *)app_metrologyData.pMetControl;
     pData += regId;
     *pData = value;
@@ -509,7 +509,7 @@ bool APP_METROLOGY_SetControlRegister( CONTROL_REG_ID regId, uint32_t value )
     return true;
 }
 
-bool APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId, uint32_t * regValue, char *regName )
+bool APP_METROLOGY_GetStatusRegister(STATUS_REG_ID regId, uint32_t * regValue, char *regName)
 {
     uint32_t *pData;
 
@@ -530,7 +530,7 @@ bool APP_METROLOGY_GetStatusRegister( STATUS_REG_ID regId, uint32_t * regValue, 
     return true;
 }
 
-bool APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId, uint64_t * regValue, char *regName )
+bool APP_METROLOGY_GetAccumulatorRegister(ACCUMULATOR_REG_ID regId, uint64_t * regValue, char *regName)
 {
     uint64_t *pData;
 
@@ -551,7 +551,7 @@ bool APP_METROLOGY_GetAccumulatorRegister( ACCUMULATOR_REG_ID regId, uint64_t * 
     return true;
 }
 
-bool APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId, uint32_t * regValue, char *regName )
+bool APP_METROLOGY_GetHarmonicsRegister(HARMONICS_REG_ID regId, uint32_t * regValue, char *regName)
 {
     uint32_t *pData;
 
@@ -572,7 +572,7 @@ bool APP_METROLOGY_GetHarmonicsRegister( HARMONICS_REG_ID regId, uint32_t * regV
     return true;
 }
 
-bool APP_METROLOGY_GetRMS( DRV_METROLOGY_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign )
+bool APP_METROLOGY_GetRMS(DRV_METROLOGY_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign)
 {
     if (rmsId >= RMS_TYPE_NUM)
     {
@@ -606,6 +606,12 @@ void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     DRV_METROLOGY_SetConfiguration(config);
 
     _APP_METROLOGY_StoreDataInMemory();
+}
+
+size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
+{
+    *address = (uint32_t)app_metrologyData.pMetControl->CAPTURE_ADDR;
+    return (size_t)app_metrologyData.pMetControl->CAPTURE_BUFF_SIZE;
 }
 
 

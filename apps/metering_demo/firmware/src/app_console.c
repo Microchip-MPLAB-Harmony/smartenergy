@@ -85,13 +85,6 @@ OSAL_SEM_HANDLE_TYPE appConsoleStorageSemID;
 /* Local storage objects */
 static APP_ENERGY_ACCUMULATORS energyLocalObject;
 static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
-//API static DRV_MET_HRR_OBJECT hrrLocalObject;
-//API static DRV_MET_MONTHLY_ENERGY_OBJECT energyLocalObject;
-//API static DRV_MET_EVENT_OBJECT eventLocalObject;
-//API static DRV_MET_VOLTAGE_OBJECT voltageLocalObject;
-//API static DRV_MET_CURRENT_OBJECT currentLocalObject;
-//API static DRV_MET_ACTIVE_POWER_OBJECT activePowerLocalObject;
-//API static DRV_MET_REACTIVE_POWER_OBJECT reactivePowerLocalObject;
 
 /* Local Queue element to request Datalog operations */
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
@@ -134,15 +127,6 @@ static void _consoleReadStorage(APP_DATALOG_RESULT result)
     OSAL_SEM_Post(&appConsoleStorageSemID);
 }
 
-//API static void _hrrCallback(DRV_MET_HRR_OBJECT *hrrObj)
-//API {
-//API     // Copy HRR object to local variable and go to corresponding state
-//API     memcpy(&hrrLocalObject, hrrObj, sizeof(hrrLocalObject));
-//API     app_consoleData.state = APP_CONSOLE_STATE_PRINT_HRR;
-//API     // Post semaphore to wakeup task
-//API     OSAL_SEM_Post(&appConsoleSemID);
-//API }
-//API
 static void _monthlyEnergyCallback(struct tm * time, bool dataValid)
 {
     app_consoleData.timeRequest = *time;
@@ -151,16 +135,7 @@ static void _monthlyEnergyCallback(struct tm * time, bool dataValid)
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
 }
-//API
-//API static void _eventCallback(DRV_MET_EVENT_OBJECT *eventObj)
-//API {
-//API     // Copy event object to local variable and go to corresponding state
-//API     memcpy(&eventLocalObject, eventObj, sizeof(eventLocalObject));
-//API     app_consoleData.state = APP_CONSOLE_STATE_PRINT_EVENT;
-//API     // Post semaphore to wakeup task
-//API     OSAL_SEM_Post(&appConsoleSemID);
-//API }
-//API
+
 static void _maxDemandCallback(struct tm * time, bool dataValid)
 {
     app_consoleData.timeRequest = *time;
@@ -170,27 +145,6 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
 }
-//API
-//API static void _calibrationCallback(bool calibrationDone)
-//API {
-//API     if (calibrationDone) {
-//API         SYS_CMD_MESSAGE("Calibration Done!\n\r");
-//API     }
-//API     else {
-//API         SYS_CMD_MESSAGE("Calibration Failed!\n\r");
-//API     }
-//API }
-//API
-//API static void _waveformDataCallback(uint32_t *rawData, uint16_t dataSize)
-//API {
-//API     SYS_CMD_MESSAGE("Waveform Capture Data:\n\r");
-//API     // Store parameters in local variables and go to corresponding state
-//API     app_consoleData.rawData = rawData;
-//API     app_consoleData.rawDataLen = dataSize;
-//API     app_consoleData.state = APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA;
-//API     // Post semaphore to wakeup task
-//API     OSAL_SEM_Post(&appConsoleSemID);
-//API }
 
 // *****************************************************************************
 // COMMANDS
@@ -198,22 +152,48 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
 
 static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    uint8_t idx;
-
-    if (argc == 1) {
-        // Read all captured data
-        idx = 0xFF;
-//API         DRV_MET_GetWaveformData(idx);
+    uint32_t captureAddress;
+    size_t captureSize;
+    uint8_t idx = 0xFF;
+    
+    
+    if (argc > 2)
+    {
+        SYS_CMD_MESSAGE("Incorrect param number\n\r");
+        return;
     }
-    else if (argc == 2) {
+
+    if (argc == 2) 
+    {
         // Extract index from parameters
         idx = (uint8_t)strtol(argv[1], NULL, 10);
-//API         DRV_MET_GetWaveformData(idx);
     }
-    else {
-        // Incorrect parameter number
-        SYS_CMD_MESSAGE("Incorrect param number\n\r");
+    
+    // Store parameters in local variables and go to corresponding state
+    captureSize = APP_METROLOGY_GetWaveformCaptureData(&captureAddress);
+    
+    if (idx > (captureSize >> 9))
+    {
+        SYS_CMD_MESSAGE("Parameter is out of range.\n\r");
+        return;
     }
+    
+    if (idx == 0xFF)
+    {
+        app_consoleData.rawDataLen = captureSize;
+        app_consoleData.rawData = (uint32_t *)captureAddress;
+    }
+    else
+    {
+        app_consoleData.rawDataLen = 512;
+        app_consoleData.rawData = (uint32_t *)captureAddress;
+        app_consoleData.rawData += (512 * idx);
+    }
+    
+    app_consoleData.state = APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA;
+    // Post semaphore to wakeup task
+    OSAL_SEM_Post(&appConsoleSemID);
+    
 }
 
 static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
@@ -1526,8 +1506,7 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
     {"TOUR",Command_TOUR, ": Read meter TOU"},
     {"TOUW",Command_TOUW, ": Write meter TOU"},
     {"RST", Command_RST, ": System reset"},
-    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"},
-    {"RFC", Command_RFC, ": Read File Content"},
+    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"}
 };
 
 
