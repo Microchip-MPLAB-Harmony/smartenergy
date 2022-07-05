@@ -753,6 +753,7 @@ bool APP_ENERGY_GetMonthEnergy(struct tm * time)
 void APP_ENERGY_ClearEnergy(void)
 {
     /* Erases all the energy records stored in non volatile memory */
+    APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY);
 }
 
 void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
@@ -777,6 +778,7 @@ bool APP_ENERGY_GetMonthMaxDemand(struct tm * time)
 void APP_ENERGY_ClearMaxDemand(void)
 {
     /* Erases all the demand records stored in non volatile memory */
+    APP_DATALOG_ClearData(APP_DATALOG_USER_DEMAND);
 }
 
 
