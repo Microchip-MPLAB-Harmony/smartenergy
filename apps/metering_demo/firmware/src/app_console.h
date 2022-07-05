@@ -126,8 +126,8 @@ typedef struct
     uint32_t *rawData;
     uint16_t rawDataLen;
     APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
-    uint8_t maxDemandMonth;
-    uint8_t energyMonth;
+    bool dataValid;
+    struct tm timeRequest;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************

@@ -27,8 +27,8 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "app_console.h"
 #include "definitions.h"
+#include "app_console.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -143,9 +143,10 @@ static void _consoleReadStorage(APP_DATALOG_RESULT result)
 //API     OSAL_SEM_Post(&appConsoleSemID);
 //API }
 //API
-static void _monthlyEnergyCallback(uint8_t month)
+static void _monthlyEnergyCallback(struct tm * time, bool dataValid)
 {
-    app_consoleData.energyMonth = month;
+    app_consoleData.timeRequest = *time;
+    app_consoleData.dataValid = dataValid;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY;
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
@@ -160,9 +161,10 @@ static void _monthlyEnergyCallback(uint8_t month)
 //API     OSAL_SEM_Post(&appConsoleSemID);
 //API }
 //API
-static void _maxDemandCallback( uint8_t month )
+static void _maxDemandCallback(struct tm * time, bool dataValid)
 {
-    app_consoleData.maxDemandMonth = month;
+    app_consoleData.timeRequest = *time;
+    app_consoleData.dataValid = dataValid;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MAX_DEMAND;
 
     // Post semaphore to wakeup task
@@ -987,11 +989,12 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         if (sysTime.tm_mon < monthIndex)
         {
             sysTime.tm_mon += 12;
+            sysTime.tm_year--;
         }
-        monthIndex = sysTime.tm_mon - monthIndex;
+        sysTime.tm_mon -= monthIndex;
 
         // Get monthly energy from energy app
-        if (APP_ENERGY_GetMonthEnergy(monthIndex) == false)
+        if (APP_ENERGY_GetMonthEnergy(&sysTime) == false)
         {
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Incorrect param\n\r");
@@ -1192,18 +1195,19 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     uint8_t monthIndex;
 
     if (argc == 2) {
-        RTC_TimeGet(&sysTime);
+        RTC_TimeGet(&app_consoleData.timeRequest);
         // Extract month index from parameters
         monthIndex = (uint8_t)strtol(argv[1], NULL, 10);
         monthIndex %= 12;
-        if (sysTime.tm_mon < monthIndex)
+        if (app_consoleData.timeRequest.tm_mon < monthIndex)
         {
-            sysTime.tm_mon += 12;
+            app_consoleData.timeRequest.tm_mon += 12;
+            app_consoleData.timeRequest.tm_year--;
         }
-        monthIndex = sysTime.tm_mon - monthIndex;
+        app_consoleData.timeRequest.tm_mon -= monthIndex;
 
         // Get max demand from energy app
-        if (APP_ENERGY_GetMonthMaxDemand(monthIndex) == false)
+        if (APP_ENERGY_GetMonthMaxDemand(&app_consoleData.timeRequest) == false)
         {
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Incorrect param\n\r");
@@ -2144,14 +2148,36 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY:
         {
-            // Show received data on console
-//API             SYS_CMD_PRINT("Last %d Month Energy is :\n\r", energyLocalObject.monthIndex);
-//API             SYS_CMD_PRINT("TT=%fkWh T1=%fkWh T2=%fkWh T3=%fkWh T4=%fkWh\n\r",
-//API                 energyLocalObject.totalEnergy,
-//API                 energyLocalObject.energyPerTariff[0],
-//API                 energyLocalObject.energyPerTariff[1],
-//API                 energyLocalObject.energyPerTariff[2],
-//API                 energyLocalObject.energyPerTariff[3]);
+            RTC_TimeGet(&sysTime);
+            
+            /* Check if data received through callback is valid */
+            if (app_consoleData.dataValid)
+            {
+                uint64_t total = 0;
+                uint8_t idx;
+                
+                for (idx = 0; idx < TARIFF_NUM_TYPE; idx ++)
+                {
+                    total += energyLocalObject.tariff[idx];
+                }
+                
+                // Show received data on console
+                SYS_CMD_PRINT("Last %d Month Energy is :\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+
+                SYS_CMD_PRINT("TT=%.2fkWh T1=%.2fkWh T2=%.2fkWh T3=%.2fkWh T4=%.2fkWh\r\n",
+                    (float)total/10000000, (float)energyLocalObject.tariff[0]/10000000, (float)energyLocalObject.tariff[1]/10000000, 
+                        (float)energyLocalObject.tariff[2]/10000000, (float)energyLocalObject.tariff[3]/10000000);
+            }
+            else
+            {
+                // Data is not found
+                SYS_CMD_PRINT("Last %d Month Energy is not found\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+            }
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            
+
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2198,22 +2224,31 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MAX_DEMAND:
         {
-            APP_ENERGY_DEMAND_DATA *pDataMax;
-            APP_ENERGY_DEMAND_DATA *pDataTariff;
-
             RTC_TimeGet(&sysTime);
+            
+            /* Check if data received through callback is valid */
+            if (app_consoleData.dataValid)
+            {
+                APP_ENERGY_DEMAND_DATA *pDataMax;
+                APP_ENERGY_DEMAND_DATA *pDataTariff;
+                
+                // Show received data on console
+                SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
 
-            // Show received data on console
-            SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", sysTime.tm_mon - app_consoleData.maxDemandMonth);
-
-            pDataMax = &maxDemandLocalObject.maxDemad;
-            pDataTariff = &maxDemandLocalObject.tariff[0];
-            SYS_CMD_PRINT("TT=%fkW %d-%d %02d:%02d T1=%fkW %d-%d %02d:%02d T2=%fkW %d-%d %02d:%02d T3=%fkW %d-%d %02d:%02d T4=%fkW %d-%d %02d:%02d\n\r",
-                    pDataMax->value, pDataMax->month, pDataMax->day, pDataMax->hour, pDataMax->minute,
-                    pDataTariff->value, pDataTariff->month, pDataTariff->day, pDataTariff->hour, pDataTariff->minute,
-                    (pDataTariff + 1)->value, (pDataTariff + 1)->month, (pDataTariff + 1)->day, (pDataTariff + 1)->hour, (pDataTariff + 1)->minute,
-                    (pDataTariff + 2)->value, (pDataTariff + 2)->month, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
-                    (pDataTariff + 3)->value, (pDataTariff + 3)->month, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
+                pDataMax = &maxDemandLocalObject.maxDemad;
+                pDataTariff = &maxDemandLocalObject.tariff[0];
+                SYS_CMD_PRINT("TT=%.3fkW %d-%d %02d:%02d T1=%.3fkW %d-%d %02d:%02d T2=%.3fkW %d-%d %02d:%02d T3=%.3fkW %d-%d %02d:%02d T4=%.3fkW %d-%d %02d:%02d\n\r",
+                        (float)pDataMax->value/1000, pDataMax->month, pDataMax->day, pDataMax->hour, pDataMax->minute,
+                        (float)pDataTariff->value/1000, pDataTariff->month, pDataTariff->day, pDataTariff->hour, pDataTariff->minute,
+                        (float)(pDataTariff + 1)->value/1000, (pDataTariff + 1)->month, (pDataTariff + 1)->day, (pDataTariff + 1)->hour, (pDataTariff + 1)->minute,
+                        (float)(pDataTariff + 2)->value/1000, (pDataTariff + 2)->month, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
+                        (float)(pDataTariff + 3)->value/1000, (pDataTariff + 3)->month, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
+            }
+            else
+            {
+                // Data is not found
+                SYS_CMD_PRINT("Last %d Month MaxDemand is not found\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+            }
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

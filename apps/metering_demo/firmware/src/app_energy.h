@@ -57,7 +57,7 @@ typedef enum {
   TARIFF_2,
   TARIFF_3,
   TARIFF_4,
-    TARIFF_NUM_TYPE = TARIFF_4,
+  TARIFF_NUM_TYPE = TARIFF_4,
   TARIFF_INVALID = 0xFF
 } APP_ENERGY_TARIFF_TYPE;
 
@@ -99,8 +99,8 @@ typedef struct {
 /* Energy threshold to update energy register stored in external memory */
 #define APP_ENERGY_TOU_THRESHOLD  10000 // 0.01kWh (Units: 10^-4 Wh)
 
-typedef void ( * APP_ENERGY_MAXDEMAND_CALLBACK ) ( uint8_t month );
-typedef void ( * APP_ENERGY_MONTH_CALLBACK ) ( uint8_t month );
+typedef void (* APP_ENERGY_MAXDEMAND_CALLBACK) (struct tm * time, bool dataValid);
+typedef void (* APP_ENERGY_MONTH_CALLBACK) (struct tm * time, bool dataValid);
 // *****************************************************************************
 /* Application states
 
@@ -153,7 +153,7 @@ typedef struct
 
     uint32_t energyThreshold;
 
-  APP_ENERGY_TOU tou;
+    APP_ENERGY_TOU tou;
 
     APP_ENERGY_DEMAND demand;
 
@@ -174,10 +174,8 @@ typedef struct
     APP_ENERGY_MONTH_CALLBACK monthEnergyCallback;
 
     APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse;
-
-    uint8_t maxDemandMonthResponse;
-
-    uint8_t monthEnergyResponse;
+    
+    struct tm timeResponse;
 
     struct tm time;
 
@@ -199,7 +197,7 @@ typedef struct
 
 /*******************************************************************************
   Function:
-    void APP_ENERGY_Initialize ( void )
+    void APP_ENERGY_Initialize (void)
 
   Summary:
      MPLAB Harmony application initialization routine.
@@ -228,12 +226,12 @@ typedef struct
     This routine must be called from the SYS_Initialize function.
 */
 
-void APP_ENERGY_Initialize ( void );
+void APP_ENERGY_Initialize (void);
 
 
 /*******************************************************************************
   Function:
-    void APP_ENERGY_Tasks ( void )
+    void APP_ENERGY_Tasks (void)
 
   Summary:
     MPLAB Harmony Demo application tasks function
@@ -261,19 +259,19 @@ void APP_ENERGY_Initialize ( void );
     This routine must be called from SYS_Tasks() routine.
  */
 
-void APP_ENERGY_Tasks( void );
+void APP_ENERGY_Tasks(void);
 
 
-APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone( void );
-void APP_ENERGY_SetTOUTimeZone( APP_ENERGY_TOU_TIME_ZONE *timeZone );
+APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone(void);
+void APP_ENERGY_SetTOUTimeZone(APP_ENERGY_TOU_TIME_ZONE *timeZone);
 void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback,
         APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse);
-bool APP_ENERGY_GetMonthEnergy( uint8_t month );
-void APP_ENERGY_ClearEnergy( void );
+bool APP_ENERGY_GetMonthEnergy(struct tm * time);
+void APP_ENERGY_ClearEnergy(void);
 void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
         APP_ENERGY_MAX_DEMAND * pMaxDemandResponse);
-bool APP_ENERGY_GetMonthMaxDemand( uint8_t month );
-void APP_ENERGY_ClearMaxDemand( void );
+bool APP_ENERGY_GetMonthMaxDemand(struct tm * time);
+void APP_ENERGY_ClearMaxDemand(void);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
