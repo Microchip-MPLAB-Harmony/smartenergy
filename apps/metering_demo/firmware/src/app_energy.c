@@ -35,9 +35,15 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+/* Define a queue to signal the Datalog Tasks to store data */
+extern QueueHandle_t CACHE_ALIGN appDatalogQueueID;
+APP_DATALOG_QUEUE_DATA appEnergyDatalogQueueData;
 
 /* Define a queue to signal the Energy Tasks to process new energy measurement */
-QueueHandle_t CACHE_ALIGN app_energyQueue = NULL;
+QueueHandle_t CACHE_ALIGN appEnergyQueueID = NULL;
+
+/* Define a semaphore to wait callbacks from DataLog application */
+OSAL_SEM_DECLARE(appEnergySemID);
 
 // *****************************************************************************
 /* Application Data
@@ -73,16 +79,16 @@ const uint8_t app_energyDayTbl[12] = {0x31, 0x28, 0x31, 0x30, 0x31, 0x30, 0x31, 
 const char app_energyMonthTbl[12][3] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 const uint8_t app_energyDayWeekTbl[12] = {6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 
-const APP_ENERGY_TOU_TIME_ZONE gAppEnergyTOUDefault[APP_ENERGY_TOU_MAX_ZONES] = 
+const APP_ENERGY_TOU_TIME_ZONE gAppEnergyTOUDefault[APP_ENERGY_TOU_MAX_ZONES] =
 {
     {TARIFF_2, _UINT32_(8), _UINT32_(30)},
-	{TARIFF_3, _UINT32_(10), _UINT32_(30)},
-	{TARIFF_1, _UINT32_(18), _UINT32_(30)},
-	{TARIFF_4, _UINT32_(22), _UINT32_(00)},
-	{TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-	{TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-	{TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-	{TARIFF_INVALID, _UINT32_(0), _UINT32_(0)}
+  {TARIFF_3, _UINT32_(10), _UINT32_(30)},
+  {TARIFF_1, _UINT32_(18), _UINT32_(30)},
+  {TARIFF_4, _UINT32_(22), _UINT32_(00)},
+  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)}
 };
 
 // *****************************************************************************
@@ -110,6 +116,17 @@ void RTC_callback(uint32_t int_cause, uintptr_t context)
     }
 }
 
+void _APP_ENERGY_GetDataLogCallback(APP_DATALOG_RESULT result)
+{
+    if (result == APP_DATALOG_RESULT_SUCCESS)
+    {
+        app_energyData.dataIsRdy = true;
+    }
+
+    // Post semaphore to wakeup task
+    OSAL_SEM_Post(&appEnergySemID);
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Local Functions
@@ -121,7 +138,7 @@ static uint8_t _APP_ENERGY_getTOUIndex(struct tm * time)
     uint32_t value, slotValue;
     uint8_t index;
     uint8_t counterZones;
-    
+
     counterZones = app_energyData.tou.usedZones;
     value = (time->tm_hour * 100) + time->tm_min;
     for (index = 0; index < counterZones; index++)
@@ -139,73 +156,75 @@ static uint8_t _APP_ENERGY_getTOUIndex(struct tm * time)
             }
         }
     }
-    
+
     return counterZones - 1;
 }
 
 static APP_ENERGY_TARIFF_TYPE _APP_ENERGY_getTariff(struct tm * time)
 {
     uint8_t touIndex;
-    
+
     touIndex = _APP_ENERGY_getTOUIndex(time);
     return app_energyData.tou.timeZone[touIndex].tariff;
 }
 
-static bool _APP_ENERGY_InitializeRTC(void)
+static bool _APP_ENERGY_InitializeRTC(bool dataValid)
 {
-    struct tm sysTime;
-    
-//    if (APP_DATALOG_GetSystemTime(&sysTime) == false)
-//    {
+    if (!dataValid)
+    {
         char dateBuff[12];
         uint16_t y, d;
         uint8_t mon, uc_idx;
         uint8_t a, m;
 
         /* Set RTC time from COMPILER settings */
-        sysTime.tm_hour = BUILD_TIME_HOUR;
-        sysTime.tm_min = BUILD_TIME_MIN;
-        sysTime.tm_sec = BUILD_TIME_SEC;
-        sysTime.tm_year = BUILD_DATE_YEAR - 1900;
-        sysTime.tm_mday = BUILD_DATE_DAY;
+        app_energyData.time.tm_hour = BUILD_TIME_HOUR;
+        app_energyData.time.tm_min = BUILD_TIME_MIN;
+        app_energyData.time.tm_sec = BUILD_TIME_SEC;
+        app_energyData.time.tm_year = BUILD_DATE_YEAR - 1900;
+        app_energyData.time.tm_mday = BUILD_DATE_DAY;
 
         sprintf(dateBuff, "%s", __DATE__);
-        sysTime.tm_mon = 0;
+        app_energyData.time.tm_mon = 0;
         for (uc_idx = 0; uc_idx < 12; uc_idx++) {
             if (memcmp(&app_energyMonthTbl[uc_idx], dateBuff, 3) == 0) {
-                sysTime.tm_mon = uc_idx;
+                app_energyData.time.tm_mon = uc_idx;
                 break;
             }
         }
 
         /* Get day of the week */
-        mon = sysTime.tm_mon + 1;
+        mon = app_energyData.time.tm_mon + 1;
         a = (14 - mon) / 12;
         y = BUILD_DATE_YEAR - ((14 - mon) / 12);
         m = mon + (12 * a) - 2;
-        d = sysTime.tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
-        sysTime.tm_wday = (d % 7) - 1;
-//    }
-    
+        d = app_energyData.time.tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
+        app_energyData.time.tm_wday = (d % 7) - 1;
+    }
+
     /* Set RTC Time to current system time. */
-    if (RTC_TimeSet(&sysTime))
+    if (RTC_TimeSet(&app_energyData.time))
     {
         RTC_CallbackRegister(RTC_callback, 0);
         RTC_InterruptEnable(RTC_INT_TIME | RTC_INT_CALENDAR);
         return true;
     }
-    
+
     return false;
 }
 
-static void _APP_ENERGY_InitializeTOU( APP_ENERGY_TOU_TIME_ZONE *timeZone )
+static void _APP_ENERGY_InitializeTOU(bool dataValid)
 {
     struct tm time;
     uint8_t counterZones = 0;
     uint8_t index;
-    
-    memcpy(&app_energyData.tou.timeZone, timeZone, sizeof(app_energyData.tou.timeZone));
-        
+
+    if (!dataValid)
+    {
+        /* Set TOU by default */
+        memcpy(&app_energyData.tou.timeZone, &gAppEnergyTOUDefault, sizeof(app_energyData.tou.timeZone));
+    }
+
     /* Count used zones */
     for (index = 0; index < APP_ENERGY_TOU_MAX_ZONES; index++)
     {
@@ -213,24 +232,12 @@ static void _APP_ENERGY_InitializeTOU( APP_ENERGY_TOU_TIME_ZONE *timeZone )
         {
             counterZones++;
         }
-    }    
+    }
     app_energyData.tou.usedZones = counterZones;
-        
+
     /* Update current Tariff Type */
     RTC_TimeGet(&time);
     app_energyData.currentTariff = _APP_ENERGY_getTariff(&time);
-    
-}
-
-static bool _APP_ENERGY_InitializeDemand(void)
-{
-    struct tm sysTime;
-    
-    RTC_TimeGet(&sysTime);
-    
-//    APP_DATALOG_GetEnergyDemandMax(&app_energyData.demand.demandMax, &sysTime);
-    
-    return true;
 }
 
 static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
@@ -243,7 +250,7 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
         uint8_t  index = 0;
         uint8_t winStartOffset = 0;
         bool update = false;
-        
+
         if (time->tm_min == 0)
         {
             winStartOffset = 45;
@@ -259,19 +266,19 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
             demandMax += app_energyData.demand.window[winStartOffset + index];
         }
         demandMax /= 9000; /* Units are 0.1W, so divided by 10; additionally, 15 minutes, so divided by 15 */
-        
+
         /* Update Demand Max according TOU Zone */
-        if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].value < demandMax)
+        if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].value < demandMax)
         {
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].value = demandMax;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].month = time->tm_mon;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].day = time->tm_mday;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].hour = time->tm_hour;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].minute = time->tm_min;
-            
+            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].value = demandMax;
+            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].month = time->tm_mon;
+            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].day = time->tm_mday;
+            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].hour = time->tm_hour;
+            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].minute = time->tm_min;
+
             update = true;
         }
-        
+
         /* Update Demand Max in total */
         if (app_energyData.demand.maxDemand.maxDemad.value < demandMax)
         {
@@ -280,36 +287,131 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
             app_energyData.demand.maxDemand.maxDemad.day = time->tm_mday;
             app_energyData.demand.maxDemand.maxDemad.hour = time->tm_hour;
             app_energyData.demand.maxDemand.maxDemad.minute = time->tm_min;
-            
+
             update = true;
         }
-        
+
         return update;
     }
-    
+
     return false;
 }
 
-static bool _APP_ENERGY_CheckEnergyThreshold( APP_ENERGY_ACCUMULATORS * pAccumulatorsDiff )
+static bool _APP_ENERGY_CheckEnergyThreshold(APP_ENERGY_ACCUMULATORS * pAccumulatorsDiff)
 {
     uint64_t totalEnergy = 0;
     uint64_t totalEnergyDiff = 0;
     uint8_t index;
-    
-    for (index = 0; index < TARIFF_MAX_NUM; index++)
+
+    for (index = 0; index < TARIFF_NUM_TYPE; index++)
     {
         totalEnergy += app_energyData.energyAccumulator.tariff[index];
         totalEnergyDiff += pAccumulatorsDiff->tariff[index];
-    }    
-    
+    }
+
     if ((totalEnergy - totalEnergyDiff) >= app_energyData.energyThreshold)
     {
         return true;
     }
-    
+
     return false;
 }
 
+static void _APP_ENERGY_LoadRTCDataFromMemory(void)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_RTC;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.time;
+    appEnergyDatalogQueueData.dataLen = sizeof(struct tm);
+    appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
+    /* appDatalogQueueData.sysTime is not used */
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_StoreRTCDataInMemory(void)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_RTC;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.time;
+    appEnergyDatalogQueueData.dataLen = sizeof(struct tm);
+    appEnergyDatalogQueueData.endCallback = NULL;
+    /* appDatalogQueueData.sysTime is not used */
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_LoadTOUDataFromMemory(void)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_TOU;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.tou;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_TOU);
+    appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
+    /* appDatalogQueueData.sysTime is not used */
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_StoreTOUDataInMemory(void)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_TOU;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.tou;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_TOU);
+    appEnergyDatalogQueueData.endCallback = NULL;
+    /* appDatalogQueueData.sysTime is not used */
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_LoadEnergyDataFromMemory(struct tm * time)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_ENERGY;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.energyAccumulator;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_ACCUMULATORS);
+    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_StoreEnergyDataInMemory(struct tm * time)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_ENERGY;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.energyAccumulator;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_ACCUMULATORS);
+    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.endCallback = NULL;
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_LoadDemandDataFromMemory(struct tm * time)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_DEMAND;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.demand.maxDemand;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_MAX_DEMAND);
+    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
+
+static void _APP_ENERGY_StoreDemandDataInMemory(struct tm * time)
+{
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_DEMAND;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.demand.maxDemand;
+    appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_MAX_DEMAND);
+    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.endCallback = NULL;
+
+    xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -319,181 +421,260 @@ static bool _APP_ENERGY_CheckEnergyThreshold( APP_ENERGY_ACCUMULATORS * pAccumul
 
 /*******************************************************************************
   Function:
-    void APP_ENERGY_Initialize ( void )
+    void APP_ENERGY_Initialize (void)
 
   Remarks:
     See prototype in app_energy.h.
  */
 
-void APP_ENERGY_Initialize ( void )
+void APP_ENERGY_Initialize (void)
 {
     /* Place the App state machine in its initial state. */
-    app_energyData.state = APP_ENERGY_STATE_INIT_RTC;
-    
+    app_energyData.state = APP_ENERGY_STATE_WAITING_DATALOG;
+
      /* Initialize Energy callbacks */
     app_energyData.maxDemandCallback = NULL;
     app_energyData.monthEnergyCallback = NULL;
-    
+
     /* Clear RTC TIME & CALENDAR events */
     app_energyData.eventMinute = false;
     app_energyData.eventMonth = false;
-    
+
     /* Clear Energy accumulators */
     memset(&app_energyData.energyAccumulator.tariff, 0, sizeof(APP_ENERGY_ACCUMULATORS));
-    
+
     /* Clear Demand data */
-    memset(&app_energyData.demand, 0, sizeof(app_energyData.demand));
-    
+    memset(&app_energyData.demand, 0, sizeof(APP_ENERGY_DEMAND));
+
     /* Set Energy TOU Threshold */
     app_energyData.energyThreshold = APP_ENERGY_TOU_THRESHOLD;
 
     /* Create a queue capable of containing 5 unsigned long values. */
-    app_energyQueue = xQueueCreate( 5, sizeof( APP_ENERGY_QUEUE_DATA ) );
+    appEnergyQueueID = xQueueCreate(5, sizeof(APP_ENERGY_QUEUE_DATA));
 
-    if( app_energyQueue == NULL )
+    if (appEnergyQueueID == NULL)
     {
         // Queue was not created and must not be used.
         app_energyData.state = APP_ENERGY_STATE_ERROR;
         return;
+    }
+
+    /* Create the Switches Semaphore. */
+    if (OSAL_SEM_Create(&appEnergySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
+    {
+        /* Handle error condition. Not sufficient memory to create semaphore */
     }
 }
 
 
 /******************************************************************************
   Function:
-    void APP_ENERGY_Tasks ( void )
+    void APP_ENERGY_Tasks (void)
 
   Remarks:
     See prototype in app_energy.h.
  */
 
-void APP_ENERGY_Tasks ( void )
+void APP_ENERGY_Tasks (void)
 {
     /* Check the application's current state. */
-    switch ( app_energyData.state )
+    switch (app_energyData.state)
     {
         /* Application's initial state. */
+        case APP_ENERGY_STATE_WAITING_DATALOG:
+        {
+            if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
+            {
+                app_energyData.state = APP_ENERGY_STATE_INIT_RTC;
+            }
+
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            break;
+        }
+
         case APP_ENERGY_STATE_INIT_RTC:
         {
-//            if (APP_DATALOG_GetStatus() == ADD_DATALOG_READY)
-//            {
-                if (_APP_ENERGY_InitializeRTC())
+            /* Reset flag to request data to datalog app */
+            app_energyData.dataIsRdy = false;
+
+            /* Check if there are RTC data in memory */
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_RTC, app_energyData.time))
+            {
+                /* RTC data exists */
+                _APP_ENERGY_LoadRTCDataFromMemory();
+                /* Wait for the semaphore to load data from memory */
+                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+            }
+
+            if (_APP_ENERGY_InitializeRTC(app_energyData.dataIsRdy))
+            {
+                if (app_energyData.dataIsRdy == false)
                 {
-                    app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+                    /* There is no valid data in memory. Create RTC Data in memory. */
+                    _APP_ENERGY_StoreRTCDataInMemory();
                 }
-//            }
-                
+                app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+            }
+            else
+            {
+                app_energyData.state = APP_ENERGY_STATE_ERROR;
+            }
+
+
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_ENERGY_STATE_INIT_TOU:
         {
-//            if (APP_DATALOG_GetStatus() == ADD_DATALOG_READY)
-//            {
-//                APP_ENERGY_TOU_TIME_ZONE timeZone[APP_ENERGY_TOU_MAX_ZONES];
-//                
-//                if (APP_DATALOG_GetEnergyTOU(&timeZone))
-//                {
-//                    _APP_ENERGY_InitializeTOU(&timeZone);
-//                }
-//                else
-//                {
-                    /* Set TOU defined by default */
-                    _APP_ENERGY_InitializeTOU((APP_ENERGY_TOU_TIME_ZONE *)gAppEnergyTOUDefault);
-//                    /* Store TOU configuration in Data Log */
-//                    APP_DATALOG_SetEnergyTOU(&app_energyData.tou.timeZone);
-//                }
-                
-                // TBD: Restore Energy Accumulators ????????????????????????
-                app_energyData.state = APP_ENERGY_STATE_INIT_DEMAND;
-                
-//            }
+            /* Reset flag to request data to datalog app */
+            app_energyData.dataIsRdy = false;
+
+            /* Check if there are TOU data in memory */
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_TOU, app_energyData.time))
+            {
+                /* TOU data exists */
+                _APP_ENERGY_LoadTOUDataFromMemory();
+                /* Wait for the semaphore to load data from memory */
+                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+            }
+
+            _APP_ENERGY_InitializeTOU(app_energyData.dataIsRdy);
+
+            if (app_energyData.dataIsRdy == false)
+            {
+                /* There is no valid data in memory. Create TOU Data in memory. */
+                _APP_ENERGY_StoreTOUDataInMemory();
+            }
+
+            app_energyData.state = APP_ENERGY_STATE_INIT_ENERGY;
+
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            break;
+        }
+
+        case APP_ENERGY_STATE_INIT_ENERGY:
+        {
+            /* Reset flag to request data to datalog app */
+            app_energyData.dataIsRdy = false;
+
+            /* Check if there are ENERGY data in memory */
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, app_energyData.time))
+            {
+                /* TOU data exists */
+                _APP_ENERGY_LoadEnergyDataFromMemory(&app_energyData.time);
+                /* Wait for the semaphore to load data from memory */
+                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+            }
+            else
+            {
+                /* There is no valid data in memory. Create Demand Data in memory. */
+                _APP_ENERGY_StoreEnergyDataInMemory(&app_energyData.time);
+            }
+
+            app_energyData.state = APP_ENERGY_STATE_INIT_DEMAND;
+
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_ENERGY_STATE_INIT_DEMAND:
         {
-//            if (APP_DATALOG_GetStatus() == ADD_DATALOG_READY)
-//            {
-                if (_APP_ENERGY_InitializeDemand())
-                {
-                    app_energyData.state = APP_ENERGY_STATE_RUNNING;
-                }
-                else
-                {
-                    app_energyData.state = APP_ENERGY_STATE_ERROR;
-                }
-//            }
+            /* Reset flag to request data to datalog app */
+            app_energyData.dataIsRdy = false;
+
+            /* Check if there are DEMAND data in memory */
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, app_energyData.time))
+            {
+                /* TOU data exists */
+                _APP_ENERGY_LoadDemandDataFromMemory(&app_energyData.time);
+                /* Wait for the semaphore to load data from memory */
+                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+            }
+            else
+            {
+                /* There is no valid data in memory. Create Demand Data in memory. */
+                _APP_ENERGY_StoreDemandDataInMemory(&app_energyData.time);
+            }
+
+            /* Update RTC */
+            RTC_TimeGet(&app_energyData.time);
+
+            app_energyData.state = APP_ENERGY_STATE_RUNNING;
+
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_ENERGY_STATE_RUNNING:
         {
-            if (xQueueReceive(app_energyQueue, &app_energyData.newQueuedData, portMAX_DELAY))
+            if (xQueueReceive(appEnergyQueueID, &app_energyData.newQueuedData, 250 / portTICK_PERIOD_MS) == pdPASS)
             {
                 /* Update Energy Accumulator */
-                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff] += app_energyData.newQueuedData.energy;
-                
+                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff - 1] += app_energyData.newQueuedData.energy;
+
                 /* Update Demand Accumulator */
                 app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
-                
+
                 /* Check TIME Event (minute) */
+                /* Don't update the RTC because we need to handle the energy accumulated in the previous minute */
                 if (app_energyData.eventMinute)
                 {
-                    struct tm sysTime;
                     APP_ENERGY_ACCUMULATORS dataLogEnergy = {0};
 
-                    RTC_TimeGet(&sysTime);
-                    
                     /* Clear TIME Event flag */
                     app_energyData.eventMinute = false;
-                
+
                     /* Update current Tariff type */
-                    app_energyData.currentTariff = _APP_ENERGY_getTariff(&sysTime);
-                    
+                    app_energyData.currentTariff = _APP_ENERGY_getTariff(&app_energyData.time);
+
                     /* Update demand values */
-                    if (_APP_ENERGY_UpdateDemand(app_energyData.demandAccumulator, &sysTime))
+                    if (_APP_ENERGY_UpdateDemand(app_energyData.demandAccumulator, &app_energyData.time))
                     {
                         /* Update maximum demand each 15 minutes */
-//                        APP_DATALOG_SetDemandMax(&app_energyData.demand.demandMax, &sysTime);
+                        _APP_ENERGY_StoreDemandDataInMemory(&app_energyData.time);
                     }
                     app_energyData.demandAccumulator = 0;
-                    
+
                     /* Update DATALOG if accumulators has increased more than APP_ENERGY_TOU_THRESHOLD */
-//                    if (APP_DATALOG_GetEnergyAccumulators(&dataLogEnergy, &sysTime))
-//                    {
-                        if (_APP_ENERGY_CheckEnergyThreshold(&dataLogEnergy))
-                        {
-//                            APP_DATALOG_SetEnergyAccumulators(&app_energyData.energyAccumulator.timeZone, &sysTime);
-                        }   
-//                    }
+                    if (_APP_ENERGY_CheckEnergyThreshold(&dataLogEnergy))
+                    {
+                        _APP_ENERGY_StoreEnergyDataInMemory(&app_energyData.time);
+                    }
+
+                    /* Read RTC */
+                    RTC_TimeGet(&app_energyData.time);
+                    /* Update RTC data in memory */
+                    _APP_ENERGY_StoreRTCDataInMemory();
+
                 }
-                
+
                 /* Check CALENDAR Event (month) */
                 if (app_energyData.eventMonth)
                 {
                     app_energyData.eventMonth = false;
-                    
+
                     /* Clear Energy Accumulators */
                     memset(app_energyData.energyAccumulator.tariff, 0, sizeof(APP_ENERGY_ACCUMULATORS));
-                    
+
                     /* Clear MaxDemand data */
                     memset(&app_energyData.demand.maxDemand, 0, sizeof(APP_ENERGY_MAX_DEMAND));
                 }
+
+
             }
 
             break;
         }
-        
+
         case APP_ENERGY_STATE_GET_MAX_DEMAND:
         {
             /* Launch DemandMax callback */
-//            if (APP_DATALOG_GetMaxDemand(app_energyData.pMaxDemandResponse, 
+//            if (APP_DATALOG_GetMaxDemand(app_energyData.pMaxDemandResponse,
 //                    app_energyData.maxDemandMonthResponse))
 //            {
+                memcpy(app_energyData.pMaxDemandResponse, &app_energyData.demand.maxDemand, sizeof(APP_ENERGY_MAX_DEMAND));
+
                 app_energyData.maxDemandCallback(app_energyData.maxDemandMonthResponse);
                 app_energyData.state = APP_ENERGY_STATE_RUNNING;
 //            }
@@ -501,11 +682,11 @@ void APP_ENERGY_Tasks ( void )
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
-        
+
         case APP_ENERGY_STATE_GET_MONTH_ENERGY:
         {
             /* Launch DemandMax callback */
-//            if (APP_DATALOG_GetMonthEnergy(app_energyData.pMonthEnergyResponse, 
+//            if (APP_DATALOG_GetMonthEnergy(app_energyData.pMonthEnergyResponse,
 //                    app_energyData.monthEnergyResponse))
 //            {
                 app_energyData.monthEnergyCallback(app_energyData.monthEnergyResponse);
@@ -526,24 +707,24 @@ void APP_ENERGY_Tasks ( void )
     }
 }
 
-APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone( void )
+APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone(void)
 {
     return app_energyData.tou.timeZone;
 }
 
-void APP_ENERGY_SetTOUTimeZone( APP_ENERGY_TOU_TIME_ZONE *timeZone )
+void APP_ENERGY_SetTOUTimeZone(APP_ENERGY_TOU_TIME_ZONE *timeZone)
 {
     _APP_ENERGY_InitializeTOU(timeZone);
 }
 
-void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback, 
+void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback,
         APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse)
 {
     app_energyData.monthEnergyCallback = callback;
     app_energyData.pMonthEnergyResponse = pMonthEnergyResponse;
 }
 
-bool APP_ENERGY_GetMonthEnergy( uint8_t month )
+bool APP_ENERGY_GetMonthEnergy(uint8_t month)
 {
     if (app_energyData.monthEnergyCallback)
     {
@@ -554,23 +735,23 @@ bool APP_ENERGY_GetMonthEnergy( uint8_t month )
             return true;
         }
     }
-    
+
     return false;
 }
 
-void APP_ENERGY_ClearEnergy( void )
+void APP_ENERGY_ClearEnergy(void)
 {
     /* Erases all the energy records stored in non volatile memory */
 }
 
-void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback, 
+void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
         APP_ENERGY_MAX_DEMAND * pMaxDemandResponse)
 {
     app_energyData.maxDemandCallback = callback;
     app_energyData.pMaxDemandResponse = pMaxDemandResponse;
 }
 
-bool APP_ENERGY_GetMonthMaxDemand( uint8_t month )
+bool APP_ENERGY_GetMonthMaxDemand(uint8_t month)
 {
     if (app_energyData.maxDemandCallback)
     {
@@ -581,11 +762,11 @@ bool APP_ENERGY_GetMonthMaxDemand( uint8_t month )
             return true;
         }
     }
-    
+
     return false;
 }
 
-void APP_ENERGY_ClearMaxDemand( void )
+void APP_ENERGY_ClearMaxDemand(void)
 {
     app_energyData.demandAccumulator = 0;
     memset(&app_energyData.demand, 0, sizeof(app_energyData.demand));

@@ -46,31 +46,31 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-    
+
 typedef struct {
-	uint32_t energy;
-	uint32_t Pt;
+  uint32_t energy;
+  uint32_t Pt;
 } APP_ENERGY_QUEUE_DATA;
 
 typedef enum {
-	TARIFF_1 = 1,
-	TARIFF_2,
-	TARIFF_3,
-	TARIFF_4,
-    TARIFF_MAX_NUM = TARIFF_4,
-	TARIFF_INVALID = 0xFF
+  TARIFF_1 = 1,
+  TARIFF_2,
+  TARIFF_3,
+  TARIFF_4,
+    TARIFF_NUM_TYPE = TARIFF_4,
+  TARIFF_INVALID = 0xFF
 } APP_ENERGY_TARIFF_TYPE;
 
 typedef struct {
-	APP_ENERGY_TARIFF_TYPE tariff;
-	uint8_t hour;
-	uint8_t minute;
+  APP_ENERGY_TARIFF_TYPE tariff;
+  uint8_t hour;
+  uint8_t minute;
 } APP_ENERGY_TOU_TIME_ZONE;
 
 #define APP_ENERGY_TOU_MAX_ZONES             8
 
 typedef struct {
-	APP_ENERGY_TOU_TIME_ZONE timeZone[APP_ENERGY_TOU_MAX_ZONES];
+  APP_ENERGY_TOU_TIME_ZONE timeZone[APP_ENERGY_TOU_MAX_ZONES];
     uint32_t usedZones;
 } APP_ENERGY_TOU;
 
@@ -79,12 +79,12 @@ typedef struct {
     uint8_t month;
     uint8_t day;
     uint8_t hour;
-	uint8_t minute;
+  uint8_t minute;
 } APP_ENERGY_DEMAND_DATA;
 
 typedef struct {
     APP_ENERGY_DEMAND_DATA maxDemad;
-    APP_ENERGY_DEMAND_DATA tariff[TARIFF_MAX_NUM];
+    APP_ENERGY_DEMAND_DATA tariff[TARIFF_NUM_TYPE];
 } APP_ENERGY_MAX_DEMAND;
 
 typedef struct {
@@ -93,7 +93,7 @@ typedef struct {
 } APP_ENERGY_DEMAND;
 
 typedef struct {
-    uint64_t tariff[TARIFF_MAX_NUM];
+    uint64_t tariff[TARIFF_NUM_TYPE];
 } APP_ENERGY_ACCUMULATORS;
 
 /* Energy threshold to update energy register stored in external memory */
@@ -115,9 +115,11 @@ typedef void ( * APP_ENERGY_MONTH_CALLBACK ) ( uint8_t month );
 typedef enum
 {
     /* Application's state machine's initial state. */
-    APP_ENERGY_STATE_INIT_RTC = 0,
+    APP_ENERGY_STATE_WAITING_DATALOG = 0,
+    APP_ENERGY_STATE_INIT_RTC,
     APP_ENERGY_STATE_INIT_TOU,
     APP_ENERGY_STATE_INIT_DEMAND,
+    APP_ENERGY_STATE_INIT_ENERGY,
     APP_ENERGY_STATE_INIT_EVENTS,
     APP_ENERGY_STATE_RUNNING,
     APP_ENERGY_STATE_GET_MAX_DEMAND,
@@ -144,36 +146,40 @@ typedef struct
 {
     /* The application's current state */
     APP_ENERGY_STATES state;
-    
+
     APP_ENERGY_QUEUE_DATA newQueuedData;
-    
+
     APP_ENERGY_TARIFF_TYPE currentTariff;
 
     uint32_t energyThreshold;
-    
-	APP_ENERGY_TOU tou;
-    
+
+  APP_ENERGY_TOU tou;
+
     APP_ENERGY_DEMAND demand;
-    
+
     APP_ENERGY_ACCUMULATORS energyAccumulator;
-    
+
     uint32_t demandAccumulator;
-    
+
     bool eventMinute;
-    
+
     bool eventMonth;
-    
+
+    bool dataIsRdy;
+
     APP_ENERGY_MAXDEMAND_CALLBACK maxDemandCallback;
-    
+
     APP_ENERGY_MAX_DEMAND * pMaxDemandResponse;
-    
+
     APP_ENERGY_MONTH_CALLBACK monthEnergyCallback;
-    
+
     APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse;
-    
+
     uint8_t maxDemandMonthResponse;
-    
+
     uint8_t monthEnergyResponse;
+
+    struct tm time;
 
 } APP_ENERGY_DATA;
 
@@ -260,11 +266,11 @@ void APP_ENERGY_Tasks( void );
 
 APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone( void );
 void APP_ENERGY_SetTOUTimeZone( APP_ENERGY_TOU_TIME_ZONE *timeZone );
-void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback, 
+void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback,
         APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse);
 bool APP_ENERGY_GetMonthEnergy( uint8_t month );
 void APP_ENERGY_ClearEnergy( void );
-void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback, 
+void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
         APP_ENERGY_MAX_DEMAND * pMaxDemandResponse);
 bool APP_ENERGY_GetMonthMaxDemand( uint8_t month );
 void APP_ENERGY_ClearMaxDemand( void );
