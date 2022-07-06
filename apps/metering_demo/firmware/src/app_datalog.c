@@ -123,17 +123,21 @@ static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, u
     }
 }
 
-static void APP_DATALOG_GetFileNameByDate(struct tm sysTime, APP_DATALOG_USER userId, char* fileName)
+static void APP_DATALOG_GetFileNameByDate(APP_DATALOG_USER userId, APP_DATALOG_DATE *date, char *fileName)
 {
-    // Some User IDs use a unique file, not depending on date
-    if (userId < APP_DATALOG_USER_ENERGY)
+    // If date not provided or invalid, buld filename with userId only
+    if (date == NULL)
+    {
+        sprintf(fileName, "%s/%s", userToString[userId], userToString[userId]);
+    }
+    else if ((date->year == APP_DATALOG_INVALID_YEAR) || (date->month == APP_DATALOG_INVALID_MONTH))
     {
         sprintf(fileName, "%s/%s", userToString[userId], userToString[userId]);
     }
     else
     {
-        // Build name. Adjust month to range 1 - 12. Year from 2000.
-        sprintf(fileName, "%s/%02d%02d", userToString[userId], sysTime.tm_year - 100, sysTime.tm_mon + 1);
+        // Build name using date
+        sprintf(fileName, "%s/%02d%02d", userToString[userId], date->year, date->month);
     }
 }
 
@@ -159,13 +163,13 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void)
 
 /*******************************************************************************
   Function:
-    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date)
 
   Remarks:
     See prototype in app_datalog.h.
  */
 
-bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date)
 {
     SYS_FS_HANDLE fileHandle;
 
@@ -176,7 +180,7 @@ bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
     }
 
     // Get file name from parameters
-    APP_DATALOG_GetFileNameByDate(sysTime, userId, app_datalogData.fileName);
+    APP_DATALOG_GetFileNameByDate(userId, date, app_datalogData.fileName);
 
     // Check whether file exist trying to open it
     fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
@@ -350,7 +354,15 @@ void APP_DATALOG_Tasks(void)
             if (xQueueReceive(appDatalogQueueID, &app_datalogData.newQueueData, portMAX_DELAY))
             {
                 // Get file name
-                APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.sysTime, app_datalogData.newQueueData.userId, app_datalogData.fileName);
+                if ((app_datalogData.newQueueData.date.year == APP_DATALOG_INVALID_YEAR) ||
+                    (app_datalogData.newQueueData.date.month == APP_DATALOG_INVALID_MONTH))
+                {
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, NULL, app_datalogData.fileName);
+                }
+                else
+                {
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, &app_datalogData.newQueueData.date, app_datalogData.fileName);
+                }
 
                 // Check Read/Write operation
                 if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)

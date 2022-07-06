@@ -173,6 +173,37 @@ typedef enum
 
 
 // *****************************************************************************
+/* Invalid year and month definitions
+
+*/
+#define APP_DATALOG_INVALID_YEAR   0xFF
+#define APP_DATALOG_INVALID_MONTH  0xFF
+
+// *****************************************************************************
+/* Application Year/Mont structure
+
+  Summary:
+    Holds a year and month value
+
+  Description:
+    Information in this structure is used to index files in filesystem.
+
+  Remarks:
+    None.
+ */
+
+typedef struct
+{
+    // Year (from 2000)
+    uint8_t year;
+    
+    // Month (range 1-12)
+    uint8_t month;
+
+} APP_DATALOG_DATE;
+
+
+// *****************************************************************************
 /* Callback to report Datalog Operation end and its result
 
 */
@@ -204,8 +235,8 @@ typedef struct
     // Callback to be invoked at the end of Datalog operation
     APP_DATALOG_END_CALLBACK endCallback;
 
-    // Date Time to index the proper file to read/write
-    struct tm sysTime;
+    // Date to index the proper file to read/write
+    APP_DATALOG_DATE date;
 
     // Length of data to be read/written
     uint16_t dataLen;
@@ -371,7 +402,7 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
 
 /*******************************************************************************
   Function:
-    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime)
+    bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date)
 
   Summary:
     Checks whether a file exists.
@@ -385,14 +416,19 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
 
   Parameters:
     userId - ID of module to which file is associated to.
-    sysTime - DateTime structure to derive filename from.
+    date - Pointer to Date structure to derive filename from.
+           NULL to avoid indexing by date.
 
   Returns:
     True if file exists. Otherwise False.
 
   Example:
     <code>
-    if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, dateTime))
+    APP_DATALOG_DATE date;
+    date.year = 22;
+    date.month = 1;
+    
+    if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, &date))
       // Put element in Datalog queue for file read/write operation
     }
     </code>
@@ -401,7 +437,7 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
     None.
  */
 
-bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, struct tm sysTime);
+bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date);
 
 
 /*******************************************************************************
