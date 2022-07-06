@@ -51,8 +51,6 @@ typedef struct
 #define CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES   10
 #define CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT       30
 
-#define CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY        2000
-
 
 // *****************************************************************************
 /* Application Data
@@ -92,17 +90,8 @@ APP_DATALOG_QUEUE_DATA datalogQueueElement;
 /* Reference to datalog queue */
 extern QueueHandle_t CACHE_ALIGN appDatalogQueueID;
 
-/* Local DateTime struct */
-static struct tm sysTime;
-
-#define APP_CONSOLE_DEFAULT_PWD   "PIC"
+/* Local array to hold password for Commands */
 static char metPwd[6] = APP_CONSOLE_DEFAULT_PWD;
-
-/* Last Times Event requested */
-static uint8_t lastTimesEvent;
-
-/* Control max wait for Datalog ready */
-static uint32_t currentWaitForDatalogReady = 0;
 
 static char sign[2] = {' ', '-'};
 
@@ -962,19 +951,19 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     uint8_t monthIndex;
 
     if (argc == 2) {
-        RTC_TimeGet(&sysTime);
+        RTC_TimeGet(&app_consoleData.sysTime);
         // Extract month index from parameters
         monthIndex = (uint8_t)strtol(argv[1], NULL, 10);
         monthIndex %= 12;
-        if (sysTime.tm_mon < monthIndex)
+        if (app_consoleData.sysTime.tm_mon < monthIndex)
         {
-            sysTime.tm_mon += 12;
-            sysTime.tm_year--;
+            app_consoleData.sysTime.tm_mon += 12;
+            app_consoleData.sysTime.tm_year--;
         }
-        sysTime.tm_mon -= monthIndex;
+        app_consoleData.sysTime.tm_mon -= monthIndex;
 
         // Get monthly energy from energy app
-        if (APP_ENERGY_GetMonthEnergy(&sysTime) == false)
+        if (APP_ENERGY_GetMonthEnergy(&app_consoleData.sysTime) == false)
         {
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Incorrect param\n\r");
@@ -1020,7 +1009,7 @@ static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
     if (argc == 3) {
         // Extract last times from parameters
-        lastTimesEvent = (uint8_t)strtol(argv[2], NULL, 10);
+        app_consoleData.lastTimesEvent = (uint8_t)strtol(argv[2], NULL, 10);
         // Extract event id from parameters
 //API         if (strcmp(argv[1], "Ua") == 0) {
 //API             eventId = DRV_MET_SAG_UA_EVENT;
@@ -1043,7 +1032,7 @@ static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 //API
 //API         if (eventId != DRV_MET_INVALID_EVENT) {
 //API             // Get monthly energy from metrology driver
-//API             DRV_MET_GetEvent(eventId, lastTimesEvent);
+//API             DRV_MET_GetEvent(eventId, app_consoleData.lastTimesEvent);
 //API             // Response will be provided on _eventCallback function
 //API         }
 //API         else {
@@ -1131,7 +1120,7 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_WRITE;
             datalogQueueElement.endCallback = NULL;
-            datalogQueueElement.sysTime = sysTime; /* Don't need to be updated, not used */
+            datalogQueueElement.sysTime = app_consoleData.sysTime; /* Don't need to be updated, not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
@@ -1287,46 +1276,46 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Get Date
             p = argv[2];
             // Year
-            sysTime.tm_year = (uint8_t)strtol(p, NULL, 10) + 2000 - 1900;
+            app_consoleData.sysTime.tm_year = (uint8_t)strtol(p, NULL, 10) + 2000 - 1900;
             // Look for "-" char and advance to next char
             p = strstr(p, "-");
             if (p != NULL) {
                 p++;
                 // Month
-                sysTime.tm_mon = (uint8_t)strtol(p, NULL, 10) - 1;
+                app_consoleData.sysTime.tm_mon = (uint8_t)strtol(p, NULL, 10) - 1;
                 // Look for "-" char and advance to next char
                 p = strstr(p, "-");
                 if (p != NULL) {
                     p++;
                     // Day
-                    sysTime.tm_mday = (uint8_t)strtol(p, NULL, 10);
+                    app_consoleData.sysTime.tm_mday = (uint8_t)strtol(p, NULL, 10);
                 }
             }
 
             // Get Week Day
             p = argv[3];
-            sysTime.tm_wday = (uint8_t)strtol(p, NULL, 10) - 1;
+            app_consoleData.sysTime.tm_wday = (uint8_t)strtol(p, NULL, 10) - 1;
 
             // Get Time
             p = argv[4];
             // Hour
-            sysTime.tm_hour = (uint8_t)strtol(p, NULL, 10);
+            app_consoleData.sysTime.tm_hour = (uint8_t)strtol(p, NULL, 10);
             // Look for ":" char and advance to next char
             p = strstr(p, ":");
             if (p != NULL) {
                 p++;
                 // Minute
-                sysTime.tm_min = (uint8_t)strtol(p, NULL, 10);
+                app_consoleData.sysTime.tm_min = (uint8_t)strtol(p, NULL, 10);
                 // Look for ":" char and advance to next char
                 p = strstr(p, ":");
                 if (p != NULL) {
                     p++;
                     // Second
-                    sysTime.tm_sec = (uint8_t)strtol(p, NULL, 10);
+                    app_consoleData.sysTime.tm_sec = (uint8_t)strtol(p, NULL, 10);
                 }
             }
 
-            if (RTC_TimeSet(&sysTime))
+            if (RTC_TimeSet(&app_consoleData.sysTime))
             {
                 SYS_CMD_MESSAGE("Set RTC is ok!\n\r");
             }
@@ -1573,6 +1562,7 @@ void APP_CONSOLE_Tasks ( void )
 //API                 memset(touObject, 0xFF, sizeof(touObject)); /* 0xFF means invalid tariff */
                 if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
                     (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) {
+                    app_consoleData.currentWaitForDatalogReady = 0;
                     app_consoleData.state = APP_CONSOLE_STATE_WAIT_STORAGE_READY;
                 }
                 // Set default console storage data just in case it cannot be read later
@@ -1589,8 +1579,8 @@ void APP_CONSOLE_Tasks ( void )
             else
             {
                 vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
-                currentWaitForDatalogReady += CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY;
-                if (currentWaitForDatalogReady > CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY) {
+                app_consoleData.currentWaitForDatalogReady += CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY;
+                if (app_consoleData.currentWaitForDatalogReady > CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY) {
                     // Go to Datalog not ready state
                     app_consoleData.state = APP_CONSOLE_STATE_DATALOG_NOT_READY;
                 }
@@ -1604,7 +1594,7 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_READ;
             datalogQueueElement.endCallback = _consoleReadStorage;
-            datalogQueueElement.sysTime = sysTime; /* Don't need to be updated, not used */
+            datalogQueueElement.sysTime = app_consoleData.sysTime; /* Don't need to be updated, not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
@@ -2064,11 +2054,11 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_READ_RTC:
         {
             // Read and print RTC
-            RTC_TimeGet(&sysTime);
+            RTC_TimeGet(&app_consoleData.sysTime);
             SYS_CMD_MESSAGE("Present RTC is(yy-mm-dd w hh:mm:ss):\n\r");
             SYS_CMD_PRINT("%02u-%02u-%02u %u %02u:%02u:%02u\r\n",
-                    sysTime.tm_year + 1900 - 2000, sysTime.tm_mon + 1, sysTime.tm_mday,
-                    sysTime.tm_wday + 1, sysTime.tm_hour, sysTime.tm_min, sysTime.tm_sec);
+                    app_consoleData.sysTime.tm_year + 1900 - 2000, app_consoleData.sysTime.tm_mon + 1, app_consoleData.sysTime.tm_mday,
+                    app_consoleData.sysTime.tm_wday + 1, app_consoleData.sysTime.tm_hour, app_consoleData.sysTime.tm_min, app_consoleData.sysTime.tm_sec);
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2127,7 +2117,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY:
         {
-            RTC_TimeGet(&sysTime);
+            RTC_TimeGet(&app_consoleData.sysTime);
             
             /* Check if data received through callback is valid */
             if (app_consoleData.dataValid)
@@ -2141,7 +2131,7 @@ void APP_CONSOLE_Tasks ( void )
                 }
                 
                 // Show received data on console
-                SYS_CMD_PRINT("Last %d Month Energy is :\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+                SYS_CMD_PRINT("Last %d Month Energy is :\n\r", app_consoleData.sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
 
                 SYS_CMD_PRINT("TT=%.2fkWh T1=%.2fkWh T2=%.2fkWh T3=%.2fkWh T4=%.2fkWh\r\n",
                     (float)total/10000000, (float)energyLocalObject.tariff[0]/10000000, (float)energyLocalObject.tariff[1]/10000000, 
@@ -2150,7 +2140,7 @@ void APP_CONSOLE_Tasks ( void )
             else
             {
                 // Data is not found
-                SYS_CMD_PRINT("Last %d Month Energy is not found\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+                SYS_CMD_PRINT("Last %d Month Energy is not found\n\r", app_consoleData.sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
             }
 
             // Go back to IDLE
@@ -2167,22 +2157,22 @@ void APP_CONSOLE_Tasks ( void )
         {
             // Print Event ID and requested Times
 //API             if (eventLocalObject.id == DRV_MET_SAG_UA_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Ua Sag is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Ua Sag is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             else if (eventLocalObject.id == DRV_MET_SAG_UB_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Ub Sag is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Ub Sag is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             else if (eventLocalObject.id == DRV_MET_SAG_UC_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Uc Sag is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Uc Sag is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             else if (eventLocalObject.id == DRV_MET_POW_UA_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Pa reverse is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Pa reverse is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             else if (eventLocalObject.id == DRV_MET_POW_UB_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Pb reverse is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Pb reverse is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             else if (eventLocalObject.id == DRV_MET_POW_UC_EVENT) {
-//API                 SYS_CMD_PRINT("Last %d Times Pc reverse is :\n\r", lastTimesEvent);
+//API                 SYS_CMD_PRINT("Last %d Times Pc reverse is :\n\r", app_consoleData.lastTimesEvent);
 //API             }
 //API             // Show received data on console
 //API             SYS_CMD_PRINT("Total Num=%d start time is %02d-%02d %02d:%02d end time is %02d-%02d %02d:%02d\n\r",
@@ -2203,7 +2193,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_MAX_DEMAND:
         {
-            RTC_TimeGet(&sysTime);
+            RTC_TimeGet(&app_consoleData.sysTime);
             
             /* Check if data received through callback is valid */
             if (app_consoleData.dataValid)
@@ -2212,7 +2202,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_ENERGY_DEMAND_DATA *pDataTariff;
                 
                 // Show received data on console
-                SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+                SYS_CMD_PRINT("Last %d Month MaxDemand is :\n\r", app_consoleData.sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
 
                 pDataMax = &maxDemandLocalObject.maxDemad;
                 pDataTariff = &maxDemandLocalObject.tariff[0];
@@ -2226,7 +2216,7 @@ void APP_CONSOLE_Tasks ( void )
             else
             {
                 // Data is not found
-                SYS_CMD_PRINT("Last %d Month MaxDemand is not found\n\r", sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
+                SYS_CMD_PRINT("Last %d Month MaxDemand is not found\n\r", app_consoleData.sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
             }
 
             // Go back to IDLE

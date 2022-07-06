@@ -47,6 +47,12 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 
+/* Default password for Console commands */
+#define APP_CONSOLE_DEFAULT_PWD                   "PIC"
+/* Max time (in ms) to wait for datalog to be ready.
+ * Once time expires, console app continues without storaga capabilities */
+#define CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY   2000
+
 // *****************************************************************************
 /* Application states
 
@@ -128,6 +134,9 @@ typedef struct
     APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
     bool dataValid;
     struct tm timeRequest;
+    struct tm sysTime;
+    uint8_t lastTimesEvent;
+    uint32_t currentWaitForDatalogReady;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************
