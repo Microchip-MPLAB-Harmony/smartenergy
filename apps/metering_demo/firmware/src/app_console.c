@@ -1120,7 +1120,8 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_WRITE;
             datalogQueueElement.endCallback = NULL;
-            datalogQueueElement.sysTime = app_consoleData.sysTime; /* Don't need to be updated, not used */
+            datalogQueueElement.date.year = APP_DATALOG_INVALID_YEAR; /* Not used */
+            datalogQueueElement.date.month = APP_DATALOG_INVALID_MONTH; /* Not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
@@ -1594,7 +1595,8 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_READ;
             datalogQueueElement.endCallback = _consoleReadStorage;
-            datalogQueueElement.sysTime = app_consoleData.sysTime; /* Don't need to be updated, not used */
+            datalogQueueElement.date.year = APP_DATALOG_INVALID_YEAR; /* Not used */
+            datalogQueueElement.date.month = APP_DATALOG_INVALID_MONTH; /* Not used */
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
