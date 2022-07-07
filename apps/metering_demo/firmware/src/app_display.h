@@ -54,7 +54,7 @@ extern "C" {
     Application states enumeration
 
   Description:
-    This enumeration defines the valid application states.  These states
+    This enumeration defines the valid application states. These states
     determine the behavior of the application at various times.
 */
 
@@ -66,6 +66,60 @@ typedef enum
 
 } APP_DISPLAY_STATES;
 
+// *****************************************************************************
+/* Display information 
+ * 
+  Summary:
+    Display information enumeration
+
+  Description:
+    This enumeration defines the valid display information . These determines
+    which information will be shown in the display.
+*/
+typedef enum 
+{
+	APP_DISPLAY_TOTAL_ENERGY = 0,
+	APP_DISPLAY_TOU1_ENERGY,
+	APP_DISPLAY_TOU2_ENERGY,
+	APP_DISPLAY_TOU3_ENERGY,
+	APP_DISPLAY_TOU4_ENERGY,
+	APP_DISPLAY_RTC_TIME,
+	APP_DISPLAY_RTC_DATE,
+	APP_DISPLAY_VA_RMS,
+	APP_DISPLAY_VB_RMS,
+	APP_DISPLAY_VC_RMS,
+	APP_DISPLAY_IA_RMS,
+	APP_DISPLAY_IB_RMS,
+	APP_DISPLAY_IC_RMS,
+	APP_DISPLAY_TOTAL_MAX_DEMAND,
+	APP_DISPLAY_TOU1_MAX_DEMAND,
+	APP_DISPLAY_TOU2_MAX_DEMAND,
+	APP_DISPLAY_TOU3_MAX_DEMAND,
+	APP_DISPLAY_TOU4_MAX_DEMAND,
+	APP_DISPLAY_APP_INFO,
+	APP_DISPLAY_BOARD_ID,
+	APP_DISPLAY_VERSION,
+	APP_DISPLAY_MAX_TYPE,
+            
+} APP_DISPLAY_INFO;
+
+// *****************************************************************************
+/* Circular display direction
+ * 
+  Summary:
+    Circular display direction enumeration
+
+  Description:
+    This enumeration defines the valid circular display directions. These 
+    determines the direction in which the information will be shown in the 
+    display.
+*/
+typedef enum
+{
+    APP_DISPLAY_FORWARD = 0x05,
+    APP_DISPLAY_BACKWARD = 0x50,
+
+} APP_DISPLAY_DIRECTION;
 
 // *****************************************************************************
 /* Application Data
@@ -85,8 +139,41 @@ typedef struct
     /* The application's current state */
     APP_DISPLAY_STATES state;
 
+    /* Flag to indicate if the scroll up button has been pressed */
     bool scrup_pressed;
+    
+    /* Flag to indicate if the scroll down button has been pressed */
     bool scrdown_pressed;
+    
+    /* Application information */
+    uint8_t app_info[8];
+    
+    /* Flag to indicate if there is application information to show */
+    bool app_info_en;
+    
+    /* Reload time to display each information in the display (in seconds) */
+	uint32_t reload_display_time;    
+    
+    /* Time to display each information in the display (in seconds) */
+	uint32_t display_time;     
+    
+    /* Cycle counter */
+	uint8_t cycle_counter;   
+    
+    /* Information shown in display */
+	APP_DISPLAY_INFO display_info;
+    
+    /* Direction of the circular information in the display */
+	APP_DISPLAY_DIRECTION direction;
+    
+    /* Circular information loop */
+    APP_DISPLAY_INFO loop_info[APP_DISPLAY_MAX_TYPE];
+    
+    /* Maximum index in the information loop */
+    uint8_t loop_max;
+    
+    /* Current index in the information loop */
+    uint8_t loop_idx;
 
 } APP_DISPLAY_DATA;
 
@@ -109,12 +196,12 @@ typedef struct
     void APP_DISPLAY_Initialize ( void )
 
   Summary:
-     MPLAB Harmony application initialization routine.
+    MPLAB Harmony application initialization routine for the display.
 
   Description:
-    This function initializes the Harmony application.  It places the
-    application in its initial state and prepares it to run so that its
-    APP_DISPLAY_Tasks function can be called.
+    This function initializes the Harmony application for the display.  
+    It places the application in its initial state and prepares it to run 
+    so that the APP_DISPLAY_Tasks function can be called.
 
   Precondition:
     All other system initialization routines should be called before calling
@@ -143,15 +230,15 @@ void APP_DISPLAY_Initialize ( void );
     void APP_DISPLAY_Tasks ( void )
 
   Summary:
-    MPLAB Harmony Demo application tasks function
+    MPLAB Harmony Demo application tasks function for the display.
 
   Description:
-    This routine is the Harmony Demo application's tasks function.  It
-    defines the application's state machine and core logic.
+    This routine is the Harmony Demo application tasks function for the 
+    display. It defines the application state machine and core logic.
 
   Precondition:
-    The system and application initialization ("SYS_Initialize") should be
-    called before calling this.
+    The system and application initialization ("SYS_Initialize" and 
+    "APP_DISPLAY_Initialize") should be called before calling this.
 
   Parameters:
     None.
@@ -161,6 +248,7 @@ void APP_DISPLAY_Initialize ( void );
 
   Example:
     <code>
+    APP_DISPLAY_Initialize();
     APP_DISPLAY_Tasks();
     </code>
 
@@ -169,6 +257,43 @@ void APP_DISPLAY_Initialize ( void );
  */
 
 void APP_DISPLAY_Tasks( void );
+
+/*******************************************************************************
+  Function:
+    void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len)
+
+  Summary:
+    Function to include application information in the display.
+
+  Description:
+    This function includes application information in the circular loop
+    to be shown in the display.
+
+  Precondition:
+    The system and application initialization ("SYS_Initialize" and 
+    "APP_DISPLAY_Initialize") should be called before calling this.
+
+  Parameters:
+    msg       - Pointer to the application message to show (only digits 0-9)
+    len       - Length of the message (maximum 8 digits)
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    char version_info[3] = {'1', '2', '19'};
+  
+    APP_DISPLAY_Initialize();
+    APP_DISPLAY_Tasks();
+    APP_DISPLAY_SetAppInfo(version_info, sizeof(version_info));
+    </code>
+
+  Remarks:
+    This routine must be called from SYS_Tasks() routine.
+ */
+
+void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

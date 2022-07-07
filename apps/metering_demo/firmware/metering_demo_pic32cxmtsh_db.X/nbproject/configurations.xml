@@ -9,6 +9,14 @@
                        displayName="pic32cxmtsh_db"
                        projectFiles="true">
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="display" projectFiles="true">
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_font.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_segmap.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/conf_cl010_slcdc.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/conf_slcdc.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/slcdc.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory_definitions.h</itemPath>
@@ -335,6 +343,10 @@
                        displayName="pic32cxmtsh_db"
                        projectFiles="true">
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
+            <logicalFolder name="f1" displayName="display" projectFiles="true">
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_slcdc.c</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/display/slcdc.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory.c</itemPath>
             </logicalFolder>
@@ -498,14 +510,14 @@
         <targetDevice>PIC32CX2051MTSH128</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>jlink</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>4.10</languageToolchainVersion>
+        <languageToolchainVersion>4.00</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
+        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.43"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
-        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.37"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
