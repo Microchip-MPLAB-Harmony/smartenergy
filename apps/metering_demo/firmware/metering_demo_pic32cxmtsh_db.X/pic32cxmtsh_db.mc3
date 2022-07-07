@@ -738,10 +738,10 @@
         &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;dfp&quot; x=&quot;20&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;drvMet&quot; x=&quot;510&quot; y=&quot;200&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;drvMet&quot; x=&quot;512&quot; y=&quot;197&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drv_memory&quot; x=&quot;351&quot; y=&quot;428&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;drv_sdspi&quot; x=&quot;353&quot; y=&quot;601&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;drv_spi&quot; x=&quot;190&quot; y=&quot;603&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;drv_spi&quot; x=&quot;190&quot; y=&quot;602&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;drv_sst26&quot; x=&quot;184&quot; y=&quot;446&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;flexcom0&quot; x=&quot;31&quot; y=&quot;298&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;11&quot; id=&quot;flexcom5&quot; x=&quot;29&quot; y=&quot;667&quot;/&gt;
@@ -750,7 +750,7 @@
         &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc0&quot; x=&quot;515&quot; y=&quot;81&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;513&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sys_command&quot; x=&quot;354&quot; y=&quot;272&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_console&quot; x=&quot;190&quot; y=&quot;234&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_console&quot; x=&quot;184&quot; y=&quot;234&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;540&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
@@ -4928,6 +4928,17 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_command" name="SYS_COMMAND_RTOS_STACK_SIZE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
+  &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_RTOS_STACK_SIZE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;2048&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/sys_command&gt;
+&lt;/sys_command&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_command" name="SYS_COMMAND_RTOS_USE_DELAY"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
   &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_RTOS_USE_DELAY&quot;&gt;
@@ -5198,7 +5209,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MAX_FILES&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;1&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;6&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -6119,7 +6130,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>4995c3b0edd07ff7fabca911b14ec500b9d845a2d04fc447b7bf9831f7c50546</hash>
+         <hash>5054d1cff7a0771307522cbe871672ebff46d5ce33b32abbc9443fa115a7d426</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi.c</file>
@@ -6227,7 +6238,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>297c71a018b07ffa132470b699a1e75589894535449f04906d5a6c5936796982</hash>
+         <hash>9af1c39d155199e2e7b8f0af4e2af3ab5559f7f9685f13b18afbfc5efea8bb1d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -6539,7 +6550,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ffconf.h</file>
-         <hash>929a8f7ab79ee4a0f97c48ed2ad9c950761e850ee4c97858d86ab72ffa5e0f10</hash>
+         <hash>d093879fc33714125d49a7791c01a0f9a62df00d52a8e0840bf920303303257b</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\list.c</file>
@@ -6947,7 +6958,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>fba4a87d09983ca844199a0d77013daa4a121f5f775fb07217665e6f2779bf73</hash>
+         <hash>7910dbb66dfc6fd094eadf7911fdfb625046060b804d1aa15e53abfe95f0fb58</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

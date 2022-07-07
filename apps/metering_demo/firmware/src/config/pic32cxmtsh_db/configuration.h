@@ -100,7 +100,7 @@ extern "C" {
 #define SYS_CMD_BUFFER_DMA_READY
 
 /* Command System Service RTOS Configurations*/
-#define SYS_CMD_RTOS_STACK_SIZE                256
+#define SYS_CMD_RTOS_STACK_SIZE                512
 #define SYS_CMD_RTOS_TASK_PRIORITY             1
 
 
@@ -111,7 +111,7 @@ extern "C" {
 
 #define SYS_FS_AUTOMOUNT_ENABLE           true
 #define SYS_FS_CLIENT_NUMBER              1
-#define SYS_FS_MAX_FILES                  1
+#define SYS_FS_MAX_FILES                  6
 #define SYS_FS_MAX_FILE_SYSTEM_TYPE       1
 #define SYS_FS_MEDIA_MAX_BLOCK_SIZE       512
 #define SYS_FS_MEDIA_MANAGER_BUFFER_SIZE  2048

@@ -60,10 +60,10 @@
 APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 
 /* Define a queue to signal the Datalog Tasks to store data */
-QueueHandle_t CACHE_ALIGN appDatalogQueueID = NULL;
+QueueHandle_t appDatalogQueueID = NULL;
 
 /* Buffer to get a string name from User IDs */
-static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "tou", "rtc", "console", "energy", "events", "demand"};
+static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "tou", "rtc", "console", "events", "energy", "demand"};
 
 // *****************************************************************************
 // *****************************************************************************
@@ -264,8 +264,8 @@ void APP_DATALOG_Initialize ( void )
     // Set the handling function of the File System
     SYS_FS_EventHandlerSet(APP_DATALOG_SysFSEventHandler,(uintptr_t)NULL);
 
-    // Create a queue capable of containing 5 Datalog queue data elements.
-    appDatalogQueueID = xQueueCreate(5, sizeof(APP_DATALOG_QUEUE_DATA));
+    // Create a queue capable of containing 10 queue data elements.
+    appDatalogQueueID = xQueueCreate(10, sizeof(APP_DATALOG_QUEUE_DATA));
 
     if (appDatalogQueueID == NULL)
     {

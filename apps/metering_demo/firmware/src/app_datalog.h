@@ -116,11 +116,11 @@ typedef enum
     /* Console data */
     APP_DATALOG_USER_CONSOLE,
 
-    /* Energy data */
-    APP_DATALOG_USER_ENERGY,
-
     /* Events data */
     APP_DATALOG_USER_EVENTS,
+
+    /* Energy data */
+    APP_DATALOG_USER_ENERGY,
 
     /* Demand data */
     APP_DATALOG_USER_DEMAND,
