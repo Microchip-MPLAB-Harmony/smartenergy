@@ -155,17 +155,14 @@ typedef union {
     uint32_t qbDir : 1;
     uint32_t qcDir : 1;
     uint32_t qtDir : 1;
+    uint32_t sagA : 1;
     uint32_t sagB : 1;
     uint32_t sagC : 1;
     uint32_t reserved1 : 1;
     uint32_t swellA : 1;
     uint32_t swellB : 1;
     uint32_t swellC : 1;
-    uint32_t paRev : 1;
-    uint32_t pbRev : 1;
-    uint32_t pcRev : 1;
-    uint32_t ptRev : 1;
-    uint32_t reserved2 : 13;
+    uint32_t reserved2 : 17;
   } BIT;
 } DRV_METROLOGY_AFE_EVENTS;
 

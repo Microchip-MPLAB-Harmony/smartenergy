@@ -32,6 +32,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "configuration.h"
+#include "app_events.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -71,7 +72,6 @@ typedef enum
     APP_CONSOLE_STATE_IDLE,
     APP_CONSOLE_STATE_WAIT_STORAGE_READY,
     APP_CONSOLE_STATE_READ_STORAGE,
-    APP_CONSOLE_STATE_READ_STORAGE_OK,
     APP_CONSOLE_STATE_READ_STORAGE_ERROR,
     APP_CONSOLE_STATE_DATALOG_NOT_READY,
     APP_CONSOLE_STATE_READ_CONTROL_REG,
@@ -135,7 +135,8 @@ typedef struct
     bool dataValid;
     struct tm timeRequest;
     struct tm sysTime;
-    uint8_t lastTimesEvent;
+    APP_EVENTS_EVENT_ID eventIdRequest;
+    uint8_t eventLastTimeRequest;
     uint32_t currentWaitForDatalogReady;
 } APP_CONSOLE_DATA;
 

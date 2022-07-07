@@ -665,8 +665,12 @@ void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
 void DRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeRMS = NULL;
+    uint32_t stateFlagReg;
     /* TBD : calibration ?????? */
 
+    /* Get State Flag Register */
+    stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
+            
     /* Update RMS values */
     afeRMS = gDrvMetObj.metAFEData.RMS;
 
@@ -716,6 +720,14 @@ void DRV_METROLOGY_UpdateMeasurements(void)
     afeRMS[RMS_ANGLEN]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_N, gDrvMetObj.metAccData.Q_N);
 
     gDrvMetObj.metAFEData.energy += _DRV_Metrology_GetPQEnergy(PENERGY, ABS);
+    
+    /* Update Swell/Sag events */
+    gDrvMetObj.metAFEData.afeEvents.BIT.sagA = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.BIT.sagB = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.BIT.sagC = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.BIT.swellA = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.BIT.swellB = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.BIT.swellC = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk? 1 : 0;
 
 }
 
@@ -857,6 +869,11 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 
     /* Set Metrology Lib state as Init */
     pControl->STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
+}
+
+void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
+{
+    *events = gDrvMetObj.metAFEData.afeEvents;
 }
 
 

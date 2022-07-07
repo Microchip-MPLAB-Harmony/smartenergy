@@ -271,12 +271,14 @@ typedef enum
 typedef struct
 {
     /* The application's current state */
-    APP_METROLOGY_STATES    state;
+    APP_METROLOGY_STATES state;
 
-    DRV_METROLOGY_CONTROL *           pMetControl;
-    DRV_METROLOGY_STATUS *            pMetStatus;
-    DRV_METROLOGY_ACCUMULATORS *      pMetAccData;
-    DRV_METROLOGY_HARMONICS *         pMetHarData;
+    DRV_METROLOGY_CONTROL * pMetControl;
+    DRV_METROLOGY_STATUS * pMetStatus;
+    DRV_METROLOGY_ACCUMULATORS * pMetAccData;
+    DRV_METROLOGY_HARMONICS * pMetHarData;
+    
+    uint32_t queueFree;
 
     bool dataIsRdy;
 
@@ -380,7 +382,6 @@ void APP_METROLOGY_StoreMetrologyData(void);
 void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
-
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

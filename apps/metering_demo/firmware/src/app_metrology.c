@@ -40,10 +40,11 @@
  * data */
 OSAL_SEM_DECLARE(appMetrologySemID);
 
-extern QueueHandle_t CACHE_ALIGN appDatalogQueueID;
-APP_DATALOG_QUEUE_DATA appMettrologyDatalogQueueData;
+extern QueueHandle_t appDatalogQueueID;
+APP_DATALOG_QUEUE_DATA appMetrologyDatalogQueueData;
 
-extern QueueHandle_t CACHE_ALIGN appEnergyQueueID;
+extern QueueHandle_t appEnergyQueueID;
+extern QueueHandle_t appEventsQueueID;
 
 const char * _met_control_desc[] =
 {
@@ -269,26 +270,28 @@ static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
 // *****************************************************************************
 static void _APP_METROLOGY_LoadDataFromMemory(DRV_METROLOGY_CONTROL * controlReg)
 {
-    appMettrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
-    appMettrologyDatalogQueueData.operation = APP_DATALOG_READ;
-    appMettrologyDatalogQueueData.pData = (uint8_t *)controlReg;
-    appMettrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
-    appMettrologyDatalogQueueData.endCallback = _APP_METROLOGY_GetNVMDataCallback;
-    /* appMettrologyDatalogQueueData.sysTime is not used */
+    appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
+    appMetrologyDatalogQueueData.operation = APP_DATALOG_READ;
+    appMetrologyDatalogQueueData.pData = (uint8_t *)controlReg;
+    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
+    appMetrologyDatalogQueueData.endCallback = _APP_METROLOGY_GetNVMDataCallback;
+    appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appMettrologyDatalogQueueData, (TickType_t) 0);
+    xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
 }
 
 static void _APP_METROLOGY_StoreDataInMemory(void)
 {
-    appMettrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
-    appMettrologyDatalogQueueData.operation = APP_DATALOG_WRITE;
-    appMettrologyDatalogQueueData.pData = (uint8_t *)app_metrologyData.pMetControl;
-    appMettrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
-    appMettrologyDatalogQueueData.endCallback = NULL;
-    /* appDatalogQueueData.sysTime is not used */
+    appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
+    appMetrologyDatalogQueueData.operation = APP_DATALOG_WRITE;
+    appMetrologyDatalogQueueData.pData = (uint8_t *)app_metrologyData.pMetControl;
+    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
+    appMetrologyDatalogQueueData.endCallback = NULL;
+    appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appMettrologyDatalogQueueData, (TickType_t) 0);
+    xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
 }
 
 // *****************************************************************************
@@ -341,6 +344,7 @@ void APP_METROLOGY_Initialize (void)
 void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
+    APP_EVENTS_QUEUE_DATA newEvent;
 
     /* Check the application's current state. */
     switch (app_metrologyData.state)
@@ -391,10 +395,8 @@ void APP_METROLOGY_Tasks (void)
         {
             if (DRV_METROLOGY_GetState() == DRV_METROLOGY_STATE_READY)
             {
-                struct tm time = {0};
-
                 /* Check if there are Metrology data in memory */
-                if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, time))
+                if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL))
                 {
                     DRV_METROLOGY_CONTROL controlReg;
 
@@ -443,18 +445,30 @@ void APP_METROLOGY_Tasks (void)
             DRV_METROLOGY_UpdateMeasurements();
             GPIODBG_Clear();
 
-            // Write the new Energy value to the Energy Queue to be processed by the Energy Task
-            newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
-            newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
-            uint32_t freeNum = uxQueueSpacesAvailable(appEnergyQueueID);
-            if (freeNum)
+            // Send new Energy values to the Energy Task
+            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
+            if (app_metrologyData.queueFree)
             {
-//                SYS_CONSOLE_PRINT("METROLOGY Queue free: %u\r\n", freeNum);
+                newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
+                newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
                 xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
             }
             else
             {
-                SYS_CMD_MESSAGE("METROLOGY Queue FULL\n\r");
+                SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\n\r");
+            }
+            
+            // Send new Events to the Events Task
+            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
+            if (app_metrologyData.queueFree)
+            {
+                RTC_TimeGet(&newEvent.eventTime);
+                DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
+                xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+            }
+            else
+            {
+                SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\n\r");
             }
 
 
@@ -613,7 +627,6 @@ size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
     *address = (uint32_t)app_metrologyData.pMetControl->CAPTURE_ADDR;
     return (size_t)app_metrologyData.pMetControl->CAPTURE_BUFF_SIZE;
 }
-
 
 
 /*******************************************************************************

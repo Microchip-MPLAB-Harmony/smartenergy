@@ -120,6 +120,8 @@ DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
 
 void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
+void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
+
 #ifdef __cplusplus // Provide C++ Compatibility
  }
 #endif
