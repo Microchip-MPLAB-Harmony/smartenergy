@@ -36,11 +36,11 @@
 // *****************************************************************************
 // *****************************************************************************
 /* Define a queue to signal the Datalog Tasks to store data */
-extern QueueHandle_t CACHE_ALIGN appDatalogQueueID;
+extern QueueHandle_t appDatalogQueueID;
 APP_DATALOG_QUEUE_DATA appEnergyDatalogQueueData;
 
 /* Define a queue to signal the Energy Tasks to process new energy measurement */
-QueueHandle_t CACHE_ALIGN appEnergyQueueID = NULL;
+QueueHandle_t appEnergyQueueID = NULL;
 
 /* Define a semaphore to wait callbacks from DataLog application */
 OSAL_SEM_DECLARE(appEnergySemID);
@@ -82,13 +82,13 @@ const uint8_t app_energyDayWeekTbl[12] = {6, 2, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 const APP_ENERGY_TOU_TIME_ZONE gAppEnergyTOUDefault[APP_ENERGY_TOU_MAX_ZONES] =
 {
     {TARIFF_2, _UINT32_(8), _UINT32_(30)},
-  {TARIFF_3, _UINT32_(10), _UINT32_(30)},
-  {TARIFF_1, _UINT32_(18), _UINT32_(30)},
-  {TARIFF_4, _UINT32_(22), _UINT32_(00)},
-  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
-  {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)}
+    {TARIFF_3, _UINT32_(10), _UINT32_(30)},
+    {TARIFF_1, _UINT32_(18), _UINT32_(30)},
+    {TARIFF_4, _UINT32_(22), _UINT32_(00)},
+    {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+    {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+    {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)},
+    {TARIFF_INVALID, _UINT32_(0), _UINT32_(0)}
 };
 
 // *****************************************************************************
@@ -324,7 +324,8 @@ static void _APP_ENERGY_LoadRTCDataFromMemory(void)
     appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.time;
     appEnergyDatalogQueueData.dataLen = sizeof(struct tm);
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
-    /* appDatalogQueueData.sysTime is not used */
+    appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
 }
@@ -336,7 +337,8 @@ static void _APP_ENERGY_StoreRTCDataInMemory(void)
     appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.time;
     appEnergyDatalogQueueData.dataLen = sizeof(struct tm);
     appEnergyDatalogQueueData.endCallback = NULL;
-    /* appDatalogQueueData.sysTime is not used */
+    appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
 }
@@ -348,7 +350,8 @@ static void _APP_ENERGY_LoadTOUDataFromMemory(void)
     appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.tou;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_TOU);
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
-    /* appDatalogQueueData.sysTime is not used */
+    appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
 }
@@ -360,7 +363,8 @@ static void _APP_ENERGY_StoreTOUDataInMemory(void)
     appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.tou;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_TOU);
     appEnergyDatalogQueueData.endCallback = NULL;
-    /* appDatalogQueueData.sysTime is not used */
+    appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
 }
@@ -371,7 +375,8 @@ static void _APP_ENERGY_LoadEnergyDataFromMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
     appEnergyDatalogQueueData.pData = (uint8_t *)pData;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_ACCUMULATORS);
-    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.date.month = time->tm_mon + 1;
+    appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
@@ -383,7 +388,8 @@ static void _APP_ENERGY_StoreEnergyDataInMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
     appEnergyDatalogQueueData.pData = (uint8_t *)pData;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_ACCUMULATORS);
-    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.date.month = time->tm_mon + 1;
+    appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = NULL;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
@@ -395,7 +401,8 @@ static void _APP_ENERGY_LoadDemandDataFromMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
     appEnergyDatalogQueueData.pData = (uint8_t *)pData;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_MAX_DEMAND);
-    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.date.month = time->tm_mon + 1;
+    appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDataLogCallback;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
@@ -407,7 +414,8 @@ static void _APP_ENERGY_StoreDemandDataInMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.operation = APP_DATALOG_WRITE;
     appEnergyDatalogQueueData.pData = (uint8_t *)pData;
     appEnergyDatalogQueueData.dataLen = sizeof(APP_ENERGY_MAX_DEMAND);
-    appEnergyDatalogQueueData.sysTime = *time;
+    appEnergyDatalogQueueData.date.month = time->tm_mon + 1;
+    appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = NULL;
 
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
@@ -449,7 +457,7 @@ void APP_ENERGY_Initialize (void)
     /* Set Energy TOU Threshold */
     app_energyData.energyThreshold = APP_ENERGY_TOU_THRESHOLD;
 
-    /* Create a queue capable of containing 5 unsigned long values. */
+    /* Create a queue capable of containing 5 queue data elements. */
     appEnergyQueueID = xQueueCreate(5, sizeof(APP_ENERGY_QUEUE_DATA));
 
     if (appEnergyQueueID == NULL)
@@ -480,7 +488,6 @@ void APP_ENERGY_Tasks (void)
     /* Check the application's current state. */
     switch (app_energyData.state)
     {
-        /* Application's initial state. */
         case APP_ENERGY_STATE_WAITING_DATALOG:
         {
             if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
@@ -498,7 +505,7 @@ void APP_ENERGY_Tasks (void)
             app_energyData.dataIsRdy = false;
     
             /* Check if there are RTC data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_RTC, app_energyData.time))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_RTC, NULL))
             {
                 /* RTC data exists */
                 _APP_ENERGY_LoadRTCDataFromMemory();
@@ -531,7 +538,7 @@ void APP_ENERGY_Tasks (void)
             app_energyData.dataIsRdy = false;
             
             /* Check if there are TOU data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_TOU, app_energyData.time))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_TOU, NULL))
             {
                 /* TOU data exists */
                 _APP_ENERGY_LoadTOUDataFromMemory();
@@ -555,11 +562,15 @@ void APP_ENERGY_Tasks (void)
 
         case APP_ENERGY_STATE_INIT_ENERGY:
         {
+            APP_DATALOG_DATE date;
+            
             /* Reset flag to request data to datalog app */
             app_energyData.dataIsRdy = false;
             
+            date.month = app_energyData.time.tm_mon + 1;
+            date.year = app_energyData.time.tm_year - 100;
             /* Check if there are ENERGY data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, app_energyData.time))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, &date))
             {
                 /* ENERGY data exists */
                 _APP_ENERGY_LoadEnergyDataFromMemory(&app_energyData.time, &app_energyData.energyAccumulator);
@@ -580,11 +591,15 @@ void APP_ENERGY_Tasks (void)
 
         case APP_ENERGY_STATE_INIT_DEMAND:
         {
+            APP_DATALOG_DATE date;
+            
             /* Reset flag to request data to datalog app */
             app_energyData.dataIsRdy = false;
             
+            date.month = app_energyData.time.tm_mon + 1;
+            date.year = app_energyData.time.tm_year - 100;
             /* Check if there are DEMAND data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, app_energyData.time))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, &date))
             {
                 /* DEMAND data exists */
                 _APP_ENERGY_LoadDemandDataFromMemory(&app_energyData.time, &app_energyData.demand.maxDemand);
@@ -669,11 +684,15 @@ void APP_ENERGY_Tasks (void)
 
         case APP_ENERGY_STATE_GET_MAX_DEMAND:
         {
+            APP_DATALOG_DATE date;
+            
             /* Reset flag to request data to datalog app */
             app_energyData.dataIsRdy = false;
             
+            date.month = app_energyData.timeResponse.tm_mon + 1;
+            date.year = app_energyData.timeResponse.tm_year - 100;
             /* Check if there are ENERGY data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, app_energyData.timeResponse))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_DEMAND, &date))
             {
                 /* ENERGY data exists */
                 _APP_ENERGY_LoadDemandDataFromMemory(&app_energyData.timeResponse, app_energyData.pMaxDemandResponse);
@@ -691,11 +710,15 @@ void APP_ENERGY_Tasks (void)
 
         case APP_ENERGY_STATE_GET_MONTH_ENERGY:
         {
+            APP_DATALOG_DATE date;
+            
             /* Reset flag to request data to datalog app */
             app_energyData.dataIsRdy = false;
             
+            date.month = app_energyData.timeResponse.tm_mon + 1;
+            date.year = app_energyData.timeResponse.tm_year - 100;
             /* Check if there are ENERGY data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, app_energyData.timeResponse))
+            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, &date))
             {
                 /* ENERGY data exists */
                 _APP_ENERGY_LoadEnergyDataFromMemory(&app_energyData.timeResponse, app_energyData.pMonthEnergyResponse);
@@ -752,7 +775,7 @@ bool APP_ENERGY_GetMonthEnergy(struct tm * time)
 
 void APP_ENERGY_ClearEnergy(void)
 {
-    /* Erases all the energy records stored in non volatile memory */
+    /* Erase all the energy records stored in non volatile memory */
     APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY);
 }
 
@@ -777,7 +800,7 @@ bool APP_ENERGY_GetMonthMaxDemand(struct tm * time)
 
 void APP_ENERGY_ClearMaxDemand(void)
 {
-    /* Erases all the demand records stored in non volatile memory */
+    /* Erase all the demand records stored in non volatile memory */
     APP_DATALOG_ClearData(APP_DATALOG_USER_DEMAND);
 }
 
