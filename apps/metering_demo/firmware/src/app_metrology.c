@@ -321,6 +321,11 @@ void APP_METROLOGY_Initialize (void)
 
     /* Set Callback for each metrology integration process */
     DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_NewIntegrationCallback);
+    
+    /* Clear Harmonic Analysis Data */
+    app_metrologyData.harmonicAnalysisPending = false;
+    app_metrologyData.pHarmonicAnalisysCallback = NULL;
+    app_metrologyData.pHarmonicAnalysisResponse = NULL;
 
     /* Create the Switches Semaphore. */
     if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -337,10 +342,6 @@ void APP_METROLOGY_Initialize (void)
   Remarks:
     See prototype in app_metrology.h.
  */
-//extern uint32_t counterIPC;
-//extern uint32_t counterIPC20;
-//extern uint32_t counterIPC0;
-//uint32_t counter = 0;
 void APP_METROLOGY_Tasks (void)
 {
     APP_ENERGY_QUEUE_DATA newMetrologyData;
@@ -437,10 +438,6 @@ void APP_METROLOGY_Tasks (void)
             /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
             OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
 
-//            counter++;
-//            SYS_CONSOLE_Print(SYS_CONSOLE_INDEX_0, "Metrology -> received new Integration Data %u : %u\t%u\t%u \r\n",
-//                    counter, counterIPC, counterIPC20, counterIPC0);
-
             GPIODBG_Set();
             DRV_METROLOGY_UpdateMeasurements();
             GPIODBG_Clear();
@@ -470,8 +467,27 @@ void APP_METROLOGY_Tasks (void)
             {
                 SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\n\r");
             }
+            
+            // Check Harmonic Analysis Result and report
+            if (app_metrologyData.harmonicAnalysisPending)
+            {
+                app_metrologyData.state = APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS;
+            }
+            break;
+        }
 
+        case APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS:
+        {
+            if (DRV_METROLOGY_GetHarmonicAnalysisResult())
+            {
+                app_metrologyData.harmonicAnalysisPending = false;
 
+                app_metrologyData.pHarmonicAnalisysCallback(app_metrologyData.harmonicAnalysisNum);
+                
+                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
+            }
+            
+            vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
@@ -626,6 +642,38 @@ size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
 {
     *address = (uint32_t)app_metrologyData.pMetControl->CAPTURE_ADDR;
     return (size_t)app_metrologyData.pMetControl->CAPTURE_BUFF_SIZE;
+}
+
+bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
+{
+    if (DRV_METROLOGY_HarmonicAnalysisIsRun())
+    {
+        return false;
+    }
+    
+    if (app_metrologyData.pHarmonicAnalisysCallback == NULL)
+    {
+        return false;
+    }
+    
+    if (app_metrologyData.pHarmonicAnalysisResponse == NULL)
+    {
+        return false;
+    }
+    
+    app_metrologyData.harmonicAnalysisPending = true;
+    app_metrologyData.harmonicAnalysisNum = harmonicNum;
+    
+    DRV_METROLOGY_RequestHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
+    
+    return true;
+}
+
+void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK callback,
+        DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse)
+{
+    app_metrologyData.pHarmonicAnalisysCallback = callback;
+    app_metrologyData.pHarmonicAnalysisResponse = pHarmonicAnalysisResponse;
 }
 
 

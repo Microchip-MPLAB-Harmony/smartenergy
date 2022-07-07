@@ -122,6 +122,10 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
 
+void DRV_METROLOGY_RequestHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse);
+bool DRV_METROLOGY_HarmonicAnalysisIsRun(void);
+bool DRV_METROLOGY_GetHarmonicAnalysisResult(void);
+
 #ifdef __cplusplus // Provide C++ Compatibility
  }
 #endif

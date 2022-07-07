@@ -51,6 +51,8 @@ extern "C" {
 #define MET_CAPTURE_ADDR_OFFSET             47
 // Waveform capture buffer length
 #define MET_CAPTURE_BUFF_LEN                8000
+    
+typedef void (* APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK) (uint8_t harmonicNum);    
 
 typedef enum
 {
@@ -251,6 +253,7 @@ typedef enum
     APP_METROLOGY_STATE_INIT,
     APP_METROLOGY_STATE_START,
     APP_METROLOGY_STATE_RUNNING,
+    APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS,
     APP_METROLOGY_STATE_ERROR
 
 } APP_METROLOGY_STATES;
@@ -277,6 +280,11 @@ typedef struct
     DRV_METROLOGY_STATUS * pMetStatus;
     DRV_METROLOGY_ACCUMULATORS * pMetAccData;
     DRV_METROLOGY_HARMONICS * pMetHarData;
+    
+    bool harmonicAnalysisPending;
+    uint8_t harmonicAnalysisNum;
+    DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse;
+    APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK pHarmonicAnalisysCallback;
     
     uint32_t queueFree;
 
@@ -382,6 +390,10 @@ void APP_METROLOGY_StoreMetrologyData(void);
 void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
+
+bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum);
+void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK callback, 
+        DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

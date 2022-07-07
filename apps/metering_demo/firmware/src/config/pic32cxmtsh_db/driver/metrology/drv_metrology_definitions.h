@@ -166,6 +166,15 @@ typedef union {
   } BIT;
 } DRV_METROLOGY_AFE_EVENTS;
 
+typedef struct {
+	double Irms_A_m;
+	double Irms_B_m;
+	double Irms_C_m;
+	double Vrms_A_m;
+	double Vrms_B_m;
+	double Vrms_C_m;
+} DRV_METROLOGY_HARMONIC;
+
 typedef enum {
   RMS_UA = 0,
   RMS_UB,
@@ -335,6 +344,9 @@ typedef struct
 
     /* Metrology Calibration interface */
     DRV_METROLOGY_CALIBRATION       metCalibration;
+    
+    /* Harmonic Analysis Data */
+    DRV_METROLOGY_HARMONIC *        pHarmonicAnalysisResponse;
 
     /* IPC metrology lib integration Callback */
     DRV_METROLOGY_CALLBACK          newIntegrationCallback;

@@ -666,7 +666,6 @@ void DRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeRMS = NULL;
     uint32_t stateFlagReg;
-    /* TBD : calibration ?????? */
 
     /* Get State Flag Register */
     stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
@@ -874,6 +873,106 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
 {
     *events = gDrvMetObj.metAFEData.afeEvents;
+}
+
+void DRV_METROLOGY_RequestHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse)
+{
+    /* Set Data pointer to store the Harmonic data result */
+    gDrvMetObj.pHarmonicAnalysisResponse = pHarmonicResponse;
+    
+    /* Set Number of Harmonic for Analysis */
+    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_m_REQ(harmonicNum);
+    
+    /* Enable Harmonic Analysis */
+    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_EN_Msk;
+}
+
+bool DRV_METROLOGY_HarmonicAnalysisIsRun(void)
+{
+    if (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_EN_Msk)
+    {
+        uint32_t controlMReq;
+        uint32_t statusMConf;
+        
+        controlMReq = (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+        controlMReq >>= FEATURE_CTRL1_HARMONIC_m_REQ_Pos;
+        
+        statusMConf = (gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG & STATUS_STATE_FLAG_HARMONIC_m_CONF_Msk);
+        statusMConf >>= STATUS_STATE_FLAG_HARMONIC_m_CONF_Pos;
+        
+        if (controlMReq == statusMConf)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool DRV_METROLOGY_GetHarmonicAnalysisResult(void)
+{
+    if (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_EN_Msk)
+    {
+        uint32_t controlMReq;
+        uint32_t statusMConf;
+        
+        controlMReq = (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+        controlMReq >>= FEATURE_CTRL1_HARMONIC_m_REQ_Pos;
+        
+        statusMConf = (gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG & STATUS_STATE_FLAG_HARMONIC_m_CONF_Msk);
+        statusMConf >>= STATUS_STATE_FLAG_HARMONIC_m_CONF_Pos;
+        
+        if (controlMReq == statusMConf)
+        {
+            double sqrt2;
+            uint64_t div;
+            uint32_t *pHarReg;
+            uint8_t index;
+            uint32_t harTemp[12];
+            
+            pHarReg = (uint32_t *)&gDrvMetObj.metRegisters->MET_HARMONICS;
+            for (index = 0; index < 12; index++, pHarReg++) {
+                if (*pHarReg > RMS_HARMONIC) {
+                    harTemp[index] = (~(*pHarReg)) + 1;
+                } else {
+                    harTemp[index] = *pHarReg;
+                }
+            }
+
+            sqrt2 = sqrt(2);
+            div = gDrvMetObj.metRegisters->MET_STATUS.N << 6; /* format sQ25.6 */
+            
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_A_m = (sqrt(pow((double)harTemp[0], 2) + pow((double)harTemp[6], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_B_m = (sqrt(pow((double)harTemp[2], 2) + pow((double)harTemp[8], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_C_m = (sqrt(pow((double)harTemp[4], 2) + pow((double)harTemp[10], 2)) * sqrt2) / div;
+            
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2) + pow((double)harTemp[7], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2) + pow((double)harTemp[9], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2) + pow((double)harTemp[11], 2)) * sqrt2) / div;
+            
+            /* Disable Harmonic Analysis */
+            gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
+            /* Clear Number of Harmonic for Analysis */
+            gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+            
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 

@@ -81,8 +81,9 @@ OSAL_SEM_HANDLE_TYPE appConsoleSemID;
 OSAL_SEM_HANDLE_TYPE appConsoleStorageSemID;
 
 /* Local storage objects */
-static APP_ENERGY_ACCUMULATORS energyLocalObject;
+static APP_ENERGY_ACCUMULATORS energyData;
 static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
+static DRV_METROLOGY_HARMONIC harmonicAnalysisData;
 
 /* Local Queue element to request Datalog operations */
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
@@ -130,6 +131,15 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
     app_consoleData.timeRequest = *time;
     app_consoleData.dataValid = dataValid;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MAX_DEMAND;
+
+    // Post semaphore to wakeup task
+    OSAL_SEM_Post(&appConsoleSemID);
+}
+
+static void _harmonicAnalisysCallback(uint8_t harmonicNum)
+{
+    app_consoleData.harmonicNumRequest = harmonicNum;
+    app_consoleData.state = APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS;
 
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
@@ -1103,8 +1113,12 @@ static void Command_HRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Extract harmonic number from parameters
         harmonicNum = (uint8_t)strtol(argv[1], NULL, 10);
         // Set harmonics calculation mode on metrology driver
-//API         DRV_MET_SetHarmonicsCalculation(harmonicNum);
-        // Response will be provided on _hrrCallback function
+        if (APP_METROLOGY_StartHarmonicAnalysis(harmonicNum) == false)
+        {
+            // Incorrect parameter number
+            SYS_CMD_MESSAGE("Previous harmonic analysis is running\n\r");
+        }
+        // Response will be provided on _harmonicAnalisysCallback function
     }
     else 
     {
@@ -1596,9 +1610,12 @@ void APP_CONSOLE_Tasks ( void )
         {
             if (SYS_CMD_READY_TO_READ())
             {
-                /* Initialize Metrology Driver callbacks */
-                APP_ENERGY_SetMonthEnergyCallback(_monthlyEnergyCallback, &energyLocalObject);
+                /* Initialize Energy App callbacks */
+                APP_ENERGY_SetMonthEnergyCallback(_monthlyEnergyCallback, &energyData);
                 APP_ENERGY_SetMaxDemandCallback(_maxDemandCallback, &maxDemandLocalObject);
+                
+                /* Initialize Metrology App callbacks */
+                APP_METROLOGY_SetHarmonicAnalysisCallback(_harmonicAnalisysCallback, &harmonicAnalysisData);
 
                 if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
                     (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) 
@@ -2187,29 +2204,19 @@ void APP_CONSOLE_Tasks ( void )
             break;
         }
 
-        case APP_CONSOLE_STATE_PRINT_HRR:
+        case APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS:
         {
             // Show received data on console
             SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\n\r");
-//API
-//API             SYS_CMD_MESSAGE("Irms_Har_A(A)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_A);
-//API
-//API             SYS_CMD_MESSAGE("Irms_Har_B(A)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_B);
-//API
-//API             SYS_CMD_MESSAGE("Irms_Har_C(A)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Irms_C);
-//API
-//API             SYS_CMD_MESSAGE("Vrms_Har_A(V)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_A);
-//API
-//API             SYS_CMD_MESSAGE("Vrms_Har_B(V)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_B);
-//API
-//API             SYS_CMD_MESSAGE("Vrms_Har_C(V)\n\r");
-//API             SYS_CMD_PRINT("%f\n\r", hrrLocalObject.Vrms_C);
-//API
+
+            SYS_CMD_MESSAGE("Irms_Har_A(A)     Irms_Har_B(A)     Irms_Har_C(A)\n\r");
+            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisData.Irms_A_m, 
+                    harmonicAnalysisData.Irms_B_m, harmonicAnalysisData.Irms_C_m);
+            
+            SYS_CMD_MESSAGE("Vrms_Har_A(V)     Vrms_Har_B(V)     Vrms_Har_C(V)\n\r");
+            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisData.Vrms_A_m, 
+                    harmonicAnalysisData.Vrms_B_m, harmonicAnalysisData.Vrms_C_m);
+
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
@@ -2227,15 +2234,15 @@ void APP_CONSOLE_Tasks ( void )
                 
                 for (idx = 0; idx < TARIFF_NUM_TYPE; idx ++)
                 {
-                    total += energyLocalObject.tariff[idx];
+                    total += energyData.tariff[idx];
                 }
                 
                 // Show received data on console
                 SYS_CMD_PRINT("Last %d Month Energy is :\n\r", app_consoleData.sysTime.tm_mon - app_consoleData.timeRequest.tm_mon);
 
                 SYS_CMD_PRINT("TT=%.2fkWh T1=%.2fkWh T2=%.2fkWh T3=%.2fkWh T4=%.2fkWh\r\n",
-                    (float)total/10000000, (float)energyLocalObject.tariff[0]/10000000, (float)energyLocalObject.tariff[1]/10000000, 
-                        (float)energyLocalObject.tariff[2]/10000000, (float)energyLocalObject.tariff[3]/10000000);
+                    (float)total/10000000, (float)energyData.tariff[0]/10000000, (float)energyData.tariff[1]/10000000, 
+                        (float)energyData.tariff[2]/10000000, (float)energyData.tariff[3]/10000000);
             }
             else
             {

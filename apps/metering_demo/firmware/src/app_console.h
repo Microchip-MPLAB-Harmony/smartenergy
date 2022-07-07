@@ -86,7 +86,7 @@ typedef enum
     APP_CONSOLE_STATE_READ_METER_ID,
     APP_CONSOLE_STATE_READ_TOU,
     APP_CONSOLE_STATE_READ_RTC,
-    APP_CONSOLE_STATE_PRINT_HRR,
+    APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS,
     APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY,
     APP_CONSOLE_STATE_PRINT_EVENT,
     APP_CONSOLE_STATE_PRINT_MAX_DEMAND,
@@ -138,6 +138,7 @@ typedef struct
     APP_EVENTS_EVENT_ID eventIdRequest;
     uint8_t eventLastTimeRequest;
     uint32_t currentWaitForDatalogReady;
+    uint8_t harmonicNumRequest;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************
