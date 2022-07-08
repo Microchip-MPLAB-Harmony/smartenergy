@@ -144,9 +144,7 @@ typedef struct {
   uint8_t  state;
 } DRV_METROLOGY_CALIBRATION;
 
-typedef union {
-  uint32_t WORD;
-  struct {
+typedef struct {
     uint32_t paDir : 1;
     uint32_t pbDir : 1;
     uint32_t pcDir : 1;
@@ -163,7 +161,6 @@ typedef union {
     uint32_t swellB : 1;
     uint32_t swellC : 1;
     uint32_t reserved2 : 17;
-  } BIT;
 } DRV_METROLOGY_AFE_EVENTS;
 
 typedef struct {

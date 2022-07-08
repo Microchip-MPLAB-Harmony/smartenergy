@@ -221,35 +221,51 @@ static bool _APP_EVENTS_UpdateEvents(APP_EVENTS_QUEUE_DATA * newEvent)
 {
     bool update = false;
     
-    if (_APP_EVENTS_RegisterEvent(SAG_UA_EVENT_ID, newEvent->eventFlags.BIT.sagA, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(SAG_UA_EVENT_ID, newEvent->eventFlags.sagA, &newEvent->eventTime))
     {
         update = true;
     }
     
-    if (_APP_EVENTS_RegisterEvent(SAG_UB_EVENT_ID, newEvent->eventFlags.BIT.sagB, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(SAG_UB_EVENT_ID, newEvent->eventFlags.sagB, &newEvent->eventTime))
     {
         update = true;
     }
     
-    if (_APP_EVENTS_RegisterEvent(SAG_UC_EVENT_ID, newEvent->eventFlags.BIT.sagC, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(SAG_UC_EVENT_ID, newEvent->eventFlags.sagC, &newEvent->eventTime))
     {
         update = true;
     }
     
-    if (_APP_EVENTS_RegisterEvent(POW_UA_EVENT_ID, newEvent->eventFlags.BIT.swellA, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(POW_UA_EVENT_ID, newEvent->eventFlags.swellA, &newEvent->eventTime))
     {
         update = true;
     }
     
-    if (_APP_EVENTS_RegisterEvent(POW_UB_EVENT_ID, newEvent->eventFlags.BIT.swellB, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(POW_UB_EVENT_ID, newEvent->eventFlags.swellB, &newEvent->eventTime))
     {
         update = true;
     }
     
-    if (_APP_EVENTS_RegisterEvent(POW_UC_EVENT_ID, newEvent->eventFlags.BIT.swellC, &newEvent->eventTime))
+    if (_APP_EVENTS_RegisterEvent(POW_UC_EVENT_ID, newEvent->eventFlags.swellC, &newEvent->eventTime))
     {
         update = true;
     }
+    
+    /* Update Event Flags */
+    app_eventsData.flags.paDir = newEvent->eventFlags.paDir;
+    app_eventsData.flags.pbDir = newEvent->eventFlags.pbDir;
+    app_eventsData.flags.pcDir = newEvent->eventFlags.pcDir;
+    app_eventsData.flags.ptDir = newEvent->eventFlags.ptDir;
+    app_eventsData.flags.qaDir = newEvent->eventFlags.qaDir;
+    app_eventsData.flags.qbDir = newEvent->eventFlags.qbDir;
+    app_eventsData.flags.qcDir = newEvent->eventFlags.qcDir;
+    app_eventsData.flags.qtDir = newEvent->eventFlags.qtDir;
+    app_eventsData.flags.sagA = newEvent->eventFlags.sagA;
+    app_eventsData.flags.sagB = newEvent->eventFlags.sagB;
+    app_eventsData.flags.sagC = newEvent->eventFlags.sagC;
+    app_eventsData.flags.swellA = newEvent->eventFlags.swellA;
+    app_eventsData.flags.swellB = newEvent->eventFlags.swellB;
+    app_eventsData.flags.swellC = newEvent->eventFlags.swellC;
     
     return update;
 }
@@ -386,7 +402,7 @@ bool APP_EVENTS_GetNumEvents(APP_EVENTS_EVENT_ID eventId, uint8_t * counter)
     return true;
 }
 
-bool APP_EVENTS_GetLastEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, APP_EVENTS_EVENT_INFO *eventInfo)
+bool APP_EVENTS_GetEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, APP_EVENTS_EVENT_INFO *eventInfo)
 {
     APP_EVENTS_EVENT_DATA *pEvent;
     uint8_t index;
@@ -413,6 +429,14 @@ bool APP_EVENTS_GetLastEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, AP
     *eventInfo = pEvent->data[index];
     
     return true;
+}
+
+void APP_EVENTS_GetLastEventFlags(APP_EVENTS_FLAGS *eventFlags)
+{
+    if (eventFlags)
+    {
+        *eventFlags = app_eventsData.flags;
+    }
 }
 
 

@@ -773,6 +773,14 @@ bool APP_ENERGY_GetMonthEnergy(struct tm * time)
     return false;
 }
 
+void APP_ENERGY_GetCurrentEnergy(APP_ENERGY_ACCUMULATORS * pEnergy)
+{
+    if (pEnergy)
+    {
+        *pEnergy = app_energyData.energyAccumulator;
+    }
+}
+
 void APP_ENERGY_ClearEnergy(void)
 {
     /* Erase all the energy records stored in non volatile memory */
@@ -796,6 +804,14 @@ bool APP_ENERGY_GetMonthMaxDemand(struct tm * time)
     }
 
     return false;
+}
+
+void APP_ENERGY_GetCurrentMaxDemand(APP_ENERGY_MAX_DEMAND * pMaxDemand)
+{
+    if (pMaxDemand)
+    {
+        *pMaxDemand = app_energyData.demand.maxDemand;
+    }
 }
 
 void APP_ENERGY_ClearMaxDemand(void)

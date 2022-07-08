@@ -717,28 +717,28 @@ void DRV_METROLOGY_UpdateMeasurements(void)
     afeRMS[RMS_INMI] = _DRV_Metrology_GetInxRMS(gDrvMetObj.metAccData.I_Nmi);
 
     afeRMS[RMS_PA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
-    gDrvMetObj.metAFEData.afeEvents.BIT.paDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A);
+    gDrvMetObj.metAFEData.afeEvents.paDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A);
     afeRMS[RMS_PB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
-    gDrvMetObj.metAFEData.afeEvents.BIT.pbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B);
+    gDrvMetObj.metAFEData.afeEvents.pbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_B);
     afeRMS[RMS_PC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
-    gDrvMetObj.metAFEData.afeEvents.BIT.pcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C);
+    gDrvMetObj.metAFEData.afeEvents.pcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_C);
 
     afeRMS[RMS_QA]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
-    gDrvMetObj.metAFEData.afeEvents.BIT.qaDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A);
+    gDrvMetObj.metAFEData.afeEvents.qaDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A);
     afeRMS[RMS_QB]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
-    gDrvMetObj.metAFEData.afeEvents.BIT.qbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B);
+    gDrvMetObj.metAFEData.afeEvents.qbDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_B);
     afeRMS[RMS_QC]  = _DRV_Metrology_GetPQRMS(gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
-    gDrvMetObj.metAFEData.afeEvents.BIT.qcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C);
+    gDrvMetObj.metAFEData.afeEvents.qcDir = _DRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_C);
 
     afeRMS[RMS_SA]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A, gDrvMetObj.metRegisters->MET_CONTROL.K_IA, gDrvMetObj.metRegisters->MET_CONTROL.K_VA);
     afeRMS[RMS_SB]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metRegisters->MET_CONTROL.K_IB, gDrvMetObj.metRegisters->MET_CONTROL.K_VB);
     afeRMS[RMS_SC]  = _DRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
 
     afeRMS[RMS_PT]  = afeRMS[RMS_PA] + afeRMS[RMS_PB] + afeRMS[RMS_PC];
-    gDrvMetObj.metAFEData.afeEvents.BIT.ptDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.P_C);
+    gDrvMetObj.metAFEData.afeEvents.ptDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.P_C);
 
     afeRMS[RMS_QT]  = afeRMS[RMS_QA] + afeRMS[RMS_QB] + afeRMS[RMS_QC];
-    gDrvMetObj.metAFEData.afeEvents.BIT.qtDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metAccData.Q_C);
+    gDrvMetObj.metAFEData.afeEvents.qtDir = _DRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metAccData.Q_C);
 
     afeRMS[RMS_ST]  = afeRMS[RMS_SA] + afeRMS[RMS_SB] + afeRMS[RMS_SC];
 
@@ -752,12 +752,12 @@ void DRV_METROLOGY_UpdateMeasurements(void)
     gDrvMetObj.metAFEData.energy += _DRV_Metrology_GetPQEnergy(PENERGY, ABS);
     
     /* Update Swell/Sag events */
-    gDrvMetObj.metAFEData.afeEvents.BIT.sagA = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk? 1 : 0;
-    gDrvMetObj.metAFEData.afeEvents.BIT.sagB = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk? 1 : 0;
-    gDrvMetObj.metAFEData.afeEvents.BIT.sagC = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk? 1 : 0;
-    gDrvMetObj.metAFEData.afeEvents.BIT.swellA = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk? 1 : 0;
-    gDrvMetObj.metAFEData.afeEvents.BIT.swellB = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk? 1 : 0;
-    gDrvMetObj.metAFEData.afeEvents.BIT.swellC = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.sagA = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.sagB = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.sagC = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.swellA = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.swellB = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk? 1 : 0;
+    gDrvMetObj.metAFEData.afeEvents.swellC = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk? 1 : 0;
 
 }
 
@@ -784,35 +784,35 @@ DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
 
     sign = RMS_SIGN_POSITIVE;
 
-    if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.BIT.paDir))
+    if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.paDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_PB) && (gDrvMetObj.metAFEData.afeEvents.BIT.pbDir))
+    else if ((type == RMS_PB) && (gDrvMetObj.metAFEData.afeEvents.pbDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_PC) && (gDrvMetObj.metAFEData.afeEvents.BIT.pcDir))
+    else if ((type == RMS_PC) && (gDrvMetObj.metAFEData.afeEvents.pcDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_PT) && (gDrvMetObj.metAFEData.afeEvents.BIT.ptDir))
+    else if ((type == RMS_PT) && (gDrvMetObj.metAFEData.afeEvents.ptDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_QA) && (gDrvMetObj.metAFEData.afeEvents.BIT.qaDir))
+    else if ((type == RMS_QA) && (gDrvMetObj.metAFEData.afeEvents.qaDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_QB) && (gDrvMetObj.metAFEData.afeEvents.BIT.qbDir))
+    else if ((type == RMS_QB) && (gDrvMetObj.metAFEData.afeEvents.qbDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_QC) && (gDrvMetObj.metAFEData.afeEvents.BIT.qcDir))
+    else if ((type == RMS_QC) && (gDrvMetObj.metAFEData.afeEvents.qcDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
-    else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.BIT.qtDir))
+    else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.qtDir))
     {
         sign = RMS_SIGN_NEGATIVE;
     }
