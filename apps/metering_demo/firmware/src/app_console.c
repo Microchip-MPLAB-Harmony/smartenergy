@@ -1482,13 +1482,17 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 2) {
+    if (argc == 2) 
+    {
         // Check password from parameters
         if (strcmp(argv[1], metPwd) == 0) 
         {
             // Correct password, Reset System
             SYS_CMD_MESSAGE("Reset Command is Ok !\n\r");
-//API             DRV_MET_ResetSystem();
+            // Go to state to reset system
+            app_consoleData.state = APP_CONSOLE_STATE_SW_RESET;
+            // Post semaphore to wakeup task
+            OSAL_SEM_Post(&appConsoleSemID);
         }
         else 
         {
@@ -1505,11 +1509,21 @@ static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
 static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-    if (argc == 1) 
+    if (argc == 2) 
     {
-        SYS_CMD_MESSAGE("Reloading Metrology...\n\r");
-        // Reload Metrology coprocessor
-//API         DRV_MET_ReloadMetrology();
+        // Check password from parameters
+        if (strcmp(argv[1], metPwd) == 0) 
+        {
+            // Correct password, Reset System
+            SYS_CMD_MESSAGE("Reloading Metrology...\n\r\n\r");
+            // Reload Metrology coprocessor
+            APP_METROLOGY_Restart();
+        }
+        else 
+        {
+            // Invalid password
+            SYS_CMD_MESSAGE("Invalid password\n\r");
+        }
     }
     else 
     {
@@ -2510,6 +2524,13 @@ void APP_CONSOLE_Tasks ( void )
             }
             vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
             break;
+        }
+
+        case APP_CONSOLE_STATE_SW_RESET:
+        {
+            /* Wait time to show message through the Console */
+            vTaskDelay(100 / portTICK_PERIOD_MS);
+            RSTC_Reset(RSTC_PROCESSOR_RESET);
         }
 
         /* The default state should never be executed. */

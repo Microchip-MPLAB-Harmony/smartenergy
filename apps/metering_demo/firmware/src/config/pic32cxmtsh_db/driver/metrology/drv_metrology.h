@@ -102,8 +102,9 @@ typedef enum
 // *****************************************************************************
 // *****************************************************************************
 
-SYS_MODULE_OBJ DRV_METROLOGY_Initialize(const SYS_MODULE_INIT * const init, uint32_t resetValue);
+SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetValue);
 DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode);
+DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void);
 DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
 DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister(DRV_METROLOGY_CALLBACK callback);
 DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);

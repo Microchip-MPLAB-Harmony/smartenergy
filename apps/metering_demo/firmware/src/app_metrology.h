@@ -275,6 +275,8 @@ typedef struct
 {
     /* The application's current state */
     APP_METROLOGY_STATES state;
+    
+    DRV_METROLOGY_START_MODE startMode;
 
     DRV_METROLOGY_CONTROL * pMetControl;
     DRV_METROLOGY_STATUS * pMetStatus;
@@ -394,6 +396,8 @@ size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
 bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum);
 void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK callback, 
         DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse);
+
+void APP_METROLOGY_Restart(void);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

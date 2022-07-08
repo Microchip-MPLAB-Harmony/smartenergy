@@ -248,8 +248,11 @@ APP_METROLOGY_DATA CACHE_ALIGN app_metrologyData;
 
 static void _APP_METROLOGY_NewIntegrationCallback(void)
 {
-    /* Signal Metrology thread to update measurements for an integration period */
-    OSAL_SEM_PostISR(&appMetrologySemID);
+    if (app_metrologyData.state == APP_METROLOGY_STATE_RUNNING)
+    {
+        /* Signal Metrology thread to update measurements for an integration period */
+        OSAL_SEM_PostISR(&appMetrologySemID);
+    }
 }
 
 static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
@@ -312,6 +315,16 @@ void APP_METROLOGY_Initialize (void)
 {
     /* Place the App state machine in its initial state. */
     app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
+    
+    /* Detection of the WDOG0 Reset */
+    if (RSTC_ResetCauseGet() == RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
+    {
+        app_metrologyData.startMode = DRV_METROLOGY_START_SOFT;
+    }
+    else
+    {
+        app_metrologyData.startMode = DRV_METROLOGY_START_HARD;        
+    }
 
     /* Get Pointers to metrology data regions */
     app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
@@ -364,17 +377,9 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_INIT:
         {
-            DRV_METROLOGY_START_MODE startMode = DRV_METROLOGY_START_HARD;
-
-            /* Detection of the WDOG0 Reset */
-            if (RSTC_ResetCauseGet() == RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
+            if (DRV_METROLOGY_Open(app_metrologyData.startMode) == DRV_METROLOGY_SUCCESS)
             {
-                startMode = DRV_METROLOGY_START_SOFT;
-            }
-
-            if (DRV_METROLOGY_Open(startMode) == DRV_METROLOGY_SUCCESS)
-            {
-                if (startMode == DRV_METROLOGY_START_HARD)
+                if (app_metrologyData.startMode == DRV_METROLOGY_START_HARD)
                 {
                     app_metrologyData.state = APP_METROLOGY_STATE_START;
                 }
@@ -437,6 +442,12 @@ void APP_METROLOGY_Tasks (void)
         {
             /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
             OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
+            
+            if (app_metrologyData.state == APP_METROLOGY_STATE_INIT)
+            {
+                /* Received Reload Command */
+                break;
+            }
 
             GPIODBG_Set();
             DRV_METROLOGY_UpdateMeasurements();
@@ -674,6 +685,17 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_C
 {
     app_metrologyData.pHarmonicAnalisysCallback = callback;
     app_metrologyData.pHarmonicAnalysisResponse = pHarmonicAnalysisResponse;
+}
+
+void APP_METROLOGY_Restart (void)
+{   
+    app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+    app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
+    
+    DRV_METROLOGY_Close();
+    DRV_METROLOGY_Initialize(NULL, RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_SOFT_RST_Val));
+    
+    OSAL_SEM_PostISR(&appMetrologySemID);
 }
 
 

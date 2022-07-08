@@ -327,9 +327,6 @@ typedef struct
     /* Address where PLC binary file is located */
     uint32_t                        binStartAddress;
 
-    /* Flag to indicate new integration period has been completed */
-    bool                            newMetData;
-
     /* Metrology Control interface */
     MET_REGISTERS *                 metRegisters;
 

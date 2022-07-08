@@ -184,8 +184,6 @@ void IPC1_Handler (void)
 
     if (status & DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK)
     {
-        gDrvMetObj.newMetData = true;
-
         if (gDrvMetObj.metRegisters->MET_STATUS.STATUS == STATUS_STATUS_DSP_RUNNING)
         {
             /* Update Accumulators Data */
@@ -463,14 +461,17 @@ static void _DRV_Metrology_IpcInitialize (void)
 // *****************************************************************************
 // *****************************************************************************
 
-SYS_MODULE_OBJ DRV_METROLOGY_Initialize (const SYS_MODULE_INIT * const init, uint32_t resetCause)
+SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetCause)
 {
     DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
 
-    if (gDrvMetObj.inUse == true)
+    if ((gDrvMetObj.inUse == true) && (metInit != NULL))
     {
         return SYS_MODULE_OBJ_INVALID;
     }
+
+    /* Disable IPC interrupts */
+    SYS_INT_SourceDisable(IPC1_IRQn);
 
     if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
@@ -479,18 +480,26 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (const SYS_MODULE_INIT * const init, uin
         /* Asserts the reset of the co-processor (Core 1) */
         tmp = RSTC_REGS->RSTC_MR & ~RSTC_MR_CPROCEN_Msk;
         RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+        
+        if (metInit != NULL)
+        {
+            gDrvMetObj.binStartAddress = metInit->binStartAddress;
+            gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
+        }
 
         gDrvMetObj.status = SYS_STATUS_UNINITIALIZED;
-
-        gDrvMetObj.binStartAddress = metInit->binStartAddress;
-        gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
 
         /* Copy the Metrology bin file to SRAM1 */
         memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
     }
 
-    /* Initialization of the interface with Metrology Lib */
-    gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
+    if (metInit != NULL)
+    {
+        /* Initialization of the interface with Metrology Lib */
+        gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
+        gDrvMetObj.inUse = true;
+        gDrvMetObj.newIntegrationCallback = NULL;
+    }
 
     memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_ACCUMULATORS));
     memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_HARMONICS));
@@ -498,14 +507,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (const SYS_MODULE_INIT * const init, uin
     memset(&gDrvMetObj.metAFEData, 0, sizeof(DRV_METROLOGY_AFE_DATA));
 
     /* Initialization of the Metrology object */
-    gDrvMetObj.inUse = true;
-    gDrvMetObj.newMetData = false;
     gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
     gDrvMetObj.status = SYS_STATUS_READY;
-    gDrvMetObj.newIntegrationCallback = NULL;
-
-    /* Disable IPC interrupts */
-    SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Configure IPC peripheral */
     _DRV_Metrology_IpcInitialize();
@@ -551,6 +554,27 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
     }
 
     return DRV_METROLOGY_SUCCESS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
+{
+    if (gDrvMetObj.inUse == false)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    /* Disable IPC1 Interrupt Source */
+    SYS_INT_SourceDisable(IPC1_IRQn);
+    
+    /* Update Driver state */
+    gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
+    gDrvMetObj.status = SYS_STATUS_BUSY;
+    
+    /* Set Metrology Lib state as Reset */
+    gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
+    
+    return DRV_METROLOGY_SUCCESS;
+
 }
 
 DRV_METROLOGY_RESULT DRV_METROLOGY_Start (void)
