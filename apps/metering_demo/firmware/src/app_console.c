@@ -192,6 +192,9 @@ static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
     
+    /* Show console communication icon */
+    APP_DISPLAY_SetCommIcon();
+    
 }
 
 static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
@@ -684,6 +687,9 @@ static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         APP_METROLOGY_SetConfiguration(&newConf);
         SYS_CMD_MESSAGE("Configure Meter is Ok !\n\r");
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
 }
 
@@ -698,6 +704,9 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_ACCUM_REGS;
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else if (argc == 2)
     {
@@ -710,6 +719,9 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_READ_ACCUM_REG;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+            
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else
         {
@@ -731,6 +743,9 @@ static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         SYS_CMD_MESSAGE("Entering Low Power\n\r");
         // Go to Low Power mode
 //API         DRV_MET_SetLowPowerMode();
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else
     {
@@ -746,6 +761,9 @@ static void Command_DCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         SYS_CMD_MESSAGE("Load Default Is Ok !\n\r");
         // Set default control register values
         APP_METROLOGY_SetControlByDefault();
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else
     {
@@ -794,6 +812,9 @@ static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_WRITE_CONTROL_REG;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
     }
     else
@@ -826,6 +847,9 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_READ_CONTROL_REG;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else
         {
@@ -847,6 +871,9 @@ static void Command_DCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         SYS_CMD_MESSAGE("Save Data Is Ok !\n\r");
         // Save Metrology Constants and configuration settings to NVM
         APP_METROLOGY_StoreMetrologyData();
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else
     {
@@ -873,6 +900,9 @@ static void Command_DCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             {
                 // Show response on console
                 SYS_CMD_MESSAGE("Set Is Ok !\n\r");
+        
+                /* Show console communication icon */
+                APP_DISPLAY_SetCommIcon();
             }
             else
             {
@@ -904,6 +934,9 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_STATUS_REGS;
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else if (argc == 2)
     {
@@ -916,6 +949,9 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_READ_STATUS_REG;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else
         {
@@ -941,6 +977,9 @@ static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             APP_ENERGY_ClearEnergy();
             // Show response on console
             SYS_CMD_MESSAGE("Clear Energy is ok !\n\r");
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else
         {
@@ -977,6 +1016,11 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Incorrect param\n\r");
         }
+        else
+        {
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
+        }
         // Response will be provided on _monthlyEnergyCallback function
     }
     else
@@ -996,6 +1040,9 @@ static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             APP_EVENTS_ClearEvents();
             // Show response on console
             SYS_CMD_MESSAGE("Clear All Event is ok !\n\r");
+            
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -1052,7 +1099,8 @@ static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
             
-            
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();            
         }
         else 
         {
@@ -1090,6 +1138,9 @@ static void Command_HAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_READ_HARMONICS_REG;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+            
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -1118,6 +1169,11 @@ static void Command_HRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Previous harmonic analysis is running\n\r");
         }
+        else
+        {
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
+        }
         // Response will be provided on _harmonicAnalisysCallback function
     }
     else 
@@ -1134,7 +1190,10 @@ static void Command_IDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Read Meter ID
         app_consoleData.state = APP_CONSOLE_STATE_READ_METER_ID;
         // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
+        OSAL_SEM_Post(&appConsoleSemID);  
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else 
     {
@@ -1163,6 +1222,9 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Put it in queue
             xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
             SYS_CMD_MESSAGE("Set Meter ID is Ok\n\r");
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -1188,6 +1250,9 @@ static void Command_MDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             APP_ENERGY_ClearMaxDemand();
             // Show response on console
             SYS_CMD_MESSAGE("Clear MaxDemand is ok !\n\r");
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -1224,6 +1289,11 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         {
             // Incorrect parameter number
             SYS_CMD_MESSAGE("Incorrect param\n\r");
+        }
+        else
+        {
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         // Response will be provided on _maxDemandCallback function
     }
@@ -1286,6 +1356,9 @@ static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         {
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+            
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
     }
     else
@@ -1303,6 +1376,9 @@ static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_READ_RTC;
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else 
     {
@@ -1368,6 +1444,9 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             if (RTC_TimeSet(&app_consoleData.sysTime))
             {
                 SYS_CMD_MESSAGE("Set RTC is ok!\n\r");
+        
+                /* Show console communication icon */
+                APP_DISPLAY_SetCommIcon();
             }
             else
             {
@@ -1393,6 +1472,9 @@ static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_READ_TOU;
         // Post semaphore to wakeup task
         OSAL_SEM_Post(&appConsoleSemID);
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
     else 
     {
@@ -1477,6 +1559,9 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         APP_ENERGY_SetTOUTimeZone(timeZone);
         SYS_CMD_MESSAGE("Set TOU is Ok !\n\r");
+        
+        /* Show console communication icon */
+        APP_DISPLAY_SetCommIcon();
     }
 }
 
@@ -1493,6 +1578,9 @@ static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.state = APP_CONSOLE_STATE_SW_RESET;
             // Post semaphore to wakeup task
             OSAL_SEM_Post(&appConsoleSemID);
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -1518,6 +1606,9 @@ static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Reloading Metrology...\n\r\n\r");
             // Reload Metrology coprocessor
             APP_METROLOGY_Restart();
+        
+            /* Show console communication icon */
+            APP_DISPLAY_SetCommIcon();
         }
         else 
         {
@@ -2281,7 +2372,7 @@ void APP_CONSOLE_Tasks ( void )
             struct tm invalidTime = {0};
             
             APP_EVENTS_GetNumEvents(app_consoleData.eventIdRequest, &numEvents);
-            if (APP_EVENTS_GetLastEventInfo(app_consoleData.eventIdRequest, app_consoleData.eventLastTimeRequest, &eventInfo))
+            if (APP_EVENTS_GetEventInfo(app_consoleData.eventIdRequest, app_consoleData.eventLastTimeRequest, &eventInfo))
             {
                 // Print Event ID and requested Times
                 if (app_consoleData.eventIdRequest == SAG_UA_EVENT_ID) 
