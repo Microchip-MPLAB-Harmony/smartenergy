@@ -60,6 +60,9 @@
 // Section: BSP Macros
 // *****************************************************************************
 // *****************************************************************************
+#define PIC32CXMTSH_DB
+#define BOARD_NAME             "PIC32CXMTSH_DB"
+
 /*PIOA base address */
 #define PIOA_REGS   ((pio_group_registers_t*)(&(PIO0_REGS->PIO_GROUP[0])))
 /*PIOB base address */
