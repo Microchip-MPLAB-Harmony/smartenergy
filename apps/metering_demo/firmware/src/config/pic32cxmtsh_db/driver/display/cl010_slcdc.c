@@ -52,7 +52,6 @@
 #include "../PIC32CX2051MTSH128_DFP/component/supc.h"
 #include "cl010.h"
 #include "cl010_font.h"
-#include "conf_cl010_slcdc.h"
 
 /** ASCII definition for char space. */
 #define ASCII_SP                        0x20
@@ -375,21 +374,21 @@ status_code_t cl010_init(void)
 	struct slcdc_config slcdc_cfg;
 
 	/* Set LCD power mode: Internal supply */
-	ul_pow_mode = CONF_CL010_POWER_MODE;
-	supc_set_slcd_power_mode(SUPC_REGS, CONF_CL010_POWER_MODE);
+	ul_pow_mode = SLCDC_POWER_MODE_LCDON_INVR;
+	supc_set_slcd_power_mode(SUPC_REGS, SLCDC_POWER_MODE_LCDON_INVR);
 	
 	if (ul_pow_mode == SUPC_MR_LCDMODE_LCDON_INVR) {
 		/* Set contrast */
-		supc_set_slcd_vol(SUPC_REGS, CONF_CL010_CONTRAST);
+		supc_set_slcd_vol(SUPC_REGS, 8);
 	}
 
 	/* Reset SLCDC */
 	slcdc_reset(SLCDC_REGS);
 
 	/* SLCDC initialization */
-	slcdc_cfg.buf_time = CONF_CL010_BUF_TIME;
-	slcdc_cfg.frame_rate = CONF_CL010_FRAME_RATE;
-	slcdc_cfg.disp_mode = CONF_CL010_DISP_MODE;
+	slcdc_cfg.buf_time = SLCDC_BUFTIME_X64_SCLK;
+	slcdc_cfg.frame_rate = 64;
+	slcdc_cfg.disp_mode = SLCDC_DISPMODE_NORMAL;
 	if (slcdc_init(SLCDC_REGS, &slcdc_cfg) != STATUS_OK) {
 		return STATUS_ERR_BUSY;
 	}
@@ -475,7 +474,7 @@ void cl010_blink_screen(bool inverted)
 		slcdc_set_display_mode(SLCDC_REGS, SLCDC_DISPMODE_BLINKING);
 	}
 
-	slcdc_set_blink_freq(SLCDC_REGS, CONF_CL010_BLINK_FREQ, true);
+	slcdc_set_blink_freq(SLCDC_REGS, 2, true);
 }
 
 void cl010_blink_disable(void)
@@ -558,7 +557,7 @@ void cl010_select_user_buffer(void)
 
 void cl010_set_swap_mode(void)
 {
-	slcdc_set_blink_freq(SLCDC_REGS, CONF_CL010_BLINK_FREQ, true);
+	slcdc_set_blink_freq(SLCDC_REGS, 2, true);
 
 	slcdc_set_display_mode(SLCDC_REGS, SLCDC_DISPMODE_BUFFERS_SWAP);
 }

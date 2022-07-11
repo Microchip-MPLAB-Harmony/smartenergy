@@ -45,7 +45,6 @@ extern "C" {
 //#include "status_codes.h"
 #include <device.h>
 #include <stdbool.h>
-#include "conf_slcdc.h"
 
 /**
  * Status code that may be returned by shell commands and protocol
@@ -181,23 +180,7 @@ typedef void (*slcdc_callback_t)(void);
 #define SLCDC_CLOCK_DIV_MAX          8
 #define SLCDC_CLOCK_PRE_MAX          8
 
-#if CONF_SLCDC_COM_NUM == 1
-#define SLCDC_NCOM_VALUE                  16
-#elif CONF_SLCDC_COM_NUM == 2
-#define SLCDC_NCOM_VALUE                  16
-#elif CONF_SLCDC_COM_NUM == 3
-#define SLCDC_NCOM_VALUE                  15
-#elif CONF_SLCDC_COM_NUM == 4
-#define SLCDC_NCOM_VALUE                  16
-#elif CONF_SLCDC_COM_NUM == 5
-#define SLCDC_NCOM_VALUE                  15
-#elif CONF_SLCDC_COM_NUM == 6
-#define SLCDC_NCOM_VALUE                  18
-#elif CONF_SLCDC_COM_NUM == 7
-#define SLCDC_NCOM_VALUE                  14
-#elif CONF_SLCDC_COM_NUM == 8
-#define SLCDC_NCOM_VALUE                  16
-#endif
+#define SLCDC_NCOM_VALUE             16
 
 /**
  * \brief Initialize SLCDC with specified configuration.

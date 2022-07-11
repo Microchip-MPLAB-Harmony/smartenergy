@@ -29,7 +29,7 @@
 
 #include "app_display.h"
 #include "definitions.h"
-#include "config/pic32cxmtsh_db/driver/display/cl010.h"
+#include "driver/display/cl010.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -141,7 +141,7 @@ static void APP_DISPLAY_SetTimerLoop(uint32_t time_sec)
     if (time_sec) 
     {
         /* Set the new time for loop mode */
-	 app_displayData.reload_display_time = time_sec;
+        app_displayData.reload_display_time = time_sec;
     }
 }
 
@@ -794,17 +794,17 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len)
 {
     if (len > sizeof(app_displayData.app_info)) 
     {
-	len = sizeof(app_displayData.app_info);
+        len = sizeof(app_displayData.app_info);
     }
     
     memcpy(app_displayData.app_info, msg, len);
 
     if (!app_displayData.app_info_en) 
     {
-	/* Set enable flag */
-	app_displayData.app_info_en = true;
-	/* Add APP display info */
-	APP_DISPLAY_AddLoopInfo(APP_DISPLAY_APP_INFO);
+        /* Set enable flag */
+        app_displayData.app_info_en = true;
+        /* Add APP display info */
+        APP_DISPLAY_AddLoopInfo(APP_DISPLAY_APP_INFO);
     }
 
     /* Change display information and reload time */

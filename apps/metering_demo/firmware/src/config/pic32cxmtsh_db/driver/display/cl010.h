@@ -48,8 +48,6 @@
 #ifndef CL010_H_INCLUDED
 #define CL010_H_INCLUDED
 
-//#include "compiler.h"
-//#include "status_codes.h"
 #include "cl010_segmap.h"
 #include "slcdc.h"
 
