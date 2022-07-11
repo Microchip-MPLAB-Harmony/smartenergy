@@ -107,7 +107,6 @@ void _APP_DISPLAY_Tasks(  void *pvParameters  )
     while(1)
     {
         APP_DISPLAY_Tasks();
-        vTaskDelay(250 / portTICK_PERIOD_MS);
     }
 }
 /* Handle for the APP_ENERGY_Tasks. */
