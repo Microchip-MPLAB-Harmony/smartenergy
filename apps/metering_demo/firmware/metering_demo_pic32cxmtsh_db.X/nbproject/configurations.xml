@@ -8,6 +8,9 @@
         <logicalFolder name="pic32cxmtsh_db"
                        displayName="pic32cxmtsh_db"
                        projectFiles="true">
+          <logicalFolder name="bsp" displayName="bsp" projectFiles="true">
+            <itemPath>../src/config/pic32cxmtsh_db/bsp/bsp.h</itemPath>
+          </logicalFolder>
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="display" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010.h</itemPath>
@@ -342,6 +345,9 @@
         <logicalFolder name="pic32cxmtsh_db"
                        displayName="pic32cxmtsh_db"
                        projectFiles="true">
+          <logicalFolder name="bsp" displayName="bsp" projectFiles="true">
+            <itemPath>../src/config/pic32cxmtsh_db/bsp/bsp.c</itemPath>
+          </logicalFolder>
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
             <logicalFolder name="f1" displayName="display" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_slcdc.c</itemPath>

@@ -98,7 +98,7 @@ typedef enum
 	APP_DISPLAY_TOU4_MAX_DEMAND,
 	APP_DISPLAY_APP_INFO,
 	APP_DISPLAY_BOARD_ID,
-	APP_DISPLAY_VERSION,
+	APP_DISPLAY_DEMO_VERSION,
 	APP_DISPLAY_MAX_TYPE,
             
 } APP_DISPLAY_INFO;
@@ -156,6 +156,9 @@ typedef struct
     
     /* Time to display each information in the display (in seconds) */
 	uint32_t display_time;     
+    
+    /* Time to show the communication icon (in seconds) */
+	uint32_t comm_time;     
     
     /* Cycle counter */
 	uint8_t cycle_counter;   
@@ -290,10 +293,45 @@ void APP_DISPLAY_Tasks( void );
     </code>
 
   Remarks:
-    This routine must be called from SYS_Tasks() routine.
+    None.
  */
 
 void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
+
+/*******************************************************************************
+  Function:
+    void APP_DISPLAY_SetCommIcon(void)
+
+  Summary:
+    Function to set the communication icon in the display.
+
+  Description:
+    This function set the communication icon in the display to indicate that
+    there is an ongoing communication in the console.
+
+  Precondition:
+    The system and application initialization ("SYS_Initialize" and 
+    "APP_DISPLAY_Initialize") should be called before calling this.
+
+  Parameters:
+    None.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    static void Command_xx(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+    {
+        APP_DISPLAY_SetCommIcon(void);
+    }
+    </code>
+
+  Remarks:
+    This routine is called from the console application.
+ */
+
+void APP_DISPLAY_SetCommIcon(void);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

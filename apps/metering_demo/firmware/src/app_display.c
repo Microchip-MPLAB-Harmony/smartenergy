@@ -41,13 +41,25 @@
 /* Initial value of the loop timer
 
   Summary:
-    Initial value for the loop timer.
+    Initial value of the loop timer.
 
   Description:
     This is the initial value of the loop timer.
 */
 
 #define APP_DISPLAY_TIMER_LOOP_INIT          2
+
+// *****************************************************************************
+/* Value of the communication icon timer
+
+  Summary:
+    Value of the communication icon timer.
+
+  Description:
+    This is the value of the communication icon timer.
+*/
+
+#define APP_DISPLAY_TIMER_COMM_ICON          2
 
 // *****************************************************************************
 // *****************************************************************************
@@ -190,8 +202,9 @@ static void APP_DISPLAY_Process(void)
 {
 //    uint64_t total;
     uint64_t upd_symbols = 1;
-//    uint32_t temp, temp_dec;
+    uint32_t rmsValue;
     uint8_t buff1[9];
+    struct tm current_time;
 
     if (app_displayData.display_info != 0xFF) 
     {
@@ -205,108 +218,186 @@ static void APP_DISPLAY_Process(void)
     {
         case APP_DISPLAY_TOTAL_ENERGY:
         {
-        
+//void APP_ENERGY_GetCurrentEnergy(APP_ENERGY_ACCUMULATORS * pEnergy);
+
+            break;
         }
         
         case APP_DISPLAY_TOU1_ENERGY:
         {
-        
+            break;
         }
          
         case APP_DISPLAY_TOU2_ENERGY:
         {
-        
+            break;
         }
           
         case APP_DISPLAY_TOU3_ENERGY:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_TOU4_ENERGY:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_VA_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_UA, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_V);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L1);
+            break;
         }
         
         case APP_DISPLAY_VB_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_UB, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_V);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L2);
+            break;
         }
       
         case APP_DISPLAY_VC_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_UC, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_V);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L3);
+            break;
         }
         
         case APP_DISPLAY_IA_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_IA, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_A);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L1);
+            break;
         }
         
         case APP_DISPLAY_IB_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_IB, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_A);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L2);
+            break;
         }
         
         case APP_DISPLAY_IC_RMS:
         {
-        
+            APP_METROLOGY_GetRMS(RMS_IC, &rmsValue, NULL);
+            sprintf((char *)buff1, "%5u%03u", 
+                    (unsigned int)(rmsValue/10000), 
+                    (unsigned int)((rmsValue%10000)/10));
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_units(CL010_UNIT_A);
+            cl010_show_icon(CL010_ICON_DOT_1);
+            cl010_show_icon(CL010_ICON_L3);
+            break;
         }
         
         case APP_DISPLAY_RTC_TIME:
         {
-        
+            RTC_TimeGet(&current_time);
+            sprintf((char *)buff1, "%02d%02d%02d  ", 
+                    (uint8_t)current_time.tm_hour, 
+                    (uint8_t)current_time.tm_min,
+                    (uint8_t)current_time.tm_sec);
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_icon(CL010_ICON_TIME);
+            cl010_show_icon(CL010_ICON_COL_1);
+            cl010_show_icon(CL010_ICON_COL_2);
+            upd_symbols = 0;
+            break;
         }
         
         case APP_DISPLAY_RTC_DATE:
         {
-        
+            RTC_TimeGet(&current_time);
+            sprintf((char *)buff1, "%02d%02d%02d  ", 
+                    (uint8_t)current_time.tm_year,
+                    (uint8_t)current_time.tm_mon, 
+                    (uint8_t)current_time.tm_mday);
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            cl010_show_icon(CL010_ICON_DATE);
+            cl010_show_icon(CL010_ICON_COL_1);
+            cl010_show_icon(CL010_ICON_COL_2);
+            upd_symbols = 0;
+            break;
         }
         
         case APP_DISPLAY_TOTAL_MAX_DEMAND:
         {
-        
+            //void APP_ENERGY_GetCurrentMaxDemand(APP_ENERGY_MAX_DEMAND * pMaxDemand);
+            break;
         }
         
         case APP_DISPLAY_TOU1_MAX_DEMAND:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_TOU2_MAX_DEMAND:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_TOU3_MAX_DEMAND:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_TOU4_MAX_DEMAND:
         {
-        
+            break;
         }
         
         case APP_DISPLAY_APP_INFO:
         {
             cl010_show_numeric_string(CL010_LINE_UP, app_displayData.app_info);
             upd_symbols = 0;
+            break;
         }
         
         case APP_DISPLAY_BOARD_ID:
         {
-        
+            sprintf((char *)buff1, "%08x", APP_DISPLAY_BOARD_VERSION);
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            upd_symbols = 0;
+            break;
         }
         
-        case APP_DISPLAY_VERSION:
+        case APP_DISPLAY_DEMO_VERSION:
         {
-        
+            sprintf((char *)buff1, "%d", DEMO_APP_VERSION);
+            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            upd_symbols = 0;
+            break;
         }
         
         default:
@@ -317,6 +408,8 @@ static void APP_DISPLAY_Process(void)
         
     }
 
+    /* Display MCHP logo */
+    cl010_show_icon(CL010_ICON_MICROCHIP);
 }
 
 // *****************************************************************************
@@ -362,6 +455,9 @@ void APP_DISPLAY_Initialize ( void )
     /* Initial counter of cycles */
     app_displayData.cycle_counter = 0;
     
+    /* Set communication icon time */
+    app_displayData.comm_time = 0;
+    
     /* Set display time */
     app_displayData.display_time = APP_DISPLAY_TIMER_LOOP_INIT;
     
@@ -370,7 +466,7 @@ void APP_DISPLAY_Initialize ( void )
     
     /* Configure display measurements */
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_BOARD_ID);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VERSION);
+    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_DEMO_VERSION);
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOTAL_ENERGY);
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU1_ENERGY);
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_ENERGY);
@@ -449,6 +545,21 @@ void APP_DISPLAY_Tasks ( void )
                         APP_DISPLAY_ChangeInfo();    
                     }
                 }
+                
+                /* Clear communication icon */
+                if (app_displayData.comm_time == 0) 
+                {
+                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_LOW);
+                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_MED);
+                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_HIG); 
+                }
+                else
+                {
+                    --app_displayData.comm_time;
+                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
+                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
+                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
+                } 
             }
             
             /* If any button has been pressed, change the information */
@@ -509,6 +620,23 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len)
     /* Change display information and reload time */
     app_displayData.display_time = app_displayData.reload_display_time;
     app_displayData.display_info = APP_DISPLAY_APP_INFO;
+}
+
+
+/******************************************************************************
+  Function:
+    void APP_DISPLAY_SetCommIcon(void)
+
+  Remarks:
+    See prototype in app_display.h.
+ */
+
+void APP_DISPLAY_SetCommIcon(void)
+{
+    cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
+    cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
+    cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
+    app_displayData.comm_time = APP_DISPLAY_TIMER_COMM_ICON;
 }
 
 /*******************************************************************************
