@@ -38,34 +38,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-/* Initial value of the loop timer
-
-  Summary:
-    Initial value of the loop timer.
-
-  Description:
-    This is the initial value of the loop timer.
-*/
-
-#define APP_DISPLAY_TIMER_LOOP_INIT          2
-
-// *****************************************************************************
-/* Value of the communication icon timer
-
-  Summary:
-    Value of the communication icon timer.
-
-  Description:
-    This is the value of the communication icon timer.
-*/
-
-#define APP_DISPLAY_TIMER_COMM_ICON          2
-
-// *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+/* Define a semaphore to signal the Display Tasks to handle information */
+OSAL_SEM_DECLARE(appDisplaySemID);
 
 // *****************************************************************************
 /* Application Data
@@ -92,11 +71,13 @@ APP_DISPLAY_DATA CACHE_ALIGN app_displayData;
 static void APP_DISPLAY_ScrollUp_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrup_pressed = true;
+    OSAL_SEM_PostISR(&appDisplaySemID);
 }
 
 static void APP_DISPLAY_ScrollDown_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrdown_pressed = true;
+    OSAL_SEM_PostISR(&appDisplaySemID);
 }
 
 // *****************************************************************************
@@ -594,7 +575,52 @@ static void APP_DISPLAY_Process(void)
             break;
     }
     
-    if (upd_symbols) {
+    if (upd_symbols) 
+    {
+        APP_EVENTS_FLAGS eventFlags;
+        APP_EVENTS_GetLastEventFlags(&eventFlags);
+        
+        if (eventFlags.sagA) 
+        {
+            /* "A alarm" phase */
+            cl010_show_icon(CL010_ICON_PHASE_1);
+	}
+
+        if (eventFlags.sagB) 
+        {
+            /* "A alarm" phase */
+            cl010_show_icon(CL010_ICON_PHASE_2);
+	}
+        
+//#if BOARD==PIC32CXMTC_DB
+//        if (eventFlags.sagC) 
+//        {
+//            /* "A alarm" phase */
+//            cl010_show_icon(CL010_ICON_PHASE_3);
+//	}
+//#endif
+        
+        if (eventFlags.ptDir) 
+        {
+            /* active power is reverse */
+            cl010_show_icon(CL010_ICON_P_MINUS);
+	} 
+        else 
+        {
+            /* active power is forward */
+            cl010_show_icon(CL010_ICON_P_PLUS);
+	}
+        
+        if (eventFlags.qtDir) 
+        {
+            /* reactive power is reverse */
+            cl010_show_icon(CL010_ICON_P_MINUS);
+	} 
+        else 
+        {
+            /* reactive power is forward */
+            cl010_show_icon(CL010_ICON_P_PLUS);
+	}
         
     }
 
@@ -642,14 +668,11 @@ void APP_DISPLAY_Initialize ( void )
     /* Init display info */
     app_displayData.display_info = (APP_DISPLAY_INFO)0xFF;
     
-    /* Initial counter of cycles */
-    app_displayData.cycle_counter = 0;
-    
     /* Set communication icon time */
     app_displayData.comm_time = 0;
     
     /* Set display time */
-    app_displayData.display_time = APP_DISPLAY_TIMER_LOOP_INIT;
+    app_displayData.display_time = 2;
     
     /* Configure display timer loop */
     APP_DISPLAY_SetTimerLoop(3);
@@ -679,6 +702,12 @@ void APP_DISPLAY_Initialize ( void )
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_MAX_DEMAND);
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU3_MAX_DEMAND);
     APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_MAX_DEMAND);
+    
+    /* Create the Display Semaphore */
+    if (OSAL_SEM_Create(&appDisplaySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
+    {
+        /* Handle error condition. Not sufficient memory to create semaphore */
+    }
 }
 
 
@@ -711,29 +740,37 @@ void APP_DISPLAY_Tasks ( void )
 
         case APP_DISPLAY_STATE_SERVICE_TASKS:
         {
-            ++app_displayData.cycle_counter;
-            /* Task configured to run every 250ms, so 4 cycles are 1 second */
-            if (app_displayData.cycle_counter >= 4) 
+            /* Check if buttons were pressed or wait 1s */
+            if (OSAL_SEM_Pend(&appDisplaySemID, 1000) == OSAL_RESULT_TRUE)
             {
-                /* Restart counter */
-                app_displayData.cycle_counter = 0;
-                 
-                --app_displayData.display_time;
+                /* If any button has been pressed, change the information */
+                if (app_displayData.scrup_pressed)
+                {
+                    LED_RED_Set();
+                    app_displayData.scrup_pressed = false;
+                    app_displayData.direction = APP_DISPLAY_FORWARD;
+                    APP_DISPLAY_ChangeInfo();
+                }
+
+                if (app_displayData.scrdown_pressed)
+                {
+                    LED_RED_Clear();
+                    app_displayData.scrdown_pressed = false;
+                    app_displayData.direction = APP_DISPLAY_BACKWARD;
+                    APP_DISPLAY_ChangeInfo();
+                }
+            }
+            else 
+            {
                 /* Show information in display */
                 if (app_displayData.display_time != 0)
                 {
+                    --app_displayData.display_time;
                     APP_DISPLAY_Process();
                 } 
                 else 
                 {
-                    /* Change the information if no button has been pressed */
-                    if (
-                            (!app_displayData.scrup_pressed)     && 
-                            (!app_displayData.scrdown_pressed)
-                        )
-                    {
-                        APP_DISPLAY_ChangeInfo();    
-                    }
+                    APP_DISPLAY_ChangeInfo();    
                 }
                 
                 /* Clear communication icon */
@@ -750,23 +787,6 @@ void APP_DISPLAY_Tasks ( void )
                     cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
                     cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
                 } 
-            }
-            
-            /* If any button has been pressed, change the information */
-            if (app_displayData.scrup_pressed)
-            {
-                LED_RED_Set();
-                app_displayData.scrup_pressed = false;
-                app_displayData.direction = APP_DISPLAY_FORWARD;
-                APP_DISPLAY_ChangeInfo();
-            }
-            
-            if (app_displayData.scrdown_pressed)
-            {
-                LED_RED_Clear();
-                app_displayData.scrdown_pressed = false;
-                app_displayData.direction = APP_DISPLAY_BACKWARD;
-                APP_DISPLAY_ChangeInfo();
             }
 
             break;
@@ -826,7 +846,7 @@ void APP_DISPLAY_SetCommIcon(void)
     cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
     cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
     cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
-    app_displayData.comm_time = APP_DISPLAY_TIMER_COMM_ICON;
+    app_displayData.comm_time = 2;
 }
 
 /*******************************************************************************

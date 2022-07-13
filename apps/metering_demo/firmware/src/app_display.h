@@ -160,9 +160,6 @@ typedef struct
     /* Time to show the communication icon (in seconds) */
 	uint32_t comm_time;     
     
-    /* Cycle counter */
-	uint8_t cycle_counter;   
-    
     /* Information shown in display */
 	APP_DISPLAY_INFO display_info;
     

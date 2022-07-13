@@ -520,8 +520,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
+        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.43"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
-        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.42"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -705,8 +705,8 @@
         <property key="communication.autoselectspeed" value="true"/>
         <property key="communication.interface" value="swd"/>
         <property key="communication.speed" value="4"/>
-        <property key="debugoptions.debug-startup" value="Halt at main"/>
-        <property key="debugoptions.reset-behaviour" value="Main"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="jlink.override" value=""/>
         <property key="lastid" value=""/>
         <property key="loader.board_file" value="${ProjectDir}/board.xboard"/>
@@ -760,7 +760,7 @@
         <property key="script.has_reset" value="true"/>
         <property key="script.log_level" value="1"/>
         <property key="script.reset_delay" value="0"/>
-        <property key="script.show_output" value="false"/>
+        <property key="script.show_output" value="true"/>
       </j32>
       <jlink>
         <property key="AutoSelectMemRanges" value="auto"/>
