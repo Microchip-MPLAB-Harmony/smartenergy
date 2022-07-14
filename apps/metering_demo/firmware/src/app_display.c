@@ -104,11 +104,7 @@ static status_code_t APP_DISPLAY_InitLCD(void)
 
     /* Show all symbols */
     cl010_show_all();
-
-    /* Show icons */
-    cl010_show_icon(CL010_ICON_MICROCHIP);
-    cl010_show_icon(CL010_ICON_LCD);
-
+   
     return STATUS_OK;
 }
 
@@ -262,7 +258,7 @@ static void APP_DISPLAY_Process(void)
 
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_icon(CL010_ICON_CUM);
-             sprintf((char *)buff1, "      1");
+            sprintf((char *)buff1, "      1");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
             
             break;

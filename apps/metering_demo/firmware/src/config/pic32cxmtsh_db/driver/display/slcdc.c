@@ -65,8 +65,8 @@ status_code_t slcdc_init(slcdc_registers_t *p_slcdc, struct slcdc_config *slcdc_
 
 	/* SLCDC basic configuration */
 	p_slcdc->SLCDC_MR = (2 << SLCDC_MR_BIAS_Pos) |
-			((4 - 1) << SLCDC_MR_COMSEL_Pos) |
-			SLCDC_MR_SEGSEL(40 - 1) |
+			((8 - 1) << SLCDC_MR_COMSEL_Pos) |
+			SLCDC_MR_SEGSEL(20 - 1) |
 			slcdc_cfg->buf_time;
 
 	if (slcdc_set_frame_rate(p_slcdc, slcdc_cfg->frame_rate) != STATUS_OK) {
@@ -147,7 +147,7 @@ void slcdc_disable(slcdc_registers_t *p_slcdc)
 
 void slcdc_set_display_memory(slcdc_registers_t *p_slcdc)
 {
-	uint8_t tmp = 4;
+	uint8_t tmp = 8; /* SLCDC_COM_NUM */
 
 	while (tmp--) {
 		slcdc_set_lsb_memory(p_slcdc, tmp, ~0UL);
@@ -156,7 +156,7 @@ void slcdc_set_display_memory(slcdc_registers_t *p_slcdc)
 
 void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc)
 {
-	uint8_t tmp = 4;
+	uint8_t tmp = 8; /* SLCDC_COM_NUM */
 
 	while (tmp--) {
 		slcdc_clear_lsb_memory(p_slcdc, tmp, ~0UL);
