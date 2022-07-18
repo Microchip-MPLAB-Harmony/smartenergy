@@ -39,6 +39,6 @@ THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 
   .align 8
 met_bin_start:
-  .incbin "./core1_image.bin"
+  .incbin "./core1_metlib.bin"
   .align 8
 met_bin_end:
