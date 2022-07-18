@@ -37,7 +37,7 @@
 
 /* -------- FEATURE_CTRL0 : (MET_CONTROL Offset: 0x04) (R/W 32) Metrology feature setting register 0 -------- */
 #define FEATURE_CTRL0_RZC_CHAN_SELECT_Pos             _UINT32_(0)                               /* (FEATURE_CTRL0) Raw Zero-Crossing Channel Select Position */
-#define FEATURE_CTRL0_RZC_CHAN_SELECT_Msk             (_UINT32_(0xF) << FEATURE_CTRL0_RZC_CHAN_SELECT_Pos)    /* (FEATURE_CTRL0) Raw Zero-Crossing Channel Select Mask */
+#define FEATURE_CTRL0_RZC_CHAN_SELECT_Msk             (_UINT32_(0x7) << FEATURE_CTRL0_RZC_CHAN_SELECT_Pos)    /* (FEATURE_CTRL0) Raw Zero-Crossing Channel Select Mask */
 #define FEATURE_CTRL0_RZC_CHAN_SELECT(value)          (FEATURE_CTRL0_RZC_CHAN_SELECT_Msk & (_UINT32_(value) << FEATURE_CTRL0_RZC_CHAN_SELECT_Pos))
 #define   FEATURE_CTRL0_RZC_CHAN_SELECT_DISABLED_Val    _UINT32_(0x0)                           /* (FEATURE_CTRL0) Raw Zero-Crossing detection is disabled */
 #define   FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val          _UINT32_(0x1)                           /* (FEATURE_CTRL0) Raw Zero-Crossing detection based on input voltage channel V1 */

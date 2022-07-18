@@ -41,6 +41,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 #include <math.h>
 #include "system/int/sys_int.h"
 #include "drv_metrology.h"
@@ -455,6 +456,33 @@ static void _DRV_Metrology_IpcInitialize (void)
     IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
+static uint32_t _DRV_Metrology_CorrectCalibrationAngle (uint32_t measured, double reference)
+{
+    int64_t measured_angle, correction_angle;
+    uint64_t m;
+        
+    measured_angle = measured;
+    if (measured & 0x80000000) {
+        measured_angle = 0x80000000 - measured_angle;
+    }
+    correction_angle = measured_angle - reference;
+    /* Correction angle should be between -180 and 180 degrees */
+    while (correction_angle < (-180000)) {
+        correction_angle += 360000;
+    }
+    while (correction_angle > 180000 ) {
+        correction_angle -= 360000;
+    }
+    correction_angle = (correction_angle * 7158278827) / gDrvMetObj.metCalibration.freq;
+    correction_angle = (correction_angle + 50) / 100;
+    m = (uint64_t)(abs(correction_angle));
+    if (correction_angle < 0) {
+        m = (~m) + 1;
+    }
+    
+    return (uint32_t)m;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Interface
@@ -629,6 +657,11 @@ DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData (void)
 DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData (void)
 {
     return &gDrvMetObj.metHarData;
+}
+
+DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData (void)
+{
+    return &gDrvMetObj.metCalibration;
 }
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
@@ -832,6 +865,16 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     uint32_t restoreCaptureBuffSize;
     uint32_t restoreCaptureAddress;
     uint32_t restoreCaptureControl;
+    
+    /* Store Calibration config parameters */
+    gDrvMetObj.metCalibration.freq = config->freq;
+    gDrvMetObj.metCalibration.gain_i = config->gain;
+    gDrvMetObj.metCalibration.vDivRatio = config->ku;
+    gDrvMetObj.metCalibration.meterConst = config->mc;
+    gDrvMetObj.metCalibration.resLoad = config->rl;
+    gDrvMetObj.metCalibration.st = config->st;
+    gDrvMetObj.metCalibration.transfRatio = config->tr;
+    
 
     pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
 
@@ -904,6 +947,218 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
 {
     *events = gDrvMetObj.metAFEData.afeEvents;
+}
+
+void DRV_METROLOGY_StartCalibration(void)
+{
+    DRV_METROLOGY_CALIBRATION * pCalibrationData;
+    DRV_METROLOGY_CONTROL * pMetControlRegs;
+    
+    pCalibrationData = &gDrvMetObj.metCalibration;
+    pMetControlRegs = &gDrvMetObj.metRegisters->MET_CONTROL;
+    
+    /* Set the number of integration periods to improve the accuracy of the calibration */
+    pCalibrationData->numIntegrationPeriods = 4;
+    
+    /* Save FEATURE_CTRL0 register value, to be restored after calibration */
+    pCalibrationData->featureCtrl0Backup = pMetControlRegs->FEATURE_CTRL0;
+    
+    /* Init Accumulators */
+    pCalibrationData->dspAccIa = 0;
+    pCalibrationData->dspAccIb = 0;
+    pCalibrationData->dspAccIc = 0;
+    pCalibrationData->dspAccIn = 0;
+    pCalibrationData->dspAccUa = 0;
+    pCalibrationData->dspAccUb = 0;
+    pCalibrationData->dspAccUc = 0;
+    pCalibrationData->dspAccPa = 0;
+    pCalibrationData->dspAccPb = 0;
+    pCalibrationData->dspAccPc = 0;
+    pCalibrationData->dspAccQa = 0;
+    pCalibrationData->dspAccQb = 0;
+    pCalibrationData->dspAccQc = 0;
+    
+    /* Initialize calibration registers to the default values */
+    switch (pCalibrationData->references.lineId)
+    {
+        case PHASE_A:
+            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
+                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk;
+            break;
+            
+        case PHASE_B:
+            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V2_Val) | 
+                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_B_Val) | FEATURE_CTRL0_PHASE_B_EN_Msk;
+            break;
+            
+        case PHASE_C:
+            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V3_Val) | 
+                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_C_Val) | FEATURE_CTRL0_PHASE_C_EN_Msk;
+            break;
+            
+        case PHASE_T:
+            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
+                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk |
+                    FEATURE_CTRL0_PHASE_B_EN_Msk | FEATURE_CTRL0_PHASE_C_EN_Msk;
+            break;
+            
+        case PHASE_N:
+            
+            break;
+            
+    }
+    
+    pCalibrationData->running = true;
+}
+
+void DRV_METROLOGY_UpdateCalibration(void)
+{
+    DRV_METROLOGY_CALIBRATION * pCalibrationData;
+    DRV_METROLOGY_ACCUMULATORS * pMetAccRegs;
+    
+    pCalibrationData = &gDrvMetObj.metCalibration;
+    pMetAccRegs = &gDrvMetObj.metRegisters->MET_ACCUMULATORS;
+    
+    if (pCalibrationData->numIntegrationPeriods)
+    {
+        pCalibrationData->numIntegrationPeriods--;
+        
+        /* Update Accumulators */
+        pCalibrationData->dspAccIa += pMetAccRegs->I_A;
+        pCalibrationData->dspAccIb += pMetAccRegs->I_B;
+        pCalibrationData->dspAccIc += pMetAccRegs->I_C;
+        pCalibrationData->dspAccUa += pMetAccRegs->V_A;
+        pCalibrationData->dspAccUb += pMetAccRegs->V_B;
+        pCalibrationData->dspAccUc += pMetAccRegs->V_C;
+        pCalibrationData->dspAccPa += pMetAccRegs->P_A;
+        pCalibrationData->dspAccPb += pMetAccRegs->P_B;
+        pCalibrationData->dspAccPc += pMetAccRegs->P_C;
+        pCalibrationData->dspAccQa += pMetAccRegs->Q_A;
+        pCalibrationData->dspAccQb += pMetAccRegs->Q_B;
+        pCalibrationData->dspAccQc += pMetAccRegs->Q_C;
+    }
+    else
+    {
+        DRV_METROLOGY_CONTROL * pMetControlRegs;
+        uint64_t m;
+        uint32_t k;
+        
+        pMetControlRegs = &gDrvMetObj.metRegisters->MET_CONTROL;
+    
+        /* The number of the required integration periods has been completed */
+        /* Get Calibration Values */
+        if ((pCalibrationData->references.lineId == PHASE_A) || (pCalibrationData->references.lineId == PHASE_T))
+        {
+            /* Calibration I RMS */
+            pCalibrationData->dspAccIa >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccIa, pMetControlRegs->K_IA);
+            m = pCalibrationData->references.aimIA;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_IA = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_IA += 1;
+            }
+            /* Calibration V RMS */
+            pCalibrationData->dspAccUa >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccUa, pMetControlRegs->K_VA);
+            m = pCalibrationData->references.aimVA;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_VA = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_VA += 1;
+            }
+
+            /* Calibration Phase */
+            pCalibrationData->dspAccPa >>= 2;
+            pCalibrationData->dspAccQa >>= 2;
+            k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPa, pCalibrationData->dspAccQa);
+            pMetControlRegs->CAL_PH_IA = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleA);
+        }
+        
+        if ((pCalibrationData->references.lineId == PHASE_B) || (pCalibrationData->references.lineId == PHASE_T))
+        {
+            /* Calibration I RMS */
+            pCalibrationData->dspAccIb >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccIb, pMetControlRegs->K_IB);
+            m = pCalibrationData->references.aimIB;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_IB = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_IB += 1;
+            }
+            /* Calibration V RMS */
+            pCalibrationData->dspAccUb >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccUb, pMetControlRegs->K_VB);
+            m = pCalibrationData->references.aimVB;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_VB = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_VB += 1;
+            }
+
+            /* Calibration Phase */
+            pCalibrationData->dspAccPb >>= 2;
+            pCalibrationData->dspAccQb >>= 2;
+            k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPb, pCalibrationData->dspAccQb);
+            pMetControlRegs->CAL_PH_IB = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleB);
+        }
+        
+        if ((pCalibrationData->references.lineId == PHASE_C) || (pCalibrationData->references.lineId == PHASE_T))
+        {
+            /* Calibration I RMS */
+            pCalibrationData->dspAccIc >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccIc, pMetControlRegs->K_IC);
+            m = pCalibrationData->references.aimIC;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_IC = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_IC += 1;
+            }
+            /* Calibration V RMS */
+            pCalibrationData->dspAccUc >>= 2;
+            k = _DRV_Metrology_GetVIRMS(pCalibrationData->dspAccUc, pMetControlRegs->K_VC);
+            m = pCalibrationData->references.aimVC;
+            m = m << CAL_VI_Q;
+            pMetControlRegs->CAL_M_VC = (uint32_t)(m / k);
+            if ((((m % k) * 10) / k) > 4) 
+            {
+                pMetControlRegs->CAL_M_VC += 1;
+            }
+
+            /* Calibration Phase */
+            pCalibrationData->dspAccPc >>= 2;
+            pCalibrationData->dspAccQc >>= 2;
+            k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPc, pCalibrationData->dspAccQc);
+            pMetControlRegs->CAL_PH_IC = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleC);
+        }
+        
+        /* Restore FEATURE_CTRL0 after calibration */
+        pMetControlRegs->FEATURE_CTRL0 = pCalibrationData->featureCtrl0Backup;
+        
+        /* Calibration has been completed */
+        pCalibrationData->running = false;
+        pCalibrationData->result = true;
+    }
+}
+
+bool DRV_METROLOGY_CalibrationIsCompleted(void)
+{
+    if (gDrvMetObj.metCalibration.running)
+    {
+        return false;
+    }
+        
+    return true;
+}
+
+bool DRV_METROLOGY_GetCalibrationResult(void)
+{
+    return gDrvMetObj.metCalibration.result;
 }
 
 void DRV_METROLOGY_RequestHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse)

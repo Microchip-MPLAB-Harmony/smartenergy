@@ -129,13 +129,10 @@ static void APP_DISPLAY_SetTimerLoop(uint32_t time_sec)
 
 static void APP_DISPLAY_AddLoopInfo(APP_DISPLAY_INFO info)
 {
-    if (
-            (info < APP_DISPLAY_MAX_TYPE)                      && 
-            (app_displayData.loop_max < APP_DISPLAY_MAX_TYPE)
-        ) 
+    if ((info < APP_DISPLAY_MAX_TYPE) && (app_displayData.loop_max < APP_DISPLAY_MAX_TYPE)) 
     {
         /* Add info to display */
-	app_displayData.loop_info[app_displayData.loop_max++] = info;
+        app_displayData.loop_info[app_displayData.loop_max++] = info;
     }
 }
 
@@ -172,6 +169,37 @@ static void APP_DISPLAY_ChangeInfo(void)
 
 /*******************************************************************************
   Function:
+    Show Energy data and units depending on its value
+ */
+
+static void APP_DISPLAY_ShowEnergyDataUnits(uint64_t value)
+{
+    uint8_t buff1[9];
+    
+    /* Check magnitude to select units to show */
+    if (value > 999999999) {
+        /* Format: xxxxxx.xx kWh */
+        cl010_show_units(CL010_UNIT_kWh);
+        value = value/100000;
+        sprintf((char *)buff1, "%6u%02u", (unsigned int)(value/100), 
+                 (unsigned int)(value%100));
+        cl010_show_icon(CL010_ICON_DOT_2);
+    } 
+    else 
+    {
+        /* Format: xxxxx.xxx Wh */
+        cl010_show_units(CL010_UNIT_Wh);
+        value = value/10;
+        sprintf((char *)buff1, "%5u%03u", (unsigned int)(value/1000), 
+                 (unsigned int)(value%1000));
+        cl010_show_icon(CL010_ICON_DOT_1);
+    }
+
+    cl010_show_numeric_string(CL010_LINE_UP, buff1);
+}
+
+/*******************************************************************************
+  Function:
     Process information for the display.
  */
 
@@ -194,37 +222,17 @@ static void APP_DISPLAY_Process(void)
     /* Init internal buffer */
     memset(buff1, 0, sizeof(buff1));
 
-    switch ( app_displayData.display_info )
+    switch (app_displayData.display_info)
     {
         case APP_DISPLAY_TOTAL_ENERGY:
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
             total = 0;
-            for (idx = TARIFF_1; idx <= TARIFF_NUM_TYPE; idx++)
+            for (idx = 0; idx < TARIFF_NUM_TYPE; idx++)
             {
                 total += EnergyAcc.tariff[idx];
             }
-
-            /* Check magnitude to select units to show */
-            if (total > 999999999) {
-		/* Format: xxxxxx.xx kWh */
-		cl010_show_units(CL010_UNIT_kWh);
-		total = total/100000;
-		sprintf((char *)buff1, "%6u%02u", (unsigned int)(total/100), 
-                 (unsigned int)(total%100));
-                cl010_show_icon(CL010_ICON_DOT_2);
-            } 
-            else 
-            {
-		/* Format: xxxxx.xxx Wh */
-		cl010_show_units(CL010_UNIT_Wh);
-		total = total/10;
-		sprintf((char *)buff1, "%5u%03u", (unsigned int)(total/1000), 
-                 (unsigned int)(total%1000));
-                cl010_show_icon(CL010_ICON_DOT_1);
-            }
-
-            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "   1234");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
@@ -236,27 +244,7 @@ static void APP_DISPLAY_Process(void)
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
             total = EnergyAcc.tariff[TARIFF_1];
-
-            /* Check magnitude to select units to show */
-            if (total > 999999999) {
-		/* Format: xxxxxx.xx kWh */
-		cl010_show_units(CL010_UNIT_kWh);
-		total = total/100000;
-		sprintf((char *)buff1, "%6u%02u", (unsigned int)(total/100), 
-                 (unsigned int)(total%100));
-                cl010_show_icon(CL010_ICON_DOT_2);
-            } 
-            else 
-            {
-		/* Format: xxxxx.xxx Wh */
-		cl010_show_units(CL010_UNIT_Wh);
-		total = total/10;
-		sprintf((char *)buff1, "%5u%03u", (unsigned int)(total/1000), 
-                 (unsigned int)(total%1000));
-                cl010_show_icon(CL010_ICON_DOT_1);
-            }
-
-            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      1");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
@@ -268,27 +256,7 @@ static void APP_DISPLAY_Process(void)
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
             total = EnergyAcc.tariff[TARIFF_2];
-
-            /* Check magnitude to select units to show */
-            if (total > 999999999) {
-		/* Format: xxxxxx.xx kWh */
-		cl010_show_units(CL010_UNIT_kWh);
-		total = total/100000;
-		sprintf((char *)buff1, "%6u%02u", (unsigned int)(total/100), 
-                 (unsigned int)(total%100));
-                cl010_show_icon(CL010_ICON_DOT_2);
-            } 
-            else 
-            {
-		/* Format: xxxxx.xxx Wh */
-		cl010_show_units(CL010_UNIT_Wh);
-		total = total/10;
-		sprintf((char *)buff1, "%5u%03u", (unsigned int)(total/1000), 
-                 (unsigned int)(total%1000));
-                cl010_show_icon(CL010_ICON_DOT_1);
-            }
-
-            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      2");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
@@ -300,27 +268,7 @@ static void APP_DISPLAY_Process(void)
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
             total = EnergyAcc.tariff[TARIFF_3];
-
-            /* Check magnitude to select units to show */
-            if (total > 999999999) {
-		/* Format: xxxxxx.xx kWh */
-		cl010_show_units(CL010_UNIT_kWh);
-		total = total/100000;
-		sprintf((char *)buff1, "%6u%02u", (unsigned int)(total/100), 
-                 (unsigned int)(total%100));
-                cl010_show_icon(CL010_ICON_DOT_2);
-            } 
-            else 
-            {
-		/* Format: xxxxx.xxx Wh */
-		cl010_show_units(CL010_UNIT_Wh);
-		total = total/10;
-		sprintf((char *)buff1, "%5u%03u", (unsigned int)(total/1000), 
-                 (unsigned int)(total%1000));
-                cl010_show_icon(CL010_ICON_DOT_1);
-            }
-
-            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      3");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
@@ -332,27 +280,7 @@ static void APP_DISPLAY_Process(void)
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
             total = EnergyAcc.tariff[TARIFF_4];
-
-            /* Check magnitude to select units to show */
-            if (total > 999999999) {
-		/* Format: xxxxxx.xx kWh */
-		cl010_show_units(CL010_UNIT_kWh);
-		total = total/100000;
-		sprintf((char *)buff1, "%6u%02u", (unsigned int)(total/100), 
-                 (unsigned int)(total%100));
-                cl010_show_icon(CL010_ICON_DOT_2);
-            } 
-            else 
-            {
-		/* Format: xxxxx.xxx Wh */
-		cl010_show_units(CL010_UNIT_Wh);
-		total = total/10;
-		sprintf((char *)buff1, "%5u%03u", (unsigned int)(total/1000), 
-                 (unsigned int)(total%1000));
-                cl010_show_icon(CL010_ICON_DOT_1);
-            }
-
-            cl010_show_numeric_string(CL010_LINE_UP, buff1);
+            APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      4");
             cl010_show_numeric_string(CL010_LINE_DOWN, buff1);
@@ -580,13 +508,13 @@ static void APP_DISPLAY_Process(void)
         {
             /* "A alarm" phase */
             cl010_show_icon(CL010_ICON_PHASE_1);
-	}
+        }
 
         if (eventFlags.sagB) 
         {
             /* "A alarm" phase */
             cl010_show_icon(CL010_ICON_PHASE_2);
-	}
+        }
         
 //#if BOARD==PIC32CXMTC_DB
 //        if (eventFlags.sagC) 
@@ -600,23 +528,23 @@ static void APP_DISPLAY_Process(void)
         {
             /* active power is reverse */
             cl010_show_icon(CL010_ICON_P_MINUS);
-	} 
+        } 
         else 
         {
             /* active power is forward */
             cl010_show_icon(CL010_ICON_P_PLUS);
-	}
+        }
         
         if (eventFlags.qtDir) 
         {
             /* reactive power is reverse */
             cl010_show_icon(CL010_ICON_P_MINUS);
-	} 
+        } 
         else 
         {
             /* reactive power is forward */
             cl010_show_icon(CL010_ICON_P_PLUS);
-	}
+        }
         
     }
 
@@ -755,6 +683,8 @@ void APP_DISPLAY_Tasks ( void )
                     app_displayData.direction = APP_DISPLAY_BACKWARD;
                     APP_DISPLAY_ChangeInfo();
                 }
+                
+                APP_DISPLAY_Process();
             }
             else 
             {

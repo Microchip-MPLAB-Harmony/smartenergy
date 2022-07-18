@@ -248,7 +248,8 @@ APP_METROLOGY_DATA CACHE_ALIGN app_metrologyData;
 
 static void _APP_METROLOGY_NewIntegrationCallback(void)
 {
-    if (app_metrologyData.state == APP_METROLOGY_STATE_RUNNING)
+    if ((app_metrologyData.state == APP_METROLOGY_STATE_RUNNING) ||
+        (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
     {
         /* Signal Metrology thread to update measurements for an integration period */
         OSAL_SEM_PostISR(&appMetrologySemID);
@@ -271,7 +272,7 @@ static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
-static void _APP_METROLOGY_LoadDataFromMemory(DRV_METROLOGY_CONTROL * controlReg)
+static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_CONTROL * controlReg)
 {
     appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
     appMetrologyDatalogQueueData.operation = APP_DATALOG_READ;
@@ -284,11 +285,11 @@ static void _APP_METROLOGY_LoadDataFromMemory(DRV_METROLOGY_CONTROL * controlReg
     xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
 }
 
-static void _APP_METROLOGY_StoreDataInMemory(void)
+static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlReg)
 {
     appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
     appMetrologyDatalogQueueData.operation = APP_DATALOG_WRITE;
-    appMetrologyDatalogQueueData.pData = (uint8_t *)app_metrologyData.pMetControl;
+    appMetrologyDatalogQueueData.pData = (uint8_t *)controlReg;
     appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
     appMetrologyDatalogQueueData.endCallback = NULL;
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
@@ -331,7 +332,7 @@ void APP_METROLOGY_Initialize (void)
     app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
     app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
     app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
-
+    
     /* Set Callback for each metrology integration process */
     DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_NewIntegrationCallback);
     
@@ -339,6 +340,9 @@ void APP_METROLOGY_Initialize (void)
     app_metrologyData.harmonicAnalysisPending = false;
     app_metrologyData.pHarmonicAnalisysCallback = NULL;
     app_metrologyData.pHarmonicAnalysisResponse = NULL;
+    
+    /* Clear Calibration Data */
+    app_metrologyData.pCalibrationCallback = NULL;
 
     /* Create the Switches Semaphore. */
     if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -407,7 +411,7 @@ void APP_METROLOGY_Tasks (void)
                     DRV_METROLOGY_CONTROL controlReg;
 
                     /* Metrology data exists */
-                    _APP_METROLOGY_LoadDataFromMemory(&controlReg);
+                    _APP_METROLOGY_LoadControlFromMemory(&controlReg);
                     /* Wait for the semaphore to load data from memory */
                     OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
 
@@ -420,7 +424,7 @@ void APP_METROLOGY_Tasks (void)
                 else
                 {
                     /* Metrology data does not exists. Store in NVM */
-                    _APP_METROLOGY_StoreDataInMemory();
+                    _APP_METROLOGY_StoreControlInMemory(app_metrologyData.pMetControl);
                 }
 
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
@@ -448,11 +452,16 @@ void APP_METROLOGY_Tasks (void)
                 /* Received Reload Command */
                 break;
             }
+            else if (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION)
+            {
+                /* Received Calibration Command */
+                DRV_METROLOGY_StartCalibration();
+                /* Discard Measurements of this integration period */
+                break;
+            }            
 
-            GPIODBG_Set();
             DRV_METROLOGY_UpdateMeasurements();
-            GPIODBG_Clear();
-
+            
             // Send new Energy values to the Energy Task
             app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
             if (app_metrologyData.queueFree)
@@ -484,16 +493,49 @@ void APP_METROLOGY_Tasks (void)
             {
                 app_metrologyData.state = APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS;
             }
+            
             break;
         }
 
         case APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS:
         {
+            /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
+            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
+            
             if (DRV_METROLOGY_GetHarmonicAnalysisResult())
             {
                 app_metrologyData.harmonicAnalysisPending = false;
 
                 app_metrologyData.pHarmonicAnalisysCallback(app_metrologyData.harmonicAnalysisNum);
+                
+                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
+            }
+            
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            break;
+        }
+
+        case APP_METROLOGY_STATE_CHECK_CALIBRATION:
+        {
+            /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
+            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
+            
+            DRV_METROLOGY_UpdateCalibration();
+            
+            if (DRV_METROLOGY_CalibrationIsCompleted())
+            {
+                bool result = DRV_METROLOGY_GetCalibrationResult();
+                
+                if (result == true)
+                {
+                    /* Store CONTROL Regs in NVM */
+                    _APP_METROLOGY_StoreControlInMemory(app_metrologyData.pMetControl);
+                }
+                
+                if (app_metrologyData.pCalibrationCallback)
+                {
+                    app_metrologyData.pCalibrationCallback(result);
+                }
                 
                 app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
             }
@@ -639,14 +681,38 @@ void APP_METROLOGY_SetControlByDefault(void)
 
 void APP_METROLOGY_StoreMetrologyData(void)
 {
-    _APP_METROLOGY_StoreDataInMemory();
+    _APP_METROLOGY_StoreControlInMemory(app_metrologyData.pMetControl);
 }
 
 void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 {
     DRV_METROLOGY_SetConfiguration(config);
 
-    _APP_METROLOGY_StoreDataInMemory();
+    _APP_METROLOGY_StoreControlInMemory(app_metrologyData.pMetControl);
+}
+
+void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration)
+{
+    DRV_METROLOGY_CALIBRATION * pCalibrationData;
+    
+    pCalibrationData = DRV_METROLOGY_GetCalibrationData();
+    pCalibrationData->references.aimIA = calibration->aimIA;
+    pCalibrationData->references.aimVA = calibration->aimVA;
+    pCalibrationData->references.angleA = calibration->angleA;
+    pCalibrationData->references.aimIB = calibration->aimIB;
+    pCalibrationData->references.aimVB = calibration->aimVB;
+    pCalibrationData->references.angleB = calibration->angleB;
+    pCalibrationData->references.aimIC = calibration->aimIC;
+    pCalibrationData->references.aimVC = calibration->aimVC;
+    pCalibrationData->references.angleC = calibration->angleC;
+    pCalibrationData->references.lineId = calibration->lineId;
+    
+    app_metrologyData.state = APP_METROLOGY_STATE_CHECK_CALIBRATION;
+}
+
+void APP_METROLOGY_SetCalibrationCallback(APP_METROLOGY_CALIBRATION_CALLBACK callback)
+{
+    app_metrologyData.pCalibrationCallback = callback;
 }
 
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *address)
@@ -697,7 +763,6 @@ void APP_METROLOGY_Restart (void)
     
     OSAL_SEM_PostISR(&appMetrologySemID);
 }
-
 
 /*******************************************************************************
  End of File

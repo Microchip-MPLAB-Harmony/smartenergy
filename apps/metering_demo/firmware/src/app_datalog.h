@@ -106,6 +106,9 @@ typedef enum
 {
     /* Metrology data */
     APP_DATALOG_USER_METROLOGY = 0,
+            
+    /* Calibration data */
+    APP_DATALOG_USER_CALIBRATION,
 
     /* TOU data */
     APP_DATALOG_USER_TOU,

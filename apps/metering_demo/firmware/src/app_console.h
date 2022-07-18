@@ -98,6 +98,7 @@ typedef enum
     APP_CONSOLE_STATE_PRINT_FREQUENCY,
     APP_CONSOLE_STATE_PRINT_ANGLE,
     APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA,
+    APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT,
     APP_CONSOLE_STATE_SW_RESET,
 } APP_CONSOLE_STATES;
 
@@ -140,6 +141,7 @@ typedef struct
     uint8_t eventLastTimeRequest;
     uint32_t currentWaitForDatalogReady;
     uint8_t harmonicNumRequest;
+    bool calibrationResult;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************

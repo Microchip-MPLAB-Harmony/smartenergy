@@ -50,10 +50,10 @@
 #include <stdbool.h>
 #include "driver/memory/drv_memory.h"
 #include "peripheral/flexcom/spi/master/plib_flexcom5_spi_master.h"
-#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "driver/sdspi/drv_sdspi.h"
+#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
+#include "driver/sdspi/drv_sdspi.h"
 #include "system/time/sys_time.h"
 #include "bsp/bsp.h"
 #include "driver/metrology/drv_metrology_definitions.h"

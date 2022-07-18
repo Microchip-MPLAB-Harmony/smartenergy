@@ -63,7 +63,7 @@ APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 QueueHandle_t appDatalogQueueID = NULL;
 
 /* Buffer to get a string name from User IDs */
-static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "tou", "rtc", "console", "events", "energy", "demand"};
+static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "calibration", "tou", "rtc", "console", "events", "energy", "demand"};
 
 // *****************************************************************************
 // *****************************************************************************
@@ -388,7 +388,6 @@ void APP_DATALOG_Tasks(void)
         {
             if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
             {
-                SYS_CMD_PRINT("DATALOG Read File: %s\n\r", app_datalogData.fileName);
                 // Read operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
@@ -426,7 +425,6 @@ void APP_DATALOG_Tasks(void)
         {
             if (app_datalogData.newQueueData.operation == APP_DATALOG_APPEND)
             {
-                SYS_CMD_PRINT("DATALOG Append File: %s\n\r", app_datalogData.fileName);
                 // Append operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_APPEND));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
@@ -455,7 +453,6 @@ void APP_DATALOG_Tasks(void)
             }
             else if (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE)
             {
-                SYS_CMD_PRINT("DATALOG Write File: %s\n\r", app_datalogData.fileName);
                 // Write operation
                 app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_WRITE));
                 if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)

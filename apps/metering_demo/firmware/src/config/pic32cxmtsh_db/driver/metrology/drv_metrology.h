@@ -113,6 +113,7 @@ DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl(void);
 DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
 DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
 DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData(void);
+
 void DRV_METROLOGY_SetControl(DRV_METROLOGY_CONTROL * pControl);
 void DRV_METROLOGY_UpdateMeasurements(void);
 uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
@@ -122,6 +123,12 @@ DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type);
 void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 
 void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
+
+DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData(void);
+void DRV_METROLOGY_StartCalibration(void);
+void DRV_METROLOGY_UpdateCalibration(void);
+bool DRV_METROLOGY_CalibrationIsCompleted(void);
+bool DRV_METROLOGY_GetCalibrationResult(void);
 
 void DRV_METROLOGY_RequestHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse);
 bool DRV_METROLOGY_HarmonicAnalysisIsRun(void);

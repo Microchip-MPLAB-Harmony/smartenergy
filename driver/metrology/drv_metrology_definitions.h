@@ -106,42 +106,57 @@ typedef enum
     GAIN_NUM_TYPE
 } DRV_METROLOGY_GAIN_TYPE;
 
+typedef enum
+{
+    PHASE_A        = 1,
+    PHASE_B        = 2,
+    PHASE_C        = 3,
+    PHASE_N        = 4,
+    PHASE_T        = 5,
+    PHASE_ID_NUM   = PHASE_T
+} DRV_METROLOGY_PHASE_ID;
+
 typedef struct {
-  uint32_t lineId;
-  uint32_t meterConst;
-  uint32_t featureCtrl0Copy;
-  double freq;
-  uint32_t gain_i;
-  double transfRatio;
-  double resLoad;
-  uint32_t vDivRatio;
-  uint32_t aimVA;
-  uint32_t aimIA;
-  uint32_t angleA;
-  uint32_t aimVB;
-  uint32_t aimIB;
-  uint32_t angleB;
-  uint32_t aimVC;
-  uint32_t aimIC;
-  uint32_t angleC;
-  uint32_t dspUpdateNum;
-  uint64_t dspAccIa;
-  uint64_t dspAccIb;
-  uint64_t dspAccIc;
-  uint64_t dspAccIn;
-  uint64_t dspAccUa;
-  uint64_t dspAccUb;
-  uint64_t dspAccUc;
-  uint64_t dspAccUn;
-  int64_t  dspAccPa;
-  int64_t  dspAccPb;
-  int64_t  dspAccPc;
-  int64_t  dspAccQa;
-  int64_t  dspAccQb;
-  int64_t  dspAccQc;
-  DRV_METROLOGY_SENSOR_TYPE st;
-  uint8_t  harmonicOrder;
-  uint8_t  state;
+    double aimVA;
+    double aimIA;
+    double angleA;
+    double aimVB;
+    double aimIB;
+    double angleB;
+    double aimVC;
+    double aimIC;
+    double angleC;
+	DRV_METROLOGY_PHASE_ID lineId;
+} DRV_METROLOGY_CALIBRATION_REFS;
+
+typedef struct {
+    DRV_METROLOGY_CALIBRATION_REFS references;
+    uint32_t meterConst;
+    uint32_t featureCtrl0Backup;
+    double freq;
+    uint32_t gain_i;
+    double transfRatio;
+    double resLoad;
+    uint32_t vDivRatio;
+    uint32_t numIntegrationPeriods;
+    uint64_t dspAccIa;
+    uint64_t dspAccIb;
+    uint64_t dspAccIc;
+    uint64_t dspAccIn;
+    uint64_t dspAccUa;
+    uint64_t dspAccUb;
+    uint64_t dspAccUc;
+    uint64_t dspAccUn;
+    int64_t  dspAccPa;
+    int64_t  dspAccPb;
+    int64_t  dspAccPc;
+    int64_t  dspAccQa;
+    int64_t  dspAccQb;
+    int64_t  dspAccQc;
+    DRV_METROLOGY_SENSOR_TYPE st;
+    uint8_t  harmonicOrder;
+    bool  running;
+    bool  result;
 } DRV_METROLOGY_CALIBRATION;
 
 typedef struct {
@@ -164,58 +179,58 @@ typedef struct {
 } DRV_METROLOGY_AFE_EVENTS;
 
 typedef struct {
-	double Irms_A_m;
-	double Irms_B_m;
-	double Irms_C_m;
-	double Vrms_A_m;
-	double Vrms_B_m;
-	double Vrms_C_m;
+    double Irms_A_m;
+    double Irms_B_m;
+    double Irms_C_m;
+    double Vrms_A_m;
+    double Vrms_B_m;
+    double Vrms_C_m;
 } DRV_METROLOGY_HARMONIC;
 
 typedef enum {
-  RMS_UA = 0,
-  RMS_UB,
-  RMS_UC,
-  RMS_IA,
-  RMS_IB,
-  RMS_IC,
-  RMS_INI,
-  RMS_INM,
-  RMS_INMI,
-  RMS_PT,
-  RMS_PA,
-  RMS_PB,
-  RMS_PC,
-  RMS_QT,
-  RMS_QA,
-  RMS_QB,
-  RMS_QC,
-  RMS_ST,
-  RMS_SA,
-  RMS_SB,
-  RMS_SC,
-  RMS_FREQ,
-  RMS_ANGLEA,
-  RMS_ANGLEB,
-  RMS_ANGLEC,
-  RMS_ANGLEN,
+    RMS_UA = 0,
+    RMS_UB,
+    RMS_UC,
+    RMS_IA,
+    RMS_IB,
+    RMS_IC,
+    RMS_INI,
+    RMS_INM,
+    RMS_INMI,
+    RMS_PT,
+    RMS_PA,
+    RMS_PB,
+    RMS_PC,
+    RMS_QT,
+    RMS_QA,
+    RMS_QB,
+    RMS_QC,
+    RMS_ST,
+    RMS_SA,
+    RMS_SB,
+    RMS_SC,
+    RMS_FREQ,
+    RMS_ANGLEA,
+    RMS_ANGLEB,
+    RMS_ANGLEC,
+    RMS_ANGLEN,
   RMS_TYPE_NUM
 } DRV_METROLOGY_RMS_TYPE;
 
 typedef struct {
-  uint32_t energy;
-  DRV_METROLOGY_AFE_EVENTS afeEvents;
-  uint32_t RMS[RMS_TYPE_NUM];
+    uint32_t energy;
+    DRV_METROLOGY_AFE_EVENTS afeEvents;
+    uint32_t RMS[RMS_TYPE_NUM];
 } DRV_METROLOGY_AFE_DATA;
 
 typedef enum {
-  PENERGY = 0,
-  QENERGY = 1,
+    PENERGY = 0,
+    QENERGY = 1,
 } DRV_METROLOGY_ENERGY_TYPE;
 
 typedef enum {
-  ABS = 0,
-  ALG = 1
+    ABS = 0,
+    ALG = 1
 } DRV_METROLOGY_ENERGY_MODE;
 
 typedef struct

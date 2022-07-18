@@ -145,6 +145,15 @@ static void _harmonicAnalisysCallback(uint8_t harmonicNum)
     OSAL_SEM_Post(&appConsoleSemID);
 }
 
+static void _calibrationCallback(bool result)
+{
+    app_consoleData.calibrationResult = result;
+    app_consoleData.state = APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT;
+
+    // Post semaphore to wakeup task
+    OSAL_SEM_Post(&appConsoleSemID);
+}
+
 // *****************************************************************************
 // COMMANDS
 // *****************************************************************************
@@ -197,308 +206,140 @@ static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     
 }
 
+static bool _getCalibrationValue(char * argv, char * substring, double * value)
+{
+    char *p;
+    
+    if (strncmp(argv, substring, 2) == 0) {
+        // Get substring after '=' char
+        p = strstr(argv, "=");
+        if (p != NULL) {
+            // Advance ptr to ignore '=' and extract value
+            p++;
+            *value = strtod(p, NULL);
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
-//API     DRV_MET_CALIBRATION_OBJECT newCalA, newCalB, newCalC;
-    uint8_t idx, phase = 0;
-    char *p;
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
     bool parseError = false;
-
-    if (argc == 5) {
-        if (strcmp(argv[1], "A") == 0) {
-            // Parse arguments
-            for (idx = 2; idx < argc; idx++) {
-                if (strncmp(argv[idx], "Ua", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ia", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Aa", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            if (!parseError) {
-                phase = 1;
-            }
+    
+    if ((argc != 5) && (argc != 11)) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+        return;
+    }
+    
+    switch (*argv[1])
+    {
+        case 'A':
+            newCalibration.lineId = PHASE_A;
+            break;
+            
+        case 'B':
+            newCalibration.lineId = PHASE_B;
+            break;
+            
+        case 'C':
+            newCalibration.lineId = PHASE_C;
+            break;
+            
+        case 'T':
+            newCalibration.lineId = PHASE_T;
+            break;
+            
+        default:
+            SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+            return;
+    }
+    
+    if (newCalibration.lineId == PHASE_A)
+    {
+        if(_getCalibrationValue(argv[2], "Ua", &newCalibration.aimVA) == false)
+        {
+            parseError = true;
         }
-        else if (strcmp(argv[1], "B") == 0) {
-            // Parse arguments
-            for (idx = 2; idx < argc; idx++) {
-                if (strncmp(argv[idx], "Ub", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ib", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ab", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            if (!parseError) {
-                phase = 2;
-            }
+        else if(_getCalibrationValue(argv[3], "Ia", &newCalibration.aimIA) == false)
+        {
+            parseError = true;
         }
-        else if (strcmp(argv[1], "C") == 0) {
-            // Parse arguments
-            for (idx = 2; idx < argc; idx++) {
-                if (strncmp(argv[idx], "Uc", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ic", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ac", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            if (!parseError) {
-                phase = 3;
-            }
-        }
-        else {
+        else if(_getCalibrationValue(argv[4], "Aa", &newCalibration.angleA) == false)
+        {
             parseError = true;
         }
     }
-    else if (argc == 11) {
-        if (strcmp(argv[1], "T") == 0) {
-            // Parse arguments
-            for (idx = 2; idx < argc; idx++) {
-                if (strncmp(argv[idx], "Ua", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ia", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Aa", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalA.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ub", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ib", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ab", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalB.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Uc", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.voltage = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ic", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.current = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else if (strncmp(argv[idx], "Ac", 2) == 0) {
-                    // Get substring after '=' char
-                    p = strstr(argv[idx], "=");
-                    if (p != NULL) {
-                        // Advance ptr to ignore '=' and extract value
-                        p++;
-//API                         newCalC.angle = strtod(p, NULL);
-                    }
-                    else {
-                        parseError = true;
-                        break;
-                    }
-                }
-                else {
-                    parseError = true;
-                    break;
-                }
-            }
-            if (!parseError) {
-                phase = 0xFF;
-            }
+    else if (newCalibration.lineId == PHASE_B)
+    {
+        if(_getCalibrationValue(argv[2], "Ub", &newCalibration.aimVB) == false)
+        {
+            parseError = true;
         }
-        else {
+        else if(_getCalibrationValue(argv[3], "Ib", &newCalibration.aimIB) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[4], "Ab", &newCalibration.angleB) == false)
+        {
             parseError = true;
         }
     }
-    else {
-        // Incorrect parameter number
-        parseError = true;
+    else if (newCalibration.lineId == PHASE_C)
+    {
+        if(_getCalibrationValue(argv[2], "Uc", &newCalibration.aimVC) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[3], "Ic", &newCalibration.aimIC) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[4], "Ac", &newCalibration.angleC) == false)
+        {
+            parseError = true;
+        }
+    }
+    else if (newCalibration.lineId == PHASE_T)
+    {
+        if(_getCalibrationValue(argv[2], "Ua", &newCalibration.aimVA) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[3], "Ia", &newCalibration.aimIA) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[4], "Aa", &newCalibration.angleA) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[5], "Ub", &newCalibration.aimVB) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[6], "Ib", &newCalibration.aimIB) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[7], "Ab", &newCalibration.angleB) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[8], "Uc", &newCalibration.aimVC) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[9], "Ic", &newCalibration.aimIC) == false)
+        {
+            parseError = true;
+        }
+        else if(_getCalibrationValue(argv[10], "Ac", &newCalibration.angleC) == false)
+        {
+            parseError = true;
+        }
     }
 
     if (parseError) {
@@ -506,23 +347,7 @@ static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
     else {
         SYS_CMD_MESSAGE("Calibrating...\n\r");
-        switch (phase) {
-        case 1:
-//API             DRV_MET_OnePhaseCalibration(phase, &newCalA);
-            break;
-        case 2:
-//API             DRV_MET_OnePhaseCalibration(phase, &newCalB);
-            break;
-        case 3:
-//API             DRV_MET_OnePhaseCalibration(phase, &newCalC);
-            break;
-        case 0xFF:
-//API             DRV_MET_ThreePhaseCalibration(&newCalA, &newCalB, &newCalC);
-            break;
-        default:
-            SYS_CMD_MESSAGE("Could not set Calibration\n\r");
-            break;
-        }
+        APP_METROLOGY_StartCalibration(&newCalibration);
     }
 }
 
@@ -1721,6 +1546,7 @@ void APP_CONSOLE_Tasks ( void )
                 
                 /* Initialize Metrology App callbacks */
                 APP_METROLOGY_SetHarmonicAnalysisCallback(_harmonicAnalisysCallback, &harmonicAnalysisData);
+                APP_METROLOGY_SetCalibrationCallback(_calibrationCallback);
 
                 if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
                     (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) 
@@ -2614,6 +2440,23 @@ void APP_CONSOLE_Tasks ( void )
                 }
             }
             vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT:
+        {
+            // Show calibration result
+            if (app_consoleData.calibrationResult)
+            {
+                SYS_CMD_MESSAGE("Calibrating Done!\n\r");
+            }
+            else
+            {
+                SYS_CMD_MESSAGE("Calibrating Fails!\n\r");
+            }
+
+            // Go back to IDLE
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
             break;
         }
 
