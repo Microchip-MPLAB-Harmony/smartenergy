@@ -2368,7 +2368,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_126_FUNCTION_NAME&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO_PC17&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2441,6 +2441,17 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_22_LAT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_22_LAT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;High&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_22_PD"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_22_PD&quot;&gt;
@@ -2457,6 +2468,17 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_22_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_23_DIR"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_23_DIR&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2639,6 +2661,17 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_39_PU"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_39_PU&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;True&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_40_FUNCTION_NAME"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_40_FUNCTION_NAME&quot;&gt;
@@ -2677,6 +2710,17 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_40_PIO_INTERRUPT&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;User dnOrder=&quot;0&quot; value=&quot;Falling Edge&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_40_PU"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_40_PU&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;True&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4755,7 +4799,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_D_CFGR_Value18&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x100&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x0&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -7908,7 +7952,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\met_bin.S</file>
-         <hash>6bb311ebb41c7b98e3d547a6e3ae4a95fe188307a6226567b228ed62696d2e0a</hash>
+         <hash>f23841c0a56c53a3d03d929be37e6178876bb8dd63231964ccd462293cbbe38b</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\memory\drv_memory_definitions.h</file>
@@ -7916,7 +7960,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.h</file>
-         <hash>3a4621fa74bc8e4d111c15e25bdb4c6346188733f9485acc303d13bef18ba3a8</hash>
+         <hash>a83e3e8c34f3e0902828f257cad662bcb2309299bd7a1464ee04d437014d8936</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\uart.h</file>
@@ -7924,7 +7968,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>9e3f320f40c99dbd90a0f320bb2594512ac60d09b90eaa378c7de86a90de6af4</hash>
+         <hash>98e2e7e431e79071964a083bc5836c5a7dea8674f592deebeb13e9a5a56c2d3d</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
@@ -7956,11 +8000,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>9fefe97fc311d1fcdf2c45280c16092f7c02c2ecfb7b2d802a09009d2a73a47e</hash>
+         <hash>8a6dde6a9aa095aed4959e4195739fa4c65db3d05bbcd3cadf8aad1034d5eed8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>17c6400b24e2bda238bc5911a3e0293c99c5ebaba4dee49c79cca7f045a88e4f</hash>
+         <hash>18866d42c47128b9b81cd26e1ddb397853cd1fc52b6e24e8fe6f6ecd60df4f83</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\pwm.h</file>
@@ -8092,7 +8136,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>b339b6f3aa93dfc0489ddfda3a2ff4b2ecb27dd9b73c90fd743306b2222e686b</hash>
+         <hash>d963a1e4a9f831c97ea9438f6f274f7d5d5a063fdd9f10be25ee3cfde3a4f028</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi.c</file>
@@ -8292,7 +8336,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>fd90f7f23c918110b53dffe843fb5a8cd8df50619c062d4efc1299eb0495dd91</hash>
+         <hash>fae2b184a2749d70d5b88bbaa09e1a2630212d69610a57be19391ab03a0f3a09</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -8376,7 +8420,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\pin_configurations.csv</file>
-         <hash>08f96b4ea61829866c9040a315a715617c348f7a233139c35a92f78c934831b0</hash>
+         <hash>6ef1b4dd61da05926287b0ee894a0408e60b8b25f58ff3330dcbc77577818d6c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\sdspi\drv_sdspi.h</file>
@@ -8528,7 +8572,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>e6c76ca0554c0d15c350752295a121b119a2fe75cce65087715315c5a49d0779</hash>
+         <hash>38044dc8c8f0823b67231b9fca1d061bd89748868440da0764bc33481c23196a</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi_local.h</file>
@@ -8720,7 +8764,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.c</file>
-         <hash>798606eea0a6430e54649b385f52208e893b9347da6bd021aa689c1d25c06464</hash>
+         <hash>f952208c7ec1d98f268c7c8eec31fd92d68c6872d92b3d8e78a235fb4c884fbe</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_iccarm.h</file>

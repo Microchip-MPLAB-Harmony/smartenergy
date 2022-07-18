@@ -56,7 +56,7 @@ extern "C" {
     99 is the default value for the development version.
 */
     
-#define DEMO_APP_MAJOR_VERSION   1
+#define DEMO_APP_MAJOR_VERSION   3
 
 // *****************************************************************************
 /* Demo application minor version

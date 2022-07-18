@@ -1149,13 +1149,15 @@ typedef struct
     __O  uint32_t V_B_m_R;            /**< Offset: 0x0C (R/  32) The real part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
     __O  uint32_t I_C_m_R;            /**< Offset: 0x10 (R/  32) The real part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
     __O  uint32_t V_C_m_R;            /**< Offset: 0x14 (R/  32) The real part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
-    __O  uint32_t I_A_m_I;            /**< Offset: 0x18 (R/  32) The imaginary part of DFT result for current, phase-A, m-th harmonics (sQ25.6) */
-    __O  uint32_t V_A_m_I;            /**< Offset: 0x1C (R/  32) The imaginary part of DFT result for voltage, phase-A, m-th harmonics (sQ25.6) */
-    __O  uint32_t I_B_m_I;            /**< Offset: 0x20 (R/  32) The imaginary part of DFT result for current, phase-B, m-th harmonics (sQ25.6) */
-    __O  uint32_t V_B_m_I;            /**< Offset: 0x24 (R/  32) The imaginary part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
-    __O  uint32_t I_C_m_I;            /**< Offset: 0x28 (R/  32) The imaginary part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
-    __O  uint32_t V_C_m_I;            /**< Offset: 0x2C (R/  32) The imaginary part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
-    __O  uint32_t Reserved1[3];
+    __O  uint32_t I_N_m_R;            /**< Offset: 0x18 (R/  32) The real part of DFT result for voltage, phase-N, m-th harmonics (sQ25.6) */
+    __O  uint32_t I_A_m_I;            /**< Offset: 0x1C (R/  32) The imaginary part of DFT result for current, phase-A, m-th harmonics (sQ25.6) */
+    __O  uint32_t V_A_m_I;            /**< Offset: 0x20 (R/  32) The imaginary part of DFT result for voltage, phase-A, m-th harmonics (sQ25.6) */
+    __O  uint32_t I_B_m_I;            /**< Offset: 0x24 (R/  32) The imaginary part of DFT result for current, phase-B, m-th harmonics (sQ25.6) */
+    __O  uint32_t V_B_m_I;            /**< Offset: 0x28 (R/  32) The imaginary part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
+    __O  uint32_t I_C_m_I;            /**< Offset: 0x2C (R/  32) The imaginary part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
+    __O  uint32_t V_C_m_I;            /**< Offset: 0x30 (R/  32) The imaginary part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
+    __O  uint32_t I_N_m_I;            /**< Offset: 0x30 (R/  32) The imaginary part of DFT result for voltage, phase-N, m-th harmonics (sQ25.6) */
+    __O  uint32_t Reserved1;
 } DRV_METROLOGY_HARMONICS;
 
 /** \brief Metrology Accumulated Output register API structure */
@@ -1170,7 +1172,8 @@ typedef struct
     __O  uint64_t I_B_F;             /**< Offset: 0x38  (R/  32) Amp-squared-samples, phase-B, fundamental only (uQ24.40) */
     __O  uint64_t I_C_F;             /**< Offset: 0x40  (R/  32) Amp-squared-samples, phase-C, fundamental only (uQ24.40) */
     __O  uint64_t I_Nmi;             /**< Offset: 0x48  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ44.20) */
-    __O  uint64_t Reserved1[6];
+    __O  uint64_t I_Nm_F;            /**< Offset: 0x50  (R/  32) Amp-squared-samples, phase-N, fundamental only (uQ24.40) */
+    __O  uint64_t Reserved1[5];
     __O  int64_t  P_A;               /**< Offset: 0x78  (R/  32) Watt-samples, phase-A, fundamental + harmonics (sQ23.40) */
     __O  int64_t  P_B;               /**< Offset: 0x80  (R/  32) Watt-samples, phase-B, fundamental + harmonics (sQ23.40) */
     __O  int64_t  P_C;               /**< Offset: 0x88  (R/  32) Watt-samples, phase-C, fundamental + harmonics (sQ23.40) */

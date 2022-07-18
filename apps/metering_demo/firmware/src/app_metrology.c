@@ -460,6 +460,7 @@ void APP_METROLOGY_Tasks (void)
                 break;
             }            
 
+            LED_RED_Toggle();
             DRV_METROLOGY_UpdateMeasurements();
             
             // Send new Energy values to the Energy Task

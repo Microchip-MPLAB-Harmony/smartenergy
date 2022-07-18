@@ -68,76 +68,72 @@ static const uint32_t PIO_INDEX[PIO_PORT_MAX] = { 0U, 1U, 2U, 0U };
 void PIO_Initialize ( void )
 {
  /* Port A Peripheral function A configuration */
-	PIOA_REGS->PIO_MSKR = 0xffe00030LU;
-	PIOA_REGS->PIO_CFGR = 0x1U;
+   PIOA_REGS->PIO_MSKR = 0xffe00030LU;
+   PIOA_REGS->PIO_CFGR = 0x1U;
 
  /* Port A Peripheral function GPIO configuration */
-	PIOA_REGS->PIO_MSKR = 0x4c000LU;
-	PIOA_REGS->PIO_CFGR = 0x0U;
+   PIOA_REGS->PIO_MSKR = 0x4c000LU;
+   PIOA_REGS->PIO_CFGR = 0x0U;
 
  /* Port A Pin 14 configuration */
-	PIOA_REGS->PIO_MSKR = 0x4000U;
-	PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
+   PIOA_REGS->PIO_MSKR = 0x4000U;
+   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
 
  /* Port A Pin 15 configuration */
-	PIOA_REGS->PIO_MSKR = 0x8000U;
-	PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
+   PIOA_REGS->PIO_MSKR = 0x8000U;
+   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
 
  /* Port A Pin 18 configuration */
-	PIOA_REGS->PIO_MSKR = 0x40000U;
-	PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+   PIOA_REGS->PIO_MSKR = 0x40000U;
+   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port A Pin 21 configuration */
-	PIOA_REGS->PIO_MSKR = 0x200000U;
-	PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+   PIOA_REGS->PIO_MSKR = 0x200000U;
+   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port A Latch configuration */
-	PIOA_REGS->PIO_CODR = 0x4c000LU;
+   PIOA_REGS->PIO_CODR = 0x4c000LU;
 
     /* Clear the ISR register */
-	(uint32_t)PIOA_REGS->PIO_ISR;
+   (uint32_t)PIOA_REGS->PIO_ISR;
  /* Port B Peripheral function A configuration */
-	PIOB_REGS->PIO_MSKR = 0x7dfffffU;
-	PIOB_REGS->PIO_CFGR = 0x1U;
+   PIOB_REGS->PIO_MSKR = 0x7dfffffU;
+   PIOB_REGS->PIO_CFGR = 0x1U;
 
  /* Port B Pin 22 configuration */
-	PIOB_REGS->PIO_MSKR = 0x400000U;
-	PIOB_REGS->PIO_CFGR = (PIOB_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+   PIOB_REGS->PIO_MSKR = 0x400000U;
+   PIOB_REGS->PIO_CFGR = (PIOB_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
 
  /* Port C Peripheral function A configuration */
-	PIOC_REGS->PIO_MSKR = 0xff83U;
-	PIOC_REGS->PIO_CFGR = 0x1U;
+   PIOC_REGS->PIO_MSKR = 0xff83U;
+   PIOC_REGS->PIO_CFGR = 0x1U;
 
  /* Port C Peripheral function GPIO configuration */
-	PIOC_REGS->PIO_MSKR = 0x40U;
-	PIOC_REGS->PIO_CFGR = 0x0U;
+   PIOC_REGS->PIO_MSKR = 0x40U;
+   PIOC_REGS->PIO_CFGR = 0x0U;
 
  /* Port C Pin 6 configuration */
-	PIOC_REGS->PIO_MSKR = 0x40U;
-	PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+   PIOC_REGS->PIO_MSKR = 0x40U;
+   PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port C Pin 10 configuration */
-	PIOC_REGS->PIO_MSKR = 0x400U;
-	PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
+   PIOC_REGS->PIO_MSKR = 0x400U;
+   PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
 
  /* Port C Latch configuration */
-	PIOC_REGS->PIO_SODR = 0x40U;
+   PIOC_REGS->PIO_SODR = 0x40U;
 
  /* Port D Peripheral function GPIO configuration */
-	PIOD_REGS->PIO_MSKR = 0x20000U;
-	PIOD_REGS->PIO_CFGR = 0x0U;
+   PIOD_REGS->PIO_MSKR = 0x20000U;
+   PIOD_REGS->PIO_CFGR = 0x0U;
 
  /* Port D Pin 17 configuration */
-	PIOD_REGS->PIO_MSKR = 0x20000U;
-	PIOD_REGS->PIO_CFGR = (PIOD_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
-
- /* Port D Pin 18 configuration */
-	PIOD_REGS->PIO_MSKR = 0x40000U;
-	PIOD_REGS->PIO_CFGR = (PIOD_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
+   PIOD_REGS->PIO_MSKR = 0x20000U;
+   PIOD_REGS->PIO_CFGR = (PIOD_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port D Latch configuration */
-	PIOD_REGS->PIO_SODR = 0x20000U;
+   PIOD_REGS->PIO_SODR = 0x20000U;
 
 
 
@@ -148,7 +144,7 @@ void PIO_Initialize ( void )
     
     portPinCbObj[0 + 1].pin = PIO_PIN_PA15;
     
-    for(i=0U; i<2U; i++)
+    for(i = 0U; i < 2U; i++)
     {
         portPinCbObj[i].callback = NULL;
     }
@@ -401,13 +397,13 @@ void PIOA_InterruptHandler(void)
     status  = PIOA_REGS->PIO_ISR;
     status &= PIOA_REGS->PIO_IMR;
 
-	for( j = 0U; j < 2U; j++ )
-	{
-		if(((status & (1UL << (portPinCbObj[j].pin & 0x1FU))) != 0U) && (portPinCbObj[j].callback != NULL))
-		{
-			portPinCbObj[j].callback ( portPinCbObj[j].pin, portPinCbObj[j].context );
-		}
-	}
+    for( j = 0U; j < 2U; j++ )
+    {
+        if(((status & (1UL << (portPinCbObj[j].pin & 0x1FU))) != 0U) && (portPinCbObj[j].callback != NULL))
+        {
+            portPinCbObj[j].callback ( portPinCbObj[j].pin, portPinCbObj[j].context );
+        }
+    }
 }
 
 /*******************************************************************************

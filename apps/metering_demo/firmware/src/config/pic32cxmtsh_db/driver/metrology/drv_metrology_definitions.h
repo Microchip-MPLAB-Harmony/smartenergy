@@ -182,6 +182,7 @@ typedef struct {
     double Irms_A_m;
     double Irms_B_m;
     double Irms_C_m;
+    double Irms_N_m;
     double Vrms_A_m;
     double Vrms_B_m;
     double Vrms_C_m;
@@ -214,7 +215,7 @@ typedef enum {
     RMS_ANGLEB,
     RMS_ANGLEC,
     RMS_ANGLEN,
-  RMS_TYPE_NUM
+    RMS_TYPE_NUM
 } DRV_METROLOGY_RMS_TYPE;
 
 typedef struct {

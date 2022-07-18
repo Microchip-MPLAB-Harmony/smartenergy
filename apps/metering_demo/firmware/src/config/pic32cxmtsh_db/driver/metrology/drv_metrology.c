@@ -1217,7 +1217,7 @@ bool DRV_METROLOGY_GetHarmonicAnalysisResult(void)
             uint32_t harTemp[12];
             
             pHarReg = (uint32_t *)&gDrvMetObj.metRegisters->MET_HARMONICS;
-            for (index = 0; index < 12; index++, pHarReg++) {
+            for (index = 0; index < 14; index++, pHarReg++) {
                 if (*pHarReg > RMS_HARMONIC) {
                     harTemp[index] = (~(*pHarReg)) + 1;
                 } else {
@@ -1228,13 +1228,13 @@ bool DRV_METROLOGY_GetHarmonicAnalysisResult(void)
             sqrt2 = sqrt(2);
             div = gDrvMetObj.metRegisters->MET_STATUS.N << 6; /* format sQ25.6 */
             
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_A_m = (sqrt(pow((double)harTemp[0], 2) + pow((double)harTemp[6], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_B_m = (sqrt(pow((double)harTemp[2], 2) + pow((double)harTemp[8], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_C_m = (sqrt(pow((double)harTemp[4], 2) + pow((double)harTemp[10], 2)) * sqrt2) / div;
-            
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2) + pow((double)harTemp[7], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2) + pow((double)harTemp[9], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2) + pow((double)harTemp[11], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_A_m = (sqrt(pow((double)harTemp[0], 2) + pow((double)harTemp[7], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_B_m = (sqrt(pow((double)harTemp[2], 2) + pow((double)harTemp[9], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_C_m = (sqrt(pow((double)harTemp[4], 2) + pow((double)harTemp[11], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Irms_N_m = (sqrt(pow((double)harTemp[6], 2) + pow((double)harTemp[13], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2) + pow((double)harTemp[8], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2) + pow((double)harTemp[10], 2)) * sqrt2) / div;
+            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2) + pow((double)harTemp[12], 2)) * sqrt2) / div;
             
             /* Disable Harmonic Analysis */
             gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;

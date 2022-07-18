@@ -398,7 +398,6 @@ void SYS_Initialize ( void* data )
 
 
 
-
     FLEXCOM5_SPI_Initialize();
 
  

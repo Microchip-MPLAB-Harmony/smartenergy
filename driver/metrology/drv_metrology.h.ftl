@@ -77,7 +77,16 @@ typedef enum
 
 } DRV_METROLOGY_RESULT;
 
+// *****************************************************************************
+/* Metrology Driver Start mode
 
+  Summary:
+    Describes how is the startup process.
+
+  Description:
+    HARD mode implies a full reload of Core 1 application. SOFT mode does not
+    any effects on Core 1 application.
+*/
 typedef enum
 {
     // Operation completed with success.
@@ -88,6 +97,15 @@ typedef enum
 
 } DRV_METROLOGY_START_MODE;
 
+// *****************************************************************************
+/* Metrology Driver RMS sign
+
+  Summary:
+    Describes the sign of some metrology measurements.
+
+  Description:
+    This quality only affects to some RMS measurements.
+*/
 typedef enum
 {
     // Positive Value
@@ -110,6 +128,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void);
 DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
 DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister(DRV_METROLOGY_CALLBACK callback);
 DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
+
 DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
 DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl(void);
 DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);

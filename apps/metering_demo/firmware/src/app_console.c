@@ -2144,9 +2144,12 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisData.Irms_A_m, 
                     harmonicAnalysisData.Irms_B_m, harmonicAnalysisData.Irms_C_m);
             
-            SYS_CMD_MESSAGE("Vrms_Har_A(V)     Vrms_Har_B(V)     Vrms_Har_C(V)\n\r");
-            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisData.Vrms_A_m, 
-                    harmonicAnalysisData.Vrms_B_m, harmonicAnalysisData.Vrms_C_m);
+            SYS_CMD_MESSAGE("Irms_Har_N(A)     Vrms_Har_A(V)     Vrms_Har_B(V)\n\r");
+            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisData.Irms_N_m, 
+                    harmonicAnalysisData.Vrms_A_m, harmonicAnalysisData.Vrms_B_m);
+            
+            SYS_CMD_MESSAGE("Vrms_Har_C(V)\n\r");
+            SYS_CMD_PRINT("%-19.3f%\r\n", harmonicAnalysisData.Vrms_C_m);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
