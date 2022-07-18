@@ -493,6 +493,8 @@ void APP_METROLOGY_Tasks (void)
             if (app_metrologyData.harmonicAnalysisPending)
             {
                 app_metrologyData.state = APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS;
+                
+                vTaskDelay(10 / portTICK_PERIOD_MS);
             }
             
             break;
@@ -500,17 +502,14 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS:
         {
-            /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-            
             if (DRV_METROLOGY_GetHarmonicAnalysisResult())
             {
                 app_metrologyData.harmonicAnalysisPending = false;
 
                 app_metrologyData.pHarmonicAnalisysCallback(app_metrologyData.harmonicAnalysisNum);
-                
-                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
             }
+            
+            app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
             
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
