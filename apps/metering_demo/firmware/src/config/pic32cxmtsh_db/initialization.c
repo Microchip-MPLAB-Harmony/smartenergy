@@ -94,7 +94,7 @@ const DRV_SDSPI_INIT drvSDSPI0InitData =
 
     .writeProtectPin        = SYS_PORT_PIN_NONE,
 
-    .isFsEnabled            = true,
+    .isFsEnabled            = false,
 
 };
 
@@ -106,6 +106,7 @@ static uint8_t gDrvMemory0EraseBuffer[DRV_SST26_ERASE_BUFFER_SIZE] CACHE_ALIGN;
 
 static DRV_MEMORY_CLIENT_OBJECT gDrvMemory0ClientObject[DRV_MEMORY_CLIENTS_NUMBER_IDX0];
 
+static DRV_MEMORY_BUFFER_OBJECT gDrvMemory0BufferObject[DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0];
 
 const DRV_MEMORY_DEVICE_INTERFACE drvMemory0DeviceAPI = {
     .Open               = DRV_SST26_Open,
@@ -124,10 +125,12 @@ const DRV_MEMORY_INIT drvMemory0InitData =
     .memDevIndex                = DRV_SST26_INDEX,
     .memoryDevice               = &drvMemory0DeviceAPI,
     .isMemDevInterruptEnabled   = false,
-    .memDevStatusPollUs         = 500,
-    .isFsEnabled                = false,
+    .isFsEnabled                = true,
+    .deviceMediaType            = (uint8_t)SYS_FS_MEDIA_TYPE_SPIFLASH,
     .ewBuffer                   = &gDrvMemory0EraseBuffer[0],
     .clientObjPool              = (uintptr_t)&gDrvMemory0ClientObject[0],
+    .bufferObj                  = (uintptr_t)&gDrvMemory0BufferObject[0],
+    .queueSize                  = DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0,
     .nClientsMax                = DRV_MEMORY_CLIENTS_NUMBER_IDX0
 };
 
@@ -232,16 +235,11 @@ SYSTEM_OBJECTS sysObj;
 // *****************************************************************************
 // <editor-fold defaultstate="collapsed" desc="File System Initialization Data">
 
+
 const SYS_FS_MEDIA_MOUNT_DATA sysfsMountTable[SYS_FS_VOLUME_NUMBER] =
 {
-    {
-        .mountName = SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0,
-        .devName   = SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0,
-        .mediaType = SYS_FS_MEDIA_TYPE_IDX0,
-        .fsType   = SYS_FS_TYPE_IDX0
-    },
+    {NULL}
 };
-
 
 const SYS_FS_FUNCTIONS FatFsFunctions =
 {

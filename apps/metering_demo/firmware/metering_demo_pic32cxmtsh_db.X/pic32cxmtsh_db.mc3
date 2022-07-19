@@ -738,8 +738,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;779&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;349&quot; y=&quot;177&quot;/&gt;
@@ -759,12 +758,13 @@
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc0&quot; x=&quot;515&quot; y=&quot;81&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sefc1&quot; x=&quot;513&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;353&quot; y=&quot;272&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;189&quot; y=&quot;234&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;540&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;187&quot; y=&quot;234&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;466&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;21&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;779&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -982,7 +982,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;CLK_QSPI_GCLKDIV&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;9&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;3&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4986,7 +4986,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;QSPI_GCLK_FREQUENCY&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;20000000&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;50000000&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -5540,6 +5540,29 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory&gt;
   &lt;drv_memory dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_COMMON_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drv_memory&gt;
+&lt;/drv_memory&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drv_memory" name="DRV_MEMORY_COMMON_MODE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory&gt;
+  &lt;drv_memory dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_COMMON_MODE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory&quot; value=&quot;Synchronous&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;Asynchronous&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drv_memory&gt;
+&lt;/drv_memory&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drv_memory" name="DRV_MEMORY_COMMON_SYS_TIME_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory&gt;
+  &lt;drv_memory dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_COMMON_SYS_TIME_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_memory&gt;
@@ -5597,7 +5620,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_memory_0&gt;
   &lt;drv_memory_0 dnOrder=&quot;0&quot; id=&quot;DRV_MEMORY_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory_0&quot; value=&quot;false&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_memory_0&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_memory_0&gt;
 &lt;/drv_memory_0&gt;
@@ -5630,7 +5653,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_sdspi&gt;
   &lt;drv_sdspi dnOrder=&quot;0&quot; id=&quot;DRV_SDSPI_COMMON_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_sdspi&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_sdspi&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_sdspi&gt;
 &lt;/drv_sdspi&gt;
@@ -5687,7 +5710,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drv_sdspi_0&gt;
   &lt;drv_sdspi_0 dnOrder=&quot;0&quot; id=&quot;DRV_SDSPI_FS_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_sdspi_0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drv_sdspi_0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drv_sdspi_0&gt;
 &lt;/drv_sdspi_0&gt;
@@ -6779,7 +6802,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;qspi&gt;
   &lt;qspi dnOrder=&quot;0&quot; id=&quot;QSPI_CLK_FREQ&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;qspi&quot; value=&quot;20000000&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;qspi&quot; value=&quot;50000000&quot;/&gt;
     &lt;/Values&gt;
   &lt;/qspi&gt;
 &lt;/qspi&gt;
@@ -7066,7 +7089,7 @@
     &lt;Attachments dnOrder=&quot;0&quot;&gt;
       &lt;MultiCapability dnOrder=&quot;0&quot; id=&quot;sys_fs_DRV_MEDIA_dependency&quot;&gt;
         &lt;TargetAttachments dnOrder=&quot;0&quot;&gt;
-          &lt;TargetAttachment dnOrder=&quot;0&quot; targetAttachmentID=&quot;drv_media&quot; targetComponentID=&quot;drv_sdspi_0&quot;/&gt;
+          &lt;TargetAttachment dnOrder=&quot;0&quot; targetAttachmentID=&quot;drv_media&quot; targetComponentID=&quot;drv_memory_0&quot;/&gt;
         &lt;/TargetAttachments&gt;
       &lt;/MultiCapability&gt;
     &lt;/Attachments&gt;
@@ -7141,12 +7164,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_fs" name="SYS_FS_IDX1"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_IDX1&quot;&gt;
-    &lt;Attributes dnOrder=&quot;0&quot;&gt;
-      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;visible&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
-      &lt;/Boolean&gt;
-    &lt;/Attributes&gt;
-    &lt;Values dnOrder=&quot;1&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
@@ -7229,7 +7247,8 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_1_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka1&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda1&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;/dev/sst26a1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7240,8 +7259,8 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_1_NAME_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka1&quot;/&gt;
-      &lt;User dnOrder=&quot;1&quot; value=&quot;/dev/mmcblka1&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda1&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;/dev/sst26a1&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7252,7 +7271,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_2_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka2&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7263,7 +7282,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_2_NAME_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka2&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7274,7 +7293,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_3_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka3&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda3&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7285,7 +7304,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_3_NAME_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka3&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda3&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7296,7 +7315,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_4_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka4&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda4&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7307,7 +7326,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_DEVICE_4_NAME_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mmcblka4&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sys_fs&quot; value=&quot;/dev/mtda4&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7318,7 +7337,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_MOUNT_1_NAME_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sdcard&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sst26&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7329,7 +7348,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_MOUNT_1_NAME_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sd&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;/mnt/sst26&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7340,7 +7359,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_TYPE_DEFINE_IDX0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SD_CARD&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SPIFLASH&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -7351,7 +7370,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_fs&gt;
   &lt;sys_fs dnOrder=&quot;0&quot; id=&quot;SYS_FS_MEDIA_TYPE_DEFINE_IDX1&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SD_CARD&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;SYS_FS_MEDIA_TYPE_SPIFLASH&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_fs&gt;
 &lt;/sys_fs&gt;
@@ -8024,7 +8043,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\sst26\src\drv_sst26.c</file>
-         <hash>7ec38f6a0e8bcdfc865d6ca383d4551d0542b4f2324f414b90993ff1410595d3</hash>
+         <hash>21a1cdfd8ca11470054d06c66e850c4c4f73982150bcf61dd19a41ef011ab2a4</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\nvic\plib_nvic.h</file>
@@ -8056,7 +8075,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory_local.h</file>
-         <hash>9bf352420664ea21b32c2226b8650ed314bcf58992a10064adebb09fb975444b</hash>
+         <hash>7938d56b25af2bfaad712cba18a690a52bad94080eafbc9c15c235b587cdd5cb</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\ipc1.h</file>
@@ -8084,11 +8103,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager.c</file>
-         <hash>f0f4465a9ed84af262dbeb3cfabedd1fd7f888c5d9197e8ccebf57c4220b867c</hash>
+         <hash>fb06977374492e54f4cf962d857b98348748c77ceba7513df190c9db530e1d51</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.c</file>
-         <hash>af5c4d9de1c798556c3c23f002f3062922ec77e3d12863a7586e8471bd731ab7</hash>
+         <hash>67427d52ef5a5746409ec391c3e2ca17760a0c01c8d4035dd900799a507cfe23</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\mpu_armv7.h</file>
@@ -8136,7 +8155,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>d963a1e4a9f831c97ea9438f6f274f7d5d5a063fdd9f10be25ee3cfde3a4f028</hash>
+         <hash>25704ddc91201b7c5a5e725fb035822cbbacaa03a025b2e33fccb1c9868dcf17</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi.c</file>
@@ -8244,7 +8263,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>e965cf406de6c38de8c6d97feddb101b692b6ee69d24cdccb536d9101e9c9da6</hash>
+         <hash>022a748053a9c2f6e78fa6ba28f85fcc317e4de4a7fe07aa0acf25191cd23752</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -8267,6 +8286,10 @@
          <hash>6f35cfd335587dd112d0ac648ae99539a5acbb98ba80ce6e8c7c855e7b8d7465</hash>
       </entry>
       <entry>
+         <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory_file_system.c</file>
+         <hash>2509e2da0da9c4d502c7a6bdab37feaa0790f421bab99db43fea4a76d30ed215</hash>
+      </entry>
+      <entry>
          <file>..\src\app_events.h</file>
          <hash>853ebaf6f3eb3ef925004bb6fde3400200de79d1747d97eee4e9a6e814606f69</hash>
       </entry>
@@ -8276,7 +8299,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\qspi\plib_qspi.c</file>
-         <hash>e1371af875c959fa267c586565ea460e4a39346c04a5ffb1ba4aef750bc6bdf6</hash>
+         <hash>86cd43599514f15665682d754ef404e4ef7ffe9f09c91608a52e44f2019385dd</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\chipid.h</file>
@@ -8321,10 +8344,6 @@
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cmcc1.h</file>
          <hash>4ba28897b0cb100521b49932a9c7818c31c225e0f56eb64cca3c90efbbecb0bf</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi_file_system.c</file>
-         <hash>fd08cdcd754664da94c7ee881cdf09b58cf51bf1978c795cf548f4a1b862f412</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\rtt.h</file>
@@ -8396,7 +8415,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\time\src\sys_time.c</file>
-         <hash>4c2c39bc061655a06d6da7bd1f448c4de26a181e5710d74b4391923fb37ddadb</hash>
+         <hash>b722ac0c5d955d289bd906609ab6f302342166c5ba66f87b30cac17ac6bfdcd9</hash>
       </entry>
       <entry>
          <file>..\src\app_display.h</file>
@@ -8544,7 +8563,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory.c</file>
-         <hash>858d39d4b7c65fcf04e7af3206abb521ab0e48e8333acebd7ca27e06b2987d18</hash>
+         <hash>b9b7cd3017239bb840c2aa997fcb9940bec33e6d0a0ba3786f2164e9f5b2ae78</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\matrix1.h</file>
@@ -8584,7 +8603,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\tasks.c</file>
-         <hash>88cdd76fe9465206ad9b02c9bea5b9ca4a7da228035871da01b8cecee9245ac4</hash>
+         <hash>6745ab99c791cf1e018da400ec7efc5c240812bff664ba5a19304670d9ff2b83</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\tc.h</file>
@@ -8740,7 +8759,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs.c</file>
-         <hash>aba5ae4d2d52843de0d236941838bd3ff6428f6acade1fb5ef923b2aa7615968</hash>
+         <hash>ca021c42833ef8d927a2165d42b8cf0d14ba0739eae48591dbd65b03f6166993</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\semphr.h</file>
@@ -8964,7 +8983,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>fd71ecb5e2f7400063cbba7459b23398cca328bf09abd58055038cddc8a0aade</hash>
+         <hash>f4108c199e7d01a23fb237f3e81922f6fe48a7987c5b61f5c848840ca80ac8b6</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

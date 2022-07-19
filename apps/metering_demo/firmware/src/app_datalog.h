@@ -61,9 +61,14 @@ extern "C" {
 
 typedef enum
 {
+#if SYS_FS_AUTOMOUNT_ENABLE
     /* Wait for disk Mount */
     APP_DATALOG_STATE_MOUNT_WAIT = 0,
-
+#else
+    /* Mount the disk */
+    APP_DATALOG_STATE_MOUNT_DISK = 0,
+#endif    
+            
     /* The app formats the disk. */
     APP_DATALOG_STATE_FORMAT_DISK,
 
@@ -267,6 +272,9 @@ typedef struct
 {
     /* The application's current state */
     APP_DATALOG_STATES state;
+    
+    /* Format Options */
+    SYS_FS_FORMAT_PARAM formatOpt;
 
     /* Element from Queue */
     APP_DATALOG_QUEUE_DATA newQueueData;

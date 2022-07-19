@@ -109,8 +109,7 @@ extern "C" {
 #define SYS_FS_MEDIA_NUMBER               1
 #define SYS_FS_VOLUME_NUMBER              1
 
-#define SYS_FS_AUTOMOUNT_ENABLE           true
-#define SYS_FS_CLIENT_NUMBER              1
+#define SYS_FS_AUTOMOUNT_ENABLE           false
 #define SYS_FS_MAX_FILES                  5
 #define SYS_FS_MAX_FILE_SYSTEM_TYPE       1
 #define SYS_FS_MEDIA_MAX_BLOCK_SIZE       512
@@ -131,12 +130,6 @@ extern "C" {
 
 
 
-#define SYS_FS_MEDIA_TYPE_IDX0 				SYS_FS_MEDIA_TYPE_SD_CARD
-#define SYS_FS_TYPE_IDX0 					FAT
-					
-#define SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0 			"/mnt/sdcard"
-#define SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0			"/dev/mmcblka1"
-								
 
 #define SYS_CONSOLE_DEVICE_MAX_INSTANCES   			1
 #define SYS_CONSOLE_UART_MAX_INSTANCES 	   			1
@@ -173,6 +166,7 @@ extern "C" {
 /* Memory Driver Instance 0 Configuration */
 #define DRV_MEMORY_INDEX_0                   0
 #define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
+#define DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0    1
 
 /* Memory Driver Instance 0 RTOS Configurations*/
 #define DRV_MEMORY_STACK_SIZE_IDX0           1024

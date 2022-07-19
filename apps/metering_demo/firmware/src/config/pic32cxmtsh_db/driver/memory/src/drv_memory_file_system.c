@@ -1,23 +1,23 @@
 /******************************************************************************
-  SD Card (SPI) Driver File System Interface Implementation
+  MEMORY Driver File System Interface Implementation
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_sdspi_file_system.c
+    drv_memory_file_system.c
 
   Summary:
-    SD Card (SPI) Driver Interface Definition
+    MEMORY Driver Interface Definition
 
   Description:
-    The SD Card Driver provides a interface to access the SD Card. This file
-    implements the SD Card Driver file system interface.
-    This file should be included in the project if SD Card driver functionality
-    with File system is needed.
+    The MEMORY Driver provides a interface to access the MEMORY on the PIC32
+    microcontroller. This file implements the MEMORY Driver file system interface.
+    This file should be included in the project if MEMORY driver functionality with
+    File system is needed.
 *******************************************************************************/
 
-// DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -39,8 +39,8 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
-// DOM-IGNORE-END
+*******************************************************************************/
+//DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
@@ -48,7 +48,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "driver/sdspi/drv_sdspi.h"
+#include "driver/memory/src/drv_memory_local.h"
 #include "system/fs/sys_fs_media_manager.h"
 
 // *****************************************************************************
@@ -58,22 +58,22 @@
 // *****************************************************************************
 
 /* FS Function registration table. */
-typedef SYS_FS_MEDIA_COMMAND_STATUS (* CommandStatusGetType)( DRV_HANDLE, SYS_FS_MEDIA_BLOCK_COMMAND_HANDLE );    
+typedef SYS_FS_MEDIA_COMMAND_STATUS (* CommandStatusGetType)( DRV_HANDLE, SYS_FS_MEDIA_BLOCK_COMMAND_HANDLE );
 
-const SYS_FS_MEDIA_FUNCTIONS sdspiMediaFunctions =
+const SYS_FS_MEDIA_FUNCTIONS memoryMediaFunctions =
 {
-    .mediaStatusGet     = DRV_SDSPI_IsAttached,
-    .mediaGeometryGet   = DRV_SDSPI_GeometryGet,
-    .sectorRead         = DRV_SDSPI_Read,
-    .sectorWrite        = DRV_SDSPI_Write,
-    .eventHandlerset    = DRV_SDSPI_EventHandlerSet,
-    .commandStatusGet   = (CommandStatusGetType) DRV_SDSPI_CommandStatusGet,
-    .Read               = DRV_SDSPI_Read,
-    .erase              = NULL,
-    .addressGet         = NULL,
-    .open               = DRV_SDSPI_Open,
-    .close              = DRV_SDSPI_Close,
-    .tasks              = NULL,
+    .mediaStatusGet     = DRV_MEMORY_IsAttached,
+    .mediaGeometryGet   = DRV_MEMORY_GeometryGet,
+    .sectorRead         = DRV_MEMORY_AsyncRead,
+    .sectorWrite        = DRV_MEMORY_AsyncEraseWrite,
+    .eventHandlerset    = DRV_MEMORY_TransferHandlerSet,
+    .commandStatusGet   = (CommandStatusGetType)DRV_MEMORY_CommandStatusGet,
+    .Read               = DRV_MEMORY_AsyncRead,
+    .erase              = DRV_MEMORY_AsyncErase,
+    .addressGet         = DRV_MEMORY_AddressGet,
+    .open               = DRV_MEMORY_Open,
+    .close              = DRV_MEMORY_Close,
+    .tasks              = DRV_MEMORY_Tasks,
 };
 
 // *****************************************************************************
@@ -82,13 +82,13 @@ const SYS_FS_MEDIA_FUNCTIONS sdspiMediaFunctions =
 // *****************************************************************************
 // *****************************************************************************
 
-void DRV_SDSPI_RegisterWithSysFs( const SYS_MODULE_INDEX drvIndex)
+void DRV_MEMORY_RegisterWithSysFs( const SYS_MODULE_INDEX drvIndex, uint8_t mediaType)
 {
     SYS_FS_MEDIA_MANAGER_Register
     (
         (SYS_MODULE_OBJ)drvIndex,
         (SYS_MODULE_INDEX)drvIndex,
-        &sdspiMediaFunctions,
-        (SYS_FS_MEDIA_TYPE)SYS_FS_MEDIA_TYPE_SD_CARD
+        &memoryMediaFunctions,
+        (SYS_FS_MEDIA_TYPE)mediaType
     );
 }

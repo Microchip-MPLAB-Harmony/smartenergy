@@ -35,8 +35,14 @@
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define DATALOG_MOUNT_NAME          SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0
-#define DATALOG_DEVICE_NAME         SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0
+#if SYS_FS_AUTOMOUNT_ENABLE
+    #define DATALOG_MOUNT_NAME      SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0
+    #define DATALOG_DEVICE_NAME     SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0
+#else
+    #define DATALOG_MOUNT_NAME      "/mnt/myDrive1"
+    #define DATALOG_DEVICE_NAME     "/dev/mtda1"
+    #define DATALOG_FS_TYPE         FAT
+#endif
 
 #define DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY   100
 #define DATALOG_TASK_DELAY_MS_BETWEEN_STATES            10
@@ -59,6 +65,9 @@
 
 APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 
+/* Work buffer used by FAT FS during Format */
+uint8_t CACHE_ALIGN work[SYS_FS_FAT_MAX_SS];
+
 /* Define a queue to signal the Datalog Tasks to store data */
 QueueHandle_t appDatalogQueueID = NULL;
 
@@ -77,6 +86,7 @@ static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "calibration", "
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
+#if SYS_FS_AUTOMOUNT_ENABLE
 static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, uintptr_t context)
 {
     switch(event)
@@ -122,6 +132,7 @@ static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, u
             break;
     }
 }
+#endif
 
 static void APP_DATALOG_GetFileNameByDate(APP_DATALOG_USER userId, APP_DATALOG_DATE *date, char *fileName)
 {
@@ -258,12 +269,18 @@ void APP_DATALOG_ClearData(APP_DATALOG_USER userId)
 
 void APP_DATALOG_Initialize ( void )
 {
-    // Place the App state machine in its initial state.
+    /* Configure MATRIX to provide access to QSPI in mem mode for full range (2MB) */
+    MATRIX1_REGS->MATRIX_PRTSR[0] = 9;
+    
+    /* Initialize the app state to wait for media attach. */
+#if SYS_FS_AUTOMOUNT_ENABLE
     app_datalogData.state = APP_DATALOG_STATE_MOUNT_WAIT;
 
-    // Set the handling function of the File System
     SYS_FS_EventHandlerSet(APP_DATALOG_SysFSEventHandler,(uintptr_t)NULL);
-
+#else
+    app_datalogData.state = APP_DATALOG_STATE_MOUNT_DISK;
+#endif
+    
     // Create a queue capable of containing 10 queue data elements.
     appDatalogQueueID = xQueueCreate(10, sizeof(APP_DATALOG_QUEUE_DATA));
 
@@ -288,6 +305,7 @@ void APP_DATALOG_Tasks(void)
     // Check the application's current state.
     switch (app_datalogData.state)
     {
+#if SYS_FS_AUTOMOUNT_ENABLE
         case APP_DATALOG_STATE_MOUNT_WAIT:
         {
             if (app_datalogData.diskFormatRequired == true)
@@ -306,6 +324,52 @@ void APP_DATALOG_Tasks(void)
 
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY / portTICK_PERIOD_MS);
+
+            break;
+        }
+#else
+        case APP_DATALOG_STATE_MOUNT_DISK:
+        {
+            /* Mount the disk */
+            if(SYS_FS_Mount(DATALOG_DEVICE_NAME, DATALOG_MOUNT_NAME, DATALOG_FS_TYPE, 0, NULL) != 0)
+            {
+                /* The disk could not be mounted. Try mounting again until
+                 * the operation succeeds. */
+                app_datalogData.state = APP_DATALOG_STATE_MOUNT_DISK;
+            }
+            else
+            {
+                /* Check If Mount was successful with no file system on media */
+                if (SYS_FS_Error() == SYS_FS_ERROR_NO_FILESYSTEM)
+                {
+                    /* Format the disk. */
+                    app_datalogData.state = APP_DATALOG_STATE_FORMAT_DISK;
+                }
+                else
+                {
+                    app_datalogData.state = APP_DATALOG_STATE_CHECK_DIRECTORIES;
+                }
+            }
+
+            break;
+        }
+#endif
+
+        case APP_DATALOG_STATE_FORMAT_DISK:
+        {
+            app_datalogData.formatOpt.fmt = SYS_FS_FORMAT_FAT;
+            app_datalogData.formatOpt.au_size = 0;
+
+            if (SYS_FS_DriveFormat(DATALOG_MOUNT_NAME, &app_datalogData.formatOpt, (void *)work, SYS_FS_FAT_MAX_SS) != SYS_FS_RES_SUCCESS)
+            {
+                /* Format of the disk failed. */
+                app_datalogData.state = APP_DATALOG_STATE_ERROR;
+            }
+            else
+            {
+                /* Format succeeded. Check directories. */
+                app_datalogData.state = APP_DATALOG_STATE_CHECK_DIRECTORIES;
+            }
 
             break;
         }
@@ -336,14 +400,6 @@ void APP_DATALOG_Tasks(void)
 
             // Yield to other tasks
             vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-
-            break;
-        }
-
-        case APP_DATALOG_STATE_FORMAT_DISK:
-        {
-            SYS_CONSOLE_PRINT("APP_DATALOG_STATE_FORMAT_DISK!!!\r\n\r\n");
-            app_datalogData.state = APP_DATALOG_STATE_ERROR;
 
             break;
         }
