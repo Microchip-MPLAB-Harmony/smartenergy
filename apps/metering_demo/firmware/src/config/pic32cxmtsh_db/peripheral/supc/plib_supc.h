@@ -1,23 +1,23 @@
 /*******************************************************************************
-  SD Card (SPI) Driver Definitions Header File
+  Supply Controller (SUPC) Peripheral Library (PLIB)
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    drv_sdspi_definitions.h
+    plib_supc.h
 
   Summary:
-    SD Card (SPI) Driver Definitions Header File
+    Interface definition of the SUPC PLIB Header File
 
   Description:
-    This file provides implementation-specific definitions for the SD Card (SPI)
-    driver's system interface.
+    None
+
 *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -37,11 +37,11 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
+*******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef DRV_SDSPI_DEFINITIONS_H
-#define DRV_SDSPI_DEFINITIONS_H
+#ifndef PLIB_SUPC_H // Guards against multiple inclusion
+#define PLIB_SUPC_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -49,7 +49,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "system/ports/sys_ports.h"
+#include "device.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -65,55 +65,108 @@
 // *****************************************************************************
 // *****************************************************************************
 
-// *****************************************************************************
-/* SDSPI Driver Initialization Data
+typedef enum
+{
+    GPBR_REGS_0,
 
-  Summary:
-    Defines the data required to initialize the SDSPI driver
+    GPBR_REGS_1,
 
-  Description:
-    This data type defines the data required to initialize or the SDSPI driver.
+    GPBR_REGS_2,
 
-  Remarks:
-    None.
-*/
+    GPBR_REGS_3,
+
+    GPBR_REGS_4,
+
+    GPBR_REGS_5,
+
+    GPBR_REGS_6,
+
+    GPBR_REGS_7,
+
+    GPBR_REGS_8,
+
+    GPBR_REGS_9,
+
+    GPBR_REGS_10,
+
+    GPBR_REGS_11,
+
+    GPBR_REGS_12,
+
+    GPBR_REGS_13,
+
+    GPBR_REGS_14,
+
+    GPBR_REGS_15,
+
+    GPBR_REGS_16,
+
+    GPBR_REGS_17,
+
+    GPBR_REGS_18,
+
+    GPBR_REGS_19,
+
+    GPBR_REGS_20,
+
+    GPBR_REGS_21,
+
+    GPBR_REGS_22,
+
+    GPBR_REGS_23,
+
+} GPBR_REGS_INDEX;
+
+typedef enum
+{
+    WAITMODE_WKUP_RTT = PMC_FSMR_RTTAL_Msk,      // RTT
+
+    WAITMODE_WKUP_RTC = PMC_FSMR_RTCAL_Msk      // RTC
+
+} WAITMODE_WKUP_SOURCE;
+
+typedef enum
+{
+    WAITMODE_FLASH_STANDBY = PMC_FSMR_FLPM_FLASH_STANDBY,
+
+    WAITMODE_FLASH_DEEPSLEEP = PMC_FSMR_FLPM_FLASH_DEEP_POWERDOWN
+
+} WAITMODE_FLASH_STATE;
+
+typedef void (*SUPC_CALLBACK)(uint32_t supc_status, uintptr_t context);
 
 typedef struct
 {
-    /* SPI Driver Instance used by the SDSPI driver */
-    uint32_t                        spiDrvIndex;
+    SUPC_CALLBACK callback;
+    uintptr_t     context;
+} SUPC_OBJECT;
 
-    bool                            isFsEnabled;
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
-    /* Number of clients */
-    size_t                          numClients;
+void SUPC_Initialize(void);
 
-    /* Memory Pool for Client Objects */
-    uintptr_t                       clientObjPool;
+void SUPC_SleepModeEnter(void);
 
-    SYS_PORT_PIN                    chipSelectPin;
+void SUPC_WaitModeEnter(WAITMODE_FLASH_STATE flash_lpm, WAITMODE_WKUP_SOURCE source);
 
-    SYS_PORT_PIN                    writeProtectPin;
+void SUPC_BackupModeEnter(void);
 
-    uint32_t                        blockStartAddress;
+uint32_t SUPC_GPBRRead(GPBR_REGS_INDEX reg);
 
-    /* Speed at which SD card communication should happen */
-    uint32_t                        sdcardSpeedHz;
+void SUPC_GPBRWrite(GPBR_REGS_INDEX reg, uint32_t data);
 
-    uint32_t                        pollingIntervalMs;
+void SUPC_CallbackRegister(SUPC_CALLBACK callback, uintptr_t context);
 
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
 
-} DRV_SDSPI_INIT;
+    }
 
-
-//DOM-IGNORE-BEGIN
-#ifdef __cplusplus
-}
 #endif
-//DOM-IGNORE-END
+// DOM-IGNORE-END
 
-#endif // #ifndef DRV_SDSPI_DEFINITIONS_H
-
-/*******************************************************************************
- End of File
-*/
+#endif // PLIB_SUPC_H

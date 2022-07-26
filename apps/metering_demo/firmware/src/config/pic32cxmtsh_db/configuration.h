@@ -79,20 +79,6 @@ extern "C" {
 // Section: System Service Configuration
 // *****************************************************************************
 // *****************************************************************************
-/* TIME System Service Configuration Options */
-#define SYS_TIME_INDEX_0                            (0)
-#define SYS_TIME_MAX_TIMERS                         (5)
-#define SYS_TIME_HW_COUNTER_WIDTH                   (32)
-#define SYS_TIME_HW_COUNTER_PERIOD                  (4294967295U)
-#define SYS_TIME_HW_COUNTER_HALF_PERIOD             (SYS_TIME_HW_COUNTER_PERIOD>>1)
-#define SYS_TIME_CPU_CLOCK_FREQUENCY                (200000000)
-#define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES    (188)
-
-#define SYS_CONSOLE_INDEX_0                       0
-
-
-
-
 
 #define SYS_CMD_ENABLE
 #define SYS_CMD_DEVICE_MAX_INSTANCES       SYS_CONSOLE_DEVICE_MAX_INSTANCES
@@ -102,6 +88,15 @@ extern "C" {
 /* Command System Service RTOS Configurations*/
 #define SYS_CMD_RTOS_STACK_SIZE                512
 #define SYS_CMD_RTOS_TASK_PRIORITY             1
+
+/* TIME System Service Configuration Options */
+#define SYS_TIME_INDEX_0                            (0)
+#define SYS_TIME_MAX_TIMERS                         (5)
+#define SYS_TIME_HW_COUNTER_WIDTH                   (32)
+#define SYS_TIME_HW_COUNTER_PERIOD                  (4294967295U)
+#define SYS_TIME_HW_COUNTER_HALF_PERIOD             (SYS_TIME_HW_COUNTER_PERIOD>>1)
+#define SYS_TIME_CPU_CLOCK_FREQUENCY                (200000000)
+#define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES    (188)
 
 
 /* File System Service Configuration */
@@ -137,6 +132,11 @@ extern "C" {
 #define SYS_CONSOLE_PRINT_BUFFER_SIZE        		512
 
 
+#define SYS_CONSOLE_INDEX_0                       0
+
+
+
+
 
 
 // *****************************************************************************
@@ -144,23 +144,14 @@ extern "C" {
 // Section: Driver Configuration
 // *****************************************************************************
 // *****************************************************************************
-/* SDSPI Driver Instance 0 Configuration Options */
-#define DRV_SDSPI_INDEX_0                       0
-#define DRV_SDSPI_CLIENTS_NUMBER_IDX0           1
-#define DRV_SDSPI_CHIP_SELECT_PIN_IDX0          SYS_PORT_PIN_PC6
-#define DRV_SDSPI_SPEED_HZ_IDX0                 5000000
-#define DRV_SDSPI_POLLING_INTERVAL_MS_IDX0      1000
-
-
-
-/* SDSPI Driver Instance 0 RTOS Configurations*/
-#define DRV_SDSPI_STACK_SIZE_IDX0               256
-#define DRV_SDSPI_PRIORITY_IDX0                     1
-
 /* Memory Driver Global Configuration Options */
 #define DRV_MEMORY_INSTANCES_NUMBER          1
-/* SDSPI Driver Common Configuration Options */
-#define DRV_SDSPI_INSTANCES_NUMBER              1
+/* SST26 Driver Instance Configuration */
+#define DRV_SST26_INDEX                 0
+#define DRV_SST26_CLIENTS_NUMBER        1
+#define DRV_SST26_START_ADDRESS         0x0
+#define DRV_SST26_PAGE_SIZE             256
+#define DRV_SST26_ERASE_BUFFER_SIZE     4096
 
 
 /* Memory Driver Instance 0 Configuration */
@@ -177,20 +168,6 @@ extern "C" {
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
 /* Metrology Capture Buffer Size */
 #define DRV_METROLOGY_CAPTURE_BUF_SIZE        32000
-
-/* SPI Driver Common Configuration Options */
-#define DRV_SPI_INSTANCES_NUMBER              1
-
-/* SPI Driver Instance 0 Configuration Options */
-#define DRV_SPI_INDEX_0                       0
-#define DRV_SPI_CLIENTS_NUMBER_IDX0           1
-
-/* SST26 Driver Instance Configuration */
-#define DRV_SST26_INDEX                 0
-#define DRV_SST26_CLIENTS_NUMBER        1
-#define DRV_SST26_START_ADDRESS         0x0
-#define DRV_SST26_PAGE_SIZE             256
-#define DRV_SST26_ERASE_BUFFER_SIZE     4096
 
 
 

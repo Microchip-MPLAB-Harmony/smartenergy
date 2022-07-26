@@ -59,14 +59,15 @@
 // Section: RTOS "Tasks" Routine
 // *****************************************************************************
 // *****************************************************************************
-void _DRV_SDSPI_0_Tasks(  void *pvParameters  )
+void _SYS_CMD_Tasks(  void *pvParameters  )
 {
     while(1)
     {
-        DRV_SDSPI_Tasks(sysObj.drvSDSPI0);
+        SYS_CMD_Tasks();
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
+
 
 void _DRV_MEMORY_0_Tasks(  void *pvParameters  )
 {
@@ -76,6 +77,17 @@ void _DRV_MEMORY_0_Tasks(  void *pvParameters  )
         vTaskDelay(DRV_MEMORY_RTOS_DELAY_IDX0 / portTICK_PERIOD_MS);
     }
 }
+
+
+void _SYS_FS_Tasks(  void *pvParameters  )
+{
+    while(1)
+    {
+        SYS_FS_Tasks();
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+}
+
 
 /* Handle for the APP_METROLOGY_Tasks. */
 TaskHandle_t xAPP_METROLOGY_Tasks;
@@ -139,27 +151,6 @@ void _APP_EVENTS_Tasks(  void *pvParameters  )
     }
 }
 
-void _SYS_CMD_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        SYS_CMD_Tasks();
-        vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
-}
-
-
-
-void _SYS_FS_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        SYS_FS_Tasks();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }
-}
-
-
 
 
 
@@ -180,7 +171,6 @@ void SYS_Tasks ( void )
 {
     /* Maintain system services */
     
-
     xTaskCreate( _SYS_CMD_Tasks,
         "SYS_CMD_TASKS",
         SYS_CMD_RTOS_STACK_SIZE,
@@ -201,16 +191,9 @@ void SYS_Tasks ( void )
 
 
 
-    /* Maintain Device Drivers */
-        xTaskCreate( _DRV_SDSPI_0_Tasks,
-        "DRV_SD_0_TASKS",
-        DRV_SDSPI_STACK_SIZE_IDX0,
-        (void*)NULL,
-        DRV_SDSPI_PRIORITY_IDX0,
-        (TaskHandle_t*)NULL
-    );
 
-    xTaskCreate( _DRV_MEMORY_0_Tasks,
+    /* Maintain Device Drivers */
+        xTaskCreate( _DRV_MEMORY_0_Tasks,
         "DRV_MEM_0_TASKS",
         DRV_MEMORY_STACK_SIZE_IDX0,
         (void*)NULL,

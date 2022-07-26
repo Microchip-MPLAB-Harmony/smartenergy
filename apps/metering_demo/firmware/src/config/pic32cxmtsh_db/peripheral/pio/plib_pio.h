@@ -147,24 +147,6 @@
 #define SWITCH_SCRDOWN_PIN                  PIO_PIN_PA15
 #define SWITCH_SCRDOWN_InterruptEnable()   (PIOA_REGS->PIO_IER = (1<<15))
 #define SWITCH_SCRDOWN_InterruptDisable()  (PIOA_REGS->PIO_IDR = (1<<15))
-
-/*** Macros for SDCARD_CS pin ***/
-#define SDCARD_CS_Set()               (PIOC_REGS->PIO_SODR = (1<<6))
-#define SDCARD_CS_Clear()             (PIOC_REGS->PIO_CODR = (1<<6))
-#define SDCARD_CS_Toggle()            do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<6); \
-                                            PIOC_REGS->PIO_ODSR ^= (1<<6);\
-                                        } while (0)
-#define SDCARD_CS_OutputEnable()      do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<6); \
-                                            PIOC_REGS->PIO_CFGR |=(1 << PIO_CFGR_DIR_Pos);\
-                                        }while(0)
-#define SDCARD_CS_InputEnable()       do { \
-                                            PIOC_REGS->PIO_MSKR = (1<<6); \
-                                            PIOC_REGS->PIO_CFGR &= ~(1 << PIO_CFGR_DIR_Pos);\
-                                        } while (0)
-#define SDCARD_CS_Get()               ((PIOC_REGS->PIO_PDSR >> 6) & 0x1)
-#define SDCARD_CS_PIN                  PIO_PIN_PC6
 // *****************************************************************************
 /* PIO Ports
 

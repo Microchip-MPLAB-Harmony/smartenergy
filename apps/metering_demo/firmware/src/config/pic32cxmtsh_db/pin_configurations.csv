@@ -73,10 +73,10 @@ Pin Number,Pin ID,Custom Name,Function,Direction,Latch,Open Drain,PIO Interrupt,
 109,PC2,,Available,In,,,,,,,
 110,PC3,,Available,In,,,,,,,
 112,PC5,,Available,In,,,,,,,
-113,PC6,SDCARD_CS,GPIO,Out,High,No,Disabled,No,No,Glitch Filter,0x0
-114,PC7,,FLEXCOM5_IO2,n/a,n/a,No,Disabled,No,No,Glitch Filter,0x0
-115,PC8,,FLEXCOM5_IO1,n/a,n/a,No,Disabled,No,No,Glitch Filter,0x0
-116,PC9,,FLEXCOM5_IO0,n/a,n/a,No,Disabled,No,No,Glitch Filter,0x0
+113,PC6,,Available,In,,,,,,,
+114,PC7,,Available,In,,,,,,,
+115,PC8,,Available,In,,,,,,,
+116,PC9,,Available,In,,,,,,,
 118,PC10,,QSPI_QIO3,n/a,n/a,No,Disabled,Yes,No,Glitch Filter,0x0
 119,PC11,,QSPI_QIO2,n/a,n/a,No,Disabled,No,No,Glitch Filter,0x0
 121,PC12,,QSPI_QIO1,n/a,n/a,No,Disabled,No,No,Glitch Filter,0x0

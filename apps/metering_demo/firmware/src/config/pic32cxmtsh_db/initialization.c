@@ -67,37 +67,20 @@
 // Section: Driver Initialization Data
 // *****************************************************************************
 // *****************************************************************************
-// <editor-fold defaultstate="collapsed" desc="DRV_SDSPI Instance 0 Initialization Data">
+// <editor-fold defaultstate="collapsed" desc="DRV_SST26 Initialization Data">
 
-/* SDSPI Client Objects Pool */
-static DRV_SDSPI_CLIENT_OBJ drvSDSPI0ClientObjPool[DRV_SDSPI_CLIENTS_NUMBER_IDX0];
-
-
-
-/* SDSPI Driver Initialization Data */
-const DRV_SDSPI_INIT drvSDSPI0InitData =
-{
-    .spiDrvIndex            = 0,
-
-    /* SDSPI Number of clients */
-    .numClients             = DRV_SDSPI_CLIENTS_NUMBER_IDX0,
-
-    /* SDSPI Client Objects Pool */
-    .clientObjPool          = (uintptr_t)&drvSDSPI0ClientObjPool[0],
-
-
-    .chipSelectPin          = DRV_SDSPI_CHIP_SELECT_PIN_IDX0,
-
-    .sdcardSpeedHz          = DRV_SDSPI_SPEED_HZ_IDX0,
-
-    .pollingIntervalMs      = DRV_SDSPI_POLLING_INTERVAL_MS_IDX0,
-
-    .writeProtectPin        = SYS_PORT_PIN_NONE,
-
-    .isFsEnabled            = false,
-
+const DRV_SST26_PLIB_INTERFACE drvSST26PlibAPI = {
+    .CommandWrite   = QSPI_CommandWrite,
+    .RegisterRead   = QSPI_RegisterRead,
+    .RegisterWrite  = QSPI_RegisterWrite,
+    .MemoryRead     = QSPI_MemoryRead,
+    .MemoryWrite    = QSPI_MemoryWrite
 };
 
+const DRV_SST26_INIT drvSST26InitData =
+{
+    .sst26Plib      = &drvSST26PlibAPI,
+};
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="DRV_MEMORY Instance 0 Initialization Data">
@@ -155,69 +138,6 @@ DRV_METROLOGY_INIT drvMetrologyInitData = {
 };
 
 // </editor-fold>
-// <editor-fold defaultstate="collapsed" desc="DRV_SPI Instance 0 Initialization Data">
-
-/* SPI Client Objects Pool */
-static DRV_SPI_CLIENT_OBJ drvSPI0ClientObjPool[DRV_SPI_CLIENTS_NUMBER_IDX0];
-
-/* SPI PLIB Interface Initialization */
-const DRV_SPI_PLIB_INTERFACE drvSPI0PlibAPI = {
-
-    /* SPI PLIB Setup */
-    .setup = (DRV_SPI_PLIB_SETUP)FLEXCOM5_SPI_TransferSetup,
-
-    /* SPI PLIB WriteRead function */
-    .writeRead = (DRV_SPI_PLIB_WRITE_READ)FLEXCOM5_SPI_WriteRead,
-
-    /* SPI PLIB Transfer Status function */
-    .isTransmitterBusy = (DRV_SPI_PLIB_TRANSMITTER_IS_BUSY)FLEXCOM5_SPI_IsTransmitterBusy,
-
-    /* SPI PLIB Callback Register */
-    .callbackRegister = (DRV_SPI_PLIB_CALLBACK_REGISTER)FLEXCOM5_SPI_CallbackRegister,
-};
-
-const uint32_t drvSPI0remapDataBits[]= { 0x0, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80, 0xFFFFFFFF };
-const uint32_t drvSPI0remapClockPolarity[] = { 0x0, 0x1 };
-const uint32_t drvSPI0remapClockPhase[] = { 0x0, 0x2 };
-
-/* SPI Driver Initialization Data */
-const DRV_SPI_INIT drvSPI0InitData =
-{
-    /* SPI PLIB API */
-    .spiPlib = &drvSPI0PlibAPI,
-
-    .remapDataBits = drvSPI0remapDataBits,
-
-    .remapClockPolarity = drvSPI0remapClockPolarity,
-
-    .remapClockPhase = drvSPI0remapClockPhase,
-
-    /* SPI Number of clients */
-    .numClients = DRV_SPI_CLIENTS_NUMBER_IDX0,
-
-    /* SPI Client Objects Pool */
-    .clientObjPool = (uintptr_t)&drvSPI0ClientObjPool[0],
-
-
-};
-
-// </editor-fold>
-// <editor-fold defaultstate="collapsed" desc="DRV_SST26 Initialization Data">
-
-const DRV_SST26_PLIB_INTERFACE drvSST26PlibAPI = {
-    .CommandWrite   = QSPI_CommandWrite,
-    .RegisterRead   = QSPI_RegisterRead,
-    .RegisterWrite  = QSPI_RegisterWrite,
-    .MemoryRead     = QSPI_MemoryRead,
-    .MemoryWrite    = QSPI_MemoryWrite
-};
-
-const DRV_SST26_INIT drvSST26InitData =
-{
-    .sst26Plib      = &drvSST26PlibAPI,
-};
-// </editor-fold>
-
 
 
 // *****************************************************************************
@@ -299,6 +219,14 @@ const SYS_FS_REGISTRATION_TABLE sysFSInit [ SYS_FS_MAX_FILE_SYSTEM_TYPE ] =
 // Section: System Initialization
 // *****************************************************************************
 // *****************************************************************************
+
+const SYS_CMD_INIT sysCmdInit =
+{
+    .moduleInit = {0},
+    .consoleCmdIOParam = SYS_CMD_SINGLE_CHARACTER_READ_CONSOLE_IO_PARAM,
+	.consoleIndex = 0,
+};
+
 // <editor-fold defaultstate="collapsed" desc="SYS_TIME Initialization Data">
 
 const SYS_TIME_PLIB_INTERFACE sysTimePlibAPI = {
@@ -351,14 +279,6 @@ const SYS_CONSOLE_INIT sysConsole0Init =
 // </editor-fold>
 
 
-const SYS_CMD_INIT sysCmdInit =
-{
-    .moduleInit = {0},
-    .consoleCmdIOParam = SYS_CMD_SINGLE_CHARACTER_READ_CONSOLE_IO_PARAM,
-	.consoleIndex = 0,
-};
-
-
 
 
 // *****************************************************************************
@@ -398,8 +318,6 @@ void SYS_Initialize ( void* data )
 
     SUPC_Initialize();
 
-    FLEXCOM5_SPI_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
@@ -408,26 +326,21 @@ void SYS_Initialize ( void* data )
 
     FLEXCOM0_USART_Initialize();
 
-	BSP_Initialize();
     QSPI_Initialize();
+	BSP_Initialize();
 
-    /* Initialize SDSPI0 Driver Instance */
-    sysObj.drvSDSPI0 = DRV_SDSPI_Initialize(DRV_SDSPI_INDEX_0, (SYS_MODULE_INIT *)&drvSDSPI0InitData);
+    sysObj.drvSST26 = DRV_SST26_Initialize((SYS_MODULE_INDEX)DRV_SST26_INDEX, (SYS_MODULE_INIT *)&drvSST26InitData);
 
     sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
 
     /* Initialize Metrology Driver Instance */
     DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
     
-    /* Initialize SPI0 Driver Instance */
-    sysObj.drvSPI0 = DRV_SPI_Initialize(DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPI0InitData);
-    sysObj.drvSST26 = DRV_SST26_Initialize((SYS_MODULE_INDEX)DRV_SST26_INDEX, (SYS_MODULE_INIT *)&drvSST26InitData);
 
+    SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
     sysObj.sysConsole0 = SYS_CONSOLE_Initialize(SYS_CONSOLE_INDEX_0, (SYS_MODULE_INIT *)&sysConsole0Init);
-
-    SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
 
     /*** File System Service Initialization Code ***/

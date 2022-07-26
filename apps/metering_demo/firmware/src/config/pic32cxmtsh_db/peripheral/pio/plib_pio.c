@@ -106,23 +106,13 @@ void PIO_Initialize ( void )
 
 
  /* Port C Peripheral function A configuration */
-   PIOC_REGS->PIO_MSKR = 0xff83U;
+   PIOC_REGS->PIO_MSKR = 0xfc03U;
    PIOC_REGS->PIO_CFGR = 0x1U;
-
- /* Port C Peripheral function GPIO configuration */
-   PIOC_REGS->PIO_MSKR = 0x40U;
-   PIOC_REGS->PIO_CFGR = 0x0U;
-
- /* Port C Pin 6 configuration */
-   PIOC_REGS->PIO_MSKR = 0x40U;
-   PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port C Pin 10 configuration */
    PIOC_REGS->PIO_MSKR = 0x400U;
    PIOC_REGS->PIO_CFGR = (PIOC_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
 
- /* Port C Latch configuration */
-   PIOC_REGS->PIO_SODR = 0x40U;
 
 
 

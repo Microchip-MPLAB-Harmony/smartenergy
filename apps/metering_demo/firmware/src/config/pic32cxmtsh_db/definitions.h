@@ -48,25 +48,6 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "driver/memory/drv_memory.h"
-#include "peripheral/supc/plib_supc.h"
-#include "peripheral/flexcom/spi/master/plib_flexcom5_spi_master.h"
-#include "peripheral/tc/plib_tc0.h"
-#include "peripheral/rtc/plib_rtc.h"
-#include "driver/sdspi/drv_sdspi.h"
-#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
-#include "system/time/sys_time.h"
-#include "bsp/bsp.h"
-#include "driver/metrology/drv_metrology_definitions.h"
-#include "driver/metrology/drv_metrology.h"
-#include "driver/metrology/drv_metrology_regs.h"
-#include "driver/spi/drv_spi.h"
-#include "system/int/sys_int.h"
-#include "system/ports/sys_ports.h"
-#include "system/cache/sys_cache.h"
-#include "system/reset/sys_reset.h"
-#include "osal/osal.h"
-#include "system/debug/sys_debug.h"
 #include "system/command/sys_command.h"
 #include "peripheral/dwdt/plib_dwdt.h"
 #include "peripheral/clk/plib_clk.h"
@@ -74,10 +55,17 @@
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/cmcc/plib_cmcc.h"
 #include "peripheral/pio/plib_pio.h"
+#include "driver/memory/drv_memory.h"
+#include "peripheral/supc/plib_supc.h"
+#include "peripheral/tc/plib_tc0.h"
+#include "peripheral/rtc/plib_rtc.h"
 #include "driver/sst26/drv_sst26.h"
+#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "peripheral/sefc/plib_sefc0.h"
 #include "peripheral/sefc/plib_sefc1.h"
+#include "system/time/sys_time.h"
 #include "peripheral/qspi/plib_qspi.h"
+#include "bsp/bsp.h"
 #include "system/fs/sys_fs.h"
 #include "system/fs/sys_fs_media_manager.h"
 #include "system/fs/sys_fs_fat_interface.h"
@@ -86,8 +74,16 @@
 #include "system/fs/fat_fs/hardware_access/diskio.h"
 #include "system/console/sys_console.h"
 #include "system/console/src/sys_console_uart_definitions.h"
+#include "driver/metrology/drv_metrology_definitions.h"
+#include "driver/metrology/drv_metrology.h"
+#include "driver/metrology/drv_metrology_regs.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "system/int/sys_int.h"
+#include "system/cache/sys_cache.h"
+#include "system/reset/sys_reset.h"
+#include "osal/osal.h"
+#include "system/debug/sys_debug.h"
 #include "app_metrology.h"
 #include "app_console.h"
 #include "app_datalog.h"
@@ -218,17 +214,11 @@ Remarks:
 
 typedef struct
 {
-    /* SDSPI0 Driver Object */
-    SYS_MODULE_OBJ drvSDSPI0;
-
+    SYS_MODULE_OBJ  drvSST26;
     SYS_MODULE_OBJ  sysTime;
     SYS_MODULE_OBJ  drvMemory0;
     SYS_MODULE_OBJ  sysConsole0;
 
-    /* SPI0 Driver Object */
-    SYS_MODULE_OBJ drvSPI0;
-
-    SYS_MODULE_OBJ  drvSST26;
 
 } SYSTEM_OBJECTS;
 
