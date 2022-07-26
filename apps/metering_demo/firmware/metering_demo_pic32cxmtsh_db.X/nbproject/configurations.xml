@@ -28,24 +28,11 @@
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_definitions.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="sdspi" displayName="sdspi" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_local.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_driver_interface.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/drv_sdspi_definitions.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/drv_sdspi.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="spi" displayName="spi" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/spi/drv_spi.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/spi/src/drv_spi_local.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/spi/drv_spi_definitions.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="sst26" displayName="sst26" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/src/drv_sst26_local.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/drv_sst26.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/drv_sst26_definitions.h</itemPath>
             </logicalFolder>
-            <itemPath>../src/config/pic32cxmtsh_db/driver/driver_common.h</itemPath>
-            <itemPath>../src/config/pic32cxmtsh_db/driver/driver.h</itemPath>
           </logicalFolder>
           <logicalFolder name="osal" displayName="osal" projectFiles="true">
             <itemPath>../src/config/pic32cxmtsh_db/osal/osal_freertos.h</itemPath>
@@ -63,12 +50,6 @@
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/dwdt/plib_dwdt.h</itemPath>
             </logicalFolder>
             <logicalFolder name="flexcom" displayName="flexcom" projectFiles="true">
-              <logicalFolder name="spi" displayName="spi" projectFiles="true">
-                <logicalFolder name="master" displayName="master" projectFiles="true">
-                  <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/spi/master/plib_flexcom5_spi_master.h</itemPath>
-                  <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/spi/master/plib_flexcom_spi_master_common.h</itemPath>
-                </logicalFolder>
-              </logicalFolder>
               <logicalFolder name="usart" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/usart/plib_flexcom_usart_local.h</itemPath>
                 <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/usart/plib_flexcom0_usart.h</itemPath>
@@ -142,10 +123,6 @@
               <itemPath>../src/config/pic32cxmtsh_db/system/int/sys_int.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/system/int/sys_int_mapping.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="ports" displayName="ports" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/system/ports/sys_ports_mapping.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/system/ports/sys_ports.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="reset" displayName="reset" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/system/reset/sys_reset.h</itemPath>
             </logicalFolder>
@@ -157,7 +134,6 @@
             <itemPath>../src/config/pic32cxmtsh_db/system/system_common.h</itemPath>
             <itemPath>../src/config/pic32cxmtsh_db/system/system_module.h</itemPath>
             <itemPath>../src/config/pic32cxmtsh_db/system/system.h</itemPath>
-            <itemPath>../src/config/pic32cxmtsh_db/system/system_media.h</itemPath>
           </logicalFolder>
           <itemPath>../src/config/pic32cxmtsh_db/user.h</itemPath>
           <itemPath>../src/config/pic32cxmtsh_db/FreeRTOSConfig.h</itemPath>
@@ -364,13 +340,6 @@
               </logicalFolder>
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="sdspi" displayName="sdspi" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi_driver_interface.c</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/sdspi/src/drv_sdspi.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="spi" displayName="spi" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/spi/src/drv_spi.c</itemPath>
-            </logicalFolder>
             <logicalFolder name="sst26" displayName="sst26" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/src/drv_sst26.c</itemPath>
             </logicalFolder>
@@ -389,11 +358,6 @@
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/dwdt/plib_dwdt.c</itemPath>
             </logicalFolder>
             <logicalFolder name="flexcom" displayName="flexcom" projectFiles="true">
-              <logicalFolder name="spi" displayName="spi" projectFiles="true">
-                <logicalFolder name="master" displayName="master" projectFiles="true">
-                  <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/spi/master/plib_flexcom5_spi_master.c</itemPath>
-                </logicalFolder>
-              </logicalFolder>
               <logicalFolder name="usart" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/pic32cxmtsh_db/peripheral/flexcom/usart/plib_flexcom0_usart.c</itemPath>
               </logicalFolder>

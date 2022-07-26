@@ -7831,10 +7831,6 @@
          <hash>eabe00adfe80de32df0b75244c230f3a04dbc27cb29b1d418cef549e3e7a9ec2</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\ports\sys_ports_mapping.h</file>
-         <hash>8b879741803b1927b0708cfc1cdd7ae6c08b0b4f06708429691d673990cf5920</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_gcc.h</file>
          <hash>3d4e265d0aa42f888385ccf073666e6ebb5ec9f834760b9da27c474e177f708d</hash>
       </entry>
@@ -7895,10 +7891,6 @@
          <hash>accf63aa5c072a3e82a92eb72536ee727fd2b6e1acb1fb8f592dc3d074e4f69b</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\spi\master\plib_flexcom5_spi_master.c</file>
-         <hash>aa0d3074afa4d771818a6720121ec2b7a5f21275af0220cf95e197213918fa8c</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\ipc.h</file>
          <hash>779bcc072daa2c8f6d717f7a75f72fbe8d7c36134c27799215a770236d3ad841</hash>
       </entry>
@@ -7915,12 +7907,12 @@
          <hash>18866d42c47128b9b81cd26e1ddb397853cd1fc52b6e24e8fe6f6ecd60df4f83</hash>
       </entry>
       <entry>
-         <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\pwm.h</file>
-         <hash>7f800f78217e10300fcc352ae59267c49d39c6ad004312d9bbddfcc4ac151d88</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
          <hash>bbc6074719c421b07d4540ee6e745ae4145239f698780819c479e13bfdd9ddd5</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\pwm.h</file>
+         <hash>7f800f78217e10300fcc352ae59267c49d39c6ad004312d9bbddfcc4ac151d88</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\adc.h</file>
@@ -7947,12 +7939,8 @@
          <hash>c8b60cde801240196435f7960b7b919b32915cb09942019468bd4b8e9c7de827</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\spi\drv_spi.h</file>
-         <hash>aed15b9971d20ddad5624af0d417eccb3d9acf31326b0d9ededffabb34c3ed15</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\nvic\plib_nvic.c</file>
-         <hash>38eedae20674dc176cda79f6fb24a014038443a27f01d1fde1c0ddba0753e488</hash>
+         <hash>aacad34954d8cbc259da54516ff76df37cdd63db53ce995ce7eeb4ab93ce2382</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\sha.h</file>
@@ -7996,7 +7984,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.c</file>
-         <hash>67427d52ef5a5746409ec391c3e2ca17760a0c01c8d4035dd900799a507cfe23</hash>
+         <hash>89e996afabe838595a50d125737da73fa58c021e3f6707fe37f171930c7cbb72</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\mpu_armv7.h</file>
@@ -8044,11 +8032,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>63d377e03405d93190d76a802cd32fe6b86fd22ea895d5082e57a82f523e7062</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi.c</file>
-         <hash>7ccee744991ac65fea702ac9d5b16a4fc47b794d9e5bb8d6d16acf406d68cda5</hash>
+         <hash>58541a7d312ac490c1a402bea2d8063ebff3369e21d8d7d3ac4006b1195945ff</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8071,20 +8055,16 @@
          <hash>23e798871ce6f7b4b0e0dbd5cb2cad7b43bd2dd1f38152f28d14f5a5b7a2938b</hash>
       </entry>
       <entry>
-         <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\tc0.h</file>
-         <hash>fbb6b1fa8a151a76806d66d81d012fa04ec33fa0e43be49167bbd8fff695625b</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\libc_syscalls.c</file>
          <hash>88bb2e34c939601b5b7ad076556e3ee0fcedf388436b8cddb6d6fd3e9d07472f</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\startup_xc32.c</file>
-         <hash>8ca111a0fac411235ebf1536ded8523fd94784d6a615df7666acff1e38b79675</hash>
+         <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\tc0.h</file>
+         <hash>fbb6b1fa8a151a76806d66d81d012fa04ec33fa0e43be49167bbd8fff695625b</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\drv_sdspi_definitions.h</file>
-         <hash>f950fa5924efad39f834fdafd091198e2ef18a69672c78786b77cc9e3ac670a1</hash>
+         <file>..\src\config\pic32cxmtsh_db\startup_xc32.c</file>
+         <hash>8ca111a0fac411235ebf1536ded8523fd94784d6a615df7666acff1e38b79675</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int_mapping.h</file>
@@ -8152,7 +8132,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>022a748053a9c2f6e78fa6ba28f85fcc317e4de4a7fe07aa0acf25191cd23752</hash>
+         <hash>dfd9128b55d85721ab07cd0847f6bba8c7b70b39558d4bf254b90e1c9724dd31</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -8183,12 +8163,12 @@
          <hash>853ebaf6f3eb3ef925004bb6fde3400200de79d1747d97eee4e9a6e814606f69</hash>
       </entry>
       <entry>
-         <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sfrbu.h</file>
-         <hash>62be9e8a513562319a03ce04be6226e1f1943a0430174d83bdb20e3208d6e15c</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\qspi\plib_qspi.c</file>
          <hash>86cd43599514f15665682d754ef404e4ef7ffe9f09c91608a52e44f2019385dd</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sfrbu.h</file>
+         <hash>62be9e8a513562319a03ce04be6226e1f1943a0430174d83bdb20e3208d6e15c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\chipid.h</file>
@@ -8209,14 +8189,6 @@
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\portable\MemMang\heap_1.c</file>
          <hash>6d8eb84e5171bce4d5cde80abc575ebd7d81ac007b7733f34d5032bac93f1748</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi.c</file>
-         <hash>07f2e12dfb5e9c7b388526cdfea15f8223091dc1ff33eeb28aad19c17dcc133e</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\system_media.h</file>
-         <hash>be592b4eb9eb4cc8f25cf734fc15b088de091d2f8051b0fcba091c1b6194df5f</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\flexcom2.h</file>
@@ -8265,10 +8237,6 @@
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\pio0.h</file>
          <hash>d4399caf091af1ea55ea4fcf14ff4217c45826185dd25975128ee984fc9871c2</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\driver.h</file>
-         <hash>042fdd289460dbddb8e805850af7e3ac9aea95468e37414959781ebc5b2f454d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\flexcom.h</file>
@@ -8328,11 +8296,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\pin_configurations.csv</file>
-         <hash>fc2e8be40aa88ef43c71e99b01012a8b53915cda1119fc70a0a672a2bed8f0b8</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\drv_sdspi.h</file>
-         <hash>b33d6b822b44e0b83cf616e72cf454d6c721ec2cc1704d681789ea2eea95e63c</hash>
+         <hash>5f781c4bd1c1195c1cc7445b55b57ea2d44658801ceb31c8a18df292e36beb09</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ffunicode.c</file>
@@ -8359,20 +8323,12 @@
          <hash>77f31f5f25d1e6c70d0bb72d8b2093055fdf1d3b9cab8af6bc8b07edd87e78a6</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi_local.h</file>
-         <hash>32cd16737150167b4be9a623fcbf3ec33472128e3b1515258e1caa0277e43db8</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
          <hash>ef0ff8891004196fffe3f30dee7cfd045d9fd50099dcec8ba5a4382daca3be8d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cmcc0.h</file>
          <hash>cbf696b23b1d7345701059df74dccad1ae6328e032d9e220e20cfdf3ff7f7e6f</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi_driver_interface.c</file>
-         <hash>c65a0ad119e77ca704f3d891d40075939d5842514e4e15f2a999aeb146ce0fca</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cachel1_armv7.h</file>
@@ -8424,23 +8380,19 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>
-         <hash>c353770bf7043fbfce3997eaf3dda85700f6e83369f810cca1b5e475d78d662c</hash>
+         <hash>66909741445e19f362b717aa4f1bcaf5d7b4b71f691457b88f85ada1d32394d3</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.h</file>
-         <hash>00880199c393cccde1e445ece78c4bb737ba5fc08dacff5ad0a0e174b21bb51a</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\sdspi\src\drv_sdspi_driver_interface.h</file>
-         <hash>5739e72971057ef33ab0ce3ce6ed9d1264952cb05b2f64faaa6b1e73d1c95884</hash>
-      </entry>
-      <entry>
-         <file>..\src\app_energy.c</file>
-         <hash>188ff113c58ece1bd754e30ed5ac3aa971fd201397f1209fe5ffcdab6b7b3859</hash>
+         <hash>7fcd8a85930720acc1863da1fc46f67dcb4e3e780f10e8bb3c59b621ec3bc885</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\croutine.c</file>
          <hash>e31cd1c9c280c919a92edc28885e9bebce589d4cfab71cefab832a73683200fb</hash>
+      </entry>
+      <entry>
+         <file>..\src\app_energy.c</file>
+         <hash>188ff113c58ece1bd754e30ed5ac3aa971fd201397f1209fe5ffcdab6b7b3859</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\sefc.h</file>
@@ -8483,16 +8435,8 @@
          <hash>605ce2f3fff89102d460d24abd72e87375d7442e1f1967aa855ba4ce5f092545</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\driver_common.h</file>
-         <hash>5217965f6720b4fdf717e99ce9df4f2c9fbd82bbbc9655847166d1eefa806fee</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
          <hash>38044dc8c8f0823b67231b9fca1d061bd89748868440da0764bc33481c23196a</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\spi\src\drv_spi_local.h</file>
-         <hash>0464accf06b767d194c025cbff7b3654091c081f1d8da13c8b1361586bbf3d1f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc0.c</file>
@@ -8500,7 +8444,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\tasks.c</file>
-         <hash>6745ab99c791cf1e018da400ec7efc5c240812bff664ba5a19304670d9ff2b83</hash>
+         <hash>a01b9db5aee45042a78f8e4c3c30e97ee2ba120dad934beb54dbf3f9cff5f6c6</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\tc.h</file>
@@ -8535,12 +8479,12 @@
          <hash>a18775dda1e54d0f903dfa9b7ff1685effd50e7918e64689bda1d1d53c43c6b3</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\system.h</file>
-         <hash>2b75f8e370e5cb2c54f70da7351ee149f0d5a7673e700f39b373099716b31b55</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\sys_fs_media_manager.h</file>
          <hash>29bda64831783de33b10c3841e1eb703dc9f5b04287c1e26af8f3b75b7197b39</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\system\system.h</file>
+         <hash>2b75f8e370e5cb2c54f70da7351ee149f0d5a7673e700f39b373099716b31b55</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\emafe.h</file>
@@ -8603,20 +8547,12 @@
          <hash>d3c233d419e6304bfacbafc18cc68c0f5c26e365f23b20ea40ccfac458f664c5</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\ports\sys_ports.h</file>
-         <hash>39bd2e43ff276e27710db212b74b2f96ca4643ea658c11b1d50b7918e0deac01</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\core_cm4.h</file>
          <hash>d59a9e3ed4cf43a3c74a2e48f344d41be2b6363ef9394ea2c551052fe553a6af</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\pio.h</file>
          <hash>2e29c247d4cca503be04a26cfacb6cf4dd04b80de5b4875171f69262f377e727</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\spi\master\plib_flexcom_spi_master_common.h</file>
-         <hash>d2a3cbc941186fd3e6090cb9bcc4ae5c24e16a64415a8d02d6e892960a9eee6c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\trng.h</file>
@@ -8639,24 +8575,24 @@
          <hash>f6ffa260b5a6f1e0134c8845c405d0e21dcdc5fd02e95dcc7a4a5fccf1cb23ae</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\reset\sys_reset.c</file>
-         <hash>e671888007ee4e0355beae1e361ff894dc2bc4fa0a4614d6975b18c5ce057181</hash>
+         <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.h</file>
+         <hash>95cfb4b4d38f70e14f6ce2fead64e84ad2ff7824a567636876a6b1dc5c43f8a3</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.h</file>
-         <hash>348748aa9a0c68aa9c394c735cb94f9011ad9301d68120bd250e76104204af44</hash>
+         <file>..\src\config\pic32cxmtsh_db\system\reset\sys_reset.c</file>
+         <hash>e671888007ee4e0355beae1e361ff894dc2bc4fa0a4614d6975b18c5ce057181</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\dwdt.h</file>
          <hash>1cf5c36fa9344a93a62805f892d320b5a43142bb30d46830994a94fbb29567fc</hash>
       </entry>
       <entry>
-         <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\emafe.h</file>
-         <hash>39288d7e9d9ac0713188c5f8ab73be4b07a168274124f6d5fd13be3013114526</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs.c</file>
          <hash>ca021c42833ef8d927a2165d42b8cf0d14ba0739eae48591dbd65b03f6166993</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\emafe.h</file>
+         <hash>39288d7e9d9ac0713188c5f8ab73be4b07a168274124f6d5fd13be3013114526</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\semphr.h</file>
@@ -8671,16 +8607,16 @@
          <hash>a72063c3977fad098a87a5430e04e9fc5b892d703e01fbe09ea907f67aacf20e</hash>
       </entry>
       <entry>
-         <file>..\src\packs\PIC32CX2051MTSH128_DFP\pio\pic32cx2051mtsh128.h</file>
-         <hash>a2e01648959073ec14d63fcf7c63b06dd4145e970be74ab13a58439a3b80c277</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\sys_command.h</file>
          <hash>bf9556937d70118ff61c43ee225b7600065d22ca7e88806b9adda3a554f7316c</hash>
       </entry>
       <entry>
+         <file>..\src\packs\PIC32CX2051MTSH128_DFP\pio\pic32cx2051mtsh128.h</file>
+         <hash>a2e01648959073ec14d63fcf7c63b06dd4145e970be74ab13a58439a3b80c277</hash>
+      </entry>
+      <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.c</file>
-         <hash>5d4aecc93d9ed3338403e2755c2e037d8017dc7066586be3cf8b96ceb0c9d844</hash>
+         <hash>7c7ce14b255963e57d0496d1b5c42081c53c3d66da02c0eba3735e847e7abbcd</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_iccarm.h</file>
@@ -8783,10 +8719,6 @@
          <hash>3b9cbd64db721c4317544700fff4e42ac68d989f71b7d610b31087bb19175839</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\spi\master\plib_flexcom5_spi_master.h</file>
-         <hash>fce26d66be49019455a6d9ade0c399733bc639c70be1b84ec043120a482ee7db</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\aes.h</file>
          <hash>19c54aed68e954dd5754508ce19ebd7583287947679a818a6eacd9da912b755d</hash>
       </entry>
@@ -8807,12 +8739,12 @@
          <hash>1c761869860298532e18fd322bc5b67caea9af6761859694c9336755db9baaa4</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\user.h</file>
-         <hash>451e0878e9fcf6cf9fab046c1452ea662757988346c7f39e6bc98478ca25f995</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_fat_interface.c</file>
          <hash>581a4c11a2e6c4aa4aa2c64742b276d5d4b3bd1dbdbed1983aab17f162f4c47b</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\user.h</file>
+         <hash>451e0878e9fcf6cf9fab046c1452ea662757988346c7f39e6bc98478ca25f995</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\trng.h</file>
@@ -8823,12 +8755,12 @@
          <hash>bdb53cad2321b76d6e26f9e5a76cfe1efc66de341be29b504e68b9604791148f</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\system\debug\sys_debug.h</file>
-         <hash>222cdc284bd651e83188b9641cc57c133cf86563dbeb5d5523766d4a36087165</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\sys_fs.h</file>
          <hash>c3bce19e69290a393dca6f7ddbdb103ed7cf21be40f492fdfea185eb85ecbb93</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\system\debug\sys_debug.h</file>
+         <hash>222cdc284bd651e83188b9641cc57c133cf86563dbeb5d5523766d4a36087165</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\uart.h</file>
@@ -8875,12 +8807,8 @@
          <hash>2e8474f8d43394c977dcebc2159f429bea0482e276608e57021c99f53a766258</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\spi\drv_spi_definitions.h</file>
-         <hash>6409b8036676b0891749af2015ea8405e0f9494f80d4de39c7a2022afa1ab8ec</hash>
-      </entry>
-      <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>60c9eb79a2ad7e3db57d0e50e608f88ce60ff81a0f80146663c6d6ecb62e7932</hash>
+         <hash>b86c5c270b5516fdb732f58314db1a30c9e9ac8f45702fd21dda8e7788740216</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
