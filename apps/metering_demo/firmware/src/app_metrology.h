@@ -412,6 +412,7 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_C
         DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse);
 
 void APP_METROLOGY_Restart(void);
+void APP_METROLOGY_SetLowPowerMode (void);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

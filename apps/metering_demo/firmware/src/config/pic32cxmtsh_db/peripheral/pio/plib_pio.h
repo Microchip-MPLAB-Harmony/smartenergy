@@ -90,24 +90,6 @@
 #define PIO_PORT_MAX    4U
 
 
-/*** Macros for LED_RED pin ***/
-#define LED_RED_Set()               (PIOD_REGS->PIO_SODR = (1<<17))
-#define LED_RED_Clear()             (PIOD_REGS->PIO_CODR = (1<<17))
-#define LED_RED_Toggle()            do {\
-                                            PIOD_REGS->PIO_MSKR = (1<<17); \
-                                            PIOD_REGS->PIO_ODSR ^= (1<<17);\
-                                        } while (0)
-#define LED_RED_OutputEnable()      do {\
-                                            PIOD_REGS->PIO_MSKR = (1<<17); \
-                                            PIOD_REGS->PIO_CFGR |=(1 << PIO_CFGR_DIR_Pos);\
-                                        }while(0)
-#define LED_RED_InputEnable()       do { \
-                                            PIOD_REGS->PIO_MSKR = (1<<17); \
-                                            PIOD_REGS->PIO_CFGR &= ~(1 << PIO_CFGR_DIR_Pos);\
-                                        } while (0)
-#define LED_RED_Get()               ((PIOD_REGS->PIO_PDSR >> 17) & 0x1)
-#define LED_RED_PIN                  PIO_PIN_PD17
-
 /*** Macros for GPIODBG pin ***/
 #define GPIODBG_Set()               (PIOA_REGS->PIO_SODR = (1<<18))
 #define GPIODBG_Clear()             (PIOA_REGS->PIO_CODR = (1<<18))

@@ -178,6 +178,8 @@ typedef struct
     struct tm timeResponse;
 
     struct tm time;
+    
+    uint8_t minRtcBackup;
 
 } APP_ENERGY_DATA;
 

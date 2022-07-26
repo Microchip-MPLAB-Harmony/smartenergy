@@ -62,6 +62,8 @@
 void RTC_Initialize( void );
 bool RTC_TimeSet( struct tm *sysTime );
 void RTC_TimeGet( struct tm *sysTime );
+void RTC_FirstTimeStampGet( struct tm * sysTime, RTC_TAMP_INPUT tamperInput);
+void RTC_LastTimeStampGet( struct tm * sysTime, RTC_TAMP_INPUT tamperInput);
 bool RTC_AlarmSet( struct tm *alarmTime, RTC_ALARM_MASK mask );
 void RTC_CallbackRegister( RTC_CALLBACK callback, uintptr_t context );
 void RTC_InterruptDisable(RTC_INT_MASK interrupt);

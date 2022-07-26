@@ -566,8 +566,9 @@ static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 1)
     {
         SYS_CMD_MESSAGE("Entering Low Power\n\r");
+        
         // Go to Low Power mode
-//API         DRV_MET_SetLowPowerMode();
+        APP_METROLOGY_SetLowPowerMode();
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();

@@ -58,7 +58,7 @@ __STATIC_INLINE uint32_t bcdtodecimal( uint32_t aBcdValue )
 
 void RTC_Initialize( void )
 {
-    RTC_REGS->RTC_MR = RTC_MR_PERSIAN( 0U ) | RTC_MR_OUT1_NO_WAVE | RTC_MR_OUT0_NO_WAVE | RTC_MR_TPERIOD_P_1S | RTC_MR_THIGH_H_31MS | RTC_MR_UTC(0) | RTC_MR_HRMOD(0U);
+    RTC_REGS->RTC_MR = RTC_MR_PERSIAN( 0U ) | RTC_MR_OUT1_NO_WAVE | RTC_MR_OUT0_FREQ64HZ | RTC_MR_TPERIOD_P_1S | RTC_MR_THIGH_H_31MS | RTC_MR_UTC(0) | RTC_MR_HRMOD(0U);
 
     RTC_REGS->RTC_CR = RTC_CR_TIMEVSEL_MINUTE | RTC_CR_CALEVSEL_MONTH;
 
@@ -67,19 +67,18 @@ void RTC_Initialize( void )
 
     // clear any stale interrupts
     RTC_REGS->RTC_SCCR = RTC_SCCR_Msk;
-    RTC_REGS->RTC_TCR = RTC_TCR_TAMPCLR_Msk;
+    RTC_REGS->RTC_TCR = RTC_TCR_TAMPEN0_Msk | RTC_TCR_TAMPCLR_Msk;
 }
 
 bool RTC_TimeSet( struct tm * sysTime )
 {
     bool retval = true;
-    int year = sysTime->tm_year + 1900;
-    
+    uint32_t year = (uint32_t)sysTime->tm_year + 1900U;
     uint32_t data_cal = (decimaltobcd((uint32_t)sysTime->tm_mday ) << RTC_CALR_DATE_Pos)
                         | (decimaltobcd(((uint32_t)sysTime->tm_wday + 1U )) << RTC_CALR_DAY_Pos)
                         | (decimaltobcd(((uint32_t)sysTime->tm_mon + 1U )) << RTC_CALR_MONTH_Pos)
-                        | (decimaltobcd(((uint32_t)year - (((uint32_t)year/100U) * 100U ))) << RTC_CALR_YEAR_Pos)
-                        | (decimaltobcd(((uint32_t)year/100U) ) << RTC_CALR_CENT_Pos);
+                        | (decimaltobcd(year - ((year/100U) * 100U )) << RTC_CALR_YEAR_Pos)
+                        | (decimaltobcd((year/100U)) << RTC_CALR_CENT_Pos);
 
     uint32_t data_time = (decimaltobcd((uint32_t)sysTime->tm_hour) << RTC_TIMR_HOUR_Pos )
                         | (decimaltobcd((uint32_t)sysTime->tm_min) << RTC_TIMR_MIN_Pos)
@@ -153,6 +152,53 @@ void RTC_TimeGet( struct tm * sysTime )
     sysTime->tm_year = (int32_t)temp;
 }
 
+void RTC_FirstTimeStampGet( struct tm * sysTime, RTC_TAMP_INPUT tamperInput)
+{
+    uint32_t temp;
+    uint32_t data_time = RTC_REGS->RTC_SUB0[tamperInput].RTC_FSTR;
+    uint32_t data_cal = RTC_REGS->RTC_SUB0[tamperInput].RTC_FSDR;
+
+    temp = bcdtodecimal( (data_time & RTC_FSTR_HOUR_Msk) >> RTC_FSTR_HOUR_Pos );
+    sysTime->tm_hour = (int32_t)temp;
+    temp = bcdtodecimal( data_time & RTC_FSTR_SEC_Msk );
+    sysTime->tm_sec = (int32_t)temp;
+    temp = bcdtodecimal( (data_time & RTC_FSTR_MIN_Msk) >> RTC_FSTR_MIN_Pos );
+    sysTime->tm_min = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_FSDR_DATE_Msk) >> RTC_FSDR_DATE_Pos );
+    sysTime->tm_mday = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_FSDR_DAY_Msk) >> RTC_FSDR_DAY_Pos ) - 1U;
+    sysTime->tm_wday = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_FSDR_MONTH_Msk) >> RTC_FSDR_MONTH_Pos ) - 1U;
+    sysTime->tm_mon = (int32_t)temp;
+    temp = (( (100U * bcdtodecimal( data_cal & RTC_FSDR_CENT_Msk ))
+                        + bcdtodecimal( (data_cal & RTC_FSDR_YEAR_Msk) >> RTC_FSDR_YEAR_Pos )
+                    ) - 1900U);
+    sysTime->tm_year = (int32_t)temp;
+}
+
+void RTC_LastTimeStampGet( struct tm * sysTime, RTC_TAMP_INPUT tamperInput)
+{
+    uint32_t temp;
+    uint32_t data_time = RTC_REGS->RTC_SUB0[tamperInput].RTC_LSTR;
+    uint32_t data_cal = RTC_REGS->RTC_SUB0[tamperInput].RTC_LSDR;
+
+    temp = bcdtodecimal( (data_time & RTC_LSTR_HOUR_Msk) >> RTC_LSTR_HOUR_Pos );
+    sysTime->tm_hour = (int32_t)temp;
+    temp = bcdtodecimal( data_time & RTC_LSTR_SEC_Msk );
+    sysTime->tm_sec = (int32_t)temp;
+    temp = bcdtodecimal( (data_time & RTC_LSTR_MIN_Msk) >> RTC_LSTR_MIN_Pos );
+    sysTime->tm_min = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_LSDR_DATE_Msk) >> RTC_LSDR_DATE_Pos );
+    sysTime->tm_mday = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_LSDR_DAY_Msk) >> RTC_LSDR_DAY_Pos ) - 1U;
+    sysTime->tm_wday = (int32_t)temp;
+    temp = bcdtodecimal( (data_cal & RTC_LSDR_MONTH_Msk) >> RTC_LSDR_MONTH_Pos ) - 1U;
+    sysTime->tm_mon = (int32_t)temp;
+    temp = (( (100U * bcdtodecimal( data_cal & RTC_LSDR_CENT_Msk ))
+                        + bcdtodecimal( (data_cal & RTC_LSDR_YEAR_Msk) >> RTC_LSDR_YEAR_Pos )
+                    ) - 1900U);
+    sysTime->tm_year = (int32_t)temp;
+}
 
 bool RTC_AlarmSet( struct tm * alarmTime, RTC_ALARM_MASK mask )
 {
@@ -215,11 +261,11 @@ void RTC_InterruptHandler( void )
 
     if( (rtc_status & enabledInterrupts) != 0U )
     {
+        RTC_REGS->RTC_SCCR |= enabledInterrupts;
+
         if( rtc.callback != NULL )
         {
             rtc.callback( rtc_status, rtc.context );
         }
-        
-        RTC_REGS->RTC_SCCR = rtc_status;
     }
 }

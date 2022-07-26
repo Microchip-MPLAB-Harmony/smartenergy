@@ -62,6 +62,8 @@ OSAL_SEM_DECLARE(appEnergySemID);
 
 APP_ENERGY_DATA app_energyData;
 
+#define APP_ENERGY_MIN_RTC_BACKUP     15
+
 #define BUILD_TIME_HOUR     ((__TIME__[0] - '0') * 10 + __TIME__[1] - '0')
 #define BUILD_TIME_MIN      ((__TIME__[3] - '0') * 10 + __TIME__[4] - '0')
 #define BUILD_TIME_SEC      ((__TIME__[6] - '0') * 10 + __TIME__[7] - '0')
@@ -166,6 +168,20 @@ static APP_ENERGY_TARIFF_TYPE _APP_ENERGY_getTariff(struct tm * time)
 
     touIndex = _APP_ENERGY_getTOUIndex(time);
     return app_energyData.tou.timeZone[touIndex].tariff;
+}
+
+static bool _APP_ENERGY_CheckRTCFromReset(void)
+{
+    uint32_t enabledInterrupts = RTC_REGS->RTC_IMR;
+    
+    if (enabledInterrupts & (RTC_INT_TIME | RTC_INT_CALENDAR))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 static bool _APP_ENERGY_InitializeRTC(bool dataValid)
@@ -421,6 +437,36 @@ static void _APP_ENERGY_StoreDemandDataInMemory(struct tm * time, void *pData)
     xQueueSend(appDatalogQueueID, &appEnergyDatalogQueueData, (TickType_t) 0);
 }
 
+static void _APP_ENERGY_SupplyMonitorCallback(uint32_t supc_status, uintptr_t context)
+{
+    if (supc_status & SUPC_IMR_VDD3V3SMEV_Msk)
+    {
+        // Go to Low Power mode
+        APP_METROLOGY_SetLowPowerMode();
+    }
+}
+
+static void _APP_ENERGY_CheckTamperDetection(void)
+{
+    /* Check the Tamper Event Counter value */
+    if (RTC_REGS->RTC_SUB0[0].RTC_FSTR & RTC_FSTR_TEVCNT_Msk)
+    {
+        uint32_t reg;
+        struct tm tamperTime;
+        
+        RTC_LastTimeStampGet(&tamperTime, 0);
+        SYS_CMD_PRINT("Detected TAMPER event: [%02u/%02u/%04u %02u:%02u:%02u]\r\n",
+				  tamperTime.tm_mon + 1, tamperTime.tm_mday, tamperTime.tm_year + 1900,
+				  tamperTime.tm_hour, tamperTime.tm_min, tamperTime.tm_sec);
+    
+        SYS_CMD_MESSAGE("\r\nReading GPBR registers:\r\n");
+        reg = SUPC_GPBRRead(GPBR_REGS_0);
+        SYS_CMD_PRINT("\tGPBR_REGS_0  = 0x%08x\r\n", reg);
+        reg = SUPC_GPBRRead(GPBR_REGS_23);
+        SYS_CMD_PRINT("\tGPBR_REGS_23 = 0x%08x\r\n\r\n", reg );
+    }
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Initialization and State Machine Functions
@@ -443,10 +489,16 @@ void APP_ENERGY_Initialize (void)
      /* Initialize Energy callbacks */
     app_energyData.maxDemandCallback = NULL;
     app_energyData.monthEnergyCallback = NULL;
+    
+    /* Set callback for the supply monitor */
+    SUPC_CallbackRegister(_APP_ENERGY_SupplyMonitorCallback, 0);
 
     /* Clear RTC TIME & CALENDAR events */
     app_energyData.eventMinute = false;
     app_energyData.eventMonth = false;
+    
+    /* Set time to store RTC time in external memory as backup */
+    app_energyData.minRtcBackup = APP_ENERGY_MIN_RTC_BACKUP;
 
     /* Clear Energy accumulators */
     memset(&app_energyData.energyAccumulator.tariff, 0, sizeof(APP_ENERGY_ACCUMULATORS));
@@ -492,6 +544,14 @@ void APP_ENERGY_Tasks (void)
         {
             if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
             {
+                /* Write value in GPBR as initialization flag example */
+                /* In case of TAMPER detection, this value will be erased */
+                SUPC_GPBRWrite(GPBR_REGS_0, 0xA55A);
+                SUPC_GPBRWrite(GPBR_REGS_23, 0xB66B);
+                SYS_CMD_MESSAGE("\r\nSetting GPBR registers to be checked in tamper detection:\r\n");
+                SYS_CMD_PRINT("\tGPBR_REGS_0  = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_0));
+                SYS_CMD_PRINT("\tGPBR_REGS_23 = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_23));
+                
                 app_energyData.state = APP_ENERGY_STATE_INIT_RTC;
             }
 
@@ -503,30 +563,44 @@ void APP_ENERGY_Tasks (void)
         {
             /* Reset flag to request data to datalog app */
             app_energyData.dataIsRdy = false;
-    
-            /* Check if there are RTC data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_RTC, NULL))
+            
+            if (_APP_ENERGY_CheckRTCFromReset())
             {
-                /* RTC data exists */
-                _APP_ENERGY_LoadRTCDataFromMemory();
-                /* Wait for the semaphore to load data from memory */
-                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
-            }
-
-            if (_APP_ENERGY_InitializeRTC(app_energyData.dataIsRdy))
-            {
-                if (app_energyData.dataIsRdy == false)
+                /* Check if there are RTC data in memory */
+                if (APP_DATALOG_FileExists(APP_DATALOG_USER_RTC, NULL))
                 {
-                    /* There is no valid data in memory. Create RTC Data in memory. */
-                    _APP_ENERGY_StoreRTCDataInMemory();
+                    /* RTC data exists */
+                    _APP_ENERGY_LoadRTCDataFromMemory();
+                    /* Wait for the semaphore to load data from memory */
+                    OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
                 }
-                app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+
+                if (_APP_ENERGY_InitializeRTC(app_energyData.dataIsRdy))
+                {
+                    if (app_energyData.dataIsRdy == false)
+                    {
+                        /* There is no valid data in memory. Create RTC Data in memory. */
+                        _APP_ENERGY_StoreRTCDataInMemory();
+                    }
+                    app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+                }
+                else
+                {
+                    app_energyData.state = APP_ENERGY_STATE_ERROR;
+                }
             }
             else
             {
-                app_energyData.state = APP_ENERGY_STATE_ERROR;
+                RTC_TimeGet(&app_energyData.time);
+                if (_APP_ENERGY_InitializeRTC(true))
+                {
+                    app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+                }
+                else
+                {
+                    app_energyData.state = APP_ENERGY_STATE_ERROR;
+                }
             }
-
 
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
@@ -656,12 +730,17 @@ void APP_ENERGY_Tasks (void)
                     {
                         _APP_ENERGY_StoreEnergyDataInMemory(&app_energyData.time, &app_energyData.energyAccumulator);
                     }
+                    
+                    /* Check Counter to store a RTC backup */
+                    if (!app_energyData.minRtcBackup--)
+                    {
+                        app_energyData.minRtcBackup = APP_ENERGY_MIN_RTC_BACKUP;
 
-                    /* Read RTC */
-                    RTC_TimeGet(&app_energyData.time);
-                    /* Update RTC data in memory */
-                    _APP_ENERGY_StoreRTCDataInMemory();
-
+                        /* Read RTC */
+                        RTC_TimeGet(&app_energyData.time);
+                        /* Update RTC data in memory */
+                        _APP_ENERGY_StoreRTCDataInMemory();
+                    }
                 }
 
                 /* Check CALENDAR Event (month) */
@@ -676,7 +755,8 @@ void APP_ENERGY_Tasks (void)
                     memset(&app_energyData.demand.maxDemand, 0, sizeof(APP_ENERGY_MAX_DEMAND));
                 }
 
-
+                /* Check TAMPER detection */
+                _APP_ENERGY_CheckTamperDetection();
             }
 
             break;

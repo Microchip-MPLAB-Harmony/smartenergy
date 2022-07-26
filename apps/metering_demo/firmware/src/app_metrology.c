@@ -460,7 +460,6 @@ void APP_METROLOGY_Tasks (void)
                 break;
             }            
 
-            LED_RED_Toggle();
             DRV_METROLOGY_UpdateMeasurements();
             
             // Send new Energy values to the Energy Task
@@ -762,6 +761,11 @@ void APP_METROLOGY_Restart (void)
     DRV_METROLOGY_Initialize(NULL, RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_SOFT_RST_Val));
     
     OSAL_SEM_PostISR(&appMetrologySemID);
+}
+
+void APP_METROLOGY_SetLowPowerMode (void)
+{
+    SUPC_BackupModeEnter();
 }
 
 /*******************************************************************************

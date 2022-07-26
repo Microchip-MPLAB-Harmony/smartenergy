@@ -396,6 +396,8 @@ void SYS_Initialize ( void* data )
 
 
 
+    SUPC_Initialize();
+
     FLEXCOM5_SPI_Initialize();
 
  

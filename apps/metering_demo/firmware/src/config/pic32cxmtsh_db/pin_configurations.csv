@@ -7,7 +7,7 @@ Pin Number,Pin ID,Custom Name,Function,Direction,Latch,Open Drain,PIO Interrupt,
 6,PA9,,Available,In,,,,,,,
 7,PD3,,Available,In,,,,,,,
 20,PD16,,Available,In,,,,,,,
-22,PD17,LED_RED,GPIO,Out,High,No,Disabled,No,No,Glitch Filter,0x0
+22,PD17,,Available,In,,,,,,,
 23,PD18,,Available,In,,,,,,,
 24,PD19,,Available,In,,,,,,,
 25,PA10,,Available,In,,,,,,,

@@ -65,6 +65,7 @@ void BusFault_Handler (void);
 void UsageFault_Handler (void);
 void DebugMonitor_Handler (void);
 void xPortSysTickHandler (void);
+void SUPC_InterruptHandler (void);
 void RTC_InterruptHandler (void);
 void FLEXCOM0_InterruptHandler (void);
 void FLEXCOM5_InterruptHandler (void);

@@ -538,12 +538,12 @@ static void APP_DISPLAY_Process(void)
         if (eventFlags.qtDir) 
         {
             /* reactive power is reverse */
-            cl010_show_icon(CL010_ICON_P_MINUS);
+            cl010_show_icon(CL010_ICON_Q_MINUS);
         } 
         else 
         {
             /* reactive power is forward */
-            cl010_show_icon(CL010_ICON_P_PLUS);
+            cl010_show_icon(CL010_ICON_Q_PLUS);
         }
         
     }
@@ -670,7 +670,6 @@ void APP_DISPLAY_Tasks ( void )
                 /* If any button has been pressed, change the information */
                 if (app_displayData.scrup_pressed)
                 {
-//                    LED_RED_On();
                     app_displayData.scrup_pressed = false;
                     app_displayData.direction = APP_DISPLAY_FORWARD;
                     APP_DISPLAY_ChangeInfo();
@@ -678,7 +677,6 @@ void APP_DISPLAY_Tasks ( void )
 
                 if (app_displayData.scrdown_pressed)
                 {
-//                    LED_RED_Off();
                     app_displayData.scrdown_pressed = false;
                     app_displayData.direction = APP_DISPLAY_BACKWARD;
                     APP_DISPLAY_ChangeInfo();

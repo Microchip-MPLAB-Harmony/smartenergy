@@ -88,13 +88,16 @@
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/rstc/plib_rstc.h</itemPath>
             </logicalFolder>
             <logicalFolder name="rtc" displayName="rtc" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/peripheral/rtc/plib_rtc.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/rtc/plib_rtc_common.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/peripheral/rtc/plib_rtc.h</itemPath>
             </logicalFolder>
             <logicalFolder name="sefc" displayName="sefc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc_common.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc1.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc0.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="supc" displayName="supc" projectFiles="true">
+              <itemPath>../src/config/pic32cxmtsh_db/peripheral/supc/plib_supc.h</itemPath>
             </logicalFolder>
             <logicalFolder name="tc" displayName="tc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/tc/plib_tc0.h</itemPath>
@@ -414,6 +417,9 @@
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc1.c</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/sefc/plib_sefc0.c</itemPath>
             </logicalFolder>
+            <logicalFolder name="supc" displayName="supc" projectFiles="true">
+              <itemPath>../src/config/pic32cxmtsh_db/peripheral/supc/plib_supc.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="tc" displayName="tc" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/peripheral/tc/plib_tc0.c</itemPath>
             </logicalFolder>
@@ -521,7 +527,7 @@
       </toolsSet>
       <packs>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
-        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.43"/>
+        <pack name="PIC32CX-MT_DEV_DFP" vendor="Microchip" version="0.1.44"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
