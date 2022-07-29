@@ -71,6 +71,24 @@ typedef void (* DRV_METROLOGY_CALLBACK)(void);
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+#define DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK       IPC_ISR_IRQ4_Msk
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+#define DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK       IPC_ISR_IRQ5_Msk
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+#define DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK       IPC_ISR_IRQ12_Msk
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+#define DRV_METROLOGY_IPC_PULSE0_IRQ_MSK          IPC_ISR_IRQ24_Msk
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+#define DRV_METROLOGY_IPC_PULSE1_IRQ_MSK          IPC_ISR_IRQ25_Msk
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+#define DRV_METROLOGY_IPC_PULSE2_IRQ_MSK          IPC_ISR_IRQ26_Msk
+</#if>
 
 #define  FREQ_Q         12
 #define  GAIN_P_K_T_Q   24
@@ -117,15 +135,15 @@ typedef enum
 } DRV_METROLOGY_PHASE_ID;
 
 typedef struct {
-    double aimVA;
-    double aimIA;
-    double angleA;
-    double aimVB;
-    double aimIB;
-    double angleB;
-    double aimVC;
-    double aimIC;
-    double angleC;
+    double aimVA;    /* aim voltage  * 1000 */
+    double aimIA;    /* aim current  * 10000 */
+    double angleA;   /* phase angle * 1000 */
+    double aimVB;    /* aim voltage  * 1000 */
+    double aimIB;    /* aim current  * 10000 */
+    double angleB;   /* phase angle * 1000 */
+    double aimVC;    /* aim voltage  * 1000 */
+    double aimIC;    /* aim current  * 10000 */
+    double angleC;   /* phase angle * 1000 */
 	DRV_METROLOGY_PHASE_ID lineId;
 } DRV_METROLOGY_CALIBRATION_REFS;
 
@@ -133,11 +151,11 @@ typedef struct {
     DRV_METROLOGY_CALIBRATION_REFS references;
     uint32_t meterConst;
     uint32_t featureCtrl0Backup;
-    double freq;
-    uint32_t gain_i;
-    double transfRatio;
-    double resLoad;
-    uint32_t vDivRatio;
+    double freq;                     /* frequency  * 100 */
+    uint32_t gain_i;                 /* current pga */
+    double k_i;                      /* CT current transform ratio * 1000 */
+    double rl;                       /* CT resistor load * 100 */
+    uint32_t k_u;                    /* voltage divider ratio * 1000 */
     uint32_t numIntegrationPeriods;
     uint64_t dspAccIa;
     uint64_t dspAccIb;
@@ -361,12 +379,36 @@ typedef struct
     /* IPC metrology lib integration Callback */
     DRV_METROLOGY_CALLBACK          newIntegrationCallback;
 
-    /* Application Calibration Callback */
-    //DRV_MET_CALIBRATION_CALLBACK    calibrationCallback;
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+    /* IPC metrology lib Full Cycle Callback */
+    DRV_METROLOGY_CALLBACK          FullCycleCallback;
 
-    /* Application Harmonics Callback */
-    //DRV_MET_HARMONICS_CALLBACK      harmonicsCallback;
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+    /* IPC metrology lib Half Cycle Callback */
+    DRV_METROLOGY_CALLBACK          HalfCycleCallback;
 
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+    /* IPC metrology lib Zero Cross Callback */
+    DRV_METROLOGY_CALLBACK          ZeroCrossCallback;
+
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+    /* IPC metrology lib Pulse 0 Callback */
+    DRV_METROLOGY_CALLBACK          Pulse0Callback;
+
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+    /* IPC metrology lib Pulse 1 Callback */
+    DRV_METROLOGY_CALLBACK          Pulse1Callback;
+
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+    /* IPC metrology lib Pulse 2 Callback */
+    DRV_METROLOGY_CALLBACK          Pulse2Callback;
+
+</#if>
 } DRV_METROLOGY_OBJ;
 
 #ifdef __cplusplus

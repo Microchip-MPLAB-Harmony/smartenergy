@@ -168,7 +168,30 @@ extern "C" {
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
 /* Metrology Capture Buffer Size */
 #define DRV_METROLOGY_CAPTURE_BUF_SIZE        32000
-
+/* Metrology Default Config: Meter Constant */
+#define DRV_METROLOGY_CONF_PKT                0x500000
+/* Metrology Default Config: Meter Type */
+#define DRV_METROLOGY_CONF_MT                 0xccc
+/* Metrology Default Config: Current conversion factor */
+#define DRV_METROLOGY_CONF_KI                 0x9a523
+/* Metrology Default Config: Voltage conversion factor */
+#define DRV_METROLOGY_CONF_KV                 0x19cc00
+/* Metrology Default Config: ATSENSE CTRL 20 23 */
+#define DRV_METROLOGY_CONF_ATS2023            0x1010103
+/* Metrology Default Config: ATSENSE CTRL 24 27 */
+#define DRV_METROLOGY_CONF_ATS2427            0x7000001
+/* Metrology Default Config: SWELL */
+#define DRV_METROLOGY_CONF_SWELL              0x5eab918
+/* Metrology Default Config: SAG */
+#define DRV_METROLOGY_CONF_SAG                0x1a2ec26
+/* Metrology Default Config: CREEP P */
+#define DRV_METROLOGY_CONF_CREEP_P            0x2e9a
+/* Metrology Default Config: CREEP Q */
+#define DRV_METROLOGY_CONF_CREEP_Q            0x2e9a
+/* Metrology Default Config: CREEP I */
+#define DRV_METROLOGY_CONF_CREEP_I            0x212d
+/* Metrology Default Config: FEATURE_CTRL0 */
+#define DRV_METROLOGY_CONF_FCTRL0             0x300
 
 
 // *****************************************************************************

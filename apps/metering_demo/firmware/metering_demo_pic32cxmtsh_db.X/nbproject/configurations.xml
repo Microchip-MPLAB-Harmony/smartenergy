@@ -33,6 +33,8 @@
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/drv_sst26.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/drv_sst26_definitions.h</itemPath>
             </logicalFolder>
+            <itemPath>../src/config/pic32cxmtsh_db/driver/driver_common.h</itemPath>
+            <itemPath>../src/config/pic32cxmtsh_db/driver/driver.h</itemPath>
           </logicalFolder>
           <logicalFolder name="osal" displayName="osal" projectFiles="true">
             <itemPath>../src/config/pic32cxmtsh_db/osal/osal_freertos.h</itemPath>

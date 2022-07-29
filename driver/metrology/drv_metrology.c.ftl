@@ -63,36 +63,36 @@ static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BU
 const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
 {
     STATE_CTRL_STATE_CTRL_RESET_Val,        /* 00 STATE_CTRL */
-    _UINT32_(0x00000300),                   /* 01 FEATURE_CTRL0 [PIC32CXMTC_DB=_UINT32_(0x00000700);  PIC32CXMTSH_DB=_UINT32_(0x00000300)*/
+    _UINT32_(DRV_METROLOGY_CONF_FCTRL0),    /* 01 FEATURE_CTRL0 [PIC32CXMTC_DB=_UINT32_(0x00000700);  PIC32CXMTSH_DB=_UINT32_(0x00000300)*/
     _UINT32_(0x00000000),                   /* 02 FEATURE_CTRL1 */
-    _UINT32_(0x00000CCC),                   /* 03 METER_TYPE sensor_type =0 CT, 1 SHUNT, 2 ROGOWSKI */
+    _UINT32_(DRV_METROLOGY_CONF_MT),        /* 03 METER_TYPE sensor_type =0 CT, 1 SHUNT, 2 ROGOWSKI */
     _UINT32_(0x00000000),                   /* 04 M M=50->50Hz M=60->60Hz */
     _UINT32_(0x00001130),                   /* 05 N_MAX 4400=0x1130 */
     _UINT32_(0x81009100),                   /* 06 PULSE0_CTRL: enable pulse, detent NET, Watt-hours, width=80mS=80*464=0x9100 */
     _UINT32_(0x81029100),                   /* 07 PULSE1_CTRL: enable pulse, detent NET, Var-hours, width=80mS=80*464=0x9100 */
     _UINT32_(0x10049100),                   /* 08 PULSE2_CTRL: disable pulse */
-    _UINT32_(0x00500000),                   /* 09 P_K_T=(1000/3200)*2^24=52428800   mc=3200 imp/kWh */
-    _UINT32_(0x00500000),                   /* 10 Q_K_T */
-    _UINT32_(0x00500000),                   /* 11 I_K_T */
-    _UINT32_(0x00002E9A),                   /* 12 CREEP_THR_P 2w  0x2E9A=[2/(50*3600)]*2^30 */
-    _UINT32_(0x00002E9A),                   /* 13 CREEP_THR_Q 2var 0x2E9A=[2/(50*3600)]*2^30 */
-    _UINT32_(0x0000212D),                   /* 14 CREEP_THR_I 5mA K_Ix=617.283 8493=(5/617.283?*2^20 */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),       /* 09 P_K_T=(1000/3200)*2^24=52428800   mc=3200 imp/kWh */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),       /* 10 Q_K_T */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),       /* 11 I_K_T */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_P),   /* 12 CREEP_THR_P 2w  0x2E9A=[2/(50*3600)]*2^30 */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_Q),   /* 13 CREEP_THR_Q 2var 0x2E9A=[2/(50*3600)]*2^30 */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_I),   /* 14 CREEP_THR_I 5mA K_Ix=617.283 8493=(5/617.283?*2^20 */
     _UINT32_(0x00000000),                   /* 15 POWER_OFFSET_CTRL, Disable Power offset */
     _UINT32_(0x00000000),                   /* 16 POWER_OFFSET_P */
     _UINT32_(0x00000000),                   /* 17 POWER_OFFSET_Q */
-    _UINT32_(0x05E84F61),                   /* 18 SWELL_THR_VA  [(220*114%)/1651]^2*2^32 */
-    _UINT32_(0x05E84F61),                   /* 19 SWELL_THR_VB */
-    _UINT32_(0x05E84F61),                   /* 20 SWELL_THR_VC */
-    _UINT32_(0x01A2EC26),                   /* 21 SAG_THR_VA  [(220*60%)/1651]^2*2^32 */
-    _UINT32_(0x01A2EC26),                   /* 22 SAG_THR_VB */
-    _UINT32_(0x01A2EC26),                   /* 23 SAG_THR_VC */
-    _UINT32_(0x0009A523),                   /* 24 K_IA  [Te=2000/3.24]*2^10 */
-    _UINT32_(0x0019CC00),                   /* 25 K_VA  1651*2^10 */
-    _UINT32_(0x0009A523),                   /* 26 K_IB */
-    _UINT32_(0x0019CC00),                   /* 27 K_VB */
-    _UINT32_(0x0009A523),                   /* 28 K_IC */
-    _UINT32_(0x0019CC00),                   /* 29 K_VC */
-    _UINT32_(0x0009A523),                   /* 30 K_IN */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),     /* 18 SWELL_THR_VA  [(220*114%)/1651]^2*2^32 */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),     /* 19 SWELL_THR_VB */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),     /* 20 SWELL_THR_VC */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),       /* 21 SAG_THR_VA  [(220*60%)/1651]^2*2^32 */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),       /* 22 SAG_THR_VB */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),       /* 23 SAG_THR_VC */
+    _UINT32_(DRV_METROLOGY_CONF_KI),        /* 24 K_IA  [Te=2000/3.24]*2^10 */
+    _UINT32_(DRV_METROLOGY_CONF_KV),        /* 25 K_VA  1651*2^10 */
+    _UINT32_(DRV_METROLOGY_CONF_KI),        /* 26 K_IB */
+    _UINT32_(DRV_METROLOGY_CONF_KV),        /* 27 K_VB */
+    _UINT32_(DRV_METROLOGY_CONF_KI),        /* 28 K_IC */
+    _UINT32_(DRV_METROLOGY_CONF_KV),        /* 29 K_VC */
+    _UINT32_(DRV_METROLOGY_CONF_KI),        /* 30 K_IN */
     _UINT32_(0x20000000),                   /* 31 CAL_M_IA */
     _UINT32_(0x20000000),                   /* 32 CAL_M_VA */
     _UINT32_(0x20000000),                   /* 33 CAL_M_IB */
@@ -117,9 +117,8 @@ const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
 </#if>
     _UINT32_(0x00000000),                   /* 48 RESERVED_C48 */
     _UINT32_(0x00000000),                   /* 49 RESERVED_C49 */
-    _UINT32_(0x00000000),                   /* 50 RESERVED_C50 */
-    _UINT32_(0x01010103),                   /* 51 ATSENSE_CTRL_20_23: I2GAIN=0,I2ON=1,V1ON=1,I1GAIN=0,I1ON=1,I0GAIN=0,TEMP=1,I0ON=1 */
-    _UINT32_(0x07010101),                   /* 52 ATSENSE_CTRL_24_27: ONLDO=1,ONREF=1,ONBIAS=1,V3ON=1,I3GAIN=0,I3ON=1,V2ON=1 */
+    _UINT32_(DRV_METROLOGY_CONF_ATS2023),   /* 51 ATSENSE_CTRL_20_23: I2GAIN=0,I2ON=1,V1ON=1,I1GAIN=0,I1ON=1,I0GAIN=0,TEMP=1,I0ON=1 */
+    _UINT32_(DRV_METROLOGY_CONF_ATS2427),   /* 52 ATSENSE_CTRL_24_27: ONLDO=1,ONREF=1,ONBIAS=1,V3ON=1,I3GAIN=0,I3ON=1,V2ON=1 */
     _UINT32_(0x00000003),                   /* 53 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
     _UINT32_(0x00000000),                   /* 54 RESERVED_C54 */
     _UINT32_(0x00000000),                   /* 55 POWER_OFFSET_P_A */
@@ -198,6 +197,67 @@ void IPC1_Handler (void)
             gDrvMetObj.newIntegrationCallback();
         }
     }
+
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+    if (status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK)
+    {
+        if (gDrvMetObj.FullCycleCallback)
+        {
+            gDrvMetObj.FullCycleCallback();
+        }
+    }
+
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+    if (status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK)
+    {
+        if (gDrvMetObj.HalfCycleCallback)
+        {
+            gDrvMetObj.HalfCycleCallback();
+        }
+    }
+
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+    if (status & DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK)
+    {
+        if (gDrvMetObj.ZeroCrossCallback)
+        {
+            gDrvMetObj.ZeroCrossCallback();
+        }
+    }
+
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+    if (status & DRV_METROLOGY_IPC_PULSE0_IRQ_MSK)
+    {
+        if (gDrvMetObj.Pulse0Callback)
+        {
+            gDrvMetObj.Pulse0Callback();
+        }
+    }
+
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+    if (status & DRV_METROLOGY_IPC_PULSE1_IRQ_MSK)
+    {
+        if (gDrvMetObj.Pulse1Callback)
+        {
+            gDrvMetObj.Pulse1Callback();
+        }
+    }
+
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+    if (status & DRV_METROLOGY_IPC_PULSE2_IRQ_MSK)
+    {
+        if (gDrvMetObj.Pulse2Callback)
+        {
+            gDrvMetObj.Pulse2Callback();
+        }
+    }
+
+</#if>
 
     IPC1_REGS->IPC_IDCR = status;
     IPC1_REGS->IPC_ICCR = status;
@@ -634,6 +694,85 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister (DRV_METROLOGY_CA
     return DRV_METROLOGY_SUCCESS;
 }
 
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.FullCycleCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.HalfCycleCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.ZeroCrossCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse0Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse1Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse2Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+
 DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus (void)
 {
     return &gDrvMetObj.metRegisters->MET_STATUS;
@@ -865,16 +1004,16 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     uint32_t restoreCaptureBuffSize;
     uint32_t restoreCaptureAddress;
     uint32_t restoreCaptureControl;
+    uint32_t reg;
     
-    /* Store Calibration config parameters */
+    /* Store Calibration parameters */
     gDrvMetObj.metCalibration.freq = config->freq;
     gDrvMetObj.metCalibration.gain_i = config->gain;
-    gDrvMetObj.metCalibration.vDivRatio = config->ku;
+    gDrvMetObj.metCalibration.k_u = config->ku;
     gDrvMetObj.metCalibration.meterConst = config->mc;
-    gDrvMetObj.metCalibration.resLoad = config->rl;
+    gDrvMetObj.metCalibration.rl = config->rl;
     gDrvMetObj.metCalibration.st = config->st;
-    gDrvMetObj.metCalibration.transfRatio = config->tr;
-    
+    gDrvMetObj.metCalibration.k_i = config->tr;
 
     pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
 
@@ -893,13 +1032,22 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     pControl->Q_K_t = (uint32_t)m;
     pControl->I_K_t = (uint32_t)m;
 
-    pControl->METER_TYPE = METER_TYPE_SENSOR_TYPE_I_A(config->st) |
+    reg = pControl->METER_TYPE;
+    reg &= ~(METER_TYPE_SENSOR_TYPE_I_A_Msk | METER_TYPE_SENSOR_TYPE_I_B_Msk | METER_TYPE_SENSOR_TYPE_I_C_Msk);
+    reg |= METER_TYPE_SENSOR_TYPE_I_A(config->st) |
             METER_TYPE_SENSOR_TYPE_I_B(config->st) | METER_TYPE_SENSOR_TYPE_I_C(config->st);
+    pControl->METER_TYPE = reg;
 
-    pControl->ATSENSE_CTRL_20_23 = ATSENSE_CTRL_20_23_I0_GAIN(config->gain) |
+    reg = pControl->ATSENSE_CTRL_20_23;
+    reg &= ~(ATSENSE_CTRL_20_23_I0_GAIN_Msk | ATSENSE_CTRL_20_23_I1_GAIN_Msk | ATSENSE_CTRL_20_23_I2_GAIN_Msk);
+    reg |= ATSENSE_CTRL_20_23_I0_GAIN(config->gain) |
             ATSENSE_CTRL_20_23_I1_GAIN(config->gain) | ATSENSE_CTRL_20_23_I2_GAIN(config->gain);
+    pControl->ATSENSE_CTRL_20_23 = reg;
 
-    pControl->ATSENSE_CTRL_24_27 = ATSENSE_CTRL_24_27_I3_GAIN(config->gain);
+    reg = pControl->ATSENSE_CTRL_24_27;
+    reg &= ~(ATSENSE_CTRL_24_27_I3_GAIN_Msk);
+    reg |= ATSENSE_CTRL_24_27_I3_GAIN(config->gain);
+    pControl->ATSENSE_CTRL_24_27 = reg;
 
     if (config->st == SENSOR_CT)
     {
@@ -907,7 +1055,8 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         m = m * 100 * 1000;
         m = m / ((1 << config->gain) * config->rl);
         m = (m << GAIN_VI_Q);
-        m = m / 1000000;
+        m = m / 1000;
+//        m = m / 1000;
         i = (uint32_t)(m);
     } 
     else if (config->st == SENSOR_SHUNT) 
@@ -915,13 +1064,16 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
         m = config->freq;
         m = (((m * 1000000) * 1000) / (config->tr * (1 << config->gain) * 6));
         m = (m << GAIN_VI_Q);
-        m = (m + 500) / 1000;
+        m = (m + 500);
+//        m = m / 1000;
         i = (uint32_t)(m);
     } 
     else if (config->st == SENSOR_ROGOWSKI) 
     {
         m = ((uint64_t)1000000 * (uint64_t)100 * (uint64_t)10000) / ((1 << config->gain) * config->rl);
-        m = (m << GAIN_VI_Q) / 10000;
+        m = (m << GAIN_VI_Q);
+        m = m / 10;
+//        m = m / 1000;
         i = (uint32_t)(m);
     }
 

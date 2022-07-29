@@ -117,15 +117,15 @@ typedef enum
 } DRV_METROLOGY_PHASE_ID;
 
 typedef struct {
-    double aimVA;
-    double aimIA;
-    double angleA;
-    double aimVB;
-    double aimIB;
-    double angleB;
-    double aimVC;
-    double aimIC;
-    double angleC;
+    double aimVA;    /* aim voltage  * 1000 */
+    double aimIA;    /* aim current  * 10000 */
+    double angleA;   /* phase angle * 1000 */
+    double aimVB;    /* aim voltage  * 1000 */
+    double aimIB;    /* aim current  * 10000 */
+    double angleB;   /* phase angle * 1000 */
+    double aimVC;    /* aim voltage  * 1000 */
+    double aimIC;    /* aim current  * 10000 */
+    double angleC;   /* phase angle * 1000 */
 	DRV_METROLOGY_PHASE_ID lineId;
 } DRV_METROLOGY_CALIBRATION_REFS;
 
@@ -133,11 +133,11 @@ typedef struct {
     DRV_METROLOGY_CALIBRATION_REFS references;
     uint32_t meterConst;
     uint32_t featureCtrl0Backup;
-    double freq;
-    uint32_t gain_i;
-    double transfRatio;
-    double resLoad;
-    uint32_t vDivRatio;
+    double freq;                     /* frequency  * 100 */
+    uint32_t gain_i;                 /* current pga */
+    double k_i;                      /* CT current transform ratio * 1000 */
+    double rl;                       /* CT resistor load * 100 */
+    uint32_t k_u;                    /* voltage divider ratio * 1000 */
     uint32_t numIntegrationPeriods;
     uint64_t dspAccIa;
     uint64_t dspAccIb;
@@ -360,12 +360,6 @@ typedef struct
 
     /* IPC metrology lib integration Callback */
     DRV_METROLOGY_CALLBACK          newIntegrationCallback;
-
-    /* Application Calibration Callback */
-    //DRV_MET_CALIBRATION_CALLBACK    calibrationCallback;
-
-    /* Application Harmonics Callback */
-    //DRV_MET_HARMONICS_CALLBACK      harmonicsCallback;
 
 } DRV_METROLOGY_OBJ;
 
