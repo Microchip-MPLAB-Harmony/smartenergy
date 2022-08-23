@@ -131,13 +131,13 @@ typedef struct {
 
 typedef struct {
     DRV_METROLOGY_CALIBRATION_REFS references;
-    uint32_t meterConst;
+//    uint32_t meterConst;
     uint32_t featureCtrl0Backup;
-    double freq;                     /* frequency  * 100 */
-    uint32_t gain_i;                 /* current pga */
-    double k_i;                      /* CT current transform ratio * 1000 */
-    double rl;                       /* CT resistor load * 100 */
-    uint32_t k_u;                    /* voltage divider ratio * 1000 */
+    double freq;                     
+//    uint32_t gain_i;                 
+//    double k_i;                      
+//    double rl;                       
+//    uint32_t k_u;                    
     uint32_t numIntegrationPeriods;
     uint64_t dspAccIa;
     uint64_t dspAccIb;
@@ -153,7 +153,7 @@ typedef struct {
     int64_t  dspAccQa;
     int64_t  dspAccQb;
     int64_t  dspAccQc;
-    DRV_METROLOGY_SENSOR_TYPE st;
+//    DRV_METROLOGY_SENSOR_TYPE st;
     uint8_t  harmonicOrder;
     bool  running;
     bool  result;

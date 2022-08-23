@@ -1,4 +1,4 @@
-<config configName="pic32cxmtsh_db" projectName="pic32cxmtsh_db" configVersion="1.1" device="PIC32CX2051MTSH128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.4">
+<config configName="pic32cxmtsh_db" projectName="pic32cxmtsh_db" configVersion="1.1" device="PIC32CX2051MTSH128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.11">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -722,8 +722,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;349&quot; y=&quot;177&quot;/&gt;
@@ -731,7 +730,7 @@
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;dfp&quot; x=&quot;14&quot; y=&quot;21&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;512&quot; y=&quot;204&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;513&quot; y=&quot;195&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;drv_memory&quot; x=&quot;351&quot; y=&quot;428&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;drv_sst26&quot; x=&quot;184&quot; y=&quot;446&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;flexcom0&quot; x=&quot;31&quot; y=&quot;298&quot;/&gt;
@@ -747,6 +746,7 @@
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -5672,197 +5672,6 @@
 </value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_I1"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_I1&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_I2"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_I2&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_I3"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_I3&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_RL"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_RL&quot;&gt;
-    &lt;Attributes dnOrder=&quot;0&quot;&gt;
-      &lt;String dnOrder=&quot;0&quot; id=&quot;label&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;Resistor&amp;amp;#160;Load&amp;amp;#160;(mOhms)&lt;/Value&gt;
-      &lt;/String&gt;
-    &lt;/Attributes&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_ST"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_ST&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_SWELL"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_SWELL&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;264&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_TR"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_TR&quot;&gt;
-    &lt;Attributes dnOrder=&quot;0&quot;&gt;
-      &lt;String dnOrder=&quot;0&quot; id=&quot;label&quot;&gt;
-        &lt;Value dnOrder=&quot;0&quot;&gt;Transformer&amp;amp;#160;Ratio&lt;/Value&gt;
-      &lt;/String&gt;
-    &lt;/Attributes&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_V1"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_V1&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_V2"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_V2&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_V3"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_V3&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_ATS2023"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_ATS2023&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;16843011&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_ATS2427"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_ATS2427&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;117440513&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_CREEP_I"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_CREEP_I&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;3397386&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_FEATCTRL1"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_FEATCTRL1&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;768&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_KI"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_KI&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;632098&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_MT"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_MT&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;3276&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CTRL_SWELL"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
-  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_SWELL&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;99268888&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/drvMet&gt;
-&lt;/drvMet&gt;
-</value>
-      </entry>
-      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVEFORM_CAPTURE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
   &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVEFORM_CAPTURE&quot;&gt;
@@ -8166,7 +7975,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>8b8913706e082f984d5faf7c46ebfe9ce950d176f2c5a669dc4c4386dd0bda17</hash>
+         <hash>ec17f789ede773a967d16e98f07c4ca7736ccc18e56dbcd3d22a3128729c576f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8422,7 +8231,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>8017059ed7bb26c0c7e7bbf96e3ceab4d0a5c8ac1cb18ccf42640bea022d14d0</hash>
+         <hash>41b263bfb38c6574cbfec4cb5db813b90268f8f82aeae96524b36d744dcac797</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -8506,7 +8315,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>3cbf46b593aaa1fc8083e9c9d4177a6ffd0e44e4014e5a44480e2af783653f5e</hash>
+         <hash>d89db3451b01bd4b94581a399f8a81e8980f5150947529f9fcdab9074f097d12</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -8734,7 +8543,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>38044dc8c8f0823b67231b9fca1d061bd89748868440da0764bc33481c23196a</hash>
+         <hash>71ab3c87c892694a942d1f446e90d0e56d9d3745a1b6dc05c739dff9281381c9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc0.c</file>
@@ -9106,7 +8915,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>5ab9bb9b4e3c6af0d6d01e021f8b126800e1cd12684731dc3c5fa81cbbb4626c</hash>
+         <hash>9a685c53afa8e1967e153b0db38bd7e3e5dc8e5a96ac74dd74b3fc2c5877aa03</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

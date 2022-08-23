@@ -27,4 +27,12 @@
 /* Metrology Default Config: CREEP I */
 #define DRV_METROLOGY_CONF_CREEP_I            0x${DRV_MET_CTRL_CREEP_I?string}
 /* Metrology Default Config: FEATURE_CTRL0 */
-#define DRV_METROLOGY_CONF_FCTRL0             0x${DRV_MET_CTRL_FEATCTRL1?string}
+#define DRV_METROLOGY_CONF_FCTRL0             0x${DRV_MET_CTRL_FEATCTRL0?string}
+/* Metrology Default Config: FEATURE_CTRL1 */
+#define DRV_METROLOGY_CONF_FCTRL1             0x${DRV_MET_CTRL_FEATCTRL1?string}
+/* Metrology Default Config: PULSE0_CTRL */
+#define DRV_METROLOGY_CONF_PULSE0_CTRL        0x${DRV_MET_CTRL_PULSE_CTRL_0?string}
+/* Metrology Default Config: PULSE1_CTRL */
+#define DRV_METROLOGY_CONF_PULSE1_CTRL        0x${DRV_MET_CTRL_PULSE_CTRL_1?string}
+/* Metrology Default Config: PULSE2_CTRL */
+#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x${DRV_MET_CTRL_PULSE_CTRL_2?string}

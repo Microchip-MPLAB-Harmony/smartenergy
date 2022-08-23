@@ -428,13 +428,22 @@ static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     // Advance ptr to ignore '=' and extract value
                     p++;
                     value = strtol(p, NULL, 10);
-                    if (value < GAIN_NUM_TYPE)
+                    switch(value)
                     {
-                        newConf.gain = (DRV_METROLOGY_GAIN_TYPE)value;
-                    }
-                    else
-                    {
-                        parseError = true;
+                        case 1:
+                            newConf.gain = (DRV_METROLOGY_GAIN_TYPE)0;
+                            break;
+                        case 2:
+                            newConf.gain = (DRV_METROLOGY_GAIN_TYPE)1;
+                            break;
+                        case 4:
+                            newConf.gain = (DRV_METROLOGY_GAIN_TYPE)2;
+                            break;
+                        case 8:
+                            newConf.gain = (DRV_METROLOGY_GAIN_TYPE)3;
+                            break;
+                        default:
+                            parseError = true;
                     }
                 }
                 else

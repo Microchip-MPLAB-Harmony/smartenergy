@@ -192,6 +192,14 @@ extern "C" {
 #define DRV_METROLOGY_CONF_CREEP_I            0x212d
 /* Metrology Default Config: FEATURE_CTRL0 */
 #define DRV_METROLOGY_CONF_FCTRL0             0x300
+/* Metrology Default Config: FEATURE_CTRL1 */
+#define DRV_METROLOGY_CONF_FCTRL1             0x0
+/* Metrology Default Config: PULSE0_CTRL */
+#define DRV_METROLOGY_CONF_PULSE0_CTRL        0x81009100
+/* Metrology Default Config: PULSE1_CTRL */
+#define DRV_METROLOGY_CONF_PULSE1_CTRL        0x81029100
+/* Metrology Default Config: PULSE2_CTRL */
+#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0
 
 
 // *****************************************************************************

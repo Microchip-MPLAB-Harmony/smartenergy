@@ -35,27 +35,17 @@ def _get_KI():
     
     if (st == 0): 
         # Current Transformer
-        rl = float(rl) / 1000
-        print("------------------------- [CHRIS_dbg]: CT ------------------------------")
-        print("tr = ", tr ," : rl = ", rl ," : gain = ", gain )
+        rl = float(rl) / 1000000
         m = float(tr) / (rl * gain)
-        print("m = ", m)
     elif (st == 1): 
         rl = float(rl) / 1000000
         # Shunt Resistor
-        print("------------------------- [CHRIS_dbg]: SH ------------------------------")
-        print("rl = ", rl ," : gain = ", gain )
         m = 1 / float(gain * rl)
-        print("m = ", m)
     elif (st == 2): 
         # Rogowski Coil
-        rl = float(rl) / 1000
-        print("------------------------- [CHRIS_dbg]: CO ------------------------------")
-        print("tr = ", tr ," : rl = ", rl ," : gain = ", gain )
         Ksf = float(1000000) / tr
         Kdi = float(60) / freq
         m = Ksf / (gain * Kdi)
-        print("m = ", m)
 
     return m
 
@@ -70,7 +60,7 @@ def updateRLLabel(symbol, event):
     if (event["value"]) == 1:
         symbol.setLabel("Shunt Resistor (uOhms)")
     else:
-        symbol.setLabel("Resistor Load (mOhms)")
+        symbol.setLabel("Resistor Load (uOhms)")
         
 def updateConfigPKT(symbol, event):
     m = 1000000000 / event["value"]
@@ -110,7 +100,6 @@ def updateConfigATS2427(symbol, event):
 def updateConfigKI(symbol, event):
     m = _get_KI()
     m = int(m * 2**GAIN_VI_Q)
-    print("KI = ", m, "KI(hex) = ", hex(m))
     symbol.setValue(m)
 
 def updateConfigKV(symbol, event):
@@ -122,16 +111,13 @@ def updateConfigSwellSag(symbol, event):
     threshold = event["value"]
     m = (threshold/float(ku))**2
     m = int(m * 2**32)
-    print("SWELL/SAG(hex) = ", hex(m))
     symbol.setValue(m)
 
 def updateConfigCreepPQ(symbol, event):
     freq = Database.getSymbolValue("drvMet", "DRV_MET_CONF_F")
     creep = event["value"]
-    print("creep = ", creep ," : freq = ", freq)
     m = float(creep) / (freq * 3600)
     m = int(m * 2**30)
-    print("CREEP_P_Q(hex) = ", hex(m))
     symbol.setValue(m)
 
 def updateConfigCreepI(symbol, event):
@@ -139,10 +125,9 @@ def updateConfigCreepI(symbol, event):
     creep = event["value"]
     m = creep / K_Ix
     m = int(m * 2**20)
-    print("CREEP_I(hex) = ", hex(m))
     symbol.setValue(m)
 
-def updateConfigFeatCtrl1(symbol, event):
+def updateConfigFeatCtrl0(symbol, event):
     pA = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I1") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V1")
     pB = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I2") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V2")
     pC = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I3") or Database.getSymbolValue("drvMet", "DRV_MET_CONF_V3")
@@ -151,7 +136,27 @@ def updateConfigFeatCtrl1(symbol, event):
     reg = reg | (pC << 10) | (pB << 9) | (pA << 8)
     symbol.setValue(reg)
 
-def showWaveformCapture(symbol, event):
+def updateConfigFeatCtrl1(symbol, event):
+    pEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_P_EN")
+    qEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_Q_EN")
+    iEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_I_EN")
+    reg = symbol.getValue()
+    reg = reg & 0xFFFFFFF8
+    reg = reg | (pEn << 2) | (qEn << 1) | iEn
+    symbol.setValue(reg)
+
+def updateConfigPulseXCtrl(symbol, event):
+    pulseId = event["id"]
+    pulseId = pulseId[-1]
+    pEn = Database.getSymbolValue("drvMet", "DRV_MET_CONF_EN_P" + str(pulseId))
+    pDet = Database.getSymbolValue("drvMet", "DRV_MET_CONF_DET_P" + str(pulseId))
+    pPol = Database.getSymbolValue("drvMet", "DRV_MET_CONF_POL_P" + str(pulseId))
+    pTyp = Database.getSymbolValue("drvMet", "DRV_MET_CONF_TYP_P" + str(pulseId))
+    pWid = Database.getSymbolValue("drvMet", "DRV_MET_CONF_WID_P" + str(pulseId))
+    reg = (pEn << 31) | (pDet << 28) | (pPol << 24) | (pTyp << 16) | pWid
+    symbol.setValue(reg)
+
+def showSymbolOnBoolEvent(symbol, event):
     symbol.setVisible(event["value"])
 
 def setWaveformCaptureSize(symbol, event):
@@ -159,7 +164,6 @@ def setWaveformCaptureSize(symbol, event):
     global srvMetCaptureBufSizeChn
 
     symbol.setValue(srvMetCaptureNumChannels.getValue() * srvMetCaptureBufSizeChn.getValue())
-
 
 def instantiateComponent(metComponentCommon):
     
@@ -189,7 +193,7 @@ def instantiateComponent(metComponentCommon):
     srvMetCaptureNumChannels.setDefaultValue(1)
     srvMetCaptureNumChannels.setMin(1)
     srvMetCaptureNumChannels.setMax(6)
-    srvMetCaptureNumChannels.setDependencies(showWaveformCapture, ["DRV_MET_WAVEFORM_CAPTURE"])
+    srvMetCaptureNumChannels.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
     srvMetCaptureNumChannels.setHelp(srv_met_helpkeyword)
 
     global srvMetCaptureBufSizeChn
@@ -197,7 +201,7 @@ def instantiateComponent(metComponentCommon):
     srvMetCaptureBufSizeChn.setLabel("Capture Size per Channel")
     srvMetCaptureBufSizeChn.setVisible(False)
     srvMetCaptureBufSizeChn.setDefaultValue(8000)
-    srvMetCaptureBufSizeChn.setDependencies(showWaveformCapture, ["DRV_MET_WAVEFORM_CAPTURE"])
+    srvMetCaptureBufSizeChn.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
     srvMetCaptureBufSizeChn.setHelp(srv_met_helpkeyword)
 
     srvMetCaptureBufSize = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_BUF_SIZE", None)
@@ -329,8 +333,8 @@ def instantiateComponent(metComponentCommon):
     srvMetConfTr.setDependencies(updateTRLabel, ["DRV_MET_CONF_ST"])
 
     srvMetConfRl = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_RL", srvMetConfByfDef)
-    srvMetConfRl.setLabel("Resistor Load (mOhms)")
-    srvMetConfRl.setDefaultValue(3240)
+    srvMetConfRl.setLabel("Resistor Load (uOhms)")
+    srvMetConfRl.setDefaultValue(3240000)
     srvMetConfRl.setHelp(srv_met_helpkeyword)
     srvMetConfRl.setDependencies(updateRLLabel, ["DRV_MET_CONF_ST"])
 
@@ -360,20 +364,182 @@ def instantiateComponent(metComponentCommon):
     srvMetConfSwell.setDefaultValue(132)
     srvMetConfSwell.setHelp(srv_met_helpkeyword)
 
-    srvMetConfCreepP = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_P", srvMetConfByfDef)
+    srvMetConfCreepPEn = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_CREEP_P_EN", srvMetConfByfDef)
+    srvMetConfCreepPEn.setLabel("Active Power Creep Threshold Enable")
+    srvMetConfCreepPEn.setDefaultValue(0)
+    srvMetConfCreepPEn.setHelp(srv_met_helpkeyword)
+
+    srvMetConfCreepP = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_P", srvMetConfCreepPEn)
     srvMetConfCreepP.setLabel("Creep Active Energy (Wh)")
     srvMetConfCreepP.setDefaultValue(2)
+    srvMetConfCreepP.setVisible(False)
     srvMetConfCreepP.setHelp(srv_met_helpkeyword)
+    srvMetConfCreepP.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_P_EN"])
 
-    srvMetConfCreepQ = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_Q", srvMetConfByfDef)
+    srvMetConfCreepQEn = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_CREEP_Q_EN", srvMetConfByfDef)
+    srvMetConfCreepQEn.setLabel("Reactive Power Creep Threshold Enable")
+    srvMetConfCreepQEn.setDefaultValue(0)
+    srvMetConfCreepQEn.setHelp(srv_met_helpkeyword)
+
+    srvMetConfCreepQ = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_Q", srvMetConfCreepQEn)
     srvMetConfCreepQ.setLabel("Creep Reactive Energy (VARh)")
     srvMetConfCreepQ.setDefaultValue(2)
+    srvMetConfCreepQ.setVisible(False)
     srvMetConfCreepQ.setHelp(srv_met_helpkeyword)
+    srvMetConfCreepQ.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_Q_EN"])
 
-    srvMetConfCreepI = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_I", srvMetConfByfDef)
+    srvMetConfCreepIEn = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_CREEP_I_EN", srvMetConfByfDef)
+    srvMetConfCreepIEn.setLabel("Current Creep Threshold Enable")
+    srvMetConfCreepIEn.setDefaultValue(0)
+    srvMetConfCreepIEn.setHelp(srv_met_helpkeyword)
+
+    srvMetConfCreepI = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CREEP_I", srvMetConfCreepIEn)
     srvMetConfCreepI.setLabel("Creep Current (mA)")
     srvMetConfCreepI.setDefaultValue(5)
+    srvMetConfCreepI.setVisible(False)
     srvMetConfCreepI.setHelp(srv_met_helpkeyword)
+    srvMetConfCreepI.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_I_EN"])
+    
+    srvMetConfPulse0 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE0", srvMetConfByfDef)
+    srvMetConfPulse0.setLabel("Pulse 0 Control")
+    srvMetConfPulse0.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP0En = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_EN_P0", srvMetConfPulse0)
+    srvMetConfP0En.setLabel("Output Pulse Enable (PD17)")
+    srvMetConfP0En.setDefaultValue(1)
+    srvMetConfP0En.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP0Detent = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_DET_P0", srvMetConfPulse0)
+    srvMetConfP0Detent.setLabel("Total Absolute Values (P/Q)")
+    srvMetConfP0Detent.setDefaultValue(0)
+    srvMetConfP0Detent.setOutputMode("Key")
+    srvMetConfP0Detent.setDisplayMode("Description")
+    srvMetConfP0Detent.setHelp(srv_met_helpkeyword)
+    srvMetConfP0Detent.addKey("NET", "0", "NET")
+    srvMetConfP0Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
+    srvMetConfP0Detent.addKey("DELIVERED", "2", "DELIVERED")
+
+    srvMetConfP0Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P0", srvMetConfPulse0)
+    srvMetConfP0Polarity.setLabel("Polarity")
+    srvMetConfP0Polarity.setDefaultValue(1)
+    srvMetConfP0Polarity.setOutputMode("Key")
+    srvMetConfP0Polarity.setDisplayMode("Description")
+    srvMetConfP0Polarity.setHelp(srv_met_helpkeyword)
+    srvMetConfP0Polarity.addKey("PULSE_LOW", "0", "PULSE_LOW")
+    srvMetConfP0Polarity.addKey("PULSE_HIGH", "1", "PULSE_HIGH")
+
+    srvMetConfP0Type = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_TYP_P0", srvMetConfPulse0)
+    srvMetConfP0Type.setLabel("Type")
+    srvMetConfP0Type.setDefaultValue(0)
+    srvMetConfP0Type.setOutputMode("Key")
+    srvMetConfP0Type.setDisplayMode("Description")
+    srvMetConfP0Type.setHelp(srv_met_helpkeyword)
+    srvMetConfP0Type.addKey("P_T", "0", "P_T")
+    srvMetConfP0Type.addKey("P_T_F", "1", "P_T_F")
+    srvMetConfP0Type.addKey("Q_T", "2", "Q_T")
+    srvMetConfP0Type.addKey("Q_T_F", "3", "Q_T_F")
+    srvMetConfP0Type.addKey("I_T", "4", "I_T")
+    srvMetConfP0Type.addKey("I_T_F", "5", "I_T_F")  
+
+    srvMetConfP0Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P0", srvMetConfPulse0)
+    srvMetConfP0Width.setLabel("Width")
+    srvMetConfP0Width.setVisible(True)
+    srvMetConfP0Width.setDefaultValue(0x9100)
+    srvMetConfP0Width.setHelp(srv_met_helpkeyword)
+    
+    srvMetConfPulse1 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE1", srvMetConfByfDef)
+    srvMetConfPulse1.setLabel("Pulse 1 Control")
+    srvMetConfPulse1.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP1En = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_EN_P1", srvMetConfPulse1)
+    srvMetConfP1En.setLabel("Output Pulse Enable (PD18)")
+    srvMetConfP1En.setDefaultValue(1)
+    srvMetConfP1En.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP1Detent = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_DET_P1", srvMetConfPulse1)
+    srvMetConfP1Detent.setLabel("Total Absolute Values (P/Q)")
+    srvMetConfP1Detent.setDefaultValue(0)
+    srvMetConfP1Detent.setOutputMode("Key")
+    srvMetConfP1Detent.setDisplayMode("Description")
+    srvMetConfP1Detent.setHelp(srv_met_helpkeyword)
+    srvMetConfP1Detent.addKey("NET", "0", "NET")
+    srvMetConfP1Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
+    srvMetConfP1Detent.addKey("DELIVERED", "2", "DELIVERED")
+
+    srvMetConfP1Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P1", srvMetConfPulse1)
+    srvMetConfP1Polarity.setLabel("Polarity")
+    srvMetConfP1Polarity.setDefaultValue(1)
+    srvMetConfP1Polarity.setOutputMode("Key")
+    srvMetConfP1Polarity.setDisplayMode("Description")
+    srvMetConfP1Polarity.setHelp(srv_met_helpkeyword)
+    srvMetConfP1Polarity.addKey("PULSE_LOW", "0", "PULSE_LOW")
+    srvMetConfP1Polarity.addKey("PULSE_HIGH", "1", "PULSE_HIGH")
+
+    srvMetConfP1Type = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_TYP_P1", srvMetConfPulse1)
+    srvMetConfP1Type.setLabel("Type")
+    srvMetConfP1Type.setDefaultValue(2)
+    srvMetConfP1Type.setOutputMode("Key")
+    srvMetConfP1Type.setDisplayMode("Description")
+    srvMetConfP1Type.setHelp(srv_met_helpkeyword)
+    srvMetConfP1Type.addKey("P_T", "0", "P_T")
+    srvMetConfP1Type.addKey("P_T_F", "1", "P_T_F")
+    srvMetConfP1Type.addKey("Q_T", "2", "Q_T")
+    srvMetConfP1Type.addKey("Q_T_F", "3", "Q_T_F")
+    srvMetConfP1Type.addKey("I_T", "4", "I_T")
+    srvMetConfP1Type.addKey("I_T_F", "5", "I_T_F")    
+
+    srvMetConfP1Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P1", srvMetConfPulse1)
+    srvMetConfP1Width.setLabel("Width")
+    srvMetConfP1Width.setVisible(True)
+    srvMetConfP1Width.setDefaultValue(0x9100)
+    srvMetConfP1Width.setHelp(srv_met_helpkeyword)
+    
+    srvMetConfPulse2 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE2", srvMetConfByfDef)
+    srvMetConfPulse2.setLabel("Pulse 2 Control")
+    srvMetConfPulse2.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP2En = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_EN_P2", srvMetConfPulse2)
+    srvMetConfP2En.setLabel("Output Pulse Enable (PD19)")
+    srvMetConfP2En.setDefaultValue(0)
+    srvMetConfP2En.setHelp(srv_met_helpkeyword)
+
+    srvMetConfP2Detent = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_DET_P2", srvMetConfPulse2)
+    srvMetConfP2Detent.setLabel("Total Absolute Values (P/Q)")
+    srvMetConfP2Detent.setDefaultValue(0)
+    srvMetConfP2Detent.setOutputMode("Key")
+    srvMetConfP2Detent.setDisplayMode("Description")
+    srvMetConfP2Detent.setHelp(srv_met_helpkeyword)
+    srvMetConfP2Detent.addKey("NET", "0", "NET")
+    srvMetConfP2Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
+    srvMetConfP2Detent.addKey("DELIVERED", "2", "DELIVERED")
+
+    srvMetConfP2Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P2", srvMetConfPulse2)
+    srvMetConfP2Polarity.setLabel("Polarity")
+    srvMetConfP2Polarity.setDefaultValue(0)
+    srvMetConfP2Polarity.setOutputMode("Key")
+    srvMetConfP2Polarity.setDisplayMode("Description")
+    srvMetConfP2Polarity.setHelp(srv_met_helpkeyword)
+    srvMetConfP2Polarity.addKey("PULSE_LOW", "0", "PULSE_LOW")
+    srvMetConfP2Polarity.addKey("PULSE_HIGH", "1", "PULSE_HIGH")
+
+    srvMetConfP2Type = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_TYP_P2", srvMetConfPulse2)
+    srvMetConfP2Type.setLabel("Type")
+    srvMetConfP2Type.setDefaultValue(0)
+    srvMetConfP2Type.setOutputMode("Key")
+    srvMetConfP2Type.setDisplayMode("Description")
+    srvMetConfP2Type.setHelp(srv_met_helpkeyword)
+    srvMetConfP2Type.addKey("P_T", "0", "P_T")
+    srvMetConfP2Type.addKey("P_T_F", "1", "P_T_F")
+    srvMetConfP2Type.addKey("Q_T", "2", "Q_T")
+    srvMetConfP2Type.addKey("Q_T_F", "3", "Q_T_F")
+    srvMetConfP2Type.addKey("I_T", "4", "I_T")
+    srvMetConfP2Type.addKey("I_T_F", "5", "I_T_F")    
+
+    srvMetConfP2Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P2", srvMetConfPulse2)
+    srvMetConfP2Width.setLabel("Width")
+    srvMetConfP2Width.setVisible(True)
+    srvMetConfP2Width.setDefaultValue(0x0000)
+    srvMetConfP2Width.setHelp(srv_met_helpkeyword)
 
     #####################################################################################################################################
     # METROLOGY REGISTERS 
@@ -455,33 +621,40 @@ def instantiateComponent(metComponentCommon):
     srvMetRegCreepI.setReadOnly(True)
     srvMetRegCreepI.setDependencies(updateConfigCreepI, ["DRV_MET_CONF_CREEP_I", "DRV_MET_CONF_F", "DRV_MET_CONF_TR", "DRV_MET_CONF_RL", "DRV_MET_CONF_GAIN"])
 
+    srvMetRegFEATCTRL0 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL0", None)
+    srvMetRegFEATCTRL0.setLabel("FEATURE_CTRL0")
+    srvMetRegFEATCTRL0.setVisible(True)
+    srvMetRegFEATCTRL0.setDefaultValue(0x00000300)
+    srvMetRegFEATCTRL0.setReadOnly(True)
+    srvMetRegFEATCTRL0.setDependencies(updateConfigFeatCtrl0, ["DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
+
     srvMetRegFEATCTRL1 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL1", None)
     srvMetRegFEATCTRL1.setLabel("FEATURE_CTRL1")
     srvMetRegFEATCTRL1.setVisible(True)
-    srvMetRegFEATCTRL1.setDefaultValue(0x00000300)
+    srvMetRegFEATCTRL1.setDefaultValue(0)
     srvMetRegFEATCTRL1.setReadOnly(True)
-    srvMetRegFEATCTRL1.setDependencies(updateConfigFeatCtrl1, ["DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
+    srvMetRegFEATCTRL1.setDependencies(updateConfigFeatCtrl1, ["DRV_MET_CONF_CREEP_P_EN", "DRV_MET_CONF_CREEP_Q_EN", "DRV_MET_CONF_CREEP_I_EN"])
 
-    srvMetRegPulse0Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE0CTRL", None)
+    srvMetRegPulse0Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_0", None)
     srvMetRegPulse0Ctrl.setLabel("PULSE0_CTRL")
     srvMetRegPulse0Ctrl.setVisible(True)
     srvMetRegPulse0Ctrl.setDefaultValue(0x81009100)
     srvMetRegPulse0Ctrl.setReadOnly(True)
-    srvMetRegPulse0Ctrl.setDependencies(updateConfigPulseXCtrl, ["XXXXX"])
+    srvMetRegPulse0Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P0", "DRV_MET_CONF_DET_P0", "DRV_MET_CONF_POL_P0", "DRV_MET_CONF_TYP_P0", "DRV_MET_CONF_WID_P0"])
 
-    srvMetRegPulse1Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE1CTRL", None)
+    srvMetRegPulse1Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_1", None)
     srvMetRegPulse1Ctrl.setLabel("PULSE1_CTRL")
     srvMetRegPulse1Ctrl.setVisible(True)
     srvMetRegPulse1Ctrl.setDefaultValue(0x81029100)
     srvMetRegPulse1Ctrl.setReadOnly(True)
-    srvMetRegPulse1Ctrl.setDependencies(updateConfigPulseXCtrl, ["XXXXX"])
+    srvMetRegPulse1Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P1", "DRV_MET_CONF_DET_P1", "DRV_MET_CONF_POL_P1", "DRV_MET_CONF_TYP_P1", "DRV_MET_CONF_WID_P1"])
 
-    srvMetRegPulse2Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE2CTRL", None)
+    srvMetRegPulse2Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_2", None)
     srvMetRegPulse2Ctrl.setLabel("PULSE2_CTRL")
     srvMetRegPulse2Ctrl.setVisible(True)
-    srvMetRegPulse2Ctrl.setDefaultValue(0x10049100)
+    srvMetRegPulse2Ctrl.setDefaultValue(0x0)
     srvMetRegPulse2Ctrl.setReadOnly(True)
-    srvMetRegPulse2Ctrl.setDependencies(updateConfigPulseXCtrl, ["XXXXX"])
+    srvMetRegPulse2Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P2", "DRV_MET_CONF_DET_P2", "DRV_MET_CONF_POL_P2", "DRV_MET_CONF_TYP_P2", "DRV_MET_CONF_WID_P2"])
     
     #####################################################################################################################################
     # METROLOGY FILES 

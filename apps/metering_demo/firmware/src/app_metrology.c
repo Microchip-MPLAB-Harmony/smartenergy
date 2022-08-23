@@ -757,6 +757,8 @@ void APP_METROLOGY_Restart (void)
     app_metrologyData.state = APP_METROLOGY_STATE_INIT;
     app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
     
+    /* Disable ICM : TBD -> icm_reset, disable ICM int, clear pending ICM */
+    
     DRV_METROLOGY_Close();
     DRV_METROLOGY_Initialize(NULL, RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_SOFT_RST_Val));
     
