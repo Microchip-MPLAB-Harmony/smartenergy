@@ -17,9 +17,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-1B2EA98D-2D73-4430-B618-98A85A520318.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="library-interface-g3-plc" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Library Interface (G3-PLC)</title>
+<title>Library Interface (G3-PLC)</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-library-interface-g3-plc" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -68,10 +67,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -95,7 +93,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -109,16 +106,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -157,7 +187,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -199,44 +229,44 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="library-interface-g3-plc">
 <h1 class="title topictitle1" id="ariaid-title1">Library Interface (G3-PLC)</h1><div class="body"><p class="p">If the PLC Driver uses G3-PLC PHY, the PLC PHY Coupling service library provides the following interfaces:</p>
 <p class="p"><strong class="ph b">Functions</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64586e21"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64586e23"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d27752e21"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d27752e23"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e21 "><span>SRV_PCOUP_Get_Config</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e23 "><span>Get the PLC PHY Coupling parameters for the specified transmission branch</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e21 "><span>SRV_PCOUP_Get_Config</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e23 "><span>Get the PLC PHY Coupling parameters for the specified transmission branch</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e21 "><span>SRV_PCOUP_Set_Config</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e23 "><span>Set the PLC PHY Coupling parameters for the specified transmission branch</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e21 "><span>SRV_PCOUP_Set_Config</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e23 "><span>Set the PLC PHY Coupling parameters for the specified transmission branch</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e21 "><span>SRV_PCOUP_Get_Default_Branch</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e23 "><span>Get the default branch of the PLC transmission coupling</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e21 "><span>SRV_PCOUP_Get_Default_Branch</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e23 "><span>Get the default branch of the PLC transmission coupling</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e21 "><span>SRV_PCOUP_Get_Default_Branch</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e23 "><span>Get the G3-PLC PHY band associated to the specified transmission branch</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e21 "><span>SRV_PCOUP_Get_Default_Branch</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e23 "><span>Get the G3-PLC PHY band associated to the specified transmission branch</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Data types and constants</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64586e56"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64586e58"><span>Type</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64586e60"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d27752e56"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d27752e58"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d27752e60"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e56 "><span>SRV_PLC_PCOUP_BRANCH</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e58 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e60 "><span>List of possible transmission branches</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e56 "><span>SRV_PLC_PCOUP_BRANCH</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e58 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e60 "><span>List of possible transmission branches</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e56 "><span>SRV_PLC_PCOUP_DATA</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e58 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64586e60 "><span>PLC PHY Coupling data</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e56 "><span>SRV_PLC_PCOUP_DATA</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e58 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d27752e60 "><span>PLC PHY Coupling data</span></td>
 </tr>
 </tbody>
 </table>

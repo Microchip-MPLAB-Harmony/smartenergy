@@ -11,11 +11,11 @@
 <meta name="DC.relation" scheme="URI" content="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html" />
 <meta name="DC.relation" scheme="URI" content="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html" />
 <meta name="DC.relation" scheme="URI" content="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="driver-libraries" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Driver Libraries</title>
+<title>Driver Libraries</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-driver-libraries" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -64,10 +64,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -91,7 +90,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -105,16 +103,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -153,7 +184,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -195,7 +226,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="driver-libraries">
 <h1 class="title topictitle1" id="ariaid-title1">Driver Libraries</h1><div class="body"><p class="p"><strong class="ph b">PLC</strong> stands for Power Line Communications, a communication technology that enables sending data over existing AC or DC power cables.</p>
 <p class="p">The Smart Energy PLC Drivers are software components designed to act as interface between the Host MCU where it is running and a PLC transceiver (PL360 or PL460).</p>
@@ -248,6 +279,8 @@ Available binaries are:</p>
 <li class="link ulchildlink"><strong><a href="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html">PLC PHY Driver</a></strong><br />
 </li>
 <li class="link ulchildlink"><strong><a href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html">G3 MAC RT Driver</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html">Metrology Driver</a></strong><br />
 </li>
 </ul>
 

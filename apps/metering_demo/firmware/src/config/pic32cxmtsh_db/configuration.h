@@ -166,8 +166,6 @@ extern "C" {
 
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
-/* Metrology Capture Buffer Size */
-#define DRV_METROLOGY_CAPTURE_BUF_SIZE        32000
 /* Metrology Default Config: Meter Constant */
 #define DRV_METROLOGY_CONF_PKT                0x500000
 /* Metrology Default Config: Meter Type */
@@ -200,6 +198,10 @@ extern "C" {
 #define DRV_METROLOGY_CONF_PULSE1_CTRL        0x81029100
 /* Metrology Default Config: PULSE2_CTRL */
 #define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0
+/* Metrology Default Config: Waveform Capture */
+#define DRV_METROLOGY_CONF_WAVEFORM           0x0
+/* Metrology Default Config: Capture Buffer Size */
+#define DRV_METROLOGY_CAPTURE_BUF_SIZE        0
 
 
 // *****************************************************************************

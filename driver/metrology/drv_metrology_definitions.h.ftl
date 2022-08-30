@@ -104,19 +104,30 @@ typedef void (* DRV_METROLOGY_CALLBACK)(void);
 #define  RMS_HARMONIC   0x80000000
 #define  CONST_Pi       3.1415926
 
-typedef enum {
-    // Current Transformer
-    SENSOR_CT        = 0,
-    // Shunt resistor
-    SENSOR_SHUNT     = 1,
-    // Rogowski Coil
-    SENSOR_ROGOWSKI  = 2,
+/* Metrology Driver Sensor Type
 
+  Summary:
+    Describes the sensor type.
+
+  Description:
+    The metrology driver has been designed to interface with Current Transformers, Rogowski Coils and Shunt Resistors current sensors.
+*/
+typedef enum {
+    SENSOR_CT        = 0,
+    SENSOR_SHUNT     = 1,
+    SENSOR_ROGOWSKI  = 2,
     SENSOR_NUM_TYPE
 } DRV_METROLOGY_SENSOR_TYPE;
 
-typedef enum
-{
+/* Metrology Driver Gain Type
+
+  Summary:
+    Gain selected for use in the ADC front-end.
+
+  Description:
+    On Current measurement channels gain for voltage is fixed to 1.
+*/
+typedef enum {
     GAIN_1        = 0,
     GAIN_2        = 1,
     GAIN_4        = 2,
@@ -124,38 +135,64 @@ typedef enum
     GAIN_NUM_TYPE
 } DRV_METROLOGY_GAIN_TYPE;
 
-typedef enum
-{
+/* Metrology Driver Phase Identifier
+
+  Summary:
+    Line identifier used in the calibration process.
+
+  Description:
+    Phase A, B and C are used to identify Ua, Ub and Uc respectively. Phase T includes all phases.
+*/
+typedef enum {
     PHASE_A        = 1,
     PHASE_B        = 2,
     PHASE_C        = 3,
-    PHASE_N        = 4,
     PHASE_T        = 5,
     PHASE_ID_NUM   = PHASE_T
 } DRV_METROLOGY_PHASE_ID;
 
+
+/* Metrology Driver Calibration References
+
+  Summary:
+    Specifies the all reference values used for the auto calibration process.
+
+  Description:
+    - aimVx refers to the RMS voltage applied to the voltage input where x = A,B,C
+    - aimIx refers to the Rms current applied to the current input where x = A,B,C
+    - anglex refers to the Angle between the voltage and current vectors where x = A,B,C
+    - lineID identifies the phase/phases to calibrate
+*/
 typedef struct {
-    double aimVA;    /* aim voltage  * 1000 */
-    double aimIA;    /* aim current  * 10000 */
-    double angleA;   /* phase angle * 1000 */
-    double aimVB;    /* aim voltage  * 1000 */
-    double aimIB;    /* aim current  * 10000 */
-    double angleB;   /* phase angle * 1000 */
-    double aimVC;    /* aim voltage  * 1000 */
-    double aimIC;    /* aim current  * 10000 */
-    double angleC;   /* phase angle * 1000 */
-	DRV_METROLOGY_PHASE_ID lineId;
+    double aimVA;  
+    double aimIA;  
+    double angleA; 
+    double aimVB;  
+    double aimIB;  
+    double angleB; 
+    double aimVC;  
+    double aimIC;  
+    double angleC; 
+    DRV_METROLOGY_PHASE_ID lineId;
 } DRV_METROLOGY_CALIBRATION_REFS;
 
+/* Metrology Driver Calibration Data
+
+  Summary:
+    Specifies all data internally needed for the auto calibration process.
+
+  Description:
+    - references. Calibration references. Client must be set the references before starting the calibration process.
+    - freq. Stores the mains frequency passed as parameter in the DRV_METROLOGY_SetConfiguration() routine.
+    - numIntegrationPeriods. Number of integration periods needed to complete the calibration process. It is set internally to 4.
+    - running. Flag used to check if the calibration process was completed.
+    - result. Flag used to check if the calibration process has been successful.
+    - Rest of the values are internally used to perform the calibration process.
+*/
 typedef struct {
     DRV_METROLOGY_CALIBRATION_REFS references;
-//    uint32_t meterConst;
     uint32_t featureCtrl0Backup;
     double freq;                     
-//    uint32_t gain_i;                 
-//    double k_i;                      
-//    double rl;                       
-//    uint32_t k_u;                    
     uint32_t numIntegrationPeriods;
     uint64_t dspAccIa;
     uint64_t dspAccIb;
@@ -171,12 +208,21 @@ typedef struct {
     int64_t  dspAccQa;
     int64_t  dspAccQb;
     int64_t  dspAccQc;
-//    DRV_METROLOGY_SENSOR_TYPE st;
-    uint8_t  harmonicOrder;
     bool  running;
     bool  result;
 } DRV_METROLOGY_CALIBRATION;
 
+/* Metrology Driver AFE Events
+
+  Summary:
+    Identifies all events related to metrology library.
+
+  Description:
+    - pXDir. Identifies the sign of the active power in channel X. "1" means a negative value, "0" is a positive value.
+    - qXDir. Identifies the sign of the reactive power in channel X. "1" means a negative value, "0" is a positive value.
+    - sagX. Voltage Sag Detected Flag for Channel X. "1" means that voltage sag is detected.
+    - swellX. Voltage Swell Detected Flag for Channel X. "1" means that voltage Swell is detected.
+*/
 typedef struct {
     uint32_t paDir : 1;
     uint32_t pbDir : 1;
@@ -196,6 +242,16 @@ typedef struct {
     uint32_t reserved2 : 17;
 } DRV_METROLOGY_AFE_EVENTS;
 
+/* Metrology Driver Harmonic Data
+
+  Summary:
+    Identifies the result of the Harmonic Analysis process.
+
+  Description:
+    - Irms_X_m. RMS current value obtained as the result of last the harmonic analysis regarding channel X.
+    - Irms_N_m. RMS current value obtained as the result of last the harmonic analysis regarding neutral channel.
+    - Vrms_X_m. RMS voltage value obtained as the result of last the harmonic analysis regarding channel X.
+*/
 typedef struct {
     double Irms_A_m;
     double Irms_B_m;
@@ -206,6 +262,21 @@ typedef struct {
     double Vrms_C_m;
 } DRV_METROLOGY_HARMONIC;
 
+/* Metrology Driver RMS type
+
+  Summary:
+    Identifies the all RMS types of measurements.
+
+  Description:
+    RMS values are calculated including all harmonics of each phase, where:
+        - U = Voltage RMS value
+        - I = Current RMS value
+        - P = Active power RMS value
+        - Q = Reactive power RMS value
+        - S = Aparent power RMS value
+        - FREQ = Frequency of the line voltage fundamental harmonic component determined by the Metrology library using the dominant phase
+        - ANGLE = Angle between the voltage and current vectors
+*/
 typedef enum {
     RMS_UA = 0,
     RMS_UB,
@@ -236,62 +307,62 @@ typedef enum {
     RMS_TYPE_NUM
 } DRV_METROLOGY_RMS_TYPE;
 
+/* Metrology Driver AFE calculated data
+
+  Summary:
+    Identifies the data calculated from the metrology AFE measurements.
+
+  Description:
+    - energy. Active energy calculated value.
+    - afeEvents. AFE events data.
+    - RMS[RMS_TYPE_NUM]. RMS calculated values.
+*/
 typedef struct {
     uint32_t energy;
     DRV_METROLOGY_AFE_EVENTS afeEvents;
     uint32_t RMS[RMS_TYPE_NUM];
 } DRV_METROLOGY_AFE_DATA;
 
-typedef enum {
-    PENERGY = 0,
-    QENERGY = 1,
-} DRV_METROLOGY_ENERGY_TYPE;
-
-typedef enum {
-    ABS = 0,
-    ALG = 1
-} DRV_METROLOGY_ENERGY_MODE;
-
-typedef struct
-{
-    /* Meter Constant */
-    uint32_t mc;
-
-    /* Mains frequency */
-    double freq;
-
-    /* Transformer ratio */
-    double tr;
-
-    /* Resistor load */
-    double rl;
-
-    /* Voltage divider ratio */
-    uint32_t ku;
-
-    /* Sensor type */
-    DRV_METROLOGY_SENSOR_TYPE st;
-
-    /* Programmable gain amplifier of the AFE */
-    DRV_METROLOGY_GAIN_TYPE gain;
-
-} DRV_METROLOGY_CONFIGURATION;
-
-// *****************************************************************************
-/* DRV_PLC_PHY Transfer Object State
+/* Metrology Driver Configuration
 
   Summary:
-    Defines the status of the DRV_PLC_PHY Transfer Object.
+    Identifies values needed to set different metrology configurations.
 
   Description:
-    This enumeration defines the status of the DRV_PLC_PHY Transfer Object.
+    - mc. Meter Constant (amount of energy signified by one output pulse). Units: pulses/kWh (active energy), pulses/kVARh (reactive energy), or pulses/kAmp2-h (amp square)
+    - freq. Mains frequency. Units: Hz.
+    - tr. 
+      - In the case of a current transformer, this is the current transformer ratio
+      - In the case of a Rogowski Coil, this is the current sensitivity (units: uV/A) at the main frequency specified in ?Frequency? parameter.
+    - rl.
+      - In the case of current transformer, this is the resistor load or burden resistor (units: ?).
+      - In the case of shunt resistor, this is the shunt resistor value (units: u?)
+    - ku. Voltage divider ratio.
+    - st. Sensor Type. Refer to DRV_METROLOGY_SENSOR_TYPE.
+    - gain. Programmable Gain Amplifier of the AFE (analog front end). Refer to DRV_METROLOGY_GAIN_TYPE.
+*/
+typedef struct {
+    uint32_t mc;
+    double freq;
+    double tr;
+    double rl;
+    uint32_t ku;
+    DRV_METROLOGY_SENSOR_TYPE st;
+    DRV_METROLOGY_GAIN_TYPE gain;
+} DRV_METROLOGY_CONFIGURATION;
+
+/* Metrology Library State
+
+  Summary:
+    Identifies the state of the metrology library.
+
+  Description:
+    For further information about the state diagram, refer to DRV_METROLOGY_GetState() online documentation.
 
   Remarks:
     None.
 */
-
-typedef enum
-{
+typedef enum {
     DRV_METROLOGY_STATE_HALT = STATUS_STATUS_HALT,
     DRV_METROLOGY_STATE_RESET = STATUS_STATUS_RESET,
     DRV_METROLOGY_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
@@ -309,23 +380,17 @@ typedef enum
     Defines the data required to initialize the Metrology driver
 
   Description:
-    This data type defines the data required to initialize or the Metrology driver.
+    - regBaseAddress. Base Address for Metrology registers.
+    - binStartAddress. Start Address where Metrology library application file is located.
+    - binEndAddress. End Address where Metrology library application binary file is located.
 
   Remarks:
     None.
 */
-
-typedef struct
-{
-    /* Base Address for Metrology registers */
-    uint32_t                        regBaseAddress;
-
-    /* Start Address where MET binary file is located */
-    uint32_t                        binStartAddress;
-
-    /* End Address where MET binary file is located */
-    uint32_t                        binEndAddress;
-
+typedef struct {
+    uint32_t regBaseAddress;
+    uint32_t binStartAddress;
+    uint32_t binEndAddress;
 } DRV_METROLOGY_INIT;
 
 // *****************************************************************************

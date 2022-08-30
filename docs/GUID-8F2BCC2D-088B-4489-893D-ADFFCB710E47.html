@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-DC136775-2C6D-44AC-810C-0CD7057E42EF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-psniffer-settxmessage-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_PSNIFFER_SetTxMessage Function</title>
+<title>SRV_PSNIFFER_SetTxMessage Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-psniffer-settxmessage-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,17 +223,17 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-psniffer-settxmessage-function">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_PSNIFFER_SetTxMessage Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-DC136775-2C6D-44AC-810C-0CD7057E42EF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d23293e21', this);">Copy</button><code id="d23293e21" content="void SRV_PSNIFFER_SetTxMessage&#xA;(&#xA;    DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj&#xA;);"><span class="ph token keyword">void</span> SRV_PSNIFFER_SetTxMessage
-<span class="ph token punctuation">(</span>
-    DRV_PLC_PHY_TRANSMISSION_OBJ<span class="ph token operator">*</span> pTxObj
-<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> SRV_PSNIFFER_SetTxMessage
+(
+    DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj
+);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Gives a transmitted PLC object to Sniffer library so it is stored for later serialization.</p>
 </div>
@@ -215,12 +245,12 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d23293e68"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d23293e70"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d9419e56"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d9419e58"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d23293e68 "><span>pTxObj</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d23293e70 "><span>Pointer to a PLC transmission object to be stored (see <a class="xref" href="GUID-C351E8B0-8A8B-4006-89E0-3DE133B33D5E.html"><em class="ph i">G3 DRV_PLC_PHY_TRANSMISSION_OBJ Struct</em></a> and <a class="xref" href="GUID-D6A8F4B2-ABF8-4BB2-B38F-28A4A20CA152.html"><em class="ph i">PRIME DRV_PLC_PHY_TRANSMISSION_OBJ Struct</em></a>)</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d9419e56 "><span>pTxObj</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d9419e58 "><span>Pointer to a PLC transmission object to be stored (see <a class="xref" href="GUID-C351E8B0-8A8B-4006-89E0-3DE133B33D5E.html"><em class="ph i">G3 DRV_PLC_PHY_TRANSMISSION_OBJ Struct</em></a> and <a class="xref" href="GUID-D6A8F4B2-ABF8-4BB2-B38F-28A4A20CA152.html"><em class="ph i">PRIME DRV_PLC_PHY_TRANSMISSION_OBJ Struct</em></a>)</span></td>
 </tr>
 </tbody>
 </table>
@@ -230,13 +260,13 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d23293e98', this);">Copy</button><code id="d23293e98" content="static void APP_PLCTxFrame(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj)&#xA;{&#xA;    /* Give transmission object to Sniffer */&#xA;    SRV_PSNIFFER_SetTxMessage(pTxObj);&#xA;    /* Send PLC frame through PHY Driver */&#xA;    /* DRV_PLC_PHY_xxx(pTxObj); */&#xA;}"><span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLCTxFrame</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_TRANSMISSION_OBJ<span class="ph token operator">*</span> pTxObj<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Give transmission object to Sniffer */</span>
-    <span class="ph token function">SRV_PSNIFFER_SetTxMessage</span><span class="ph token punctuation">(</span>pTxObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Send PLC frame through PHY Driver */</span>
-    <span class="ph token comment">/* DRV_PLC_PHY_xxx(pTxObj); */</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLCTxFrame</span>(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj)
+{
+    <em class="hl-comment">/* Give transmission object to Sniffer */</em>
+    SRV_PSNIFFER_SetTxMessage(pTxObj);
+    <em class="hl-comment">/* Send PLC frame through PHY Driver */</em>
+    <em class="hl-comment">/* DRV_PLC_PHY_xxx(pTxObj); */</em>
+}</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">None.</p>
 </div>

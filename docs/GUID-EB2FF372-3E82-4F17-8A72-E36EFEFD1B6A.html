@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-txrequest-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_TxRequest Function</title>
+<title>DRV_PLC_PHY_TxRequest Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-txrequest-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,17 +223,17 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-txrequest-function">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_TxRequest Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d89241e21', this);">Copy</button><code id="d89241e21" content="void DRV_PLC_PHY_TxRequest (&#xA;    const DRV_HANDLE handle,&#xA;    DRV_PLC_PHY_TRANSMISSION_OBJ *transmitObj&#xA;);"><span class="ph token keyword">void</span> DRV_PLC_PHY_TxRequest <span class="ph token punctuation">(</span>
-    <span class="ph token keyword">const</span> DRV_HANDLE handle<span class="ph token punctuation">,</span>
-    DRV_PLC_PHY_TRANSMISSION_OBJ <span class="ph token operator">*</span>transmitObj
-<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> DRV_PLC_PHY_TxRequest (
+    <strong class="hl-keyword">const</strong> DRV_HANDLE handle,
+    DRV_PLC_PHY_TRANSMISSION_OBJ *transmitObj
+);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Allows a client to transmit PLC PHY data through Power Line (PLC).</p>
 </div>
@@ -216,15 +246,15 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d89241e79"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d89241e81"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d74256e60"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d74256e62"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d89241e79 "><span>handle</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d89241e81 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD.html"><em class="ph i">DRV_PLC_PHY_Open</em></a> routine</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d74256e60 "><span>handle</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d74256e62 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD.html"><em class="ph i">DRV_PLC_PHY_Open</em></a> routine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d89241e79 "><span>transmitObj</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d89241e81 "><span>Pointer to the object to transmit</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d74256e60 "><span>transmitObj</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d74256e62 "><span>Pointer to the object to transmit</span></td>
 </tr>
 </tbody>
 </table>
@@ -234,15 +264,15 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d89241e109', this);">Copy</button><code id="d89241e109" content="// 'handle', returned from DRV_PLC_PHY_Open previously called&#xA;&#xA;// Local function implemented in the user application&#xA;_setupTransmissionParameters();&#xA;&#xA;memcpy(transmitObj.data, src_buf, data_len);&#xA;transmitObj.length = data_len;&#xA;&#xA;DRV_PLC_PHY_TxRequest(handle, &amp;transmitObj);"><span class="ph token comment">// 'handle', returned from DRV_PLC_PHY_Open previously called</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><em class="hl-comment">// 'handle', returned from DRV_PLC_PHY_Open previously called</em>
 
-<span class="ph token comment">// Local function implemented in the user application</span>
-<span class="ph token function">_setupTransmissionParameters</span><span class="ph token punctuation">(</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+<em class="hl-comment">// Local function implemented in the user application</em>
+<span class="hl-functions">_setupTransmissionParameters</span>();
 
-<span class="ph token function">memcpy</span><span class="ph token punctuation">(</span>transmitObj<span class="ph token punctuation">.</span>data<span class="ph token punctuation">,</span> src_buf<span class="ph token punctuation">,</span> data_len<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-transmitObj<span class="ph token punctuation">.</span>length <span class="ph token operator">=</span> data_len<span class="ph token punctuation">;</span>
+memcpy(transmitObj.data, src_buf, data_len);
+transmitObj.length = data_len;
 
-<span class="ph token function">DRV_PLC_PHY_TxRequest</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>transmitObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+DRV_PLC_PHY_TxRequest(handle, &amp;transmitObj);</pre></div>
 </div>
 </body>
 </html>

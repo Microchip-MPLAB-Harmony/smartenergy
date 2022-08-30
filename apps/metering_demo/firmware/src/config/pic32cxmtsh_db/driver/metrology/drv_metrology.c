@@ -53,73 +53,76 @@
     extern "C" {
 #endif
 
+typedef enum {
+    PENERGY = 0,
+    QENERGY = 1,
+} DRV_METROLOGY_ENERGY_TYPE;        
+
 /* This is the driver instance object array. */
 DRV_METROLOGY_OBJ gDrvMetObj;
 
-static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BUF_SIZE)];
-
 const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
 {
-    STATE_CTRL_STATE_CTRL_RESET_Val,             /* 00 STATE_CTRL */
-    _UINT32_(DRV_METROLOGY_CONF_FCTRL0),         /* 01 FEATURE_CTRL0 */
-    _UINT32_(DRV_METROLOGY_CONF_FCTRL1),         /* 02 FEATURE_CTRL1 */
-    _UINT32_(DRV_METROLOGY_CONF_MT),             /* 03 METER_TYPE sensor_type =0 CT, 1 SHUNT, 2 ROGOWSKI */
-    _UINT32_(0x00000000),                        /* 04 M M=50->50Hz M=60->60Hz */
-    _UINT32_(0x00001130),                        /* 05 N_MAX 4400=0x1130 */
-    _UINT32_(DRV_METROLOGY_CONF_PULSE0_CTRL),    /* 06 PULSE0_CTRL */
-    _UINT32_(DRV_METROLOGY_CONF_PULSE1_CTRL),    /* 07 PULSE1_CTRL */
-    _UINT32_(DRV_METROLOGY_CONF_PULSE2_CTRL),    /* 08 PULSE2_CTRL */
-    _UINT32_(DRV_METROLOGY_CONF_PKT),            /* 09 P_K_T */
-    _UINT32_(DRV_METROLOGY_CONF_PKT),            /* 10 Q_K_T */
-    _UINT32_(DRV_METROLOGY_CONF_PKT),            /* 11 I_K_T */
-    _UINT32_(DRV_METROLOGY_CONF_CREEP_P),        /* 12 CREEP_THR_P */
-    _UINT32_(DRV_METROLOGY_CONF_CREEP_Q),        /* 13 CREEP_THR_Q */
-    _UINT32_(DRV_METROLOGY_CONF_CREEP_I),        /* 14 CREEP_THR_I */
-    _UINT32_(0x00000000),                        /* 15 POWER_OFFSET_CTRL */
-    _UINT32_(0x00000000),                        /* 16 POWER_OFFSET_P */
-    _UINT32_(0x00000000),                        /* 17 POWER_OFFSET_Q */
-    _UINT32_(DRV_METROLOGY_CONF_SWELL),          /* 18 SWELL_THR_VA */
-    _UINT32_(DRV_METROLOGY_CONF_SWELL),          /* 19 SWELL_THR_VB */
-    _UINT32_(DRV_METROLOGY_CONF_SWELL),          /* 20 SWELL_THR_VC */
-    _UINT32_(DRV_METROLOGY_CONF_SAG),            /* 21 SAG_THR_VA */
-    _UINT32_(DRV_METROLOGY_CONF_SAG),            /* 22 SAG_THR_VB */
-    _UINT32_(DRV_METROLOGY_CONF_SAG),            /* 23 SAG_THR_VC */
-    _UINT32_(DRV_METROLOGY_CONF_KI),             /* 24 K_IA */
-    _UINT32_(DRV_METROLOGY_CONF_KV),             /* 25 K_VA */
-    _UINT32_(DRV_METROLOGY_CONF_KI),             /* 26 K_IB */
-    _UINT32_(DRV_METROLOGY_CONF_KV),             /* 27 K_VB */
-    _UINT32_(DRV_METROLOGY_CONF_KI),             /* 28 K_IC */
-    _UINT32_(DRV_METROLOGY_CONF_KV),             /* 29 K_VC */
-    _UINT32_(DRV_METROLOGY_CONF_KI),             /* 30 K_IN */
-    _UINT32_(0x20000000),                        /* 31 CAL_M_IA */
-    _UINT32_(0x20000000),                        /* 32 CAL_M_VA */
-    _UINT32_(0x20000000),                        /* 33 CAL_M_IB */
-    _UINT32_(0x20000000),                        /* 34 CAL_M_VB */
-    _UINT32_(0x20000000),                        /* 35 CAL_M_IC */
-    _UINT32_(0x20000000),                        /* 36 CAL_M_VC */
-    _UINT32_(0x20000000),                        /* 37 CAL_M_IN */
-    _UINT32_(0x00000000),                        /* 38 CAL_PH_IA */
-    _UINT32_(0x00000000),                        /* 39 CAL_PH_VA */
-    _UINT32_(0x00000000),                        /* 40 CAL_PH_IB */
-    _UINT32_(0x00000000),                        /* 41 CAL_PH_VB */
-    _UINT32_(0x00000000),                        /* 42 CAL_PH_IC */
-    _UINT32_(0x00000000),                        /* 43 CAL_PH_VC */
-    _UINT32_(0x00000000),                        /* 44 CAL_PH_IN */
-    _UINT32_(0x00000000),                        /* 45 CAPTURE_CTRL */
-    _UINT32_(MET_CAPTURE_BUF_SIZE),              /* 46 CAPTURE_BUFF_SIZE */
-    _UINT32_(sCaptureBuffer),                    /* 47 CAPTURE_ADDR */
-    _UINT32_(0x00000000),                        /* 48 RESERVED_C48 */
-    _UINT32_(0x00000000),                        /* 49 RESERVED_C49 */
-    _UINT32_(DRV_METROLOGY_CONF_ATS2023),        /* 51 ATSENSE_CTRL_20_23 */
-    _UINT32_(DRV_METROLOGY_CONF_ATS2427),        /* 52 ATSENSE_CTRL_24_27 */
-    _UINT32_(0x00000003),                        /* 53 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
-    _UINT32_(0x00000000),                        /* 54 RESERVED_C54 */
-    _UINT32_(0x00000000),                        /* 55 POWER_OFFSET_P_A */
-    _UINT32_(0x00000000),                        /* 56 POWER_OFFSET_P_B */
-    _UINT32_(0x00000000),                        /* 57 POWER_OFFSET_P_C */
-    _UINT32_(0x00000000),                        /* 58 POWER_OFFSET_Q_A */
-    _UINT32_(0x00000000),                        /* 59 POWER_OFFSET_Q_B */
-    _UINT32_(0x00000000)                         /* 60 POWER_OFFSET_Q_C */
+    STATE_CTRL_STATE_CTRL_RESET_Val,                /* 00 STATE_CTRL */
+    _UINT32_(DRV_METROLOGY_CONF_FCTRL0),            /* 01 FEATURE_CTRL0 */
+    _UINT32_(DRV_METROLOGY_CONF_FCTRL1),            /* 02 FEATURE_CTRL1 */
+    _UINT32_(DRV_METROLOGY_CONF_MT),                /* 03 METER_TYPE sensor_type =0 CT, 1 SHUNT, 2 ROGOWSKI */
+    _UINT32_(0x00000000),                           /* 04 M M=50->50Hz M=60->60Hz */
+    _UINT32_(0x00001130),                           /* 05 N_MAX 4400=0x1130 */
+    _UINT32_(DRV_METROLOGY_CONF_PULSE0_CTRL),       /* 06 PULSE0_CTRL */
+    _UINT32_(DRV_METROLOGY_CONF_PULSE1_CTRL),       /* 07 PULSE1_CTRL */
+    _UINT32_(DRV_METROLOGY_CONF_PULSE2_CTRL),       /* 08 PULSE2_CTRL */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),               /* 09 P_K_T */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),               /* 10 Q_K_T */
+    _UINT32_(DRV_METROLOGY_CONF_PKT),               /* 11 I_K_T */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_P),           /* 12 CREEP_THR_P */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_Q),           /* 13 CREEP_THR_Q */
+    _UINT32_(DRV_METROLOGY_CONF_CREEP_I),           /* 14 CREEP_THR_I */
+    _UINT32_(0x00000000),                           /* 15 POWER_OFFSET_CTRL */
+    _UINT32_(0x00000000),                           /* 16 POWER_OFFSET_P */
+    _UINT32_(0x00000000),                           /* 17 POWER_OFFSET_Q */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),             /* 18 SWELL_THR_VA */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),             /* 19 SWELL_THR_VB */
+    _UINT32_(DRV_METROLOGY_CONF_SWELL),             /* 20 SWELL_THR_VC */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),               /* 21 SAG_THR_VA */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),               /* 22 SAG_THR_VB */
+    _UINT32_(DRV_METROLOGY_CONF_SAG),               /* 23 SAG_THR_VC */
+    _UINT32_(DRV_METROLOGY_CONF_KI),                /* 24 K_IA */
+    _UINT32_(DRV_METROLOGY_CONF_KV),                /* 25 K_VA */
+    _UINT32_(DRV_METROLOGY_CONF_KI),                /* 26 K_IB */
+    _UINT32_(DRV_METROLOGY_CONF_KV),                /* 27 K_VB */
+    _UINT32_(DRV_METROLOGY_CONF_KI),                /* 28 K_IC */
+    _UINT32_(DRV_METROLOGY_CONF_KV),                /* 29 K_VC */
+    _UINT32_(DRV_METROLOGY_CONF_KI),                /* 30 K_IN */
+    _UINT32_(0x20000000),                           /* 31 CAL_M_IA */
+    _UINT32_(0x20000000),                           /* 32 CAL_M_VA */
+    _UINT32_(0x20000000),                           /* 33 CAL_M_IB */
+    _UINT32_(0x20000000),                           /* 34 CAL_M_VB */
+    _UINT32_(0x20000000),                           /* 35 CAL_M_IC */
+    _UINT32_(0x20000000),                           /* 36 CAL_M_VC */
+    _UINT32_(0x20000000),                           /* 37 CAL_M_IN */
+    _UINT32_(0x00000000),                           /* 38 CAL_PH_IA */
+    _UINT32_(0x00000000),                           /* 39 CAL_PH_VA */
+    _UINT32_(0x00000000),                           /* 40 CAL_PH_IB */
+    _UINT32_(0x00000000),                           /* 41 CAL_PH_VB */
+    _UINT32_(0x00000000),                           /* 42 CAL_PH_IC */
+    _UINT32_(0x00000000),                           /* 43 CAL_PH_VC */
+    _UINT32_(0x00000000),                           /* 44 CAL_PH_IN */
+    _UINT32_(DRV_METROLOGY_CONF_WAVEFORM),          /* 45 CAPTURE_CTRL */
+    _UINT32_(DRV_METROLOGY_CAPTURE_BUF_SIZE),       /* 46 CAPTURE_BUFF_SIZE */
+    _UINT32_(0x00000000),                           /* 47 CAPTURE_ADDR */
+    _UINT32_(0x00000000),                           /* 48 RESERVED_C48 */
+    _UINT32_(0x00000000),                           /* 49 RESERVED_C49 */
+    _UINT32_(DRV_METROLOGY_CONF_ATS2023),           /* 51 ATSENSE_CTRL_20_23 */
+    _UINT32_(DRV_METROLOGY_CONF_ATS2427),           /* 52 ATSENSE_CTRL_24_27 */
+    _UINT32_(0x00000003),                           /* 53 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
+    _UINT32_(0x00000000),                           /* 54 RESERVED_C54 */
+    _UINT32_(0x00000000),                           /* 55 POWER_OFFSET_P_A */
+    _UINT32_(0x00000000),                           /* 56 POWER_OFFSET_P_B */
+    _UINT32_(0x00000000),                           /* 57 POWER_OFFSET_P_C */
+    _UINT32_(0x00000000),                           /* 58 POWER_OFFSET_Q_A */
+    _UINT32_(0x00000000),                           /* 59 POWER_OFFSET_Q_B */
+    _UINT32_(0x00000000)                            /* 60 POWER_OFFSET_Q_C */
 };
 
 static void _DRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
@@ -328,111 +331,95 @@ static uint32_t _DRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
     return ((uint32_t)(n));
 }
 
-static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id, DRV_METROLOGY_ENERGY_MODE mode)
+static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 {
     double m, k;
 
     m = 0;
     k = 0;
+    /* Calculated as absolute values */
     if (id == PENERGY)
     {
-        /* active energy */
-        if (mode == ABS)
+        if (gDrvMetObj.metAccData.P_A < 0)
         {
-            /* abs */
-            if (gDrvMetObj.metAccData.P_A < 0)
-            {
-                m = (double)((~gDrvMetObj.metAccData.P_A) + 1);
-            }
-            else
-            {
-                m = (double)(gDrvMetObj.metAccData.P_A);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-
-            if (gDrvMetObj.metAccData.P_B < 0)
-            {
-                m = (double)((~gDrvMetObj.metAccData.P_B) + 1);
-            }
-            else
-            {
-                m = (double)(gDrvMetObj.metAccData.P_B);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-
-            if (gDrvMetObj.metAccData.P_C < 0)
-            {
-                m += (double)((~gDrvMetObj.metAccData.P_C) + 1);
-            }
-            else
-            {
-                m += (double)(gDrvMetObj.metAccData.P_C);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+            m = (double)((~gDrvMetObj.metAccData.P_A) + 1);
         }
         else
         {
-            /* algebra */
+            m = (double)(gDrvMetObj.metAccData.P_A);
         }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+
+        if (gDrvMetObj.metAccData.P_B < 0)
+        {
+            m = (double)((~gDrvMetObj.metAccData.P_B) + 1);
+        }
+        else
+        {
+            m = (double)(gDrvMetObj.metAccData.P_B);
+        }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+
+        if (gDrvMetObj.metAccData.P_C < 0)
+        {
+            m += (double)((~gDrvMetObj.metAccData.P_C) + 1);
+        }
+        else
+        {
+            m += (double)(gDrvMetObj.metAccData.P_C);
+        }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
     }
     else
     {
         /* reactive energy */
-        if (mode == ABS)
+        if (gDrvMetObj.metAccData.Q_A < 0)
         {
-            /* abs */
-            if (gDrvMetObj.metAccData.Q_A < 0)
-            {
-                m = (double)((~gDrvMetObj.metAccData.Q_A) + 1);
-            }
-            else
-            {
-                m = (double)(gDrvMetObj.metAccData.Q_A);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-
-            if (gDrvMetObj.metAccData.Q_B < 0)
-            {
-                m = (double)((~gDrvMetObj.metAccData.Q_B) + 1);
-            }
-            else
-            {
-                m = (double)(gDrvMetObj.metAccData.Q_B);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-            
-            if (gDrvMetObj.metAccData.Q_C < 0)
-            {
-                m = (double)((~gDrvMetObj.metAccData.Q_C) + 1);
-            }
-            else
-            {
-                m = (double)(gDrvMetObj.metAccData.Q_C);
-            }
-
-            m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-            m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-            k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+            m = (double)((~gDrvMetObj.metAccData.Q_A) + 1);
         }
         else
         {
-            /* algebra */
+            m = (double)(gDrvMetObj.metAccData.Q_A);
         }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+
+        if (gDrvMetObj.metAccData.Q_B < 0)
+        {
+            m = (double)((~gDrvMetObj.metAccData.Q_B) + 1);
+        }
+        else
+        {
+            m = (double)(gDrvMetObj.metAccData.Q_B);
+        }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+
+        if (gDrvMetObj.metAccData.Q_C < 0)
+        {
+            m = (double)((~gDrvMetObj.metAccData.Q_C) + 1);
+        }
+        else
+        {
+            m = (double)(gDrvMetObj.metAccData.Q_C);
+        }
+
+        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
+        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
+        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
     }
 
     k = k / 3600;         /* xxxxxx (Wh/Varh) */
@@ -509,11 +496,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         /* Disable coprocessor peripheral clocks */
         PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPBMCK_Msk;
         
-        if (metInit != NULL)
-        {
-            gDrvMetObj.binStartAddress = metInit->binStartAddress;
-            gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
-        }
+        gDrvMetObj.binStartAddress = metInit->binStartAddress;
+        gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
 
         gDrvMetObj.status = SYS_STATUS_UNINITIALIZED;
 
@@ -527,13 +511,10 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
     }
 
-    if (metInit != NULL)
-    {
-        /* Initialization of the interface with Metrology Lib */
-        gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
-        gDrvMetObj.inUse = true;
-        gDrvMetObj.newIntegrationCallback = NULL;
-    }
+    /* Initialization of the interface with Metrology Lib */
+    gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
+    gDrvMetObj.inUse = true;
+    gDrvMetObj.newIntegrationCallback = NULL;
 
     memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_ACCUMULATORS));
     memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_HARMONICS));
@@ -568,11 +549,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
 
     if (mode == DRV_METROLOGY_START_HARD)
     {
-        /* Enable the coprocessor clock (Core 1) */
-        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
-
         /* De-assert the reset of the coprocessor (Core 1) */
         RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPROCEN_Msk);
+
+        /* Enable the coprocessor clock (Core 1) */
+        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
 
         /* Wait IPC Init interrupt */
         while(gDrvMetObj.state != DRV_METROLOGY_STATE_INIT_DSP);
@@ -796,7 +777,7 @@ void DRV_METROLOGY_UpdateMeasurements(void)
     afeRMS[RMS_ANGLEC]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C);
     afeRMS[RMS_ANGLEN]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_N, gDrvMetObj.metAccData.Q_N);
 
-    gDrvMetObj.metAFEData.energy += _DRV_Metrology_GetPQEnergy(PENERGY, ABS);
+    gDrvMetObj.metAFEData.energy += _DRV_Metrology_GetPQEnergy(PENERGY);
     
     /* Update Swell/Sag events */
     gDrvMetObj.metAFEData.afeEvents.sagA = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk? 1 : 0;
@@ -883,12 +864,6 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     
     /* Store Calibration parameters */
     gDrvMetObj.metCalibration.freq = config->freq;
-//    gDrvMetObj.metCalibration.gain_i = config->gain;
-//    gDrvMetObj.metCalibration.k_u = config->ku;
-//    gDrvMetObj.metCalibration.meterConst = config->mc;
-//    gDrvMetObj.metCalibration.rl = config->rl;
-//    gDrvMetObj.metCalibration.st = config->st;
-//    gDrvMetObj.metCalibration.k_i = config->tr;
 
     pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
 
@@ -1033,13 +1008,10 @@ void DRV_METROLOGY_StartCalibration(void)
                     FEATURE_CTRL0_PHASE_B_EN_Msk | FEATURE_CTRL0_PHASE_C_EN_Msk;
             break;
             
-        case PHASE_N:
-            
-            break;
-            
     }
     
     pCalibrationData->running = true;
+    pCalibrationData->result = false;
 }
 
 void DRV_METROLOGY_UpdateCalibration(void)
@@ -1106,6 +1078,8 @@ void DRV_METROLOGY_UpdateCalibration(void)
             pCalibrationData->dspAccQa >>= 2;
             k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPa, pCalibrationData->dspAccQa);
             pMetControlRegs->CAL_PH_IA = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleA);
+            
+            pCalibrationData->result = true;
         }
         
         if ((pCalibrationData->references.lineId == PHASE_B) || (pCalibrationData->references.lineId == PHASE_T))
@@ -1136,6 +1110,8 @@ void DRV_METROLOGY_UpdateCalibration(void)
             pCalibrationData->dspAccQb >>= 2;
             k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPb, pCalibrationData->dspAccQb);
             pMetControlRegs->CAL_PH_IB = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleB);
+            
+            pCalibrationData->result = true;
         }
         
         if ((pCalibrationData->references.lineId == PHASE_C) || (pCalibrationData->references.lineId == PHASE_T))
@@ -1166,6 +1142,8 @@ void DRV_METROLOGY_UpdateCalibration(void)
             pCalibrationData->dspAccQc >>= 2;
             k = _DRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPc, pCalibrationData->dspAccQc);
             pMetControlRegs->CAL_PH_IC = _DRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleC);
+            
+            pCalibrationData->result = true;
         }
         
         /* Restore FEATURE_CTRL0 after calibration */
@@ -1173,7 +1151,6 @@ void DRV_METROLOGY_UpdateCalibration(void)
         
         /* Calibration has been completed */
         pCalibrationData->running = false;
-        pCalibrationData->result = true;
     }
 }
 
@@ -1192,7 +1169,7 @@ bool DRV_METROLOGY_GetCalibrationResult(void)
     return gDrvMetObj.metCalibration.result;
 }
 
-void DRV_METROLOGY_RequestHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse)
+void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse)
 {
     /* Set Data pointer to store the Harmonic data result */
     gDrvMetObj.pHarmonicAnalysisResponse = pHarmonicResponse;

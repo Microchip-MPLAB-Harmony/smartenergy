@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-6AC86335-EDE5-40ED-8D96-800FFF8D9748.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="using-the-library-g3-plc" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Using The Library (G3-PLC)</title>
+<title>Using The Library (G3-PLC)</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-using-the-library-g3-plc" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,113 +223,113 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="using-the-library-g3-plc">
 <h1 class="title topictitle1" id="ariaid-title1">Using The Library (G3-PLC)</h1><div class="body"><p class="p">For G3-PLC, <a class="xref" href="GUID-F7F88BE2-2CCE-41EE-A028-2F8E7F231F59.html"><em class="ph i">SRV_PCOUP_Set_Config</em></a> has to be called once the PLC Driver is ready (binary loaded to PLC Device) and before any transmission is requested.</p>
 <p class="p">Each transmission branch (main or auxiliary) is associated to a G3-PLC PHY band. For multi-band applications (one PLC PHY binary for each band), <a class="xref" href="GUID-F7F88BE2-2CCE-41EE-A028-2F8E7F231F59.html"><em class="ph i">SRV_PCOUP_Set_Config</em></a> has to be called every time the band is changed (PLC PHY binary reloaded).</p>
 <p class="p"><strong class="ph b">G3-PLC Example application using PLC PHY Coupling service</strong></p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d21881e27', this);">Copy</button><code id="d21881e27" content="#include &#34;definitions.h&#34;&#xA;&#xA;typedef enum&#xA;{&#xA;    APP_STATE_INIT,&#xA;    APP_STATE_OPEN,&#xA;    APP_STATE_READY,&#xA;    APP_STATE_ERROR&#xA;&#xA;} APP_STATE;&#xA;&#xA;typedef struct&#xA;{&#xA;    APP_STATE state;&#xA;    &#xA;    SRV_PLC_PCOUP_BRANCH plcBranch;&#xA;&#xA;    DRV_HANDLE drvPlcHandle;&#xA;    &#xA;} APP_DATA;&#xA;&#xA;APP_DATA appData;&#xA;&#xA;static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)&#xA;{&#xA;    /* Do whatever with transmission confirm */&#xA;}&#xA;&#xA;static void APP_PLC_DataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)&#xA;{&#xA;    /* Do whatever with received frame indication */&#xA;}&#xA;&#xA;void APP_Initialize (void)&#xA;{&#xA;    /* Initialize application state */&#xA;    appData.state = APP_STATE_INIT;&#xA;&#xA;    /* Get the default transmission branch */&#xA;    appData.plcBranch = SRV_PCOUP_Get_Default_Branch();&#xA;}&#xA;&#xA;void APP_Tasks (void)&#xA;{&#xA;    /* Check the application's current state. */&#xA;    switch (appData.state)&#xA;    {&#xA;        case APP_STATE_INIT:&#xA;        {&#xA;            /* Open PLC driver */&#xA;            appData.drvPlcHandle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);&#xA;&#xA;            if (appData.drvPlcHandle != DRV_HANDLE_INVALID)&#xA;            {&#xA;                /* Register PLC callbacks */&#xA;                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPlcHandle,&#xA;                        APP_PLC_DataIndCb, DRV_PLC_PHY_INDEX);&#xA;                DRV_PLC_PHY_DataCfmCallbackRegister(appData.drvPlcHandle,&#xA;                        APP_PLC_DataCfmCb, DRV_PLC_PHY_INDEX);&#xA;&#xA;                /* Enable PLC Transmission */&#xA;                DRV_PLC_PHY_Enable_TX(appData.drvPlcHandle, true);&#xA;&#xA;                /* Go to next state to wait until PLC Driver is ready */&#xA;                appData.state = APP_STATE_OPEN;&#xA;            }&#xA;            else&#xA;            {&#xA;                appData.state = APP_PLC_STATE_ERROR;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_STATE_OPEN:&#xA;        {&#xA;            /* Check PLC Driver status */&#xA;            if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)&#xA;            {&#xA;                /* Apply PLC PHY Coupling configuration */&#xA;                SRV_PCOUP_Set_Config(appData.drvPlcHandle, appData.plcBranch);&#xA;&#xA;                /* At this point the PLC Transceiver is ready for transmission */&#xA;                appData.state = APP_STATE_READY;&#xA;            }&#xA;        }&#xA;        break;&#xA;&#xA;        case APP_STATE_READY:&#xA;        {&#xA;            /* Do whatever, request transmission or wait to receive something  */&#xA;            break;&#xA;        }&#xA;&#xA;        /* The default state should never be executed. */&#xA;        default:&#xA;        {&#xA;            /* Handle error in application's state machine. */&#xA;            break;&#xA;        }&#xA;    }&#xA;}&#xA;"><span class="ph token macro property">#<span class="ph token directive keyword">include</span> <span class="ph token string">"definitions.h"</span></span>
+<pre class="pre codeblock c"><span class="hl-directive">#include</span> <span class="hl-string">"definitions.h"</span>
 
-<span class="ph token keyword">typedef</span> <span class="ph token keyword">enum</span>
-<span class="ph token punctuation">{</span>
-    APP_STATE_INIT<span class="ph token punctuation">,</span>
-    APP_STATE_OPEN<span class="ph token punctuation">,</span>
-    APP_STATE_READY<span class="ph token punctuation">,</span>
+<strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">enum</strong>
+{
+    APP_STATE_INIT,
+    APP_STATE_OPEN,
+    APP_STATE_READY,
     APP_STATE_ERROR
 
-<span class="ph token punctuation">}</span> APP_STATE<span class="ph token punctuation">;</span>
+} APP_STATE;
 
-<span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span>
-<span class="ph token punctuation">{</span>
-    APP_STATE state<span class="ph token punctuation">;</span>
+<strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong>
+{
+    APP_STATE state;
     
-    SRV_PLC_PCOUP_BRANCH plcBranch<span class="ph token punctuation">;</span>
+    SRV_PLC_PCOUP_BRANCH plcBranch;
 
-    DRV_HANDLE drvPlcHandle<span class="ph token punctuation">;</span>
+    DRV_HANDLE drvPlcHandle;
     
-<span class="ph token punctuation">}</span> APP_DATA<span class="ph token punctuation">;</span>
+} APP_DATA;
 
-APP_DATA appData<span class="ph token punctuation">;</span>
+APP_DATA appData;
 
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataCfmCb</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ <span class="ph token operator">*</span>cfmObj<span class="ph token punctuation">,</span> uintptr_t context<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Do whatever with transmission confirm */</span>
-<span class="ph token punctuation">}</span>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataCfmCb</span>(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)
+{
+    <em class="hl-comment">/* Do whatever with transmission confirm */</em>
+}
 
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataIndCb</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_RECEPTION_OBJ <span class="ph token operator">*</span>indObj<span class="ph token punctuation">,</span> uintptr_t context<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Do whatever with received frame indication */</span>
-<span class="ph token punctuation">}</span>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataIndCb</span>(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
+{
+    <em class="hl-comment">/* Do whatever with received frame indication */</em>
+}
 
-<span class="ph token keyword">void</span> APP_Initialize <span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Initialize application state */</span>
-    appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_INIT<span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> APP_Initialize (<strong class="hl-keyword">void</strong>)
+{
+    <em class="hl-comment">/* Initialize application state */</em>
+    appData.state = APP_STATE_INIT;
 
-    <span class="ph token comment">/* Get the default transmission branch */</span>
-    appData<span class="ph token punctuation">.</span>plcBranch <span class="ph token operator">=</span> <span class="ph token function">SRV_PCOUP_Get_Default_Branch</span><span class="ph token punctuation">(</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span>
+    <em class="hl-comment">/* Get the default transmission branch */</em>
+    appData.plcBranch = SRV_PCOUP_Get_Default_Branch();
+}
 
-<span class="ph token keyword">void</span> APP_Tasks <span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Check the application's current state. */</span>
-    <span class="ph token keyword">switch</span> <span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>state<span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token keyword">case</span> APP_STATE_INIT<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Open PLC driver */</span>
-            appData<span class="ph token punctuation">.</span>drvPlcHandle <span class="ph token operator">=</span> <span class="ph token function">DRV_PLC_PHY_Open</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> APP_Tasks (<strong class="hl-keyword">void</strong>)
+{
+    <em class="hl-comment">/* Check the application's current state. */</em>
+    <strong class="hl-keyword">switch</strong> (appData.state)
+    {
+        <strong class="hl-keyword">case</strong> APP_STATE_INIT:
+        {
+            <em class="hl-comment">/* Open PLC driver */</em>
+            appData.drvPlcHandle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);
 
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPlcHandle <span class="ph token operator">!=</span> DRV_HANDLE_INVALID<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Register PLC callbacks */</span>
-                <span class="ph token function">DRV_PLC_PHY_DataIndCallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPlcHandle<span class="ph token punctuation">,</span>
-                        APP_PLC_DataIndCb<span class="ph token punctuation">,</span> DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token function">DRV_PLC_PHY_DataCfmCallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPlcHandle<span class="ph token punctuation">,</span>
-                        APP_PLC_DataCfmCb<span class="ph token punctuation">,</span> DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+            <strong class="hl-keyword">if</strong> (appData.drvPlcHandle != DRV_HANDLE_INVALID)
+            {
+                <em class="hl-comment">/* Register PLC callbacks */</em>
+                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPlcHandle,
+                        APP_PLC_DataIndCb, DRV_PLC_PHY_INDEX);
+                DRV_PLC_PHY_DataCfmCallbackRegister(appData.drvPlcHandle,
+                        APP_PLC_DataCfmCb, DRV_PLC_PHY_INDEX);
 
-                <span class="ph token comment">/* Enable PLC Transmission */</span>
-                <span class="ph token function">DRV_PLC_PHY_Enable_TX</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPlcHandle<span class="ph token punctuation">,</span> true<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Enable PLC Transmission */</em>
+                DRV_PLC_PHY_Enable_TX(appData.drvPlcHandle, true);
 
-                <span class="ph token comment">/* Go to next state to wait until PLC Driver is ready */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_OPEN<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">else</span>
-            <span class="ph token punctuation">{</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_ERROR<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+                <em class="hl-comment">/* Go to next state to wait until PLC Driver is ready */</em>
+                appData.state = APP_STATE_OPEN;
+            }
+            <strong class="hl-keyword">else</strong>
+            {
+                appData.state = APP_PLC_STATE_ERROR;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_STATE_OPEN<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Check PLC Driver status */</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_PLC_PHY_Status</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SYS_STATUS_READY<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Apply PLC PHY Coupling configuration */</span>
-                <span class="ph token function">SRV_PCOUP_Set_Config</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPlcHandle<span class="ph token punctuation">,</span> appData<span class="ph token punctuation">.</span>plcBranch<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_OPEN:
+        {
+            <em class="hl-comment">/* Check PLC Driver status */</em>
+            <strong class="hl-keyword">if</strong> (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)
+            {
+                <em class="hl-comment">/* Apply PLC PHY Coupling configuration */</em>
+                SRV_PCOUP_Set_Config(appData.drvPlcHandle, appData.plcBranch);
 
-                <span class="ph token comment">/* At this point the PLC Transceiver is ready for transmission */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_READY<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* At this point the PLC Transceiver is ready for transmission */</em>
+                appData.state = APP_STATE_READY;
+            }
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> APP_STATE_READY<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Do whatever, request transmission or wait to receive something  */</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_READY:
+        {
+            <em class="hl-comment">/* Do whatever, request transmission or wait to receive something  */</em>
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token comment">/* The default state should never be executed. */</span>
-        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Handle error in application's state machine. */</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span>
-</code></pre></div>
+        <em class="hl-comment">/* The default state should never be executed. */</em>
+        <strong class="hl-keyword">default</strong>:
+        {
+            <em class="hl-comment">/* Handle error in application's state machine. */</em>
+            <strong class="hl-keyword">break</strong>;
+        }
+    }
+}
+</pre></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-6AC86335-EDE5-40ED-8D96-800FFF8D9748.html">Using The Library</a></div>

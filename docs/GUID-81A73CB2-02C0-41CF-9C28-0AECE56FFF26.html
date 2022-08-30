@@ -10,11 +10,11 @@
 <meta name="DC.title" content="MPLAB® Harmony Smart Energy Library" />
 <meta name="DC.relation" scheme="URI" content="GUID-97853572-2DF9-4BDC-8CC2-427931EE96D9.html" />
 <meta name="DC.relation" scheme="URI" content="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-85AB674B-2F1D-4636-87B5-36ACBE66A8BE.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="mplab-harmony-smart-energy-library" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>MPLAB® Harmony Smart Energy Library</title>
+<title>MPLAB® Harmony Smart Energy Library</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-mplab-harmony-smart-energy-library" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -63,10 +63,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -90,7 +89,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -104,16 +102,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -152,7 +183,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -194,36 +225,36 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="mplab-harmony-smart-energy-library">
 <h1 class="title topictitle1" id="ariaid-title1">MPLAB® Harmony Smart Energy Library</h1><div class="body"><p class="p">The Smart Energy Library provides access to Narrow Band Power Line Communications (PLC).</p>
 <p class="p">It supports widely used narrow-band PLC standards such as ITU G.9903 (<a class="xref" href="https://g3-plc.com/" target="_blank">G3-PLC®</a>) and ITU G.9904 (<a class="xref" href="https://www.prime-alliance.org/" target="_blank">PRIME</a>).</p>
 <p class="p">These standards are supported at different levels:</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e35"><span>Standard</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e37"><span>PHY Access Support</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e39"><span>MAC Real Time Access Support</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e41"><span>MAC Access Support</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e43"><span>ADP Access Support</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e45"><span>IPv6 Access Support</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d61769e47"><span>4-32 Access Support</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e35"><span>Standard</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e37"><span>PHY Access Support</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e39"><span>MAC Real Time Access Support</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e41"><span>MAC Access Support</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e43"><span>ADP Access Support</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e45"><span>IPv6 Access Support</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26276e47"><span>4-32 Access Support</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e35 "><span>G3-PLC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e37 "><span>Yes</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e39 "><span>Yes</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e41 "><span>-</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e43 "><span>-</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e45 "><span>-</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e47 "><span>N/A</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e35 "><span>G3-PLC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e37 "><span>Yes</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e39 "><span>Yes</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e41 "><span>-</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e43 "><span>-</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e45 "><span>-</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e47 "><span>N/A</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e35 "><span>PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e37 "><span>Yes</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e39 "><span>N/A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e41 "><span>-</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e43 "><span>N/A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e45 "><span>-</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d61769e47 "><span>-</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e35 "><span>PRIME</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e37 "><span>Yes</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e39 "><span>N/A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e41 "><span>-</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e43 "><span>N/A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e45 "><span>-</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26276e47 "><span>-</span></td>
 </tr>
 </tbody>
 </table>
@@ -235,6 +266,8 @@
 </li>
 <li class="link ulchildlink"><strong><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html">Service Libraries</a></strong><br />
 </li>
+<li class="link ulchildlink"><strong><a href="GUID-85AB674B-2F1D-4636-87B5-36ACBE66A8BE.html">Demo Meter Application</a></strong><br />
+Enter a short description of your concept here (optional).</li>
 </ul>
 </div></body>
 </html>

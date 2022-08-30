@@ -61,6 +61,37 @@ def updateRLLabel(symbol, event):
         symbol.setLabel("Shunt Resistor (uOhms)")
     else:
         symbol.setLabel("Resistor Load (uOhms)")
+
+def updateConfigWaveform(symbol, event):
+    global srvMetRegWaveformCaptureSize
+    
+    enable = Database.getSymbolValue("drvMet", "DRV_MET_WAVEFORM_CAPTURE")
+    ia = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_IA")
+    va = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_VA")
+    ib = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_IB")
+    vb = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_VB")
+    ic = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_IC")
+    vc = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_VC")
+    src = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_SRC")
+    type = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_TYPE")
+
+    reg = (enable << 31) | (vc << 13) | (ic << 12) | (vb << 11) | (ib << 10) | (va << 9) | (ia << 8) | (src << 4) | type
+    symbol.setValue(reg)        
+
+    if (enable):
+        bufferSize = Database.getSymbolValue("drvMet", "DRV_MET_CAPTURE_BUF_SIZE_CHN")
+        channels_sel = (reg >> 8) & 0x3F
+        num_chn = 0
+        for ch_sel in range(0, 6):
+            if (channels_sel & 0x01) == 0x01:
+                num_chn = num_chn + 1
+            
+            channels_sel = channels_sel >> 1
+    else:
+        bufferSize = 0
+        num_chn = 0
+
+    srvMetRegWaveformCaptureSize.setValue(bufferSize * num_chn * 4)
         
 def updateConfigPKT(symbol, event):
     m = 1000000000 / event["value"]
@@ -81,9 +112,8 @@ def updateConfigATS2023(symbol, event):
     i1 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I1")
     v1 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_V1")
     i2 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I2")
-    temp = Database.getSymbolValue("drvMet", "DRV_MET_CONF_TEMP")
 
-    reg = (gainValue << 28) | (gainValue << 12) | (gainValue << 4) | (i2 << 24) | (v1 << 16) | (i1 << 8) | (temp << 1) | i0
+    reg = (gainValue << 28) | (gainValue << 12) | (gainValue << 4) | (i2 << 24) | (v1 << 16) | (i1 << 8) | i0
     symbol.setValue(reg)
 
 def updateConfigATS2427(symbol, event):
@@ -185,31 +215,78 @@ def instantiateComponent(metComponentCommon):
     srvMetWaveformCapture.setLabel("Waveform Capture")
     srvMetWaveformCapture.setDefaultValue(False)
     srvMetWaveformCapture.setHelp(srv_met_helpkeyword)
+    
+    srvMetWaveformCaptureChIA = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IA", srvMetWaveformCapture)
+    srvMetWaveformCaptureChIA.setLabel("Capture Channel IA")
+    srvMetWaveformCaptureChIA.setDefaultValue(False)
+    srvMetWaveformCaptureChIA.setVisible(False)
+    srvMetWaveformCaptureChIA.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChIA.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+    
+    srvMetWaveformCaptureChVA = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VA", srvMetWaveformCapture)
+    srvMetWaveformCaptureChVA.setLabel("Capture Channel VA")
+    srvMetWaveformCaptureChVA.setDefaultValue(False)
+    srvMetWaveformCaptureChVA.setVisible(False)
+    srvMetWaveformCaptureChVA.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChVA.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+    
+    srvMetWaveformCaptureChIB = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IB", srvMetWaveformCapture)
+    srvMetWaveformCaptureChIB.setLabel("Capture Channel IB")
+    srvMetWaveformCaptureChIB.setDefaultValue(False)
+    srvMetWaveformCaptureChIB.setVisible(False)
+    srvMetWaveformCaptureChIB.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChIB.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+    
+    srvMetWaveformCaptureChVB = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VB", srvMetWaveformCapture)
+    srvMetWaveformCaptureChVB.setLabel("Capture Channel VB")
+    srvMetWaveformCaptureChVB.setDefaultValue(False)
+    srvMetWaveformCaptureChVB.setVisible(False)
+    srvMetWaveformCaptureChVB.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChVB.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+    
+    srvMetWaveformCaptureChIC = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IC", srvMetWaveformCapture)
+    srvMetWaveformCaptureChIC.setLabel("Capture Channel IC")
+    srvMetWaveformCaptureChIC.setDefaultValue(False)
+    srvMetWaveformCaptureChIC.setVisible(False)
+    srvMetWaveformCaptureChIC.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChIC.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+    
+    srvMetWaveformCaptureChVC = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VC", srvMetWaveformCapture)
+    srvMetWaveformCaptureChVC.setLabel("Capture Channel VC")
+    srvMetWaveformCaptureChVC.setDefaultValue(False)
+    srvMetWaveformCaptureChVC.setVisible(False)
+    srvMetWaveformCaptureChVC.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureChVC.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
 
-    global srvMetCaptureNumChannels
-    srvMetCaptureNumChannels = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_NUM_CHANNELS", srvMetWaveformCapture)
-    srvMetCaptureNumChannels.setLabel("Capture Num Channels")
-    srvMetCaptureNumChannels.setVisible(False)
-    srvMetCaptureNumChannels.setDefaultValue(1)
-    srvMetCaptureNumChannels.setMin(1)
-    srvMetCaptureNumChannels.setMax(6)
-    srvMetCaptureNumChannels.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    srvMetCaptureNumChannels.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureSrc = metComponentCommon.createKeyValueSetSymbol("DRV_MET_WAVECAPT_SRC", srvMetWaveformCapture)
+    srvMetWaveformCaptureSrc.setLabel("Capture Source")
+    srvMetWaveformCaptureSrc.setDefaultValue(0)
+    srvMetWaveformCaptureSrc.setVisible(False)
+    srvMetWaveformCaptureSrc.setOutputMode("Key")
+    srvMetWaveformCaptureSrc.setDisplayMode("Description")
+    srvMetWaveformCaptureSrc.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureSrc.addKey("16KHz", "0", "16KHz data")
+    srvMetWaveformCaptureSrc.addKey("4KHz_FBW", "1", "4KHz Full Bandwidth")
+    srvMetWaveformCaptureSrc.addKey("4KHz_NBW", "2", "4KHz Narrow Bandwidth")
+    srvMetWaveformCaptureSrc.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
 
-    global srvMetCaptureBufSizeChn
+    srvMetWaveformCaptureType = metComponentCommon.createKeyValueSetSymbol("DRV_MET_WAVECAPT_TYPE", srvMetWaveformCapture)
+    srvMetWaveformCaptureType.setLabel("Capture Type")
+    srvMetWaveformCaptureType.setDefaultValue(0)
+    srvMetWaveformCaptureType.setVisible(False)
+    srvMetWaveformCaptureType.setOutputMode("Key")
+    srvMetWaveformCaptureType.setDisplayMode("Description")
+    srvMetWaveformCaptureType.setHelp(srv_met_helpkeyword)
+    srvMetWaveformCaptureType.addKey("One-shoot", "0", "One-shot capture")
+    srvMetWaveformCaptureType.addKey("Continuous", "1", "Continuous capture")
+    srvMetWaveformCaptureType.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
+
     srvMetCaptureBufSizeChn = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_BUF_SIZE_CHN", srvMetWaveformCapture)
-    srvMetCaptureBufSizeChn.setLabel("Capture Size per Channel")
+    srvMetCaptureBufSizeChn.setLabel("Samples per Channel")
     srvMetCaptureBufSizeChn.setVisible(False)
     srvMetCaptureBufSizeChn.setDefaultValue(8000)
     srvMetCaptureBufSizeChn.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
     srvMetCaptureBufSizeChn.setHelp(srv_met_helpkeyword)
-
-    srvMetCaptureBufSize = metComponentCommon.createIntegerSymbol("DRV_MET_CAPTURE_BUF_SIZE", None)
-    srvMetCaptureBufSize.setLabel("Capture Size per Channel")
-    srvMetCaptureBufSize.setVisible(False)
-    srvMetCaptureBufSize.setDefaultValue(8000)
-    srvMetCaptureBufSize.setDependencies(setWaveformCaptureSize, ["DRV_MET_CAPTURE_NUM_CHANNELS", "DRV_MET_CAPTURE_BUF_SIZE_CHN"])
-    srvMetCaptureBufSize.setHelp(srv_met_helpkeyword)
 
     srvMetNotificationMenu = metComponentCommon.createMenuSymbol("DRV_MET_NOTIFICATION_MENU", None)
     srvMetNotificationMenu.setLabel("Additional Notifications")
@@ -225,20 +302,10 @@ def instantiateComponent(metComponentCommon):
     srvMetNotHalfCycle.setDefaultValue(False)
     srvMetNotHalfCycle.setHelp(srv_met_helpkeyword)
     
-    # srvMetNotCreepDetection = metComponentCommon.createBooleanSymbol("DRV_MET_NOT_CREEP_DETECTION", srvMetNotificationMenu)
-    # srvMetNotCreepDetection.setLabel("CREEP Detection")
-    # srvMetNotCreepDetection.setDefaultValue(False)
-    # srvMetNotCreepDetection.setHelp(srv_met_helpkeyword)
-    
     srvMetNotRawZeroCrossing = metComponentCommon.createBooleanSymbol("DRV_MET_RAW_ZERO_CROSSING", srvMetNotificationMenu)
     srvMetNotRawZeroCrossing.setLabel("Raw Zero Crossing")
     srvMetNotRawZeroCrossing.setDefaultValue(False)
     srvMetNotRawZeroCrossing.setHelp(srv_met_helpkeyword)
-    
-    # srvMetNotStatusUpdate = metComponentCommon.createBooleanSymbol("DRV_MET_STATUS_UPDATE", srvMetNotificationMenu)
-    # srvMetNotStatusUpdate.setLabel("Status Update")
-    # srvMetNotStatusUpdate.setDefaultValue(False)
-    # srvMetNotStatusUpdate.setHelp(srv_met_helpkeyword)
     
     srvMetNotPulse0 = metComponentCommon.createBooleanSymbol("DRV_MET_PULSE_0", srvMetNotificationMenu)
     srvMetNotPulse0.setLabel("Pulse 0")
@@ -261,11 +328,6 @@ def instantiateComponent(metComponentCommon):
     srvMetConfChannels = metComponentCommon.createMenuSymbol("DRV_MET_CONF_CHANNELS", None)
     srvMetConfChannels.setLabel("Enable Channels")
     srvMetConfChannels.setHelp(srv_met_helpkeyword)
-
-    srvMetConfTemp = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_TEMP", srvMetConfChannels)
-    srvMetConfTemp.setLabel("Enable Temperature Sensor")
-    srvMetConfTemp.setDefaultValue(1)
-    srvMetConfTemp.setHelp(srv_met_helpkeyword)
 
     srvMetConfI0 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_I0", srvMetConfChannels)
     srvMetConfI0.setLabel("Enable Channel I0")
@@ -418,6 +480,7 @@ def instantiateComponent(metComponentCommon):
     srvMetConfP0Detent.addKey("NET", "0", "NET")
     srvMetConfP0Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
     srvMetConfP0Detent.addKey("DELIVERED", "2", "DELIVERED")
+    srvMetConfP0Detent.addKey("GENERATED", "3", "GENERATED")
 
     srvMetConfP0Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P0", srvMetConfPulse0)
     srvMetConfP0Polarity.setLabel("Polarity")
@@ -465,6 +528,7 @@ def instantiateComponent(metComponentCommon):
     srvMetConfP1Detent.addKey("NET", "0", "NET")
     srvMetConfP1Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
     srvMetConfP1Detent.addKey("DELIVERED", "2", "DELIVERED")
+    srvMetConfP1Detent.addKey("GENERATED", "3", "GENERATED")
 
     srvMetConfP1Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P1", srvMetConfPulse1)
     srvMetConfP1Polarity.setLabel("Polarity")
@@ -512,6 +576,7 @@ def instantiateComponent(metComponentCommon):
     srvMetConfP2Detent.addKey("NET", "0", "NET")
     srvMetConfP2Detent.addKey("ABSOLUTE", "1", "ABSOLUTE")
     srvMetConfP2Detent.addKey("DELIVERED", "2", "DELIVERED")
+    srvMetConfP2Detent.addKey("GENERATED", "3", "GENERATED")
 
     srvMetConfP2Polarity = metComponentCommon.createKeyValueSetSymbol("DRV_MET_CONF_POL_P2", srvMetConfPulse2)
     srvMetConfP2Polarity.setLabel("Polarity")
@@ -544,114 +609,128 @@ def instantiateComponent(metComponentCommon):
     #####################################################################################################################################
     # METROLOGY REGISTERS 
     
+    srvMetRegWaveformCapture = metComponentCommon.createHexSymbol("DRV_MET_CONF_WAVEFORM_CAPTURE", None)
+    srvMetRegWaveformCapture.setLabel("WAVEFORM_CAPTURE")
+    srvMetRegWaveformCapture.setVisible(False)
+    srvMetRegWaveformCapture.setDefaultValue(0x00000000)
+    srvMetRegWaveformCapture.setReadOnly(True)
+    srvMetRegWaveformCapture.setDependencies(updateConfigWaveform, ["DRV_MET_WAVEFORM_CAPTURE", "DRV_MET_WAVECAPT_CH_IA", "DRV_MET_WAVECAPT_CH_VA", "DRV_MET_WAVECAPT_CH_IB", "DRV_MET_WAVECAPT_CH_VB", "DRV_MET_WAVECAPT_CH_IC", "DRV_MET_WAVECAPT_CH_VC", "DRV_MET_WAVECAPT_SRC", "DRV_MET_WAVECAPT_TYPE", "DRV_MET_CAPTURE_BUF_SIZE_CHN"])
+
+    global srvMetRegWaveformCaptureSize
+    srvMetRegWaveformCaptureSize = metComponentCommon.createIntegerSymbol("DRV_MET_CONF_CAPTURE_BUFFER_SIZE", None)
+    srvMetRegWaveformCaptureSize.setLabel("CAPTURE_BUFFER_SIZE")
+    srvMetRegWaveformCaptureSize.setVisible(False)
+    srvMetRegWaveformCaptureSize.setDefaultValue(0)
+    srvMetRegWaveformCaptureSize.setReadOnly(True)
+    
     srvMetRegPKT = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PKT", None)
     srvMetRegPKT.setLabel("PKT")
-    srvMetRegPKT.setVisible(True)
+    srvMetRegPKT.setVisible(False)
     srvMetRegPKT.setDefaultValue(0x00500000)
     srvMetRegPKT.setReadOnly(True)
     srvMetRegPKT.setDependencies(updateConfigPKT, ["DRV_MET_CONF_MC"])
 
     srvMetRegMT = metComponentCommon.createHexSymbol("DRV_MET_CTRL_MT", None)
     srvMetRegMT.setLabel("MT")
-    srvMetRegMT.setVisible(True)
+    srvMetRegMT.setVisible(False)
     srvMetRegMT.setDefaultValue(0x00000CCC)
     srvMetRegMT.setReadOnly(True)
     srvMetRegMT.setDependencies(updateConfigMT, ["DRV_MET_CONF_ST"])
 
     srvMetRegKI = metComponentCommon.createHexSymbol("DRV_MET_CTRL_KI", None)
     srvMetRegKI.setLabel("KI")
-    srvMetRegKI.setVisible(True)
+    srvMetRegKI.setVisible(False)
     srvMetRegKI.setDefaultValue(0x0009A523)
     srvMetRegKI.setReadOnly(True)
     srvMetRegKI.setDependencies(updateConfigKI, ["DRV_MET_CONF_F", "DRV_MET_CONF_TR", "DRV_MET_CONF_RL", "DRV_MET_CONF_GAIN"])
 
     srvMetRegKV = metComponentCommon.createHexSymbol("DRV_MET_CTRL_KV", None)
     srvMetRegKV.setLabel("KV")
-    srvMetRegKV.setVisible(True)
+    srvMetRegKV.setVisible(False)
     srvMetRegKV.setDefaultValue(0x0019CC00)
     srvMetRegKV.setReadOnly(True)
     srvMetRegKV.setDependencies(updateConfigKV, ["DRV_MET_CONF_KU"])
 
     srvMetRegATS2023 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_ATS2023", None)
     srvMetRegATS2023.setLabel("ATS2023")
-    srvMetRegATS2023.setVisible(True)
+    srvMetRegATS2023.setVisible(False)
     srvMetRegATS2023.setDefaultValue(0x01010103)
     srvMetRegATS2023.setReadOnly(True)
-    srvMetRegATS2023.setDependencies(updateConfigATS2023, ["DRV_MET_CONF_GAIN", "DRV_MET_CONF_I0", "DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_TEMP"])
+    srvMetRegATS2023.setDependencies(updateConfigATS2023, ["DRV_MET_CONF_GAIN", "DRV_MET_CONF_I0", "DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2"])
 
     srvMetRegATS2427 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_ATS2427", None)
     srvMetRegATS2427.setLabel("ATS2427")
-    srvMetRegATS2427.setVisible(True)
+    srvMetRegATS2427.setVisible(False)
     srvMetRegATS2427.setDefaultValue(0x07000001)
     srvMetRegATS2427.setReadOnly(True)
     srvMetRegATS2427.setDependencies(updateConfigATS2427, ["DRV_MET_CONF_GAIN", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
 
     srvMetRegSWELL = metComponentCommon.createHexSymbol("DRV_MET_CTRL_SWELL", None)
     srvMetRegSWELL.setLabel("SWELL")
-    srvMetRegSWELL.setVisible(True)
+    srvMetRegSWELL.setVisible(False)
     srvMetRegSWELL.setDefaultValue(0x5eab918)
     srvMetRegSWELL.setReadOnly(True)
     srvMetRegSWELL.setDependencies(updateConfigSwellSag, ["DRV_MET_CONF_SWELL", "DRV_MET_CONF_KU"])
 
     srvMetRegSAG = metComponentCommon.createHexSymbol("DRV_MET_CTRL_SAG", None)
     srvMetRegSAG.setLabel("SAG")
-    srvMetRegSAG.setVisible(True)
+    srvMetRegSAG.setVisible(False)
     srvMetRegSAG.setDefaultValue(0x1a2ec26)
     srvMetRegSAG.setReadOnly(True)
     srvMetRegSAG.setDependencies(updateConfigSwellSag, ["DRV_MET_CONF_SAG"])
 
     srvMetRegCreepP = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_P", None)
     srvMetRegCreepP.setLabel("CREEP_P")
-    srvMetRegCreepP.setVisible(True)
+    srvMetRegCreepP.setVisible(False)
     srvMetRegCreepP.setDefaultValue(0x00002E9A)
     srvMetRegCreepP.setReadOnly(True)
     srvMetRegCreepP.setDependencies(updateConfigCreepPQ, ["DRV_MET_CONF_CREEP_P", "DRV_MET_CONF_F"])
 
     srvMetRegCreepQ = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_Q", None)
     srvMetRegCreepQ.setLabel("CREEP_Q")
-    srvMetRegCreepQ.setVisible(True)
+    srvMetRegCreepQ.setVisible(False)
     srvMetRegCreepQ.setDefaultValue(0x00002E9A)
     srvMetRegCreepQ.setReadOnly(True)
     srvMetRegCreepQ.setDependencies(updateConfigCreepPQ, ["DRV_MET_CONF_CREEP_Q", "DRV_MET_CONF_F"])
 
     srvMetRegCreepI = metComponentCommon.createHexSymbol("DRV_MET_CTRL_CREEP_I", None)
     srvMetRegCreepI.setLabel("CREEP_I")
-    srvMetRegCreepI.setVisible(True)
+    srvMetRegCreepI.setVisible(False)
     srvMetRegCreepI.setDefaultValue(0x0000212D)
     srvMetRegCreepI.setReadOnly(True)
     srvMetRegCreepI.setDependencies(updateConfigCreepI, ["DRV_MET_CONF_CREEP_I", "DRV_MET_CONF_F", "DRV_MET_CONF_TR", "DRV_MET_CONF_RL", "DRV_MET_CONF_GAIN"])
 
     srvMetRegFEATCTRL0 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL0", None)
     srvMetRegFEATCTRL0.setLabel("FEATURE_CTRL0")
-    srvMetRegFEATCTRL0.setVisible(True)
+    srvMetRegFEATCTRL0.setVisible(False)
     srvMetRegFEATCTRL0.setDefaultValue(0x00000300)
     srvMetRegFEATCTRL0.setReadOnly(True)
     srvMetRegFEATCTRL0.setDependencies(updateConfigFeatCtrl0, ["DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
 
     srvMetRegFEATCTRL1 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL1", None)
     srvMetRegFEATCTRL1.setLabel("FEATURE_CTRL1")
-    srvMetRegFEATCTRL1.setVisible(True)
+    srvMetRegFEATCTRL1.setVisible(False)
     srvMetRegFEATCTRL1.setDefaultValue(0)
     srvMetRegFEATCTRL1.setReadOnly(True)
     srvMetRegFEATCTRL1.setDependencies(updateConfigFeatCtrl1, ["DRV_MET_CONF_CREEP_P_EN", "DRV_MET_CONF_CREEP_Q_EN", "DRV_MET_CONF_CREEP_I_EN"])
 
     srvMetRegPulse0Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_0", None)
     srvMetRegPulse0Ctrl.setLabel("PULSE0_CTRL")
-    srvMetRegPulse0Ctrl.setVisible(True)
+    srvMetRegPulse0Ctrl.setVisible(False)
     srvMetRegPulse0Ctrl.setDefaultValue(0x81009100)
     srvMetRegPulse0Ctrl.setReadOnly(True)
     srvMetRegPulse0Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P0", "DRV_MET_CONF_DET_P0", "DRV_MET_CONF_POL_P0", "DRV_MET_CONF_TYP_P0", "DRV_MET_CONF_WID_P0"])
 
     srvMetRegPulse1Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_1", None)
     srvMetRegPulse1Ctrl.setLabel("PULSE1_CTRL")
-    srvMetRegPulse1Ctrl.setVisible(True)
+    srvMetRegPulse1Ctrl.setVisible(False)
     srvMetRegPulse1Ctrl.setDefaultValue(0x81029100)
     srvMetRegPulse1Ctrl.setReadOnly(True)
     srvMetRegPulse1Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P1", "DRV_MET_CONF_DET_P1", "DRV_MET_CONF_POL_P1", "DRV_MET_CONF_TYP_P1", "DRV_MET_CONF_WID_P1"])
 
     srvMetRegPulse2Ctrl = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PULSE_CTRL_2", None)
     srvMetRegPulse2Ctrl.setLabel("PULSE2_CTRL")
-    srvMetRegPulse2Ctrl.setVisible(True)
+    srvMetRegPulse2Ctrl.setVisible(False)
     srvMetRegPulse2Ctrl.setDefaultValue(0x0)
     srvMetRegPulse2Ctrl.setReadOnly(True)
     srvMetRegPulse2Ctrl.setDependencies(updateConfigPulseXCtrl, ["DRV_MET_CONF_EN_P2", "DRV_MET_CONF_DET_P2", "DRV_MET_CONF_POL_P2", "DRV_MET_CONF_TYP_P2", "DRV_MET_CONF_WID_P2"])

@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-usi-protocol-id-enum" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_USI_PROTOCOL_ID Enum</title>
+<title>SRV_USI_PROTOCOL_ID Enum</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-usi-protocol-id-enum" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,73 +223,73 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-usi-protocol-id-enum">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_USI_PROTOCOL_ID Enum</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d84795e21', this);">Copy</button><code id="d84795e21" content="typedef enum&#xA;{&#xA;    /* PRIME Manager generic */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME                = 0x00,&#xA;&#xA;    /* PRIME Manager: GETQRY */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY         = 0x00,&#xA;&#xA;    /* PRIME Manager: GETRSP */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP         = 0x01,&#xA;&#xA;    /* PRIME Manager: SET */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_SET            = 0x02,&#xA;&#xA;    /* PRIME Manager: RESET */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_RESET          = 0x03,&#xA;&#xA;    /* PRIME Manager: REBOOT */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_REBOOT         = 0x04,&#xA;&#xA;    /* PRIME Manager: Firmware Upgrade */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_FU             = 0x05,&#xA;&#xA;    /* PRIME Manager: GETQRY enhanced */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN      = 0x06,&#xA;&#xA;    /* PRIME Manager: GETRSP enhanced */&#xA;    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN      = 0x07,&#xA;&#xA;    /* PRIME Sniffer */&#xA;    SRV_USI_PROT_ID_SNIF_PRIME                = 0x13,&#xA;&#xA;    /* PRIME PHY Serial */&#xA;    SRV_USI_PROT_ID_PHY_SERIAL_PRIME          = 0x1F,&#xA;&#xA;    /* Physical Layer  */&#xA;    SRV_USI_PROT_ID_PHY                       = 0x22,&#xA;&#xA;    /* G3 Sniffer  */&#xA;    SRV_USI_PROT_ID_SNIFF_G3                  = 0x23,&#xA;&#xA;    /* G3 MAC layer  */&#xA;    SRV_USI_PROT_ID_MAC_G3                    = 0x24,&#xA;&#xA;    /* G3 ADP layer  */&#xA;    SRV_USI_PROT_ID_ADP_G3                    = 0x25,&#xA;&#xA;    /* G3 Coordinator  */&#xA;    SRV_USI_PROT_ID_COORD_G3                  = 0x26,&#xA;&#xA;    /* MicroPLC Physical Layer  */&#xA;    SRV_USI_PROT_ID_PHY_MICROPLC              = 0x27,&#xA;&#xA;    /* PRIME API  */&#xA;    SRV_USI_PROT_ID_PRIME_API                 = 0x30,&#xA;&#xA;    /* Invalid protocol  */&#xA;    SRV_USI_PROT_ID_INVALID                   = 0xFF&#xA;&#xA;} SRV_USI_PROTOCOL_ID;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">enum</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* PRIME Manager generic */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME                <span class="ph token operator">=</span> <span class="ph token number">0x00</span><span class="ph token punctuation">,</span>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">enum</strong>
+{
+    <em class="hl-comment">/* PRIME Manager generic */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME                = <span class="hl-number">0x00</span>,
 
-    <span class="ph token comment">/* PRIME Manager: GETQRY */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY         <span class="ph token operator">=</span> <span class="ph token number">0x00</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: GETQRY */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY         = <span class="hl-number">0x00</span>,
 
-    <span class="ph token comment">/* PRIME Manager: GETRSP */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP         <span class="ph token operator">=</span> <span class="ph token number">0x01</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: GETRSP */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP         = <span class="hl-number">0x01</span>,
 
-    <span class="ph token comment">/* PRIME Manager: SET */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_SET            <span class="ph token operator">=</span> <span class="ph token number">0x02</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: SET */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_SET            = <span class="hl-number">0x02</span>,
 
-    <span class="ph token comment">/* PRIME Manager: RESET */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_RESET          <span class="ph token operator">=</span> <span class="ph token number">0x03</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: RESET */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_RESET          = <span class="hl-number">0x03</span>,
 
-    <span class="ph token comment">/* PRIME Manager: REBOOT */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_REBOOT         <span class="ph token operator">=</span> <span class="ph token number">0x04</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: REBOOT */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_REBOOT         = <span class="hl-number">0x04</span>,
 
-    <span class="ph token comment">/* PRIME Manager: Firmware Upgrade */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_FU             <span class="ph token operator">=</span> <span class="ph token number">0x05</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: Firmware Upgrade */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_FU             = <span class="hl-number">0x05</span>,
 
-    <span class="ph token comment">/* PRIME Manager: GETQRY enhanced */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN      <span class="ph token operator">=</span> <span class="ph token number">0x06</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: GETQRY enhanced */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN      = <span class="hl-number">0x06</span>,
 
-    <span class="ph token comment">/* PRIME Manager: GETRSP enhanced */</span>
-    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN      <span class="ph token operator">=</span> <span class="ph token number">0x07</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Manager: GETRSP enhanced */</em>
+    SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN      = <span class="hl-number">0x07</span>,
 
-    <span class="ph token comment">/* PRIME Sniffer */</span>
-    SRV_USI_PROT_ID_SNIF_PRIME                <span class="ph token operator">=</span> <span class="ph token number">0x13</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME Sniffer */</em>
+    SRV_USI_PROT_ID_SNIF_PRIME                = <span class="hl-number">0x13</span>,
 
-    <span class="ph token comment">/* PRIME PHY Serial */</span>
-    SRV_USI_PROT_ID_PHY_SERIAL_PRIME          <span class="ph token operator">=</span> <span class="ph token number">0x1F</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME PHY Serial */</em>
+    SRV_USI_PROT_ID_PHY_SERIAL_PRIME          = <span class="hl-number">0x1F</span>,
 
-    <span class="ph token comment">/* Physical Layer  */</span>
-    SRV_USI_PROT_ID_PHY                       <span class="ph token operator">=</span> <span class="ph token number">0x22</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* Physical Layer  */</em>
+    SRV_USI_PROT_ID_PHY                       = <span class="hl-number">0x22</span>,
 
-    <span class="ph token comment">/* G3 Sniffer  */</span>
-    SRV_USI_PROT_ID_SNIFF_G3                  <span class="ph token operator">=</span> <span class="ph token number">0x23</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* G3 Sniffer  */</em>
+    SRV_USI_PROT_ID_SNIFF_G3                  = <span class="hl-number">0x23</span>,
 
-    <span class="ph token comment">/* G3 MAC layer  */</span>
-    SRV_USI_PROT_ID_MAC_G3                    <span class="ph token operator">=</span> <span class="ph token number">0x24</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* G3 MAC layer  */</em>
+    SRV_USI_PROT_ID_MAC_G3                    = <span class="hl-number">0x24</span>,
 
-    <span class="ph token comment">/* G3 ADP layer  */</span>
-    SRV_USI_PROT_ID_ADP_G3                    <span class="ph token operator">=</span> <span class="ph token number">0x25</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* G3 ADP layer  */</em>
+    SRV_USI_PROT_ID_ADP_G3                    = <span class="hl-number">0x25</span>,
 
-    <span class="ph token comment">/* G3 Coordinator  */</span>
-    SRV_USI_PROT_ID_COORD_G3                  <span class="ph token operator">=</span> <span class="ph token number">0x26</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* G3 Coordinator  */</em>
+    SRV_USI_PROT_ID_COORD_G3                  = <span class="hl-number">0x26</span>,
 
-    <span class="ph token comment">/* MicroPLC Physical Layer  */</span>
-    SRV_USI_PROT_ID_PHY_MICROPLC              <span class="ph token operator">=</span> <span class="ph token number">0x27</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* MicroPLC Physical Layer  */</em>
+    SRV_USI_PROT_ID_PHY_MICROPLC              = <span class="hl-number">0x27</span>,
 
-    <span class="ph token comment">/* PRIME API  */</span>
-    SRV_USI_PROT_ID_PRIME_API                 <span class="ph token operator">=</span> <span class="ph token number">0x30</span><span class="ph token punctuation">,</span>
+    <em class="hl-comment">/* PRIME API  */</em>
+    SRV_USI_PROT_ID_PRIME_API                 = <span class="hl-number">0x30</span>,
 
-    <span class="ph token comment">/* Invalid protocol  */</span>
-    SRV_USI_PROT_ID_INVALID                   <span class="ph token operator">=</span> <span class="ph token number">0xFF</span>
+    <em class="hl-comment">/* Invalid protocol  */</em>
+    SRV_USI_PROT_ID_INVALID                   = <span class="hl-number">0xFF</span>
 
-<span class="ph token punctuation">}</span> SRV_USI_PROTOCOL_ID<span class="ph token punctuation">;</span></code></pre></div>
+} SRV_USI_PROTOCOL_ID;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">List of available USI protocols.</p>
 </div>

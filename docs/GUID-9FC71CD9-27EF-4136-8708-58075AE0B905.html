@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="using-the-library" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Using The Library</title>
+<title>Using The Library</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-using-the-library" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,235 +223,235 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="using-the-library">
 <h1 class="title topictitle1" id="ariaid-title1">Using The Library</h1><div class="body"><p class="p">The PLC PHY Serial library is an add-on that can be used along with the <a class="xref" href="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html"><em class="ph i">PLC PHY Driver</em></a>.
 The PHY driver is the one in charge of PLC communications, while the Serial library is used to serialize the PHY API, this is, to decode/encode the packets containing the PLC frames, their related parameters and the PIB objects, after receiving/sending them them from/to a Serial interface.</p>
 <p class="p">Following example illustrate how to use the Serial library (which in turn uses the USI service to send/receive the packets to/from an external tool), to serialize the PLC PHY API.
 Even if G3 and PRIME protocols have differences in the content of the serialized packets, a unique example is provided, not entering is such details, so it is seen that the implementation is the same in terms of function calling and state machines.</p>
 <p class="p"><strong class="ph b">Example implementation of a PLC PHY API Serialization</strong></p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d93282e22', this);">Copy</button><code id="d93282e22" content="APP_DATA appData;&#xA;    &#xA;static uint8_t pPLCDataTxBuffer[APP_PLC_DATA_BUFFER_SIZE];&#xA;static uint8_t pPLCDataRxBuffer[APP_PLC_DATA_BUFFER_SIZE];&#xA;static uint8_t pPLCDataPIBBuffer[APP_PLC_PIB_BUFFER_SIZE];&#xA;static uint8_t pSerialDataBuffer[APP_SERIAL_DATA_BUFFER_SIZE];&#xA;&#xA;/* PLC Data Indication Callback */&#xA;static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)&#xA;{&#xA;    /* Send Received PLC message through USI */&#xA;    if (indObj-&gt;dataLength)&#xA;    {&#xA;        size_t length;&#xA;&#xA;        /* Serialize received message */&#xA;        length = SRV_PSERIAL_SerialRxMessage(appData.pSerialData, indObj);&#xA;        /* Send through USI */&#xA;        SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,&#xA;                appData.pSerialData, length);&#xA;    }&#xA;}&#xA;&#xA;/* PLC Data Confirm Callback */&#xA;static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)&#xA;{&#xA;    size_t length;&#xA;    &#xA;    appData.plcTxState = APP_PLC_TX_STATE_IDLE;&#xA;&#xA;    /* Serialize received message */&#xA;    length = SRV_PSERIAL_SerialCfmMessage(appData.pSerialData, cfmObj);&#xA;    /* Send through USI */&#xA;    SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,&#xA;            appData.pSerialData, length);&#xA;&#xA;}&#xA;&#xA;/* USI packet received Callback */&#xA;void APP_USIPhyProtocolEventHandler(uint8_t *pData, size_t length)&#xA;{&#xA;    /* Message received from PLC Tool - USART */&#xA;    SRV_PSERIAL_COMMAND command;&#xA;&#xA;    /* Process received message */&#xA;    command = SRV_PSERIAL_GetCommand(pData);&#xA;&#xA;    switch (command) {&#xA;        case SRV_PSERIAL_CMD_PHY_GET_CFG:&#xA;        {&#xA;            /* Extract PIB information */&#xA;            SRV_PSERIAL_ParseGetPIB(&amp;appData.plcPIB, pData);&#xA;&#xA;            if (DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &amp;appData.plcPIB))&#xA;            {&#xA;                size_t len;&#xA;&#xA;                /* Serialize PIB data */&#xA;                len = SRV_PSERIAL_SerialGetPIB(appData.pSerialData, &amp;appData.plcPIB);&#xA;                /* Send through USI */&#xA;                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,&#xA;                        appData.pSerialData, len);&#xA;            }&#xA;        }&#xA;        break;&#xA;&#xA;        case SRV_PSERIAL_CMD_PHY_SET_CFG:&#xA;        {&#xA;            /* Extract PIB information */&#xA;            SRV_PSERIAL_ParseSetPIB(&amp;appData.plcPIB, pData);&#xA;&#xA;            if (DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &amp;appData.plcPIB))&#xA;            {&#xA;                size_t len;&#xA;&#xA;                /* Serialize PIB data */&#xA;                len = SRV_PSERIAL_SerialSetPIB(&amp;appData.pSerialData[1], &amp;appData.plcPIB);&#xA;                /* Send through USI */&#xA;                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,&#xA;                        appData.pSerialData, len);&#xA;            }&#xA;        }&#xA;        break;&#xA;&#xA;        case SRV_PSERIAL_CMD_PHY_SEND_MSG:&#xA;        {&#xA;            /* Set PLC TX State to wait Tx confirmation */&#xA;            appData.plcTxState = APP_PLC_TX_STATE_WAIT_TX_CFM;&#xA;&#xA;            /* Capture and parse data from USI */&#xA;            SRV_PSERIAL_ParseTxMessage(&amp;appData.plcTxObj, pData);&#xA;&#xA;            /* Send Message through PLC */&#xA;            DRV_PLC_PHY_Send(appData.drvPl360Handle, &amp;appData.plcTxObj);&#xA;        }&#xA;        break;&#xA;&#xA;        default:&#xA;            break;&#xA;    }&#xA;}&#xA;&#xA;void APP_Initialize(void)&#xA;{&#xA;    /* Place the App state machine in its initial state. */&#xA;    appData.state = APP_STATE_INIT;&#xA;&#xA;    /* Initialize PLC buffers */&#xA;    appData.plcTxObj.pTransmitData = pPLCDataTxBuffer;&#xA;    appData.plcRxObj.pReceivedData = pPLCDataRxBuffer;&#xA;    appData.plcPIB.pData = pPLCDataPIBBuffer;&#xA;    appData.pSerialData = pSerialDataBuffer;&#xA;    &#xA;    /* Init PLC TX status */&#xA;    appData.plcTxState = APP_PLC_TX_STATE_IDLE;&#xA;}&#xA;&#xA;void APP_Tasks(void)&#xA;{&#xA;    /* Check the application's current state. */&#xA;    switch(appData.state)&#xA;    {&#xA;        /* Application's initial state. */&#xA;        case APP_STATE_INIT:&#xA;        {&#xA;            /* Open PLC driver : Start uploading process */&#xA;            appData.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);&#xA;&#xA;            if (appData.drvPl360Handle != DRV_HANDLE_INVALID)&#xA;            {&#xA;                /* Set Application to next state */&#xA;                appData.state = APP_STATE_REGISTER;&#xA;            }&#xA;            else&#xA;            {&#xA;                /* Set Application to ERROR state */&#xA;                appData.state = APP_STATE_ERROR;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        /* Waiting to PLC transceiver be opened and register callback functions */&#xA;        case APP_STATE_REGISTER:&#xA;        {&#xA;            /* Check PLC transceiver */&#xA;            if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)&#xA;            {&#xA;                /* Register PLC callback */&#xA;                DRV_PLC_PHY_ExceptionCallbackRegister(appData.drvPl360Handle,&#xA;                        APP_PLCExceptionCb, DRV_PLC_PHY_INDEX);&#xA;                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPl360Handle,&#xA;                        APP_PLCDataIndCb, DRV_PLC_PHY_INDEX);&#xA;                DRV_PLC_PHY_DataCfmCallbackRegister(appData.drvPl360Handle,&#xA;                        APP_PLCDataCfmCb, DRV_PLC_PHY_INDEX);&#xA;&#xA;                /* Open USI Service */&#xA;                appData.srvUSIHandle = SRV_USI_Open(SRV_USI_INDEX_0);&#xA;&#xA;                if (appData.srvUSIHandle != DRV_HANDLE_INVALID)&#xA;                {&#xA;                    /* Set Application to next state */&#xA;                    appData.state = APP_STATE_CONFIG_USI;&#xA;                }&#xA;                else&#xA;                {&#xA;                    /* Set Application to ERROR state */&#xA;                    appData.state = APP_STATE_ERROR;&#xA;                }&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_STATE_CONFIG_USI:&#xA;        {&#xA;            if (SRV_USI_Status(appData.srvUSIHandle) == SRV_USI_STATUS_CONFIGURED)&#xA;            {&#xA;                /* Register USI callback */&#xA;                SRV_USI_CallbackRegister(appData.srvUSIHandle,&#xA;                        SRV_USI_PROT_ID_PHY, APP_USIPhyProtocolEventHandler);&#xA;&#xA;                /* Set Application to next state */&#xA;                appData.state = APP_STATE_CONFIG_PLC;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_STATE_CONFIG_PLC:&#xA;        {&#xA;            /* Set PLC configuration (differs from G3 to PRIME) */&#xA;            /* ... */&#xA;            /* Set Application to next state */&#xA;            appData.state = APP_STATE_READY;&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_STATE_READY:&#xA;        {&#xA;            /* Check USI status in case of USI device has been reset */&#xA;            if (SRV_USI_Status(appData.srvUSIHandle) == SRV_USI_STATUS_NOT_CONFIGURED)&#xA;            {&#xA;                /* Set Application to next state */&#xA;                appData.state = APP_STATE_CONFIG_USI;&#xA;            }&#xA;            &#xA;            /* Else just wait for events to trigger callbacks */&#xA;            &#xA;            break;&#xA;        }&#xA;&#xA;        case APP_STATE_ERROR:&#xA;        {&#xA;            /* Handle error in application's state machine */&#xA;            break;&#xA;        }&#xA;&#xA;        /* The default state should never be executed. */&#xA;        default:&#xA;        {&#xA;            break;&#xA;        }&#xA;    }&#xA;}">APP_DATA appData<span class="ph token punctuation">;</span>
+<pre class="pre codeblock c">APP_DATA appData;
     
-<span class="ph token keyword">static</span> uint8_t pPLCDataTxBuffer<span class="ph token punctuation">[</span>APP_PLC_DATA_BUFFER_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">static</span> uint8_t pPLCDataRxBuffer<span class="ph token punctuation">[</span>APP_PLC_DATA_BUFFER_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">static</span> uint8_t pPLCDataPIBBuffer<span class="ph token punctuation">[</span>APP_PLC_PIB_BUFFER_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">static</span> uint8_t pSerialDataBuffer<span class="ph token punctuation">[</span>APP_SERIAL_DATA_BUFFER_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">static</strong> uint8_t pPLCDataTxBuffer[APP_PLC_DATA_BUFFER_SIZE];
+<strong class="hl-keyword">static</strong> uint8_t pPLCDataRxBuffer[APP_PLC_DATA_BUFFER_SIZE];
+<strong class="hl-keyword">static</strong> uint8_t pPLCDataPIBBuffer[APP_PLC_PIB_BUFFER_SIZE];
+<strong class="hl-keyword">static</strong> uint8_t pSerialDataBuffer[APP_SERIAL_DATA_BUFFER_SIZE];
 
-<span class="ph token comment">/* PLC Data Indication Callback */</span>
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLCDataIndCb</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_RECEPTION_OBJ <span class="ph token operator">*</span>indObj<span class="ph token punctuation">,</span> uintptr_t context<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Send Received PLC message through USI */</span>
-    <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>indObj<span class="ph token operator">-&gt;</span>dataLength<span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        size_t length<span class="ph token punctuation">;</span>
+<em class="hl-comment">/* PLC Data Indication Callback */</em>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLCDataIndCb</span>(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
+{
+    <em class="hl-comment">/* Send Received PLC message through USI */</em>
+    <strong class="hl-keyword">if</strong> (indObj-&gt;dataLength)
+    {
+        size_t length;
 
-        <span class="ph token comment">/* Serialize received message */</span>
-        length <span class="ph token operator">=</span> <span class="ph token function">SRV_PSERIAL_SerialRxMessage</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> indObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        <span class="ph token comment">/* Send through USI */</span>
-        <span class="ph token function">SRV_USI_Send_Message</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">,</span> SRV_USI_PROT_ID_PHY<span class="ph token punctuation">,</span>
-                appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> length<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span>
+        <em class="hl-comment">/* Serialize received message */</em>
+        length = SRV_PSERIAL_SerialRxMessage(appData.pSerialData, indObj);
+        <em class="hl-comment">/* Send through USI */</em>
+        SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,
+                appData.pSerialData, length);
+    }
+}
 
-<span class="ph token comment">/* PLC Data Confirm Callback */</span>
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLCDataCfmCb</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ <span class="ph token operator">*</span>cfmObj<span class="ph token punctuation">,</span> uintptr_t context<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    size_t length<span class="ph token punctuation">;</span>
+<em class="hl-comment">/* PLC Data Confirm Callback */</em>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLCDataCfmCb</span>(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context)
+{
+    size_t length;
     
-    appData<span class="ph token punctuation">.</span>plcTxState <span class="ph token operator">=</span> APP_PLC_TX_STATE_IDLE<span class="ph token punctuation">;</span>
+    appData.plcTxState = APP_PLC_TX_STATE_IDLE;
 
-    <span class="ph token comment">/* Serialize received message */</span>
-    length <span class="ph token operator">=</span> <span class="ph token function">SRV_PSERIAL_SerialCfmMessage</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> cfmObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Send through USI */</span>
-    <span class="ph token function">SRV_USI_Send_Message</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">,</span> SRV_USI_PROT_ID_PHY<span class="ph token punctuation">,</span>
-            appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> length<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Serialize received message */</em>
+    length = SRV_PSERIAL_SerialCfmMessage(appData.pSerialData, cfmObj);
+    <em class="hl-comment">/* Send through USI */</em>
+    SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,
+            appData.pSerialData, length);
 
-<span class="ph token punctuation">}</span>
+}
 
-<span class="ph token comment">/* USI packet received Callback */</span>
-<span class="ph token keyword">void</span> <span class="ph token function">APP_USIPhyProtocolEventHandler</span><span class="ph token punctuation">(</span>uint8_t <span class="ph token operator">*</span>pData<span class="ph token punctuation">,</span> size_t length<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Message received from PLC Tool - USART */</span>
-    SRV_PSERIAL_COMMAND command<span class="ph token punctuation">;</span>
+<em class="hl-comment">/* USI packet received Callback */</em>
+<strong class="hl-keyword">void</strong> <span class="hl-functions">APP_USIPhyProtocolEventHandler</span>(uint8_t *pData, size_t length)
+{
+    <em class="hl-comment">/* Message received from PLC Tool - USART */</em>
+    SRV_PSERIAL_COMMAND command;
 
-    <span class="ph token comment">/* Process received message */</span>
-    command <span class="ph token operator">=</span> <span class="ph token function">SRV_PSERIAL_GetCommand</span><span class="ph token punctuation">(</span>pData<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Process received message */</em>
+    command = SRV_PSERIAL_GetCommand(pData);
 
-    <span class="ph token keyword">switch</span> <span class="ph token punctuation">(</span>command<span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-        <span class="ph token keyword">case</span> SRV_PSERIAL_CMD_PHY_GET_CFG<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Extract PIB information */</span>
-            <span class="ph token function">SRV_PSERIAL_ParseGetPIB</span><span class="ph token punctuation">(</span><span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">,</span> pData<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    <strong class="hl-keyword">switch</strong> (command) {
+        <strong class="hl-keyword">case</strong> SRV_PSERIAL_CMD_PHY_GET_CFG:
+        {
+            <em class="hl-comment">/* Extract PIB information */</em>
+            SRV_PSERIAL_ParseGetPIB(&amp;appData.plcPIB, pData);
 
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_PLC_PHY_PIBGet</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                size_t len<span class="ph token punctuation">;</span>
+            <strong class="hl-keyword">if</strong> (DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &amp;appData.plcPIB))
+            {
+                size_t len;
 
-                <span class="ph token comment">/* Serialize PIB data */</span>
-                len <span class="ph token operator">=</span> <span class="ph token function">SRV_PSERIAL_SerialGetPIB</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token comment">/* Send through USI */</span>
-                <span class="ph token function">SRV_USI_Send_Message</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">,</span> SRV_USI_PROT_ID_PHY<span class="ph token punctuation">,</span>
-                        appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> len<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Serialize PIB data */</em>
+                len = SRV_PSERIAL_SerialGetPIB(appData.pSerialData, &amp;appData.plcPIB);
+                <em class="hl-comment">/* Send through USI */</em>
+                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,
+                        appData.pSerialData, len);
+            }
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> SRV_PSERIAL_CMD_PHY_SET_CFG<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Extract PIB information */</span>
-            <span class="ph token function">SRV_PSERIAL_ParseSetPIB</span><span class="ph token punctuation">(</span><span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">,</span> pData<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> SRV_PSERIAL_CMD_PHY_SET_CFG:
+        {
+            <em class="hl-comment">/* Extract PIB information */</em>
+            SRV_PSERIAL_ParseSetPIB(&amp;appData.plcPIB, pData);
 
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_PLC_PHY_PIBSet</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                size_t len<span class="ph token punctuation">;</span>
+            <strong class="hl-keyword">if</strong> (DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &amp;appData.plcPIB))
+            {
+                size_t len;
 
-                <span class="ph token comment">/* Serialize PIB data */</span>
-                len <span class="ph token operator">=</span> <span class="ph token function">SRV_PSERIAL_SerialSetPIB</span><span class="ph token punctuation">(</span><span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">[</span><span class="ph token number">1</span><span class="ph token punctuation">]</span><span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token comment">/* Send through USI */</span>
-                <span class="ph token function">SRV_USI_Send_Message</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">,</span> SRV_USI_PROT_ID_PHY<span class="ph token punctuation">,</span>
-                        appData<span class="ph token punctuation">.</span>pSerialData<span class="ph token punctuation">,</span> len<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Serialize PIB data */</em>
+                len = SRV_PSERIAL_SerialSetPIB(&amp;appData.pSerialData[<span class="hl-number">1</span>], &amp;appData.plcPIB);
+                <em class="hl-comment">/* Send through USI */</em>
+                SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_PHY,
+                        appData.pSerialData, len);
+            }
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> SRV_PSERIAL_CMD_PHY_SEND_MSG<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Set PLC TX State to wait Tx confirmation */</span>
-            appData<span class="ph token punctuation">.</span>plcTxState <span class="ph token operator">=</span> APP_PLC_TX_STATE_WAIT_TX_CFM<span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> SRV_PSERIAL_CMD_PHY_SEND_MSG:
+        {
+            <em class="hl-comment">/* Set PLC TX State to wait Tx confirmation */</em>
+            appData.plcTxState = APP_PLC_TX_STATE_WAIT_TX_CFM;
 
-            <span class="ph token comment">/* Capture and parse data from USI */</span>
-            <span class="ph token function">SRV_PSERIAL_ParseTxMessage</span><span class="ph token punctuation">(</span><span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcTxObj<span class="ph token punctuation">,</span> pData<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+            <em class="hl-comment">/* Capture and parse data from USI */</em>
+            SRV_PSERIAL_ParseTxMessage(&amp;appData.plcTxObj, pData);
 
-            <span class="ph token comment">/* Send Message through PLC */</span>
-            <span class="ph token function">DRV_PLC_PHY_Send</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appData<span class="ph token punctuation">.</span>plcTxObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+            <em class="hl-comment">/* Send Message through PLC */</em>
+            DRV_PLC_PHY_Send(appData.drvPl360Handle, &amp;appData.plcTxObj);
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">default</strong>:
+            <strong class="hl-keyword">break</strong>;
+    }
+}
 
-<span class="ph token keyword">void</span> <span class="ph token function">APP_Initialize</span><span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Place the App state machine in its initial state. */</span>
-    appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_INIT<span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> <span class="hl-functions">APP_Initialize</span>(<strong class="hl-keyword">void</strong>)
+{
+    <em class="hl-comment">/* Place the App state machine in its initial state. */</em>
+    appData.state = APP_STATE_INIT;
 
-    <span class="ph token comment">/* Initialize PLC buffers */</span>
-    appData<span class="ph token punctuation">.</span>plcTxObj<span class="ph token punctuation">.</span>pTransmitData <span class="ph token operator">=</span> pPLCDataTxBuffer<span class="ph token punctuation">;</span>
-    appData<span class="ph token punctuation">.</span>plcRxObj<span class="ph token punctuation">.</span>pReceivedData <span class="ph token operator">=</span> pPLCDataRxBuffer<span class="ph token punctuation">;</span>
-    appData<span class="ph token punctuation">.</span>plcPIB<span class="ph token punctuation">.</span>pData <span class="ph token operator">=</span> pPLCDataPIBBuffer<span class="ph token punctuation">;</span>
-    appData<span class="ph token punctuation">.</span>pSerialData <span class="ph token operator">=</span> pSerialDataBuffer<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Initialize PLC buffers */</em>
+    appData.plcTxObj.pTransmitData = pPLCDataTxBuffer;
+    appData.plcRxObj.pReceivedData = pPLCDataRxBuffer;
+    appData.plcPIB.pData = pPLCDataPIBBuffer;
+    appData.pSerialData = pSerialDataBuffer;
     
-    <span class="ph token comment">/* Init PLC TX status */</span>
-    appData<span class="ph token punctuation">.</span>plcTxState <span class="ph token operator">=</span> APP_PLC_TX_STATE_IDLE<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span>
+    <em class="hl-comment">/* Init PLC TX status */</em>
+    appData.plcTxState = APP_PLC_TX_STATE_IDLE;
+}
 
-<span class="ph token keyword">void</span> <span class="ph token function">APP_Tasks</span><span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Check the application's current state. */</span>
-    <span class="ph token keyword">switch</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>state<span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token comment">/* Application's initial state. */</span>
-        <span class="ph token keyword">case</span> APP_STATE_INIT<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Open PLC driver : Start uploading process */</span>
-            appData<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">=</span> <span class="ph token function">DRV_PLC_PHY_Open</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> <span class="hl-functions">APP_Tasks</span>(<strong class="hl-keyword">void</strong>)
+{
+    <em class="hl-comment">/* Check the application's current state. */</em>
+    <strong class="hl-keyword">switch</strong>(appData.state)
+    {
+        <em class="hl-comment">/* Application's initial state. */</em>
+        <strong class="hl-keyword">case</strong> APP_STATE_INIT:
+        {
+            <em class="hl-comment">/* Open PLC driver : Start uploading process */</em>
+            appData.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX, NULL);
 
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">!=</span> DRV_HANDLE_INVALID<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Set Application to next state */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_REGISTER<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">else</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Set Application to ERROR state */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_ERROR<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+            <strong class="hl-keyword">if</strong> (appData.drvPl360Handle != DRV_HANDLE_INVALID)
+            {
+                <em class="hl-comment">/* Set Application to next state */</em>
+                appData.state = APP_STATE_REGISTER;
+            }
+            <strong class="hl-keyword">else</strong>
+            {
+                <em class="hl-comment">/* Set Application to ERROR state */</em>
+                appData.state = APP_STATE_ERROR;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token comment">/* Waiting to PLC transceiver be opened and register callback functions */</span>
-        <span class="ph token keyword">case</span> APP_STATE_REGISTER<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Check PLC transceiver */</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_PLC_PHY_Status</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SYS_STATUS_READY<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Register PLC callback */</span>
-                <span class="ph token function">DRV_PLC_PHY_ExceptionCallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span>
-                        APP_PLCExceptionCb<span class="ph token punctuation">,</span> DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token function">DRV_PLC_PHY_DataIndCallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span>
-                        APP_PLCDataIndCb<span class="ph token punctuation">,</span> DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token function">DRV_PLC_PHY_DataCfmCallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span>
-                        APP_PLCDataCfmCb<span class="ph token punctuation">,</span> DRV_PLC_PHY_INDEX<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <em class="hl-comment">/* Waiting to PLC transceiver be opened and register callback functions */</em>
+        <strong class="hl-keyword">case</strong> APP_STATE_REGISTER:
+        {
+            <em class="hl-comment">/* Check PLC transceiver */</em>
+            <strong class="hl-keyword">if</strong> (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX) == SYS_STATUS_READY)
+            {
+                <em class="hl-comment">/* Register PLC callback */</em>
+                DRV_PLC_PHY_ExceptionCallbackRegister(appData.drvPl360Handle,
+                        APP_PLCExceptionCb, DRV_PLC_PHY_INDEX);
+                DRV_PLC_PHY_DataIndCallbackRegister(appData.drvPl360Handle,
+                        APP_PLCDataIndCb, DRV_PLC_PHY_INDEX);
+                DRV_PLC_PHY_DataCfmCallbackRegister(appData.drvPl360Handle,
+                        APP_PLCDataCfmCb, DRV_PLC_PHY_INDEX);
 
-                <span class="ph token comment">/* Open USI Service */</span>
-                appData<span class="ph token punctuation">.</span>srvUSIHandle <span class="ph token operator">=</span> <span class="ph token function">SRV_USI_Open</span><span class="ph token punctuation">(</span>SRV_USI_INDEX_0<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Open USI Service */</em>
+                appData.srvUSIHandle = SRV_USI_Open(SRV_USI_INDEX_<span class="hl-number">0</span>);
 
-                <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle <span class="ph token operator">!=</span> DRV_HANDLE_INVALID<span class="ph token punctuation">)</span>
-                <span class="ph token punctuation">{</span>
-                    <span class="ph token comment">/* Set Application to next state */</span>
-                    appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_CONFIG_USI<span class="ph token punctuation">;</span>
-                <span class="ph token punctuation">}</span>
-                <span class="ph token keyword">else</span>
-                <span class="ph token punctuation">{</span>
-                    <span class="ph token comment">/* Set Application to ERROR state */</span>
-                    appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_ERROR<span class="ph token punctuation">;</span>
-                <span class="ph token punctuation">}</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+                <strong class="hl-keyword">if</strong> (appData.srvUSIHandle != DRV_HANDLE_INVALID)
+                {
+                    <em class="hl-comment">/* Set Application to next state */</em>
+                    appData.state = APP_STATE_CONFIG_USI;
+                }
+                <strong class="hl-keyword">else</strong>
+                {
+                    <em class="hl-comment">/* Set Application to ERROR state */</em>
+                    appData.state = APP_STATE_ERROR;
+                }
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_STATE_CONFIG_USI<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">SRV_USI_Status</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SRV_USI_STATUS_CONFIGURED<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Register USI callback */</span>
-                <span class="ph token function">SRV_USI_CallbackRegister</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">,</span>
-                        SRV_USI_PROT_ID_PHY<span class="ph token punctuation">,</span> APP_USIPhyProtocolEventHandler<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_CONFIG_USI:
+        {
+            <strong class="hl-keyword">if</strong> (SRV_USI_Status(appData.srvUSIHandle) == SRV_USI_STATUS_CONFIGURED)
+            {
+                <em class="hl-comment">/* Register USI callback */</em>
+                SRV_USI_CallbackRegister(appData.srvUSIHandle,
+                        SRV_USI_PROT_ID_PHY, APP_USIPhyProtocolEventHandler);
 
-                <span class="ph token comment">/* Set Application to next state */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_CONFIG_PLC<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+                <em class="hl-comment">/* Set Application to next state */</em>
+                appData.state = APP_STATE_CONFIG_PLC;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_STATE_CONFIG_PLC<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Set PLC configuration (differs from G3 to PRIME) */</span>
-            <span class="ph token comment">/* ... */</span>
-            <span class="ph token comment">/* Set Application to next state */</span>
-            appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_READY<span class="ph token punctuation">;</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_CONFIG_PLC:
+        {
+            <em class="hl-comment">/* Set PLC configuration (differs from G3 to PRIME) */</em>
+            <em class="hl-comment">/* ... */</em>
+            <em class="hl-comment">/* Set Application to next state */</em>
+            appData.state = APP_STATE_READY;
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_STATE_READY<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Check USI status in case of USI device has been reset */</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">SRV_USI_Status</span><span class="ph token punctuation">(</span>appData<span class="ph token punctuation">.</span>srvUSIHandle<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SRV_USI_STATUS_NOT_CONFIGURED<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Set Application to next state */</span>
-                appData<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_STATE_CONFIG_USI<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_READY:
+        {
+            <em class="hl-comment">/* Check USI status in case of USI device has been reset */</em>
+            <strong class="hl-keyword">if</strong> (SRV_USI_Status(appData.srvUSIHandle) == SRV_USI_STATUS_NOT_CONFIGURED)
+            {
+                <em class="hl-comment">/* Set Application to next state */</em>
+                appData.state = APP_STATE_CONFIG_USI;
+            }
             
-            <span class="ph token comment">/* Else just wait for events to trigger callbacks */</span>
+            <em class="hl-comment">/* Else just wait for events to trigger callbacks */</em>
             
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_STATE_ERROR<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Handle error in application's state machine */</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_STATE_ERROR:
+        {
+            <em class="hl-comment">/* Handle error in application's state machine */</em>
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token comment">/* The default state should never be executed. */</span>
-        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+        <em class="hl-comment">/* The default state should never be executed. */</em>
+        <strong class="hl-keyword">default</strong>:
+        {
+            <strong class="hl-keyword">break</strong>;
+        }
+    }
+}</pre></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html">PLC PHY Serial Service</a></div>

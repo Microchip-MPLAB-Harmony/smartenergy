@@ -36,9 +36,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="library-interface" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Library Interface</title>
+<title>Library Interface</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-library-interface" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -87,10 +86,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -114,7 +112,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -128,16 +125,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -176,7 +206,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -218,205 +248,205 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="library-interface">
 <h1 class="title topictitle1" id="ariaid-title1">Library Interface</h1><div class="body"><p class="p">PLC PHY driver library provides the following interfaces:</p>
 <p class="p"><strong class="ph b">Functions</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e21"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e23"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e21"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e23"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Initialize</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Initializes the PLC PHY instance for the specified driver index</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Initialize</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Initializes the PLC PHY instance for the specified driver index</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Open</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Opens the specified PLC PHY driver instance and returns a handle to it</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Open</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Opens the specified PLC PHY driver instance and returns a handle to it</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Close</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Closes an opened instance of the PLC PHY driver given its handle</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Close</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Closes an opened instance of the PLC PHY driver given its handle</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_TxRequest</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to transmit PLC PHY data through Power Line</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_TxRequest</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to transmit PLC PHY data through Power Line</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_PIBGet</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to get information from PLC transceiver about PLC PHY and PHY information base (PIB)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_PIBGet</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to get information from PLC transceiver about PLC PHY and PHY information base (PIB)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_PIBSet</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to set information to PLC transceiver on PLC PHY and PHY information base (PIB)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_PIBSet</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to set information to PLC transceiver on PLC PHY and PHY information base (PIB)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_TxCfmCallbackRegister</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to set a data confirm event handling function for the driver to call back when the requested transmission has finished</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_TxCfmCallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to set a data confirm event handling function for the driver to call back when the requested transmission has finished</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_DataIndCallbackRegister</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to set a data indication event handling function for the driver to call back when a data reception has finished</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_DataIndCallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to set a data indication event handling function for the driver to call back when a data reception has finished</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_SleepDisableCallbackRegister</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to set an sleep mode disable event handling function for the driver to call back when the PLC driver is active again</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_SleepDisableCallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to set an sleep mode disable event handling function for the driver to call back when the PLC driver is active again</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_ExceptionCallbackRegister</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows a client to set an exception event handling function for the driver to call back when some error occurs through PLC transceiver communication</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_ExceptionCallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows a client to set an exception event handling function for the driver to call back when some error occurs through PLC transceiver communication</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_ExternalInterruptHandler</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Allows application to register callback for PLC Interrupt pin</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_ExternalInterruptHandler</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Allows application to register callback for PLC Interrupt pin</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Status</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Gets the current status of the PLC driver module</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Status</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Gets the current status of the PLC driver module</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Tasks</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Maintains the driver's state machine</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Tasks</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Maintains the driver's state machine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_Sleep</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>PLC driver Sleep mode management</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_Sleep</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>PLC driver Sleep mode management</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e21 "><span>DRV_PLC_PHY_EnableTX</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e23 "><span>Enables/Disables PLC transmission</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e21 "><span>DRV_PLC_PHY_EnableTX</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e23 "><span>Enables/Disables PLC transmission</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Data types and constants</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e112"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e114"><span>Type</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e116"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e112"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e114"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e116"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e112 "><span>DRV_PLC_PHY_TX_CFM_CALLBACK</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e114 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e116 "><span>Pointer to a PLC PHY Driver Transmission Confirm Event handler function</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e112 "><span>DRV_PLC_PHY_TX_CFM_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e114 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e116 "><span>Pointer to a PLC PHY Driver Transmission Confirm Event handler function</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e112 "><span>DRV_PLC_PHY_DATA_IND_CALLBACK</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e114 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e116 "><span>Pointer to a PLC PHY Driver Reception Event handler function</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e112 "><span>DRV_PLC_PHY_DATA_IND_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e114 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e116 "><span>Pointer to a PLC PHY Driver Reception Event handler function</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e112 "><span>DRV_PLC_PHY_SLEEP_CALLBACK</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e114 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e116 "><span>Notifies when Sleep Mode is disabled and PLC PHY driver is available to be used again</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e112 "><span>DRV_PLC_PHY_SLEEP_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e114 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e116 "><span>Notifies when Sleep Mode is disabled and PLC PHY driver is available to be used again</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e112 "><span>DRV_PLC_PHY_EXCEPTION_CALLBACK</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e114 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e116 "><span>Pointer to a PLC PHY Driver Exceptions Event handler function</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e112 "><span>DRV_PLC_PHY_EXCEPTION_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e114 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e116 "><span>Pointer to a PLC PHY Driver Exceptions Event handler function</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e112 "><span>DRV_PLC_PHY_EXCEPTION</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e114 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e116 "><span>Defines the type for PLC PHY Driver transfer errors</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e112 "><span>DRV_PLC_PHY_EXCEPTION</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e114 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e116 "><span>Defines the type for PLC PHY Driver transfer errors</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">G3 Data types and constants</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e164"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e166"><span>Type</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e168"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e164"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e166"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e168"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_ID</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>List of available G3 PLC PHY Information Base objects</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_ID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>List of available G3 PLC PHY Information Base objects</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_MOD_TYPE</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>List of G3 modulations</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_MOD_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>List of G3 modulations</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_MOD_SCHEME</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>List of G3 modulations schemes</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_MOD_SCHEME</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>List of G3 modulations schemes</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_DEL_TYPE</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>List of G3 delimiter types</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_DEL_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>List of G3 delimiter types</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_TX_RESULT</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>List of transmission results</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_TX_RESULT</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>List of transmission results</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_TONE_MAP_RSP</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Includes modulation type, modulation scheme and Tone Map data</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_TONE_MAP_RSP</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Includes modulation type, modulation scheme and Tone Map data</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Includes the parameters used to get the maximum PSDU length computation</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Includes the parameters used to get the maximum PSDU length computation</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_TRANSMISSION_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Includes PLC Transmission setup data</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_TRANSMISSION_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Includes PLC Transmission setup data</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Includes a transmission result and timestamp</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Includes a transmission result and timestamp</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_RECEPTION_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Includes PLC PHY Reception data and PHY parameters</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_RECEPTION_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Includes PLC PHY Reception data and PHY parameters</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e164 "><span>DRV_PLC_PHY_PIB_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e166 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e168 "><span>Object to access the PLC PHY Information Base</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e164 "><span>DRV_PLC_PHY_PIB_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e166 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e168 "><span>Object to access the PLC PHY Information Base</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">PRIME Data types and constants</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e258"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e260"><span>Type</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d83759e262"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e258"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e260"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d71687e262"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_ID</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of available PRIME PLC PHY Information Base objects</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_ID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of available PRIME PLC PHY Information Base objects</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_SCH</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of PRIME modulations schemes</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_SCH</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of PRIME modulations schemes</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_FRAME_TYPE</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of PRIME frame types</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_FRAME_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of PRIME frame types</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_HEADER</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of PRIME header types</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_HEADER</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of PRIME header types</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_CHANNEL</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of PRIME channels</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_CHANNEL</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of PRIME channels</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_BUFFER_ID</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of buffers ID to handle PLC communications</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_BUFFER_ID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of buffers ID to handle PLC communications</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_TX_RESULT</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>List of transmission results</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_TX_RESULT</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>List of transmission results</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Includes the Noise Capture States</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Includes the Noise Capture States</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Includes information about Noise Capture</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Includes information about Noise Capture</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_TRANSMISSION_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Includes PLC Transmission setup data</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_TRANSMISSION_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Includes PLC Transmission setup data</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Includes a transmission result and timestamp</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Includes a transmission result and timestamp</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_RECEPTION_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Includes PLC PHY Reception data and PHY parameters</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_RECEPTION_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Includes PLC PHY Reception data and PHY parameters</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e258 "><span>DRV_PLC_PHY_PIB_OBJ</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e260 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d83759e262 "><span>Object to access the PLC PHY Information Base</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e258 "><span>DRV_PLC_PHY_PIB_OBJ</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e260 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d71687e262 "><span>Object to access the PLC PHY Information Base</span></td>
 </tr>
 </tbody>
 </table>

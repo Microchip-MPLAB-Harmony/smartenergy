@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-signal-capture-state-enum" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</title>
+<title>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-signal-capture-state-enum" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,18 +223,18 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-signal-capture-state-enum">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html">PRIME Data types and constants</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d14434e21', this);">Copy</button><code id="d14434e21" content="typedef enum {&#xA;    SIGNAL_CAPTURE_IDLE,&#xA;    SIGNAL_CAPTURE_RUNNING,&#xA;    SIGNAL_CAPTURE_READY,&#xA;} DRV_PLC_PHY_SIGNAL_CAPTURE_STATE;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">enum</span> <span class="ph token punctuation">{</span>
-    SIGNAL_CAPTURE_IDLE<span class="ph token punctuation">,</span>
-    SIGNAL_CAPTURE_RUNNING<span class="ph token punctuation">,</span>
-    SIGNAL_CAPTURE_READY<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_SIGNAL_CAPTURE_STATE<span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">enum</strong> {
+    SIGNAL_CAPTURE_IDLE,
+    SIGNAL_CAPTURE_RUNNING,
+    SIGNAL_CAPTURE_READY,
+} DRV_PLC_PHY_SIGNAL_CAPTURE_STATE;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">PRIME Noise Capture States</p>
 </div>

@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="using-the-library" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Using The Library</title>
+<title>Using The Library</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-using-the-library" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,57 +223,57 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="using-the-library">
 <h1 class="title topictitle1" id="ariaid-title1">Using The Library</h1><div class="body"><p class="p">The CRC library is called to compute the CRC of a given length (8, 16, 32 bits) to append to a data buffer on transmission, and to verify the correctness of a received frame and its CRC.
 The following example illustrates how the USI service computes the CRC of a received frame to verify frame integrity.</p>
 <p class="p"><strong class="ph b">Example implementation of CRC library usage for frame validation</strong></p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d85884e15', this);">Copy</button><code id="d85884e15" content="static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) &#xA;{&#xA;    uint32_t crcGetValue;&#xA;    uint32_t crcRcvValue;&#xA;    SRV_USI_PROTOCOL_ID protocol;&#xA;    PCRC_CRC_TYPE crcType;&#xA;    &#xA;    if (length) &#xA;    {      &#xA;        /* New received message */&#xA;        /* Extract Protocol */&#xA;        protocol = (SRV_USI_PROTOCOL_ID)USI_TYPE_PROTOCOL(*(pData + 1));&#xA;        &#xA;        /* Get CRC type from Protocol */&#xA;        crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);&#xA;        &#xA;        /* Check CRC */&#xA;        crcGetValue = SRV_PCRC_GetValue(pData, length - (1&lt;&lt;crcType), &#xA;                PCRC_HT_USI, crcType, 0);&#xA; &#xA;        if (crcType == PCRC_CRC8)&#xA;        {&#xA;            crcRcvValue = (uint32_t)(*(pData + length - 1));&#xA;        } &#xA;        else if (crcType == PCRC_CRC16)&#xA;        {&#xA;            crcRcvValue = (((uint32_t)(*(pData + length - 2))) &lt;&lt; 8) + &#xA;                          (uint32_t)(*(pData + length - 1));&#xA;        }&#xA;        else&#xA;        {            &#xA;            crcRcvValue = (((uint32_t)(*(pData + length - 4))) &lt;&lt; 24) + &#xA;                          (((uint32_t)(*(pData + length - 3))) &lt;&lt; 16) + &#xA;                          (((uint32_t)(*(pData + length - 2))) &lt;&lt; 8) + &#xA;                          (uint32_t)(*(pData + length - 1));&#xA;        }&#xA;        &#xA;        if (crcGetValue != crcRcvValue) &#xA;        {&#xA;            /* Discard message */&#xA;            return;&#xA;        }&#xA;    &#xA;        /* Correct frame, process it */&#xA;    }&#xA;}"><span class="ph token keyword">static</span> <span class="ph token keyword">void</span> _SRV_USI_Callback_Handle <span class="ph token punctuation">(</span> uint8_t <span class="ph token operator">*</span>pData<span class="ph token punctuation">,</span> uint16_t length<span class="ph token punctuation">,</span> uintptr_t context <span class="ph token punctuation">)</span> 
-<span class="ph token punctuation">{</span>
-    uint32_t crcGetValue<span class="ph token punctuation">;</span>
-    uint32_t crcRcvValue<span class="ph token punctuation">;</span>
-    SRV_USI_PROTOCOL_ID protocol<span class="ph token punctuation">;</span>
-    PCRC_CRC_TYPE crcType<span class="ph token punctuation">;</span>
+<pre class="pre codeblock c"><strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) 
+{
+    uint32_t crcGetValue;
+    uint32_t crcRcvValue;
+    SRV_USI_PROTOCOL_ID protocol;
+    PCRC_CRC_TYPE crcType;
     
-    <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>length<span class="ph token punctuation">)</span> 
-    <span class="ph token punctuation">{</span>      
-        <span class="ph token comment">/* New received message */</span>
-        <span class="ph token comment">/* Extract Protocol */</span>
-        protocol <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>SRV_USI_PROTOCOL_ID<span class="ph token punctuation">)</span><span class="ph token function">USI_TYPE_PROTOCOL</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> <span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+    <strong class="hl-keyword">if</strong> (length) 
+    {      
+        <em class="hl-comment">/* New received message */</em>
+        <em class="hl-comment">/* Extract Protocol */</em>
+        protocol = (SRV_USI_PROTOCOL_ID)USI_TYPE_PROTOCOL(*(pData + <span class="hl-number">1</span>));
         
-        <span class="ph token comment">/* Get CRC type from Protocol */</span>
-        crcType <span class="ph token operator">=</span> <span class="ph token function">_SRV_USI_GetCRCTypeFromProtocol</span><span class="ph token punctuation">(</span>protocol<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <em class="hl-comment">/* Get CRC type from Protocol */</em>
+        crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
         
-        <span class="ph token comment">/* Check CRC */</span>
-        crcGetValue <span class="ph token operator">=</span> <span class="ph token function">SRV_PCRC_GetValue</span><span class="ph token punctuation">(</span>pData<span class="ph token punctuation">,</span> length <span class="ph token operator">-</span> <span class="ph token punctuation">(</span><span class="ph token number">1</span><span class="ph token operator">&lt;&lt;</span>crcType<span class="ph token punctuation">)</span><span class="ph token punctuation">,</span> 
-                PCRC_HT_USI<span class="ph token punctuation">,</span> crcType<span class="ph token punctuation">,</span> <span class="ph token number">0</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <em class="hl-comment">/* Check CRC */</em>
+        crcGetValue = SRV_PCRC_GetValue(pData, length - (<span class="hl-number">1</span>&lt;&lt;crcType), 
+                PCRC_HT_USI, crcType, <span class="hl-number">0</span>);
  
-        <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>crcType <span class="ph token operator">==</span> PCRC_CRC8<span class="ph token punctuation">)</span>
-        <span class="ph token punctuation">{</span>
-            crcRcvValue <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span> 
-        <span class="ph token keyword">else</span> <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>crcType <span class="ph token operator">==</span> PCRC_CRC16<span class="ph token punctuation">)</span>
-        <span class="ph token punctuation">{</span>
-            crcRcvValue <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">2</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">8</span><span class="ph token punctuation">)</span> <span class="ph token operator">+</span> 
-                          <span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">else</span>
-        <span class="ph token punctuation">{</span>            
-            crcRcvValue <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">4</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">24</span><span class="ph token punctuation">)</span> <span class="ph token operator">+</span> 
-                          <span class="ph token punctuation">(</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">3</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">16</span><span class="ph token punctuation">)</span> <span class="ph token operator">+</span> 
-                          <span class="ph token punctuation">(</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">2</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">8</span><span class="ph token punctuation">)</span> <span class="ph token operator">+</span> 
-                          <span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span><span class="ph token operator">*</span><span class="ph token punctuation">(</span>pData <span class="ph token operator">+</span> length <span class="ph token operator">-</span> <span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">if</strong> (crcType == PCRC_CRC8)
+        {
+            crcRcvValue = (uint32_t)(*(pData + length - <span class="hl-number">1</span>));
+        } 
+        <strong class="hl-keyword">else</strong> <strong class="hl-keyword">if</strong> (crcType == PCRC_CRC16)
+        {
+            crcRcvValue = (((uint32_t)(*(pData + length - <span class="hl-number">2</span>))) &lt;&lt; <span class="hl-number">8</span>) + 
+                          (uint32_t)(*(pData + length - <span class="hl-number">1</span>));
+        }
+        <strong class="hl-keyword">else</strong>
+        {            
+            crcRcvValue = (((uint32_t)(*(pData + length - <span class="hl-number">4</span>))) &lt;&lt; <span class="hl-number">24</span>) + 
+                          (((uint32_t)(*(pData + length - <span class="hl-number">3</span>))) &lt;&lt; <span class="hl-number">16</span>) + 
+                          (((uint32_t)(*(pData + length - <span class="hl-number">2</span>))) &lt;&lt; <span class="hl-number">8</span>) + 
+                          (uint32_t)(*(pData + length - <span class="hl-number">1</span>));
+        }
         
-        <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>crcGetValue <span class="ph token operator">!=</span> crcRcvValue<span class="ph token punctuation">)</span> 
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Discard message */</span>
-            <span class="ph token keyword">return</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">if</strong> (crcGetValue != crcRcvValue) 
+        {
+            <em class="hl-comment">/* Discard message */</em>
+            <strong class="hl-keyword">return</strong>;
+        }
     
-        <span class="ph token comment">/* Correct frame, process it */</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+        <em class="hl-comment">/* Correct frame, process it */</em>
+    }
+}</pre></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html">PLC CRC Service</a></div>

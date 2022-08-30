@@ -740,7 +740,7 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
     app_metrologyData.harmonicAnalysisPending = true;
     app_metrologyData.harmonicAnalysisNum = harmonicNum;
     
-    DRV_METROLOGY_RequestHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
+    DRV_METROLOGY_StartHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
     
     return true;
 }

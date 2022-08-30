@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-plib-interface-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PLIB_INTERFACE Struct</title>
+<title>DRV_PLC_PLIB_INTERFACE Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-plib-interface-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,64 +223,64 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-plib-interface-struct">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PLIB_INTERFACE Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d16219e21', this);">Copy</button><code id="d16219e21" content="typedef struct&#xA;{  &#xA;    /* PLC SPI PLIB Transfer Setup */&#xA;    DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup;&#xA;&#xA;    /* SPI transmit DMA channel. */&#xA;    SYS_DMA_CHANNEL                        dmaChannelTx; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI receive DMA channel. */&#xA;    SYS_DMA_CHANNEL                        dmaChannelRx; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI transmit register address used for DMA operation. */&#xA;    void                                   *spiAddressTx; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI receive register address used for DMA operation. */&#xA;    void                                   *spiAddressRx; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI MR register address. */&#xA;    uint32_t                               *spiMR; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI MR register address. */&#xA;    uint32_t                               *spiCSR; /* Only visible if used SPI supports DMA */&#xA;&#xA;    /* SPI Write/Read */&#xA;    DRV_PLC_SPI_WRITE_READ                 spiWriteRead; /* Only visible if used SPI uses PDC instead of DMA */&#xA;    &#xA;    /* SPI Is Busy */&#xA;    DRV_PLC_SPI_ISBUSY                     spiIsBusy; /* Only visible if used SPI uses PDC instead of DMA */&#xA;&#xA;    /* SPI clock frequency */&#xA;    uint32_t                               spiClockFrequency;&#xA;&#xA;    /* PLC LDO enable pin */&#xA;    SYS_PORT_PIN                           ldoPin;&#xA;&#xA;    /* PLC reset pin */&#xA;    SYS_PORT_PIN                           resetPin;&#xA;&#xA;    /* PLC external interrupt pin */&#xA;    SYS_PORT_PIN                           extIntPin;&#xA;&#xA;    /* PLC Tx Enable pin */&#xA;    SYS_PORT_PIN                           txEnablePin; /* Only visible if PL460 Driver is used */&#xA;&#xA;    /* PLC StandBy Pin */&#xA;    SYS_PORT_PIN                           stByPin; /* Only visible if SLEEP MODE is enabled on Driver Configuration */&#xA;&#xA;    /* PLC Thermal Monitor pin */&#xA;    SYS_PORT_PIN                           thMonPin; /* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */&#xA;&#xA;} DRV_PLC_PLIB_INTERFACE;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span>
-<span class="ph token punctuation">{</span>  
-    <span class="ph token comment">/* PLC SPI PLIB Transfer Setup */</span>
-    DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup<span class="ph token punctuation">;</span>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong>
+{  
+    <em class="hl-comment">/* PLC SPI PLIB Transfer Setup */</em>
+    DRV_PLC_SPI_PLIB_TRANSFER_SETUP        spiPlibTransferSetup;
 
-    <span class="ph token comment">/* SPI transmit DMA channel. */</span>
-    SYS_DMA_CHANNEL                        dmaChannelTx<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI transmit DMA channel. */</em>
+    SYS_DMA_CHANNEL                        dmaChannelTx; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI receive DMA channel. */</span>
-    SYS_DMA_CHANNEL                        dmaChannelRx<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI receive DMA channel. */</em>
+    SYS_DMA_CHANNEL                        dmaChannelRx; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI transmit register address used for DMA operation. */</span>
-    <span class="ph token keyword">void</span>                                   <span class="ph token operator">*</span>spiAddressTx<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI transmit register address used for DMA operation. */</em>
+    <strong class="hl-keyword">void</strong>                                   *spiAddressTx; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI receive register address used for DMA operation. */</span>
-    <span class="ph token keyword">void</span>                                   <span class="ph token operator">*</span>spiAddressRx<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI receive register address used for DMA operation. */</em>
+    <strong class="hl-keyword">void</strong>                                   *spiAddressRx; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI MR register address. */</span>
-    uint32_t                               <span class="ph token operator">*</span>spiMR<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI MR register address. */</em>
+    uint32_t                               *spiMR; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI MR register address. */</span>
-    uint32_t                               <span class="ph token operator">*</span>spiCSR<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI supports DMA */</span>
+    <em class="hl-comment">/* SPI MR register address. */</em>
+    uint32_t                               *spiCSR; <em class="hl-comment">/* Only visible if used SPI supports DMA */</em>
 
-    <span class="ph token comment">/* SPI Write/Read */</span>
-    DRV_PLC_SPI_WRITE_READ                 spiWriteRead<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI uses PDC instead of DMA */</span>
+    <em class="hl-comment">/* SPI Write/Read */</em>
+    DRV_PLC_SPI_WRITE_READ                 spiWriteRead; <em class="hl-comment">/* Only visible if used SPI uses PDC instead of DMA */</em>
     
-    <span class="ph token comment">/* SPI Is Busy */</span>
-    DRV_PLC_SPI_ISBUSY                     spiIsBusy<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if used SPI uses PDC instead of DMA */</span>
+    <em class="hl-comment">/* SPI Is Busy */</em>
+    DRV_PLC_SPI_ISBUSY                     spiIsBusy; <em class="hl-comment">/* Only visible if used SPI uses PDC instead of DMA */</em>
 
-    <span class="ph token comment">/* SPI clock frequency */</span>
-    uint32_t                               spiClockFrequency<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* SPI clock frequency */</em>
+    uint32_t                               spiClockFrequency;
 
-    <span class="ph token comment">/* PLC LDO enable pin */</span>
-    SYS_PORT_PIN                           ldoPin<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC LDO enable pin */</em>
+    SYS_PORT_PIN                           ldoPin;
 
-    <span class="ph token comment">/* PLC reset pin */</span>
-    SYS_PORT_PIN                           resetPin<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC reset pin */</em>
+    SYS_PORT_PIN                           resetPin;
 
-    <span class="ph token comment">/* PLC external interrupt pin */</span>
-    SYS_PORT_PIN                           extIntPin<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC external interrupt pin */</em>
+    SYS_PORT_PIN                           extIntPin;
 
-    <span class="ph token comment">/* PLC Tx Enable pin */</span>
-    SYS_PORT_PIN                           txEnablePin<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used */</span>
+    <em class="hl-comment">/* PLC Tx Enable pin */</em>
+    SYS_PORT_PIN                           txEnablePin; <em class="hl-comment">/* Only visible if PL460 Driver is used */</em>
 
-    <span class="ph token comment">/* PLC StandBy Pin */</span>
-    SYS_PORT_PIN                           stByPin<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if SLEEP MODE is enabled on Driver Configuration */</span>
+    <em class="hl-comment">/* PLC StandBy Pin */</em>
+    SYS_PORT_PIN                           stByPin; <em class="hl-comment">/* Only visible if SLEEP MODE is enabled on Driver Configuration */</em>
 
-    <span class="ph token comment">/* PLC Thermal Monitor pin */</span>
-    SYS_PORT_PIN                           thMonPin<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */</span>
+    <em class="hl-comment">/* PLC Thermal Monitor pin */</em>
+    SYS_PORT_PIN                           thMonPin; <em class="hl-comment">/* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */</em>
 
-<span class="ph token punctuation">}</span> DRV_PLC_PLIB_INTERFACE<span class="ph token punctuation">;</span></code></pre></div>
+} DRV_PLC_PLIB_INTERFACE;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains the data required to initialize the PLC driver PLIB Interface.</p>
 </div>

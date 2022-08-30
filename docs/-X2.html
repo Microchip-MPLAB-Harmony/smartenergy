@@ -12,9 +12,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-hal-interface-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_HAL_INTERFACE Struct</title>
+<title>DRV_PLC_HAL_INTERFACE Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-hal-interface-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -63,10 +62,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -90,7 +88,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -104,16 +101,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -152,7 +182,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -194,49 +224,49 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-hal-interface-struct">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_HAL_INTERFACE Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d2465e27', this);">Copy</button><code id="d2465e27" content="typedef struct&#xA;{&#xA;    /* PLC PLIB Interface */&#xA;    DRV_PLC_PLIB_INTERFACE                   *plcPlib;&#xA;&#xA;    /* PLC HAL init */&#xA;    DRV_PLC_HAL_INIT                         init;&#xA;&#xA;    /* PLC HAL setup */&#xA;    DRV_PLC_HAL_SETUP                        setup;&#xA;&#xA;    /* PLC HAL reset device */&#xA;    DRV_PLC_HAL_RESET                        reset;&#xA;     &#xA;    /* PLC low power management */&#xA;    DRV_PLC_HAL_SET_STBY                     setStandBy; /* Only visible if SLEEP MODE is enabled on Driver Configuration */&#xA;&#xA;    /* PLC Temperature Monitor */&#xA;    DRV_PLC_HAL_GET_THMON                    getThermalMonitor; /* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */&#xA;&#xA;    /* PLC HAL Set Tx Enable pin */&#xA;    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable; /* Only visible if PL460 Driver is used */&#xA;&#xA;    /* PLC HAL Enable/Disable external interrupt */&#xA;    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;&#xA;&#xA;    /* PLC HAL delay function */&#xA;    DRV_PLC_HAL_DELAY                        delay;&#xA;&#xA;    /* PLC HAL Transfer Bootloader Command */&#xA;    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd;&#xA;&#xA;    /* PLC HAL Transfer Write/Read Command */&#xA;    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd;&#xA;&#xA;} DRV_PLC_HAL_INTERFACE;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* PLC PLIB Interface */</span>
-    DRV_PLC_PLIB_INTERFACE                   <span class="ph token operator">*</span>plcPlib<span class="ph token punctuation">;</span>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong>
+{
+    <em class="hl-comment">/* PLC PLIB Interface */</em>
+    DRV_PLC_PLIB_INTERFACE                   *plcPlib;
 
-    <span class="ph token comment">/* PLC HAL init */</span>
-    DRV_PLC_HAL_INIT                         init<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL init */</em>
+    DRV_PLC_HAL_INIT                         init;
 
-    <span class="ph token comment">/* PLC HAL setup */</span>
-    DRV_PLC_HAL_SETUP                        setup<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL setup */</em>
+    DRV_PLC_HAL_SETUP                        setup;
 
-    <span class="ph token comment">/* PLC HAL reset device */</span>
-    DRV_PLC_HAL_RESET                        reset<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL reset device */</em>
+    DRV_PLC_HAL_RESET                        reset;
      
-    <span class="ph token comment">/* PLC low power management */</span>
-    DRV_PLC_HAL_SET_STBY                     setStandBy<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if SLEEP MODE is enabled on Driver Configuration */</span>
+    <em class="hl-comment">/* PLC low power management */</em>
+    DRV_PLC_HAL_SET_STBY                     setStandBy; <em class="hl-comment">/* Only visible if SLEEP MODE is enabled on Driver Configuration */</em>
 
-    <span class="ph token comment">/* PLC Temperature Monitor */</span>
-    DRV_PLC_HAL_GET_THMON                    getThermalMonitor<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */</span>
+    <em class="hl-comment">/* PLC Temperature Monitor */</em>
+    DRV_PLC_HAL_GET_THMON                    getThermalMonitor; <em class="hl-comment">/* Only visible if PL460 Driver is used and THERMAL MONITOR is enabled on Driver Configuration */</em>
 
-    <span class="ph token comment">/* PLC HAL Set Tx Enable pin */</span>
-    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable<span class="ph token punctuation">;</span> <span class="ph token comment">/* Only visible if PL460 Driver is used */</span>
+    <em class="hl-comment">/* PLC HAL Set Tx Enable pin */</em>
+    DRV_PLC_HAL_SET_TXENABLE                 setTxEnable; <em class="hl-comment">/* Only visible if PL460 Driver is used */</em>
 
-    <span class="ph token comment">/* PLC HAL Enable/Disable external interrupt */</span>
-    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL Enable/Disable external interrupt */</em>
+    DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;
 
-    <span class="ph token comment">/* PLC HAL delay function */</span>
-    DRV_PLC_HAL_DELAY                        delay<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL delay function */</em>
+    DRV_PLC_HAL_DELAY                        delay;
 
-    <span class="ph token comment">/* PLC HAL Transfer Bootloader Command */</span>
-    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL Transfer Bootloader Command */</em>
+    DRV_PLC_HAL_SEND_BOOT_CMD                sendBootCmd;
 
-    <span class="ph token comment">/* PLC HAL Transfer Write/Read Command */</span>
-    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* PLC HAL Transfer Write/Read Command */</em>
+    DRV_PLC_HAL_SEND_WRRD_CMD                sendWrRdCmd;
 
-<span class="ph token punctuation">}</span> DRV_PLC_HAL_INTERFACE<span class="ph token punctuation">;</span></code></pre></div>
+} DRV_PLC_HAL_INTERFACE;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains the data required to initialize the PLC driver HAL Interface.</p>
 </div>

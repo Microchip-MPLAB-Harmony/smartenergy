@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="using-the-library" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Using The Library</title>
+<title>Using The Library</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-using-the-library" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,140 +223,140 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="using-the-library">
 <h1 class="title topictitle1" id="ariaid-title1">Using The Library</h1><div class="body"><p class="p">The PLC PHY library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with Data transmission and reception functions and configuration parameters that can be read/written.</p>
 <p class="p">Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let library provide communication events to the user.Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.</p>
 <p class="p"><strong class="ph b">Example application to send data through PLC and wait for a response</strong></p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d65995e21', this);">Copy</button><code id="d65995e21" content="APP_PLC_DATA appPlc;&#xA;bool txConfirmed;&#xA;bool frameReceived;&#xA;uint8_t txBuffer[MAC_RT_MAX_PAYLOAD_SIZE];&#xA;uint16_t txLength;&#xA;&#xA;static void APP_PLC_SendData ( uint8_t* pData, uint16_t length )&#xA;{&#xA;    if ((length &gt; 0) &amp;&amp; (length &lt;= APP_PLC_BUFFER_SIZE))&#xA;    {&#xA;        /* Set data length in Tx Parameters structure */&#xA;        /* It should be equal or less than Maximum Data Length (see _get_max_psdu_len) */&#xA;        /* Otherwise DRV_PLC_PHY_TX_RESULT_INV_LENGTH will be reported in Tx Confirm */&#xA;        appPlcTx.pl360Tx.dataLength = length + 2;&#xA;        memcpy(appPlcTx.pDataTx + 2, pData, length);&#xA;&#xA;        DRV_PLC_PHY_Send(appPlc.drvPl360Handle, &amp;appPlcTx.pl360Tx);&#xA;    }&#xA;}&#xA;&#xA;static void APP_PLC_DataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context )&#xA;{&#xA;    /* Update flag */&#xA;    txConfirmed = true;&#xA;}&#xA;&#xA;static void APP_PLC_DataIndCb( DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context )&#xA;{&#xA;    /* Do whatever with received frame */&#xA;    frameReceived = true;&#xA;}&#xA;&#xA;void APP_PLC_Initialize ( void )&#xA;{&#xA;    /* Init PLC data buffers */&#xA;    appPlcTx.pTxFrame = appPlcTxFrameBuffer;&#xA;    appPlcTx.pRxFrame = appPlcRxFrameBuffer;&#xA;    &#xA;    /* Set PLC state */&#xA;    appPlc.state = APP_PLC_STATE_IDLE;&#xA;}&#xA;&#xA;void APP_PLC_Tasks ( void )&#xA;{   &#xA;    /* Check the application's current state. */&#xA;    switch ( appPlc.state )&#xA;    {&#xA;        case APP_PLC_STATE_IDLE:&#xA;        {&#xA;            /* Initialize PLC driver */&#xA;            appPlc.state = APP_PLC_STATE_INIT;&#xA;        }&#xA;        break;&#xA;&#xA;        case APP_PLC_STATE_INIT:&#xA;        {&#xA;            /* Open PLC driver */&#xA;            appPlc.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX_0, NULL);&#xA;&#xA;            if (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)&#xA;            {&#xA;                appPlc.state = APP_PLC_STATE_OPEN;&#xA;            }&#xA;            else&#xA;            {&#xA;                appPlc.state = APP_PLC_STATE_ERROR;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_OPEN:&#xA;        {&#xA;            /* Check PLC transceiver */&#xA;            if (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX_0) == SYS_STATUS_READY)&#xA;            {&#xA;                /* Configure PLC callbacks */&#xA;                DRV_PLC_PHY_DataCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb, NULL);&#xA;                DRV_PLC_PHY_DataIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataIndCb, NULL);&#xA;                &#xA;                /* Apply PLC initial configuration */&#xA;                APP_PLC_SetInitialConfiguration();&#xA;                &#xA;                /* Enable PLC Transmission */&#xA;                DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);&#xA;                &#xA;                /* Set PLC state to transmit a frame */&#xA;                appPlc.state = APP_PLC_STATE_TX_REQUEST;&#xA;            }&#xA;        }&#xA;        break;&#xA;&#xA;        case APP_PLC_STATE_TX_REQUEST:&#xA;        {&#xA;            /* Build a frame in buffer and set length before calling SendData */&#xA;            APP_PLC_SendData(txBuffer, txLength);&#xA;            appPlc.state = APP_PLC_STATE_WAITING_TX_CFM;&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_WAITING:&#xA;        {&#xA;            if (frameReceived)&#xA;            {&#xA;                frameReceived = false;&#xA;                /* Send another frame */&#xA;                appPlc.state = APP_PLC_STATE_TX_REQUEST;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        case APP_PLC_STATE_WAITING_TX_CFM:&#xA;        {&#xA;            if (txConfirmed)&#xA;            {&#xA;                frameReceived = false;&#xA;                appPlc.state = APP_PLC_STATE_WAITING;&#xA;            }&#xA;            break;&#xA;        }&#xA;&#xA;        /* The default state should never be executed. */&#xA;        default:&#xA;        {&#xA;            /* Handle error in application's state machine. */&#xA;            break;&#xA;        }&#xA;    }&#xA;}&#xA;">APP_PLC_DATA appPlc<span class="ph token punctuation">;</span>
-bool txConfirmed<span class="ph token punctuation">;</span>
-bool frameReceived<span class="ph token punctuation">;</span>
-uint8_t txBuffer<span class="ph token punctuation">[</span>MAC_RT_MAX_PAYLOAD_SIZE<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-uint16_t txLength<span class="ph token punctuation">;</span>
+<pre class="pre codeblock c">APP_PLC_DATA appPlc;
+bool txConfirmed;
+bool frameReceived;
+uint8_t txBuffer[MAC_RT_MAX_PAYLOAD_SIZE];
+uint16_t txLength;
 
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> APP_PLC_SendData <span class="ph token punctuation">(</span> uint8_t<span class="ph token operator">*</span> pData<span class="ph token punctuation">,</span> uint16_t length <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>length <span class="ph token operator">&gt;</span> <span class="ph token number">0</span><span class="ph token punctuation">)</span> <span class="ph token operator">&amp;&amp;</span> <span class="ph token punctuation">(</span>length <span class="ph token operator">&lt;=</span> APP_PLC_BUFFER_SIZE<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token comment">/* Set data length in Tx Parameters structure */</span>
-        <span class="ph token comment">/* It should be equal or less than Maximum Data Length (see _get_max_psdu_len) */</span>
-        <span class="ph token comment">/* Otherwise DRV_PLC_PHY_TX_RESULT_INV_LENGTH will be reported in Tx Confirm */</span>
-        appPlcTx<span class="ph token punctuation">.</span>pl360Tx<span class="ph token punctuation">.</span>dataLength <span class="ph token operator">=</span> length <span class="ph token operator">+</span> <span class="ph token number">2</span><span class="ph token punctuation">;</span>
-        <span class="ph token function">memcpy</span><span class="ph token punctuation">(</span>appPlcTx<span class="ph token punctuation">.</span>pDataTx <span class="ph token operator">+</span> <span class="ph token number">2</span><span class="ph token punctuation">,</span> pData<span class="ph token punctuation">,</span> length<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> APP_PLC_SendData ( uint8_t* pData, uint16_t length )
+{
+    <strong class="hl-keyword">if</strong> ((length &gt; <span class="hl-number">0</span>) &amp;&amp; (length &lt;= APP_PLC_BUFFER_SIZE))
+    {
+        <em class="hl-comment">/* Set data length in Tx Parameters structure */</em>
+        <em class="hl-comment">/* It should be equal or less than Maximum Data Length (see _get_max_psdu_len) */</em>
+        <em class="hl-comment">/* Otherwise DRV_PLC_PHY_TX_RESULT_INV_LENGTH will be reported in Tx Confirm */</em>
+        appPlcTx.pl360Tx.dataLength = length + <span class="hl-number">2</span>;
+        memcpy(appPlcTx.pDataTx + <span class="hl-number">2</span>, pData, length);
 
-        <span class="ph token function">DRV_PLC_PHY_Send</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>appPlcTx<span class="ph token punctuation">.</span>pl360Tx<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span>
+        DRV_PLC_PHY_Send(appPlc.drvPl360Handle, &amp;appPlcTx.pl360Tx);
+    }
+}
 
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataCfmCb</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ <span class="ph token operator">*</span>cfmObj<span class="ph token punctuation">,</span> uintptr_t context <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Update flag */</span>
-    txConfirmed <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataCfmCb</span>(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *cfmObj, uintptr_t context )
+{
+    <em class="hl-comment">/* Update flag */</em>
+    txConfirmed = true;
+}
 
-<span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_DataIndCb</span><span class="ph token punctuation">(</span> DRV_PLC_PHY_RECEPTION_OBJ <span class="ph token operator">*</span>indObj<span class="ph token punctuation">,</span> uintptr_t context <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Do whatever with received frame */</span>
-    frameReceived <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span>
+<strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataIndCb</span>( DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context )
+{
+    <em class="hl-comment">/* Do whatever with received frame */</em>
+    frameReceived = true;
+}
 
-<span class="ph token keyword">void</span> APP_PLC_Initialize <span class="ph token punctuation">(</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Init PLC data buffers */</span>
-    appPlcTx<span class="ph token punctuation">.</span>pTxFrame <span class="ph token operator">=</span> appPlcTxFrameBuffer<span class="ph token punctuation">;</span>
-    appPlcTx<span class="ph token punctuation">.</span>pRxFrame <span class="ph token operator">=</span> appPlcRxFrameBuffer<span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> APP_PLC_Initialize ( <strong class="hl-keyword">void</strong> )
+{
+    <em class="hl-comment">/* Init PLC data buffers */</em>
+    appPlcTx.pTxFrame = appPlcTxFrameBuffer;
+    appPlcTx.pRxFrame = appPlcRxFrameBuffer;
     
-    <span class="ph token comment">/* Set PLC state */</span>
-    appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_IDLE<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span>
+    <em class="hl-comment">/* Set PLC state */</em>
+    appPlc.state = APP_PLC_STATE_IDLE;
+}
 
-<span class="ph token keyword">void</span> APP_PLC_Tasks <span class="ph token punctuation">(</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>   
-    <span class="ph token comment">/* Check the application's current state. */</span>
-    <span class="ph token keyword">switch</span> <span class="ph token punctuation">(</span> appPlc<span class="ph token punctuation">.</span>state <span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token keyword">case</span> APP_PLC_STATE_IDLE<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Initialize PLC driver */</span>
-            appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_INIT<span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">void</strong> APP_PLC_Tasks ( <strong class="hl-keyword">void</strong> )
+{   
+    <em class="hl-comment">/* Check the application's current state. */</em>
+    <strong class="hl-keyword">switch</strong> ( appPlc.state )
+    {
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_IDLE:
+        {
+            <em class="hl-comment">/* Initialize PLC driver */</em>
+            appPlc.state = APP_PLC_STATE_INIT;
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> APP_PLC_STATE_INIT<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Open PLC driver */</span>
-            appPlc<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">=</span> <span class="ph token function">DRV_PLC_PHY_Open</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX_0<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_INIT:
+        {
+            <em class="hl-comment">/* Open PLC driver */</em>
+            appPlc.drvPl360Handle = DRV_PLC_PHY_Open(DRV_PLC_PHY_INDEX_<span class="hl-number">0</span>, NULL);
 
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle <span class="ph token operator">!=</span> DRV_HANDLE_INVALID<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_OPEN<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">else</span>
-            <span class="ph token punctuation">{</span>
-                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_ERROR<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+            <strong class="hl-keyword">if</strong> (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)
+            {
+                appPlc.state = APP_PLC_STATE_OPEN;
+            }
+            <strong class="hl-keyword">else</strong>
+            {
+                appPlc.state = APP_PLC_STATE_ERROR;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_PLC_STATE_OPEN<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Check PLC transceiver */</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span><span class="ph token function">DRV_PLC_PHY_Status</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_INDEX_0<span class="ph token punctuation">)</span> <span class="ph token operator">==</span> SYS_STATUS_READY<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                <span class="ph token comment">/* Configure PLC callbacks */</span>
-                <span class="ph token function">DRV_PLC_PHY_DataCfmCallbackRegister</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> APP_PLC_DataCfmCb<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-                <span class="ph token function">DRV_PLC_PHY_DataIndCallbackRegister</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> APP_PLC_DataIndCb<span class="ph token punctuation">,</span> <span class="ph token constant">NULL</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_OPEN:
+        {
+            <em class="hl-comment">/* Check PLC transceiver */</em>
+            <strong class="hl-keyword">if</strong> (DRV_PLC_PHY_Status(DRV_PLC_PHY_INDEX_<span class="hl-number">0</span>) == SYS_STATUS_READY)
+            {
+                <em class="hl-comment">/* Configure PLC callbacks */</em>
+                DRV_PLC_PHY_DataCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb, NULL);
+                DRV_PLC_PHY_DataIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataIndCb, NULL);
                 
-                <span class="ph token comment">/* Apply PLC initial configuration */</span>
-                <span class="ph token function">APP_PLC_SetInitialConfiguration</span><span class="ph token punctuation">(</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Apply PLC initial configuration */</em>
+                APP_PLC_SetInitialConfiguration();
                 
-                <span class="ph token comment">/* Enable PLC Transmission */</span>
-                <span class="ph token function">DRV_PLC_PHY_EnableTX</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> true<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Enable PLC Transmission */</em>
+                DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
                 
-                <span class="ph token comment">/* Set PLC state to transmit a frame */</span>
-                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_TX_REQUEST<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-        <span class="ph token punctuation">}</span>
-        <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+                <em class="hl-comment">/* Set PLC state to transmit a frame */</em>
+                appPlc.state = APP_PLC_STATE_TX_REQUEST;
+            }
+        }
+        <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> APP_PLC_STATE_TX_REQUEST<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Build a frame in buffer and set length before calling SendData */</span>
-            <span class="ph token function">APP_PLC_SendData</span><span class="ph token punctuation">(</span>txBuffer<span class="ph token punctuation">,</span> txLength<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-            appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_WAITING_TX_CFM<span class="ph token punctuation">;</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_TX_REQUEST:
+        {
+            <em class="hl-comment">/* Build a frame in buffer and set length before calling SendData */</em>
+            APP_PLC_SendData(txBuffer, txLength);
+            appPlc.state = APP_PLC_STATE_WAITING_TX_CFM;
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_PLC_STATE_WAITING<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>frameReceived<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                frameReceived <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
-                <span class="ph token comment">/* Send another frame */</span>
-                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_TX_REQUEST<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_WAITING:
+        {
+            <strong class="hl-keyword">if</strong> (frameReceived)
+            {
+                frameReceived = false;
+                <em class="hl-comment">/* Send another frame */</em>
+                appPlc.state = APP_PLC_STATE_TX_REQUEST;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token keyword">case</span> APP_PLC_STATE_WAITING_TX_CFM<span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>txConfirmed<span class="ph token punctuation">)</span>
-            <span class="ph token punctuation">{</span>
-                frameReceived <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
-                appPlc<span class="ph token punctuation">.</span>state <span class="ph token operator">=</span> APP_PLC_STATE_WAITING<span class="ph token punctuation">;</span>
-            <span class="ph token punctuation">}</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">case</strong> APP_PLC_STATE_WAITING_TX_CFM:
+        {
+            <strong class="hl-keyword">if</strong> (txConfirmed)
+            {
+                frameReceived = false;
+                appPlc.state = APP_PLC_STATE_WAITING;
+            }
+            <strong class="hl-keyword">break</strong>;
+        }
 
-        <span class="ph token comment">/* The default state should never be executed. */</span>
-        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
-        <span class="ph token punctuation">{</span>
-            <span class="ph token comment">/* Handle error in application's state machine. */</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
-        <span class="ph token punctuation">}</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span>
-</code></pre></div>
+        <em class="hl-comment">/* The default state should never be executed. */</em>
+        <strong class="hl-keyword">default</strong>:
+        {
+            <em class="hl-comment">/* Handle error in application's state machine. */</em>
+            <strong class="hl-keyword">break</strong>;
+        }
+    }
+}
+</pre></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html">PLC PHY Driver</a></div>

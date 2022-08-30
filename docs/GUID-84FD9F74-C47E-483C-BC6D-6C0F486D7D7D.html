@@ -25,9 +25,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-2155582A-0939-41A5-91DE-53D1FC6F1003.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="library-interface" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>Library Interface</title>
+<title>Library Interface</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-library-interface" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -76,10 +75,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -103,7 +101,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -117,16 +114,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -165,7 +195,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -207,73 +237,73 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="library-interface">
 <h1 class="title topictitle1" id="ariaid-title1">Library Interface</h1><div class="body"><p class="p">USI service library provides the following interfaces:</p>
 <p class="p"><strong class="ph b">Functions</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d88035e21"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d88035e23"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d37425e21"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d37425e23"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Initialize</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Initializes the specified USI service instance</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Initialize</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Initializes the specified USI service instance</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Open</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Opens the specified USI service instance and returns a handle to it</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Open</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Opens the specified USI service instance and returns a handle to it</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Close</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Closes an opened-instance of the USI service</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Close</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Closes an opened-instance of the USI service</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Status</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Returns the current status of the USI service</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Status</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Returns the current status of the USI service</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_CallbackRegister</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Registers a function to be called back when a new message is received and it belongs to the specified USI protocol</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_CallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Registers a function to be called back when a new message is received and it belongs to the specified USI protocol</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Tasks</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Maintains the USI's state machine</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Tasks</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Maintains the USI's state machine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e21 "><span>SRV_USI_Send_Message</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e23 "><span>Sends a message through serial interface (USI)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e21 "><span>SRV_USI_Send_Message</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e23 "><span>Sends a message through serial interface (USI)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Data types and constants</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d88035e71"><span>Name</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d88035e73"><span>Type</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d88035e75"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d37425e71"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d37425e73"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d37425e75"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_PROTOCOL_ID</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>List of available USI protocols</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_PROTOCOL_ID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>List of available USI protocols</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_STATUS</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Enum</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>List of possible values of USI status</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_STATUS</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>List of possible values of USI status</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_HANDLE</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>Handle to an opened instance of the USI service</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_HANDLE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>Handle to an opened instance of the USI service</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_HANDLE_INVALID</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Macro</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>Definition of invalid USI handle</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_HANDLE_INVALID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Macro</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>Definition of invalid USI handle</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_CALLBACK</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Typedef</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>Pointer to an USI service callback function</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>Pointer to an USI service callback function</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_DEV_DESC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>Contains the API required by the USI service to abstract from the hardware peripheral used</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_DEV_DESC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>Contains the API required by the USI service to abstract from the hardware peripheral used</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e71 "><span>SRV_USI_INIT</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e73 "><span>Struct</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d88035e75 "><span>Contains the data required to initialize an instance of the USI service</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e71 "><span>SRV_USI_INIT</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e73 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d37425e75 "><span>Contains the data required to initialize an instance of the USI service</span></td>
 </tr>
 </tbody>
 </table>

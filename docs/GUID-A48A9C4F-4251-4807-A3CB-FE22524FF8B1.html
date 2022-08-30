@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-exceptioncallbackregister-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_ExceptionCallbackRegister Function</title>
+<title>DRV_PLC_PHY_ExceptionCallbackRegister Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-exceptioncallbackregister-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,18 +223,18 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-exceptioncallbackregister-function">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_ExceptionCallbackRegister Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-98F10C10-D69B-45C3-A273-F3488B67B1A3.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d59010e21', this);">Copy</button><code id="d59010e21" content="void DRV_PLC_PHY_ExceptionCallbackRegister (&#xA;    const DRV_HANDLE handle,&#xA;    const DRV_PLC_PHY_EXCEPTION_CALLBACK callback, &#xA;    const uintptr_t context &#xA;);"><span class="ph token keyword">void</span> DRV_PLC_PHY_ExceptionCallbackRegister <span class="ph token punctuation">(</span>
-    <span class="ph token keyword">const</span> DRV_HANDLE handle<span class="ph token punctuation">,</span>
-    <span class="ph token keyword">const</span> DRV_PLC_PHY_EXCEPTION_CALLBACK callback<span class="ph token punctuation">,</span> 
-    <span class="ph token keyword">const</span> uintptr_t context 
-<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> DRV_PLC_PHY_ExceptionCallbackRegister (
+    <strong class="hl-keyword">const</strong> DRV_HANDLE handle,
+    <strong class="hl-keyword">const</strong> DRV_PLC_PHY_EXCEPTION_CALLBACK callback, 
+    <strong class="hl-keyword">const</strong> uintptr_t context 
+);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Allows a client to set an exception event handling function for the driver to call back when some error occurs through PLC transceiver communication.</p>
 </div>
@@ -216,18 +246,18 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d59010e87"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d59010e89"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d63968e62"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d63968e64"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e87 "><span>handle</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e89 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD.html"><em class="ph i">DRV_PLC_PHY_Open</em></a> routine</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e62 "><span>handle</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e64 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD.html"><em class="ph i">DRV_PLC_PHY_Open</em></a> routine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e87 "><span>callback</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e89 "><span>Pointer to the callback function</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e62 "><span>callback</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e64 "><span>Pointer to the callback function</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e87 "><span>context</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d59010e89 "><span>The value of parameter will be passed back to the client unchanged, when the callback function is called</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e62 "><span>context</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d63968e64 "><span>The value of parameter will be passed back to the client unchanged, when the callback function is called</span></td>
 </tr>
 </tbody>
 </table>
@@ -237,24 +267,24 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d59010e122', this);">Copy</button><code id="d59010e122" content="void APP_PLC_Exception_callback(DRV_PLC_PHY_EXCEPTION_OBJ *exceptionObj, uintptr_t context)&#xA;{&#xA;    // The context handle was set to an application specific&#xA;    // object. It is now retrievable easily in the event handler.&#xA;    MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;&#xA;&#xA;    // Exception handling here.&#xA;&#xA;}&#xA;    &#xA;// myAppObj is an application specific state data object.&#xA;MY_APP_OBJ myAppObj;&#xA;&#xA;// myHandle is the handle returned from DRV_PLC_PHY_Open API.&#xA;&#xA;// Client registers a data confirm callback with driver. This is done once&#xA;&#xA;DRV_PLC_PHY_ExceptionCallbackRegister( myHandle, APP_PLC_Exception_callback, (uintptr_t)&amp;myAppObj );"><span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_Exception_callback</span><span class="ph token punctuation">(</span>DRV_PLC_PHY_EXCEPTION_OBJ <span class="ph token operator">*</span>exceptionObj<span class="ph token punctuation">,</span> uintptr_t context<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">// The context handle was set to an application specific</span>
-    <span class="ph token comment">// object. It is now retrievable easily in the event handler.</span>
-    MY_APP_OBJ myAppObj <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>MY_APP_OBJ <span class="ph token operator">*</span><span class="ph token punctuation">)</span> context<span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_Exception_callback</span>(DRV_PLC_PHY_EXCEPTION_OBJ *exceptionObj, uintptr_t context)
+{
+    <em class="hl-comment">// The context handle was set to an application specific</em>
+    <em class="hl-comment">// object. It is now retrievable easily in the event handler.</em>
+    MY_APP_OBJ myAppObj = (MY_APP_OBJ *) context;
 
-    <span class="ph token comment">// Exception handling here.</span>
+    <em class="hl-comment">// Exception handling here.</em>
 
-<span class="ph token punctuation">}</span>
+}
     
-<span class="ph token comment">// myAppObj is an application specific state data object.</span>
-MY_APP_OBJ myAppObj<span class="ph token punctuation">;</span>
+<em class="hl-comment">// myAppObj is an application specific state data object.</em>
+MY_APP_OBJ myAppObj;
 
-<span class="ph token comment">// myHandle is the handle returned from DRV_PLC_PHY_Open API.</span>
+<em class="hl-comment">// myHandle is the handle returned from DRV_PLC_PHY_Open API.</em>
 
-<span class="ph token comment">// Client registers a data confirm callback with driver. This is done once</span>
+<em class="hl-comment">// Client registers a data confirm callback with driver. This is done once</em>
 
-<span class="ph token function">DRV_PLC_PHY_ExceptionCallbackRegister</span><span class="ph token punctuation">(</span> myHandle<span class="ph token punctuation">,</span> APP_PLC_Exception_callback<span class="ph token punctuation">,</span> <span class="ph token punctuation">(</span>uintptr_t<span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>myAppObj <span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+DRV_PLC_PHY_ExceptionCallbackRegister( myHandle, APP_PLC_Exception_callback, (uintptr_t)&amp;myAppObj );</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">None.</p>
 </div>

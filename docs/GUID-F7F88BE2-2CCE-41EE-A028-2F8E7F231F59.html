@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-EF398ECF-CD01-4199-8C4D-0C410898C27C.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-pcoup-set-config-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_PCOUP_Set_Config Function</title>
+<title>SRV_PCOUP_Set_Config Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-pcoup-set-config-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,14 +223,14 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-pcoup-set-config-function">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_PCOUP_Set_Config Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-EF398ECF-CD01-4199-8C4D-0C410898C27C.html">Library Interface (G3-PLC)</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d15254e21', this);">Copy</button><code id="d15254e21" content="bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch);">bool <span class="ph token function">SRV_PCOUP_Set_Config</span><span class="ph token punctuation">(</span>DRV_HANDLE handle<span class="ph token punctuation">,</span> SRV_PLC_PCOUP_BRANCH branch<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c">bool <span class="hl-functions">SRV_PCOUP_Set_Config</span>(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Set the PLC PHY Coupling parameters for the specified transmission branch.</p>
 </div>
@@ -212,15 +242,15 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d15254e83"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d15254e85"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d5200e71"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d5200e73"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d15254e83 "><span>handle</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d15254e85 "><span>A valid instance handle, returned from the PLC driver's open routine</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d5200e71 "><span>handle</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d5200e73 "><span>A valid instance handle, returned from the PLC driver's open routine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d15254e83 "><span>branch</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d15254e85 "><span>Transmission branch (<a class="xref" href="GUID-EC8301E5-93D5-4777-8700-FDEB4DBEB360.html"><em class="ph i">SRV_PLC_PCOUP_BRANCH Enum</em></a>) for which the parameters will be set</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d5200e71 "><span>branch</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d5200e73 "><span>Transmission branch (<a class="xref" href="GUID-EC8301E5-93D5-4777-8700-FDEB4DBEB360.html"><em class="ph i">SRV_PLC_PCOUP_BRANCH Enum</em></a>) for which the parameters will be set</span></td>
 </tr>
 </tbody>
 </table>
@@ -242,10 +272,10 @@
 </ul>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d15254e134', this);">Copy</button><code id="d15254e134" content="// 'handle', returned from DRV_PLC_PHY_Open or DRV_G3_MACRT_Open&#xA;bool result;&#xA;&#xA;result = SRV_PCOUP_Set_Config(handle, SRV_PLC_PCOUP_MAIN_BRANCH);"><span class="ph token comment">// 'handle', returned from DRV_PLC_PHY_Open or DRV_G3_MACRT_Open</span>
-bool result<span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><em class="hl-comment">// 'handle', returned from DRV_PLC_PHY_Open or DRV_G3_MACRT_Open</em>
+bool result;
 
-result <span class="ph token operator">=</span> <span class="ph token function">SRV_PCOUP_Set_Config</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> SRV_PLC_PCOUP_MAIN_BRANCH<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+result = SRV_PCOUP_Set_Config(handle, SRV_PLC_PCOUP_MAIN_BRANCH);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">This function is only generated by MCC if the PLC Driver uses G3-PLC PHY.</p>
 </div>

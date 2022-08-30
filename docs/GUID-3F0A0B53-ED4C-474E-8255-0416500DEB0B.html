@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="g3-mac-rt-ibs" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>G3 MAC RT IBs</title>
+<title>G3 MAC RT IBs</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-g3-mac-rt-ibs" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,7 +223,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="g3-mac-rt-ibs">
 <h1 class="title topictitle1" id="ariaid-title1">G3 MAC RT IBs</h1><div class="body"></div>
 <div class="related-links">
@@ -283,18 +313,18 @@ This value should be greater than (1 + MAC_RT_PIB_MAX_FRAME_RETRIES) * aEIFS.</p
 <p class="p">To get all the active entries, the first step is to get the number of such active entries by means of MAC_WRP_PIB_MANUF_NEIGHBOUR_TABLE_COUNT (0x08000012). Then, because the table is ordered, all the entries can be obtained by iterating from 0 to the number of active entries.</p>
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 19-byte entries as defined in the following structure:</p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e314', this);">Copy</button><code id="d36492e314" content="typedef struct __attribute__((packed)) {&#xA;  uint16_t shortAddress;&#xA;  MAC_RT_TONE_MAP toneMap;&#xA;  uint8_t modulationType : 3;&#xA;  uint8_t txGain : 4;&#xA;  uint8_t txRes : 1;&#xA;  MAC_RT_TX_COEF txCoef;&#xA;  uint8_t modulationScheme : 1;&#xA;  uint8_t phaseDifferential : 3;&#xA;  uint8_t lqi;&#xA;  uint16_t tmrValidTime;&#xA;} MAC_RT_NEIGHBOUR_ENTRY;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-  uint16_t shortAddress<span class="ph token punctuation">;</span>
-  MAC_RT_TONE_MAP toneMap<span class="ph token punctuation">;</span>
-  uint8_t modulationType <span class="ph token operator">:</span> <span class="ph token number">3</span><span class="ph token punctuation">;</span>
-  uint8_t txGain <span class="ph token operator">:</span> <span class="ph token number">4</span><span class="ph token punctuation">;</span>
-  uint8_t txRes <span class="ph token operator">:</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-  MAC_RT_TX_COEF txCoef<span class="ph token punctuation">;</span>
-  uint8_t modulationScheme <span class="ph token operator">:</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-  uint8_t phaseDifferential <span class="ph token operator">:</span> <span class="ph token number">3</span><span class="ph token punctuation">;</span>
-  uint8_t lqi<span class="ph token punctuation">;</span>
-  uint16_t tmrValidTime<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> MAC_RT_NEIGHBOUR_ENTRY<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
+<pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed)) {
+  uint16_t shortAddress;
+  MAC_RT_TONE_MAP toneMap;
+  uint8_t modulationType : <span class="hl-number">3</span>;
+  uint8_t txGain : <span class="hl-number">4</span>;
+  uint8_t txRes : <span class="hl-number">1</span>;
+  MAC_RT_TX_COEF txCoef;
+  uint8_t modulationScheme : <span class="hl-number">1</span>;
+  uint8_t phaseDifferential : <span class="hl-number">3</span>;
+  uint8_t lqi;
+  uint16_t tmrValidTime;
+} MAC_RT_NEIGHBOUR_ENTRY;</pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title16" id="mac-rt-pib-csma-fairness-limit-0x0000010c"><h2 class="title topictitle2" id="ariaid-title16">MAC_RT_PIB_CSMA_FAIRNESS_LIMIT (0x0000010C)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Channel access fairness limit. Specifies after how many failed back-off attempts, back-off exponent is set to minBE. Should be at least (2 * (MAC_RT_PIB_MAX_BE - MAC_RT_PIB_MIN_BE)).</p>
@@ -380,11 +410,11 @@ This value should be greater than (1 + MAC_RT_PIB_MAX_FRAME_RETRIES) * aEIFS.</p
 <p class="p">To get all the active entries, the first step is to get the number of such active entries by means of MAC_WRP_PIB_MANUF_POS_TABLE_COUNT (0x0800001E). Then, because the table is ordered, all the entries can be obtained by iterating from 0 to the number of active entries.</p>
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 5-byte entries as defined in the following structure:</p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e710', this);">Copy</button><code id="d36492e710" content="typedef struct __attribute__((packed)) {&#xA;  uint16_t shortAddress;&#xA;  uint8_t lqi;&#xA;  uint16_t posValidTime;&#xA;} MAC_RT_POS_ENTRY;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-  uint16_t shortAddress<span class="ph token punctuation">;</span>
-  uint8_t lqi<span class="ph token punctuation">;</span>
-  uint16_t posValidTime<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> MAC_RT_POS_ENTRY<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
+<pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed)) {
+  uint16_t shortAddress;
+  uint8_t lqi;
+  uint16_t posValidTime;
+} MAC_RT_POS_ENTRY;</pre><p class="p"><strong class="ph b">Default Value:</strong> Empty Table.</p>
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title30" id="mac-rt-pib-pos-recent-entry-threshold-0x00000121"><h2 class="title topictitle2" id="ariaid-title30">MAC_RT_PIB_POS_RECENT_ENTRY_THRESHOLD (0x00000121)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Threshold in minutes below which POS table entries are considered as recently refreshed.</p>
@@ -558,14 +588,14 @@ The intention of this IB is more internal than for G3 user. It is used by G3 sta
 <div class="topic nested1" aria-labelledby="ariaid-title50" id="mac-rt-pib-manuf-mac-rt-internal-version-0x08000022"><h2 class="title topictitle2" id="ariaid-title50">MAC_RT_PIB_MANUF_MAC_RT_INTERNAL_VERSION (0x08000022)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Gets internal MAC RT version.</p>
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 6 bytes as defined in the following structure:</p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d36492e1265', this);">Copy</button><code id="d36492e1265" content="typedef struct {&#xA;  uint8_t major;&#xA;  uint8_t minor;&#xA;  uint8_t revision;&#xA;  uint8_t year; // year since 2000&#xA;  uint8_t month;&#xA;  uint8_t day;&#xA;} MAC_RT_INTERNAL_VERSION;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
-  uint8_t major<span class="ph token punctuation">;</span>
-  uint8_t minor<span class="ph token punctuation">;</span>
-  uint8_t revision<span class="ph token punctuation">;</span>
-  uint8_t year<span class="ph token punctuation">;</span> <span class="ph token comment">// year since 2000</span>
-  uint8_t month<span class="ph token punctuation">;</span>
-  uint8_t day<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> MAC_RT_INTERNAL_VERSION<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
+<pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> {
+  uint8_t major;
+  uint8_t minor;
+  uint8_t revision;
+  uint8_t year; <em class="hl-comment">// year since 2000</em>
+  uint8_t month;
+  uint8_t day;
+} MAC_RT_INTERNAL_VERSION;</pre><p class="p"><strong class="ph b">Default Value:</strong> N/A.</p>
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title51" id="mac-rt-pib-sleep-mode-0x08000024"><h2 class="title topictitle2" id="ariaid-title51">MAC_RT_PIB_SLEEP_MODE (0x08000024)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Enable/Disable Sleep Mode.</p>

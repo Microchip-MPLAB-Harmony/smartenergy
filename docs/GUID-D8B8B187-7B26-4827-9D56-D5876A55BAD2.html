@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-60271DE1-2B32-4ED7-8DB8-613930EFDA20.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-pvddmon-callback-typedef" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_PVDDMON_CALLBACK Typedef</title>
+<title>SRV_PVDDMON_CALLBACK Typedef</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-pvddmon-callback-typedef" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,14 +223,14 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-pvddmon-callback-typedef">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_PVDDMON_CALLBACK Typedef</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-60271DE1-2B32-4ED7-8DB8-613930EFDA20.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d62447e21', this);">Copy</button><code id="d62447e21" content="typedef void (*SRV_PVDDMON_CALLBACK)( SRV_PVDDMON_CMP_MODE cmpMode, uintptr_t context );"><span class="ph token keyword">typedef</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">(</span><span class="ph token operator">*</span>SRV_PVDDMON_CALLBACK<span class="ph token punctuation">)</span><span class="ph token punctuation">(</span> SRV_PVDDMON_CMP_MODE cmpMode<span class="ph token punctuation">,</span> uintptr_t context <span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">void</strong> (*SRV_PVDDMON_CALLBACK)( SRV_PVDDMON_CMP_MODE cmpMode, uintptr_t context );</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Pointer to a PVDD Monitor Event handler function.</p>
 </div>
@@ -209,15 +239,15 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title5" id="parameters"><h2 class="title topictitle2" id="ariaid-title5">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d62447e68"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d62447e70"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26809e45"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d26809e47"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62447e68 "><span>cmpMode</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62447e70 "><span>Comparison mode - <a class="xref" href="GUID-FBA5ADF9-861F-4690-AAE9-9188BCD3A6AE.html"><em class="ph i">SRV_PVDDMON_CMP_MODE</em></a></span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26809e45 "><span>cmpMode</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26809e47 "><span>Comparison mode - <a class="xref" href="GUID-FBA5ADF9-861F-4690-AAE9-9188BCD3A6AE.html"><em class="ph i">SRV_PVDDMON_CMP_MODE</em></a></span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62447e68 "><span>context</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62447e70 "><span>Pointer to parameters to be passed to Handler function.</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26809e45 "><span>context</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d26809e47 "><span>Pointer to parameters to be passed to Handler function.</span></td>
 </tr>
 </tbody>
 </table>
@@ -227,27 +257,27 @@
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="returns"><h2 class="title topictitle2" id="ariaid-title6">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d62447e97', this);">Copy</button><code id="d62447e97" content="static void APP_PLC_PVDDMonitorCb( SRV_PVDDMON_CMP_MODE cmpMode, uintptr_t context )&#xA;{&#xA;    (void)context;&#xA;    &#xA;    if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)&#xA;    {&#xA;        /* PLC Transmission is not permitted */&#xA;        DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);&#xA;        appPlc.pvddMonTxEnable = false;&#xA;        /* Restart PVDD Monitor to check when VDD is within the comparison window */&#xA;        SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);&#xA;    }&#xA;    else&#xA;    {&#xA;        /* PLC Transmission is permitted again */&#xA;        DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);&#xA;        appPlc.pvddMonTxEnable = true;&#xA;        /* Restart PVDD Monitor to check when VDD is out of the comparison window */&#xA;        SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);&#xA;    }&#xA;}"><span class="ph token keyword">static</span> <span class="ph token keyword">void</span> <span class="ph token function">APP_PLC_PVDDMonitorCb</span><span class="ph token punctuation">(</span> SRV_PVDDMON_CMP_MODE cmpMode<span class="ph token punctuation">,</span> uintptr_t context <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span>context<span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_PVDDMonitorCb</span>( SRV_PVDDMON_CMP_MODE cmpMode, uintptr_t context )
+{
+    (<strong class="hl-keyword">void</strong>)context;
     
-    <span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>cmpMode <span class="ph token operator">==</span> SRV_PVDDMON_CMP_MODE_OUT<span class="ph token punctuation">)</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token comment">/* PLC Transmission is not permitted */</span>
-        <span class="ph token function">DRV_PLC_PHY_EnableTX</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> false<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        appPlc<span class="ph token punctuation">.</span>pvddMonTxEnable <span class="ph token operator">=</span> false<span class="ph token punctuation">;</span>
-        <span class="ph token comment">/* Restart PVDD Monitor to check when VDD is within the comparison window */</span>
-        <span class="ph token function">SRV_PVDDMON_Restart</span><span class="ph token punctuation">(</span>SRV_PVDDMON_CMP_MODE_IN<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token punctuation">}</span>
-    <span class="ph token keyword">else</span>
-    <span class="ph token punctuation">{</span>
-        <span class="ph token comment">/* PLC Transmission is permitted again */</span>
-        <span class="ph token function">DRV_PLC_PHY_EnableTX</span><span class="ph token punctuation">(</span>appPlc<span class="ph token punctuation">.</span>drvPl360Handle<span class="ph token punctuation">,</span> true<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-        appPlc<span class="ph token punctuation">.</span>pvddMonTxEnable <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
-        <span class="ph token comment">/* Restart PVDD Monitor to check when VDD is out of the comparison window */</span>
-        <span class="ph token function">SRV_PVDDMON_Restart</span><span class="ph token punctuation">(</span>SRV_PVDDMON_CMP_MODE_OUT<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-    <span class="ph token punctuation">}</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+    <strong class="hl-keyword">if</strong> (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
+    {
+        <em class="hl-comment">/* PLC Transmission is not permitted */</em>
+        DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);
+        appPlc.pvddMonTxEnable = false;
+        <em class="hl-comment">/* Restart PVDD Monitor to check when VDD is within the comparison window */</em>
+        SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);
+    }
+    <strong class="hl-keyword">else</strong>
+    {
+        <em class="hl-comment">/* PLC Transmission is permitted again */</em>
+        DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
+        appPlc.pvddMonTxEnable = true;
+        <em class="hl-comment">/* Restart PVDD Monitor to check when VDD is out of the comparison window */</em>
+        SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);
+    }
+}</pre></div>
 </div>
 </body>
 </html>

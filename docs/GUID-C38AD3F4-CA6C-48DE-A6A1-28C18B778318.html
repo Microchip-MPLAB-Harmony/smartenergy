@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-g3-macrt-pibset-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_G3_MACRT_PIBSet Function</title>
+<title>DRV_G3_MACRT_PIBSet Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-g3-macrt-pibset-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,17 +223,17 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-g3-macrt-pibset-function">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_G3_MACRT_PIBSet Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d41266e21', this);">Copy</button><code id="d41266e21" content="MAC_RT_STATUS DRV_G3_MACRT_PIBSet (&#xA;    const DRV_HANDLE handle,&#xA;    MAC_RT_PIB_OBJ *pibObj&#xA;);">MAC_RT_STATUS DRV_G3_MACRT_PIBSet <span class="ph token punctuation">(</span>
-    <span class="ph token keyword">const</span> DRV_HANDLE handle<span class="ph token punctuation">,</span>
-    MAC_RT_PIB_OBJ <span class="ph token operator">*</span>pibObj
-<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c">MAC_RT_STATUS DRV_G3_MACRT_PIBSet (
+    <strong class="hl-keyword">const</strong> DRV_HANDLE handle,
+    MAC_RT_PIB_OBJ *pibObj
+);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Allows a client to set information to PLC transceiver on MAC RT and PHY information base (PIB).</p>
 </div>
@@ -215,15 +245,15 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d41266e77"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d41266e79"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d52451e61"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d52451e63"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d41266e77 "><span>handle</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d41266e79 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CFC0A3D7-6B3D-4D47-A061-7314346BFFCF.html"><em class="ph i">DRV_G3_MACRT_Open</em></a> routine</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d52451e61 "><span>handle</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d52451e63 "><span>A valid instance handle, returned from the driver <a class="xref" href="GUID-CFC0A3D7-6B3D-4D47-A061-7314346BFFCF.html"><em class="ph i">DRV_G3_MACRT_Open</em></a> routine</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d41266e77 "><span>pibObj</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d41266e79 "><span>Pointer to the PIB object to set</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d52451e61 "><span>pibObj</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d52451e63 "><span>Pointer to the PIB object to set</span></td>
 </tr>
 </tbody>
 </table>
@@ -233,39 +263,39 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p"><a class="xref" href="GUID-F2925ACF-B9D7-43CC-830D-549364A186D6.html"><em class="ph i">MAC_RT_STATUS Enum</em></a> value containing the result of set operation.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d41266e111', this);">Copy</button><code id="d41266e111" content="// 'handle', returned from DRV_G3_MACRT_Open previously called&#xA;&#xA;MAC_RT_PIB_OBJ pibObj;&#xA;uint8_t autoMode&#xA;uint8_t impedance;&#xA;uint8_t forcedRobo;&#xA;&#xA;// Disable AUTODETECT impedance mode&#xA;autoMode = 0;&#xA;&#xA;// Set VLO impedance mode&#xA;impedance = VLO_STATE; &#xA;&#xA;pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;&#xA;pibObj.index = PHY_PARAM_CFG_AUTODETECT_BRANCH; &#xA;pibObj.pData = &amp;autoMode;&#xA;pibObj.length = 1;&#xA;DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);&#xA;&#xA;pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;&#xA;pibObj.index = PHY_PARAM_CFG_IMPEDANCE; &#xA;pibObj.pData = &amp;impedance;&#xA;pibObj.length = 1;&#xA;DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);&#xA;&#xA;// Forces Modulation Type in every transmitted frame (1 - Force BPSK_ROBO)&#xA;forcedRobo = 1; &#xA;&#xA;pibObj.pib = MAC_RT_PIB_MANUF_FORCED_MOD_TYPE;&#xA;pibObj.index = 0; &#xA;pibObj.pData = &amp;forcedRobo;&#xA;pibObj.length = 1;&#xA;DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);"><span class="ph token comment">// 'handle', returned from DRV_G3_MACRT_Open previously called</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><em class="hl-comment">// 'handle', returned from DRV_G3_MACRT_Open previously called</em>
 
-MAC_RT_PIB_OBJ pibObj<span class="ph token punctuation">;</span>
+MAC_RT_PIB_OBJ pibObj;
 uint8_t autoMode
-uint8_t impedance<span class="ph token punctuation">;</span>
-uint8_t forcedRobo<span class="ph token punctuation">;</span>
+uint8_t impedance;
+uint8_t forcedRobo;
 
-<span class="ph token comment">// Disable AUTODETECT impedance mode</span>
-autoMode <span class="ph token operator">=</span> <span class="ph token number">0</span><span class="ph token punctuation">;</span>
+<em class="hl-comment">// Disable AUTODETECT impedance mode</em>
+autoMode = <span class="hl-number">0</span>;
 
-<span class="ph token comment">// Set VLO impedance mode</span>
-impedance <span class="ph token operator">=</span> VLO_STATE<span class="ph token punctuation">;</span> 
+<em class="hl-comment">// Set VLO impedance mode</em>
+impedance = VLO_STATE; 
 
-pibObj<span class="ph token punctuation">.</span>pib <span class="ph token operator">=</span> MAC_RT_PIB_MANUF_PHY_PARAM<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>index <span class="ph token operator">=</span> PHY_PARAM_CFG_AUTODETECT_BRANCH<span class="ph token punctuation">;</span> 
-pibObj<span class="ph token punctuation">.</span>pData <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>autoMode<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>length <span class="ph token operator">=</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-<span class="ph token function">DRV_G3_MACRT_PIBSet</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>pibObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
+pibObj.index = PHY_PARAM_CFG_AUTODETECT_BRANCH; 
+pibObj.pData = &amp;autoMode;
+pibObj.length = <span class="hl-number">1</span>;
+DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);
 
-pibObj<span class="ph token punctuation">.</span>pib <span class="ph token operator">=</span> MAC_RT_PIB_MANUF_PHY_PARAM<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>index <span class="ph token operator">=</span> PHY_PARAM_CFG_IMPEDANCE<span class="ph token punctuation">;</span> 
-pibObj<span class="ph token punctuation">.</span>pData <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>impedance<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>length <span class="ph token operator">=</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-<span class="ph token function">DRV_G3_MACRT_PIBSet</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>pibObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
+pibObj.index = PHY_PARAM_CFG_IMPEDANCE; 
+pibObj.pData = &amp;impedance;
+pibObj.length = <span class="hl-number">1</span>;
+DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);
 
-<span class="ph token comment">// Forces Modulation Type in every transmitted frame (1 - Force BPSK_ROBO)</span>
-forcedRobo <span class="ph token operator">=</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span> 
+<em class="hl-comment">// Forces Modulation Type in every transmitted frame (1 - Force BPSK_ROBO)</em>
+forcedRobo = <span class="hl-number">1</span>; 
 
-pibObj<span class="ph token punctuation">.</span>pib <span class="ph token operator">=</span> MAC_RT_PIB_MANUF_FORCED_MOD_TYPE<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>index <span class="ph token operator">=</span> <span class="ph token number">0</span><span class="ph token punctuation">;</span> 
-pibObj<span class="ph token punctuation">.</span>pData <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>forcedRobo<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>length <span class="ph token operator">=</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-<span class="ph token function">DRV_G3_MACRT_PIBSet</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>pibObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+pibObj.pib = MAC_RT_PIB_MANUF_FORCED_MOD_TYPE;
+pibObj.index = <span class="hl-number">0</span>; 
+pibObj.pData = &amp;forcedRobo;
+pibObj.length = <span class="hl-number">1</span>;
+DRV_G3_MACRT_PIBSet(handle, &amp;pibObj);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">None.</p>
 </div>

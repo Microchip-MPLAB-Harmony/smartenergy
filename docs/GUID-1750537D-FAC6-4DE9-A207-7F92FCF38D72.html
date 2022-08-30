@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="mac-rt-rx-parameters-obj-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>MAC_RT_RX_PARAMETERS_OBJ Struct</title>
+<title>MAC_RT_RX_PARAMETERS_OBJ Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-mac-rt-rx-parameters-obj-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,29 +223,29 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="mac-rt-rx-parameters-obj-struct">
 <h1 class="title topictitle1" id="ariaid-title1">MAC_RT_RX_PARAMETERS_OBJ Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d23639e21', this);">Copy</button><code id="d23639e21" content="typedef struct __attribute__((packed, aligned(1))) {&#xA;    /* High Priority */&#xA;    bool highPriority;&#xA;    /* PDU Link Quality */&#xA;    uint8_t pduLinkQuality;&#xA;    /* Phase Differential */&#xA;    uint8_t phaseDifferential;&#xA;    /* Modulation Type */&#xA;    MAC_RT_MOD_TYPE modType;&#xA;    /* Modulation Scheme */&#xA;    MAC_RT_MOD_SCHEME modScheme;&#xA;    /* Tone map */&#xA;    MAC_RT_TONE_MAP toneMap;&#xA;    /* Tone map Response */&#xA;    MAC_RT_TONE_MAP_RSP_DATA toneMapRsp;&#xA;} MAC_RT_RX_PARAMETERS_OBJ;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">,</span> <span class="ph token function">aligned</span><span class="ph token punctuation">(</span><span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* High Priority */</span>
-    bool highPriority<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* PDU Link Quality */</span>
-    uint8_t pduLinkQuality<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Phase Differential */</span>
-    uint8_t phaseDifferential<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Modulation Type */</span>
-    MAC_RT_MOD_TYPE modType<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Modulation Scheme */</span>
-    MAC_RT_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Tone map */</span>
-    MAC_RT_TONE_MAP toneMap<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Tone map Response */</span>
-    MAC_RT_TONE_MAP_RSP_DATA toneMapRsp<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> MAC_RT_RX_PARAMETERS_OBJ<span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed, aligned(<span class="hl-number">1</span>))) {
+    <em class="hl-comment">/* High Priority */</em>
+    bool highPriority;
+    <em class="hl-comment">/* PDU Link Quality */</em>
+    uint8_t pduLinkQuality;
+    <em class="hl-comment">/* Phase Differential */</em>
+    uint8_t phaseDifferential;
+    <em class="hl-comment">/* Modulation Type */</em>
+    MAC_RT_MOD_TYPE modType;
+    <em class="hl-comment">/* Modulation Scheme */</em>
+    MAC_RT_MOD_SCHEME modScheme;
+    <em class="hl-comment">/* Tone map */</em>
+    MAC_RT_TONE_MAP toneMap;
+    <em class="hl-comment">/* Tone map Response */</em>
+    MAC_RT_TONE_MAP_RSP_DATA toneMapRsp;
+} MAC_RT_RX_PARAMETERS_OBJ;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains information realted to a received message.</p>
 </div>

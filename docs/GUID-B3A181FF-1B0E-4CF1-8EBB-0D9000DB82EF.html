@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-usi-close-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_USI_Close Function</title>
+<title>SRV_USI_Close Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-usi-close-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,14 +223,14 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-usi-close-function">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_USI_Close Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d62910e21', this);">Copy</button><code id="d62910e21" content="void SRV_USI_Close( const SRV_USI_HANDLE handle )"><span class="ph token keyword">void</span> <span class="ph token function">SRV_USI_Close</span><span class="ph token punctuation">(</span> <span class="ph token keyword">const</span> SRV_USI_HANDLE handle <span class="ph token punctuation">)</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> <span class="hl-functions">SRV_USI_Close</span>( <strong class="hl-keyword">const</strong> SRV_USI_HANDLE handle )</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Closes an opened-instance of the USI service.</p>
 </div>
@@ -213,12 +243,12 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="parameters"><h2 class="title topictitle2" id="ariaid-title6">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d62910e74"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d62910e76"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64956e62"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d64956e64"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62910e74 "><span>handle</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d62910e76 "><span>A valid open-instance handle, returned from <a class="xref" href="GUID-7464B9B1-E30E-4C83-BFF4-C8FBC8AE2B97.html"><em class="ph i">SRV_USI_Open</em></a></span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64956e62 "><span>handle</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d64956e64 "><span>A valid open-instance handle, returned from <a class="xref" href="GUID-7464B9B1-E30E-4C83-BFF4-C8FBC8AE2B97.html"><em class="ph i">SRV_USI_Open</em></a></span></td>
 </tr>
 </tbody>
 </table>
@@ -228,9 +258,9 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d62910e98', this);">Copy</button><code id="d62910e98" content="// 'handle', returned from SRV_USI_Open previously called&#xA;&#xA;SRV_USI_Close(handle);"><span class="ph token comment">// 'handle', returned from SRV_USI_Open previously called</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><em class="hl-comment">// 'handle', returned from SRV_USI_Open previously called</em>
 
-<span class="ph token function">SRV_USI_Close</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+SRV_USI_Close(handle);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">None.</p>
 </div>

@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-reception-obj-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
+<title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-reception-obj-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,49 +223,49 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-reception-obj-struct">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_RECEPTION_OBJ Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html">PRIME Data types and constants</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d75421e21', this);">Copy</button><code id="d75421e21" content="typedef struct __attribute__((packed, aligned(1))) {&#xA;    /* Pointer to received data buffer */&#xA;    uint8_t *pReceivedData;&#xA;    /* Instant when frame was received (start of message) referred to 1us PHY counter */&#xA;    uint32_t time;&#xA;    /* Accumulated Error Vector Magnitude for header */&#xA;    uint32_t evmHeaderAcum;&#xA;    /* Accumulated Error Vector Magnitude for payload */&#xA;    uint32_t evmPayloadAcum;&#xA;    /* Error Vector Magnitude for header */&#xA;    uint16_t evmHeader;&#xA;    /* Error Vector Magnitude for payload */&#xA;    uint16_t evmPayload;&#xA;    /* Length of the received data in bytes */&#xA;    uint16_t dataLength;&#xA;    /* Scheme of Modulation */&#xA;    DRV_PLC_PHY_SCH scheme;&#xA;    /* PRIME Frame type */&#xA;    DRV_PLC_PHY_FRAME_TYPE frameType;&#xA;    /* Header type */&#xA;    DRV_PLC_PHY_HEADER headerType;&#xA;    /* Average RSSI (Received Signal Strength Indication) in dBuV */&#xA;    uint8_t rssiAvg;&#xA;    /* Average CNIR (Carrier to Interference + Noise ratio) */&#xA;    uint8_t cinrAvg;&#xA;    /* Minimum CNIR (Carrier to Interference + Noise ratio) */&#xA;    uint8_t cinrMin;&#xA;    /* Average Soft BER (Bit Error Rate) */&#xA;    uint8_t berSoftAvg;&#xA;    /* Maximum Soft BER (Bit Error Rate) */&#xA;    uint8_t berSoftMax;&#xA;    /* Percentage of carriers affected by narrow band noise */&#xA;    uint8_t narBandPercent;&#xA;    /* Percentage of symbols affected by impulsive noise */&#xA;    uint8_t impNoisePercent;&#xA;} DRV_PLC_PHY_RECEPTION_OBJ;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">,</span> <span class="ph token function">aligned</span><span class="ph token punctuation">(</span><span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Pointer to received data buffer */</span>
-    uint8_t <span class="ph token operator">*</span>pReceivedData<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Instant when frame was received (start of message) referred to 1us PHY counter */</span>
-    uint32_t time<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Accumulated Error Vector Magnitude for header */</span>
-    uint32_t evmHeaderAcum<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Accumulated Error Vector Magnitude for payload */</span>
-    uint32_t evmPayloadAcum<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Error Vector Magnitude for header */</span>
-    uint16_t evmHeader<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Error Vector Magnitude for payload */</span>
-    uint16_t evmPayload<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Length of the received data in bytes */</span>
-    uint16_t dataLength<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Scheme of Modulation */</span>
-    DRV_PLC_PHY_SCH scheme<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* PRIME Frame type */</span>
-    DRV_PLC_PHY_FRAME_TYPE frameType<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Header type */</span>
-    DRV_PLC_PHY_HEADER headerType<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Average RSSI (Received Signal Strength Indication) in dBuV */</span>
-    uint8_t rssiAvg<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Average CNIR (Carrier to Interference + Noise ratio) */</span>
-    uint8_t cinrAvg<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Minimum CNIR (Carrier to Interference + Noise ratio) */</span>
-    uint8_t cinrMin<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Average Soft BER (Bit Error Rate) */</span>
-    uint8_t berSoftAvg<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Maximum Soft BER (Bit Error Rate) */</span>
-    uint8_t berSoftMax<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Percentage of carriers affected by narrow band noise */</span>
-    uint8_t narBandPercent<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Percentage of symbols affected by impulsive noise */</span>
-    uint8_t impNoisePercent<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_RECEPTION_OBJ<span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed, aligned(<span class="hl-number">1</span>))) {
+    <em class="hl-comment">/* Pointer to received data buffer */</em>
+    uint8_t *pReceivedData;
+    <em class="hl-comment">/* Instant when frame was received (start of message) referred to 1us PHY counter */</em>
+    uint32_t time;
+    <em class="hl-comment">/* Accumulated Error Vector Magnitude for header */</em>
+    uint32_t evmHeaderAcum;
+    <em class="hl-comment">/* Accumulated Error Vector Magnitude for payload */</em>
+    uint32_t evmPayloadAcum;
+    <em class="hl-comment">/* Error Vector Magnitude for header */</em>
+    uint16_t evmHeader;
+    <em class="hl-comment">/* Error Vector Magnitude for payload */</em>
+    uint16_t evmPayload;
+    <em class="hl-comment">/* Length of the received data in bytes */</em>
+    uint16_t dataLength;
+    <em class="hl-comment">/* Scheme of Modulation */</em>
+    DRV_PLC_PHY_SCH scheme;
+    <em class="hl-comment">/* PRIME Frame type */</em>
+    DRV_PLC_PHY_FRAME_TYPE frameType;
+    <em class="hl-comment">/* Header type */</em>
+    DRV_PLC_PHY_HEADER headerType;
+    <em class="hl-comment">/* Average RSSI (Received Signal Strength Indication) in dBuV */</em>
+    uint8_t rssiAvg;
+    <em class="hl-comment">/* Average CNIR (Carrier to Interference + Noise ratio) */</em>
+    uint8_t cinrAvg;
+    <em class="hl-comment">/* Minimum CNIR (Carrier to Interference + Noise ratio) */</em>
+    uint8_t cinrMin;
+    <em class="hl-comment">/* Average Soft BER (Bit Error Rate) */</em>
+    uint8_t berSoftAvg;
+    <em class="hl-comment">/* Maximum Soft BER (Bit Error Rate) */</em>
+    uint8_t berSoftMax;
+    <em class="hl-comment">/* Percentage of carriers affected by narrow band noise */</em>
+    uint8_t narBandPercent;
+    <em class="hl-comment">/* Percentage of symbols affected by impulsive noise */</em>
+    uint8_t impNoisePercent;
+} DRV_PLC_PHY_RECEPTION_OBJ;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains information related to a received message.</p>
 </div>

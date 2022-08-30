@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="how-the-library-works" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>How the Library Works</title>
+<title>How the Library Works</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-how-the-library-works" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,7 +223,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="how-the-library-works">
 <h1 class="title topictitle1" id="ariaid-title1">How the Library Works</h1><div class="body"><p class="p">USI service is a wrapper that provides the interface between the Smart Energy stacks and the serial communications channel (UART or USB CDC).</p>
 <p class="p">For USI message transmission, <a class="xref" href="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html"><em class="ph i">SRV_USI_Send_Message</em></a> function is provided, which packs the data into USI frame format and sends the message through serial interface.</p>
@@ -218,46 +248,46 @@
 </li>
 </ul>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d17437e87"><span>USI Protocol (<a class="xref" href="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF.html"><em class="ph i">SRV_USI_PROTOCOL_ID Enum</em></a>)</span></th>
-<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d17437e94"><span>PROTOCOL ID</span></th>
-<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d17437e96"><span>CRC size (bits)</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d6207e87"><span>USI Protocol (<a class="xref" href="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF.html"><em class="ph i">SRV_USI_PROTOCOL_ID Enum</em></a>)</span></th>
+<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d6207e94"><span>PROTOCOL ID</span></th>
+<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d6207e96"><span>CRC size (bits)</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_MNGP_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x00-0x07</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>32</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_MNGP_PRIME</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x00-0x07</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>32</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_SNIF_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x13</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_SNIF_PRIME</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x13</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_PHY_SERIAL_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x1F</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PHY_SERIAL_PRIME</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x1F</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_PHY</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x22</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PHY</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x22</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_SNIFF_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x23</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_SNIFF_G3</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x23</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_MAC_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x24</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_MAC_G3</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x24</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_ADP_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x25</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_ADP_G3</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x25</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_COORD_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x26</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>16</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_COORD_G3</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x26</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d17437e87 "><span>SRV_USI_PROT_ID_PRIME_API</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e94 "><span>0x30</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d17437e96 "><span>8</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PRIME_API</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x30</span></td>
+<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>8</span></td>
 </tr>
 </tbody>
 </table>

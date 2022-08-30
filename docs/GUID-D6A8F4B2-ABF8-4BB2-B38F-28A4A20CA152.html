@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-transmission-obj-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
+<title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-transmission-obj-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,33 +223,33 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-transmission-obj-struct">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_TRANSMISSION_OBJ Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html">PRIME Data types and constants</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d71470e21', this);">Copy</button><code id="d71470e21" content="typedef struct __attribute__((packed, aligned(1))) {&#xA;    /* Pointer to data buffer to transmit */&#xA;    uint8_t *pTransmitData;&#xA;    /* Instant when transmission has to start referred to 1us PHY counter */&#xA;    uint32_t time;&#xA;    /* Length of the data to transmit in bytes */&#xA;    uint16_t dataLength;&#xA;    /* Transmission Mode (absolute, relative, cancel, continuous). Constants above */&#xA;    uint8_t mode;&#xA;    /* Attenuation level with which the message will be transmitted */&#xA;    uint8_t attenuation;&#xA;    /* Forced transmission */&#xA;    uint8_t forced;&#xA;    /* Buffer Id used for transmission */&#xA;    DRV_PLC_PHY_BUFFER_ID bufferId;&#xA;    /* Scheme of Modulation */&#xA;    DRV_PLC_PHY_SCH scheme;&#xA;    /* PRIME Frame type */&#xA;    DRV_PLC_PHY_FRAME_TYPE frameType;&#xA;} DRV_PLC_PHY_TRANSMISSION_OBJ;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">,</span> <span class="ph token function">aligned</span><span class="ph token punctuation">(</span><span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-    <span class="ph token comment">/* Pointer to data buffer to transmit */</span>
-    uint8_t <span class="ph token operator">*</span>pTransmitData<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Instant when transmission has to start referred to 1us PHY counter */</span>
-    uint32_t time<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Length of the data to transmit in bytes */</span>
-    uint16_t dataLength<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Transmission Mode (absolute, relative, cancel, continuous). Constants above */</span>
-    uint8_t mode<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Attenuation level with which the message will be transmitted */</span>
-    uint8_t attenuation<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Forced transmission */</span>
-    uint8_t forced<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Buffer Id used for transmission */</span>
-    DRV_PLC_PHY_BUFFER_ID bufferId<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* Scheme of Modulation */</span>
-    DRV_PLC_PHY_SCH scheme<span class="ph token punctuation">;</span>
-    <span class="ph token comment">/* PRIME Frame type */</span>
-    DRV_PLC_PHY_FRAME_TYPE frameType<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_TRANSMISSION_OBJ<span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed, aligned(<span class="hl-number">1</span>))) {
+    <em class="hl-comment">/* Pointer to data buffer to transmit */</em>
+    uint8_t *pTransmitData;
+    <em class="hl-comment">/* Instant when transmission has to start referred to 1us PHY counter */</em>
+    uint32_t time;
+    <em class="hl-comment">/* Length of the data to transmit in bytes */</em>
+    uint16_t dataLength;
+    <em class="hl-comment">/* Transmission Mode (absolute, relative, cancel, continuous). Constants above */</em>
+    uint8_t mode;
+    <em class="hl-comment">/* Attenuation level with which the message will be transmitted */</em>
+    uint8_t attenuation;
+    <em class="hl-comment">/* Forced transmission */</em>
+    uint8_t forced;
+    <em class="hl-comment">/* Buffer Id used for transmission */</em>
+    DRV_PLC_PHY_BUFFER_ID bufferId;
+    <em class="hl-comment">/* Scheme of Modulation */</em>
+    DRV_PLC_PHY_SCH scheme;
+    <em class="hl-comment">/* PRIME Frame type */</em>
+    DRV_PLC_PHY_FRAME_TYPE frameType;
+} DRV_PLC_PHY_TRANSMISSION_OBJ;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">PRIME Transmission setup data.</p>
 </div>

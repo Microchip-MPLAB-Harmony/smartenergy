@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-FB84DD36-66A1-4AC7-8809-C528890A4B16.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-ids" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_IDs</title>
+<title>DRV_PLC_PHY_IDs</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-ids" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,7 +223,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-ids">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_IDs</h1><div class="body"></div>
 <div class="related-links">
@@ -291,14 +321,14 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title14" id="plc-id-tone-map-rsp-data-0x4005"><h2 class="title topictitle2" id="ariaid-title14">PLC_ID_TONE_MAP_RSP_DATA (0x4005)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Tone Map response data is the best modulation and Tone Map combination to maximize baud rate and minimize frame error rate. It is calculated by the selection algorithm, based on the signal quality of the last received message. See PLC_ID_TONE_MAP_RSP_ENABLED_MODS (0x403E) to enable/disable the different modulations for the selection algorithm. The format is defined by the structure shown below:</p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d50951e302', this);">Copy</button><code id="d50951e302" content="typedef struct {&#xA;  // Modulation type&#xA;  DRV_PLC_PHY_MOD_TYPE modType;&#xA;  // Modulation scheme&#xA;  DRV_PLC_PHY_MOD_SCHEME modScheme;&#xA;  // Tone Map&#xA;  uint8_t toneMap[TONE_MAP_SIZE_MAX];&#xA;} DRV_PLC_PHY_TONE_MAP_RSP;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
-  <span class="ph token comment">// Modulation type</span>
-  DRV_PLC_PHY_MOD_TYPE modType<span class="ph token punctuation">;</span>
-  <span class="ph token comment">// Modulation scheme</span>
-  DRV_PLC_PHY_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
-  <span class="ph token comment">// Tone Map</span>
-  uint8_t toneMap<span class="ph token punctuation">[</span>TONE_MAP_SIZE_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_TONE_MAP_RSP<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
+<pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> {
+  <em class="hl-comment">// Modulation type</em>
+  DRV_PLC_PHY_MOD_TYPE modType;
+  <em class="hl-comment">// Modulation scheme</em>
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  <em class="hl-comment">// Tone Map</em>
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
+} DRV_PLC_PHY_TONE_MAP_RSP;</pre><p class="p"><strong class="ph b">Access:</strong> Read-only.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 5 bytes.</p>
 <p class="p"><strong class="ph b">Default Value:</strong> BPSK Robust modulation type (0x04), differential modulation scheme (0x00) and full tone map (0x3F0000 in CENELEC-A; 0x0F0000 in CENELEC-B; 0xFFFFFF in FCC).</p>
 </div>
@@ -524,24 +554,24 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 32 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1100"><span>Byte 0-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1102"><span>Byte 4-7</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1104"><span>Byte 8-11</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1106"><span>Byte 12-15</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1108"><span>Byte 16-19</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1110"><span>Byte 20-24</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1112"><span>Byte 25-27</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1114"><span>Byte 28-31</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1062"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1064"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1066"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1068"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1070"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1072"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1074"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1076"><span>Byte 28-31</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1100 "><span>RMS_HI_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1102 "><span>RMS_HI_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1104 "><span>RMS_HI_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1106 "><span>RMS_HI_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1108 "><span>RMS_HI_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1110 "><span>RMS_HI_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1112 "><span>RMS_HI_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1114 "><span>RMS_HI_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1062 "><span>RMS_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1064 "><span>RMS_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1066 "><span>RMS_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1068 "><span>RMS_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1070 "><span>RMS_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1072 "><span>RMS_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1074 "><span>RMS_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1076 "><span>RMS_HI_7</span></td>
 </tr>
 </tbody>
 </table>
@@ -549,46 +579,46 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p">where RMS_HI_x: Target value of RMS_CALC in mode of transmission HIGH for the attenuation level x (attenuation levels in 3dB steps)</p>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1152"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1154"><span>RMS_HI_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1156"><span>RMS_HI_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1158"><span>RMS_HI_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1160"><span>RMS_HI_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1162"><span>RMS_HI_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1164"><span>RMS_HI_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1166"><span>RMS_HI_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1168"><span>RMS_HI_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1114"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1116"><span>RMS_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1118"><span>RMS_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1120"><span>RMS_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1122"><span>RMS_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1124"><span>RMS_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1126"><span>RMS_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1128"><span>RMS_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1130"><span>RMS_HI_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1991</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>1381</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>976</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>695</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>495</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>351</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>250</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>179</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1114 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1116 "><span>1991</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1118 "><span>1381</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1120 "><span>976</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1122 "><span>695</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1124 "><span>495</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1126 "><span>351</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1128 "><span>250</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1130 "><span>179</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1355</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>960</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>681</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>485</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>345</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>246</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>177</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>129</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1114 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1116 "><span>1355</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1118 "><span>960</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1120 "><span>681</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1122 "><span>485</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1124 "><span>345</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1126 "><span>246</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1128 "><span>177</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1130 "><span>129</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1152 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1154 "><span>1133</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1156 "><span>793</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1158 "><span>559</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1160 "><span>396</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1162 "><span>280</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1164 "><span>199</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1166 "><span>143</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1168 "><span>108</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1114 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1116 "><span>1133</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1118 "><span>793</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1120 "><span>559</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1122 "><span>396</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1124 "><span>280</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1126 "><span>199</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1128 "><span>143</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1130 "><span>108</span></td>
 </tr>
 </tbody>
 </table>
@@ -599,24 +629,24 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 32 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1256"><span>Byte 0-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1258"><span>Byte 4-7</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1260"><span>Byte 8-11</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1262"><span>Byte 12-15</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1264"><span>Byte 16-19</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1266"><span>Byte 20-24</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1268"><span>Byte 25-27</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1270"><span>Byte 28-31</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1218"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1220"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1222"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1224"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1226"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1228"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1230"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1232"><span>Byte 28-31</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1256 "><span>RMS_VLO_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1258 "><span>RMS_VLO_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1260 "><span>RMS_VLO_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1262 "><span>RMS_VLO_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1264 "><span>RMS_VLO_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1266 "><span>RMS_VLO_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1268 "><span>RMS_VLO_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1270 "><span>RMS_VLO_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1218 "><span>RMS_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1220 "><span>RMS_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1222 "><span>RMS_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1224 "><span>RMS_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1226 "><span>RMS_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1228 "><span>RMS_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1230 "><span>RMS_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1232 "><span>RMS_VLO_7</span></td>
 </tr>
 </tbody>
 </table>
@@ -624,46 +654,46 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p">where: RMS_HI_x: Target value of RMS_CALC in mode of transmission VERY_LOW for the attenuation level x (attenuation levels in 3dB steps)</p>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1308"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1310"><span>RMS_VLO_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1312"><span>RMS_VLO_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1314"><span>RMS_VLO_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1316"><span>RMS_VLO_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1318"><span>RMS_VLO_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1320"><span>RMS_VLO_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1322"><span>RMS_VLO_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1324"><span>RMS_VLO_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1270"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1272"><span>RMS_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1274"><span>RMS_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1276"><span>RMS_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1278"><span>RMS_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1280"><span>RMS_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1282"><span>RMS_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1284"><span>RMS_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1286"><span>RMS_VLO_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>6356</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>4706</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>3317</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>2308</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>1602</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>1112</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>778</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>546</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1270 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1272 "><span>6356</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1274 "><span>4706</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1276 "><span>3317</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1278 "><span>2308</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1280 "><span>1602</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1282 "><span>1112</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1284 "><span>778</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1286 "><span>546</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>5656</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>4174</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>2877</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>1987</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>1413</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>1020</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>736</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>532</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1270 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1272 "><span>5656</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1274 "><span>4174</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1276 "><span>2877</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1278 "><span>1987</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1280 "><span>1413</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1282 "><span>1020</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1284 "><span>736</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1286 "><span>532</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1308 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1310 "><span>2871</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1312 "><span>2120</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1314 "><span>1498</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1316 "><span>1054</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1318 "><span>740</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1320 "><span>519</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1322 "><span>366</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1324 "><span>259</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1270 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1272 "><span>2871</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1274 "><span>2120</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1276 "><span>1498</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1278 "><span>1054</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1280 "><span>740</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1282 "><span>519</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1284 "><span>366</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1286 "><span>259</span></td>
 </tr>
 </tbody>
 </table>
@@ -687,138 +717,138 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1431"><span>Byte 0-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1433"><span>Byte 4-7</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1435"><span>Byte 8-11</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1437"><span>Byte 12-15</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1439"><span>Byte 16-19</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1441"><span>Byte 20-24</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1443"><span>Byte 25-27</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1445"><span>Byte 28-31</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1393"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1395"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1397"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1399"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1401"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1403"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1405"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1407"><span>Byte 28-31</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1431 "><span>TH_HI_LO_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1433 "><span>TH_HI_LO_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1435 "><span>TH_HI_LO_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1437 "><span>TH_HI_LO_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1439 "><span>TH_HI_LO_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1441 "><span>TH_HI_LO_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1443 "><span>TH_HI_LO_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1445 "><span>TH_HI_LO_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1393 "><span>TH_HI_LO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1395 "><span>TH_HI_LO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1397 "><span>TH_HI_LO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1399 "><span>TH_HI_LO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1401 "><span>TH_HI_LO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1403 "><span>TH_HI_LO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1405 "><span>TH_HI_LO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1407 "><span>TH_HI_LO_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1477"><span>Byte 32-35</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1479"><span>Byte 36-39</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1481"><span>Byte 40-43</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1483"><span>Byte 44-47</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1485"><span>Byte 48-51</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1487"><span>Byte 52-55</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1489"><span>Byte 56-59</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1491"><span>Byte 60-63</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1439"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1441"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1443"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1445"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1447"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1449"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1451"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1453"><span>Byte 60-63</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1477 "><span>TH_HI_VLO_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1479 "><span>TH_HI_VLO_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1481 "><span>TH_HI_VLO_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1483 "><span>TH_HI_VLO_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1485 "><span>TH_HI_VLO_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1487 "><span>TH_HI_VLO_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1489 "><span>TH_HI_VLO_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1491 "><span>TH_HI_VLO_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1439 "><span>TH_HI_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1441 "><span>TH_HI_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1443 "><span>TH_HI_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1445 "><span>TH_HI_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1447 "><span>TH_HI_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1449 "><span>TH_HI_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1451 "><span>TH_HI_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1453 "><span>TH_HI_VLO_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1527"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1529"><span>TH_HI_LO_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1531"><span>TH_HI_LO_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1533"><span>TH_HI_LO_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1535"><span>TH_HI_LO_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1537"><span>TH_HI_LO_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1539"><span>TH_HI_LO_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1541"><span>TH_HI_LO_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1543"><span>TH_HI_LO_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1489"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1491"><span>TH_HI_LO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1493"><span>TH_HI_LO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1495"><span>TH_HI_LO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1497"><span>TH_HI_LO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1499"><span>TH_HI_LO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1501"><span>TH_HI_LO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1503"><span>TH_HI_LO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1505"><span>TH_HI_LO_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1489 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1491 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1493 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1495 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1497 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1499 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1501 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1503 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1505 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1489 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1491 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1493 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1495 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1497 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1499 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1501 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1503 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1505 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1527 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1529 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1531 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1533 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1535 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1537 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1539 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1541 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1543 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1489 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1491 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1493 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1495 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1497 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1499 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1501 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1503 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1505 "><span>0</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1616"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1618"><span>TH_HI_VLO_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1620"><span>TH_HI_VLO_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1622"><span>TH_HI_VLO_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1624"><span>TH_HI_VLO_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1626"><span>TH_HI_VLO_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1628"><span>TH_HI_VLO_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1630"><span>TH_HI_VLO_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1632"><span>TH_HI_VLO_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1578"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1580"><span>TH_HI_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1582"><span>TH_HI_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1584"><span>TH_HI_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1586"><span>TH_HI_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1588"><span>TH_HI_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1590"><span>TH_HI_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1592"><span>TH_HI_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1594"><span>TH_HI_VLO_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>1685</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>1173</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>828</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>589</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>419</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>298</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>212</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>151</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1578 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1580 "><span>1685</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1582 "><span>1173</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1584 "><span>828</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1586 "><span>589</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1588 "><span>419</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1590 "><span>298</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1592 "><span>212</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1594 "><span>151</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>1147</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>811</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>576</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>409</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>291</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>208</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>150</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>109</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1578 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1580 "><span>1147</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1582 "><span>811</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1584 "><span>576</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1586 "><span>409</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1588 "><span>291</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1590 "><span>208</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1592 "><span>150</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1594 "><span>109</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1616 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1618 "><span>950</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1620 "><span>667</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1622 "><span>471</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1624 "><span>334</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1626 "><span>238</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1628 "><span>169</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1630 "><span>122</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1632 "><span>90</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1578 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1580 "><span>950</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1582 "><span>667</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1584 "><span>471</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1586 "><span>334</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1588 "><span>238</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1590 "><span>169</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1592 "><span>122</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1594 "><span>90</span></td>
 </tr>
 </tbody>
 </table>
@@ -842,138 +872,138 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1739"><span>Byte 0-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1741"><span>Byte 4-7</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1743"><span>Byte 8-11</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1745"><span>Byte 12-15</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1747"><span>Byte 16-19</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1749"><span>Byte 20-24</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1751"><span>Byte 25-27</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1753"><span>Byte 28-31</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1701"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1703"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1705"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1707"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1709"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1711"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1713"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1715"><span>Byte 28-31</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1739 "><span>TH_LO_HI_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1741 "><span>TH_LO_HI_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1743 "><span>TH_LO_HI_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1745 "><span>TH_LO_HI_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1747 "><span>TH_LO_HI_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1749 "><span>TH_LO_HI_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1751 "><span>TH_LO_HI_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1753 "><span>TH_LO_HI_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1701 "><span>TH_LO_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1703 "><span>TH_LO_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1705 "><span>TH_LO_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1707 "><span>TH_LO_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1709 "><span>TH_LO_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1711 "><span>TH_LO_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1713 "><span>TH_LO_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1715 "><span>TH_LO_HI_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1785"><span>Byte 32-35</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1787"><span>Byte 36-39</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1789"><span>Byte 40-43</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1791"><span>Byte 44-47</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1793"><span>Byte 48-51</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1795"><span>Byte 52-55</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1797"><span>Byte 56-59</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1799"><span>Byte 60-63</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1747"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1749"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1751"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1753"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1755"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1757"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1759"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1761"><span>Byte 60-63</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1785 "><span>TH_LO_VLO_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1787 "><span>TH_LO_VLO_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1789 "><span>TH_LO_VLO_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1791 "><span>TH_LO_VLO_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1793 "><span>TH_LO_VLO_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1795 "><span>TH_LO_VLO_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1797 "><span>TH_LO_VLO_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1799 "><span>TH_LO_VLO_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1747 "><span>TH_LO_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1749 "><span>TH_LO_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1751 "><span>TH_LO_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1753 "><span>TH_LO_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1755 "><span>TH_LO_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1757 "><span>TH_LO_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1759 "><span>TH_LO_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1761 "><span>TH_LO_VLO_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1835"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1837"><span>TH_LO_HI_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1839"><span>TH_LO_HI_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1841"><span>TH_LO_HI_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1843"><span>TH_LO_HI_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1845"><span>TH_LO_HI_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1847"><span>TH_LO_HI_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1849"><span>TH_LO_HI_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1851"><span>TH_LO_HI_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1797"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1799"><span>TH_LO_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1801"><span>TH_LO_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1803"><span>TH_LO_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1805"><span>TH_LO_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1807"><span>TH_LO_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1809"><span>TH_LO_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1811"><span>TH_LO_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1813"><span>TH_LO_HI_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1797 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1799 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1801 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1803 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1805 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1807 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1809 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1811 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1813 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1797 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1799 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1801 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1803 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1805 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1807 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1809 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1811 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1813 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1835 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1837 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1839 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1841 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1843 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1845 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1847 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1849 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1851 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1797 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1799 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1801 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1803 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1805 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1807 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1809 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1811 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1813 "><span>0</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1924"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1926"><span>TH_LO_VLO_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1928"><span>TH_LO_VLO_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1930"><span>TH_LO_VLO_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1932"><span>TH_LO_VLO_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1934"><span>TH_LO_VLO_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1936"><span>TH_LO_VLO_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1938"><span>TH_LO_VLO_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e1940"><span>TH_LO_VLO_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1886"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1888"><span>TH_LO_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1890"><span>TH_LO_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1892"><span>TH_LO_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1894"><span>TH_LO_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1896"><span>TH_LO_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1898"><span>TH_LO_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1900"><span>TH_LO_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e1902"><span>TH_LO_VLO_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1886 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1888 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1890 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1892 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1894 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1896 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1898 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1900 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1902 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1886 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1888 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1890 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1892 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1894 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1896 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1898 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1900 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1902 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1924 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1926 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1928 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1930 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1932 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1934 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1936 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1938 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e1940 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1886 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1888 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1890 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1892 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1894 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1896 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1898 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1900 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e1902 "><span>0</span></td>
 </tr>
 </tbody>
 </table>
@@ -997,138 +1027,138 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 64 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2047"><span>Byte 0-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2049"><span>Byte 4-7</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2051"><span>Byte 8-11</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2053"><span>Byte 12-15</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2055"><span>Byte 16-19</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2057"><span>Byte 20-24</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2059"><span>Byte 25-27</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2061"><span>Byte 28-31</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2009"><span>Byte 0-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2011"><span>Byte 4-7</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2013"><span>Byte 8-11</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2015"><span>Byte 12-15</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2017"><span>Byte 16-19</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2019"><span>Byte 20-24</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2021"><span>Byte 25-27</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2023"><span>Byte 28-31</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2047 "><span>TH_VLO_HI_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2049 "><span>TH_VLO_HI_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2051 "><span>TH_VLO_HI_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2053 "><span>TH_VLO_HI_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2055 "><span>TH_VLO_HI_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2057 "><span>TH_VLO_HI_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2059 "><span>TH_VLO_HI_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2061 "><span>TH_VLO_HI_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2009 "><span>TH_VLO_HI_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2011 "><span>TH_VLO_HI_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2013 "><span>TH_VLO_HI_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2015 "><span>TH_VLO_HI_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2017 "><span>TH_VLO_HI_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2019 "><span>TH_VLO_HI_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2021 "><span>TH_VLO_HI_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2023 "><span>TH_VLO_HI_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2093"><span>Byte 32-35</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2095"><span>Byte 36-39</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2097"><span>Byte 40-43</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2099"><span>Byte 44-47</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2101"><span>Byte 48-51</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2103"><span>Byte 52-55</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2105"><span>Byte 56-59</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2107"><span>Byte 60-63</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2055"><span>Byte 32-35</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2057"><span>Byte 36-39</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2059"><span>Byte 40-43</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2061"><span>Byte 44-47</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2063"><span>Byte 48-51</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2065"><span>Byte 52-55</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2067"><span>Byte 56-59</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2069"><span>Byte 60-63</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2093 "><span>TH_VLO_VLO_0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2095 "><span>TH_VLO_VLO_1</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2097 "><span>TH_VLO_VLO_2</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2099 "><span>TH_VLO_VLO_3</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2101 "><span>TH_VLO_VLO_4</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2103 "><span>TH_VLO_VLO_5</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2105 "><span>TH_VLO_VLO_6</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2107 "><span>TH_VLO_VLO_7</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2055 "><span>TH_VLO_VLO_0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2057 "><span>TH_VLO_VLO_1</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2059 "><span>TH_VLO_VLO_2</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2061 "><span>TH_VLO_VLO_3</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2063 "><span>TH_VLO_VLO_4</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2065 "><span>TH_VLO_VLO_5</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2067 "><span>TH_VLO_VLO_6</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2069 "><span>TH_VLO_VLO_7</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2143"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2145"><span>TH_VLO_HI_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2147"><span>TH_VLO_HI_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2149"><span>TH_VLO_HI_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2151"><span>TH_VLO_HI_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2153"><span>TH_VLO_HI_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2155"><span>TH_VLO_HI_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2157"><span>TH_VLO_HI_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2159"><span>TH_VLO_HI_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2105"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2107"><span>TH_VLO_HI_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2109"><span>TH_VLO_HI_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2111"><span>TH_VLO_HI_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2113"><span>TH_VLO_HI_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2115"><span>TH_VLO_HI_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2117"><span>TH_VLO_HI_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2119"><span>TH_VLO_HI_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2121"><span>TH_VLO_HI_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2105 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2107 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2109 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2111 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2113 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2115 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2117 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2119 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2121 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2105 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2107 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2109 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2111 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2113 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2115 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2117 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2119 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2121 "><span>0</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2143 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2145 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2147 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2149 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2151 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2153 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2155 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2157 "><span>0</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2159 "><span>0</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2105 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2107 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2109 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2111 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2113 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2115 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2117 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2119 "><span>0</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2121 "><span>0</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2232"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2234"><span>TH_VLO_VLO_0</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2236"><span>TH_VLO_VLO_1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2238"><span>TH_VLO_VLO_2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2240"><span>TH_VLO_VLO_3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2242"><span>TH_VLO_VLO_4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2244"><span>TH_VLO_VLO_5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2246"><span>TH_VLO_VLO_6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2248"><span>TH_VLO_VLO_7</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2194"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2196"><span>TH_VLO_VLO_0</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2198"><span>TH_VLO_VLO_1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2200"><span>TH_VLO_VLO_2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2202"><span>TH_VLO_VLO_3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2204"><span>TH_VLO_VLO_4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2206"><span>TH_VLO_VLO_5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2208"><span>TH_VLO_VLO_6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2210"><span>TH_VLO_VLO_7</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>CEN-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>8988</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>6370</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>4466</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>3119</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>2171</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>1512</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>1061</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>752</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2194 "><span>CEN-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2196 "><span>8988</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2198 "><span>6370</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2200 "><span>4466</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2202 "><span>3119</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2204 "><span>2171</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2206 "><span>1512</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2208 "><span>1061</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2210 "><span>752</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>8153</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>5718</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>4007</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>2871</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>2080</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>1506</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>1083</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>778</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2194 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2196 "><span>8153</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2198 "><span>5718</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2200 "><span>4007</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2202 "><span>2871</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2204 "><span>2080</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2206 "><span>1506</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2208 "><span>1083</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2210 "><span>778</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2232 "><span>CEN-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2234 "><span>3878</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2236 "><span>2749</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2238 "><span>1935</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2240 "><span>1362</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2242 "><span>965</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2244 "><span>686</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2246 "><span>493</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2248 "><span>353</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2194 "><span>CEN-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2196 "><span>3878</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2198 "><span>2749</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2200 "><span>1935</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2202 "><span>1362</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2204 "><span>965</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2206 "><span>686</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2208 "><span>493</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2210 "><span>353</span></td>
 </tr>
 </tbody>
 </table>
@@ -1205,14 +1235,14 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 6 bytes</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2425"><span>Byte 0-1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2427"><span>Byte 2-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2429"><span>Byte 4-5</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2387"><span>Byte 0-1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2389"><span>Byte 2-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2391"><span>Byte 4-5</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2425 "><span>GAIN_HI_INI</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2427 "><span>GAIN_HI_MIN</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2429 "><span>GAIN_HI_MAX</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2387 "><span>GAIN_HI_INI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2389 "><span>GAIN_HI_MIN</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2391 "><span>GAIN_HI_MAX</span></td>
 </tr>
 </tbody>
 </table>
@@ -1228,26 +1258,26 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p">GAIN_HI_MIN and GAIN_HI_MAX are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2464"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2466"><span>GAIN_HI_INI</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2468"><span>GAIN_HI_MIN</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2470"><span>GAIN_HI_MAX</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2426"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2428"><span>GAIN_HI_INI</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2430"><span>GAIN_HI_MIN</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2432"><span>GAIN_HI_MAX</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>CENELEC-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>142</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>70</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>336</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2426 "><span>CENELEC-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2428 "><span>142</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2430 "><span>70</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2432 "><span>336</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>109</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>50</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>256</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2426 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2428 "><span>109</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2430 "><span>50</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2432 "><span>256</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2464 "><span>CENELEC-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2466 "><span>248</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2468 "><span>119</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2470 "><span>496</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2426 "><span>CENELEC-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2428 "><span>248</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2430 "><span>119</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2432 "><span>496</span></td>
 </tr>
 </tbody>
 </table>
@@ -1264,14 +1294,14 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 6 bytes.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2543"><span>Byte 0-1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2545"><span>Byte 2-3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2547"><span>Byte 4-5</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2505"><span>Byte 0-1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2507"><span>Byte 2-3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2509"><span>Byte 4-5</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2543 "><span>GAIN_VLO_INI</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2545 "><span>GAIN_VLO_MIN</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2547 "><span>GAIN_VLO_MAX</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2505 "><span>GAIN_VLO_INI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2507 "><span>GAIN_VLO_MIN</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2509 "><span>GAIN_VLO_MAX</span></td>
 </tr>
 </tbody>
 </table>
@@ -1287,26 +1317,26 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 <p class="p">GAIN_VLO_MIN and GAIN_VLO_MAX are only used if Tx AGC is enabled (see PLC_ID_CFG_AUTODETECT_IMPEDANCE (0x401E)).</p>
 <p class="p"><strong class="ph b">Default Value:</strong></p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2582"><span>G3 BAND</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2584"><span>GAIN_VLO_INI</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2586"><span>GAIN_VLO_MIN</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2588"><span>GAIN_VLO_MAX</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2544"><span>G3 BAND</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2546"><span>GAIN_VLO_INI</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2548"><span>GAIN_VLO_MIN</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2550"><span>GAIN_VLO_MAX</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>CENELEC-A</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>474</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>230</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>597</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2544 "><span>CENELEC-A</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2546 "><span>474</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2548 "><span>230</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2550 "><span>597</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>FCC</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>364</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>180</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>408</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2544 "><span>FCC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2546 "><span>364</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2548 "><span>180</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2550 "><span>408</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2582 "><span>CENELEC-B</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2584 "><span>701</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2586 "><span>350</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2588 "><span>883</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2544 "><span>CENELEC-B</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2546 "><span>701</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2548 "><span>350</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2550 "><span>883</span></td>
 </tr>
 </tbody>
 </table>
@@ -1407,24 +1437,24 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title70" id="plc-id-tone-map-rsp-enabled-mods-0x403e"><h2 class="title topictitle2" id="ariaid-title70">PLC_ID_TONE_MAP_RSP_ENABLED_MODS (0x403E)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Bitmask to enable/disable the available modulations for the algorithm to select modulation and Tone Map (see PLC_ID_TONE_MAP_RSP_DATA (0x4005)). Each bit corresponds to a combination of modulation type and modulation scheme. The modulation is enabled if the corresponding bit is 1.</p>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2931"><span>Bit 7 (MSB)</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2933"><span>Bit 6</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2935"><span>Bit 5</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2937"><span>Bit 4</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2939"><span>Bit 3</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2941"><span>Bit 2</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2943"><span>Bit 1</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d50951e2945"><span>Bit 0 (LSB)</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2893"><span>Bit 7 (MSB)</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2895"><span>Bit 6</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2897"><span>Bit 5</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2899"><span>Bit 4</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2901"><span>Bit 3</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2903"><span>Bit 2</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2905"><span>Bit 1</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d56195e2907"><span>Bit 0 (LSB)</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2931 "><span>8PSK_D</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2933 "><span>8PSK_C</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2935 "><span>QPSK_D</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2937 "><span>QPSK_C</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2939 "><span>BPSK_D</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2941 "><span>BPSK_C</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2943 "><span>ROBO_D</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d50951e2945 "><span>ROBO_C</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2893 "><span>8PSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2895 "><span>8PSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2897 "><span>QPSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2899 "><span>QPSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2901 "><span>BPSK_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2903 "><span>BPSK_C</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2905 "><span>ROBO_D</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d56195e2907 "><span>ROBO_C</span></td>
 </tr>
 </tbody>
 </table>
@@ -1453,16 +1483,16 @@ In reception, when it is enabled, CRC is computed over the received PDU and it i
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title74" id="plc-id-max-psdu-len-params-0x4042"><h2 class="title topictitle2" id="ariaid-title74">PLC_ID_MAX_PSDU_LEN_PARAMS (0x4042)</h2><div class="body"><p class="p"><strong class="ph b">Description:</strong> Parameters used for the computation of the maximum PDU length (see PLC_ID_MAX_PSDU_LEN (0x4043)). The format is defined by the structure shown below:</p>
-<pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d50951e3051', this);">Copy</button><code id="d50951e3051" content="typedef struct {&#xA;  // Modulation type&#xA;  DRV_PLC_PHY_MOD_TYPE modType;&#xA;  // Modulation scheme&#xA;  DRV_PLC_PHY_MOD_SCHEME modScheme;&#xA;  // Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC)&#xA;  uint8_t rs2Blocks;&#xA;  // Tone Map&#xA;  uint8_t toneMap[TONE_MAP_SIZE_MAX];&#xA;} DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token punctuation">{</span>
-  <span class="ph token comment">// Modulation type</span>
-  DRV_PLC_PHY_MOD_TYPE modType<span class="ph token punctuation">;</span>
-  <span class="ph token comment">// Modulation scheme</span>
-  DRV_PLC_PHY_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
-  <span class="ph token comment">// Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC)</span>
-  uint8_t rs2Blocks<span class="ph token punctuation">;</span>
-  <span class="ph token comment">// Tone Map</span>
-  uint8_t toneMap<span class="ph token punctuation">[</span>TONE_MAP_SIZE_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS<span class="ph token punctuation">;</span></code></pre><p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
+<pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> {
+  <em class="hl-comment">// Modulation type</em>
+  DRV_PLC_PHY_MOD_TYPE modType;
+  <em class="hl-comment">// Modulation scheme</em>
+  DRV_PLC_PHY_MOD_SCHEME modScheme;
+  <em class="hl-comment">// Flag to indicate whether 2 Reed-Solomon blocks have to be used (only used for FCC)</em>
+  uint8_t rs2Blocks;
+  <em class="hl-comment">// Tone Map</em>
+  uint8_t toneMap[TONE_MAP_SIZE_MAX];
+} DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;</pre><p class="p"><strong class="ph b">Access:</strong> Read-write.</p>
 <p class="p"><strong class="ph b">Value Range:</strong> 6 bytes.</p>
 <p class="p"><strong class="ph b">Default Value:</strong> BPSK Robust modulation type (0x04), differential modulation scheme (0x00), 1 Reed Solomon block (0x00) and full tone map (0x3F0000, in CENELEC-A; 0x0F0000, in CENELEC-B; 0xFFFFFF, in FCC) .</p>
 </div>

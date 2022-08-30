@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-12833367-18A3-4273-875A-63BBDDAEB68F.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-reception-obj-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
+<title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-reception-obj-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,71 +223,71 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-reception-obj-struct">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_RECEPTION_OBJ Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-12833367-18A3-4273-875A-63BBDDAEB68F.html">G3 Data types and constants</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d46261e21', this);">Copy</button><code id="d46261e21" content="typedef struct __attribute__((packed, aligned(1))) {&#xA;       /* Pointer to received data buffer */&#xA;      uint8_t *pReceivedData;&#xA;      /* Instant when frame was received (end of message) referred to 1us PHY counter */&#xA;      uint32_t time;&#xA;      /* Frame duration referred to 1us PHY counter (Preamble + FCH + Payload) */&#xA;      uint32_t frameDuration;&#xA;      /* Length of the received data in bytes */&#xA;      uint16_t dataLength;&#xA;      /* Reception RSSI in dBuV */&#xA;      uint16_t rssi;&#xA;      /* ZCT info */&#xA;      uint8_t zctDiff;&#xA;      /* Errors corrected by Reed-Solomon */&#xA;      uint8_t rsCorrectedErrors;&#xA;      /* Modulation type */&#xA;      DRV_PLC_PHY_MOD_TYPE modType;&#xA;      /* Modulation scheme */&#xA;      DRV_PLC_PHY_MOD_SCHEME modScheme;&#xA;      /* DT field coming in header */&#xA;      DRV_PLC_PHY_DEL_TYPE delimiterType;&#xA;      /* MAC CRC. 1: OK; 0: BAD; 0xFE: Timeout Error; 0xFF: CRC capability disabled (PLC_ID_CRC_TX_RX_CAPABILITY) */&#xA;      uint8_t crcOk;&#xA;      /* Test data information */&#xA;      uint16_t agcFine;&#xA;      /* Test data information */&#xA;      uint32_t agcFactor;  &#xA;      /* Test data information */&#xA;      int16_t agcOffsetMeas;&#xA;      /* Test data information */&#xA;      uint8_t agcActive;&#xA;      /* Test data information */&#xA;      uint8_t agcPgaValue;&#xA;      /* Test data information */&#xA;      int16_t snrFch;&#xA;      /* Test data information */&#xA;      int16_t snrPay;&#xA;      /* Number of corrupted carriers */&#xA;      uint16_t payloadCorruptedCarriers;&#xA;      /* Number of noised symbols */&#xA;      uint16_t payloadNoisedSymbols;&#xA;      /* SNR of the worst carrier */&#xA;      uint8_t payloadSnrWorstCarrier;&#xA;      /* SNR of the worst symbol */&#xA;      uint8_t payloadSnrWorstSymbol;&#xA;      /* SNR of impulsive noise */&#xA;      uint8_t payloadSnrImpulsive;&#xA;       /* SNR of Narrowband noise */ &#xA;      uint8_t payloadSnrBand;&#xA;      /* Background SNR */&#xA;      uint8_t payloadSnrBackground;&#xA;      /* Link Quality Indicator */&#xA;      uint8_t lqi;&#xA;      /* Reception Tone Map */&#xA;      uint8_t toneMap[TONE_MAP_SIZE_MAX];&#xA;      /* SNR per carrier */&#xA;      uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];&#xA;} DRV_PLC_PHY_RECEPTION_OBJ;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span> <span class="ph token class-name">__attribute__</span><span class="ph token punctuation">(</span><span class="ph token punctuation">(</span>packed<span class="ph token punctuation">,</span> <span class="ph token function">aligned</span><span class="ph token punctuation">(</span><span class="ph token number">1</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span><span class="ph token punctuation">)</span> <span class="ph token punctuation">{</span>
-       <span class="ph token comment">/* Pointer to received data buffer */</span>
-      uint8_t <span class="ph token operator">*</span>pReceivedData<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Instant when frame was received (end of message) referred to 1us PHY counter */</span>
-      uint32_t time<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Frame duration referred to 1us PHY counter (Preamble + FCH + Payload) */</span>
-      uint32_t frameDuration<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Length of the received data in bytes */</span>
-      uint16_t dataLength<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Reception RSSI in dBuV */</span>
-      uint16_t rssi<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* ZCT info */</span>
-      uint8_t zctDiff<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Errors corrected by Reed-Solomon */</span>
-      uint8_t rsCorrectedErrors<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Modulation type */</span>
-      DRV_PLC_PHY_MOD_TYPE modType<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Modulation scheme */</span>
-      DRV_PLC_PHY_MOD_SCHEME modScheme<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* DT field coming in header */</span>
-      DRV_PLC_PHY_DEL_TYPE delimiterType<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* MAC CRC. 1: OK; 0: BAD; 0xFE: Timeout Error; 0xFF: CRC capability disabled (PLC_ID_CRC_TX_RX_CAPABILITY) */</span>
-      uint8_t crcOk<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      uint16_t agcFine<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      uint32_t agcFactor<span class="ph token punctuation">;</span>  
-      <span class="ph token comment">/* Test data information */</span>
-      int16_t agcOffsetMeas<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      uint8_t agcActive<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      uint8_t agcPgaValue<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      int16_t snrFch<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Test data information */</span>
-      int16_t snrPay<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Number of corrupted carriers */</span>
-      uint16_t payloadCorruptedCarriers<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Number of noised symbols */</span>
-      uint16_t payloadNoisedSymbols<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* SNR of the worst carrier */</span>
-      uint8_t payloadSnrWorstCarrier<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* SNR of the worst symbol */</span>
-      uint8_t payloadSnrWorstSymbol<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* SNR of impulsive noise */</span>
-      uint8_t payloadSnrImpulsive<span class="ph token punctuation">;</span>
-       <span class="ph token comment">/* SNR of Narrowband noise */</span> 
-      uint8_t payloadSnrBand<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Background SNR */</span>
-      uint8_t payloadSnrBackground<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Link Quality Indicator */</span>
-      uint8_t lqi<span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* Reception Tone Map */</span>
-      uint8_t toneMap<span class="ph token punctuation">[</span>TONE_MAP_SIZE_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-      <span class="ph token comment">/* SNR per carrier */</span>
-      uint8_t carrierSnr<span class="ph token punctuation">[</span>PROTOCOL_CARRIERS_MAX<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_RECEPTION_OBJ<span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong> <span class="hl-functions">__attribute__</span>((packed, aligned(<span class="hl-number">1</span>))) {
+       <em class="hl-comment">/* Pointer to received data buffer */</em>
+      uint8_t *pReceivedData;
+      <em class="hl-comment">/* Instant when frame was received (end of message) referred to 1us PHY counter */</em>
+      uint32_t time;
+      <em class="hl-comment">/* Frame duration referred to 1us PHY counter (Preamble + FCH + Payload) */</em>
+      uint32_t frameDuration;
+      <em class="hl-comment">/* Length of the received data in bytes */</em>
+      uint16_t dataLength;
+      <em class="hl-comment">/* Reception RSSI in dBuV */</em>
+      uint16_t rssi;
+      <em class="hl-comment">/* ZCT info */</em>
+      uint8_t zctDiff;
+      <em class="hl-comment">/* Errors corrected by Reed-Solomon */</em>
+      uint8_t rsCorrectedErrors;
+      <em class="hl-comment">/* Modulation type */</em>
+      DRV_PLC_PHY_MOD_TYPE modType;
+      <em class="hl-comment">/* Modulation scheme */</em>
+      DRV_PLC_PHY_MOD_SCHEME modScheme;
+      <em class="hl-comment">/* DT field coming in header */</em>
+      DRV_PLC_PHY_DEL_TYPE delimiterType;
+      <em class="hl-comment">/* MAC CRC. 1: OK; 0: BAD; 0xFE: Timeout Error; 0xFF: CRC capability disabled (PLC_ID_CRC_TX_RX_CAPABILITY) */</em>
+      uint8_t crcOk;
+      <em class="hl-comment">/* Test data information */</em>
+      uint16_t agcFine;
+      <em class="hl-comment">/* Test data information */</em>
+      uint32_t agcFactor;  
+      <em class="hl-comment">/* Test data information */</em>
+      int16_t agcOffsetMeas;
+      <em class="hl-comment">/* Test data information */</em>
+      uint8_t agcActive;
+      <em class="hl-comment">/* Test data information */</em>
+      uint8_t agcPgaValue;
+      <em class="hl-comment">/* Test data information */</em>
+      int16_t snrFch;
+      <em class="hl-comment">/* Test data information */</em>
+      int16_t snrPay;
+      <em class="hl-comment">/* Number of corrupted carriers */</em>
+      uint16_t payloadCorruptedCarriers;
+      <em class="hl-comment">/* Number of noised symbols */</em>
+      uint16_t payloadNoisedSymbols;
+      <em class="hl-comment">/* SNR of the worst carrier */</em>
+      uint8_t payloadSnrWorstCarrier;
+      <em class="hl-comment">/* SNR of the worst symbol */</em>
+      uint8_t payloadSnrWorstSymbol;
+      <em class="hl-comment">/* SNR of impulsive noise */</em>
+      uint8_t payloadSnrImpulsive;
+       <em class="hl-comment">/* SNR of Narrowband noise */</em> 
+      uint8_t payloadSnrBand;
+      <em class="hl-comment">/* Background SNR */</em>
+      uint8_t payloadSnrBackground;
+      <em class="hl-comment">/* Link Quality Indicator */</em>
+      uint8_t lqi;
+      <em class="hl-comment">/* Reception Tone Map */</em>
+      uint8_t toneMap[TONE_MAP_SIZE_MAX];
+      <em class="hl-comment">/* SNR per carrier */</em>
+      uint8_t carrierSnr[PROTOCOL_CARRIERS_MAX];
+} DRV_PLC_PHY_RECEPTION_OBJ;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Contains information related to a received message.</p>
 </div>

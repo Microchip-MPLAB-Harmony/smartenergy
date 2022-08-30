@@ -386,31 +386,21 @@ void APP_METROLOGY_Initialize (void);
 
 void APP_METROLOGY_Tasks(void);
 
-
-
-
 bool APP_METROLOGY_GetControlRegister(CONTROL_REG_ID regId, uint32_t * regValue, char *regName);
 bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value);
 bool APP_METROLOGY_GetStatusRegister(STATUS_REG_ID regId, uint32_t * regValue, char *regName);
 bool APP_METROLOGY_GetAccumulatorRegister(ACCUMULATOR_REG_ID regId, uint64_t * regValue, char *regName);
 bool APP_METROLOGY_GetHarmonicsRegister(HARMONICS_REG_ID regId, uint32_t * regValue, char *regName);
-
 bool APP_METROLOGY_GetRMS(DRV_METROLOGY_RMS_TYPE rmsId, uint32_t * rmsValue, DRV_METROLOGY_RMS_SIGN * sign);
-
 void APP_METROLOGY_SetControlByDefault(void);
-
 void APP_METROLOGY_StoreMetrologyData(void);
-
 void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration);
 void APP_METROLOGY_SetCalibrationCallback(APP_METROLOGY_CALIBRATION_CALLBACK callback);
-
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
-
 bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum);
 void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK callback, 
         DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse);
-
 void APP_METROLOGY_Restart(void);
 void APP_METROLOGY_SetLowPowerMode (void);
 

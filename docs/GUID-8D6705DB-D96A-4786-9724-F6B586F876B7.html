@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-g3-macrt-initialize-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_G3_MACRT_Initialize Function</title>
+<title>DRV_G3_MACRT_Initialize Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-g3-macrt-initialize-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,17 +223,17 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-g3-macrt-initialize-function">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_G3_MACRT_Initialize Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d8884e21', this);">Copy</button><code id="d8884e21" content="SYS_MODULE_OBJ DRV_G3_MACRT_Initialize (&#xA;    const SYS_MODULE_INDEX index,&#xA;    const SYS_MODULE_INIT * const init&#xA;);">SYS_MODULE_OBJ DRV_G3_MACRT_Initialize <span class="ph token punctuation">(</span>
-    <span class="ph token keyword">const</span> SYS_MODULE_INDEX index<span class="ph token punctuation">,</span>
-    <span class="ph token keyword">const</span> SYS_MODULE_INIT <span class="ph token operator">*</span> <span class="ph token keyword">const</span> init
-<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c">SYS_MODULE_OBJ DRV_G3_MACRT_Initialize (
+    <strong class="hl-keyword">const</strong> SYS_MODULE_INDEX index,
+    <strong class="hl-keyword">const</strong> SYS_MODULE_INIT * <strong class="hl-keyword">const</strong> init
+);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Initializes the MAC RT instance for the specified driver index.</p>
 </div>
@@ -214,15 +244,15 @@ It is a single instance driver, so this API should be called only once.</p>
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title5" id="parameters"><h2 class="title topictitle2" id="ariaid-title5">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8884e68"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8884e70"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d3644e45"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d3644e47"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8884e68 "><span>index</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8884e70 "><span>Index for the instance to be initialized. As driver is single instance, index '0' must always be used.</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d3644e45 "><span>index</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d3644e47 "><span>Index for the instance to be initialized. As driver is single instance, index '0' must always be used.</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8884e68 "><span>init</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8884e70 "><span>Pointer to the init data structure containing any data necessary to initialize the driver.</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d3644e45 "><span>init</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d3644e47 "><span>Pointer to the init data structure containing any data necessary to initialize the driver.</span></td>
 </tr>
 </tbody>
 </table>
@@ -232,48 +262,48 @@ It is a single instance driver, so this API should be called only once.</p>
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="returns"><h2 class="title topictitle2" id="ariaid-title6">Returns</h2><div class="body"><p class="p">If successful, returns a valid handle to a driver instance object. Otherwise, it returns SYS_MODULE_OBJ_INVALID.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d8884e93', this);">Copy</button><code id="d8884e93" content="SYS_MODULE_OBJ   sysObjDrvMACRT;&#xA;&#xA;DRV_PLC_PLIB_INTERFACE drvPLCPlib = {&#xA;&#xA;    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,&#xA;    .dmaChannelTx = SYS_DMA_CHANNEL_1,&#xA;    .dmaChannelRx  = SYS_DMA_CHANNEL_0,&#xA;    .spiAddressTx =  (void *)&amp;(SPI0_REGS-&gt;SPI_TDR),&#xA;    .spiAddressRx  = (void *)&amp;(SPI0_REGS-&gt;SPI_RDR),&#xA;    .spiClockFrequency = DRV_PLC_SPI_CLK,&#xA;    .ldoPin = DRV_PLC_LDO_EN_PIN, &#xA;    .resetPin = DRV_PLC_RESET_PIN,&#xA;    .extIntPin = DRV_PLC_EXT_INT_PIN,&#xA;};&#xA;&#xA;DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {&#xA;    .plcPlib = &amp;drvPLCPlib,&#xA;    .init = (DRV_PLC_HAL_INIT)drv_plc_hal_init,&#xA;    .setup = (DRV_PLC_HAL_SETUP)drv_plc_hal_setup,&#xA;    .reset = (DRV_PLC_HAL_RESET)drv_plc_hal_reset,&#xA;    .getCd = (DRV_PLC_HAL_GET_CD)drv_plc_hal_get_cd,&#xA;    .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)drv_plc_hal_enable_interrupt,&#xA;    .delay = (DRV_PLC_HAL_DELAY)drv_plc_hal_delay,&#xA;    .sendBootCmd = (DRV_PLC_HAL_SEND_BOOT_CMD)drv_plc_hal_send_boot_cmd,&#xA;    .sendWrRdCmd = (DRV_PLC_HAL_SEND_WRRD_CMD)drv_plc_hal_send_wrrd_cmd,&#xA;};&#xA;&#xA;extern uint8_t g3_macrt_bin_start;&#xA;extern uint8_t g3_macrt_bin_end;&#xA;&#xA;DRV_G3_MACRT_INIT drvPLCMacRtInitData = {&#xA;    .plcHal = &amp;drvPLCHalAPI,&#xA;    .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  &#xA;    .plcProfile = DRV_G3_MACRT_PLC_PROFILE,&#xA;    .binStartAddress = (uint32_t)&amp;g3_macrt_bin_start,&#xA;    .binEndAddress = (uint32_t)&amp;g3_macrt_bin_end,&#xA;    .secure = DRV_G3_MACRT_SECURE,       &#xA;};&#xA;&#xA;sysObjDrvMACRT = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX_0, (SYS_MODULE_INIT *)&amp;drvPLCMacRtInitData);&#xA;// Register Callback function is mandatory to handle PLC interruption &#xA;PIO_PinInterruptCallbackRegister(DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObjDrvMACRT);">SYS_MODULE_OBJ   sysObjDrvMACRT<span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock c">SYS_MODULE_OBJ   sysObjDrvMACRT;
 
-DRV_PLC_PLIB_INTERFACE drvPLCPlib <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
+DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
-    <span class="ph token punctuation">.</span>spiPlibTransferSetup <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_SPI_PLIB_TRANSFER_SETUP<span class="ph token punctuation">)</span>SPI0_TransferSetup<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>dmaChannelTx <span class="ph token operator">=</span> SYS_DMA_CHANNEL_1<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>dmaChannelRx  <span class="ph token operator">=</span> SYS_DMA_CHANNEL_0<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>spiAddressTx <span class="ph token operator">=</span>  <span class="ph token punctuation">(</span><span class="ph token keyword">void</span> <span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span><span class="ph token punctuation">(</span>SPI0_REGS<span class="ph token operator">-&gt;</span>SPI_TDR<span class="ph token punctuation">)</span><span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>spiAddressRx  <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token keyword">void</span> <span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span><span class="ph token punctuation">(</span>SPI0_REGS<span class="ph token operator">-&gt;</span>SPI_RDR<span class="ph token punctuation">)</span><span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>spiClockFrequency <span class="ph token operator">=</span> DRV_PLC_SPI_CLK<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>ldoPin <span class="ph token operator">=</span> DRV_PLC_LDO_EN_PIN<span class="ph token punctuation">,</span> 
-    <span class="ph token punctuation">.</span>resetPin <span class="ph token operator">=</span> DRV_PLC_RESET_PIN<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>extIntPin <span class="ph token operator">=</span> DRV_PLC_EXT_INT_PIN<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+    .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)SPI0_TransferSetup,
+    .dmaChannelTx = SYS_DMA_CHANNEL_<span class="hl-number">1</span>,
+    .dmaChannelRx  = SYS_DMA_CHANNEL_<span class="hl-number">0</span>,
+    .spiAddressTx =  (<strong class="hl-keyword">void</strong> *)&amp;(SPI0_REGS-&gt;SPI_TDR),
+    .spiAddressRx  = (<strong class="hl-keyword">void</strong> *)&amp;(SPI0_REGS-&gt;SPI_RDR),
+    .spiClockFrequency = DRV_PLC_SPI_CLK,
+    .ldoPin = DRV_PLC_LDO_EN_PIN, 
+    .resetPin = DRV_PLC_RESET_PIN,
+    .extIntPin = DRV_PLC_EXT_INT_PIN,
+};
 
-DRV_PLC_HAL_INTERFACE drvPLCHalAPI <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>plcPlib <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>drvPLCPlib<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>init <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_INIT<span class="ph token punctuation">)</span>drv_plc_hal_init<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>setup <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_SETUP<span class="ph token punctuation">)</span>drv_plc_hal_setup<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>reset <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_RESET<span class="ph token punctuation">)</span>drv_plc_hal_reset<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>getCd <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_GET_CD<span class="ph token punctuation">)</span>drv_plc_hal_get_cd<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>enableExtInt <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_ENABLE_EXT_INT<span class="ph token punctuation">)</span>drv_plc_hal_enable_interrupt<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>delay <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_DELAY<span class="ph token punctuation">)</span>drv_plc_hal_delay<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>sendBootCmd <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_SEND_BOOT_CMD<span class="ph token punctuation">)</span>drv_plc_hal_send_boot_cmd<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>sendWrRdCmd <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>DRV_PLC_HAL_SEND_WRRD_CMD<span class="ph token punctuation">)</span>drv_plc_hal_send_wrrd_cmd<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
+    .plcPlib = &amp;drvPLCPlib,
+    .init = (DRV_PLC_HAL_INIT)drv_plc_hal_init,
+    .setup = (DRV_PLC_HAL_SETUP)drv_plc_hal_setup,
+    .reset = (DRV_PLC_HAL_RESET)drv_plc_hal_reset,
+    .getCd = (DRV_PLC_HAL_GET_CD)drv_plc_hal_get_cd,
+    .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)drv_plc_hal_enable_interrupt,
+    .delay = (DRV_PLC_HAL_DELAY)drv_plc_hal_delay,
+    .sendBootCmd = (DRV_PLC_HAL_SEND_BOOT_CMD)drv_plc_hal_send_boot_cmd,
+    .sendWrRdCmd = (DRV_PLC_HAL_SEND_WRRD_CMD)drv_plc_hal_send_wrrd_cmd,
+};
 
-<span class="ph token keyword">extern</span> uint8_t g3_macrt_bin_start<span class="ph token punctuation">;</span>
-<span class="ph token keyword">extern</span> uint8_t g3_macrt_bin_end<span class="ph token punctuation">;</span>
+<strong class="hl-keyword">extern</strong> uint8_t g3_macrt_bin_start;
+<strong class="hl-keyword">extern</strong> uint8_t g3_macrt_bin_end;
 
-DRV_G3_MACRT_INIT drvPLCMacRtInitData <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>plcHal <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>drvPLCHalAPI<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>numClients <span class="ph token operator">=</span> DRV_G3_MACRT_CLIENTS_NUMBER_IDX<span class="ph token punctuation">,</span>  
-    <span class="ph token punctuation">.</span>plcProfile <span class="ph token operator">=</span> DRV_G3_MACRT_PLC_PROFILE<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>binStartAddress <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>g3_macrt_bin_start<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>binEndAddress <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>uint32_t<span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>g3_macrt_bin_end<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>secure <span class="ph token operator">=</span> DRV_G3_MACRT_SECURE<span class="ph token punctuation">,</span>       
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+DRV_G3_MACRT_INIT drvPLCMacRtInitData = {
+    .plcHal = &amp;drvPLCHalAPI,
+    .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,  
+    .plcProfile = DRV_G3_MACRT_PLC_PROFILE,
+    .binStartAddress = (uint32_t)&amp;g3_macrt_bin_start,
+    .binEndAddress = (uint32_t)&amp;g3_macrt_bin_end,
+    .secure = DRV_G3_MACRT_SECURE,       
+};
 
-sysObjDrvMACRT <span class="ph token operator">=</span> <span class="ph token function">DRV_G3_MACRT_Initialize</span><span class="ph token punctuation">(</span>DRV_G3_MACRT_INDEX_0<span class="ph token punctuation">,</span> <span class="ph token punctuation">(</span>SYS_MODULE_INIT <span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>drvPLCMacRtInitData<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-<span class="ph token comment">// Register Callback function is mandatory to handle PLC interruption </span>
-<span class="ph token function">PIO_PinInterruptCallbackRegister</span><span class="ph token punctuation">(</span>DRV_G3_MACRT_EXT_INT_PIN<span class="ph token punctuation">,</span> DRV_G3_MACRT_ExternalInterruptHandler<span class="ph token punctuation">,</span> sysObjDrvMACRT<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+sysObjDrvMACRT = DRV_G3_MACRT_Initialize(DRV_G3_MACRT_INDEX_<span class="hl-number">0</span>, (SYS_MODULE_INIT *)&amp;drvPLCMacRtInitData);
+<em class="hl-comment">// Register Callback function is mandatory to handle PLC interruption </em>
+PIO_PinInterruptCallbackRegister(DRV_G3_MACRT_EXT_INT_PIN, DRV_G3_MACRT_ExternalInterruptHandler, sysObjDrvMACRT);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title8" id="remarks"><h2 class="title topictitle2" id="ariaid-title8">Remarks</h2><div class="body"><p class="p">This routine must be called before any other DRV_G3_MACRT routine is called.This routine should only be called once during system initialization.This routine will block for hardware access.</p>
 </div>

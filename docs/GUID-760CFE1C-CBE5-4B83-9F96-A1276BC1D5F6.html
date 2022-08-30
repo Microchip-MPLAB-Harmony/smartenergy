@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="Library Interface" />
+<meta name="DC.relation" scheme="URI" content="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-15B110AF-D87C-4DFC-A9B4-B32D12B324A0.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-B4522710-73A2-4AC6-8FAA-A46B8AFEF0D3.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-A33FE9DF-132B-4BE0-8D69-E474D59DAF49.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-065E9B11-C994-458B-81A0-245A6DDCA060.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-E8DB02F0-91A9-4650-AD55-7583FDCE6EF1.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-000D4A61-94C6-4D5C-BCA3-4D0D98D90389.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-7A6D3728-F774-40C8-A34F-893A562AB3FA.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-AC680876-B0BE-403F-B362-21FD96EB06B3.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-2C3CD0E2-6C3D-459E-BFED-C275DBCEF3E1.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-C0265DE4-9BE3-4A22-A9C0-9E76AE1D1E61.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-A5A33003-F6F9-43F2-9625-337590CBC7E1.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-A006380B-59B3-4102-8A27-00BA14ABEA64.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-14C662AB-69E2-4C87-9869-99B3A87461C8.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-067B7063-E94C-453E-AA51-9179785602C2.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-4ED8B3F6-0288-41C8-BA4B-F0A0FEE81E7A.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-5DD54744-A308-4CFC-9EC7-2A74AE260057.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-42DAEFE9-160F-4E01-961A-6BA11105CD6F.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-B2ABF750-2622-4A16-BD06-60AF4EA9E6EA.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-D4D6B9B8-E622-43E0-8A4F-58303A16AB3C.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-2D4B1FB0-E202-4D55-BD07-801884E97291.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-D4AD27AE-02DA-494A-A32F-6574D5835235.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-9962617B-ABCC-44BA-AF1E-3BFC1B4D81F1.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-8CEA8A9A-497B-4D34-BF20-91B6B4A704C5.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-EB8372C5-89A0-4063-B212-93D39E201E1C.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-CD6C930C-1CEF-40B2-A0BC-B284F0BB91E3.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-40B6968C-BC5B-4834-B172-6037A8F86B4C.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-8C5F5F6E-5B77-4AC5-9274-D0E6AE292759.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-6947C4CA-0A47-43CA-9928-DDC533406CBE.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-B0D43890-3087-41AD-B694-E10EB97EB0D8.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-B30E0A99-F577-4040-B9DB-4BF69AC7D3E8.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-C68E12F8-5625-420D-B82B-D586E15D9F3A.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-43E7E120-2618-422D-AC8B-23E78FF268AE.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-FB4BC534-FE65-4396-85AA-33E97F8474F2.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-1C383DE6-835B-43D8-812B-E35155090B0F.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-18109125-3906-41A5-8221-A41436ADE4A4.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-A92CAB0B-51F2-4706-938C-5E993E3CD6BD.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-EDB3D0B3-3F3F-42A7-ABCB-F42A6AE36965.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-DFA024DD-029D-43F9-A6C2-6D65EFA83011.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-1EB20D0D-FAB8-46CF-B99E-66BDD7CB6A0F.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-87E6C7E7-6BA7-4E96-BA40-DD5CF7349793.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-0E9A7DEF-904D-451D-A356-FACF9360BA4F.html" />
+<meta name="DC.relation" scheme="URI" content="GUID-388C8E2A-F0FE-40EC-8115-8680F569945E.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="library-interface" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<title>Library Interface</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-library-interface" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+         
+         function copyContent(content, button) {
+         
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+               console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-760CFE1C-CBE5-4B83-9F96-A1276BC1D5F6"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
+<body id="library-interface">
+<h1 class="title topictitle1" id="ariaid-title1">Library Interface</h1><div class="body"><p class="p">Metrology driver library provides the following interfaces:</p>
+<p class="p"><strong class="ph b">Functions</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8464e21"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8464e23"><span>Description</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_Initialize</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Initializes the metrology Driver for MISTRAL dual-core devices</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_Open</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Opens the specified metrology driver</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_Close</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Closes an opened instance of the metrology driver</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_Start</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Start running the metrology library in coprocessor</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_IntegrationCallbackRegister</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Allows a client to set an event handling function for the driver to call back when the integration period has completed</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetState</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the current state of the metrology driver</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetControl</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the control registers of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetStatus</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the status registers of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetAccData</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the accumulated quantities of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetHarData</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the Harmonic analysis quantities of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetCalibrationData</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the calibration data used for the metrology driver</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetControlByDefault</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the control registers defined by MCC configurator</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_SetControl</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Sets the value of all the control registers of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_UpdateMeasurements</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Allows a client to update all RMS, events and energy measurements according to the last values stored in the registers of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetEnergyValue</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the last energy calculated value</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetRMSValue</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the RMS value of the desired measurement</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetRMSSign</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the RMS sign of the desired measurement</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetEventsData</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Gets the pointer to the last events obtained from the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_SetConfiguration</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Applies the proper configuration before calibrating the system</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_StartCalibration</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Starts the calibration process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_UpdateCalibration</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Allows a client to update the calibration process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_CalibrationIsCompleted</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Checks if the calibration process has been completed</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetCalibrationResult</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Check if the calibration process has been performed correctly</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_StartHarmonicAnalysis</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Starts the harmonics computation</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_HarmonicAnalysisIsRun</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Checks if the harmonic analysis is in progress</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e21 "><span>DRV_METROLOGY_GetHarmonicAnalysisResult</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e23 "><span>Check if the harmonic analisys computation has been performed correctly</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p"><strong class="ph b">Data types and constants</strong></p>
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8464e168"><span>Name</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8464e170"><span>Type</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d8464e172"><span>Description</span></th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_RESULT</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Result of a Metrology driver interface operation</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_START_MODE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies types of startup process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_RMS_SIGN</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies the sign of RMS values</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_CALLBACK</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Typedef</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Pointer to a metrology event handler function</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_SENSOR_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies types of metrology sensors</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_GAIN_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies possible gain values for the AFE (Analog Front End)</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_PHASE_ID</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies all the metrology phases</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_CALIBRATION_REFS</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Specifies the all reference values used for the auto calibration process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_CALIBRATION</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Specifies all data internally needed for the auto calibration process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_AFE_EVENTS</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies all events related to metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_HARMONIC</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies the result of the Harmonic Analysis process</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_RMS_TYPE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies the all RMS types of measurements</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_AFE_DATA</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies the data calculated from the metrology AFE measurements</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_CONFIGURATION</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies values needed to set different metrology configurations</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_STATE</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Enum</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies the state of the metrology library</span></td>
+</tr>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e168 "><span>DRV_METROLOGY_INIT</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e170 "><span>Struct</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d8464e172 "><span>Identifies values needed for the initialization routine</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="related-links">
+<ul class="ullinks">
+<li class="link ulchildlink"><strong><a href="GUID-15B110AF-D87C-4DFC-A9B4-B32D12B324A0.html">DRV_METROLOGY_Initialize Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-B4522710-73A2-4AC6-8FAA-A46B8AFEF0D3.html">DRV_METROLOGY_Open Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-A33FE9DF-132B-4BE0-8D69-E474D59DAF49.html">DRV_METROLOGY_Close Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-065E9B11-C994-458B-81A0-245A6DDCA060.html">DRV_METROLOGY_Start Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-E8DB02F0-91A9-4650-AD55-7583FDCE6EF1.html">DRV_METROLOGY_IntegrationCallbackRegister Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-000D4A61-94C6-4D5C-BCA3-4D0D98D90389.html">DRV_METROLOGY_GetState Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-7A6D3728-F774-40C8-A34F-893A562AB3FA.html">DRV_METROLOGY_GetControl Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-AC680876-B0BE-403F-B362-21FD96EB06B3.html">DRV_METROLOGY_GetStatus Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-2C3CD0E2-6C3D-459E-BFED-C275DBCEF3E1.html">DRV_METROLOGY_GetAccData Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-C0265DE4-9BE3-4A22-A9C0-9E76AE1D1E61.html">DRV_METROLOGY_GetHarData Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-A5A33003-F6F9-43F2-9625-337590CBC7E1.html">DRV_METROLOGY_GetCalibrationData Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-A006380B-59B3-4102-8A27-00BA14ABEA64.html">DRV_METROLOGY_GetControlByDefault Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-14C662AB-69E2-4C87-9869-99B3A87461C8.html">DRV_METROLOGY_SetControl Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-067B7063-E94C-453E-AA51-9179785602C2.html">DRV_METROLOGY_UpdateMeasurements Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-4ED8B3F6-0288-41C8-BA4B-F0A0FEE81E7A.html">DRV_METROLOGY_GetEnergyValue Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-5DD54744-A308-4CFC-9EC7-2A74AE260057.html">DRV_METROLOGY_GetRMSValue Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-42DAEFE9-160F-4E01-961A-6BA11105CD6F.html">DRV_METROLOGY_GetRMSSign Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-B2ABF750-2622-4A16-BD06-60AF4EA9E6EA.html">DRV_METROLOGY_GetEventsData Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-D4D6B9B8-E622-43E0-8A4F-58303A16AB3C.html">DRV_METROLOGY_SetConfiguration Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-2D4B1FB0-E202-4D55-BD07-801884E97291.html">APP_METROLOGY_StartCalibration Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-D4AD27AE-02DA-494A-A32F-6574D5835235.html">DRV_METROLOGY_UpdateCalibration Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-9962617B-ABCC-44BA-AF1E-3BFC1B4D81F1.html">DRV_METROLOGY_CalibrationIsCompleted Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-8CEA8A9A-497B-4D34-BF20-91B6B4A704C5.html">DRV_METROLOGY_GetCalibrationResult Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-EB8372C5-89A0-4063-B212-93D39E201E1C.html">DRV_METROLOGY_StartHarmonicAnalysis Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-CD6C930C-1CEF-40B2-A0BC-B284F0BB91E3.html">DRV_METROLOGY_HarmonicAnalysisIsRun Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-40B6968C-BC5B-4834-B172-6037A8F86B4C.html">DRV_METROLOGY_GetHarmonicAnalysisResult Function</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-8C5F5F6E-5B77-4AC5-9274-D0E6AE292759.html">DRV_METROLOGY_RESULT Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-6947C4CA-0A47-43CA-9928-DDC533406CBE.html">DRV_METROLOGY_START_MODE Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-B0D43890-3087-41AD-B694-E10EB97EB0D8.html">DRV_METROLOGY_RMS_SIGN Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-B30E0A99-F577-4040-B9DB-4BF69AC7D3E8.html">DRV_METROLOGY_CALLBACK Typedef</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-C68E12F8-5625-420D-B82B-D586E15D9F3A.html">DRV_METROLOGY_SENSOR_TYPE Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-43E7E120-2618-422D-AC8B-23E78FF268AE.html">DRV_METROLOGY_GAIN_TYPE Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-FB4BC534-FE65-4396-85AA-33E97F8474F2.html">DRV_METROLOGY_PHASE_ID Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-1C383DE6-835B-43D8-812B-E35155090B0F.html">DRV_METROLOGY_CALIBRATION_REFS Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-18109125-3906-41A5-8221-A41436ADE4A4.html">DRV_METROLOGY_CALIBRATION Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-A92CAB0B-51F2-4706-938C-5E993E3CD6BD.html">DRV_METROLOGY_AFE_EVENTS Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-EDB3D0B3-3F3F-42A7-ABCB-F42A6AE36965.html">DRV_METROLOGY_HARMONIC Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-DFA024DD-029D-43F9-A6C2-6D65EFA83011.html">DRV_METROLOGY_RMS_TYPE Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-1EB20D0D-FAB8-46CF-B99E-66BDD7CB6A0F.html">DRV_METROLOGY_AFE_DATA Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-87E6C7E7-6BA7-4E96-BA40-DD5CF7349793.html">DRV_METROLOGY_CONFIGURATION Struct</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-0E9A7DEF-904D-451D-A356-FACF9360BA4F.html">DRV_METROLOGY_STATE Enum</a></strong><br />
+</li>
+<li class="link ulchildlink"><strong><a href="GUID-388C8E2A-F0FE-40EC-8115-8680F569945E.html">DRV_METROLOGY_INIT Struct</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html">Metrology Driver</a></div>
+</div>
+</div></body>
+</html>

@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-usi-initialize-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_USI_Initialize Function</title>
+<title>SRV_USI_Initialize Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-usi-initialize-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,16 +223,16 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-usi-initialize-function">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_USI_Initialize Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d92169e21', this);">Copy</button><code id="d92169e21" content="SYS_MODULE_OBJ SRV_USI_Initialize(&#xA;    const SYS_MODULE_INDEX index,&#xA;    const SYS_MODULE_INIT * const init)">SYS_MODULE_OBJ <span class="ph token function">SRV_USI_Initialize</span><span class="ph token punctuation">(</span>
-    <span class="ph token keyword">const</span> SYS_MODULE_INDEX index<span class="ph token punctuation">,</span>
-    <span class="ph token keyword">const</span> SYS_MODULE_INIT <span class="ph token operator">*</span> <span class="ph token keyword">const</span> init<span class="ph token punctuation">)</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c">SYS_MODULE_OBJ <span class="hl-functions">SRV_USI_Initialize</span>(
+    <strong class="hl-keyword">const</strong> SYS_MODULE_INDEX index,
+    <strong class="hl-keyword">const</strong> SYS_MODULE_INIT * <strong class="hl-keyword">const</strong> init)</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Initializes the specified USI service instance.</p>
 </div>
@@ -213,15 +243,15 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title5" id="parameters"><h2 class="title topictitle2" id="ariaid-title5">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d92169e75"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d92169e77"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d39593e52"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d39593e54"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d92169e75 "><span>index</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d92169e77 "><span>Index for the instance to be initialized</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d39593e52 "><span>index</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d39593e54 "><span>Index for the instance to be initialized</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d92169e75 "><span>init</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d92169e77 "><span>Pointer to the init data structure containing any data necessary to initialize the service.</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d39593e52 "><span>init</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d39593e54 "><span>Pointer to the init data structure containing any data necessary to initialize the service.</span></td>
 </tr>
 </tbody>
 </table>
@@ -231,73 +261,73 @@
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="returns"><h2 class="title topictitle2" id="ariaid-title6">Returns</h2><div class="body"><p class="p">If successful, returns a valid USI instance object. Otherwise, returns <em class="ph i">SYS_MODULE_OBJ_INVALID</em>.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d92169e103', this);">Copy</button><code id="d92169e103" content="static uint8_t CACHE_ALIGN srvUSI0ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {0};&#xA;static uint8_t CACHE_ALIGN srvUSI0WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {0};&#xA;&#xA;/* Declared in USI USART service implementation (srv_usi_usart.c) */&#xA;extern const SRV_USI_DEV_DESC srvUSIUSARTDevDesc;&#xA;&#xA;const SRV_USI_USART_INTERFACE srvUsi0InitDataUART2 = {&#xA;    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)UART2_ReadCallbackRegister,&#xA;    .read = (USI_USART_PLIB_WRRD)UART2_Read,&#xA;    .write = (USI_USART_PLIB_WRRD)UART2_Write,&#xA;    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)UART2_WriteIsBusy,&#xA;};&#xA;&#xA;const USI_USART_INIT_DATA srvUsi0InitData = {&#xA;    .plib = (void*)&amp;srvUsi0InitDataUART2,&#xA;    .pRdBuffer = (void*)srvUSI0ReadBuffer,&#xA;    .rdBufferSize = SRV_USI0_RD_BUF_SIZE,&#xA;};&#xA;&#xA;const SRV_USI_INIT srvUSI0Init =&#xA;{&#xA;    .deviceInitData = (const void*)&amp;srvUsi0InitData,&#xA;    .consDevDesc = &amp;srvUSIUSARTDevDesc,&#xA;    .deviceIndex = 0,&#xA;    .pWrBuffer = srvUSI0WriteBuffer,&#xA;    .wrBufferSize = SRV_USI0_WR_BUF_SIZE&#xA;};&#xA;&#xA;static uint8_t CACHE_ALIGN srvUSI1ReadBuffer[SRV_USI1_RD_BUF_SIZE] = {0};&#xA;static uint8_t CACHE_ALIGN srvUSI1WriteBuffer[SRV_USI1_WR_BUF_SIZE] = {0};&#xA;&#xA;static uint8_t CACHE_ALIGN srvUSI1CDCReadBuffer[128] = {0};&#xA;&#xA;/* Declared in USI CDC service implementation (srv_usi_cdc.c) */&#xA;extern const SRV_USI_DEV_DESC srvUSICDCDevDesc;&#xA;&#xA;const USI_CDC_INIT_DATA srvUsi1InitData = {&#xA;    .cdcInstanceIndex = 0,&#xA;    .usiReadBuffer = srvUSI1ReadBuffer,&#xA;    .usiBufferSize = SRV_USI1_RD_BUF_SIZE,&#xA;    .cdcReadBuffer = srvUSI1CDCReadBuffer,&#xA;    .cdcBufferSize = 128&#xA;};&#xA;&#xA;const SRV_USI_INIT srvUSI1Init =&#xA;{&#xA;    .deviceInitData = (const void*)&amp;srvUsi1InitData,&#xA;    .consDevDesc = &amp;srvUSICDCDevDesc,&#xA;    .deviceIndex = 0,&#xA;    .pWrBuffer = srvUSI1WriteBuffer,&#xA;    .wrBufferSize = SRV_USI1_WR_BUF_SIZE&#xA;};&#xA;&#xA;SYS_MODULE_OBJ  objSrvUSI0;&#xA;SYS_MODULE_OBJ  objSrvUSI1;&#xA;&#xA;objSrvUSI0 = SRV_USI_Initialize(SRV_USI_INDEX_0, (SYS_MODULE_INIT *)&amp;srvUSI0Init);&#xA;if (objSrvUSI0 == SYS_MODULE_OBJ_INVALID)&#xA;{&#xA;    // Handle error&#xA;}&#xA;&#xA;objSrvUSI1 = SRV_USI_Initialize(SRV_USI_INDEX_1, (SYS_MODULE_INIT *)&amp;srvUSI1Init);&#xA;if (objSrvUSI1 == SYS_MODULE_OBJ_INVALID)&#xA;{&#xA;    // Handle error&#xA;}"><span class="ph token keyword">static</span> uint8_t CACHE_ALIGN srvUSI0ReadBuffer<span class="ph token punctuation">[</span>SRV_USI0_RD_BUF_SIZE<span class="ph token punctuation">]</span> <span class="ph token operator">=</span> <span class="ph token punctuation">{</span><span class="ph token number">0</span><span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">static</span> uint8_t CACHE_ALIGN srvUSI0WriteBuffer<span class="ph token punctuation">[</span>SRV_USI0_WR_BUF_SIZE<span class="ph token punctuation">]</span> <span class="ph token operator">=</span> <span class="ph token punctuation">{</span><span class="ph token number">0</span><span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">static</strong> uint8_t CACHE_ALIGN srvUSI0ReadBuffer[SRV_USI0_RD_BUF_SIZE] = {<span class="hl-number">0</span>};
+<strong class="hl-keyword">static</strong> uint8_t CACHE_ALIGN srvUSI0WriteBuffer[SRV_USI0_WR_BUF_SIZE] = {<span class="hl-number">0</span>};
 
-<span class="ph token comment">/* Declared in USI USART service implementation (srv_usi_usart.c) */</span>
-<span class="ph token keyword">extern</span> <span class="ph token keyword">const</span> SRV_USI_DEV_DESC srvUSIUSARTDevDesc<span class="ph token punctuation">;</span>
+<em class="hl-comment">/* Declared in USI USART service implementation (srv_usi_usart.c) */</em>
+<strong class="hl-keyword">extern</strong> <strong class="hl-keyword">const</strong> SRV_USI_DEV_DESC srvUSIUSARTDevDesc;
 
-<span class="ph token keyword">const</span> SRV_USI_USART_INTERFACE srvUsi0InitDataUART2 <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>readCallbackRegister <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>USI_USART_PLIB_READ_CALLBACK_REG<span class="ph token punctuation">)</span>UART2_ReadCallbackRegister<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>read <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>USI_USART_PLIB_WRRD<span class="ph token punctuation">)</span>UART2_Read<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>write <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>USI_USART_PLIB_WRRD<span class="ph token punctuation">)</span>UART2_Write<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>writeIsBusy <span class="ph token operator">=</span> <span class="ph token punctuation">(</span>USI_USART_PLIB_WRITE_ISBUSY<span class="ph token punctuation">)</span>UART2_WriteIsBusy<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">const</strong> SRV_USI_USART_INTERFACE srvUsi0InitDataUART2 = {
+    .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)UART2_ReadCallbackRegister,
+    .read = (USI_USART_PLIB_WRRD)UART2_Read,
+    .write = (USI_USART_PLIB_WRRD)UART2_Write,
+    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)UART2_WriteIsBusy,
+};
 
-<span class="ph token keyword">const</span> USI_USART_INIT_DATA srvUsi0InitData <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>plib <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>srvUsi0InitDataUART2<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>pRdBuffer <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token operator">*</span><span class="ph token punctuation">)</span>srvUSI0ReadBuffer<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>rdBufferSize <span class="ph token operator">=</span> SRV_USI0_RD_BUF_SIZE<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">const</strong> USI_USART_INIT_DATA srvUsi0InitData = {
+    .plib = (<strong class="hl-keyword">void</strong>*)&amp;srvUsi0InitDataUART2,
+    .pRdBuffer = (<strong class="hl-keyword">void</strong>*)srvUSI0ReadBuffer,
+    .rdBufferSize = SRV_USI0_RD_BUF_SIZE,
+};
 
-<span class="ph token keyword">const</span> SRV_USI_INIT srvUSI0Init <span class="ph token operator">=</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>deviceInitData <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token keyword">const</span> <span class="ph token keyword">void</span><span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>srvUsi0InitData<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>consDevDesc <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>srvUSIUSARTDevDesc<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>deviceIndex <span class="ph token operator">=</span> <span class="ph token number">0</span><span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>pWrBuffer <span class="ph token operator">=</span> srvUSI0WriteBuffer<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>wrBufferSize <span class="ph token operator">=</span> SRV_USI0_WR_BUF_SIZE
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">const</strong> SRV_USI_INIT srvUSI0Init =
+{
+    .deviceInitData = (<strong class="hl-keyword">const</strong> <strong class="hl-keyword">void</strong>*)&amp;srvUsi0InitData,
+    .consDevDesc = &amp;srvUSIUSARTDevDesc,
+    .deviceIndex = <span class="hl-number">0</span>,
+    .pWrBuffer = srvUSI0WriteBuffer,
+    .wrBufferSize = SRV_USI0_WR_BUF_SIZE
+};
 
-<span class="ph token keyword">static</span> uint8_t CACHE_ALIGN srvUSI1ReadBuffer<span class="ph token punctuation">[</span>SRV_USI1_RD_BUF_SIZE<span class="ph token punctuation">]</span> <span class="ph token operator">=</span> <span class="ph token punctuation">{</span><span class="ph token number">0</span><span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">static</span> uint8_t CACHE_ALIGN srvUSI1WriteBuffer<span class="ph token punctuation">[</span>SRV_USI1_WR_BUF_SIZE<span class="ph token punctuation">]</span> <span class="ph token operator">=</span> <span class="ph token punctuation">{</span><span class="ph token number">0</span><span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">static</strong> uint8_t CACHE_ALIGN srvUSI1ReadBuffer[SRV_USI1_RD_BUF_SIZE] = {<span class="hl-number">0</span>};
+<strong class="hl-keyword">static</strong> uint8_t CACHE_ALIGN srvUSI1WriteBuffer[SRV_USI1_WR_BUF_SIZE] = {<span class="hl-number">0</span>};
 
-<span class="ph token keyword">static</span> uint8_t CACHE_ALIGN srvUSI1CDCReadBuffer<span class="ph token punctuation">[</span><span class="ph token number">128</span><span class="ph token punctuation">]</span> <span class="ph token operator">=</span> <span class="ph token punctuation">{</span><span class="ph token number">0</span><span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">static</strong> uint8_t CACHE_ALIGN srvUSI1CDCReadBuffer[<span class="hl-number">128</span>] = {<span class="hl-number">0</span>};
 
-<span class="ph token comment">/* Declared in USI CDC service implementation (srv_usi_cdc.c) */</span>
-<span class="ph token keyword">extern</span> <span class="ph token keyword">const</span> SRV_USI_DEV_DESC srvUSICDCDevDesc<span class="ph token punctuation">;</span>
+<em class="hl-comment">/* Declared in USI CDC service implementation (srv_usi_cdc.c) */</em>
+<strong class="hl-keyword">extern</strong> <strong class="hl-keyword">const</strong> SRV_USI_DEV_DESC srvUSICDCDevDesc;
 
-<span class="ph token keyword">const</span> USI_CDC_INIT_DATA srvUsi1InitData <span class="ph token operator">=</span> <span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>cdcInstanceIndex <span class="ph token operator">=</span> <span class="ph token number">0</span><span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>usiReadBuffer <span class="ph token operator">=</span> srvUSI1ReadBuffer<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>usiBufferSize <span class="ph token operator">=</span> SRV_USI1_RD_BUF_SIZE<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>cdcReadBuffer <span class="ph token operator">=</span> srvUSI1CDCReadBuffer<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>cdcBufferSize <span class="ph token operator">=</span> <span class="ph token number">128</span>
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">const</strong> USI_CDC_INIT_DATA srvUsi1InitData = {
+    .cdcInstanceIndex = <span class="hl-number">0</span>,
+    .usiReadBuffer = srvUSI1ReadBuffer,
+    .usiBufferSize = SRV_USI1_RD_BUF_SIZE,
+    .cdcReadBuffer = srvUSI1CDCReadBuffer,
+    .cdcBufferSize = <span class="hl-number">128</span>
+};
 
-<span class="ph token keyword">const</span> SRV_USI_INIT srvUSI1Init <span class="ph token operator">=</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token punctuation">.</span>deviceInitData <span class="ph token operator">=</span> <span class="ph token punctuation">(</span><span class="ph token keyword">const</span> <span class="ph token keyword">void</span><span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>srvUsi1InitData<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>consDevDesc <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>srvUSICDCDevDesc<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>deviceIndex <span class="ph token operator">=</span> <span class="ph token number">0</span><span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>pWrBuffer <span class="ph token operator">=</span> srvUSI1WriteBuffer<span class="ph token punctuation">,</span>
-    <span class="ph token punctuation">.</span>wrBufferSize <span class="ph token operator">=</span> SRV_USI1_WR_BUF_SIZE
-<span class="ph token punctuation">}</span><span class="ph token punctuation">;</span>
+<strong class="hl-keyword">const</strong> SRV_USI_INIT srvUSI1Init =
+{
+    .deviceInitData = (<strong class="hl-keyword">const</strong> <strong class="hl-keyword">void</strong>*)&amp;srvUsi1InitData,
+    .consDevDesc = &amp;srvUSICDCDevDesc,
+    .deviceIndex = <span class="hl-number">0</span>,
+    .pWrBuffer = srvUSI1WriteBuffer,
+    .wrBufferSize = SRV_USI1_WR_BUF_SIZE
+};
 
-SYS_MODULE_OBJ  objSrvUSI0<span class="ph token punctuation">;</span>
-SYS_MODULE_OBJ  objSrvUSI1<span class="ph token punctuation">;</span>
+SYS_MODULE_OBJ  objSrvUSI0;
+SYS_MODULE_OBJ  objSrvUSI1;
 
-objSrvUSI0 <span class="ph token operator">=</span> <span class="ph token function">SRV_USI_Initialize</span><span class="ph token punctuation">(</span>SRV_USI_INDEX_0<span class="ph token punctuation">,</span> <span class="ph token punctuation">(</span>SYS_MODULE_INIT <span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>srvUSI0Init<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>objSrvUSI0 <span class="ph token operator">==</span> SYS_MODULE_OBJ_INVALID<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">// Handle error</span>
-<span class="ph token punctuation">}</span>
+objSrvUSI0 = SRV_USI_Initialize(SRV_USI_INDEX_<span class="hl-number">0</span>, (SYS_MODULE_INIT *)&amp;srvUSI0Init);
+<strong class="hl-keyword">if</strong> (objSrvUSI0 == SYS_MODULE_OBJ_INVALID)
+{
+    <em class="hl-comment">// Handle error</em>
+}
 
-objSrvUSI1 <span class="ph token operator">=</span> <span class="ph token function">SRV_USI_Initialize</span><span class="ph token punctuation">(</span>SRV_USI_INDEX_1<span class="ph token punctuation">,</span> <span class="ph token punctuation">(</span>SYS_MODULE_INIT <span class="ph token operator">*</span><span class="ph token punctuation">)</span><span class="ph token operator">&amp;</span>srvUSI1Init<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-<span class="ph token keyword">if</span> <span class="ph token punctuation">(</span>objSrvUSI1 <span class="ph token operator">==</span> SYS_MODULE_OBJ_INVALID<span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token comment">// Handle error</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+objSrvUSI1 = SRV_USI_Initialize(SRV_USI_INDEX_<span class="hl-number">1</span>, (SYS_MODULE_INIT *)&amp;srvUSI1Init);
+<strong class="hl-keyword">if</strong> (objSrvUSI1 == SYS_MODULE_OBJ_INVALID)
+{
+    <em class="hl-comment">// Handle error</em>
+}</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title8" id="remarks"><h2 class="title topictitle2" id="ariaid-title8">Remarks</h2><div class="body"><p class="p">This routine must be called before any other USI routine is called. This routine should only during system initialization.</p>
 </div>

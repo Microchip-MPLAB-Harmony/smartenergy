@@ -12,9 +12,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-C7DD098A-D23F-4DFD-BE53-74C297670599.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-plc-phy-id-enum" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_PLC_PHY_ID Enum</title>
+<title>DRV_PLC_PHY_ID Enum</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-plc-phy-id-enum" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -63,10 +62,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -90,7 +88,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -104,16 +101,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -152,7 +182,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -194,7 +224,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-plc-phy-id-enum">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_PLC_PHY_ID Enum</h1><div class="body"></div>
 <div class="related-links">
@@ -206,94 +236,94 @@
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-AF884BA6-67E5-4927-8D31-B1F196BE22BD.html">PRIME Data types and constants</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d25186e27', this);">Copy</button><code id="d25186e27" content="typedef enum {&#xA;    PLC_ID_HOST_DESCRIPTION_ID = 0x0100,&#xA;    PLC_ID_HOST_MODEL_ID  = 0x010A,&#xA;    PLC_ID_HOST_PHY_ID = 0x010C,&#xA;    PLC_ID_HOST_PRODUCT_ID = 0x0110,&#xA;    PLC_ID_HOST_VERSION_ID = 0x0112,&#xA;    PLC_ID_HOST_BAND_ID = 0x0116,&#xA;    PLC_ID_TIME_REF_ID = 0x0200,&#xA;    PLC_ID_PRODID = 0x4000,&#xA;    PLC_ID_MODEL,&#xA;    PLC_ID_VERSION_STR,&#xA;    PLC_ID_VERSION_NUM,&#xA;    PLC_ID_CFG_AUTODETECT_IMPEDANCE,&#xA;    PLC_ID_CFG_IMPEDANCE,&#xA;    PLC_ID_ZC_TIME,&#xA;    PLC_ID_RX_PAY_SYMBOLS,&#xA;    PLC_ID_TX_PAY_SYMBOLS,&#xA;    PLC_ID_RSV0,&#xA;    PLC_ID_MAX_RMS_TABLE_HI,&#xA;    PLC_ID_MAX_RMS_TABLE_VLO,&#xA;    PLC_ID_THRESHOLDS_TABLE_HI,&#xA;    PLC_ID_THRESHOLDS_TABLE_LO,&#xA;    PLC_ID_THRESHOLDS_TABLE_VLO,&#xA;    PLC_ID_PREDIST_COEF_TABLE_HI,&#xA;    PLC_ID_PREDIST_COEF_TABLE_LO,&#xA;    PLC_ID_PREDIST_COEF_TABLE_VLO,&#xA;    PLC_ID_GAIN_TABLE_HI,&#xA;    PLC_ID_GAIN_TABLE_LO,&#xA;    PLC_ID_GAIN_TABLE_VLO,&#xA;    PLC_ID_DACC_TABLE_CFG,&#xA;    PLC_ID_CHANNEL_CFG,&#xA;    PLC_ID_NUM_TX_LEVELS,&#xA;    PLC_ID_CORRECTED_RMS_CALC,&#xA;    PLC_ID_CURRENT_GAIN,&#xA;    PLC_ID_ZC_CONF_INV,&#xA;    PLC_ID_ZC_CONF_FREQ,&#xA;    PLC_ID_ZC_CONF_DELAY,&#xA;    PLC_ID_SIGNAL_CAPTURE_START,&#xA;    PLC_ID_SIGNAL_CAPTURE_STATUS,&#xA;    PLC_ID_SIGNAL_CAPTURE_FRAGMENT,&#xA;    PLC_ID_SIGNAL_CAPTURE_DATA,&#xA;    PLC_ID_ENABLE_AUTO_NOISE_CAPTURE,&#xA;    PLC_ID_TIME_BETWEEN_NOISE_CAPTURES,&#xA;    PLC_ID_DELAY_NOISE_CAPTURE_AFTER_RX,&#xA;    PLC_ID_RRC_NOTCH_ACTIVE,&#xA;    PLC_ID_RRC_NOTCH_INDEX,&#xA;    PLC_ID_NOISE_PEAK_POWER,&#xA;    PLC_ID_RRC_NOTCH_AUTODETECT,&#xA;    PLC_ID_RRC_NOTCH_THR_ON,&#xA;    PLC_ID_RRC_NOTCH_THR_OFF,&#xA;    PLC_ID_TX_TOTAL,&#xA;    PLC_ID_TX_TOTAL_BYTES,&#xA;    PLC_ID_TX_TOTAL_ERRORS,&#xA;    PLC_ID_TX_BAD_BUSY_TX,&#xA;    PLC_ID_TX_BAD_BUSY_CHANNEL,&#xA;    PLC_ID_TX_BAD_LEN,&#xA;    PLC_ID_TX_BAD_FORMAT,&#xA;    PLC_ID_TX_TIMEOUT,&#xA;    PLC_ID_RX_TOTAL,&#xA;    PLC_ID_RX_TOTAL_BYTES,&#xA;    PLC_ID_RX_EXCEPTIONS,&#xA;    PLC_ID_RX_BAD_LEN,&#xA;    PLC_ID_RX_BAD_CRC_FCH,&#xA;    PLC_ID_RX_FALSE_POSITIVE,&#xA;    PLC_ID_RX_BAD_FORMAT,&#xA;    PLC_ID_NOISE_PER_CARRIER,&#xA;    PLC_ID_PPM_CALIB_ON,&#xA;    PLC_ID_ZC_PERIOD,&#xA;    PLC_ID_SYNC_THRESHOLDS,&#xA;    PLC_ID_NUM_CHANNELS,&#xA;    PLC_ID_MAX_NUM_CHANNELS,&#xA;    PLC_ID_PREDIST_COEF_TABLE_HI_2,&#xA;    PLC_ID_PREDIST_COEF_TABLE_LO_2,&#xA;    PLC_ID_PREDIST_COEF_TABLE_VLO_2,&#xA;    PLC_ID_NOISE_PER_CARRIER_2,&#xA;    PLC_ID_RESET_STATS,&#xA;    PLC_ID_IC_DRIVER_CFG,&#xA;    PLC_ID_RX_CHN_EST_REAL,&#xA;    PLC_ID_RX_CHN_EST_IMAG,&#xA;    PLC_ID_RX_CHN_EST_REAL_2,&#xA;    PLC_ID_RX_CHN_EST_IMAG_2,&#xA;    PLC_ID_TX_DISABLE,&#xA;    PLC_ID_TX_HIGH_TEMP_120,&#xA;    PLC_ID_TX_CANCELLED,&#xA;    PLC_ID_RX_CD_INFO,&#xA;    PLC_ID_SFO_ESTIMATION_LAST_RX,&#xA;    PLC_ID_END_ID,&#xA;} DRV_PLC_PHY_ID;    "><span class="ph token keyword">typedef</span> <span class="ph token keyword">enum</span> <span class="ph token punctuation">{</span>
-    PLC_ID_HOST_DESCRIPTION_ID <span class="ph token operator">=</span> <span class="ph token number">0x0100</span><span class="ph token punctuation">,</span>
-    PLC_ID_HOST_MODEL_ID  <span class="ph token operator">=</span> <span class="ph token number">0x010A</span><span class="ph token punctuation">,</span>
-    PLC_ID_HOST_PHY_ID <span class="ph token operator">=</span> <span class="ph token number">0x010C</span><span class="ph token punctuation">,</span>
-    PLC_ID_HOST_PRODUCT_ID <span class="ph token operator">=</span> <span class="ph token number">0x0110</span><span class="ph token punctuation">,</span>
-    PLC_ID_HOST_VERSION_ID <span class="ph token operator">=</span> <span class="ph token number">0x0112</span><span class="ph token punctuation">,</span>
-    PLC_ID_HOST_BAND_ID <span class="ph token operator">=</span> <span class="ph token number">0x0116</span><span class="ph token punctuation">,</span>
-    PLC_ID_TIME_REF_ID <span class="ph token operator">=</span> <span class="ph token number">0x0200</span><span class="ph token punctuation">,</span>
-    PLC_ID_PRODID <span class="ph token operator">=</span> <span class="ph token number">0x4000</span><span class="ph token punctuation">,</span>
-    PLC_ID_MODEL<span class="ph token punctuation">,</span>
-    PLC_ID_VERSION_STR<span class="ph token punctuation">,</span>
-    PLC_ID_VERSION_NUM<span class="ph token punctuation">,</span>
-    PLC_ID_CFG_AUTODETECT_IMPEDANCE<span class="ph token punctuation">,</span>
-    PLC_ID_CFG_IMPEDANCE<span class="ph token punctuation">,</span>
-    PLC_ID_ZC_TIME<span class="ph token punctuation">,</span>
-    PLC_ID_RX_PAY_SYMBOLS<span class="ph token punctuation">,</span>
-    PLC_ID_TX_PAY_SYMBOLS<span class="ph token punctuation">,</span>
-    PLC_ID_RSV0<span class="ph token punctuation">,</span>
-    PLC_ID_MAX_RMS_TABLE_HI<span class="ph token punctuation">,</span>
-    PLC_ID_MAX_RMS_TABLE_VLO<span class="ph token punctuation">,</span>
-    PLC_ID_THRESHOLDS_TABLE_HI<span class="ph token punctuation">,</span>
-    PLC_ID_THRESHOLDS_TABLE_LO<span class="ph token punctuation">,</span>
-    PLC_ID_THRESHOLDS_TABLE_VLO<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_HI<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_LO<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_VLO<span class="ph token punctuation">,</span>
-    PLC_ID_GAIN_TABLE_HI<span class="ph token punctuation">,</span>
-    PLC_ID_GAIN_TABLE_LO<span class="ph token punctuation">,</span>
-    PLC_ID_GAIN_TABLE_VLO<span class="ph token punctuation">,</span>
-    PLC_ID_DACC_TABLE_CFG<span class="ph token punctuation">,</span>
-    PLC_ID_CHANNEL_CFG<span class="ph token punctuation">,</span>
-    PLC_ID_NUM_TX_LEVELS<span class="ph token punctuation">,</span>
-    PLC_ID_CORRECTED_RMS_CALC<span class="ph token punctuation">,</span>
-    PLC_ID_CURRENT_GAIN<span class="ph token punctuation">,</span>
-    PLC_ID_ZC_CONF_INV<span class="ph token punctuation">,</span>
-    PLC_ID_ZC_CONF_FREQ<span class="ph token punctuation">,</span>
-    PLC_ID_ZC_CONF_DELAY<span class="ph token punctuation">,</span>
-    PLC_ID_SIGNAL_CAPTURE_START<span class="ph token punctuation">,</span>
-    PLC_ID_SIGNAL_CAPTURE_STATUS<span class="ph token punctuation">,</span>
-    PLC_ID_SIGNAL_CAPTURE_FRAGMENT<span class="ph token punctuation">,</span>
-    PLC_ID_SIGNAL_CAPTURE_DATA<span class="ph token punctuation">,</span>
-    PLC_ID_ENABLE_AUTO_NOISE_CAPTURE<span class="ph token punctuation">,</span>
-    PLC_ID_TIME_BETWEEN_NOISE_CAPTURES<span class="ph token punctuation">,</span>
-    PLC_ID_DELAY_NOISE_CAPTURE_AFTER_RX<span class="ph token punctuation">,</span>
-    PLC_ID_RRC_NOTCH_ACTIVE<span class="ph token punctuation">,</span>
-    PLC_ID_RRC_NOTCH_INDEX<span class="ph token punctuation">,</span>
-    PLC_ID_NOISE_PEAK_POWER<span class="ph token punctuation">,</span>
-    PLC_ID_RRC_NOTCH_AUTODETECT<span class="ph token punctuation">,</span>
-    PLC_ID_RRC_NOTCH_THR_ON<span class="ph token punctuation">,</span>
-    PLC_ID_RRC_NOTCH_THR_OFF<span class="ph token punctuation">,</span>
-    PLC_ID_TX_TOTAL<span class="ph token punctuation">,</span>
-    PLC_ID_TX_TOTAL_BYTES<span class="ph token punctuation">,</span>
-    PLC_ID_TX_TOTAL_ERRORS<span class="ph token punctuation">,</span>
-    PLC_ID_TX_BAD_BUSY_TX<span class="ph token punctuation">,</span>
-    PLC_ID_TX_BAD_BUSY_CHANNEL<span class="ph token punctuation">,</span>
-    PLC_ID_TX_BAD_LEN<span class="ph token punctuation">,</span>
-    PLC_ID_TX_BAD_FORMAT<span class="ph token punctuation">,</span>
-    PLC_ID_TX_TIMEOUT<span class="ph token punctuation">,</span>
-    PLC_ID_RX_TOTAL<span class="ph token punctuation">,</span>
-    PLC_ID_RX_TOTAL_BYTES<span class="ph token punctuation">,</span>
-    PLC_ID_RX_EXCEPTIONS<span class="ph token punctuation">,</span>
-    PLC_ID_RX_BAD_LEN<span class="ph token punctuation">,</span>
-    PLC_ID_RX_BAD_CRC_FCH<span class="ph token punctuation">,</span>
-    PLC_ID_RX_FALSE_POSITIVE<span class="ph token punctuation">,</span>
-    PLC_ID_RX_BAD_FORMAT<span class="ph token punctuation">,</span>
-    PLC_ID_NOISE_PER_CARRIER<span class="ph token punctuation">,</span>
-    PLC_ID_PPM_CALIB_ON<span class="ph token punctuation">,</span>
-    PLC_ID_ZC_PERIOD<span class="ph token punctuation">,</span>
-    PLC_ID_SYNC_THRESHOLDS<span class="ph token punctuation">,</span>
-    PLC_ID_NUM_CHANNELS<span class="ph token punctuation">,</span>
-    PLC_ID_MAX_NUM_CHANNELS<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_HI_2<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_LO_2<span class="ph token punctuation">,</span>
-    PLC_ID_PREDIST_COEF_TABLE_VLO_2<span class="ph token punctuation">,</span>
-    PLC_ID_NOISE_PER_CARRIER_2<span class="ph token punctuation">,</span>
-    PLC_ID_RESET_STATS<span class="ph token punctuation">,</span>
-    PLC_ID_IC_DRIVER_CFG<span class="ph token punctuation">,</span>
-    PLC_ID_RX_CHN_EST_REAL<span class="ph token punctuation">,</span>
-    PLC_ID_RX_CHN_EST_IMAG<span class="ph token punctuation">,</span>
-    PLC_ID_RX_CHN_EST_REAL_2<span class="ph token punctuation">,</span>
-    PLC_ID_RX_CHN_EST_IMAG_2<span class="ph token punctuation">,</span>
-    PLC_ID_TX_DISABLE<span class="ph token punctuation">,</span>
-    PLC_ID_TX_HIGH_TEMP_120<span class="ph token punctuation">,</span>
-    PLC_ID_TX_CANCELLED<span class="ph token punctuation">,</span>
-    PLC_ID_RX_CD_INFO<span class="ph token punctuation">,</span>
-    PLC_ID_SFO_ESTIMATION_LAST_RX<span class="ph token punctuation">,</span>
-    PLC_ID_END_ID<span class="ph token punctuation">,</span>
-<span class="ph token punctuation">}</span> DRV_PLC_PHY_ID<span class="ph token punctuation">;</span>    </code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">enum</strong> {
+    PLC_ID_HOST_DESCRIPTION_ID = <span class="hl-number">0x0100</span>,
+    PLC_ID_HOST_MODEL_ID  = <span class="hl-number">0x010A</span>,
+    PLC_ID_HOST_PHY_ID = <span class="hl-number">0x010C</span>,
+    PLC_ID_HOST_PRODUCT_ID = <span class="hl-number">0x0110</span>,
+    PLC_ID_HOST_VERSION_ID = <span class="hl-number">0x0112</span>,
+    PLC_ID_HOST_BAND_ID = <span class="hl-number">0x0116</span>,
+    PLC_ID_TIME_REF_ID = <span class="hl-number">0x0200</span>,
+    PLC_ID_PRODID = <span class="hl-number">0x4000</span>,
+    PLC_ID_MODEL,
+    PLC_ID_VERSION_STR,
+    PLC_ID_VERSION_NUM,
+    PLC_ID_CFG_AUTODETECT_IMPEDANCE,
+    PLC_ID_CFG_IMPEDANCE,
+    PLC_ID_ZC_TIME,
+    PLC_ID_RX_PAY_SYMBOLS,
+    PLC_ID_TX_PAY_SYMBOLS,
+    PLC_ID_RSV0,
+    PLC_ID_MAX_RMS_TABLE_HI,
+    PLC_ID_MAX_RMS_TABLE_VLO,
+    PLC_ID_THRESHOLDS_TABLE_HI,
+    PLC_ID_THRESHOLDS_TABLE_LO,
+    PLC_ID_THRESHOLDS_TABLE_VLO,
+    PLC_ID_PREDIST_COEF_TABLE_HI,
+    PLC_ID_PREDIST_COEF_TABLE_LO,
+    PLC_ID_PREDIST_COEF_TABLE_VLO,
+    PLC_ID_GAIN_TABLE_HI,
+    PLC_ID_GAIN_TABLE_LO,
+    PLC_ID_GAIN_TABLE_VLO,
+    PLC_ID_DACC_TABLE_CFG,
+    PLC_ID_CHANNEL_CFG,
+    PLC_ID_NUM_TX_LEVELS,
+    PLC_ID_CORRECTED_RMS_CALC,
+    PLC_ID_CURRENT_GAIN,
+    PLC_ID_ZC_CONF_INV,
+    PLC_ID_ZC_CONF_FREQ,
+    PLC_ID_ZC_CONF_DELAY,
+    PLC_ID_SIGNAL_CAPTURE_START,
+    PLC_ID_SIGNAL_CAPTURE_STATUS,
+    PLC_ID_SIGNAL_CAPTURE_FRAGMENT,
+    PLC_ID_SIGNAL_CAPTURE_DATA,
+    PLC_ID_ENABLE_AUTO_NOISE_CAPTURE,
+    PLC_ID_TIME_BETWEEN_NOISE_CAPTURES,
+    PLC_ID_DELAY_NOISE_CAPTURE_AFTER_RX,
+    PLC_ID_RRC_NOTCH_ACTIVE,
+    PLC_ID_RRC_NOTCH_INDEX,
+    PLC_ID_NOISE_PEAK_POWER,
+    PLC_ID_RRC_NOTCH_AUTODETECT,
+    PLC_ID_RRC_NOTCH_THR_ON,
+    PLC_ID_RRC_NOTCH_THR_OFF,
+    PLC_ID_TX_TOTAL,
+    PLC_ID_TX_TOTAL_BYTES,
+    PLC_ID_TX_TOTAL_ERRORS,
+    PLC_ID_TX_BAD_BUSY_TX,
+    PLC_ID_TX_BAD_BUSY_CHANNEL,
+    PLC_ID_TX_BAD_LEN,
+    PLC_ID_TX_BAD_FORMAT,
+    PLC_ID_TX_TIMEOUT,
+    PLC_ID_RX_TOTAL,
+    PLC_ID_RX_TOTAL_BYTES,
+    PLC_ID_RX_EXCEPTIONS,
+    PLC_ID_RX_BAD_LEN,
+    PLC_ID_RX_BAD_CRC_FCH,
+    PLC_ID_RX_FALSE_POSITIVE,
+    PLC_ID_RX_BAD_FORMAT,
+    PLC_ID_NOISE_PER_CARRIER,
+    PLC_ID_PPM_CALIB_ON,
+    PLC_ID_ZC_PERIOD,
+    PLC_ID_SYNC_THRESHOLDS,
+    PLC_ID_NUM_CHANNELS,
+    PLC_ID_MAX_NUM_CHANNELS,
+    PLC_ID_PREDIST_COEF_TABLE_HI_<span class="hl-number">2</span>,
+    PLC_ID_PREDIST_COEF_TABLE_LO_<span class="hl-number">2</span>,
+    PLC_ID_PREDIST_COEF_TABLE_VLO_<span class="hl-number">2</span>,
+    PLC_ID_NOISE_PER_CARRIER_<span class="hl-number">2</span>,
+    PLC_ID_RESET_STATS,
+    PLC_ID_IC_DRIVER_CFG,
+    PLC_ID_RX_CHN_EST_REAL,
+    PLC_ID_RX_CHN_EST_IMAG,
+    PLC_ID_RX_CHN_EST_REAL_<span class="hl-number">2</span>,
+    PLC_ID_RX_CHN_EST_IMAG_<span class="hl-number">2</span>,
+    PLC_ID_TX_DISABLE,
+    PLC_ID_TX_HIGH_TEMP_<span class="hl-number">120</span>,
+    PLC_ID_TX_CANCELLED,
+    PLC_ID_RX_CD_INFO,
+    PLC_ID_SFO_ESTIMATION_LAST_RX,
+    PLC_ID_END_ID,
+} DRV_PLC_PHY_ID;    </pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">List of PRIME PLC PHY IBs.</p>
 </div>

@@ -1,9 +1,5 @@
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x${DRV_MET_BASE_ADDRESS?string}
-<#if DRV_MET_WAVEFORM_CAPTURE == true>  
-/* Metrology Capture Buffer Size */
-#define DRV_METROLOGY_CAPTURE_BUF_SIZE        ${DRV_MET_CAPTURE_BUF_SIZE?string}
-</#if>
 /* Metrology Default Config: Meter Constant */
 #define DRV_METROLOGY_CONF_PKT                0x${DRV_MET_CTRL_PKT?string}
 /* Metrology Default Config: Meter Type */
@@ -36,3 +32,7 @@
 #define DRV_METROLOGY_CONF_PULSE1_CTRL        0x${DRV_MET_CTRL_PULSE_CTRL_1?string}
 /* Metrology Default Config: PULSE2_CTRL */
 #define DRV_METROLOGY_CONF_PULSE2_CTRL        0x${DRV_MET_CTRL_PULSE_CTRL_2?string}
+/* Metrology Default Config: Waveform Capture */
+#define DRV_METROLOGY_CONF_WAVEFORM           0x${DRV_MET_CONF_WAVEFORM_CAPTURE?string}
+/* Metrology Default Config: Capture Buffer Size */
+#define DRV_METROLOGY_CAPTURE_BUF_SIZE        ${DRV_MET_CONF_CAPTURE_BUFFER_SIZE?string}

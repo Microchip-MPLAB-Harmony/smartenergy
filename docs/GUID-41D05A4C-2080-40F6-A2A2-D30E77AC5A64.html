@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="drv-g3-macrt-exception-callback-typedef" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</title>
+<title>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-drv-g3-macrt-exception-callback-typedef" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,15 +223,15 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="drv-g3-macrt-exception-callback-typedef">
 <h1 class="title topictitle1" id="ariaid-title1">DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html">Library Interface</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d70295e21', this);">Copy</button><code id="d70295e21" content="typedef void ( *DRV_G3_MACRT_EXCEPTION_CALLBACK )( DRV_G3_MACRT_EXCEPTION exception );&#xA;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">void</span> <span class="ph token punctuation">(</span> <span class="ph token operator">*</span>DRV_G3_MACRT_EXCEPTION_CALLBACK <span class="ph token punctuation">)</span><span class="ph token punctuation">(</span> DRV_G3_MACRT_EXCEPTION exception <span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
-</code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">void</strong> ( *DRV_G3_MACRT_EXCEPTION_CALLBACK )( DRV_G3_MACRT_EXCEPTION exception );
+</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Pointer to a G3 MAC RT Driver Exceptions Event handler function.</p>
 </div>
@@ -210,12 +240,12 @@
 </div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title5" id="parameters"><h2 class="title topictitle2" id="ariaid-title5">Parameters</h2><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d70295e69"><span>Param</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d70295e71"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d31287e47"><span>Param</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d31287e49"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d70295e69 "><span>exception</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d70295e71 "><span>Value (of type DRV_G3_MACRT_EXCEPTION Enum) identifying the exception code which occurs during SPI transfer</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d31287e47 "><span>exception</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d31287e49 "><span>Value (of type DRV_G3_MACRT_EXCEPTION Enum) identifying the exception code which occurs during SPI transfer</span></td>
 </tr>
 </tbody>
 </table>
@@ -225,32 +255,32 @@
 <div class="topic nested1" aria-labelledby="ariaid-title6" id="returns"><h2 class="title topictitle2" id="ariaid-title6">Returns</h2><div class="body"><p class="p">None.</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d70295e89', this);">Copy</button><code id="d70295e89" content="void APP_MyExceptionEventHandler( DRV_G3_MACRT_EXCEPTION exception )&#xA;{&#xA;    switch (exceptionObj) &#xA;    {&#xA;        case DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY:&#xA;            // SPI has detected an unexpected status, reset is recommended&#xA;            break;&#xA;&#xA;        case DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR:&#xA;            // SPI critical error in last transfer. Bootloader task has failured.&#xA;            break;&#xA;&#xA;        case DRV_G3_MACRT_EXCEPTION_DEBUG:&#xA;            // PLC transceiver has been reset by Debugging tool&#xA;            break;&#xA;&#xA;        case DRV_G3_MACRT_EXCEPTION_RESET:&#xA;            // PLC transceiver has been reset&#xA;            break;&#xA;&#xA;        default:&#xA;            // SPI has detected an unexpected status, reset is recommended&#xA;    }&#xA;&#xA;    appData-&gt;macrt_exception = true;&#xA;}"><span class="ph token keyword">void</span> <span class="ph token function">APP_MyExceptionEventHandler</span><span class="ph token punctuation">(</span> DRV_G3_MACRT_EXCEPTION exception <span class="ph token punctuation">)</span>
-<span class="ph token punctuation">{</span>
-    <span class="ph token keyword">switch</span> <span class="ph token punctuation">(</span>exceptionObj<span class="ph token punctuation">)</span> 
-    <span class="ph token punctuation">{</span>
-        <span class="ph token keyword">case</span> DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY<span class="ph token operator">:</span>
-            <span class="ph token comment">// SPI has detected an unexpected status, reset is recommended</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title7" id="example"><h2 class="title topictitle2" id="ariaid-title7">Example</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">void</strong> <span class="hl-functions">APP_MyExceptionEventHandler</span>( DRV_G3_MACRT_EXCEPTION exception )
+{
+    <strong class="hl-keyword">switch</strong> (exceptionObj) 
+    {
+        <strong class="hl-keyword">case</strong> DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY:
+            <em class="hl-comment">// SPI has detected an unexpected status, reset is recommended</em>
+            <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR<span class="ph token operator">:</span>
-            <span class="ph token comment">// SPI critical error in last transfer. Bootloader task has failured.</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> DRV_G3_MACRT_EXCEPTION_CRITICAL_ERROR:
+            <em class="hl-comment">// SPI critical error in last transfer. Bootloader task has failured.</em>
+            <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> DRV_G3_MACRT_EXCEPTION_DEBUG<span class="ph token operator">:</span>
-            <span class="ph token comment">// PLC transceiver has been reset by Debugging tool</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> DRV_G3_MACRT_EXCEPTION_DEBUG:
+            <em class="hl-comment">// PLC transceiver has been reset by Debugging tool</em>
+            <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">case</span> DRV_G3_MACRT_EXCEPTION_RESET<span class="ph token operator">:</span>
-            <span class="ph token comment">// PLC transceiver has been reset</span>
-            <span class="ph token keyword">break</span><span class="ph token punctuation">;</span>
+        <strong class="hl-keyword">case</strong> DRV_G3_MACRT_EXCEPTION_RESET:
+            <em class="hl-comment">// PLC transceiver has been reset</em>
+            <strong class="hl-keyword">break</strong>;
 
-        <span class="ph token keyword">default</span><span class="ph token operator">:</span>
-            <span class="ph token comment">// SPI has detected an unexpected status, reset is recommended</span>
-    <span class="ph token punctuation">}</span>
+        <strong class="hl-keyword">default</strong>:
+            <em class="hl-comment">// SPI has detected an unexpected status, reset is recommended</em>
+    }
 
-    appData<span class="ph token operator">-&gt;</span>macrt_exception <span class="ph token operator">=</span> true<span class="ph token punctuation">;</span>
-<span class="ph token punctuation">}</span></code></pre></div>
+    appData-&gt;macrt_exception = true;
+}</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title8" id="remarks"><h2 class="title topictitle2" id="ariaid-title8">Remarks</h2><div class="body"><p class="p">None.</p>
 </div>

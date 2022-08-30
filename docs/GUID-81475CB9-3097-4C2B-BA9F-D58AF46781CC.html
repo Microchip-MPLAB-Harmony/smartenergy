@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="how-the-library-works" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>How the Library Works</title>
+<title>How the Library Works</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-how-the-library-works" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,7 +223,7 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="how-the-library-works">
 <h1 class="title topictitle1" id="ariaid-title1">How the Library Works</h1><div class="body"></div>
 <div class="related-links">
@@ -215,39 +245,39 @@ On the other side of this interface, the <em class="ph i">Microchip PLC Sniffer 
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="parameters-encoded-with-frames-for-serialization"><h2 class="title topictitle2" id="ariaid-title3">Parameters Encoded with Frames for Serialization</h2><div class="body"><p class="p">The parameters included to provide additional information of the PLC frames depend on the used PLC profile, G3 or PRIME.</p>
 </div>
 <div class="topic nested2" aria-labelledby="ariaid-title4" id="g3-parameters"><h3 class="title topictitle3" id="ariaid-title4">G3 parameters</h3><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e51"><span>Parameter</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e53"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d54422e51"><span>Parameter</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d54422e53"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Modulation Type/Scheme</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Modulation in which PLC frame is encoded (Fixed to '0' for ACK frames)</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Modulation Type/Scheme</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Modulation in which PLC frame is encoded (Fixed to '0' for ACK frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Tone Map</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Bitmap indicating which frquencies are used for Payload encoding (Fixed to '0' for ACK frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Tone Map</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Bitmap indicating which frquencies are used for Payload encoding (Fixed to '0' for ACK frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Num Symbols</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Number of OFDM symbols that frame payload consists of (Fixed to '0' for ACK frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Num Symbols</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Number of OFDM symbols that frame payload consists of (Fixed to '0' for ACK frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>SNR</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Indicator of frame reception quality (Fixed to '0xFF' for ACK frames and Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>SNR</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Indicator of frame reception quality (Fixed to '0xFF' for ACK frames and Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Delimiter Type</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Field to indicate frame type (Data with or without ACK request, ACK, NACK)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Delimiter Type</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Field to indicate frame type (Data with or without ACK request, ACK, NACK)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Time Ini</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Timestamp for the start of frame in line</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Time Ini</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Timestamp for the start of frame in line</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Time End</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Timestamp for the end of frame in line</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Time End</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Timestamp for the end of frame in line</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>RSSI</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Received Signal Strength Indicator (Fixed to '0xFFFF' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>RSSI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Received Signal Strength Indicator (Fixed to '0xFFFF' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>Length</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Frame lenght</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>Length</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Frame lenght</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e51 "><span>PDU</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e53 "><span>Frame buffer</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e51 "><span>PDU</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e53 "><span>Frame buffer</span></td>
 </tr>
 </tbody>
 </table>
@@ -256,48 +286,48 @@ On the other side of this interface, the <em class="ph i">Microchip PLC Sniffer 
 </div>
 </div>
 <div class="topic nested2" aria-labelledby="ariaid-title5" id="prime-parameters"><h3 class="title topictitle3" id="ariaid-title5">PRIME parameters</h3><div class="body">
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e119"><span>Parameter</span></th>
-<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d47085e121"><span>Description</span></th>
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d54422e119"><span>Parameter</span></th>
+<th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d54422e121"><span>Description</span></th>
 </tr>
 </thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Modulation Scheme</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Modulation in which PLC frame is encoded</span></td>
+<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Modulation Scheme</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Modulation in which PLC frame is encoded</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Num Symbols</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Number of OFDM symbols that frame payload consists of</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Num Symbols</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Number of OFDM symbols that frame payload consists of</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>SNR</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Indicator of frame reception quality (Fixed to '7' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>SNR</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Indicator of frame reception quality (Fixed to '7' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>CINR Average</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Auxiliary indicator of frame reception quality (averaged) (Fixed to '60' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>CINR Average</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Auxiliary indicator of frame reception quality (averaged) (Fixed to '60' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>CINR Min</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Auxiliary indicator of frame reception quality (minimum) (Fixed to '0xFF' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>CINR Min</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Auxiliary indicator of frame reception quality (minimum) (Fixed to '0xFF' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Channel</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>PLC Channel in which device is operating</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Channel</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>PLC Channel in which device is operating</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>BER Average</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Bit Error Rate estimation (averaged) (Fixed to '0' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>BER Average</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Bit Error Rate estimation (averaged) (Fixed to '0' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>BER Max</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Bit Error Rate estimation (maximum) (Fixed to '0' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>BER Max</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Bit Error Rate estimation (maximum) (Fixed to '0' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Time Ini</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Timestamp for the start of frame in line</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Time Ini</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Timestamp for the start of frame in line</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Time End</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Timestamp for the end of frame in line</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Time End</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Timestamp for the end of frame in line</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>RSSI</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Received Signal Strength Indicator (Fixed to '140' for Transmitted frames)</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>RSSI</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Received Signal Strength Indicator (Fixed to '140' for Transmitted frames)</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>Length</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Frame lenght</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>Length</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Frame lenght</span></td>
 </tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e119 "><span>PDU</span></td>
-<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d47085e121 "><span>Frame buffer</span></td>
+<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e119 "><span>PDU</span></td>
+<td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d54422e121 "><span>Frame buffer</span></td>
 </tr>
 </tbody>
 </table>

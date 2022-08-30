@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
+<meta name="DC.rights.owner" content="(C) Copyright 2022" />
+<meta name="DC.type" content="topic" />
+<meta name="DC.title" content="Metrology driver Configurations" />
+<meta name="DC.relation" scheme="URI" content="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html" />
+<meta name="DC.format" content="XHTML" />
+<meta name="DC.identifier" content="metrology-driver-configurations" />
+<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
+<title>Metrology driver Configurations</title>
+<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-metrology-driver-configurations" />
+<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
+<meta name="Microsoft.Help.TocOrder" content="0" />
+<meta name="Microsoft.Help.Locale" content="en-US" />
+<meta name="Microsoft.Help.TopicLocale" content="en-US" />
+<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
+<script language="javascript">
+       
+       if (window.parent.location.protocol != 'file:') {
+				document.addEventListener('click', function(e) {
+				    if (e.target) {
+               if (e.target.nodeName == "A" ) {
+                    if (!e.target.target) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                              
+                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
+                      if (origUrl.length === 0) {
+                          origUrl = window.parent.location.href;
+                      }
+                      var href= e.target.getAttribute("href");
+                      var parts = href.split("#");
+          
+                      var url = "";
+                      if (parts.length == 2 ) {
+                        if (!parts[0].length) {
+                            url = window.parent.location.search.replace('?','')
+                        } else {
+                            url = parts[0].replace('.html','');
+                        }
+                      } else {
+                        url = parts[0].replace('.html','');
+                      }
+
+                      if (parts.length == 2) {
+                          url += "#" + parts[1];
+                      }
+    
+                      window.parent.location.href = origUrl + "?" + url;
+
+                      return false;
+                    }
+               }
+            }
+				});
+			}
+
+		</script><script language="javascript">
+         
+         function copyContent(content, button) {
+         
+            var textArea = document.createElement("textarea");
+            
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            
+            // Ensure it has a small width and height. Setting to 1px / 1em
+            // doesn't work as this gives a negative w/h on some browsers.
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            
+            // We don't need padding, reducing the size if it does flash render.
+            textArea.style.padding = 0;
+            
+            // Clean up any borders.
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            
+            // Avoid flash of the white box if rendered for any reason.
+            textArea.style.background = 'transparent';
+            
+            textArea.value = content;
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+               var successful = document.execCommand('copy');
+               var msg = successful ? 'successful' : 'unsuccessful';
+               if (!button.classList.contains("copied")){
+                  button.textContent = "Copied";
+                  button.classList.add("copied");
+                  setTimeout(function(){
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
+                  },1000);
+               }
+            } catch (err) {
+               console.log('Oops, unable to copy');
+            }
+            
+            document.body.removeChild(textArea);
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
+      </script><script language="javascript">
+          
+          // Add the MathML namespace to html
+          var html = document.getElementsByTagName("html")[0],
+          head = document.getElementsByTagName("head")[0];
+          
+          var mathJax = document.createElement("script");
+          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
+          head.appendChild(mathJax);
+          
+          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
+          
+          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
+          
+          if (!inIframe()) { 
+          
+          var Default = "index.html?GUID-2356AE43-5731-46E5-8556-A282237A8145"; 
+          
+          var displaylocation = "value" + window.location.href;
+          
+          var GUIDS = displaylocation.split('GUID');          
+          
+          if (displaylocation.indexOf('#GUID') != -1) {            
+          var First = GUIDS[1].split('.html');  
+          if (GUIDS[3]){First = GUIDS[2].split('.html');}
+          if (GUIDS[4]){First = GUIDS[3].split('.html');}
+          if (GUIDS[5]){First = GUIDS[4].split('.html');}
+          
+          var Second = GUIDS[2].split('#');   
+          if (GUIDS[3]){Second = GUIDS[3].split('#');}
+          if (GUIDS[4]){Second = GUIDS[4].split('#');}
+          if (GUIDS[5]){Second = GUIDS[5].split('#');}
+          
+          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
+          }                    
+          window.top.location = Default;
+          }       
+          
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
+        
+          button.copy-code{
+            display:none;
+            padding:0.7em 1.4em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:0.15em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            text-transform:uppercase;
+            font-weight:400;
+            color:#FFFFFF;
+            background-color:#9c9c9c;
+            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+            text-align:center;
+            position:relative;
+            border: 0;
+            float: right;
+            border-radius: .5em;
+            cursor: pointer;
+          }
+          button.copy-code:active{
+            top:0.1em;
+          }
+          
+          pre:hover button.copy-code{
+            display: inline-block !important;
+          }
+          button.copy-code.copied {
+            cursor: default !important;
+          }
+          
+          
+          @media all and (max-width:30em){
+            button.copy-code{
+              display:block;
+              margin:0.4em auto;
+            }
+          }
+        
+        
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
+<body id="metrology-driver-configurations">
+<h1 class="title topictitle1" id="ariaid-title1">Metrology driver Configurations</h1><div class="body"><p class="p"><strong class="ph b">Metrology Specific User Configurations</strong></p>
+<p class="p">Metrology Driver library should be configured via MCC. Below is the Snapshot of the MCC configuration window for Metrology driver and brief description.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>Metrology Driver main configuration options</div><img class="image" src="GUID-8E62CBB3-09A7-470D-A0F4-C131C53BF690-low.png" alt="Metrology_MCC_main_options" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Register Base Address:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Specifies the PLC device physically connected.</p>
+</li>
+<li class="li"><p class="p">The pins in use will vary depending on the device selected.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Waveform capture:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture.</p>
+</li>
+<li class="li"><p class="p">The waveform capture feature is a powerful tool allowing the Core 0 to access to the metrology samples. The data can be processed by the Demo Meter Application running on Core 0, or can be sent to an external device for being analyzed.</p>
+</li>
+<li class="li"><p class="p">The waveform capture function is useful in two main scenarios:</p>
+<ul class="ul"><li class="li"><p class="p">When the product is being developed it's an excellent engineering tool for analyzing the acquired data. The signals can be inspected in order to obtain more information about a hypothetical cross-talk, or to assess how some critical sections of the electronic design (power supplies, communications modules, relays, switching devices, ...) could be introducing noise in the metrology channels.</p>
+</li>
+<li class="li"><p class="p">At the release time, it allows to include new functionality in the final product. Typical examples: waveform monitors, harmonic analysis of the captured data (FFT), etc.</p>
+</li>
+</ul>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 2. </span>Metrology Driver waveform configuration options</div><img class="image" src="GUID-8F730BAB-EA7F-44FD-8E1F-271A7553E5DB-low.png" alt="Metrology_MCC_waveform_capture" /><br /></div>
+<ul class="ul"><li class="li"><p class="p">Up to 6 channels of data may be captured at the same time.</p>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel IA:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel IA.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel VA:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel VA.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel IB:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel IB.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel VB:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel VB.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel IC:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel IC.</p>
+</li>
+<li class="li"><p class="p">Only valid for PIC32CXMTC_DB board.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Channel VC:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable waveform capture of channel VC.</p>
+</li>
+<li class="li"><p class="p">Only valid for PIC32CXMTC_DB board.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Source:</strong></p>
+<ul class="ul"><li class="li"><p class="p">All captured data is after Vref compensation has been applied and are scaled values (normalized by the appropriate K_Ix and K_Vx). In the case of 16kHz sampling data, the calibration constants have not been applied. Possible values could be:</p>
+<ul class="ul"><li class="li"><p class="p">Capture 16kHz data <span class="xref"></span> before DSP filtering.</p>
+</li>
+<li class="li"><p class="p">Capture 4kHz FBW data <span class="xref"></span> (Full Bandwidth = fundamental + harmonics).</p>
+</li>
+<li class="li"><p class="p">Capture 4kHz NBW data <span class="xref"></span> (Narrow Bandwidth = fundamental only).</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Capture Type:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Capture must be enabled to initiate a capture process. Once enabled, capture occurs based on the requested capture mode. If enabled and a continuous capture mode is selected, capture continues until it is disabled. If enabled and a one-shot capture mode is selected, capture continues until appointed number samples is captured.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Samples per Channel:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Specifies the buffer size used per channel for the capture function in units of 32-bits value.</p>
+</li>
+<li class="li"><p class="p">Size of the global buffer in bytes where the data set will be stored is obtained as (Num_channels) x (Size_per_Channel) x 4.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Additional notifications:</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 3. </span>Metrology Driver additional IPC notifications</div><img class="image" src="GUID-67CB168D-91A3-42AC-A82C-471D90721333-low.png" alt="Metrology_MCC_aditional_not" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Line Cycle:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Line Cycle interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated every full line cycle. It means that the frequency and accumulated energy associated with pulse have been updated. Unlike the RZC_IRQ, the FULL_CYCLE_IRQ uses the 4KHz narrowband filtered voltage channels and exhibit a deterministic but frequency-dependent phase delay.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Half Line Cycle:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Half Line Cycle interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated every half line cycle. It means that swell and sag flags have been updated. Unlike the RZC_IRQ, the HALF_CYCLE_IRQ uses the 4KHz narrowband filtered voltage channels and exhibit a deterministic but frequency-dependent phase delay.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Raw Zero Crossing:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Raw Zero Crossing interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated on zero-crossings using the unfiltered “raw” 16KHz data stream of the selected direction and selected voltage channel.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Pulse 0:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Pulse 0 interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated immediately after their respective pulse has computationally committed to be generated, but not necessarily occurred, and is not subject to the pulse's PC0_OVERRIDE control bit.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Pulse 1:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Pulse 1 interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated immediately after their respective pulse has computationally committed to be generated, but not necessarily occurred, and is not subject to the pulse's PC1_OVERRIDE control bit.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Pulse 2:</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable Pulse 2 interrupt.</p>
+</li>
+<li class="li"><p class="p">This interrupt is generated immediately after their respective pulse has computationally committed to be generated, but not necessarily occurred, and is not subject to the pulse's PC2_OVERRIDE control bit.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channels</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 4. </span>Metrology Driver channels</div><img class="image" src="GUID-3F79F75E-70B1-47C1-83B5-0805BB9FC63C-low.png" alt="Metrology_MCC_enable_chn" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Enable Channel I0</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel I0 on ATSense AFE.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel I1</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel I1 on ATSense AFE.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel V1</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel V1 on ATSense AFE.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel I2</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel I2 on ATSense AFE.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel V2</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel V2 on ATSense AFE.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel I3</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel I3 on ATSense AFE.</p>
+</li>
+<li class="li"><p class="p">Only valid for PIC32CXMTC_DB board.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Enable Channel V3</strong></p>
+<ul class="ul"><li class="li"><p class="p">Enable channel V3 on ATSense AFE.</p>
+</li>
+<li class="li"><p class="p">Only valid for PIC32CXMTC_DB board.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Configuration</strong></p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 5. </span>Metrology Driver control configuration options</div><img class="image" src="GUID-64D9F230-C3E8-4B42-B433-7C2758EC9BC0-low.png" alt="Metrology_MCC_configuration" /><br /></div>
+<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Sensor Type</strong></p>
+<ul class="ul"><li class="li"><p class="p">Selects the type of current and voltage sensor used. For each channel selected as using a Rogowski sensor, the Metrology DSP implements a digital integrator filter to normalize the effects of the sensor’s di/dt behavior.</p>
+</li>
+<li class="li"><p class="p">Possible values could be:</p>
+<ul class="ul"><li class="li"><p class="p">Current Transformer.</p>
+</li>
+<li class="li"><p class="p">Resistive Shunt. May only be used with phase-to-neutral voltage measurement applications</p>
+</li>
+<li class="li"><p class="p">Rogowski Coil (CRC) Current sensor. A digital integrator function is added to the DSP of all current channels selected as using Rogowski Coils. When SENSOR_TYPE_I_x = 2, an additional phase correction is internally added to each channel with a Rogowski sensor in the amount of -0.3704º (@60Hz) to correct for a linear phase response introduced by the digital integrator filter. This is taken into account during the internal calculation of actual phase-correction filter coefficients, when a new set of phase calibration settings are loaded, and should not be added by the user in the phase-correction entries. When SENSOR_TYPE_I_x is set to other values, it takes no effects.</p>
+</li>
+<li class="li"><p class="p">Resistive Divider (VRD) Voltage sensor. Normally, this is the typical option selected for voltage sensors.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Meter Constant</strong></p>
+<ul class="ul"><li class="li"><p class="p">Amount of energy signified by one output pulse (MC).</p>
+</li>
+<li class="li"><p class="p">Units: pulses/kWh (active energy), pulses/kVARh (reactive energy), or pulses/kAmp2-h (amp square).</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Mains Frequency</strong></p>
+<ul class="ul"><li class="li"><p class="p">Mains frequency (F). Units: Hz.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Transformer Ratio</strong></p>
+<ul class="ul"><li class="li"><p class="p">In the case of a current transformer, this is the current transformer ratio (Tr).</p>
+</li>
+<li class="li"><p class="p">In the case of a Rogowski Coil, this is the current sensitivity (units: uV/A) at the main frequency specified in “Frequency” parameter.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 6. </span>Metrology Driver configuration for Rogowski coil Type</div><img class="image" src="GUID-D5A0739B-52FF-470B-959C-D6D5FB586FFE-low.png" alt="Metrology_MCC_conf_rogowski" /><br /></div>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Resistor Load</strong></p>
+<ul class="ul"><li class="li"><p class="p">In the case of current transformer, this is the resistor load (Rl) or burden resistor (units: Ω).</p>
+</li>
+<li class="li"><p class="p">In the case of shunt resistor, this is the shunt resistor value (units: uΩ).</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 7. </span>Metrology Driver configuration for Shunt Type</div><img class="image" src="GUID-8B2A6F0B-0F3D-44DC-81E5-32A79759EF70-low.png" alt="Metrology_MCC_conf_shunt" /><br /></div>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Voltage divider ratio</strong></p>
+<ul class="ul"><li class="li"><p class="p">Voltage divider ratio (Ku).</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Programable Gain Amplifier</strong></p>
+<ul class="ul"><li class="li"><p class="p">Programmable Gain Amplifier (G) of the AFE (analog front end).</p>
+</li>
+<li class="li"><p class="p">Possible values: 1, 2, 4 or 8.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">SWELL Threshold RMS</strong></p>
+<ul class="ul"><li class="li"><p class="p">For each half cycle of the fundamental period, VxRMS is calculated, per phase, and compared to the value set in SWELL_THRESHOLD_Vx: where x = <span class="xref"></span>, to determine if a voltage swell condition exists. For each half cycle that a voltage swell exists, the associated flag, SWELL_DET_Vx is set to 1. A threshold is allowed for each phase and is computed using the native phase voltages, before transformation to implied 4WY service. This allows setting different thresholds for non-balanced service types.</p>
+</li>
+<li class="li"><p class="p">For this configuration, same SWELL Threshold will be applied to all phases.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">SAG Threshold RMS</strong></p>
+<ul class="ul"><li class="li"><p class="p">For each half cycle of the fundamental period, VxRMS is calculated, per  phase, and compared to the value set in SAG_THRESHOLD_Vx: where x = <span class="xref"></span>, to determine if a voltage sag condition exists. For each half cycle  that a voltage sag exists, the associated flag, SWAG_DET_Vx is set to 1. A  threshold is allowed for each phase and is computed using the native phase  voltages, before transformation to implied 4WY service. This allows  setting different thresholds for non-balanced service types.</p>
+</li>
+<li class="li"><p class="p">For this configuration, same SAG Threshold will be applied to all phases.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Active Power Creep Threshold Enable</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to enable/disable metrology creep function of active power pulse generation and any associated ACC_Tx total energy pulse value accumulators.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 8. </span>Metrology Driver configuration for Active Power Creep</div><img class="image" src="GUID-0B474337-A351-491D-B729-1C302CCD4E9E-low.png" alt="Metrology_MCC_conf_p_creep" /><br /></div>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Creep Active Energy (Wh)</strong>
+- Total active energy pulse quantities in any one line cycle interval less than the creep threshold are reset to zero and are not accumulated.
+- Is the creep active energy (Watt-hour) in a full cycle (20ms for 50Hz, 16.667ms for 60Hz).</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Reactive power Creep Threshold Enable</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to enable/disable metrology creep function of reactive power pulse generation and any associated ACC_Tx total quadergy pulse value accumulators.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 9. </span>Metrology Driver configuration for Reactive Power Creep</div><img class="image" src="GUID-5CD69C41-BB9B-4E66-870E-790940964AE4-low.png" alt="Metrology_MCC_conf_q_creep" /><br /></div>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Creep Reactive Energy (VARh)</strong></p>
+<ul class="ul"><li class="li"><p class="p">Total reactive energy pulse quantities in any one line cycle interval less than the creep threshold are reset to zero and are not accumulated.</p>
+</li>
+<li class="li"><p class="p">Is the creep reactive energy (Var-hour) in a full cycle (20ms for 50Hz, 16.667ms for 60Hz).</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Current Creep Threshold Enable</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to enable/disable creep function of metrology, both for pulse generation and any associated ACC_Tx total pulse value accumulators. Current creep thresholding is used to kill pulse contribution from any or all phases below the current threshold and affects all enabled <span class="xref"></span> pulsing.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 10. </span>Metrology Driver configuration for Current Creep</div><img class="image" src="GUID-25FEC60E-E975-4D99-AF99-8055E6592D81-low.png" alt="Metrology_MCC_conf_i_creep" /><br /></div>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Creep Current (mA)</strong></p>
+<ul class="ul"><li class="li"><p class="p">For each phase whose current is less than this threshold, any contributions to a selected pulse are zeroed out and quantities from that phase make no contribution toward any selected pulse and its associated pulse accumulator.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Pulse X Control</strong></p>
+<ul class="ul"><li class="li"><p class="p">Three pulses can be generated at the same time. PULSE0_CTRL is used to control the pulse output from PD17. PULSE1_CTRL is used to control the pulse output from PD18. PULSE2_CTRL is used to control the pulse output from PD19. IPC interrupts are triggered at each pulse: IPC_PULSEx.</p>
+<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 11. </span>Metrology Driver configuration for Pulse X Control</div><img class="image" src="GUID-DCA1DEBD-D0B9-4CD4-8EC8-BF9C3A032989-low.png" alt="Metrology_MCC_pulse_control" /><br /></div>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Output Pulse Enable</strong></p>
+<ul class="ul"><li class="li"><p class="p">Used to enable or disable pulse functionality.</p>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Total Absolute Values</strong></p>
+<ul class="ul"><li class="li"><p class="p">When creating P and Q accumulator totals of multiple phases, this option allows taking the absolute values of each phase before adding to make the total. This is used to primarily ignore direction of energy delivered/generated, for pulse generation.</p>
+</li>
+<li class="li"><p class="p">Possible values could be:</p>
+<ul class="ul"><li class="li"><p class="p">Net: Pulses generated based on (energy delivered – energy generated): Individual sign of each channel’s P and Q is taken into account when creating total P and Q accumulator sums.</p>
+</li>
+<li class="li"><p class="p">Absolute: Pulses generated based on (energy delivered + energy generated): The absolute value of each phase’s P and Q is used when creating the total P and Q accumulator sums.</p>
+</li>
+<li class="li"><p class="p">Delivered: Pulses generated based on (delivered only): Only positive values (energy delivered) of each phase’s P and Q are used when creating the total P and Q accumulator sums, with negative values (energy generated) being ignored.</p>
+</li>
+<li class="li"><p class="p">Generated: Pulses generated based on (generated only): Only negative values (energy generated) of each phase’s P and Q are used when creating the total P and Q accumulator sums, with positive values (energy delivered) being ignored.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Polarity</strong></p>
+<ul class="ul"><li class="li"><p class="p">Pulse Polarity.</p>
+</li>
+<li class="li"><p class="p">Possible values could be:</p>
+<ul class="ul"><li class="li"><p class="p">PULSE_LOW: Output pulse is low with width set by K_WIDTH, followed by an inactive level of high.</p>
+</li>
+<li class="li"><p class="p">PULSE_HIGH: Output pulse is high with width set by K_WIDTH, followed by an inactive level of low.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Type</strong></p>
+<ul class="ul"><li class="li"><p class="p">Types described as “all phases” are based on all active phases: <span class="xref"></span>.   Types described as “S” use only the synthesized voltage channel, phase:   <span class="xref"></span>, if available.</p>
+</li>
+<li class="li"><p class="p">Possible values could be:</p>
+<ul class="ul"><li class="li"><p class="p">P_T: Watt-hours, total all phases, fundamental + harmonics</p>
+</li>
+<li class="li"><p class="p">P_T_F: Watt-hours, total all phases, fundamental only</p>
+</li>
+<li class="li"><p class="p">Q_T: Var-hours, total all phases, fundamental + harmonics</p>
+</li>
+<li class="li"><p class="p">Q_T_F: Var-hours, total all phases, fundamental only</p>
+</li>
+<li class="li"><p class="p">I_T: Amp-squared-hours, total all phases, fundamental + harmonics</p>
+</li>
+<li class="li"><p class="p">I_T_F: Amp-squared-hours, total all phases, fundamental only</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="li"><p class="p"><strong class="ph b">Width</strong></p>
+<ul class="ul"><li class="li"><p class="p">Pulse width.</p>
+</li>
+<li class="li"><p class="p">The granularity for pulse width is in units of 2.1552μs, corresponding to a peripheral clock rate of 464kHz.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html">Metrology Driver</a></div>
+</div>
+</div></body>
+</html>

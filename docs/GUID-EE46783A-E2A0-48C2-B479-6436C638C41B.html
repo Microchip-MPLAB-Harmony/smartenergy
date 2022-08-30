@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-08A6DB8F-C8BE-470F-A8C9-FA1021C398C0.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-pcoup-get-default-channel-function" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_PCOUP_Get_Default_Channel Function</title>
+<title>SRV_PCOUP_Get_Default_Channel Function</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-pcoup-get-default-channel-function" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,14 +223,14 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-pcoup-get-default-channel-function">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_PCOUP_Get_Default_Channel Function</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-08A6DB8F-C8BE-470F-A8C9-FA1021C398C0.html">Library Interface (PRIME)</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d89618e21', this);">Copy</button><code id="d89618e21" content="DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel(void);">DRV_PLC_PHY_CHANNEL <span class="ph token function">SRV_PCOUP_Get_Default_Channel</span><span class="ph token punctuation">(</span><span class="ph token keyword">void</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c">DRV_PLC_PHY_CHANNEL <span class="hl-functions">SRV_PCOUP_Get_Default_Channel</span>(<strong class="hl-keyword">void</strong>);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">Get the default PRIME channel.</p>
 </div>
@@ -217,18 +247,18 @@
 <div class="topic nested1" aria-labelledby="ariaid-title7" id="returns"><h2 class="title topictitle2" id="ariaid-title7">Returns</h2><div class="body"><p class="p">Default PRIME channel (<a class="xref" href="GUID-D74B0E99-F889-4785-907E-AD92A06C9D2A.html"><em class="ph i">DRV_PLC_PHY_CHANNEL Enum</em></a>).</p>
 </div>
 </div>
-<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d89618e72', this);">Copy</button><code id="d89618e72" content="// 'handle', returned from DRV_PLC_PHY_Open&#xA;DRV_PLC_PHY_CHANNEL plcDefaultChannel;&#xA;DRV_PLC_PHY_PIB_OBJ pibObj;&#xA;&#xA;plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();&#xA;&#xA;pibObj.id = PLC_ID_CHANNEL_CFG;&#xA;pibObj.length = 1;&#xA;pibObj.pData = &amp;plcDefaultChannel;&#xA;DRV_PLC_PHY_PIBSet(handle, &amp;pibObj);&#xA;            &#xA;SRV_PCOUP_Set_Channel_Config(handle, plcDefaultChannel);"><span class="ph token comment">// 'handle', returned from DRV_PLC_PHY_Open</span>
-DRV_PLC_PHY_CHANNEL plcDefaultChannel<span class="ph token punctuation">;</span>
-DRV_PLC_PHY_PIB_OBJ pibObj<span class="ph token punctuation">;</span>
+<div class="topic nested1" aria-labelledby="ariaid-title8" id="example"><h2 class="title topictitle2" id="ariaid-title8">Example</h2><div class="body"><pre class="pre codeblock c"><em class="hl-comment">// 'handle', returned from DRV_PLC_PHY_Open</em>
+DRV_PLC_PHY_CHANNEL plcDefaultChannel;
+DRV_PLC_PHY_PIB_OBJ pibObj;
 
-plcDefaultChannel <span class="ph token operator">=</span> <span class="ph token function">SRV_PCOUP_Get_Default_Channel</span><span class="ph token punctuation">(</span><span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();
 
-pibObj<span class="ph token punctuation">.</span>id <span class="ph token operator">=</span> PLC_ID_CHANNEL_CFG<span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>length <span class="ph token operator">=</span> <span class="ph token number">1</span><span class="ph token punctuation">;</span>
-pibObj<span class="ph token punctuation">.</span>pData <span class="ph token operator">=</span> <span class="ph token operator">&amp;</span>plcDefaultChannel<span class="ph token punctuation">;</span>
-<span class="ph token function">DRV_PLC_PHY_PIBSet</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> <span class="ph token operator">&amp;</span>pibObj<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span>
+pibObj.id = PLC_ID_CHANNEL_CFG;
+pibObj.length = <span class="hl-number">1</span>;
+pibObj.pData = &amp;plcDefaultChannel;
+DRV_PLC_PHY_PIBSet(handle, &amp;pibObj);
             
-<span class="ph token function">SRV_PCOUP_Set_Channel_Config</span><span class="ph token punctuation">(</span>handle<span class="ph token punctuation">,</span> plcDefaultChannel<span class="ph token punctuation">)</span><span class="ph token punctuation">;</span></code></pre></div>
+SRV_PCOUP_Set_Channel_Config(handle, plcDefaultChannel);</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title9" id="remarks"><h2 class="title topictitle2" id="ariaid-title9">Remarks</h2><div class="body"><p class="p">This function is only generated by MCC if the PLC Driver uses PRIME PHY.</p>
 </div>

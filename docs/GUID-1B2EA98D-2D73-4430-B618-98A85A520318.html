@@ -11,9 +11,8 @@
 <meta name="DC.relation" scheme="URI" content="GUID-EF398ECF-CD01-4199-8C4D-0C410898C27C.html" />
 <meta name="DC.format" content="XHTML" />
 <meta name="DC.identifier" content="srv-plc-pcoup-data-struct" />
-<link rel="stylesheet" type="text/css" href="stylesheets/commonltr.css" />
 <link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<link rel="stylesheet" type="text/css" href="./stylesheets/common-extended.css" /><title>SRV_PLC_PCOUP_DATA Struct</title>
+<title>SRV_PLC_PCOUP_DATA Struct</title>
 <meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-srv-plc-pcoup-data-struct" />
 <meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
 <meta name="Microsoft.Help.TocOrder" content="0" />
@@ -62,10 +61,9 @@
 			}
 
 		</script><script language="javascript">
-        function cpy(id, button) {
-        
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
+         
+         function copyContent(content, button) {
+         
             var textArea = document.createElement("textarea");
             
             // Place in the top-left corner of screen regardless of scroll position.
@@ -89,7 +87,6 @@
             // Avoid flash of the white box if rendered for any reason.
             textArea.style.background = 'transparent';
             
-            
             textArea.value = content;
             
             document.body.appendChild(textArea);
@@ -103,16 +100,49 @@
                   button.textContent = "Copied";
                   button.classList.add("copied");
                   setTimeout(function(){
-                    button.textContent = "Copy";
-                    button.classList.remove("copied");
+                     button.textContent = "Copy";
+                     button.classList.remove("copied");
                   },1000);
                }
             } catch (err) {
-              console.log('Oops, unable to copy');
+               console.log('Oops, unable to copy');
             }
             
             document.body.removeChild(textArea);
-        }
+         }
+         
+         function cpy(id, button) {
+            var element = document.getElementById(id);
+            var content = element.getAttribute("content");
+            
+            copyContent(content, button);
+         }
+         
+         document.addEventListener("DOMContentLoaded", function(event) {
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.style.position = "relative";
+               var copy = document.createElement("button");
+               copy.textContent = "Copy";
+               copy.setAttribute("class", "copy-code");
+               
+               var content = elem.textContent;
+               
+               copy.addEventListener("click", function(){
+                  copyContent(content, copy);
+               });
+               
+               elem.addEventListener("mouseenter", function(evt){
+                  elem.prepend(copy);
+               });
+            });
+            
+            document.querySelectorAll(".codeblock").forEach(function(elem) {
+               elem.addEventListener("mouseleave", function(evt){
+                  document.querySelector(".copy-code").remove();
+               });
+            });
+         });
+         
       </script><script language="javascript">
           
           // Add the MathML namespace to html
@@ -151,7 +181,7 @@
           window.top.location = Default;
           }       
           
-        </script><style xml:space="">
+        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
         
           button.copy-code{
             display:none;
@@ -193,56 +223,56 @@
           }
         
         
-      </style></head>
+      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
 <body id="srv-plc-pcoup-data-struct">
 <h1 class="title topictitle1" id="ariaid-title1">SRV_PLC_PCOUP_DATA Struct</h1><div class="body"></div>
 <div class="related-links">
 <div class="familylinks">
 <div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-EF398ECF-CD01-4199-8C4D-0C410898C27C.html">Library Interface (G3-PLC)</a></div>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock language-c"><button title="Copy Code" class="copy-code" onclick="cpy('d24842e21', this);">Copy</button><code id="d24842e21" content="typedef struct&#xA;{  &#xA;    /* Target RMS values in HIGH mode for dynamic Tx gain */&#xA;    uint32_t                         rmsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS];&#xA;&#xA;    /* Target RMS values in VLOW mode for dynamic Tx gain */&#xA;    uint32_t                         rmsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS];&#xA;&#xA;    /* Threshold RMS values in HIGH mode for dynamic Tx mode */&#xA;    uint32_t                         thrsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS &lt;&lt; 1];&#xA;&#xA;    /* Threshold RMS values in VLOW mode for dynamic Tx mode */&#xA;    uint32_t                         thrsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS &lt;&lt; 1];&#xA;&#xA;    /* Values for configuration of PLC DACC peripheral, according to hardware &#xA;       coupling design and PLC device (PL360/PL460) */&#xA;    uint32_t                         daccTable[17];&#xA;&#xA;    /* Pointer to Tx equalization coefficients table in HIGH mode. &#xA;       There is one coefficient for each carrier in the used band */&#xA;    const uint16_t *                 equHigh;&#xA;&#xA;    /* Pointer to Tx equalization coefficients table in VLOW mode. &#xA;       There is one coefficient for each carrier in the used band */&#xA;    const uint16_t *                 equVlow;&#xA;&#xA;    /* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */&#xA;    uint16_t                         gainHigh[3];&#xA;&#xA;    /* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */&#xA;    uint16_t                         gainVLow[3];&#xA;&#xA;    /* Number of Tx attenuation levels (3 dB step) suppoting dynamic Tx mode */&#xA;    uint8_t                          numTxLevels;&#xA;&#xA;    /* Size of Tx equalization coefficients table in bytes */&#xA;    uint8_t                          equSize;&#xA;&#xA;    /* Configuration of the PLC Tx Line Driver, according to hardware coupling &#xA;       design and PLC device (PL360/PL460) */&#xA;    uint8_t                          lineDrvConf;&#xA;&#xA;} SRV_PLC_PCOUP_DATA;"><span class="ph token keyword">typedef</span> <span class="ph token keyword">struct</span>
-<span class="ph token punctuation">{</span>  
-    <span class="ph token comment">/* Target RMS values in HIGH mode for dynamic Tx gain */</span>
-    uint32_t                         rmsHigh<span class="ph token punctuation">[</span>SRV_PCOUP_MAX_NUM_TX_LEVELS<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="c"><h2 class="title topictitle2" id="ariaid-title2">C</h2><div class="body"><pre class="pre codeblock c"><strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">struct</strong>
+{  
+    <em class="hl-comment">/* Target RMS values in HIGH mode for dynamic Tx gain */</em>
+    uint32_t                         rmsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS];
 
-    <span class="ph token comment">/* Target RMS values in VLOW mode for dynamic Tx gain */</span>
-    uint32_t                         rmsVLow<span class="ph token punctuation">[</span>SRV_PCOUP_MAX_NUM_TX_LEVELS<span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Target RMS values in VLOW mode for dynamic Tx gain */</em>
+    uint32_t                         rmsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS];
 
-    <span class="ph token comment">/* Threshold RMS values in HIGH mode for dynamic Tx mode */</span>
-    uint32_t                         thrsHigh<span class="ph token punctuation">[</span>SRV_PCOUP_MAX_NUM_TX_LEVELS <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">1</span><span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Threshold RMS values in HIGH mode for dynamic Tx mode */</em>
+    uint32_t                         thrsHigh[SRV_PCOUP_MAX_NUM_TX_LEVELS &lt;&lt; <span class="hl-number">1</span>];
 
-    <span class="ph token comment">/* Threshold RMS values in VLOW mode for dynamic Tx mode */</span>
-    uint32_t                         thrsVLow<span class="ph token punctuation">[</span>SRV_PCOUP_MAX_NUM_TX_LEVELS <span class="ph token operator">&lt;&lt;</span> <span class="ph token number">1</span><span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Threshold RMS values in VLOW mode for dynamic Tx mode */</em>
+    uint32_t                         thrsVLow[SRV_PCOUP_MAX_NUM_TX_LEVELS &lt;&lt; <span class="hl-number">1</span>];
 
-    <span class="ph token comment">/* Values for configuration of PLC DACC peripheral, according to hardware 
-       coupling design and PLC device (PL360/PL460) */</span>
-    uint32_t                         daccTable<span class="ph token punctuation">[</span><span class="ph token number">17</span><span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Values for configuration of PLC DACC peripheral, according to hardware 
+       coupling design and PLC device (PL360/PL460) */</em>
+    uint32_t                         daccTable[<span class="hl-number">17</span>];
 
-    <span class="ph token comment">/* Pointer to Tx equalization coefficients table in HIGH mode. 
-       There is one coefficient for each carrier in the used band */</span>
-    <span class="ph token keyword">const</span> uint16_t <span class="ph token operator">*</span>                 equHigh<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Pointer to Tx equalization coefficients table in HIGH mode. 
+       There is one coefficient for each carrier in the used band */</em>
+    <strong class="hl-keyword">const</strong> uint16_t *                 equHigh;
 
-    <span class="ph token comment">/* Pointer to Tx equalization coefficients table in VLOW mode. 
-       There is one coefficient for each carrier in the used band */</span>
-    <span class="ph token keyword">const</span> uint16_t <span class="ph token operator">*</span>                 equVlow<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Pointer to Tx equalization coefficients table in VLOW mode. 
+       There is one coefficient for each carrier in the used band */</em>
+    <strong class="hl-keyword">const</strong> uint16_t *                 equVlow;
 
-    <span class="ph token comment">/* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */</span>
-    uint16_t                         gainHigh<span class="ph token punctuation">[</span><span class="ph token number">3</span><span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */</em>
+    uint16_t                         gainHigh[<span class="hl-number">3</span>];
 
-    <span class="ph token comment">/* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */</span>
-    uint16_t                         gainVLow<span class="ph token punctuation">[</span><span class="ph token number">3</span><span class="ph token punctuation">]</span><span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */</em>
+    uint16_t                         gainVLow[<span class="hl-number">3</span>];
 
-    <span class="ph token comment">/* Number of Tx attenuation levels (3 dB step) suppoting dynamic Tx mode */</span>
-    uint8_t                          numTxLevels<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Number of Tx attenuation levels (3 dB step) suppoting dynamic Tx mode */</em>
+    uint8_t                          numTxLevels;
 
-    <span class="ph token comment">/* Size of Tx equalization coefficients table in bytes */</span>
-    uint8_t                          equSize<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Size of Tx equalization coefficients table in bytes */</em>
+    uint8_t                          equSize;
 
-    <span class="ph token comment">/* Configuration of the PLC Tx Line Driver, according to hardware coupling 
-       design and PLC device (PL360/PL460) */</span>
-    uint8_t                          lineDrvConf<span class="ph token punctuation">;</span>
+    <em class="hl-comment">/* Configuration of the PLC Tx Line Driver, according to hardware coupling 
+       design and PLC device (PL360/PL460) */</em>
+    uint8_t                          lineDrvConf;
 
-<span class="ph token punctuation">}</span> SRV_PLC_PCOUP_DATA<span class="ph token punctuation">;</span></code></pre></div>
+} SRV_PLC_PCOUP_DATA;</pre></div>
 </div>
 <div class="topic nested1" aria-labelledby="ariaid-title3" id="summary"><h2 class="title topictitle2" id="ariaid-title3">Summary</h2><div class="body"><p class="p">PLC PHY Coupling data.</p>
 </div>
