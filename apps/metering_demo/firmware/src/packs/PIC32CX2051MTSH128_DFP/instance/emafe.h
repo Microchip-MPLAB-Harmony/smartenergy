@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-04-29T12:45:09Z */
+/* file generated from device description version 2022-07-26T09:53:40Z */
 #ifndef _PIC32CXMTSH_EMAFE_INSTANCE_
 #define _PIC32CXMTSH_EMAFE_INSTANCE_
 

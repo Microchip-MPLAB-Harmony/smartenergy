@@ -54,7 +54,6 @@
 static void WaitEntryClockSetup(bool xtal_disable)
 {
     uint8_t count = 0U;
-    uint32_t reg = 0U;
 
     /* Enable the RC Oscillator */
     PMC_REGS->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCEN_Msk;
@@ -67,18 +66,6 @@ static void WaitEntryClockSetup(bool xtal_disable)
 
     /* Wait for Main Clock Selection Status */
     while((PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk);
-
-    /* Program PMC_CPU_CKR.CSS and MCK dividers and Wait for PMC_SR.MCKRDY to be set    */
-    reg = (PMC_REGS->PMC_CPU_CKR & ~(PMC_CPU_CKR_CSS_Msk |
-                                     PMC_CPU_CKR_RATIO_MCK0DIV_Msk |
-                                     PMC_CPU_CKR_RATIO_MCK0DIV2_Msk));
-
-    reg |= (PMC_CPU_CKR_CSS_MAINCK | PMC_CPU_CKR_RATIO_MCK0DIV_Msk );
-    PMC_REGS->PMC_CPU_CKR = reg;
-    while ((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk)
-    {
-        /* Wait for status MCKRDY */
-    }
 
     /* Disable PLL Clock */
     for (count = 0U; count < 3U; count++)
@@ -107,7 +94,7 @@ void SUPC_Initialize(void)
 
     SUPC_REGS->SUPC_MR = (SUPC_REGS->SUPC_MR & ~SUPC_MR_Msk) | (SUPC_REGS->SUPC_MR & SUPC_MR_OSCBYPASS_Msk) | SUPC_MR_KEY_PASSWD | SUPC_MR_IO_BACKUP_ISO_Msk | SUPC_MR_CORSMRSTEN_Msk | SUPC_MR_VREGDIS_Msk | SUPC_MR_CORSMM_Msk;
 
-    SUPC_REGS->SUPC_BMR = (SUPC_REGS->SUPC_BMR & ~SUPC_BMR_Msk) | SUPC_BMR_KEY_PASSWD | SUPC_BMR_FWUPEN_Msk | SUPC_BMR_MRTCOUT_Msk ;
+    SUPC_REGS->SUPC_BMR = (SUPC_REGS->SUPC_BMR & ~SUPC_BMR_Msk) | SUPC_BMR_FWUPEN_Msk | SUPC_BMR_MRTCOUT_Msk ;
 
     SUPC_REGS->SUPC_WUMR = SUPC_WUMR_LPDBC0(0x1) | SUPC_WUMR_LPDBC1(0x0) | SUPC_WUMR_LPDBC2(0x0) | SUPC_WUMR_LPDBC3(0x0) | SUPC_WUMR_LPDBC4(0x0) | SUPC_WUMR_WKUPDBC(0x2) | SUPC_WUMR_FWUPDBC(0x2) | SUPC_WUMR_LPDBCEN0_Msk ;
 
