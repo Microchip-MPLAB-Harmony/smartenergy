@@ -754,10 +754,10 @@ void APP_ENERGY_Tasks (void)
                     /* Clear MaxDemand data */
                     memset(&app_energyData.demand.maxDemand, 0, sizeof(APP_ENERGY_MAX_DEMAND));
                 }
-
-                /* Check TAMPER detection */
-                _APP_ENERGY_CheckTamperDetection();
             }
+
+            /* Check TAMPER detection */
+            _APP_ENERGY_CheckTamperDetection();
 
             break;
         }
