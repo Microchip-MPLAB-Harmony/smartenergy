@@ -2319,7 +2319,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetRMS(RMS_UB, &vb, 0);
             APP_METROLOGY_GetRMS(RMS_UC, &vc, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present voltage is :\n\rUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)va/10000, (float)vc/10000);
+            SYS_CMD_PRINT("Present voltage is :\n\rUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)vb/10000, (float)vc/10000);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2408,7 +2408,7 @@ void APP_CONSOLE_Tasks ( void )
 
             APP_METROLOGY_GetRMS(RMS_FREQ, &freq, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/10);
+            SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/100);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
