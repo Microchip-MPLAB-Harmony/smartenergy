@@ -113,6 +113,7 @@ const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
     _UINT32_(0x00000000),                           /* 47 CAPTURE_ADDR */
     _UINT32_(0x00000000),                           /* 48 RESERVED_C48 */
     _UINT32_(0x00000000),                           /* 49 RESERVED_C49 */
+    _UINT32_(0x00000000),                           /* 50 RESERVED_C50 */
     _UINT32_(DRV_METROLOGY_CONF_ATS2023),           /* 51 ATSENSE_CTRL_20_23 */
     _UINT32_(DRV_METROLOGY_CONF_ATS2427),           /* 52 ATSENSE_CTRL_24_27 */
     _UINT32_(0x00000003),                           /* 53 ATSENSE_CTRL_28_2B: MSB_MODE=0,OSR=3 */
@@ -725,9 +726,11 @@ void DRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeRMS = NULL;
     uint32_t stateFlagReg;
+    uint32_t freq;
 
     /* Get State Flag Register */
     stateFlagReg = gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG;
+    freq = gDrvMetObj.metRegisters->MET_STATUS.FREQ;
             
     /* Update RMS values */
     afeRMS = gDrvMetObj.metAFEData.RMS;
@@ -770,7 +773,7 @@ void DRV_METROLOGY_UpdateMeasurements(void)
 
     afeRMS[RMS_ST]  = afeRMS[RMS_SA] + afeRMS[RMS_SB] + afeRMS[RMS_SC];
 
-    afeRMS[RMS_FREQ]  = (gDrvMetObj.metRegisters->MET_STATUS.FREQ * 100) >> FREQ_Q;
+    afeRMS[RMS_FREQ]  = (freq * 100) >> FREQ_Q;
 
     afeRMS[RMS_ANGLEA]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.Q_A);
     afeRMS[RMS_ANGLEB]  = _DRV_Metrology_GetAngleRMS(gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.Q_B);
