@@ -92,7 +92,8 @@ APP_DATALOG_QUEUE_DATA datalogQueueElement;
 extern QueueHandle_t appDatalogQueueID;
 
 /* Local array to hold password for Commands */
-static char metPwd[6] = APP_CONSOLE_DEFAULT_PWD;
+#define APP_CONSOLE_MET_PWD_SIZE             6
+static char metPwd[APP_CONSOLE_MET_PWD_SIZE] = APP_CONSOLE_DEFAULT_PWD;
 
 static char sign[2] = {' ', '-'};
 
@@ -178,6 +179,12 @@ static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     
     // Store parameters in local variables and go to corresponding state
     captureSize = APP_METROLOGY_GetWaveformCaptureData(&captureAddress);
+    
+    if ((captureSize == 0) || (captureAddress == 0))
+    {
+        SYS_CMD_MESSAGE("Waveform data is disabled.\n\r");
+        return;
+    }
     
     if (idx > (captureSize >> 9))
     {
@@ -628,7 +635,7 @@ static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             if (p != NULL)
             {
                 p++;
-                app_consoleData.regsToModify[i].value = (uint32_t)strtol(p, NULL, 16);
+                app_consoleData.regsToModify[i].value = (uint32_t)strtoul(p, NULL, 16);
             }
             else
             {
@@ -729,7 +736,7 @@ static void Command_DCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         if (idx < CONTROL_REG_NUM)
         {
             // Extract register value
-            regValue = (uint32_t)strtol(argv[2], NULL, 16);
+            regValue = (uint32_t)strtoul(argv[2], NULL, 16);
             // Write register value
             if (APP_METROLOGY_SetControlRegister((CONTROL_REG_ID)idx, regValue))
             {
@@ -806,7 +813,7 @@ static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 2)
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0)
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0)
         {
             // Correct password, Clear Energy records
             APP_ENERGY_ClearEnergy();
@@ -870,7 +877,7 @@ static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 2) 
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0) 
         {
             APP_EVENTS_ClearEvents();
             // Show response on console
@@ -1042,7 +1049,7 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 3) 
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0) 
         {
             // Correct password, write Meter ID
             memcpy(&app_consoleStorageData.meterID, argv[2], sizeof(app_consoleStorageData.meterID));
@@ -1079,7 +1086,7 @@ static void Command_MDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 2) 
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0) 
         {
             // Correct password, Clear Max Demand records
             APP_ENERGY_ClearMaxDemand();
@@ -1226,7 +1233,7 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 5)
     {
-        if (strcmp(argv[1], metPwd) == 0)
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0)
         {
             char *p;
 
@@ -1328,7 +1335,7 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if ((argc > 3) && ((argc - 2) % 2 == 0))
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0)
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0)
         {
              // Correct password, write TOW
              for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++)
@@ -1405,7 +1412,7 @@ static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 2) 
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0) 
         {
             // Correct password, Reset System
             SYS_CMD_MESSAGE("Reset Command is Ok !\n\r");
@@ -1435,7 +1442,7 @@ static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 2) 
     {
         // Check password from parameters
-        if (strcmp(argv[1], metPwd) == 0) 
+        if (strncmp(argv[1], metPwd, APP_CONSOLE_MET_PWD_SIZE) == 0) 
         {
             // Correct password, Reset System
             SYS_CMD_MESSAGE("Reloading Metrology...\n\r\n\r");
