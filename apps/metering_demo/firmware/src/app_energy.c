@@ -831,7 +831,10 @@ APP_ENERGY_TOU_TIME_ZONE * APP_ENERGY_GetTOUTimeZone(void)
 
 void APP_ENERGY_SetTOUTimeZone(APP_ENERGY_TOU_TIME_ZONE *timeZone)
 {
-    _APP_ENERGY_InitializeTOU(timeZone);
+    /* Set TOU data */
+    memcpy(&app_energyData.tou.timeZone, timeZone, sizeof(app_energyData.tou.timeZone));
+    _APP_ENERGY_InitializeTOU(true);
+    _APP_ENERGY_StoreTOUDataInMemory();
 }
 
 void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback,
