@@ -99,6 +99,7 @@ typedef enum
     APP_CONSOLE_STATE_PRINT_ANGLE,
     APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA,
     APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT,
+    APP_CONSOLE_STATE_PRINT_HELP,
     APP_CONSOLE_STATE_SW_RESET,
 } APP_CONSOLE_STATES;
 
@@ -142,6 +143,9 @@ typedef struct
     uint32_t currentWaitForDatalogReady;
     uint8_t harmonicNumRequest;
     bool calibrationResult;
+    int8_t numCommands;
+    int8_t cmdNumToShowHelp;
+    SYS_CMD_DESCRIPTOR *pCmdDescToShowHelp;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************

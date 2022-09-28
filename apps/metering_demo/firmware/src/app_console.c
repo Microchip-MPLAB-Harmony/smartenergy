@@ -97,6 +97,76 @@ static char metPwd[APP_CONSOLE_MET_PWD_SIZE] = APP_CONSOLE_DEFAULT_PWD;
 
 static char sign[2] = {' ', '-'};
 
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Application Local Functions
+// *****************************************************************************
+// *****************************************************************************
+static void Command_BUF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_CAL (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_CNF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCB (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCM (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCS (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DCW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_DSR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_ENC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_ENR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_HAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_HRR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_IDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_IDW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_MDC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_MDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_PAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_RST (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_RLD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void Command_HELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+
+static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
+{
+    {"BUF", Command_BUF, ": Read waveform capture data (if a parameter is used, only a 512 samples sector is returned)"},
+    {"CAL", Command_CAL, ": Automatic calibration"},
+    {"CNF", Command_CNF, ": Automatic configuration"},
+    {"DAR", Command_DAR, ": Read DSP_ACC register"},
+    {"DCB", Command_DCB, ": Go to low power mode"},
+    {"DCD", Command_DCD, ": Load default metrology control register values"},
+    {"DCM", Command_DCM, ": Write DSP_CONTROL several registers"},
+    {"DCR", Command_DCR, ": Read DSP_CONTROL registers"},
+    {"DCS", Command_DCS, ": Save metrology constants to non volatile memory"},
+    {"DCW", Command_DCW, ": Write DSP_CONTROL register"},
+    {"DSR", Command_DSR, ": Read DSP_ST register"},
+    {"ENC", Command_ENC, ": Clear all energy"},
+    {"ENR", Command_ENR, ": Read energy"},
+    {"EVEC",Command_EVEC, ": Clear all event record"},
+    {"EVER",Command_EVER, ": Read single event record"},
+    {"HAR", Command_HAR, ": Read harmonic register"},
+    {"HRR", Command_HRR, ": Read harmonic Irms/Vrms"},
+    {"IDR", Command_IDR, ": Read meter id"},
+    {"IDW", Command_IDW, ": Write meter id (id length limited to 6 characters)"},
+    {"MDC", Command_MDC, ": Clear all maxim demand and happen time"},
+    {"MDR", Command_MDR, ": Read maxim demand"},
+    {"PAR", Command_PAR, ": Read measure parameter"},
+    {"RTCR",Command_RTCR, ": Read meter RTC"},
+    {"RTCW",Command_RTCW, ": Write meter RTC"},
+    {"TOUR",Command_TOUR, ": Read meter TOU"},
+    {"TOUW",Command_TOUW, ": Write meter TOU"},
+    {"RST", Command_RST, ": System reset"},
+    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"},
+    {"HELP",Command_HELP, ": Help on commands"}
+};
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -158,6 +228,44 @@ static void _calibrationCallback(bool result)
 // *****************************************************************************
 // COMMANDS
 // *****************************************************************************
+static void Command_HELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    if (argc == 2) 
+    {
+        SYS_CMD_DESCRIPTOR *pCmd;
+        uint8_t idx;
+        size_t len;
+        
+        // Show help for a single command
+        pCmd = (SYS_CMD_DESCRIPTOR *)appCmdTbl;
+        for (idx = 0; idx < app_consoleData.numCommands; idx++, pCmd++)
+        {
+            len = strlen(argv[1]);
+            
+            if (strncmp(pCmd->cmdStr, argv[1], len) == 0)
+            {
+                SYS_CMD_PRINT("%s\t%s\n\r", pCmd->cmdStr, pCmd->cmdDescr);
+                break;
+            }
+        }
+        
+        if (idx == app_consoleData.numCommands)
+        {
+            SYS_CMD_MESSAGE("Command is not found.\n\r");
+        }
+    }
+    else 
+    {
+        app_consoleData.state = APP_CONSOLE_STATE_PRINT_HELP;
+        app_consoleData.cmdNumToShowHelp = app_consoleData.numCommands;
+        app_consoleData.pCmdDescToShowHelp = (SYS_CMD_DESCRIPTOR *)appCmdTbl;
+        // Post semaphore to wakeup task
+        OSAL_SEM_Post(&appConsoleSemID);
+    }
+    
+    /* Show console communication icon */
+    APP_DISPLAY_SetCommIcon();
+}
 
 static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
@@ -1465,44 +1573,6 @@ static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Local Functions
-// *****************************************************************************
-// *****************************************************************************
-
-static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
-{
-    {"BUF", Command_BUF, ": Read waveform capture data (if a parameter is used, only a 512 samples sector is returned)"},
-    {"CAL", Command_CAL, ": Automatic calibration"},
-    {"CNF", Command_CNF, ": Automatic configuration"},
-    {"DAR", Command_DAR, ": Read DSP_ACC register"},
-    {"DCB", Command_DCB, ": Go to low power mode"},
-    {"DCD", Command_DCD, ": Load default metrology control register values"},
-    {"DCM", Command_DCM, ": Write DSP_CONTROL several registers"},
-    {"DCR", Command_DCR, ": Read DSP_CONTROL registers"},
-    {"DCS", Command_DCS, ": Save metrology constants to non volatile memory"},
-    {"DCW", Command_DCW, ": Write DSP_CONTROL register"},
-    {"DSR", Command_DSR, ": Read DSP_ST register"},
-    {"ENC", Command_ENC, ": Clear all energy"},
-    {"ENR", Command_ENR, ": Read energy"},
-    {"EVEC",Command_EVEC, ": Clear all event record"},
-    {"EVER",Command_EVER, ": Read single event record"},
-    {"HAR", Command_HAR, ": Read harmonic register"},
-    {"HRR", Command_HRR, ": Read harmonic Irms/Vrms"},
-    {"IDR", Command_IDR, ": Read meter id"},
-    {"IDW", Command_IDW, ": Write meter id (id length limited to 6 characters)"},
-    {"MDC", Command_MDC, ": Clear all maxim demand and happen time"},
-    {"MDR", Command_MDR, ": Read maxim demand"},
-    {"PAR", Command_PAR, ": Read measure parameter"},
-    {"RTCR",Command_RTCR, ": Read meter RTC"},
-    {"RTCW",Command_RTCW, ": Write meter RTC"},
-    {"TOUR",Command_TOUR, ": Read meter TOU"},
-    {"TOUW",Command_TOUW, ": Write meter TOU"},
-    {"RST", Command_RST, ": System reset"},
-    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"}
-};
-
 
 // *****************************************************************************
 // *****************************************************************************
@@ -1522,10 +1592,12 @@ void APP_CONSOLE_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     app_consoleData.state = APP_CONSOLE_STATE_INIT;
+    app_consoleData.numCommands = sizeof(appCmdTbl)/sizeof(SYS_CMD_DESCRIPTOR);
 
-    if (!SYS_CMD_ADDGRP(appCmdTbl, sizeof(appCmdTbl)/sizeof(*appCmdTbl), "App Console", ": Metering console commands"))
+    if (!SYS_CMD_ADDGRP(appCmdTbl, app_consoleData.numCommands, "App Console", ": Metering console commands"))
     {
         SYS_CONSOLE_Print(SYS_CONSOLE_INDEX_0, "Failed to create APP Console Commands\r\n");
+        app_consoleData.numCommands = 0;
     }
     else
     {
@@ -2477,6 +2549,36 @@ void APP_CONSOLE_Tasks ( void )
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_HELP:
+        {
+            uint8_t idx;
+            uint8_t idxMax = 2;
+
+            if (app_consoleData.cmdNumToShowHelp > 0)
+            {
+                if (app_consoleData.cmdNumToShowHelp < 5)
+                {
+                    idxMax = app_consoleData.cmdNumToShowHelp;
+                }
+                
+                for (idx = 0; idx < idxMax; idx++, app_consoleData.pCmdDescToShowHelp++)
+                {
+                    SYS_CMD_PRINT("%s\t%s\n\r", app_consoleData.pCmdDescToShowHelp->cmdStr, 
+                            app_consoleData.pCmdDescToShowHelp->cmdDescr);
+                    app_consoleData.cmdNumToShowHelp--;
+                }
+            }
+            else
+            {
+                // All commands have been represented
+                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                break;                
+            }
+        
+            vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
             break;
         }
 
