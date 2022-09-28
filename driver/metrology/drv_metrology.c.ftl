@@ -542,7 +542,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
 {
     DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
 
-    if ((gDrvMetObj.inUse == true) && (metInit != NULL))
+    if ((gDrvMetObj.inUse == true) || (init != NULL))
     {
         return SYS_MODULE_OBJ_INVALID;
     }
@@ -1346,11 +1346,11 @@ bool DRV_METROLOGY_HarmonicAnalysisIsRun(void)
         
         if (controlMReq == statusMConf)
         {
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            return true;
         }
     }
     else

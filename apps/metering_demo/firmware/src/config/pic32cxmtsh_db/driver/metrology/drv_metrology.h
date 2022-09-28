@@ -256,7 +256,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void);
     Starts the metrology driver.  
 
   Description:
-    This routine shoud be called until the metrology library application running in the second processor is ready to be used.
+    This routine should be called until the metrology library application running in the second processor is ready to be used.
 
   Precondition:
     None.
@@ -1004,7 +1004,7 @@ void DRV_METROLOGY_StartCalibration(void);
 
   Description:
     Once the calibration process is started by calling DRV_METROLOGY_StartCalibration() routine, 
-    this funtion has to be called every integration period.
+    this function has to be called every integration period.
     The metrology driver internally sets the duration of the calibration process as 4 integration periods.
     CAL_M_Ix (X = A, B, C or N) and CAL_M_Vx (X = A, B or C) are used to calibrate 
     the current and voltage magnitudes of phase x. Calibration process is iterative, 
