@@ -199,9 +199,14 @@ extern "C" {
 /* Metrology Default Config: PULSE2_CTRL */
 #define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0
 /* Metrology Default Config: Waveform Capture */
-#define DRV_METROLOGY_CONF_WAVEFORM           0x0
+#define DRV_METROLOGY_CONF_WAVEFORM           0x300
 /* Metrology Default Config: Capture Buffer Size */
 #define DRV_METROLOGY_CAPTURE_BUF_SIZE        0
+
+/* Metrology Driver RTOS Configurations */
+#define DRV_METROLOGY_RTOS_STACK_SIZE         256
+#define DRV_METROLOGY_RTOS_TASK_PRIORITY      1
+
 
 
 // *****************************************************************************

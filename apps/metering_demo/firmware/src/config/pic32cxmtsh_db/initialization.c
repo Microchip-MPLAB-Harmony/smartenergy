@@ -318,12 +318,12 @@ void SYS_Initialize ( void* data )
 
     SUPC_Initialize();
 
-    RTC_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
     
+    RTC_Initialize();
+
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();
@@ -334,7 +334,7 @@ void SYS_Initialize ( void* data )
     sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
 
     /* Initialize Metrology Driver Instance */
-    DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
+    sysObj.drvMet = DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
     
 
     SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);

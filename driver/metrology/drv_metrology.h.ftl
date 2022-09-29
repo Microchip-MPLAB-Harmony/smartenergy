@@ -446,6 +446,41 @@ DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
 */
 DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
 
+/* Function:
+    SYS_MODULE_OBJ DRV_METROLOGY_Tasks (
+        SYS_MODULE_OBJ object
+    );
+
+  Summary:
+    Routine that performs the tasks necessary to maintain a state machine in 
+    the metrology driver. 
+
+  Description:
+    Routine that performs the tasks necessary to maintain a state machine in 
+    the metrology driver.
+
+  Precondition:
+    The low-level board initialization must have been completed and 
+    the module's initialization function must have been called before 
+    the system can call the tasks routine for any module.
+
+  Parameters:
+    object - Handle to the module instance
+
+  Returns:
+    None. 
+
+  Example:
+    <code>
+
+    DRV_METROLOGY_Tasks(sysObj.drvMet);
+    </code>
+
+  Remarks:
+    None. 
+*/
+void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
+
 // *****************************************************************************
 /* Function:
     DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl (void);

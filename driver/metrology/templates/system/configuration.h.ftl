@@ -36,3 +36,17 @@
 #define DRV_METROLOGY_CONF_WAVEFORM           0x${DRV_MET_CONF_WAVEFORM_CAPTURE?string}
 /* Metrology Default Config: Capture Buffer Size */
 #define DRV_METROLOGY_CAPTURE_BUF_SIZE        ${DRV_MET_CONF_CAPTURE_BUFFER_SIZE?string}
+
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    <#lt>/* Metrology Driver RTOS Configurations */
+    <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS == "FreeRTOS">
+        <#lt>#define DRV_METROLOGY_RTOS_STACK_SIZE         ${DRV_MET_RTOS_STACK_SIZE / 4}
+    <#else>
+        <#lt>#define DRV_METROLOGY_RTOS_STACK_SIZE         ${DRV_MET_RTOS_STACK_SIZE}
+    </#if>
+        <#lt>#define DRV_METROLOGY_RTOS_TASK_PRIORITY      ${DRV_MET_RTOS_TASK_PRIORITY}
+        <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS == "MicriumOSIII">
+            <#lt>#define DRV_METROLOGY_RTOS_TASK_MSG_QTY       ${DRV_MET_RTOS_TASK_MSG_QTY}u
+            <#lt>#define DRV_METROLOGY_RTOS_TASK_TIME_QUANTA   ${DRV_MET_RTOS_TASK_TIME_QUANTA}u
+    </#if>
+</#if>

@@ -89,6 +89,14 @@ void _SYS_FS_Tasks(  void *pvParameters  )
 }
 
 
+void _DRV_METROLOGY_Tasks(  void *pvParameters  )
+{
+    while(1)
+    {
+        DRV_METROLOGY_Tasks(sysObj.drvMet);
+    }
+}
+
 /* Handle for the APP_METROLOGY_Tasks. */
 TaskHandle_t xAPP_METROLOGY_Tasks;
 
@@ -198,6 +206,15 @@ void SYS_Tasks ( void )
         DRV_MEMORY_STACK_SIZE_IDX0,
         (void*)NULL,
         DRV_MEMORY_PRIORITY_IDX0,
+        (TaskHandle_t*)NULL
+    );
+
+
+    xTaskCreate( _DRV_METROLOGY_Tasks,
+        "DRV_METROLOGY_TASKS",
+        DRV_METROLOGY_RTOS_STACK_SIZE,
+        (void*)NULL,
+        DRV_METROLOGY_RTOS_TASK_PRIORITY,
         (TaskHandle_t*)NULL
     );
 

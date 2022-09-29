@@ -57,13 +57,13 @@
 #include "peripheral/pio/plib_pio.h"
 #include "driver/memory/drv_memory.h"
 #include "peripheral/supc/plib_supc.h"
-#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/tc/plib_tc0.h"
+#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "driver/sst26/drv_sst26.h"
 #include "peripheral/sefc/plib_sefc0.h"
-#include "peripheral/sefc/plib_sefc1.h"
 #include "system/time/sys_time.h"
+#include "peripheral/sefc/plib_sefc1.h"
 #include "peripheral/qspi/plib_qspi.h"
 #include "bsp/bsp.h"
 #include "system/fs/sys_fs.h"
@@ -74,11 +74,11 @@
 #include "system/fs/fat_fs/hardware_access/diskio.h"
 #include "system/console/sys_console.h"
 #include "system/console/src/sys_console_uart_definitions.h"
-#include "FreeRTOS.h"
-#include "task.h"
 #include "driver/metrology/drv_metrology_definitions.h"
 #include "driver/metrology/drv_metrology.h"
 #include "driver/metrology/drv_metrology_regs.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "system/int/sys_int.h"
 #include "system/cache/sys_cache.h"
 #include "system/reset/sys_reset.h"
@@ -219,6 +219,7 @@ typedef struct
     SYS_MODULE_OBJ  drvMemory0;
     SYS_MODULE_OBJ  sysConsole0;
 
+    SYS_MODULE_OBJ drvMet;
 
 } SYSTEM_OBJECTS;
 
