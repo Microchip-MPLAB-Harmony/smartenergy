@@ -83,7 +83,7 @@ OSAL_SEM_HANDLE_TYPE appConsoleStorageSemID;
 /* Local storage objects */
 static APP_ENERGY_ACCUMULATORS energyData;
 static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
-static DRV_METROLOGY_HARMONIC harmonicAnalysisData;
+static DRV_METROLOGY_HARMONICS_RMS harmonicAnalysisRMSData;
 
 /* Local Queue element to request Datalog operations */
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
@@ -207,7 +207,7 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
     OSAL_SEM_Post(&appConsoleSemID);
 }
 
-static void _harmonicAnalisysCallback(uint8_t harmonicNum)
+static void _harmonicAnalysisCallback(uint8_t harmonicNum)
 {
     app_consoleData.harmonicNumRequest = harmonicNum;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS;
@@ -1124,7 +1124,7 @@ static void Command_HRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
         }
-        // Response will be provided on _harmonicAnalisysCallback function
+        // Response will be provided on _harmonicAnalysisCallback function
     }
     else 
     {
@@ -1634,7 +1634,7 @@ void APP_CONSOLE_Tasks ( void )
                 APP_ENERGY_SetMaxDemandCallback(_maxDemandCallback, &maxDemandLocalObject);
                 
                 /* Initialize Metrology App callbacks */
-                APP_METROLOGY_SetHarmonicAnalysisCallback(_harmonicAnalisysCallback, &harmonicAnalysisData);
+                APP_METROLOGY_SetHarmonicAnalysisCallback(_harmonicAnalysisCallback, &harmonicAnalysisRMSData);
                 APP_METROLOGY_SetCalibrationCallback(_calibrationCallback);
 
                 if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
@@ -1714,6 +1714,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_IDLE:
         {
+            SYS_CMD_MESSAGE("\r\n");
             OSAL_SEM_Pend(&appConsoleSemID, OSAL_WAIT_FOREVER);
             break;
         }
@@ -2230,15 +2231,19 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\n\r");
 
             SYS_CMD_MESSAGE("Irms_Har_A(A)     Irms_Har_B(A)     Irms_Har_C(A)\n\r");
-            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisData.Irms_A_m, 
-                    harmonicAnalysisData.Irms_B_m, harmonicAnalysisData.Irms_C_m);
+            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisRMSData.Irms_A_m, 
+                    harmonicAnalysisRMSData.Irms_B_m, harmonicAnalysisRMSData.Irms_C_m);
+            
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
             
             SYS_CMD_MESSAGE("Irms_Har_N(A)     Vrms_Har_A(V)     Vrms_Har_B(V)\n\r");
-            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisData.Irms_N_m, 
-                    harmonicAnalysisData.Vrms_A_m, harmonicAnalysisData.Vrms_B_m);
+            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisRMSData.Irms_N_m, 
+                    harmonicAnalysisRMSData.Vrms_A_m, harmonicAnalysisRMSData.Vrms_B_m);
+            
+            vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
             
             SYS_CMD_MESSAGE("Vrms_Har_C(V)\n\r");
-            SYS_CMD_PRINT("%-19.3f%\n\r", harmonicAnalysisData.Vrms_C_m);
+            SYS_CMD_PRINT("%-19.3f\n\r", harmonicAnalysisRMSData.Vrms_C_m);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

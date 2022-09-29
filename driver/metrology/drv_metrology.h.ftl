@@ -355,6 +355,10 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK
 DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback);
 </#if>
 
+DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CALIBRATION_CALLBACK callback);
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback);
+
 // *****************************************************************************
 /* Function:
     DRV_METROLOGY_STATE DRV_METROLOGY_GetState (void);
@@ -727,42 +731,6 @@ void DRV_METROLOGY_SetControl(DRV_METROLOGY_CONTROL * pControl);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_UpdateMeasurements(void);
-
-  Summary:
-    Updates the RMS values, metrology events and AFE energy value.
-
-  Description:
-    This function is used to obtain the RMS values and the metrology events from the control and accumulator registers of the metrology library. AFE energy value is also calculated and updated. 
-    Control and Accumulator registers are updated by the metrology library application once per an integration period.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    None. 
-
-  Example:
-    <code>
-        case APP_METROLOGY_STATE_RUNNING:
-        {
-            // Wait for the metrology semaphore to get measurements at the end of the integration period.
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-            DRV_METROLOGY_UpdateMeasurements();
-        }
-    </code>
-
-  Remarks:
-    None. 
-*/
-void DRV_METROLOGY_UpdateMeasurements(void);
-
-// *****************************************************************************
-/* Function:
     uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy);
 
   Summary:
@@ -966,10 +934,11 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData (void);
+    DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void);
 
   Summary:
-    Get the pointer to the data used in the internal calibration process of the metrology library. 
+    Get the pointer to the calibration references used in the internal
+    calibration process of the metrology library. 
 
   Description:
     These internal calibration values are used to obtain the RMS values correctly. 
@@ -988,29 +957,29 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
     <code>
         void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration)
         {
-            DRV_METROLOGY_CALIBRATION * pCalibrationData;
+            DRV_METROLOGY_CALIBRATION_REFS * pCalibrationRefs;
 
-            pCalibrationData = DRV_METROLOGY_GetCalibrationData();
-
-            pCalibrationData->references.aimIA = calibration->aimIA;
-            pCalibrationData->references.aimVA = calibration->aimVA;
-            pCalibrationData->references.angleA = calibration->angleA;
-            pCalibrationData->references.aimIB = calibration->aimIB;
-            pCalibrationData->references.aimVB = calibration->aimVB;
-            pCalibrationData->references.angleB = calibration->angleB;
-            pCalibrationData->references.aimIC = calibration->aimIC;
-            pCalibrationData->references.aimVC = calibration->aimVC;
-            pCalibrationData->references.angleC = calibration->angleC;
-            pCalibrationData->references.lineId = calibration->lineId;
+            pCalibrationRefs = DRV_METROLOGY_GetCalibrationReferences();
+            pCalibrationRefs->aimIA = calibration->aimIA;
+            pCalibrationRefs->aimVA = calibration->aimVA;
+            pCalibrationRefs->angleA = calibration->angleA;
+            pCalibrationRefs->aimIB = calibration->aimIB;
+            pCalibrationRefs->aimVB = calibration->aimVB;
+            pCalibrationRefs->angleB = calibration->angleB;
+            pCalibrationRefs->aimIC = calibration->aimIC;
+            pCalibrationRefs->aimVC = calibration->aimVC;
+            pCalibrationRefs->angleC = calibration->angleC;
+            pCalibrationRefs->lineId = calibration->lineId;
 
             app_metrologyData.state = APP_METROLOGY_STATE_CHECK_CALIBRATION;
+            DRV_METROLOGY_StartCalibration();
         }
     </code>
 
   Remarks:
     None. 
 */
-DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData(void);
+DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences(void);
 
 // *****************************************************************************
 /* Function:
@@ -1054,166 +1023,6 @@ void DRV_METROLOGY_StartCalibration(void);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_UpdateCalibration(void);
-
-  Summary:
-    Performs the internal calibration process. 
-
-  Description:
-    Once the calibration process is started by calling DRV_METROLOGY_StartCalibration() routine, 
-    this funtion has to be called every integration period.
-    The metrology driver internally sets the duration of the calibration process as 4 integration periods.
-    CAL_M_Ix (X = A, B, C or N) and CAL_M_Vx (X = A, B or C) are used to calibrate 
-    the current and voltage magnitudes of phase x. Calibration process is iterative, 
-    using prior or old magnitude calibration factors to perform the next calibration cycle.
-    CAL_PH_Ix(x = A, B, C or N) and CAL_PH_Vx(x = A, B or C) are used to align 
-    the phase delays between each pair of current and voltage channels, and also 
-    to optionally equalize the phase delays between voltage channels. 
-    All phase shift coefficients used by the metrology library must be normalized to 
-    equivalent linear-phase shift amounts at 60Hz.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    None. 
-
-  Example:
-    <code>
-        case APP_METROLOGY_STATE_CHECK_CALIBRATION:
-        {
-            // Wait for the metrology semaphore to get measurements at the end of the integration period. 
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-            DRV_METROLOGY_UpdateCalibration();
-
-            if (DRV_METROLOGY_CalibrationIsCompleted())
-            {
-                bool result = DRV_METROLOGY_GetCalibrationResult();
-
-                if (app_metrologyData.pCalibrationCallback)
-                {
-                    app_metrologyData.pCalibrationCallback(result);
-                }
-
-                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-            }
-
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            break;
-        } 
-    </code>
-
-  Remarks:
-    None. 
-*/
-void DRV_METROLOGY_UpdateCalibration(void);
-
-// *****************************************************************************
-/* Function:
-    bool DRV_METROLOGY_CalibrationIsCompleted(void);
-
-  Summary:
-    Checks if the calibration process is finished. 
-
-  Description:
-    This routine should be called to know if the calibration process is finished.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    True if the calibration process has been completed, otherwise False.. 
-
-  Example:
-    <code>
-        case APP_METROLOGY_STATE_CHECK_CALIBRATION:
-        {
-            // Wait for the metrology semaphore to get measurements at the end of the integration period. 
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-            DRV_METROLOGY_UpdateCalibration();
-
-            if (DRV_METROLOGY_CalibrationIsCompleted())
-            {
-                bool result = DRV_METROLOGY_GetCalibrationResult();
-
-                if (app_metrologyData.pCalibrationCallback)
-                {
-                    app_metrologyData.pCalibrationCallback(result);
-                }
-
-                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-            }
-
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            break;
-        } 
-    </code>
-
-  Remarks:
-    None. 
-*/
-bool DRV_METROLOGY_CalibrationIsCompleted(void);
-
-// *****************************************************************************
-/* Function:
-    bool DRV_METROLOGY_GetCalibrationResult(void);
-
-  Summary:
-    Gets the result of the calibration process. 
-
-  Description:
-    This routine should be used to check if the calibration process has been completed successfully.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    True if at least 1 phase has been calibrated successfully, otherwise False. 
-
-  Example:
-    <code>
-        case APP_METROLOGY_STATE_CHECK_CALIBRATION:
-        {
-            // Wait for the metrology semaphore to get measurements at the end of the integration period. 
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-            DRV_METROLOGY_UpdateCalibration();
-
-            if (DRV_METROLOGY_CalibrationIsCompleted())
-            {
-                bool result = DRV_METROLOGY_GetCalibrationResult();
-
-                if (app_metrologyData.pCalibrationCallback)
-                {
-                    app_metrologyData.pCalibrationCallback(result);
-                }
-
-                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-            }
-
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            break;
-        } 
-    </code>
-
-  Remarks:
-    None. 
-*/
-bool DRV_METROLOGY_GetCalibrationResult(void);
-
-// *****************************************************************************
-/* Function:
     void DRV_METROLOGY_StartHarmonicAnalysis(
         uint8_t harmonicNum, 
         DRV_METROLOGY_HARMONIC *pHarmonicResponse
@@ -1248,101 +1057,7 @@ bool DRV_METROLOGY_GetCalibrationResult(void);
   Remarks:
     None. 
 */
-void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse);
-
-// *****************************************************************************
-/* Function:
-    bool DRV_METROLOGY_HarmonicAnalysisIsRun(void);
-
-  Summary:
-    Checks if the Harmonic analysis is finished.
-
-  Description:
-    This routine should be called to know if the Harmonic analysis is finished.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    This routine should be called to know if the Harmonic analysis is finished. 
-
-  Example:
-    <code>
-        bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
-        {
-            if (DRV_METROLOGY_HarmonicAnalysisIsRun())
-            {
-                return false;
-            }
-
-            if (app_metrologyData.pHarmonicAnalisysCallback == NULL)
-            {
-                return false;
-            }
-
-            if (app_metrologyData.pHarmonicAnalysisResponse == NULL)
-            {
-                return false;
-            }
-
-            app_metrologyData.harmonicAnalysisPending = true;
-            app_metrologyData.harmonicAnalysisNum = harmonicNum;
-
-            DRV_METROLOGY_StartHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
-
-            return true;
-        }
-    </code>
-
-  Remarks:
-    None. 
-*/
-bool DRV_METROLOGY_HarmonicAnalysisIsRun(void);
-
-// *****************************************************************************
-/* Function:
-    bool DRV_METROLOGY_GetHarmonicAnalysisResult(void);
-
-  Summary:
-    Gets the result of the Harmonic analysis. 
-
-  Description:
-    This routine should be used to check if the Harmonic analysis has been completed successfully.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    True if the Harmonic analysis has been completed successfully, otherwise False. 
-
-  Example:
-    <code>
-        case APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS:
-        {
-            if (DRV_METROLOGY_GetHarmonicAnalysisResult())
-            {
-                app_metrologyData.harmonicAnalysisPending = false;
-
-                app_metrologyData.pHarmonicAnalisysCallback(app_metrologyData.harmonicAnalysisNum);
-            }
-
-            app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-
-            vTaskDelay(10 / portTICK_PERIOD_MS);
-            break;
-        }
-    </code>
-
-  Remarks:
-    None. 
-*/
-bool DRV_METROLOGY_GetHarmonicAnalysisResult(void);
+void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse);
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }

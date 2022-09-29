@@ -68,6 +68,8 @@
 // *****************************************************************************
 // *****************************************************************************
 typedef void (* DRV_METROLOGY_CALLBACK)(void);
+typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
+typedef void (* DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK) (uint8_t harmonicNum);          
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
@@ -194,6 +196,32 @@ typedef struct {
     bool  result;
 } DRV_METROLOGY_CALIBRATION;
 
+/* Metrology Driver Harmonic Data
+
+  Summary:
+    Identifies the result of the Harmonic Analysis process.
+
+  Description:
+    - Irms_X_m. RMS current value obtained as the result of last the harmonic analysis regarding channel X.
+    - Irms_N_m. RMS current value obtained as the result of last the harmonic analysis regarding neutral channel.
+    - Vrms_X_m. RMS voltage value obtained as the result of last the harmonic analysis regarding channel X.
+*/
+typedef struct {
+    double Irms_A_m;
+    double Irms_B_m;
+    double Irms_C_m;
+    double Irms_N_m;
+    double Vrms_A_m;
+    double Vrms_B_m;
+    double Vrms_C_m;
+} DRV_METROLOGY_HARMONICS_RMS;
+
+typedef struct {
+    DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
+    uint8_t harmonicNum;
+    bool  running;
+} DRV_METROLOGY_HARMONIC_ANALYSIS;
+
 /* Metrology Driver AFE Events
 
   Summary:
@@ -223,26 +251,6 @@ typedef struct {
     uint32_t swellC : 1;
     uint32_t reserved2 : 17;
 } DRV_METROLOGY_AFE_EVENTS;
-
-/* Metrology Driver Harmonic Data
-
-  Summary:
-    Identifies the result of the Harmonic Analysis process.
-
-  Description:
-    - Irms_X_m. RMS current value obtained as the result of last the harmonic analysis regarding channel X.
-    - Irms_N_m. RMS current value obtained as the result of last the harmonic analysis regarding neutral channel.
-    - Vrms_X_m. RMS voltage value obtained as the result of last the harmonic analysis regarding channel X.
-*/
-typedef struct {
-    double Irms_A_m;
-    double Irms_B_m;
-    double Irms_C_m;
-    double Irms_N_m;
-    double Vrms_A_m;
-    double Vrms_B_m;
-    double Vrms_C_m;
-} DRV_METROLOGY_HARMONIC;
 
 /* Metrology Driver RMS type
 
@@ -391,40 +399,46 @@ typedef struct {
 typedef struct
 {
     /* Flag to indicate this object is in use */
-    bool                            inUse;
+    bool                                          inUse;
 
     /* The status of the driver */
-    SYS_STATUS                      status;
+    SYS_STATUS                                    status;
 
     /* State of the metrology driver  */
-    volatile DRV_METROLOGY_STATE    state;
+    volatile DRV_METROLOGY_STATE                  state;
 
     /* Size (in Bytes) of the PLC binary file */
-    uint32_t                        binSize;
+    uint32_t                                      binSize;
 
     /* Address where PLC binary file is located */
-    uint32_t                        binStartAddress;
+    uint32_t                                      binStartAddress;
 
     /* Metrology Control interface */
-    MET_REGISTERS *                 metRegisters;
+    MET_REGISTERS *                               metRegisters;
 
     /* Metrology Accumulated Output Data */
-    DRV_METROLOGY_ACCUMULATORS      metAccData;
+    DRV_METROLOGY_ACCUMULATORS                    metAccData;
 
     /* Metrology Harmonic Analysis Output Data */
-    DRV_METROLOGY_HARMONICS         metHarData;
+    DRV_METROLOGY_HARMONICS                       metHarData;
 
     /* Metrology Analog Front End Data */
-    DRV_METROLOGY_AFE_DATA          metAFEData;
+    DRV_METROLOGY_AFE_DATA                        metAFEData;
 
     /* Metrology Calibration interface */
-    DRV_METROLOGY_CALIBRATION       metCalibration;
+    DRV_METROLOGY_CALIBRATION                     calibrationData;
     
     /* Harmonic Analysis Data */
-    DRV_METROLOGY_HARMONIC *        pHarmonicAnalysisResponse;
+    DRV_METROLOGY_HARMONIC_ANALYSIS               harmonicAnalysisData;
 
     /* IPC metrology lib integration Callback */
-    DRV_METROLOGY_CALLBACK          newIntegrationCallback;
+    DRV_METROLOGY_CALLBACK                        integrationCallback;
+
+    /* Calibration Process Callback */
+    DRV_METROLOGY_CALIBRATION_CALLBACK            calibrationCallback;
+
+    /* Harmonic Analysis Callback */
+    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK      harmonicAnalysisCallback;
 
 } DRV_METROLOGY_OBJ;
 

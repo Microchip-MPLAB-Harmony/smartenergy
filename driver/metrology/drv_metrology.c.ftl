@@ -46,12 +46,17 @@
 #include "system/int/sys_int.h"
 #include "drv_metrology.h"
 #include "drv_metrology_definitions.h"
+#include "osal/osal.h"
 
 #include "peripheral/pio/plib_pio.h"
 
 #ifdef __cplusplus // Provide C++ Compatibility
     extern "C" {
 #endif
+        
+/* Define a semaphore to signal the Metrology Tasks to process new integration
+ * data */
+OSAL_SEM_DECLARE(drvMetrologySemID);
 
 typedef enum {
     PENERGY = 0,
@@ -263,10 +268,12 @@ void IPC1_Handler (void)
     }
 
 </#if>
-
     IPC1_REGS->IPC_IDCR = status;
     IPC1_REGS->IPC_ICCR = status;
     IPC1_REGS->IPC_IECR = status;
+    
+    /* Signal Metrology thread to update measurements for an integration period */
+    OSAL_SEM_PostISR(&drvMetrologySemID);
 }
 
 static uint32_t _DRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
@@ -522,7 +529,7 @@ static uint32_t _DRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     while (correction_angle > 180000 ) {
         correction_angle -= 360000;
     }
-    correction_angle = (correction_angle * 7158278827) / gDrvMetObj.metCalibration.freq;
+    correction_angle = (correction_angle * 7158278827) / gDrvMetObj.calibrationData.freq;
     correction_angle = (correction_angle + 50) / 100;
     m = (uint64_t)(abs(correction_angle));
     if (correction_angle < 0) {
@@ -532,347 +539,7 @@ static uint32_t _DRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     return (uint32_t)m;
 }
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Interface
-// *****************************************************************************
-// *****************************************************************************
-
-SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetCause)
-{
-    DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
-
-    if ((gDrvMetObj.inUse == true) || (init != NULL))
-    {
-        return SYS_MODULE_OBJ_INVALID;
-    }
-
-    /* Disable IPC interrupts */
-    SYS_INT_SourceDisable(IPC1_IRQn);
-
-    if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
-    {
-        uint32_t tmp;
-
-        /* Assert reset of the coprocessor and its peripherals */
-        tmp = RSTC_REGS->RSTC_MR;
-        tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
-        RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
-        
-        /* Disable coprocessor Clocks */
-        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
-        
-        /* Disable coprocessor peripheral clocks */
-        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPBMCK_Msk;
-        
-        gDrvMetObj.binStartAddress = metInit->binStartAddress;
-        gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
-
-        gDrvMetObj.status = SYS_STATUS_UNINITIALIZED;
-
-        /* De-assert reset of the coprocessor peripherals */
-        RSTC_REGS->RSTC_MR |= RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk;
-        
-        /* Enable coprocessor peripheral clocks */
-        PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
-        
-        /* Copy the Metrology bin file to SRAM1 */
-        memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
-    }
-
-    /* Initialization of the interface with Metrology Lib */
-    gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
-    gDrvMetObj.inUse = true;
-    gDrvMetObj.newIntegrationCallback = NULL;
-
-    memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_ACCUMULATORS));
-    memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_HARMONICS));
-    memset(&gDrvMetObj.metCalibration, 0, sizeof(DRV_METROLOGY_CALIBRATION));
-    memset(&gDrvMetObj.metAFEData, 0, sizeof(DRV_METROLOGY_AFE_DATA));
-
-    /* Initialization of the Metrology object */
-    gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
-    gDrvMetObj.status = SYS_STATUS_READY;
-
-    /* Configure IPC peripheral */
-    _DRV_Metrology_IpcInitialize();
-
-    return 0;
-}
-
-DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
-{
-    if (gDrvMetObj.inUse == false)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    if (gDrvMetObj.state != DRV_METROLOGY_STATE_HALT)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    /* Enable IPC1 Interrupt Source */
-    SYS_INT_SourceStatusClear(IPC1_IRQn);
-    SYS_INT_SourceEnable(IPC1_IRQn);
-
-    if (mode == DRV_METROLOGY_START_HARD)
-    {
-        /* De-assert the reset of the coprocessor (Core 1) */
-        RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPROCEN_Msk);
-
-        /* Enable the coprocessor clock (Core 1) */
-        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
-
-        /* Wait IPC Init interrupt */
-        while(gDrvMetObj.state != DRV_METROLOGY_STATE_INIT_DSP);
-
-        /* Keep Metrology Lib in reset */
-        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
-
-        /* Load default Control values */
-        memcpy(&gDrvMetObj.metRegisters->MET_CONTROL, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
-
-        /* Set Metrology Lib state as Init */
-        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
-    }
-
-    return DRV_METROLOGY_SUCCESS;
-}
-
-DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
-{
-    if (gDrvMetObj.inUse == false)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    /* Disable IPC1 Interrupt Source */
-    SYS_INT_SourceDisable(IPC1_IRQn);
-    NVIC_ClearPendingIRQ(IPC1_IRQn);
-    
-    /* BOARD == PIC32CXMTSH_DB ***********************************/
-    /* Disable EMAFE clock */
-    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_PID(ID_EMAFE);
-    /* Put ATSense into hardware RESET */
-    PIO_PortClear(PIO_PORT_D, (_UINT32_(1) << 30));
-    /*************************************************************/
-    /* Disable ATSense clock */
-    PMC_REGS->PMC_SCDR |= PMC_SCDR_PCK2_Msk;
-    
-    /* Update Driver state */
-    gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
-    gDrvMetObj.status = SYS_STATUS_BUSY;
-    
-    return DRV_METROLOGY_SUCCESS;
-
-}
-
-DRV_METROLOGY_RESULT DRV_METROLOGY_Start (void)
-{
-    if (gDrvMetObj.metRegisters->MET_STATUS.STATUS == STATUS_STATUS_READY)
-    {
-        /* Set Metrology Lib state as Run */
-        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RUN_Val;
-
-        return DRV_METROLOGY_SUCCESS;
-    }
-
-    return DRV_METROLOGY_ERROR;
-}
-
-DRV_METROLOGY_STATE DRV_METROLOGY_GetState (void)
-{
-    return (DRV_METROLOGY_STATE)gDrvMetObj.metRegisters->MET_STATUS.STATUS;
-}
-
-DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister (DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.newIntegrationCallback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.FullCycleCallback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.HalfCycleCallback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.ZeroCrossCallback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-<#if DRV_MET_PULSE_0 == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.Pulse0Callback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-<#if DRV_MET_PULSE_1 == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.Pulse1Callback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-<#if DRV_MET_PULSE_2 == true>  
-DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback)
-{
-    if (callback == NULL)
-    {
-        return DRV_METROLOGY_ERROR;
-    }
-
-    gDrvMetObj.Pulse2Callback = callback;
-    return DRV_METROLOGY_SUCCESS;
-}
-
-</#if>
-void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
-{
-    
-}
-
-DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus (void)
-{
-    return &gDrvMetObj.metRegisters->MET_STATUS;
-}
-
-DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl (void)
-{
-    return &gDrvMetObj.metRegisters->MET_CONTROL;
-}
-
-DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
-{
-    return (DRV_METROLOGY_CONTROL *)&gDrvMetControlDefault;
-}
-
-DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData (void)
-{
-    return &gDrvMetObj.metAccData;
-}
-
-DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData (void)
-{
-    return &gDrvMetObj.metHarData;
-}
-
-DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData (void)
-{
-    return &gDrvMetObj.metCalibration;
-}
-
-void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
-{
-    DRV_METROLOGY_CONTROL * pDstControl;
-
-    pDstControl = &gDrvMetObj.metRegisters->MET_CONTROL;
-
-    pDstControl->FEATURE_CTRL0 = pControl->FEATURE_CTRL0;
-    pDstControl->FEATURE_CTRL1 = pControl->FEATURE_CTRL1;
-    pDstControl->METER_TYPE = pControl->METER_TYPE;
-    pDstControl->M = pControl->M;
-    pDstControl->N_MAX = pControl->N_MAX;
-    pDstControl->PULSE0_CTRL = pControl->PULSE0_CTRL;
-    pDstControl->PULSE1_CTRL = pControl->PULSE1_CTRL;
-    pDstControl->PULSE2_CTRL = pControl->PULSE2_CTRL;
-    pDstControl->P_K_t = pControl->P_K_t;
-    pDstControl->Q_K_t = pControl->Q_K_t;
-    pDstControl->I_K_t = pControl->I_K_t;
-    pDstControl->CREEP_THRESHOLD_P = pControl->CREEP_THRESHOLD_P;
-    pDstControl->CREEP_THRESHOLD_Q = pControl->CREEP_THRESHOLD_Q;
-    pDstControl->CREEP_THRESHOLD_I = pControl->CREEP_THRESHOLD_I;
-    pDstControl->POWER_OFFSET_CTRL = pControl->POWER_OFFSET_CTRL;
-    pDstControl->POWER_OFFSET_P = pControl->POWER_OFFSET_P;
-    pDstControl->POWER_OFFSET_Q = pControl->POWER_OFFSET_Q;
-    pDstControl->SWELL_THRESHOLD_VA = pControl->SWELL_THRESHOLD_VA;
-    pDstControl->SWELL_THRESHOLD_VB = pControl->SWELL_THRESHOLD_VB;
-    pDstControl->SWELL_THRESHOLD_VC = pControl->SWELL_THRESHOLD_VC;
-    pDstControl->SAG_THRESHOLD_VA = pControl->SAG_THRESHOLD_VA;
-    pDstControl->SAG_THRESHOLD_VB = pControl->SAG_THRESHOLD_VB;
-    pDstControl->SAG_THRESHOLD_VC = pControl->SAG_THRESHOLD_VC;
-    pDstControl->K_IA = pControl->K_IA;
-    pDstControl->K_VA = pControl->K_VA;
-    pDstControl->K_IB = pControl->K_IB;
-    pDstControl->K_VB = pControl->K_VB;
-    pDstControl->K_IC = pControl->K_IC;
-    pDstControl->K_VC = pControl->K_VC;
-    pDstControl->K_IN = pControl->K_IN;
-    pDstControl->CAL_M_IA = pControl->CAL_M_IA;
-    pDstControl->CAL_M_VA = pControl->CAL_M_VA;
-    pDstControl->CAL_M_IB = pControl->CAL_M_IB;
-    pDstControl->CAL_M_VB = pControl->CAL_M_VB;
-    pDstControl->CAL_M_IC = pControl->CAL_M_IC;
-    pDstControl->CAL_M_VC = pControl->CAL_M_VC;
-    pDstControl->CAL_M_IN = pControl->CAL_M_IN;
-    pDstControl->CAL_PH_IA = pControl->CAL_PH_IA;
-    pDstControl->CAL_PH_VA = pControl->CAL_PH_VA;
-    pDstControl->CAL_PH_IB = pControl->CAL_PH_IB;
-    pDstControl->CAL_PH_VB = pControl->CAL_PH_VB;
-    pDstControl->CAL_PH_IC = pControl->CAL_PH_IC;
-    pDstControl->CAL_PH_VC = pControl->CAL_PH_VC;
-    pDstControl->CAL_PH_IN = pControl->CAL_PH_IN;
-    pDstControl->CAPTURE_CTRL = pControl->CAPTURE_CTRL;
-    pDstControl->ATSENSE_CTRL_20_23 = pControl->ATSENSE_CTRL_20_23;
-    pDstControl->ATSENSE_CTRL_24_27 = pControl->ATSENSE_CTRL_24_27;
-    pDstControl->ATSENSE_CTRL_28_2B = pControl->ATSENSE_CTRL_28_2B;
-    pDstControl->POWER_OFFSET_P_A = pControl->POWER_OFFSET_P_A;
-    pDstControl->POWER_OFFSET_P_B = pControl->POWER_OFFSET_P_B;
-    pDstControl->POWER_OFFSET_P_C = pControl->POWER_OFFSET_P_C;
-    pDstControl->POWER_OFFSET_Q_A = pControl->POWER_OFFSET_Q_A;
-    pDstControl->POWER_OFFSET_Q_B = pControl->POWER_OFFSET_Q_B;
-    pDstControl->POWER_OFFSET_Q_C = pControl->POWER_OFFSET_Q_C;
-}
-
-void DRV_METROLOGY_UpdateMeasurements(void)
+static void _DRV_METROLOGY_UpdateMeasurements(void)
 {
     uint32_t *afeRMS = NULL;
     uint32_t stateFlagReg;
@@ -942,237 +609,12 @@ void DRV_METROLOGY_UpdateMeasurements(void)
 
 }
 
-uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
-{
-    uint32_t energy = gDrvMetObj.metAFEData.energy;
-
-    if (restartEnergy)
-    {
-        gDrvMetObj.metAFEData.energy = 0;
-    }
-
-    return energy;
-}
-
-uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type)
-{
-    return gDrvMetObj.metAFEData.RMS[type];
-}
-
-DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
-{
-    DRV_METROLOGY_RMS_SIGN sign;
-
-    sign = RMS_SIGN_POSITIVE;
-
-    if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.paDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_PB) && (gDrvMetObj.metAFEData.afeEvents.pbDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_PC) && (gDrvMetObj.metAFEData.afeEvents.pcDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_PT) && (gDrvMetObj.metAFEData.afeEvents.ptDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_QA) && (gDrvMetObj.metAFEData.afeEvents.qaDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_QB) && (gDrvMetObj.metAFEData.afeEvents.qbDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_QC) && (gDrvMetObj.metAFEData.afeEvents.qcDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.qtDir))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-    else if ((type >= RMS_ANGLEA) && (gDrvMetObj.metAFEData.RMS[type] & 0x80000000))
-    {
-        sign = RMS_SIGN_NEGATIVE;
-    }
-
-    return sign;
-}
-
-void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
-{
-    uint64_t m;
-    DRV_METROLOGY_CONTROL *pControl;
-    uint32_t i;
-    uint32_t restoreCaptureBuffSize;
-    uint32_t restoreCaptureAddress;
-    uint32_t restoreCaptureControl;
-    uint32_t reg;
-    
-    /* Store Calibration parameters */
-    gDrvMetObj.metCalibration.freq = config->freq;
-
-    pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
-
-    restoreCaptureBuffSize = pControl->CAPTURE_BUFF_SIZE;
-    restoreCaptureAddress = pControl->CAPTURE_ADDR;
-    restoreCaptureControl = pControl->CAPTURE_CTRL;
-
-    /* Load default Control values */
-    memcpy(pControl, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
-
-    m = 1000000000 / (config->mc);
-    m = (m << GAIN_P_K_T_Q);
-    m = m / 1000000;
-
-    pControl->P_K_t = (uint32_t)m;
-    pControl->Q_K_t = (uint32_t)m;
-    pControl->I_K_t = (uint32_t)m;
-
-    reg = pControl->METER_TYPE;
-    reg &= ~(METER_TYPE_SENSOR_TYPE_I_A_Msk | METER_TYPE_SENSOR_TYPE_I_B_Msk | METER_TYPE_SENSOR_TYPE_I_C_Msk);
-    reg |= METER_TYPE_SENSOR_TYPE_I_A(config->st) |
-            METER_TYPE_SENSOR_TYPE_I_B(config->st) | METER_TYPE_SENSOR_TYPE_I_C(config->st);
-    pControl->METER_TYPE = reg;
-
-    reg = pControl->ATSENSE_CTRL_20_23;
-    reg &= ~(ATSENSE_CTRL_20_23_I0_GAIN_Msk | ATSENSE_CTRL_20_23_I1_GAIN_Msk | ATSENSE_CTRL_20_23_I2_GAIN_Msk);
-    reg |= ATSENSE_CTRL_20_23_I0_GAIN(config->gain) |
-            ATSENSE_CTRL_20_23_I1_GAIN(config->gain) | ATSENSE_CTRL_20_23_I2_GAIN(config->gain);
-    pControl->ATSENSE_CTRL_20_23 = reg;
-
-    reg = pControl->ATSENSE_CTRL_24_27;
-    reg &= ~(ATSENSE_CTRL_24_27_I3_GAIN_Msk);
-    reg |= ATSENSE_CTRL_24_27_I3_GAIN(config->gain);
-    pControl->ATSENSE_CTRL_24_27 = reg;
-
-    if (config->st == SENSOR_CT)
-    {
-        double div;
-        double res;
-        
-        m = config->tr * 1000000; /* improve accuracy * (ohm -> uohm) */
-        div = config->rl * 1000000; /* improve accuracy * (ohm -> uohm) */
-        div *= (1 << config->gain);
-        res = m / div;
-        res *= (1 << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t) res;
-    } 
-    else if (config->st == SENSOR_ROGOWSKI) 
-    {
-        double res;
-        double div;
-        
-        res = 1000000 / config->tr;
-        div = 60 / config->freq; 
-        res = res / ((1 << config->gain) * div);
-        res *= (1 << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t) res;
-    } 
-    else if (config->st == SENSOR_SHUNT) 
-    {
-        m = 1000000; /* (uOhm -> Ohm) */
-        reg = (1 << config->gain) * config->rl;
-        m = m / reg; /* (ohm -> mohm) */
-        m = (m << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t)(m);
-    }
-
-    pControl->K_IA = i;
-    pControl->K_IB = i;
-    pControl->K_IC = i;
-    pControl->K_IN = i;
-
-    i = (config->ku) << GAIN_VI_Q; /* format Q22.10 */
-    pControl->K_VA = i;
-    pControl->K_VB = i;
-    pControl->K_VC = i;
-
-    /* Restore Capture Buffer */
-    pControl->CAPTURE_ADDR = restoreCaptureAddress;
-    pControl->CAPTURE_BUFF_SIZE = restoreCaptureBuffSize;
-    pControl->CAPTURE_CTRL = restoreCaptureControl;
-
-    /* Set Metrology Lib state as Init */
-    pControl->STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
-}
-
-void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
-{
-    *events = gDrvMetObj.metAFEData.afeEvents;
-}
-
-void DRV_METROLOGY_StartCalibration(void)
-{
-    DRV_METROLOGY_CALIBRATION * pCalibrationData;
-    DRV_METROLOGY_CONTROL * pMetControlRegs;
-    
-    pCalibrationData = &gDrvMetObj.metCalibration;
-    pMetControlRegs = &gDrvMetObj.metRegisters->MET_CONTROL;
-    
-    /* Set the number of integration periods to improve the accuracy of the calibration */
-    pCalibrationData->numIntegrationPeriods = 4;
-    
-    /* Save FEATURE_CTRL0 register value, to be restored after calibration */
-    pCalibrationData->featureCtrl0Backup = pMetControlRegs->FEATURE_CTRL0;
-    
-    /* Init Accumulators */
-    pCalibrationData->dspAccIa = 0;
-    pCalibrationData->dspAccIb = 0;
-    pCalibrationData->dspAccIc = 0;
-    pCalibrationData->dspAccIn = 0;
-    pCalibrationData->dspAccUa = 0;
-    pCalibrationData->dspAccUb = 0;
-    pCalibrationData->dspAccUc = 0;
-    pCalibrationData->dspAccPa = 0;
-    pCalibrationData->dspAccPb = 0;
-    pCalibrationData->dspAccPc = 0;
-    pCalibrationData->dspAccQa = 0;
-    pCalibrationData->dspAccQb = 0;
-    pCalibrationData->dspAccQc = 0;
-    
-    /* Initialize calibration registers to the default values */
-    switch (pCalibrationData->references.lineId)
-    {
-        case PHASE_A:
-            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
-                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk;
-            break;
-            
-        case PHASE_B:
-            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V2_Val) | 
-                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_B_Val) | FEATURE_CTRL0_PHASE_B_EN_Msk;
-            break;
-            
-        case PHASE_C:
-            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V3_Val) | 
-                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_C_Val) | FEATURE_CTRL0_PHASE_C_EN_Msk;
-            break;
-            
-        case PHASE_T:
-            pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
-                    FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk |
-                    FEATURE_CTRL0_PHASE_B_EN_Msk | FEATURE_CTRL0_PHASE_C_EN_Msk;
-            break;
-            
-    }
-    
-    pCalibrationData->running = true;
-    pCalibrationData->result = false;
-}
-
-void DRV_METROLOGY_UpdateCalibration(void)
+static bool _DRV_METROLOGY_UpdateCalibrationValues(void)
 {
     DRV_METROLOGY_CALIBRATION * pCalibrationData;
     DRV_METROLOGY_ACCUMULATORS * pMetAccRegs;
     
-    pCalibrationData = &gDrvMetObj.metCalibration;
+    pCalibrationData = &gDrvMetObj.calibrationData;
     pMetAccRegs = &gDrvMetObj.metRegisters->MET_ACCUMULATORS;
     
     if (pCalibrationData->numIntegrationPeriods)
@@ -1192,6 +634,8 @@ void DRV_METROLOGY_UpdateCalibration(void)
         pCalibrationData->dspAccQa += pMetAccRegs->Q_A;
         pCalibrationData->dspAccQb += pMetAccRegs->Q_B;
         pCalibrationData->dspAccQc += pMetAccRegs->Q_C;
+        
+        return false;
     }
     else
     {
@@ -1304,117 +748,60 @@ void DRV_METROLOGY_UpdateCalibration(void)
         
         /* Calibration has been completed */
         pCalibrationData->running = false;
+        
+        return true;
     }
 }
 
-bool DRV_METROLOGY_CalibrationIsCompleted(void)
+static bool _DRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
 {
-    if (gDrvMetObj.metCalibration.running)
-    {
-        return false;
-    }
-        
-    return true;
-}
+    uint32_t controlMReq;
+    uint32_t statusMConf;
 
-bool DRV_METROLOGY_GetCalibrationResult(void)
-{
-    return gDrvMetObj.metCalibration.result;
-}
+    controlMReq = (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+    controlMReq >>= FEATURE_CTRL1_HARMONIC_m_REQ_Pos;
 
-void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONIC *pHarmonicResponse)
-{
-    /* Set Data pointer to store the Harmonic data result */
-    gDrvMetObj.pHarmonicAnalysisResponse = pHarmonicResponse;
-    
-    /* Set Number of Harmonic for Analysis */
-    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
-    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_m_REQ(harmonicNum);
-    
-    /* Enable Harmonic Analysis */
-    gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_EN_Msk;
-}
+    statusMConf = (gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG & STATUS_STATE_FLAG_HARMONIC_m_CONF_Msk);
+    statusMConf >>= STATUS_STATE_FLAG_HARMONIC_m_CONF_Pos;
 
-bool DRV_METROLOGY_HarmonicAnalysisIsRun(void)
-{
-    if (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_EN_Msk)
+    if (controlMReq == statusMConf)
     {
-        uint32_t controlMReq;
-        uint32_t statusMConf;
-        
-        controlMReq = (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
-        controlMReq >>= FEATURE_CTRL1_HARMONIC_m_REQ_Pos;
-        
-        statusMConf = (gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG & STATUS_STATE_FLAG_HARMONIC_m_CONF_Msk);
-        statusMConf >>= STATUS_STATE_FLAG_HARMONIC_m_CONF_Pos;
-        
-        if (controlMReq == statusMConf)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-    else
-    {
-        return false;
-    }
-}
+        DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
+        double sqrt2;
+        uint64_t div;
+        uint32_t *pHarReg;
+        uint8_t index;
+        uint32_t harTemp[12];
 
-bool DRV_METROLOGY_GetHarmonicAnalysisResult(void)
-{
-    if (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_EN_Msk)
-    {
-        uint32_t controlMReq;
-        uint32_t statusMConf;
-        
-        controlMReq = (gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 & FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
-        controlMReq >>= FEATURE_CTRL1_HARMONIC_m_REQ_Pos;
-        
-        statusMConf = (gDrvMetObj.metRegisters->MET_STATUS.STATE_FLAG & STATUS_STATE_FLAG_HARMONIC_m_CONF_Msk);
-        statusMConf >>= STATUS_STATE_FLAG_HARMONIC_m_CONF_Pos;
-        
-        if (controlMReq == statusMConf)
-        {
-            double sqrt2;
-            uint64_t div;
-            uint32_t *pHarReg;
-            uint8_t index;
-            uint32_t harTemp[12];
-            
-            pHarReg = (uint32_t *)&gDrvMetObj.metRegisters->MET_HARMONICS;
-            for (index = 0; index < 14; index++, pHarReg++) {
-                if (*pHarReg > RMS_HARMONIC) {
-                    harTemp[index] = (~(*pHarReg)) + 1;
-                } else {
-                    harTemp[index] = *pHarReg;
-                }
+        pHarReg = (uint32_t *)&gDrvMetObj.metRegisters->MET_HARMONICS;
+        for (index = 0; index < 14; index++, pHarReg++) {
+            if (*pHarReg > RMS_HARMONIC) {
+                harTemp[index] = (~(*pHarReg)) + 1;
+            } else {
+                harTemp[index] = *pHarReg;
             }
+        }
 
-            sqrt2 = sqrt(2);
-            div = gDrvMetObj.metRegisters->MET_STATUS.N << 6; /* format sQ25.6 */
-            
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_A_m = (sqrt(pow((double)harTemp[0], 2) + pow((double)harTemp[7], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_B_m = (sqrt(pow((double)harTemp[2], 2) + pow((double)harTemp[9], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_C_m = (sqrt(pow((double)harTemp[4], 2) + pow((double)harTemp[11], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Irms_N_m = (sqrt(pow((double)harTemp[6], 2) + pow((double)harTemp[13], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2) + pow((double)harTemp[8], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2) + pow((double)harTemp[10], 2)) * sqrt2) / div;
-            gDrvMetObj.pHarmonicAnalysisResponse->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2) + pow((double)harTemp[12], 2)) * sqrt2) / div;
-            
-            /* Disable Harmonic Analysis */
-            gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
-            /* Clear Number of Harmonic for Analysis */
-            gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
-            
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        sqrt2 = sqrt(2);
+        div = gDrvMetObj.metRegisters->MET_STATUS.N << 6; /* format sQ25.6 */
+
+        pHarmonicsRsp->Irms_A_m = (sqrt(pow((double)harTemp[0], 2) + pow((double)harTemp[7], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Irms_B_m = (sqrt(pow((double)harTemp[2], 2) + pow((double)harTemp[9], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Irms_C_m = (sqrt(pow((double)harTemp[4], 2) + pow((double)harTemp[11], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Irms_N_m = (sqrt(pow((double)harTemp[6], 2) + pow((double)harTemp[13], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2) + pow((double)harTemp[8], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2) + pow((double)harTemp[10], 2)) * sqrt2) / div;
+        pHarmonicsRsp->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2) + pow((double)harTemp[12], 2)) * sqrt2) / div;
+
+        /* Disable Harmonic Analysis */
+        gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
+        /* Clear Number of Harmonic for Analysis */
+        gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+        
+        gDrvMetObj.harmonicAnalysisData.harmonicNum = statusMConf;
+        gDrvMetObj.harmonicAnalysisData.running = false;
+
+        return true;
     }
     else
     {
@@ -1422,6 +809,665 @@ bool DRV_METROLOGY_GetHarmonicAnalysisResult(void)
     }
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface
+// *****************************************************************************
+// *****************************************************************************
+
+SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetCause)
+{
+    DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
+
+    if ((gDrvMetObj.inUse == true) || (init == NULL))
+    {
+        return SYS_MODULE_OBJ_INVALID;
+    }
+    
+    /* Create the Semaphore */
+    if (OSAL_SEM_Create(&drvMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
+    {
+        return SYS_MODULE_OBJ_INVALID;
+    }
+
+    /* Disable IPC interrupts */
+    SYS_INT_SourceDisable(IPC1_IRQn);
+
+    if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
+    {
+        uint32_t tmp;
+
+        /* Assert reset of the coprocessor and its peripherals */
+        tmp = RSTC_REGS->RSTC_MR;
+        tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
+        RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
+        
+        /* Disable coprocessor Clocks */
+        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
+        
+        /* Disable coprocessor peripheral clocks */
+        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPBMCK_Msk;
+        
+        gDrvMetObj.binStartAddress = metInit->binStartAddress;
+        gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
+
+        gDrvMetObj.status = SYS_STATUS_UNINITIALIZED;
+
+        /* De-assert reset of the coprocessor peripherals */
+        RSTC_REGS->RSTC_MR |= RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk;
+        
+        /* Enable coprocessor peripheral clocks */
+        PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
+        
+        /* Copy the Metrology bin file to SRAM1 */
+        memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
+    }
+
+    /* Initialization of the interface with Metrology Lib */
+    gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
+    gDrvMetObj.inUse = true;
+    gDrvMetObj.integrationCallback = NULL;
+
+    memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_ACCUMULATORS));
+    memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_HARMONICS));
+    memset(&gDrvMetObj.calibrationData, 0, sizeof(DRV_METROLOGY_CALIBRATION));
+    memset(&gDrvMetObj.metAFEData, 0, sizeof(DRV_METROLOGY_AFE_DATA));
+
+    /* Initialization of the Metrology object */
+    gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
+    gDrvMetObj.status = SYS_STATUS_READY;
+
+    /* Configure IPC peripheral */
+    _DRV_Metrology_IpcInitialize();
+
+    return (SYS_MODULE_OBJ)&gDrvMetObj;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
+{
+    if (gDrvMetObj.inUse == false)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    if (gDrvMetObj.state != DRV_METROLOGY_STATE_HALT)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    /* Enable IPC1 Interrupt Source */
+    SYS_INT_SourceStatusClear(IPC1_IRQn);
+    SYS_INT_SourceEnable(IPC1_IRQn);
+
+    if (mode == DRV_METROLOGY_START_HARD)
+    {
+        /* De-assert the reset of the coprocessor (Core 1) */
+        RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPROCEN_Msk);
+
+        /* Enable the coprocessor clock (Core 1) */
+        PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPCK_Msk);
+
+        /* Wait IPC Init interrupt */
+        while(gDrvMetObj.state != DRV_METROLOGY_STATE_INIT_DSP);
+
+        /* Keep Metrology Lib in reset */
+        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
+
+        /* Load default Control values */
+        memcpy(&gDrvMetObj.metRegisters->MET_CONTROL, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
+
+        /* Set Metrology Lib state as Init */
+        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
+    }
+
+    return DRV_METROLOGY_SUCCESS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
+{
+    if (gDrvMetObj.inUse == false)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    /* Disable IPC1 Interrupt Source */
+    SYS_INT_SourceDisable(IPC1_IRQn);
+    NVIC_ClearPendingIRQ(IPC1_IRQn);
+    
+    /* BOARD == PIC32CXMTSH_DB ***********************************/
+    /* Disable EMAFE clock */
+    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_PID(ID_EMAFE);
+    /* Put ATSense into hardware RESET */
+    PIO_PortClear(PIO_PORT_D, (_UINT32_(1) << 30));
+    /*************************************************************/
+    /* Disable ATSense clock */
+    PMC_REGS->PMC_SCDR |= PMC_SCDR_PCK2_Msk;
+    
+    /* Update Driver state */
+    gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
+    gDrvMetObj.status = SYS_STATUS_BUSY;
+    
+    return DRV_METROLOGY_SUCCESS;
+
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_Start (void)
+{
+    if (gDrvMetObj.metRegisters->MET_STATUS.STATUS == STATUS_STATUS_READY)
+    {
+        /* Set Metrology Lib state as Run */
+        gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RUN_Val;
+
+        return DRV_METROLOGY_SUCCESS;
+    }
+
+    return DRV_METROLOGY_ERROR;
+}
+
+DRV_METROLOGY_STATE DRV_METROLOGY_GetState (void)
+{
+    return (DRV_METROLOGY_STATE)gDrvMetObj.metRegisters->MET_STATUS.STATUS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister (
+    DRV_METROLOGY_CALLBACK callback
+)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.integrationCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.FullCycleCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.HalfCycleCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.ZeroCrossCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse0Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse1Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.Pulse2Callback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+</#if>
+DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister (
+    DRV_METROLOGY_CALIBRATION_CALLBACK callback
+)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.calibrationCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister (
+    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback
+)
+{
+    if (callback == NULL)
+    {
+        return DRV_METROLOGY_ERROR;
+    }
+
+    gDrvMetObj.harmonicAnalysisCallback = callback;
+    return DRV_METROLOGY_SUCCESS;
+}
+
+void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
+{
+    if (object == SYS_MODULE_OBJ_INVALID)
+    {
+        /* Invalid system object */
+        return;
+    }
+    
+    /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
+    OSAL_SEM_Pend(&drvMetrologySemID, OSAL_WAIT_FOREVER);
+    
+    /* Update measurements from metrology library registers */
+    _DRV_METROLOGY_UpdateMeasurements();
+
+    /* Launch integration callback */
+    if (gDrvMetObj.integrationCallback)
+    {
+        gDrvMetObj.integrationCallback();
+    }
+    
+    /* Check if there is a calibration process running */
+    if (gDrvMetObj.calibrationData.running)
+    {
+        if (_DRV_METROLOGY_UpdateCalibrationValues())
+        {
+            /* Launch calibration callback */
+            if (gDrvMetObj.calibrationCallback)
+            {
+                gDrvMetObj.calibrationCallback(gDrvMetObj.calibrationData.result);
+            }
+        }
+    }
+    
+    /* Check if there is a harmonic analysis process running */
+    if (gDrvMetObj.harmonicAnalysisData.running)
+    {
+        if (_DRV_METROLOGY_UpdateHarmonicAnalysisValues())
+        {
+            /* Launch calibration callback */
+            if (gDrvMetObj.harmonicAnalysisCallback)
+            {
+                gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+            }
+        }
+    }
+}
+
+DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus (void)
+{
+    return &gDrvMetObj.metRegisters->MET_STATUS;
+}
+
+DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl (void)
+{
+    return &gDrvMetObj.metRegisters->MET_CONTROL;
+}
+
+DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
+{
+    return (DRV_METROLOGY_CONTROL *)&gDrvMetControlDefault;
+}
+
+DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData (void)
+{
+    return &gDrvMetObj.metAccData;
+}
+
+DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData (void)
+{
+    return &gDrvMetObj.metHarData;
+}
+
+DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData (void)
+{
+    return &gDrvMetObj.calibrationData;
+}
+
+void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
+{
+    DRV_METROLOGY_CONTROL * pDstControl;
+
+    pDstControl = &gDrvMetObj.metRegisters->MET_CONTROL;
+
+    pDstControl->FEATURE_CTRL0 = pControl->FEATURE_CTRL0;
+    pDstControl->FEATURE_CTRL1 = pControl->FEATURE_CTRL1;
+    pDstControl->METER_TYPE = pControl->METER_TYPE;
+    pDstControl->M = pControl->M;
+    pDstControl->N_MAX = pControl->N_MAX;
+    pDstControl->PULSE0_CTRL = pControl->PULSE0_CTRL;
+    pDstControl->PULSE1_CTRL = pControl->PULSE1_CTRL;
+    pDstControl->PULSE2_CTRL = pControl->PULSE2_CTRL;
+    pDstControl->P_K_t = pControl->P_K_t;
+    pDstControl->Q_K_t = pControl->Q_K_t;
+    pDstControl->I_K_t = pControl->I_K_t;
+    pDstControl->CREEP_THRESHOLD_P = pControl->CREEP_THRESHOLD_P;
+    pDstControl->CREEP_THRESHOLD_Q = pControl->CREEP_THRESHOLD_Q;
+    pDstControl->CREEP_THRESHOLD_I = pControl->CREEP_THRESHOLD_I;
+    pDstControl->POWER_OFFSET_CTRL = pControl->POWER_OFFSET_CTRL;
+    pDstControl->POWER_OFFSET_P = pControl->POWER_OFFSET_P;
+    pDstControl->POWER_OFFSET_Q = pControl->POWER_OFFSET_Q;
+    pDstControl->SWELL_THRESHOLD_VA = pControl->SWELL_THRESHOLD_VA;
+    pDstControl->SWELL_THRESHOLD_VB = pControl->SWELL_THRESHOLD_VB;
+    pDstControl->SWELL_THRESHOLD_VC = pControl->SWELL_THRESHOLD_VC;
+    pDstControl->SAG_THRESHOLD_VA = pControl->SAG_THRESHOLD_VA;
+    pDstControl->SAG_THRESHOLD_VB = pControl->SAG_THRESHOLD_VB;
+    pDstControl->SAG_THRESHOLD_VC = pControl->SAG_THRESHOLD_VC;
+    pDstControl->K_IA = pControl->K_IA;
+    pDstControl->K_VA = pControl->K_VA;
+    pDstControl->K_IB = pControl->K_IB;
+    pDstControl->K_VB = pControl->K_VB;
+    pDstControl->K_IC = pControl->K_IC;
+    pDstControl->K_VC = pControl->K_VC;
+    pDstControl->K_IN = pControl->K_IN;
+    pDstControl->CAL_M_IA = pControl->CAL_M_IA;
+    pDstControl->CAL_M_VA = pControl->CAL_M_VA;
+    pDstControl->CAL_M_IB = pControl->CAL_M_IB;
+    pDstControl->CAL_M_VB = pControl->CAL_M_VB;
+    pDstControl->CAL_M_IC = pControl->CAL_M_IC;
+    pDstControl->CAL_M_VC = pControl->CAL_M_VC;
+    pDstControl->CAL_M_IN = pControl->CAL_M_IN;
+    pDstControl->CAL_PH_IA = pControl->CAL_PH_IA;
+    pDstControl->CAL_PH_VA = pControl->CAL_PH_VA;
+    pDstControl->CAL_PH_IB = pControl->CAL_PH_IB;
+    pDstControl->CAL_PH_VB = pControl->CAL_PH_VB;
+    pDstControl->CAL_PH_IC = pControl->CAL_PH_IC;
+    pDstControl->CAL_PH_VC = pControl->CAL_PH_VC;
+    pDstControl->CAL_PH_IN = pControl->CAL_PH_IN;
+    pDstControl->CAPTURE_CTRL = pControl->CAPTURE_CTRL;
+    pDstControl->ATSENSE_CTRL_20_23 = pControl->ATSENSE_CTRL_20_23;
+    pDstControl->ATSENSE_CTRL_24_27 = pControl->ATSENSE_CTRL_24_27;
+    pDstControl->ATSENSE_CTRL_28_2B = pControl->ATSENSE_CTRL_28_2B;
+    pDstControl->POWER_OFFSET_P_A = pControl->POWER_OFFSET_P_A;
+    pDstControl->POWER_OFFSET_P_B = pControl->POWER_OFFSET_P_B;
+    pDstControl->POWER_OFFSET_P_C = pControl->POWER_OFFSET_P_C;
+    pDstControl->POWER_OFFSET_Q_A = pControl->POWER_OFFSET_Q_A;
+    pDstControl->POWER_OFFSET_Q_B = pControl->POWER_OFFSET_Q_B;
+    pDstControl->POWER_OFFSET_Q_C = pControl->POWER_OFFSET_Q_C;
+}
+
+uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
+{
+    uint32_t energy = gDrvMetObj.metAFEData.energy;
+
+    if (restartEnergy)
+    {
+        gDrvMetObj.metAFEData.energy = 0;
+    }
+
+    return energy;
+}
+
+uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type)
+{
+    return gDrvMetObj.metAFEData.RMS[type];
+}
+
+DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
+{
+    DRV_METROLOGY_RMS_SIGN sign;
+
+    sign = RMS_SIGN_POSITIVE;
+
+    if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.paDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PB) && (gDrvMetObj.metAFEData.afeEvents.pbDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PC) && (gDrvMetObj.metAFEData.afeEvents.pcDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_PT) && (gDrvMetObj.metAFEData.afeEvents.ptDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QA) && (gDrvMetObj.metAFEData.afeEvents.qaDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QB) && (gDrvMetObj.metAFEData.afeEvents.qbDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QC) && (gDrvMetObj.metAFEData.afeEvents.qcDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type == RMS_QT) && (gDrvMetObj.metAFEData.afeEvents.qtDir))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+    else if ((type >= RMS_ANGLEA) && (gDrvMetObj.metAFEData.RMS[type] & 0x80000000))
+    {
+        sign = RMS_SIGN_NEGATIVE;
+    }
+
+    return sign;
+}
+
+void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
+{
+    uint64_t m;
+    DRV_METROLOGY_CONTROL *pControl;
+    uint32_t i;
+    uint32_t restoreCaptureBuffSize;
+    uint32_t restoreCaptureAddress;
+    uint32_t restoreCaptureControl;
+    uint32_t reg;
+    
+    /* Store Calibration parameters */
+    gDrvMetObj.calibrationData.freq = config->freq;
+
+    pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
+
+    restoreCaptureBuffSize = pControl->CAPTURE_BUFF_SIZE;
+    restoreCaptureAddress = pControl->CAPTURE_ADDR;
+    restoreCaptureControl = pControl->CAPTURE_CTRL;
+
+    /* Load default Control values */
+    memcpy(pControl, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
+
+    m = 1000000000 / (config->mc);
+    m = (m << GAIN_P_K_T_Q);
+    m = m / 1000000;
+
+    pControl->P_K_t = (uint32_t)m;
+    pControl->Q_K_t = (uint32_t)m;
+    pControl->I_K_t = (uint32_t)m;
+
+    reg = pControl->METER_TYPE;
+    reg &= ~(METER_TYPE_SENSOR_TYPE_I_A_Msk | METER_TYPE_SENSOR_TYPE_I_B_Msk | METER_TYPE_SENSOR_TYPE_I_C_Msk);
+    reg |= METER_TYPE_SENSOR_TYPE_I_A(config->st) |
+            METER_TYPE_SENSOR_TYPE_I_B(config->st) | METER_TYPE_SENSOR_TYPE_I_C(config->st);
+    pControl->METER_TYPE = reg;
+
+    reg = pControl->ATSENSE_CTRL_20_23;
+    reg &= ~(ATSENSE_CTRL_20_23_I0_GAIN_Msk | ATSENSE_CTRL_20_23_I1_GAIN_Msk | ATSENSE_CTRL_20_23_I2_GAIN_Msk);
+    reg |= ATSENSE_CTRL_20_23_I0_GAIN(config->gain) |
+            ATSENSE_CTRL_20_23_I1_GAIN(config->gain) | ATSENSE_CTRL_20_23_I2_GAIN(config->gain);
+    pControl->ATSENSE_CTRL_20_23 = reg;
+
+    reg = pControl->ATSENSE_CTRL_24_27;
+    reg &= ~(ATSENSE_CTRL_24_27_I3_GAIN_Msk);
+    reg |= ATSENSE_CTRL_24_27_I3_GAIN(config->gain);
+    pControl->ATSENSE_CTRL_24_27 = reg;
+
+    if (config->st == SENSOR_CT)
+    {
+        double div;
+        double res;
+        
+        m = config->tr * 1000000; /* improve accuracy * (ohm -> uohm) */
+        div = config->rl * 1000000; /* improve accuracy * (ohm -> uohm) */
+        div *= (1 << config->gain);
+        res = m / div;
+        res *= (1 << GAIN_VI_Q); /* format Q22.10 */
+        i = (uint32_t) res;
+    } 
+    else if (config->st == SENSOR_ROGOWSKI) 
+    {
+        double res;
+        double div;
+        
+        res = 1000000 / config->tr;
+        div = 60 / config->freq; 
+        res = res / ((1 << config->gain) * div);
+        res *= (1 << GAIN_VI_Q); /* format Q22.10 */
+        i = (uint32_t) res;
+    } 
+    else if (config->st == SENSOR_SHUNT) 
+    {
+        m = 1000000; /* (uOhm -> Ohm) */
+        reg = (1 << config->gain) * config->rl;
+        m = m / reg; /* (ohm -> mohm) */
+        m = (m << GAIN_VI_Q); /* format Q22.10 */
+        i = (uint32_t)(m);
+    }
+
+    pControl->K_IA = i;
+    pControl->K_IB = i;
+    pControl->K_IC = i;
+    pControl->K_IN = i;
+
+    i = (config->ku) << GAIN_VI_Q; /* format Q22.10 */
+    pControl->K_VA = i;
+    pControl->K_VB = i;
+    pControl->K_VC = i;
+
+    /* Restore Capture Buffer */
+    pControl->CAPTURE_ADDR = restoreCaptureAddress;
+    pControl->CAPTURE_BUFF_SIZE = restoreCaptureBuffSize;
+    pControl->CAPTURE_CTRL = restoreCaptureControl;
+
+    /* Set Metrology Lib state as Init */
+    pControl->STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
+}
+
+void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
+{
+    *events = gDrvMetObj.metAFEData.afeEvents;
+}
+
+void DRV_METROLOGY_StartCalibration(void)
+{
+    DRV_METROLOGY_CALIBRATION * pCalibrationData = &gDrvMetObj.calibrationData;
+    
+    if (!pCalibrationData->running)
+    {
+        DRV_METROLOGY_CONTROL * pMetControlRegs = &gDrvMetObj.metRegisters->MET_CONTROL;
+    
+        /* Set the number of integration periods to improve the accuracy of the calibration */
+        pCalibrationData->numIntegrationPeriods = 4;
+
+        /* Save FEATURE_CTRL0 register value, to be restored after calibration */
+        pCalibrationData->featureCtrl0Backup = pMetControlRegs->FEATURE_CTRL0;
+
+        /* Init Accumulators */
+        pCalibrationData->dspAccIa = 0;
+        pCalibrationData->dspAccIb = 0;
+        pCalibrationData->dspAccIc = 0;
+        pCalibrationData->dspAccIn = 0;
+        pCalibrationData->dspAccUa = 0;
+        pCalibrationData->dspAccUb = 0;
+        pCalibrationData->dspAccUc = 0;
+        pCalibrationData->dspAccPa = 0;
+        pCalibrationData->dspAccPb = 0;
+        pCalibrationData->dspAccPc = 0;
+        pCalibrationData->dspAccQa = 0;
+        pCalibrationData->dspAccQb = 0;
+        pCalibrationData->dspAccQc = 0;
+
+        /* Initialize calibration registers to the default values */
+        switch (pCalibrationData->references.lineId)
+        {
+            case PHASE_A:
+                pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
+                        FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk;
+                break;
+
+            case PHASE_B:
+                pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V2_Val) | 
+                        FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_B_Val) | FEATURE_CTRL0_PHASE_B_EN_Msk;
+                break;
+
+            case PHASE_C:
+                pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V3_Val) | 
+                        FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_C_Val) | FEATURE_CTRL0_PHASE_C_EN_Msk;
+                break;
+
+            case PHASE_T:
+                pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) | 
+                        FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk |
+                        FEATURE_CTRL0_PHASE_B_EN_Msk | FEATURE_CTRL0_PHASE_C_EN_Msk;
+                break;
+
+        }
+
+        pCalibrationData->running = true;
+        pCalibrationData->result = false;
+    }
+}
+
+void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARMONICS_RMS *pHarmonicResponse)
+{
+    if (!gDrvMetObj.harmonicAnalysisData.running)
+    {
+        gDrvMetObj.harmonicAnalysisData.running = true;
+
+        /* Set Data pointer to store the Harmonic data result */
+        gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse = pHarmonicResponse;
+
+        /* Set Number of Harmonic for Analysis */
+        gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~(FEATURE_CTRL1_HARMONIC_m_REQ_Msk);
+        gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_m_REQ(harmonicNum);
+
+        /* Enable Harmonic Analysis */
+        gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 |= FEATURE_CTRL1_HARMONIC_EN_Msk;
+    }
+}
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }

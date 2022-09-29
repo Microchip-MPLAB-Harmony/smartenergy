@@ -46,9 +46,6 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
     
-typedef void (* APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK) (uint8_t harmonicNum);  
-typedef void (* APP_METROLOGY_CALIBRATION_CALLBACK) (bool result);  
-
 typedef enum
 {
     CONTROL_STATE_CTRL = 0,
@@ -264,7 +261,6 @@ typedef enum
     APP_METROLOGY_STATE_INIT,
     APP_METROLOGY_STATE_START,
     APP_METROLOGY_STATE_RUNNING,
-    APP_METROLOGY_STATE_CHECK_HARMONIC_ANALYSIS,
     APP_METROLOGY_STATE_CHECK_CALIBRATION,
     APP_METROLOGY_STATE_ERROR
 
@@ -296,11 +292,10 @@ typedef struct
     DRV_METROLOGY_HARMONICS * pMetHarData;
     
     bool harmonicAnalysisPending;
-    uint8_t harmonicAnalysisNum;
-    DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse;
-    APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK pHarmonicAnalisysCallback;
+    DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
+    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK pHarmonicAnalysisCallback;
     
-    APP_METROLOGY_CALIBRATION_CALLBACK pCalibrationCallback;
+    DRV_METROLOGY_CALIBRATION_CALLBACK pCalibrationCallback;
     
     uint32_t queueFree;
 
@@ -398,11 +393,11 @@ void APP_METROLOGY_SetControlByDefault(void);
 void APP_METROLOGY_StoreMetrologyData(void);
 void APP_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config);
 void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration);
-void APP_METROLOGY_SetCalibrationCallback(APP_METROLOGY_CALIBRATION_CALLBACK callback);
+void APP_METROLOGY_SetCalibrationCallback(DRV_METROLOGY_CALIBRATION_CALLBACK callback);
 size_t APP_METROLOGY_GetWaveformCaptureData(uint32_t *pData);
 bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum);
-void APP_METROLOGY_SetHarmonicAnalysisCallback(APP_METROLOGY_HARMONIC_ANALISYS_CALLBACK callback, 
-        DRV_METROLOGY_HARMONIC * pHarmonicAnalysisResponse);
+void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback, 
+        DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
 void APP_METROLOGY_Restart(void);
 void APP_METROLOGY_SetLowPowerMode (void);
 
