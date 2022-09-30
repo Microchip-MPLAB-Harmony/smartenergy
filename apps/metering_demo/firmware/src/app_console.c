@@ -104,67 +104,67 @@ static char sign[2] = {' ', '-'};
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
-static void Command_BUF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_CAL (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_CNF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCB (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCM (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCS (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DCW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_DSR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_ENC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_ENR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_HAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_HRR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_IDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_IDW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_MDC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_MDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_PAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_RST (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_RLD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void Command_HELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandBUF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCAL (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCNF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCB (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCM (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCS (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDCW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandDSR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandENC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandENR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandEVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandHAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandHRR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandIDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandIDW (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandMDC (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandMDR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandPAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandRTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandTOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandTOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandRST (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandRLD (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 
 static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
 {
-    {"BUF", Command_BUF, ": Read waveform capture data (if a parameter is used, only a 512 samples sector is returned)"},
-    {"CAL", Command_CAL, ": Automatic calibration"},
-    {"CNF", Command_CNF, ": Automatic configuration"},
-    {"DAR", Command_DAR, ": Read DSP_ACC register"},
-    {"DCB", Command_DCB, ": Go to low power mode"},
-    {"DCD", Command_DCD, ": Load default metrology control register values"},
-    {"DCM", Command_DCM, ": Write DSP_CONTROL several registers"},
-    {"DCR", Command_DCR, ": Read DSP_CONTROL registers"},
-    {"DCS", Command_DCS, ": Save metrology constants to non volatile memory"},
-    {"DCW", Command_DCW, ": Write DSP_CONTROL register"},
-    {"DSR", Command_DSR, ": Read DSP_ST register"},
-    {"ENC", Command_ENC, ": Clear all energy"},
-    {"ENR", Command_ENR, ": Read energy"},
-    {"EVEC",Command_EVEC, ": Clear all event record"},
-    {"EVER",Command_EVER, ": Read single event record"},
-    {"HAR", Command_HAR, ": Read harmonic register"},
-    {"HRR", Command_HRR, ": Read harmonic Irms/Vrms"},
-    {"IDR", Command_IDR, ": Read meter id"},
-    {"IDW", Command_IDW, ": Write meter id (id length limited to 6 characters)"},
-    {"MDC", Command_MDC, ": Clear all maxim demand and happen time"},
-    {"MDR", Command_MDR, ": Read maxim demand"},
-    {"PAR", Command_PAR, ": Read measure parameter"},
-    {"RTCR",Command_RTCR, ": Read meter RTC"},
-    {"RTCW",Command_RTCW, ": Write meter RTC"},
-    {"TOUR",Command_TOUR, ": Read meter TOU"},
-    {"TOUW",Command_TOUW, ": Write meter TOU"},
-    {"RST", Command_RST, ": System reset"},
-    {"RLD", Command_RLD, ": Reload Metrology Coprocessor"},
-    {"HELP",Command_HELP, ": Help on commands"}
+    {"BUF", _commandBUF, ": Read waveform capture data (if a parameter is used, only a 512 samples sector is returned)"},
+    {"CAL", _commandCAL, ": Automatic calibration"},
+    {"CNF", _commandCNF, ": Automatic configuration"},
+    {"DAR", _commandDAR, ": Read DSP_ACC register"},
+    {"DCB", _commandDCB, ": Go to low power mode"},
+    {"DCD", _commandDCD, ": Load default metrology control register values"},
+    {"DCM", _commandDCM, ": Write DSP_CONTROL several registers"},
+    {"DCR", _commandDCR, ": Read DSP_CONTROL registers"},
+    {"DCS", _commandDCS, ": Save metrology constants to non volatile memory"},
+    {"DCW", _commandDCW, ": Write DSP_CONTROL register"},
+    {"DSR", _commandDSR, ": Read DSP_ST register"},
+    {"ENC", _commandENC, ": Clear all energy"},
+    {"ENR", _commandENR, ": Read energy"},
+    {"EVEC",_commandEVEC, ": Clear all event record"},
+    {"EVER",_commandEVER, ": Read single event record"},
+    {"HAR", _commandHAR, ": Read harmonic register"},
+    {"HRR", _commandHRR, ": Read harmonic Irms/Vrms"},
+    {"IDR", _commandIDR, ": Read meter id"},
+    {"IDW", _commandIDW, ": Write meter id (id length limited to 6 characters)"},
+    {"MDC", _commandMDC, ": Clear all maxim demand and happen time"},
+    {"MDR", _commandMDR, ": Read maxim demand"},
+    {"PAR", _commandPAR, ": Read measure parameter"},
+    {"RTCR",_commandRTCR, ": Read meter RTC"},
+    {"RTCW",_commandRTCW, ": Write meter RTC"},
+    {"TOUR",_commandTOUR, ": Read meter TOU"},
+    {"TOUW",_commandTOUW, ": Write meter TOU"},
+    {"RST", _commandRST, ": System reset"},
+    {"RLD", _commandRLD, ": Reload Metrology Coprocessor"},
+    {"HELP",_commandHELP, ": Help on commands"}
 };
 
 // *****************************************************************************
@@ -172,6 +172,32 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
+
+bool _preprocessorCallback ( const SYS_CMD_DESCRIPTOR* pCmdTbl, 
+        SYS_CMD_DEVICE_NODE* pCmdIO, char* cmdBuff, size_t bufSize, void* hParam)
+{
+    char *pBuff = cmdBuff;
+    char cmdChar;
+    size_t idx;
+    
+    for(idx = 0; idx < bufSize; idx++, pBuff++)
+    {
+        cmdChar = *pBuff;
+        if ((cmdChar >= 'a') && (cmdChar <= 'z'))
+        {
+            // Convert upper case
+            *pBuff -= 32;
+        }
+        else if ((cmdChar == '\t') || (cmdChar == ',') || (cmdChar == ';') || (cmdChar == '[') || 
+                (cmdChar == ']') || (cmdChar == '(') || (cmdChar == ')'))
+        {
+            // Replace command separator
+            *pBuff = ' ';
+        }
+    }
+    
+    return false;
+}
 
 static void _consoleReadStorage(APP_DATALOG_RESULT result)
 {
@@ -228,7 +254,7 @@ static void _calibrationCallback(bool result)
 // *****************************************************************************
 // COMMANDS
 // *****************************************************************************
-static void Command_HELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
     {
@@ -267,7 +293,7 @@ static void Command_HELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     APP_DISPLAY_SetCommIcon();
 }
 
-static void Command_BUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint32_t captureAddress;
     size_t captureSize;
@@ -339,7 +365,7 @@ static bool _getCalibrationValue(char * argv, char * substring, double * value)
     return false;
 }
 
-static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandCAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     APP_METROLOGY_CALIBRATION newCalibration = {0};
     bool parseError = false;
@@ -466,7 +492,7 @@ static void Command_CAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandCNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     DRV_METROLOGY_CONFIGURATION newConf;
     uint8_t idx, value;
@@ -642,7 +668,7 @@ static void Command_CNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
@@ -685,7 +711,7 @@ static void Command_DAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1)
     {
@@ -704,7 +730,7 @@ static void Command_DCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1)
     {
@@ -722,7 +748,7 @@ static void Command_DCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t i;
     uint8_t numRegsToWrite;
@@ -774,7 +800,7 @@ static void Command_DCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
@@ -814,7 +840,7 @@ static void Command_DCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1)
     {
@@ -832,7 +858,7 @@ static void Command_DCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
     uint32_t regValue;
@@ -873,7 +899,7 @@ static void Command_DCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandDSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
@@ -916,7 +942,7 @@ static void Command_DSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2)
     {
@@ -944,7 +970,7 @@ static void Command_ENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t monthIndex;
 
@@ -980,7 +1006,7 @@ static void Command_ENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandEVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
     {
@@ -1007,7 +1033,7 @@ static void Command_EVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     app_consoleData.eventIdRequest = EVENT_INVALID_ID;
 
@@ -1065,7 +1091,7 @@ static void Command_EVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_HAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t idx;
 
@@ -1105,7 +1131,7 @@ static void Command_HAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_HRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t harmonicNum;
 
@@ -1133,7 +1159,7 @@ static void Command_HRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_IDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandIDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1) 
     {
@@ -1152,7 +1178,7 @@ static void Command_IDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandIDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 3) 
     {
@@ -1189,7 +1215,7 @@ static void Command_IDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_MDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandMDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
     {
@@ -1217,7 +1243,7 @@ static void Command_MDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandMDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t monthIndex;
 
@@ -1254,7 +1280,7 @@ static void Command_MDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     bool wakeup = false;
 
@@ -1318,7 +1344,7 @@ static void Command_PAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandRTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1) 
     {
@@ -1337,7 +1363,7 @@ static void Command_RTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 5)
     {
@@ -1414,7 +1440,7 @@ static void Command_RTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandTOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1) 
     {
@@ -1433,7 +1459,7 @@ static void Command_TOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandTOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     char *p;
     APP_ENERGY_TOU_TIME_ZONE timeZone[APP_ENERGY_TOU_MAX_ZONES];
@@ -1515,7 +1541,7 @@ static void Command_TOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandRST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
     {
@@ -1545,7 +1571,7 @@ static void Command_RST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static void Command_RLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
     {
@@ -1601,6 +1627,7 @@ void APP_CONSOLE_Initialize ( void )
     }
     else
     {
+        SYS_CMD_CallbackRegister(appCmdTbl, _preprocessorCallback, 0);
         SYS_CONSOLE_Print(SYS_CONSOLE_INDEX_0, CONSOLE_HEADER);
     }
 }

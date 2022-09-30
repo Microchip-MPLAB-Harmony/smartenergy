@@ -722,8 +722,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;349&quot; y=&quot;177&quot;/&gt;
@@ -747,6 +746,7 @@
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -7937,7 +7937,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>7f9a1ba4064535bb0241aff4fad9cbf854f67ff03010d71e868f09631b0a7326</hash>
+         <hash>18b454cc672d43e175e77e8ff7bcfbd484da8b0afd5da5912216f0d1e6a8712d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -7965,7 +7965,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>52225dca7fd54da2ddd19c5584605af86acb8cf45d815c389bad625e55244891</hash>
+         <hash>fa69a82737ed566dd6f4d4c8ab0a52145fc6c2b9be1fd76950c45679a82abe98</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -8057,7 +8057,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>3b24124a7748380fe40d623e8112813a43e33a0a7b3f1ac1ab398c9244ac4503</hash>
+         <hash>23be7fda05472a70da3b2a3742d960da85356a33f142bb4a702fecbb81dc2e47</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\aesb.h</file>
@@ -8093,7 +8093,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>3d7b9207e6ef17f166dc870471922a8bd3e32a87d2b9e1913ad2620038a2a2d3</hash>
+         <hash>93d4466f3a9250824302779a69a75186efb0a337e7c240737c6352dc107bf6c6</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8193,7 +8193,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>3b4aaa21217733a8af6f70cf2935c87bd473ae9278a891a86d62e12a7dc3f4dd</hash>
+         <hash>59ef02e4cc5f420e79804e4993e592cfd61ace99f982fe84b36272f7333f77e5</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -8277,7 +8277,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>31400a821f4162498e243fdab96b5cb23c3298ed460e3be32001929f9ee1c6e9</hash>
+         <hash>421fcbd1be06764b34d7ed969ea367e7c4d1948fe4e509e04cb73b25c117b34f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -8389,7 +8389,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
-         <hash>ef0ff8891004196fffe3f30dee7cfd045d9fd50099dcec8ba5a4382daca3be8d</hash>
+         <hash>29a12ebec59c8917979f3298d8104f87366444aef9e042c7c3c92a20e2dd4508</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cmcc0.h</file>
@@ -8513,7 +8513,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\tasks.c</file>
-         <hash>a01b9db5aee45042a78f8e4c3c30e97ee2ba120dad934beb54dbf3f9cff5f6c6</hash>
+         <hash>3f22abb6b3ae1d883ae9b1b36d638a45c1b1833e44adeb2f055350fcd627090e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\tc.h</file>
@@ -8641,7 +8641,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\src\sys_command.c</file>
-         <hash>f6ffa260b5a6f1e0134c8845c405d0e21dcdc5fd02e95dcc7a4a5fccf1cb23ae</hash>
+         <hash>75a66261ea15413cc4b79ff838de934c7a82115bdf45b6a361b3bfe214a7af03</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.h</file>
@@ -8677,7 +8677,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\sys_command.h</file>
-         <hash>bf9556937d70118ff61c43ee225b7600065d22ca7e88806b9adda3a554f7316c</hash>
+         <hash>c95de61335ee5c61f97c843b3383f30ad48f6dc49c3598c98640146c15f10835</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\pio\pic32cx2051mtsh128.h</file>
@@ -8693,7 +8693,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\toolchain_specifics.h</file>
-         <hash>c93f9d68b1623668727be21b4449250a7e4a5d7040776d6f6d604a7528ffc9eb</hash>
+         <hash>0322d8a252c0047ffd9e533cc76c470158ed1f3ac5193e63b507fe5eb6e1855f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\rstc\plib_rstc.h</file>
@@ -8877,7 +8877,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>d30be1cd035fffe835f6cc3ced910a4e53b3a802bc7170a6c98750e6a00d82c1</hash>
+         <hash>38291704e9555af502ae9b7af03e2dabc76dc66e629496f228aef0a50ad090d4</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

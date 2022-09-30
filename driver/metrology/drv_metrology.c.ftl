@@ -202,9 +202,9 @@ void IPC1_Handler (void)
             _DRV_Metrology_copy((uintptr_t)&gDrvMetObj.metHarData, (uintptr_t)&gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_HARMONICS));
         }
 
-        if (gDrvMetObj.newIntegrationCallback)
+        if (gDrvMetObj.integrationCallback)
         {
-            gDrvMetObj.newIntegrationCallback();
+            gDrvMetObj.integrationCallback();
         }
     }
 
@@ -1158,9 +1158,9 @@ DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData (void)
     return &gDrvMetObj.metHarData;
 }
 
-DRV_METROLOGY_CALIBRATION * DRV_METROLOGY_GetCalibrationData (void)
+DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 {
-    return &gDrvMetObj.calibrationData;
+    return &gDrvMetObj.calibrationData.references;
 }
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
