@@ -138,21 +138,21 @@ def updateConfigKV(symbol, event):
 
 def updateConfigSwellSag(symbol, event):
     ku = Database.getSymbolValue("drvMet", "DRV_MET_CONF_KU")
-    threshold = event["value"]
+    threshold = Database.getSymbolValue("drvMet", "DRV_MET_CONF_SWELL")
     m = (threshold/float(ku))**2
     m = int(m * 2**32)
     symbol.setValue(m)
 
 def updateConfigCreepPQ(symbol, event):
     freq = Database.getSymbolValue("drvMet", "DRV_MET_CONF_F")
-    creep = event["value"]
+    creep = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_P")
     m = float(creep) / (freq * 3600)
     m = int(m * 2**30)
     symbol.setValue(m)
 
 def updateConfigCreepI(symbol, event):
     K_Ix = _get_KI()
-    creep = event["value"]
+    creep = Database.getSymbolValue("drvMet", "DRV_MET_CONF_CREEP_I")
     m = creep / K_Ix
     m = int(m * 2**20)
     symbol.setValue(m)
