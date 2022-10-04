@@ -68,11 +68,11 @@ static const uint32_t PIO_INDEX[PIO_PORT_MAX] = { 0U, 1U, 2U, 0U };
 void PIO_Initialize ( void )
 {
  /* Port A Peripheral function A configuration */
-   PIOA_REGS->PIO_MSKR = 0xffe00030LU;
+   PIOA_REGS->PIO_MSKR = 0x1fe00030LU;
    PIOA_REGS->PIO_CFGR = 0x1U;
 
  /* Port A Peripheral function GPIO configuration */
-   PIOA_REGS->PIO_MSKR = 0x4c000LU;
+   PIOA_REGS->PIO_MSKR = 0xc000LU;
    PIOA_REGS->PIO_CFGR = 0x0U;
 
  /* Port A Pin 14 configuration */
@@ -83,21 +83,17 @@ void PIO_Initialize ( void )
    PIOA_REGS->PIO_MSKR = 0x8000U;
    PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x200U;
 
- /* Port A Pin 18 configuration */
-   PIOA_REGS->PIO_MSKR = 0x40000U;
-   PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
-
  /* Port A Pin 21 configuration */
    PIOA_REGS->PIO_MSKR = 0x200000U;
    PIOA_REGS->PIO_CFGR = (PIOA_REGS->PIO_CFGR & (PIO_CFGR_FUNC_Msk)) | 0x100U;
 
  /* Port A Latch configuration */
-   PIOA_REGS->PIO_CODR = 0x4c000LU;
+   PIOA_REGS->PIO_CODR = 0xc000LU;
 
     /* Clear the ISR register */
    (uint32_t)PIOA_REGS->PIO_ISR;
  /* Port B Peripheral function A configuration */
-   PIOB_REGS->PIO_MSKR = 0x7dfffffU;
+   PIOB_REGS->PIO_MSKR = 0x1d7fff8U;
    PIOB_REGS->PIO_CFGR = 0x1U;
 
  /* Port B Pin 22 configuration */
@@ -106,7 +102,7 @@ void PIO_Initialize ( void )
 
 
  /* Port C Peripheral function A configuration */
-   PIOC_REGS->PIO_MSKR = 0xfc03U;
+   PIOC_REGS->PIO_MSKR = 0xfc00U;
    PIOC_REGS->PIO_CFGR = 0x1U;
 
  /* Port C Pin 10 configuration */

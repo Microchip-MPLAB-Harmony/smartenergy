@@ -123,7 +123,8 @@ typedef enum {
     It is a single instance driver.
 
   Precondition:
-    None.
+    The low-level processor and board initialization must be completed before the
+    system can call the initialization functions for any modules.
 
   Parameters:
     init  - Pointer to the init data structure containing any data necessary to initialize the driver.
@@ -154,6 +155,53 @@ typedef enum {
     This routine must be called before any other DRV_METROLOGY routine is called. 
 */
 SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetValue);
+
+// *****************************************************************************
+/* Function:
+    SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (
+        SYS_MODULE_INIT * init,
+    );
+
+  Summary:
+    Reinitializes the metrology driver according to the init parameter. 
+
+  Description:
+    This routine reinitializes the metrology driver making it ready for clients to open and use.
+    The initialization data is specified by the init parameter.
+    It is a single instance driver.
+
+  Precondition:
+    The low-level board initialization must have been completed and the
+    module's initialization function must have been called before the system.
+
+  Parameters:
+    init  - Pointer to the init data structure containing any data necessary to initialize the driver.
+
+  Returns:
+    If successful, returns a valid handle to a driver instance object. 
+    Otherwise, it returns SYS_MODULE_OBJ_INVALID. 
+
+  Example:
+    <code>
+    SYS_MODULE_OBJ   sysObjDrvMet;
+
+    extern uint8_t met_bin_start;
+    extern uint8_t met_bin_end;
+
+    DRV_METROLOGY_INIT drvMetrologyInitData = {
+        .regBaseAddress = DRV_METROLOGY_REG_BASE_ADDRESS,
+        .binStartAddress = (uint32_t)&met_bin_start,
+        .binEndAddress = (uint32_t)&met_bin_end,
+
+    };
+
+    sysObjDrvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
+    </code>
+
+  Remarks:
+    This routine must be called before any other DRV_METROLOGY routine is called. 
+*/
+SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
 
 // *****************************************************************************
 /* Function:

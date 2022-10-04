@@ -90,24 +90,6 @@
 #define PIO_PORT_MAX    4U
 
 
-/*** Macros for GPIODBG pin ***/
-#define GPIODBG_Set()               (PIOA_REGS->PIO_SODR = (1<<18))
-#define GPIODBG_Clear()             (PIOA_REGS->PIO_CODR = (1<<18))
-#define GPIODBG_Toggle()            do {\
-                                            PIOA_REGS->PIO_MSKR = (1<<18); \
-                                            PIOA_REGS->PIO_ODSR ^= (1<<18);\
-                                        } while (0)
-#define GPIODBG_OutputEnable()      do {\
-                                            PIOA_REGS->PIO_MSKR = (1<<18); \
-                                            PIOA_REGS->PIO_CFGR |=(1 << PIO_CFGR_DIR_Pos);\
-                                        }while(0)
-#define GPIODBG_InputEnable()       do { \
-                                            PIOA_REGS->PIO_MSKR = (1<<18); \
-                                            PIOA_REGS->PIO_CFGR &= ~(1 << PIO_CFGR_DIR_Pos);\
-                                        } while (0)
-#define GPIODBG_Get()               ((PIOA_REGS->PIO_PDSR >> 18) & 0x1)
-#define GPIODBG_PIN                  PIO_PIN_PA18
-
 /*** Macros for SWITCH_SCRUP pin ***/
 #define SWITCH_SCRUP_Set()               (PIOA_REGS->PIO_SODR = (1<<14))
 #define SWITCH_SCRUP_Clear()             (PIOA_REGS->PIO_CODR = (1<<14))

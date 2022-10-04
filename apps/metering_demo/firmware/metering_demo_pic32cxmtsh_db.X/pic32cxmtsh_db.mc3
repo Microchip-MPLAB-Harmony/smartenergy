@@ -722,7 +722,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;349&quot; y=&quot;177&quot;/&gt;
@@ -746,7 +747,6 @@
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;686&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -2075,7 +2075,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_103_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG28&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2097,7 +2097,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_103_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2108,7 +2108,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_104_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG29&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2130,7 +2130,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_104_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2141,7 +2141,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_105_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG30&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2163,7 +2163,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_105_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2174,7 +2174,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_106_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG31&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2196,7 +2196,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_106_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2691,7 +2691,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_35_DIR&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;Out&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2702,7 +2702,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_35_FUNCTION_NAME&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIODBG&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2713,7 +2713,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_35_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -2724,7 +2724,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_35_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;GPIO&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3153,7 +3153,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_71_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG0&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3175,7 +3175,29 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_71_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_72_DIR"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_72_DIR&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PIN_72_FUNCTION_NAME"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_72_FUNCTION_NAME&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3186,7 +3208,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_72_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG1&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3208,7 +3230,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_72_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3219,7 +3241,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_74_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG4&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3241,7 +3263,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_74_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3252,7 +3274,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_75_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG3&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3274,7 +3296,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_75_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3285,7 +3307,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_76_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG5&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3307,7 +3329,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_76_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3318,7 +3340,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG2&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3340,7 +3362,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_77_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3879,7 +3901,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_97_FUNCTION_TYPE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;SLCDC_SEG22&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3901,7 +3923,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PIN_97_PERIPHERAL_FUNCTION&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;A&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4062,17 +4084,6 @@
 </value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PLLB_REFCLK_FREQUENCY"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
-  &lt;core dnOrder=&quot;0&quot; id=&quot;PLLB_REFCLK_FREQUENCY&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;8192000&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/core&gt;
-&lt;/core&gt;
-</value>
-      </entry>
-      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PLLCCK_FREQUENCY"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PLLCCK_FREQUENCY&quot;&gt;
@@ -4089,17 +4100,6 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;PLLC_CORECLK_FREQUENCY&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;344064000&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/core&gt;
-&lt;/core&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="PLLC_REFCLK_FREQUENCY"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
-  &lt;core dnOrder=&quot;0&quot; id=&quot;PLLC_REFCLK_FREQUENCY&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;8192000&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4132,7 +4132,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_A_CFGR_Value18&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x100&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x0&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4275,7 +4275,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_A_MSKR_ValueA&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0xffe00030L&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x1fe00030L&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4352,7 +4352,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_A_MSKR_ValueGPIO&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x4c000L&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0xc000L&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4660,7 +4660,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_B_MSKR_ValueA&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x7dfffff&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0x1d7fff8&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4814,7 +4814,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;PORT_C_MSKR_ValueA&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0xfc03&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0xfc00&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -7932,12 +7932,12 @@
          <hash>5abc11a6bd7e5fafc1bbaead9451da0bfcc9f2632ebcf0363ed28b056df19944</hash>
       </entry>
       <entry>
-         <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
-         <hash>f9b239f168976f7b167e054fa72616826f55ae4d74d76b87c9e70b2df079363f</hash>
+         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
+         <hash>877e620304a63de5482a60a05eb032a3d60144a8412376ac92b887456e36f9cc</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>18b454cc672d43e175e77e8ff7bcfbd484da8b0afd5da5912216f0d1e6a8712d</hash>
+         <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
+         <hash>f9b239f168976f7b167e054fa72616826f55ae4d74d76b87c9e70b2df079363f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -7965,7 +7965,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>fa69a82737ed566dd6f4d4c8ab0a52145fc6c2b9be1fd76950c45679a82abe98</hash>
+         <hash>a6f4f04e825d6cdf21b40c643493d081ac0f0de9f8f724603ded4dc2f8fb0daf</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -8361,7 +8361,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\pin_configurations.csv</file>
-         <hash>5f781c4bd1c1195c1cc7445b55b57ea2d44658801ceb31c8a18df292e36beb09</hash>
+         <hash>93966a69440155223aa291f64ae43ab416ffab6aa635329628749e048d0c8181</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ffunicode.c</file>
@@ -8645,7 +8645,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.h</file>
-         <hash>95cfb4b4d38f70e14f6ce2fead64e84ad2ff7824a567636876a6b1dc5c43f8a3</hash>
+         <hash>525f4cf6bd0b76c668350223c6f1377a5a0b7a670a40d0c0e26dd670c4187702</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\reset\sys_reset.c</file>
@@ -8685,7 +8685,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.c</file>
-         <hash>7c7ce14b255963e57d0496d1b5c42081c53c3d66da02c0eba3735e847e7abbcd</hash>
+         <hash>8b41c31e110dc6978e4e0b83b644a7a23dc4351e196bdf4ce048a1d3c42a72a5</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_iccarm.h</file>
@@ -8877,7 +8877,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>38291704e9555af502ae9b7af03e2dabc76dc66e629496f228aef0a50ad090d4</hash>
+         <hash>cf534756fbaeeba8f7f0ba890cf724970bf09f4662b1f51a3294b77b98958273</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

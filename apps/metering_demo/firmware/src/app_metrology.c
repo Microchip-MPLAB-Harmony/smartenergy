@@ -48,6 +48,8 @@ APP_DATALOG_QUEUE_DATA appMetrologyDatalogQueueData;
 extern QueueHandle_t appEnergyQueueID;
 extern QueueHandle_t appEventsQueueID;
 
+extern DRV_METROLOGY_INIT drvMetrologyInitData;
+
 const char * _met_control_desc[] =
 {
   "00 STATE_CTRL",
@@ -281,7 +283,7 @@ static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlR
 // *****************************************************************************
 // *****************************************************************************
 
-static void _APP_METROLOGY_NewIntegrationCallback(void)
+static void _APP_METROLOGY_IntegrationCallback(void)
 {
     if ((app_metrologyData.state == APP_METROLOGY_STATE_RUNNING) ||
         (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
@@ -364,7 +366,7 @@ void APP_METROLOGY_Initialize (void)
     app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     
     /* Set Callback for each metrology integration process */
-    DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_NewIntegrationCallback);
+    DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_IntegrationCallback);
     /* Set Callback for calibration process */
     DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
     /* Set Callback for harmonic analysis process */
@@ -469,6 +471,7 @@ void APP_METROLOGY_Tasks (void)
 
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
                 {
+                    SYS_CMD_MESSAGE("Metrology is running.\n\r");
                     app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
                 }
                 else
@@ -755,10 +758,7 @@ void APP_METROLOGY_Restart (void)
     app_metrologyData.state = APP_METROLOGY_STATE_INIT;
     app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
     
-    /* Disable ICM : TBD -> icm_reset, disable ICM int, clear pending ICM */
-    
-    DRV_METROLOGY_Close();
-    DRV_METROLOGY_Initialize(NULL, RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_SOFT_RST_Val));
+    sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
     
     OSAL_SEM_Post(&appMetrologySemID);
 }
