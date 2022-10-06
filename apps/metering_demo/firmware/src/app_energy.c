@@ -207,49 +207,64 @@ static bool _APP_ENERGY_CheckRTCFromReset(void)
     }
 }
 
+static void _APP_ENERGY_SetBuildTimeRTC(struct tm *time)
+{
+    char dateBuff[12];
+    uint16_t y, d;
+    uint8_t mon, uc_idx;
+    uint8_t a, m;
+
+    /* Set RTC time from COMPILER settings */
+    time->tm_hour = BUILD_TIME_HOUR;
+    time->tm_min = BUILD_TIME_MIN;
+    time->tm_sec = BUILD_TIME_SEC;
+    time->tm_year = BUILD_DATE_YEAR - 1900;
+    time->tm_mday = BUILD_DATE_DAY;
+
+    sprintf(dateBuff, "%s", __DATE__);
+    time->tm_mon = 0;
+    for (uc_idx = 0; uc_idx < 12; uc_idx++) {
+        if (memcmp(&app_energyMonthTbl[uc_idx], dateBuff, 3) == 0) {
+            time->tm_mon = uc_idx;
+            break;
+        }
+    }
+
+    /* Get day of the week */
+    mon = time->tm_mon + 1;
+    a = (14 - mon) / 12;
+    y = BUILD_DATE_YEAR - ((14 - mon) / 12);
+    m = mon + (12 * a) - 2;
+    d = time->tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
+    time->tm_wday = (d % 7) - 1;
+}
+
 static bool _APP_ENERGY_InitializeRTC(bool dataValid)
 {
+    bool rtcBuildValue = false;
+    bool rtcResult;
+    
     if (!dataValid)
     {
-        char dateBuff[12];
-        uint16_t y, d;
-        uint8_t mon, uc_idx;
-        uint8_t a, m;
-
-        /* Set RTC time from COMPILER settings */
-        app_energyData.time.tm_hour = BUILD_TIME_HOUR;
-        app_energyData.time.tm_min = BUILD_TIME_MIN;
-        app_energyData.time.tm_sec = BUILD_TIME_SEC;
-        app_energyData.time.tm_year = BUILD_DATE_YEAR - 1900;
-        app_energyData.time.tm_mday = BUILD_DATE_DAY;
-
-        sprintf(dateBuff, "%s", __DATE__);
-        app_energyData.time.tm_mon = 0;
-        for (uc_idx = 0; uc_idx < 12; uc_idx++) {
-            if (memcmp(&app_energyMonthTbl[uc_idx], dateBuff, 3) == 0) {
-                app_energyData.time.tm_mon = uc_idx;
-                break;
-            }
-        }
-
-        /* Get day of the week */
-        mon = app_energyData.time.tm_mon + 1;
-        a = (14 - mon) / 12;
-        y = BUILD_DATE_YEAR - ((14 - mon) / 12);
-        m = mon + (12 * a) - 2;
-        d = app_energyData.time.tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
-        app_energyData.time.tm_wday = (d % 7) - 1;
+        /* Set Build Time */
+        _APP_ENERGY_SetBuildTimeRTC(&app_energyData.time);
+        rtcBuildValue = true;
     }
-
+    
     /* Set RTC Time to current system time. */
-    if (RTC_TimeSet(&app_energyData.time))
+    rtcResult = RTC_TimeSet(&app_energyData.time);
+    while (rtcResult == false)
     {
-        RTC_CallbackRegister(RTC_callback, 0);
-        RTC_InterruptEnable(RTC_INT_TIME | RTC_INT_CALENDAR);
-        return true;
+        /* Set Build Time */
+        _APP_ENERGY_SetBuildTimeRTC(&app_energyData.time);
+        rtcResult = RTC_TimeSet(&app_energyData.time);
+        rtcBuildValue = true;
     }
 
-    return false;
+    RTC_CallbackRegister(RTC_callback, 0);
+    RTC_InterruptEnable(RTC_INT_TIME | RTC_INT_CALENDAR);
+
+    return rtcBuildValue;
 }
 
 static void _APP_ENERGY_InitializeTOU(bool dataValid)
@@ -600,29 +615,22 @@ void APP_ENERGY_Tasks (void)
 
                 if (_APP_ENERGY_InitializeRTC(app_energyData.dataIsRdy))
                 {
-                    if (app_energyData.dataIsRdy == false)
-                    {
-                        /* There is no valid data in memory. Create RTC Data in memory. */
-                        _APP_ENERGY_StoreRTCDataInMemory();
-                    }
-                    app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+                    /* Update RTC Data in memory. */
+                    _APP_ENERGY_StoreRTCDataInMemory();
                 }
-                else
-                {
-                    app_energyData.state = APP_ENERGY_STATE_ERROR;
-                }
+                    
+                app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
             }
             else
             {
                 RTC_TimeGet(&app_energyData.time);
                 if (_APP_ENERGY_InitializeRTC(true))
                 {
-                    app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
+                    /* Update RTC Data in memory. */
+                    _APP_ENERGY_StoreRTCDataInMemory();
                 }
-                else
-                {
-                    app_energyData.state = APP_ENERGY_STATE_ERROR;
-                }
+                
+                app_energyData.state = APP_ENERGY_STATE_INIT_TOU;
             }
 
             vTaskDelay(10 / portTICK_PERIOD_MS);
