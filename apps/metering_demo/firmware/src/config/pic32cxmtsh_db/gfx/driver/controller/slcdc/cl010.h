@@ -49,7 +49,7 @@
 #define CL010_H_INCLUDED
 
 #include "cl010_segmap.h"
-#include "slcdc.h"
+#include "drv_gfx_slcdc.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -168,13 +168,22 @@ typedef struct __attribute__((__packed__)) cl010_unit_pixel {
  */
 
 /**
- * \brief Initialize the CL010 LCD Glass component.
+ * \brief Initialize the CL010 LCD component.
  *
  * This function initializes the LCD driver to control the LCD glass.
- * It perform LCD module intialization according to the CL010 characteristics.
+ * It perform LCD module initialization according to the CL010 characteristics.
  *
  */
-status_code_t cl010_init(void);
+ void DRV_SLCDC_Initialize(void);
+ 
+ /**
+ * \brief Update the CL010 LCD component.
+ *
+ * This function updated the LCD driver to control the LCD glass.
+ * It perform LCD module update according to the CL010 characteristics.
+ *
+ */
+void DRV_SLCDC_Update(void);
 
 /**
  * \brief Write string to CL010 LCD glass numeric field.
@@ -337,6 +346,9 @@ void cl010_set_swap_mode(void);
  * \param val The 0 to 3 value which show the communication condition.
  */
 void cl010_communication_value(enum cl010_communication_value val);
+
+
+status_code_t cl010_init(void);
 
 /** @} */
 

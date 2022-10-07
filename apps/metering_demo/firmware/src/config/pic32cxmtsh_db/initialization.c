@@ -333,9 +333,11 @@ void SYS_Initialize ( void* data )
 
     sysObj.drvMemory0 = DRV_MEMORY_Initialize((SYS_MODULE_INDEX)DRV_MEMORY_INDEX_0, (SYS_MODULE_INIT *)&drvMemory0InitData);
 
+    DRV_SLCDC_Initialize();
+
     /* Initialize Metrology Driver Instance */
     sysObj.drvMet = DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
-    
+
 
     SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 

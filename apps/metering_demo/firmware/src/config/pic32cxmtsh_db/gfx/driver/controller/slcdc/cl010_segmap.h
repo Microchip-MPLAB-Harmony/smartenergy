@@ -48,6 +48,9 @@
 #ifndef CL010_SEGMAP_H_INCLUDED
 #define CL010_SEGMAP_H_INCLUDED
 
+
+
+
 /**
  * \name LCD component CL010 segment map definitions in PIC32CXMTSH_DB
  * @{
@@ -212,6 +215,8 @@
 /* The LCD segment map number */
 #define CL010_SEGMAP_NUM_0     0x0EBFFFC0
 /* @} */
+
+
 
 #define CL010_ICONS_UNIT_W      CL010_ICON_UNITS_6, CL010_ICON_UNITS_7, CL010_ICON_UNITS_8
 #define CL010_ICONS_UNIT_h      CL010_ICON_UNITS_10, CL010_ICON_UNITS_11, CL010_ICON_UNITS_11_BIS

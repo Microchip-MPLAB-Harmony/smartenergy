@@ -12,12 +12,6 @@
             <itemPath>../src/config/pic32cxmtsh_db/bsp/bsp.h</itemPath>
           </logicalFolder>
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
-            <logicalFolder name="display" displayName="display" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_font.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_segmap.h</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/slcdc.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory_definitions.h</itemPath>
@@ -35,6 +29,17 @@
             </logicalFolder>
             <itemPath>../src/config/pic32cxmtsh_db/driver/driver_common.h</itemPath>
             <itemPath>../src/config/pic32cxmtsh_db/driver/driver.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="gfx" displayName="gfx" projectFiles="true">
+            <logicalFolder name="driver" displayName="driver" projectFiles="true">
+              <logicalFolder name="slcdc" displayName="slcdc" projectFiles="true">
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010.h</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_font.h</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_segmap.h</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/drv_gfx_slcdc.h</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/gfx_driver.h</itemPath>
+              </logicalFolder>
+            </logicalFolder>
           </logicalFolder>
           <logicalFolder name="osal" displayName="osal" projectFiles="true">
             <itemPath>../src/config/pic32cxmtsh_db/osal/osal_freertos.h</itemPath>
@@ -328,10 +333,6 @@
             <itemPath>../src/config/pic32cxmtsh_db/bsp/bsp.c</itemPath>
           </logicalFolder>
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
-            <logicalFolder name="display" displayName="display" projectFiles="true">
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/cl010_slcdc.c</itemPath>
-              <itemPath>../src/config/pic32cxmtsh_db/driver/display/slcdc.c</itemPath>
-            </logicalFolder>
             <logicalFolder name="memory" displayName="memory" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory.c</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory_file_system.c</itemPath>
@@ -344,6 +345,15 @@
             </logicalFolder>
             <logicalFolder name="sst26" displayName="sst26" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/src/drv_sst26.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="gfx" displayName="gfx" projectFiles="true">
+            <logicalFolder name="driver" displayName="driver" projectFiles="true">
+              <logicalFolder name="slcdc" displayName="slcdc" projectFiles="true">
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_slcdc.c</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/drv_gfx_slcdc.c</itemPath>
+                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/gfx_driver.c</itemPath>
+              </logicalFolder>
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="osal" displayName="osal" projectFiles="true">

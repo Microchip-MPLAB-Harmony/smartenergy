@@ -34,17 +34,29 @@
 /*
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
-#ifndef SLCDC_H_INCLUDED
-#define SLCDC_H_INCLUDED
+#ifndef DRV_FGX_SLCDC_H_INCLUDED
+#define DRV_FGX_SLCDC_H_INCLUDED
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-//#include "compiler.h"
-//#include "status_codes.h"
 #include <device.h>
 #include <stdbool.h>
+
+
+/**
+ * \brief Waveform mode
+ *
+ * Enum waveform mode.
+ */
+enum slcdc_waveform_mode {
+		SLCDC_STANDARD_WAVEFORM_MODE = 0,
+		SLCDC_LOW_POWER_WAVEFORM_MODE = 1,
+};
+
+
+
 
 /**
  * Status code that may be returned by shell commands and protocol
@@ -114,57 +126,91 @@ typedef enum status_code status_code_t;
 /** Buffer On-Time */
 enum slcdc_buf_time {
 	/** Nominal drive time is 0% of SCLK period */
-	SLCDC_BUFTIME_OFF = SLCDC_MR_BUFTIME_OFF,
+	SLCDC_BUFTIME_OFF 			= SLCDC_MR_BUFTIME_OFF,
 	/** Nominal drive time is 2 periods of SCLK clock */
-	SLCDC_BUFTIME_X2_SCLK = SLCDC_MR_BUFTIME_X2_SCLK_PERIOD,
+	SLCDC_BUFTIME_X2_SCLK 		= SLCDC_MR_BUFTIME_X2_SCLK_PERIOD,
 	/** Nominal drive time is 4 periods of SCLK clock */
-	SLCDC_BUFTIME_X4_SCLK = SLCDC_MR_BUFTIME_X4_SCLK_PERIOD,
+	SLCDC_BUFTIME_X4_SCLK 		= SLCDC_MR_BUFTIME_X4_SCLK_PERIOD,
 	/** Nominal drive time is 8 periods of SCLK clock */
-	SLCDC_BUFTIME_X8_SCLK = SLCDC_MR_BUFTIME_X8_SCLK_PERIOD,
+	SLCDC_BUFTIME_X8_SCLK 		= SLCDC_MR_BUFTIME_X8_SCLK_PERIOD,
 	/** Nominal drive time is 16 periods of SCLK clock */
-	SLCDC_BUFTIME_X16_SCLK = SLCDC_MR_BUFTIME_X16_SCLK_PERIOD,
+	SLCDC_BUFTIME_X16_SCLK 		= SLCDC_MR_BUFTIME_X16_SCLK_PERIOD,
 	/** Nominal drive time is 32 periods of SCLK clock */
-	SLCDC_BUFTIME_X32_SCLK = SLCDC_MR_BUFTIME_X32_SCLK_PERIOD,
+	SLCDC_BUFTIME_X32_SCLK	 	= SLCDC_MR_BUFTIME_X32_SCLK_PERIOD,
 	/** Nominal drive time is 64 periods of SCLK clock */
-	SLCDC_BUFTIME_X64_SCLK = SLCDC_MR_BUFTIME_X64_SCLK_PERIOD,
+	SLCDC_BUFTIME_X64_SCLK 		= SLCDC_MR_BUFTIME_X64_SCLK_PERIOD,
 	/** Nominal drive time is 128 periods of SCLK clock */
-	SLCDC_BUFTIME_X128_SCLK = SLCDC_MR_BUFTIME_X128_SCLK_PERIOD,
+	SLCDC_BUFTIME_X128_SCLK 	= SLCDC_MR_BUFTIME_X128_SCLK_PERIOD,
 	/** Nominal drive time is 50% of SCLK period */
-	SLCDC_BUFTIME_PERCENT_50 = SLCDC_MR_BUFTIME_PERCENT_50,
+	SLCDC_BUFTIME_PERCENT_50 	= SLCDC_MR_BUFTIME_PERCENT_50,
 	/** Nominal drive time is 100% of SCLK period */
-	SLCDC_BUFTIME_PERCENT_100 = SLCDC_MR_BUFTIME_PERCENT_100,
+	SLCDC_BUFTIME_PERCENT_100 	= SLCDC_MR_BUFTIME_PERCENT_100,
 };
 
 /** Display Mode */
 enum slcdc_disp_mode {
 	/** Normal Mode */
-	SLCDC_DISPMODE_NORMAL = SLCDC_DR_DISPMODE_NORMAL,
+	SLCDC_DISPMODE_NORMAL 			= SLCDC_DR_DISPMODE_NORMAL,
 	/** Force Off Mode */
-	SLCDC_DISPMODE_FORCE_OFF = SLCDC_DR_DISPMODE_FORCE_OFF,
+	SLCDC_DISPMODE_FORCE_OFF 		= SLCDC_DR_DISPMODE_FORCE_OFF,
 	/** Force On Mode */
-	SLCDC_DISPMODE_FORCE_ON = SLCDC_DR_DISPMODE_FORCE_ON,
+	SLCDC_DISPMODE_FORCE_ON 		= SLCDC_DR_DISPMODE_FORCE_ON,
 	/** Blinking Mode */
-	SLCDC_DISPMODE_BLINKING = SLCDC_DR_DISPMODE_BLINKING,
+	SLCDC_DISPMODE_BLINKING 		= SLCDC_DR_DISPMODE_BLINKING,
 	/** Inverted Mode */
-	SLCDC_DISPMODE_INVERTED = SLCDC_DR_DISPMODE_INVERTED,
+	SLCDC_DISPMODE_INVERTED 		= SLCDC_DR_DISPMODE_INVERTED,
 	/** Inverted Blinking Mode */
-	SLCDC_DISPMODE_INVERTED_BLINK = SLCDC_DR_DISPMODE_INVERTED_BLINK,
+	SLCDC_DISPMODE_INVERTED_BLINK 	= SLCDC_DR_DISPMODE_INVERTED_BLINK,
 	/** User Buffer Only Load Mode */
-	SLCDC_DISPMODE_USER_BUFFER = SLCDC_DR_DISPMODE_USER_BUFFER_LOAD,
+	SLCDC_DISPMODE_USER_BUFFER 		= SLCDC_DR_DISPMODE_USER_BUFFER_LOAD,
 	/** Buffer Swap Mode */
-	SLCDC_DISPMODE_BUFFERS_SWAP = SLCDC_DR_DISPMODE_BUFFERS_SWAP,
+	SLCDC_DISPMODE_BUFFERS_SWAP 	= SLCDC_DR_DISPMODE_BUFFERS_SWAP,
 };
+
+
+enum slcdc_bias_config {
+	SLCDC_BIAS_STATIC = 0,
+	SLCDC_BIAS_1_2,
+	SLCDC_BIAS_1_3,
+	SLCDC_BIAS_1_4,
+};
+
+
+enum slcdc_frame_prescaler {
+	/** Normal Mode */
+	SLCDC_FRAME_PRE_8 		= 8,
+	SLCDC_FRAME_PRE_16 		= 16,
+	SLCDC_FRAME_PRE_32 		= 32,
+	SLCDC_FRAME_PRE_64 		= 64,
+	SLCDC_FRAME_PRE_128 	= 128,
+	SLCDC_FRAME_PRE_256 	= 256,
+	SLCDC_FRAME_PRE_512 	= 512,
+	SLCDC_FRAME_PRE_1024	= 1024,
+};
+
+
+/** Power Mode */
+enum slcdc_power_mode {
+	/** The internal supply source and the external supply source are both deselected. */
+	SLCDC_POWER_MODE_LCDOFF = SUPC_MR_LCDMODE_LCDOFF,
+	/** The external supply source for LCD is selected */
+	SLCDC_POWER_MODE_LCDON_EXTVR = SUPC_MR_LCDMODE_LCDON_EXTVR,
+	/** The internal supply source for LCD is selected */
+	SLCDC_POWER_MODE_LCDON_INVR = SUPC_MR_LCDMODE_LCDON_INVR,
+};
+
 
 /**
  * Basic configuration for SLCDC.
  */
 struct slcdc_config {
-	/** Buffer On-Time */
+	enum slcdc_frame_prescaler framePrescaler;
+	enum slcdc_waveform_mode waveform_mode;
 	enum slcdc_buf_time buf_time;
-	/** Frame rate */
-	uint32_t frame_rate;
-	/** Display Mode. */
+	uint8_t bias_buffer_duration;
 	enum slcdc_disp_mode disp_mode;
+	enum slcdc_power_mode controller_power_mode;
+	uint32_t frame_rate;
 };
 
 /**
@@ -181,6 +227,10 @@ typedef void (*slcdc_callback_t)(void);
 #define SLCDC_CLOCK_PRE_MAX          8
 
 #define SLCDC_NCOM_VALUE             16
+
+
+
+void slcdc_get_config_defaults(struct slcdc_config *slcdc_cfg);
 
 /**
  * \brief Initialize SLCDC with specified configuration.
@@ -541,7 +591,7 @@ void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc);
  * \section slcdc_basic SLCDC basic usage
  *
  * This use case will demonstrate how to configure and use of the on-chip
- * SLCD controller to address an external LCD segment (C42048A).
+ * SLCDC controller to address an external LCD segment (C42048A).
  *
  * \section slcdc_basic_setup Setup steps
  *
@@ -557,7 +607,7 @@ void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc);
  * Add this to the main loop or a setup function:
  * \code
  *         // Set LCD power mode: Internal supply
- *         supc_set_slcd_power_mode(SUPC, SLCDC_POWER_MODE_LCDON_INVR);
+ *         supc_set_slcdc_power_mode(SUPC, SLCDC_POWER_MODE_LCDON_INVR);
  *
  *         struct slcdc_config slcdc_cfg;
  *
@@ -566,7 +616,6 @@ void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc);
  *         // - Display mode: Normal
  *         // - Frame Rate:  64Hz
  *         slcdc_cfg.buf_time = SLCDC_BUFTIME_X64_SCLK;
- *         slcdc_cfg.frame_rate= 64;
  *         slcdc_cfg.disp_mode = SLCDC_DISPMODE_NORMAL;
  *         slcdc_init(&slcdc_cfg);
  *         slcdc_enable();
@@ -578,7 +627,7 @@ void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc);
  * \subsection slcdc_basic_setup_workflow Basic Setup Workflow
  *
  * -# Set LCD power mode
- *  - \code supc_set_slcd_power_mode(SUPC, SLCDC_POWER_MODE_LCDON_INVR); \endcode
+ *  - \code supc_set_slcdc_power_mode(SUPC, SLCDC_POWER_MODE_LCDON_INVR); \endcode
  * -# Initialize SLCDC with basic configuration
  *  - \code slcdc_init(&slcdc_cfg); \endcode
  * -# Enable SLCDC module
@@ -587,4 +636,4 @@ void slcdc_clear_display_memory(slcdc_registers_t *p_slcdc);
  *  - \code ioport_set_pin_level(LCD_BL_GPIO, IOPORT_PIN_LEVEL_HIGH); \endcode
  *
  */
-#endif /* SLCDC_H_INCLUDED */
+#endif /* DRV_FGX_SLCDC_H_INCLUDED */

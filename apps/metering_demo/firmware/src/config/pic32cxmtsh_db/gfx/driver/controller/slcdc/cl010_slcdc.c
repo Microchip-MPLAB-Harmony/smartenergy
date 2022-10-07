@@ -48,7 +48,7 @@
 //#include "compiler.h"
 #include <device.h>
 #include <stdio.h>
-#include "slcdc.h"
+#include "drv_gfx_slcdc.h"
 #include "../PIC32CX2051MTSH128_DFP/component/supc.h"
 #include "cl010.h"
 #include "cl010_font.h"
@@ -185,16 +185,6 @@ const cl010_unit_pixel_t symbol_units[CL010_UNIT_NUM] = {
 	{sizeof(plot_unit_MHz), plot_unit_MHz}
 };
 
-/** Power Mode */
-enum slcdc_power_mode {
-	/** The internal supply source and the external supply source are both deselected. */
-	SLCDC_POWER_MODE_LCDOFF = SUPC_MR_LCDMODE_LCDOFF,
-	/** The external supply source for LCD is selected */
-	SLCDC_POWER_MODE_LCDON_EXTVR = SUPC_MR_LCDMODE_LCDON_EXTVR,
-	/** The internal supply source for LCD is selected */
-	SLCDC_POWER_MODE_LCDON_INVR = SUPC_MR_LCDMODE_LCDON_INVR,
-};
-
 /**
  * \brief Get supply controller status.
  *
@@ -208,29 +198,29 @@ static uint32_t supc_get_status(supc_registers_t *p_supc)
 }
 
 /**
- * \brief Get SLCD power mode.
+ * \brief Get SLCDC power mode.
  *
  * \param p_supc Pointer to a SUPC instance.
  *
  * \return The mode of SLCDC.
  */
-enum slcdc_power_mode supc_get_slcd_power_mode(supc_registers_t *p_supc)
+enum slcdc_power_mode supc_get_slcdc_power_mode(supc_registers_t *p_supc)
 {
 	return (enum slcdc_power_mode)(p_supc->SUPC_MR & SUPC_MR_LCDMODE_Msk);
 }
 
 /**
- * \brief Set SLCD power mode.
+ * \brief Set SLCDC power mode.
  *
  * \param p_supc Pointer to a SUPC instance.
  * \param mode The mode of SLCDC.
  */
-static void supc_set_slcd_power_mode(supc_registers_t *p_supc, enum slcdc_power_mode mode)
+static void supc_set_slcdc_power_mode(supc_registers_t *p_supc, enum slcdc_power_mode mode)
 {
 	enum slcdc_power_mode pre_mode;
 	uint32_t tmp;
 
-	pre_mode = supc_get_slcd_power_mode(p_supc);
+	pre_mode = supc_get_slcdc_power_mode(p_supc);
 
 	if ((pre_mode == SLCDC_POWER_MODE_LCDON_EXTVR) && (mode == SLCDC_POWER_MODE_LCDON_INVR)) {
 		return;
@@ -256,7 +246,7 @@ static void supc_set_slcd_power_mode(supc_registers_t *p_supc, enum slcdc_power_
  * \param p_supc Pointer to a SUPC instance.
  * \param vol  The voltage of Regulator Output.
  */
-static void supc_set_slcd_vol(supc_registers_t *p_supc, uint32_t vol)
+static void supc_set_slcdc_vol(supc_registers_t *p_supc, uint32_t vol)
 {
 	uint32_t tmp= p_supc->SUPC_MR;
 	tmp &= ~SUPC_MR_LCDOUT_Msk;
@@ -366,33 +356,41 @@ static void cl010_slcdc_display_num_string(enum cl010_line disp_line, const uint
 	}
 }
 
+void DRV_SLCDC_Update(void)
+{
+	/* satisfies Harmony3 code regen */
+}
+
+void DRV_SLCDC_Initialize(void)
+{
+	/* Do nothing. Allow the application to initialize the LCD */
+}
+
 status_code_t cl010_init(void)
 {
-	uint32_t ul_pow_mode;
 	
 	/* SLCDC configuration */
 	struct slcdc_config slcdc_cfg;
-
-	/* Set LCD power mode: Internal supply */
-	ul_pow_mode = SLCDC_POWER_MODE_LCDON_INVR;
-	supc_set_slcd_power_mode(SUPC_REGS, SLCDC_POWER_MODE_LCDON_INVR);
 	
-	if (ul_pow_mode == SUPC_MR_LCDMODE_LCDON_INVR) {
-		/* Set contrast */
-		supc_set_slcd_vol(SUPC_REGS, 8);
+	slcdc_get_config_defaults(&slcdc_cfg);
+
+	/* Set LCD power mode */
+	supc_set_slcdc_power_mode(SUPC_REGS, slcdc_cfg.controller_power_mode);
+	
+	if (slcdc_cfg.controller_power_mode == SUPC_MR_LCDMODE_LCDON_INVR) {
+		
+		supc_set_slcdc_vol(SUPC_REGS, 8);
 	}
 
 	/* Reset SLCDC */
 	slcdc_reset(SLCDC_REGS);
 
 	/* SLCDC initialization */
-	slcdc_cfg.buf_time = SLCDC_BUFTIME_X64_SCLK;
-	slcdc_cfg.frame_rate = 64;
-	slcdc_cfg.disp_mode = SLCDC_DISPMODE_NORMAL;
-	if (slcdc_init(SLCDC_REGS, &slcdc_cfg) != STATUS_OK) {
+	if (slcdc_init(SLCDC_REGS, &slcdc_cfg) != STATUS_OK) 
+	{
 		return STATUS_ERR_BUSY;
 	}
-
+	
 	/* LCD seg mapped on SEGx I/O pin */
 	slcdc_set_segmap0(SLCDC_REGS, CL010_SEGMAP_NUM_0);
 
@@ -400,7 +398,7 @@ status_code_t cl010_init(void)
 	slcdc_enable(SLCDC_REGS);
 	while (!slcdc_get_status(SLCDC_REGS)) {
 	}
-
+		
 	return STATUS_OK;
 }
 
@@ -487,7 +485,7 @@ void cl010_set_contrast(int8_t contrast)
 	//Assert((0 <= contrast) && (contrast < 16));
 	uint8_t voltage[16] = {7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8};
 
-	supc_set_slcd_vol(SUPC_REGS, voltage[contrast]);
+	supc_set_slcdc_vol(SUPC_REGS, voltage[contrast]);
 }
 
 void cl010_show_all(void)

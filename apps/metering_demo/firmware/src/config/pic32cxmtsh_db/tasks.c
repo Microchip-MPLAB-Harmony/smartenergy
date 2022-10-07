@@ -89,6 +89,15 @@ void _SYS_FS_Tasks(  void *pvParameters  )
 }
 
 
+void _SLCDC_Tasks(  void *pvParameters  )
+{
+    while(1)
+    {
+        DRV_SLCDC_Update();
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+}
+
 void _DRV_METROLOGY_Tasks(  void *pvParameters  )
 {
     while(1)
@@ -206,6 +215,14 @@ void SYS_Tasks ( void )
         DRV_MEMORY_STACK_SIZE_IDX0,
         (void*)NULL,
         DRV_MEMORY_PRIORITY_IDX0,
+        (TaskHandle_t*)NULL
+    );
+
+    xTaskCreate( _SLCDC_Tasks,
+        "SLCDC_Tasks",
+        2048,
+        (void*)NULL,
+        1,
         (TaskHandle_t*)NULL
     );
 
