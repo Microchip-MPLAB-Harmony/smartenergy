@@ -1764,7 +1764,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_IDLE:
         {
-            SYS_CMD_MESSAGE("\r\n");
+            SYS_CMD_MESSAGE("\r\n>");
             OSAL_SEM_Pend(&appConsoleSemID, OSAL_WAIT_FOREVER);
             break;
         }

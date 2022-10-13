@@ -741,8 +741,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;695&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;348&quot; y=&quot;168&quot;/&gt;
@@ -762,12 +761,13 @@
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;516&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;31&quot; y=&quot;93&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;521&quot; y=&quot;316&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;353&quot; y=&quot;250&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;355&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;466&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;21&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;695&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -8199,7 +8199,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>793c7b75f26f38d724409bfb5f97959c6dff57ab2a839e7ba0bda2aabafa7d6d</hash>
+         <hash>90fd54078ad4a21a548ee566ee800bcfd82580974da75baeca91a811b63bb791</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8395,7 +8395,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\gfx\driver\controller\slcdc\cl010_segmap.h</file>
-         <hash>7729db79aec3d6d8a838664da736a8a2d2e558f983821acd72786ddbd6260d62</hash>
+         <hash>dd65858e15d02ead2dd482373a0cd15e548bcfc58ffa55c5659d473ed338d3c3</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\osc.h</file>
@@ -8730,14 +8730,6 @@
          <hash>ff6b0fd7ed96cdd778f7dc448451f6740c1ed57ac2acd25d46bb0f877f096d81</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\gfx\driver\gfx_driver.h</file>
-         <hash>fe9fcaab15196bb9b101e51cddc6418c9004f6babc2d416d8d5400ed7e554308</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\pic32cxmtsh_db\gfx\driver\gfx_driver.c</file>
-         <hash>09c3af304672f8af0e2396e39d075b3666380044092f21647b30b1030d0f0655</hash>
-      </entry>
-      <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\cmcc.h</file>
          <hash>54fe6b38684a3d9ff6470e94f2a02fddf4c3bebf9d4f5b6ccbbd2020652483bb</hash>
       </entry>
@@ -9011,7 +9003,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>776ac5057341dd50fee388abd607a8bac482ea3016ef3291f42da8d35ecab412</hash>
+         <hash>b79dd1a0181ea919a559c2656d1901dd787fec687055d7d62b388842f80b8c21</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

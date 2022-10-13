@@ -37,7 +37,6 @@
                 <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_font.h</itemPath>
                 <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_segmap.h</itemPath>
                 <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/drv_gfx_slcdc.h</itemPath>
-                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/gfx_driver.h</itemPath>
               </logicalFolder>
             </logicalFolder>
           </logicalFolder>
@@ -352,7 +351,6 @@
               <logicalFolder name="slcdc" displayName="slcdc" projectFiles="true">
                 <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/cl010_slcdc.c</itemPath>
                 <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/controller/slcdc/drv_gfx_slcdc.c</itemPath>
-                <itemPath>../src/config/pic32cxmtsh_db/gfx/driver/gfx_driver.c</itemPath>
               </logicalFolder>
             </logicalFolder>
           </logicalFolder>
