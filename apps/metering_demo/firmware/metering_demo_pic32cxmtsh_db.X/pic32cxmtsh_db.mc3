@@ -6983,7 +6983,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
   &lt;sys_command dnOrder=&quot;0&quot; id=&quot;SYS_COMMAND_MAX_CMD_LENGTH&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;100&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;255&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sys_command&gt;
 &lt;/sys_command&gt;
@@ -8199,7 +8199,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>90fd54078ad4a21a548ee566ee800bcfd82580974da75baeca91a811b63bb791</hash>
+         <hash>793c7b75f26f38d724409bfb5f97959c6dff57ab2a839e7ba0bda2aabafa7d6d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8799,7 +8799,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\sys_command.h</file>
-         <hash>c95de61335ee5c61f97c843b3383f30ad48f6dc49c3598c98640146c15f10835</hash>
+         <hash>1c36d07fd3d877b8d94161b81b4661e48dde95377be3003565abdc0d8ef07c5f</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\pio\pic32cx2051mtsh128.h</file>
@@ -9003,7 +9003,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>b79dd1a0181ea919a559c2656d1901dd787fec687055d7d62b388842f80b8c21</hash>
+         <hash>1866ffe2bc9565c60dd23db886b79ef4f6d15066733a9e1d1189cdef3d92e192</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
