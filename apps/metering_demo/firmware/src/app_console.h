@@ -158,7 +158,6 @@ typedef struct
     uint32_t *rawData;
     size_t rawDataLen;
     APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
-    bool dataValid;
     struct tm timeRequest;
     struct tm sysTime;
     APP_EVENTS_EVENT_ID eventIdRequest;
@@ -169,6 +168,7 @@ typedef struct
     int8_t numCommands;
     int8_t cmdNumToShowHelp;
     SYS_CMD_DESCRIPTOR *pCmdDescToShowHelp;
+    uint8_t requestCounter;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************
