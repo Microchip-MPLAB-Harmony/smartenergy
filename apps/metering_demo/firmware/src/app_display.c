@@ -416,7 +416,7 @@ static void APP_DISPLAY_Process(void)
             sprintf((char *)buff1, "%02d%02d%02d  ", 
                     (uint8_t)(current_time.tm_year - 100),
                     (uint8_t)(current_time.tm_mon + 1), 
-                    (uint8_t)(current_time.tm_mday + 1));
+                    (uint8_t)(current_time.tm_mday));
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_icon(CL010_ICON_DATE);
             cl010_show_icon(CL010_ICON_COL_1);
