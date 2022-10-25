@@ -741,7 +741,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;695&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;348&quot; y=&quot;168&quot;/&gt;
@@ -749,7 +750,7 @@
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;dfp&quot; x=&quot;14&quot; y=&quot;21&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;516&quot; y=&quot;220&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;515&quot; y=&quot;220&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;drv_memory&quot; x=&quot;351&quot; y=&quot;428&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;drv_sst26&quot; x=&quot;184&quot; y=&quot;446&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;flexcom0&quot; x=&quot;194&quot; y=&quot;326&quot;/&gt;
@@ -761,13 +762,12 @@
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;516&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;31&quot; y=&quot;93&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;521&quot; y=&quot;316&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;355&quot; y=&quot;262&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;354&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;466&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;21&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;695&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -5666,11 +5666,33 @@
          <value>__ROOTVIEW</value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_CAPTURE_BUFFER_SIZE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_CAPTURE_BUFFER_SIZE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;128000&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_KU"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
   &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_KU&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;User dnOrder=&quot;0&quot; value=&quot;1651&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_CONF_WAVEFORM_CAPTURE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CONF_WAVEFORM_CAPTURE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;2147487488&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drvMet&gt;
 &lt;/drvMet&gt;
@@ -5693,6 +5715,81 @@
   &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_CTRL_SWELL&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;99268888&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVECAPT_CH_IA"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVECAPT_CH_IA&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;visible&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVECAPT_CH_IB"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVECAPT_CH_IB&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;visible&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVECAPT_CH_VA"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVECAPT_CH_VA&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;visible&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVECAPT_CH_VB"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVECAPT_CH_VB&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;visible&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/drvMet&gt;
+&lt;/drvMet&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="drvMet" name="DRV_MET_WAVEFORM_CAPTURE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;drvMet&gt;
+  &lt;drvMet dnOrder=&quot;0&quot; id=&quot;DRV_MET_WAVEFORM_CAPTURE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/drvMet&gt;
 &lt;/drvMet&gt;
@@ -8035,7 +8132,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>877e620304a63de5482a60a05eb032a3d60144a8412376ac92b887456e36f9cc</hash>
+         <hash>d1a0c3ad51ae8b376b23446e9ff12ea656b61607f7f388c4a60635e17ed510a1</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
@@ -8067,7 +8164,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>a6f4f04e825d6cdf21b40c643493d081ac0f0de9f8f724603ded4dc2f8fb0daf</hash>
+         <hash>b68002b5b69041bc127b7bb7e59950e2b2f54c68283fcd445d924d8ab87eb929</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -8299,7 +8396,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\configuration.h</file>
-         <hash>59ef02e4cc5f420e79804e4993e592cfd61ace99f982fe84b36272f7333f77e5</hash>
+         <hash>12ce458f4a23ad39e3eaef15d6b8ae287979825091b127580e94804027ad0d31</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\qspi.h</file>
@@ -8627,7 +8724,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>71ab3c87c892694a942d1f446e90d0e56d9d3745a1b6dc05c739dff9281381c9</hash>
+         <hash>b0ffbb7823dddac0027c74ab533d9e977f7560a18f0b8779b7db3a5d946d746d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc0.c</file>
@@ -9003,7 +9100,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>1866ffe2bc9565c60dd23db886b79ef4f6d15066733a9e1d1189cdef3d92e192</hash>
+         <hash>776ac5057341dd50fee388abd607a8bac482ea3016ef3291f42da8d35ecab412</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

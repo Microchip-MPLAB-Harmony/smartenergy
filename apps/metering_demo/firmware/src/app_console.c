@@ -382,12 +382,6 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         return;
     }
     
-    if (idx > (captureSize >> 9))
-    {
-        SYS_CMD_MESSAGE("Parameter is out of range.\n\r");
-        return;
-    }
-    
     if (idx == 0xFF)
     {
         app_consoleData.rawDataLen = captureSize;
@@ -395,6 +389,12 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
     else
     {
+        if (idx > (captureSize >> 9))
+        {
+            SYS_CMD_MESSAGE("Parameter is out of range.\n\r");
+            return;
+        }
+    
         app_consoleData.rawDataLen = 512;
         app_consoleData.rawData = (uint32_t *)captureAddress;
         app_consoleData.rawData += (512 * idx);
@@ -655,7 +655,7 @@ static void _commandCNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Tr", 2) == 0)
+            else if (strncmp(argv[idx], "TR", 2) == 0)
             {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
@@ -671,7 +671,7 @@ static void _commandCNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Rl", 2) == 0)
+            else if (strncmp(argv[idx], "RL", 2) == 0)
             {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
@@ -687,7 +687,7 @@ static void _commandCNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                     break;
                 }
             }
-            else if (strncmp(argv[idx], "Ku", 2) == 0)
+            else if (strncmp(argv[idx], "KU", 2) == 0)
             {
                 // Get substring after '=' char
                 p = strstr(argv[idx], "=");
@@ -1106,27 +1106,27 @@ static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 3) 
     {
         // Extract event id from parameters
-        if (strcmp(argv[1], "Ua") == 0) 
+        if (strcmp(argv[1], "UA") == 0) 
         {
             app_consoleData.eventIdRequest = SAG_UA_EVENT_ID;
         }
-        else if (strcmp(argv[1], "Ub") == 0) 
+        else if (strcmp(argv[1], "UB") == 0) 
         {
             app_consoleData.eventIdRequest = SAG_UB_EVENT_ID;
         }
-        else if (strcmp(argv[1], "Uc") == 0) 
+        else if (strcmp(argv[1], "UC") == 0) 
         {
             app_consoleData.eventIdRequest = SAG_UC_EVENT_ID;
         }
-        else if (strcmp(argv[1], "Pa") == 0) 
+        else if (strcmp(argv[1], "PA") == 0) 
         {
             app_consoleData.eventIdRequest = POW_UA_EVENT_ID;
         }
-        else if (strcmp(argv[1], "Pb") == 0) 
+        else if (strcmp(argv[1], "PB") == 0) 
         {
             app_consoleData.eventIdRequest = POW_UB_EVENT_ID;
         }
-        else if (strcmp(argv[1], "Pc") == 0) 
+        else if (strcmp(argv[1], "PC") == 0) 
         {
             app_consoleData.eventIdRequest = POW_UC_EVENT_ID;
         }
@@ -1679,6 +1679,10 @@ static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
+static inline void _removePrompt(void)
+{
+    SYS_CMD_MESSAGE("\b");
+}
 
 // *****************************************************************************
 // *****************************************************************************
@@ -1828,6 +1832,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_CONTROL_REG:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Read register value
             if (APP_METROLOGY_GetControlRegister((CONTROL_REG_ID)app_consoleData.ctrlRegToRead, &regValue32[0], regName[0])) 
             {
@@ -1846,6 +1853,10 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_WRITE_CONTROL_REG:
         {
             uint8_t idx;
+            
+            // Remove Prompt symbol
+            _removePrompt();
+            
             for (idx = 0; idx < APP_CONSOLE_MAX_REGS; idx++) 
             {
                 if (app_consoleData.regsToModify[idx].index != 0xFF) 
@@ -1892,7 +1903,8 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (app_consoleData.ctrlRegToRead == 0)
                 {
-                    SYS_CMD_MESSAGE("\n\r");
+                    // Remove Prompt symbol
+                    _removePrompt();
                 }
 
                 // Check how many registers are pending to print, to format line
@@ -1975,6 +1987,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_ACCUM_REG:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Read register value
             if (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) 
             {
@@ -1996,7 +2011,8 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (app_consoleData.accumRegToRead == 0)
                 {
-                    SYS_CMD_MESSAGE("\n\r");
+                    // Remove Prompt symbol
+                    _removePrompt();
                 }
 
                 // Check how many registers are pending to print, to format line
@@ -2079,6 +2095,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_STATUS_REG:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Read register value
             if (APP_METROLOGY_GetStatusRegister((STATUS_REG_ID)app_consoleData.statusRegToRead, &regValue32[0], regName[0])) 
             {
@@ -2100,7 +2119,8 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (app_consoleData.statusRegToRead == 0)
                 {
-                    SYS_CMD_MESSAGE("\n\r");
+                    // Remove Prompt symbol
+                    _removePrompt();
                 }
 
                 // Check how many registers are pending to print, to format line
@@ -2183,6 +2203,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_HARMONICS_REG:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Read register value
             if (APP_METROLOGY_GetHarmonicsRegister((HARMONICS_REG_ID)app_consoleData.harRegToRead, &regValue32[0], regName[0])) 
             {
@@ -2204,7 +2227,8 @@ void APP_CONSOLE_Tasks ( void )
             {
                 if (app_consoleData.harRegToRead == 0)
                 {
-                    SYS_CMD_MESSAGE("\n\r");
+                    // Remove Prompt symbol
+                    _removePrompt();
                 }
 
                 // Check how many registers are pending to print, to format line
@@ -2288,6 +2312,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_METER_ID:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Show response on console
             SYS_CMD_MESSAGE("Meter ID is:\n\r");
             SYS_CMD_PRINT("%s\n\r", app_consoleStorageData.meterID);
@@ -2298,6 +2325,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_RTC:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Read and print RTC
             RTC_TimeGet(&app_consoleData.sysTime);
             SYS_CMD_MESSAGE("Present RTC is(yy-mm-dd w hh:mm:ss):\n\r");
@@ -2315,6 +2345,9 @@ void APP_CONSOLE_Tasks ( void )
             uint8_t idx;
 
             timeZone = APP_ENERGY_GetTOUTimeZone();
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             SYS_CMD_MESSAGE("TOU table is:\n\r");
             for (idx = 0; idx < APP_ENERGY_TOU_MAX_ZONES; idx++, timeZone++)
@@ -2334,16 +2367,19 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Show received data on console
             SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\n\r");
 
-            SYS_CMD_MESSAGE("Irms_Har_A(A)     Irms_Har_B(A)     Irms_Har_C(A)\n\r");
+            SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\n\r");
             SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisRMSData.Irms_A_m, 
                     harmonicAnalysisRMSData.Irms_B_m, harmonicAnalysisRMSData.Irms_C_m);
             
             vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
             
-            SYS_CMD_MESSAGE("Irms_Har_N(A)     Vrms_Har_A(V)     Vrms_Har_B(V)\n\r");
+            SYS_CMD_MESSAGE("Irms_Har_N(A)      Vrms_Har_A(V)      Vrms_Har_B(V)\n\r");
             SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\n\r", harmonicAnalysisRMSData.Irms_N_m, 
                     harmonicAnalysisRMSData.Vrms_A_m, harmonicAnalysisRMSData.Vrms_B_m);
             
@@ -2366,6 +2402,9 @@ void APP_CONSOLE_Tasks ( void )
             {
                 total += energyData.tariff[idx];
             }
+            
+            // Remove Prompt symbol
+            _removePrompt();
                 
             // Show received data on console
             idx = _getMonthIndexFromSysTime(&app_consoleData.timeRequest);
@@ -2393,6 +2432,9 @@ void APP_CONSOLE_Tasks ( void )
             APP_EVENTS_EVENT_INFO eventInfo;
             uint8_t numEvents;
             struct tm invalidTime = {0};
+            
+            // Remove Prompt symbol
+            _removePrompt();
             
             APP_EVENTS_GetNumEvents(app_consoleData.eventIdRequest, &numEvents);
             if (APP_EVENTS_GetEventInfo(app_consoleData.eventIdRequest, app_consoleData.eventLastTimeRequest, &eventInfo))
@@ -2468,6 +2510,9 @@ void APP_CONSOLE_Tasks ( void )
             APP_ENERGY_DEMAND_DATA *pDataTariff;
             int8_t idx;
             
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Show received data on console
             idx = _getMonthIndexFromSysTime(&app_consoleData.timeRequest);
             SYS_CMD_PRINT("Last %d Month MaxDemand is:\n\r", idx);
@@ -2498,6 +2543,9 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_VOLTAGE:
         {
             uint32_t va, vb, vc;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_UA, &va, 0);
             APP_METROLOGY_GetRMS(RMS_UB, &vb, 0);
@@ -2514,6 +2562,9 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t ia, ib, ic;
             uint32_t ini, inm, inmi;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_IA, &ia, 0);
             APP_METROLOGY_GetRMS(RMS_IB, &ib, 0);
@@ -2522,7 +2573,7 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetRMS(RMS_INM, &inm, 0);
             APP_METROLOGY_GetRMS(RMS_INMI, &inmi, 0);
             // Show received data on console
-            SYS_CMD_PRINT("Present current is :\n\rIa=%fA Ib=%fA Ic=%fA Ini=%fA Inm=%fA Inmi=%fA\n\r",
+            SYS_CMD_PRINT("Present current is :\n\rIa=%.4fA Ib=%.4fA Ic=%.4fA Ini=%.4fA Inm=%.4fA Inmi=%.4fA\r\n",
                     (float)ia/10000, (float)ib/10000, (float)ic/10000, (float)ini/10000,
                     (float)inm/10000, (float)inmi/10000);
 
@@ -2535,6 +2586,9 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t pt, pa, pb, pc;
             DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_PT, &pt, &signt);
             APP_METROLOGY_GetRMS(RMS_PA, &pa, &signa);
@@ -2554,13 +2608,16 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint32_t qt, qa, qb, qc;
             DRV_METROLOGY_RMS_SIGN signt, signa, signb, signc;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_QT, &qt, &signt);
             APP_METROLOGY_GetRMS(RMS_QA, &qa, &signa);
             APP_METROLOGY_GetRMS(RMS_QB, &qb, &signb);
             APP_METROLOGY_GetRMS(RMS_QC, &qc, &signc);
             // Show received data on console
-            SYS_CMD_PRINT("Present reactive power is :\n\rQt=%c%.1fW Qa=%c%.1fW Qb=%c%.1fW qc=%c%.1fW\r\n",
+            SYS_CMD_PRINT("Present reactive power is :\n\rQt=%c%.1fW Qa=%c%.1fW Qb=%c%.1fW Qc=%c%.1fW\r\n",
                    sign[signt], (float)qt/10, sign[signa], (float)qa/10, sign[signb],
                     (float)qb/10, sign[signc], (float)qc/10);
 
@@ -2572,6 +2629,9 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_APARENT_POWER:
         {
             uint32_t st, sa, sb, sc;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_ST, &st, 0);
             APP_METROLOGY_GetRMS(RMS_SA, &sa, 0);
@@ -2589,6 +2649,9 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_FREQUENCY:
         {
             uint32_t freq;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_FREQ, &freq, 0);
             // Show received data on console
@@ -2601,16 +2664,20 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_ANGLE:
         {
-            uint32_t aa, ab, ac;
-            DRV_METROLOGY_RMS_SIGN signa, signb, signc;
+            uint32_t aa, ab, ac, an;
+            DRV_METROLOGY_RMS_SIGN signa, signb, signc, signn;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             APP_METROLOGY_GetRMS(RMS_ANGLEA, &aa, &signa);
             APP_METROLOGY_GetRMS(RMS_ANGLEB, &ab, &signb);
             APP_METROLOGY_GetRMS(RMS_ANGLEC, &ac, &signc);
+            APP_METROLOGY_GetRMS(RMS_ANGLEN, &an, &signn);
             // Show received data on console
-            SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f\r\n",
+            SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f Angle_N=%c%.3f\r\n",
                     sign[signa], (float)(aa & 0xFFFFF)/1000, sign[signb], (float)(ab & 0xFFFFF)/1000,
-                    sign[signc], (float)(ac & 0xFFFFF)/1000);
+                    sign[signc], (float)(ac & 0xFFFFF)/1000, sign[signn], (float)(an & 0xFFFFF)/1000);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;
@@ -2642,6 +2709,9 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT:
         {
+            // Remove Prompt symbol
+            _removePrompt();
+            
             // Show calibration result
             if (app_consoleData.calibrationResult)
             {
@@ -2661,6 +2731,9 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint8_t idx;
             uint8_t idxMax = 2;
+            
+            // Remove Prompt symbol
+            _removePrompt();
 
             if (app_consoleData.cmdNumToShowHelp > 0)
             {

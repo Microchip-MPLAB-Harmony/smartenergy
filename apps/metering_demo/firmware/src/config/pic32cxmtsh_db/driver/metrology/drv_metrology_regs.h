@@ -1156,8 +1156,7 @@ typedef struct
     __O  uint32_t V_B_m_I;            /**< Offset: 0x28 (R/  32) The imaginary part of DFT result for voltage, phase-B, m-th harmonics (sQ25.6) */
     __O  uint32_t I_C_m_I;            /**< Offset: 0x2C (R/  32) The imaginary part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
     __O  uint32_t V_C_m_I;            /**< Offset: 0x30 (R/  32) The imaginary part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
-    __O  uint32_t I_N_m_I;            /**< Offset: 0x30 (R/  32) The imaginary part of DFT result for voltage, phase-N, m-th harmonics (sQ25.6) */
-    __O  uint32_t Reserved1;
+    __O  uint32_t I_N_m_I;            /**< Offset: 0x34 (R/  32) The imaginary part of DFT result for voltage, phase-N, m-th harmonics (sQ25.6) */
 } DRV_METROLOGY_HARMONICS;
 
 /** \brief Metrology Accumulated Output register API structure */

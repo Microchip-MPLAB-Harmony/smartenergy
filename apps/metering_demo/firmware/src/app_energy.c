@@ -584,11 +584,11 @@ void APP_ENERGY_Tasks (void)
             {
                 /* Write value in GPBR as initialization flag example */
                 /* In case of TAMPER detection, this value will be erased */
-                SUPC_GPBRWrite(GPBR_REGS_0, 0xA55A);
-                SUPC_GPBRWrite(GPBR_REGS_23, 0xB66B);
-                SYS_CMD_MESSAGE("\r\nSetting GPBR registers to be checked in tamper detection:\r\n");
-                SYS_CMD_PRINT("\tGPBR_REGS_0  = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_0));
-                SYS_CMD_PRINT("\tGPBR_REGS_23 = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_23));
+//                SUPC_GPBRWrite(GPBR_REGS_0, 0xA55A);
+//                SUPC_GPBRWrite(GPBR_REGS_23, 0xB66B);
+//                SYS_CMD_MESSAGE("\r\nSetting GPBR registers to be checked in tamper detection:\r\n");
+//                SYS_CMD_PRINT("\tGPBR_REGS_0  = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_0));
+//                SYS_CMD_PRINT("\tGPBR_REGS_23 = 0x%08x\r\n", SUPC_GPBRRead(GPBR_REGS_23));
                 
                 app_energyData.state = APP_ENERGY_STATE_INIT_RTC;
             }

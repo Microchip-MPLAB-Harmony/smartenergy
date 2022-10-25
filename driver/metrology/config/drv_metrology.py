@@ -75,7 +75,7 @@ def updateConfigWaveform(symbol, event):
     src = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_SRC")
     type = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_TYPE")
 
-    reg = (enable << 31) | (vc << 13) | (ic << 12) | (vb << 11) | (ib << 10) | (va << 9) | (ia << 8) | (src << 4) | type
+    reg = (vc << 13) | (ic << 12) | (vb << 11) | (ib << 10) | (va << 9) | (ia << 8) | (src << 4) | type
     symbol.setValue(reg)        
 
     if (enable):
@@ -91,7 +91,7 @@ def updateConfigWaveform(symbol, event):
         bufferSize = 0
         num_chn = 0
 
-    drvMetRegWaveformCaptureSize.setValue(bufferSize * num_chn * 4)
+    drvMetRegWaveformCaptureSize.setValue(bufferSize * num_chn)
         
 def updateConfigPKT(symbol, event):
     m = 1000000000 / event["value"]

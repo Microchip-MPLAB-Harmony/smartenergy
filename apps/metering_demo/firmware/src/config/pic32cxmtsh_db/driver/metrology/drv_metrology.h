@@ -53,6 +53,8 @@
     extern "C" {
 #endif
 
+#define MET_CAPTURE_BUF_SIZE     DRV_METROLOGY_CAPTURE_BUF_SIZE
+
 // *****************************************************************************
 /* Metrology Driver Result
 

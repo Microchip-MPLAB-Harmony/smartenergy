@@ -231,7 +231,9 @@ const char * _met_acc_desc[] =
   "49 RESERVED_A49",
   "50 ACC_T0",
   "51 ACC_T1",
-  "52 ACC_T2"
+  "52 ACC_T2",
+  "53 RESERVED_A53",
+  "54 RESERVED_A54"
 };
 
 const char * _met_har_desc[] =
@@ -242,12 +244,14 @@ const char * _met_har_desc[] =
   "03 V_B_m_R",
   "04 I_C_m_R",
   "05 V_C_m_R",
-  "06 I_A_m_I",
-  "07 V_A_m_I",
-  "08 I_B_m_I",
-  "09 V_B_m_I",
-  "10 I_C_m_I",
-  "11 V_C_m_I"
+  "06 I_N_m_R",
+  "07 I_A_m_I",
+  "08 V_A_m_I",
+  "09 I_B_m_I",
+  "10 V_B_m_I",
+  "11 I_C_m_I",
+  "12 V_C_m_I",
+  "13 I_N_m_I",
 };
 
 // *****************************************************************************

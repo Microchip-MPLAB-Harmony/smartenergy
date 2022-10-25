@@ -66,6 +66,8 @@ typedef enum {
 /* This is the driver instance object array. */
 DRV_METROLOGY_OBJ gDrvMetObj;
 
+static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BUF_SIZE)];
+
 const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
 {
     STATE_CTRL_STATE_CTRL_RESET_Val,                /* 00 STATE_CTRL */
@@ -115,7 +117,7 @@ const DRV_METROLOGY_CONTROL gDrvMetControlDefault =
     _UINT32_(0x00000000),                           /* 44 CAL_PH_IN */
     _UINT32_(DRV_METROLOGY_CONF_WAVEFORM),          /* 45 CAPTURE_CTRL */
     _UINT32_(DRV_METROLOGY_CAPTURE_BUF_SIZE),       /* 46 CAPTURE_BUFF_SIZE */
-    _UINT32_(0x00000000),                           /* 47 CAPTURE_ADDR */
+    _UINT32_(sCaptureBuffer),                       /* 47 CAPTURE_ADDR */
     _UINT32_(0x00000000),                           /* 48 RESERVED_C48 */
     _UINT32_(0x00000000),                           /* 49 RESERVED_C49 */
     _UINT32_(0x00000000),                           /* 50 RESERVED_C50 */
@@ -750,7 +752,7 @@ static bool _DRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
 SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetCause)
 {
     DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
-    
+
     if ((gDrvMetObj.inUse == true) || (init == NULL))
     {
         return SYS_MODULE_OBJ_INVALID;
@@ -811,7 +813,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
 
     /* Configure IPC peripheral */
     _DRV_Metrology_IpcInitialize();
-    
+
     return (SYS_MODULE_OBJ)&gDrvMetObj;
 }
 
