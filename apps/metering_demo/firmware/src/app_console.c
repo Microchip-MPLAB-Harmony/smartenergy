@@ -1488,6 +1488,17 @@ static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
             if (RTC_TimeSet(&app_consoleData.sysTime))
             {
+                // Build queue element to write it to storage
+                datalogQueueElement.userId = APP_DATALOG_USER_RTC;
+                datalogQueueElement.operation = APP_DATALOG_WRITE;
+                datalogQueueElement.endCallback = NULL;
+                datalogQueueElement.date.year = APP_DATALOG_INVALID_YEAR; /* Not used */
+                datalogQueueElement.date.month = APP_DATALOG_INVALID_MONTH; /* Not used */
+                datalogQueueElement.dataLen = sizeof(struct tm);
+                datalogQueueElement.pData = (uint8_t*)&app_consoleData.sysTime;
+                // Put it in queue
+                xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+            
                 SYS_CMD_MESSAGE("Set RTC is ok!\n\r");
         
                 /* Show console communication icon */
