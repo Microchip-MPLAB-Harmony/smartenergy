@@ -498,7 +498,7 @@ void APP_METROLOGY_Tasks (void)
 
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
                 {
-                    SYS_CMD_MESSAGE("Metrology is running.\n\r");
+                    SYS_CMD_MESSAGE("\bMetrology is running.\n\r>");
                     app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
                 }
                 else

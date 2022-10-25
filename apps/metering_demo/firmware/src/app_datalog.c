@@ -243,22 +243,20 @@ bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date)
 void APP_DATALOG_ClearData(APP_DATALOG_USER userId)
 {
     SYS_FS_HANDLE dirHandle;
-    char dirName[16];
-    SYS_FS_FSTAT stat;
     bool eod = false;
-    char filePath[32];
 
-    // Get directory name
-    sprintf(dirName, "%s", userToString[userId]);
-    //Open it
-    dirHandle = SYS_FS_DirOpen(dirName);
+    // Open directory
+    dirHandle = SYS_FS_DirOpen(userToString[userId]);
+    
+    // Stat struct has to be initialized to NULL before calling the API
+    memset(&app_datalogData.stat, 0, sizeof(SYS_FS_FSTAT));
 
     if (dirHandle != SYS_FS_HANDLE_INVALID)
     {
         while (!eod)
         {
             // Directory open is successful
-            if(SYS_FS_DirRead(dirHandle, &stat) == SYS_FS_RES_FAILURE)
+            if(SYS_FS_DirRead(dirHandle, &app_datalogData.stat) == SYS_FS_RES_FAILURE)
             {
                 // Directory read failed.
                 eod = true;
@@ -266,16 +264,16 @@ void APP_DATALOG_ClearData(APP_DATALOG_USER userId)
             else
             {
                 // Directory read succeeded.
-                if (stat.fname[0] == '\0')
+                if (app_datalogData.stat.fname[0] == '\0')
                 {
                     // Reached the end of the directory.
                     eod = true;
                 }
                 else
                 {
-                    // Remove next foud file
-                    sprintf(filePath, "%s/%s", dirName, stat.fname);
-                    SYS_FS_FileDirectoryRemove(filePath);
+                    // Remove next found file
+                    sprintf(app_datalogData.filePath, "%s/%s", userToString[userId], app_datalogData.stat.fname);
+                    SYS_FS_FileDirectoryRemove(app_datalogData.filePath);
                 }
             }
         }

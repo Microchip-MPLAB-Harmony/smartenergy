@@ -1766,16 +1766,6 @@ void APP_CONSOLE_Tasks ( void )
             {
                app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE;
             }
-            else
-            {
-                vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
-                app_consoleData.currentWaitForDatalogReady += CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY;
-                if (app_consoleData.currentWaitForDatalogReady > CONSOLE_MAX_WAIT_MS_UNTIL_DATALOG_READY) 
-                {
-                    // Go to Datalog not ready state
-                    app_consoleData.state = APP_CONSOLE_STATE_DATALOG_NOT_READY;
-                }
-            }
             break;
         }
 
@@ -1799,7 +1789,6 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_READ_STORAGE_ERROR:
         {
-            SYS_CMD_MESSAGE("No Console Data found in Storage. Write new one.\n\r");
             // Build queue element to write it to storage
             datalogQueueElement.userId = APP_DATALOG_USER_CONSOLE;
             datalogQueueElement.operation = APP_DATALOG_WRITE;

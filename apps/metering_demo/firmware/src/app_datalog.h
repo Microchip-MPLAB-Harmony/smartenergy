@@ -316,6 +316,12 @@ typedef struct
 
     /* Flag to indicate whether disk needs format */
     bool diskFormatRequired;
+    
+    /* Path File Name Buffer used in clear data routine */
+    char filePath[32];
+    
+    /* SYS FS File status structure used in clear data routine */
+    SYS_FS_FSTAT stat;
 
 } APP_DATALOG_DATA;
 
