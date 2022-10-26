@@ -489,7 +489,6 @@ static void _APP_ENERGY_CheckTamperDetection(void)
     /* Check the Tamper Event Counter value */
     if (RTC_REGS->RTC_SUB0[0].RTC_FSTR & RTC_FSTR_TEVCNT_Msk)
     {
-        uint32_t reg;
         struct tm tamperTime;
         
         RTC_LastTimeStampGet(&tamperTime, 0);
