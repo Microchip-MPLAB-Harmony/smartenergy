@@ -1079,63 +1079,13 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
 {
     DRV_METROLOGY_CONTROL * pDstControl;
-
+    
+    /* Get Pointer to Control registers */
     pDstControl = &gDrvMetObj.metRegisters->MET_CONTROL;
-
-    pDstControl->FEATURE_CTRL0 = pControl->FEATURE_CTRL0;
-    pDstControl->FEATURE_CTRL1 = pControl->FEATURE_CTRL1;
-    pDstControl->METER_TYPE = pControl->METER_TYPE;
-    pDstControl->M = pControl->M;
-    pDstControl->N_MAX = pControl->N_MAX;
-    pDstControl->PULSE0_CTRL = pControl->PULSE0_CTRL;
-    pDstControl->PULSE1_CTRL = pControl->PULSE1_CTRL;
-    pDstControl->PULSE2_CTRL = pControl->PULSE2_CTRL;
-    pDstControl->P_K_t = pControl->P_K_t;
-    pDstControl->Q_K_t = pControl->Q_K_t;
-    pDstControl->I_K_t = pControl->I_K_t;
-    pDstControl->CREEP_THRESHOLD_P = pControl->CREEP_THRESHOLD_P;
-    pDstControl->CREEP_THRESHOLD_Q = pControl->CREEP_THRESHOLD_Q;
-    pDstControl->CREEP_THRESHOLD_I = pControl->CREEP_THRESHOLD_I;
-    pDstControl->POWER_OFFSET_CTRL = pControl->POWER_OFFSET_CTRL;
-    pDstControl->POWER_OFFSET_P = pControl->POWER_OFFSET_P;
-    pDstControl->POWER_OFFSET_Q = pControl->POWER_OFFSET_Q;
-    pDstControl->SWELL_THRESHOLD_VA = pControl->SWELL_THRESHOLD_VA;
-    pDstControl->SWELL_THRESHOLD_VB = pControl->SWELL_THRESHOLD_VB;
-    pDstControl->SWELL_THRESHOLD_VC = pControl->SWELL_THRESHOLD_VC;
-    pDstControl->SAG_THRESHOLD_VA = pControl->SAG_THRESHOLD_VA;
-    pDstControl->SAG_THRESHOLD_VB = pControl->SAG_THRESHOLD_VB;
-    pDstControl->SAG_THRESHOLD_VC = pControl->SAG_THRESHOLD_VC;
-    pDstControl->K_IA = pControl->K_IA;
-    pDstControl->K_VA = pControl->K_VA;
-    pDstControl->K_IB = pControl->K_IB;
-    pDstControl->K_VB = pControl->K_VB;
-    pDstControl->K_IC = pControl->K_IC;
-    pDstControl->K_VC = pControl->K_VC;
-    pDstControl->K_IN = pControl->K_IN;
-    pDstControl->CAL_M_IA = pControl->CAL_M_IA;
-    pDstControl->CAL_M_VA = pControl->CAL_M_VA;
-    pDstControl->CAL_M_IB = pControl->CAL_M_IB;
-    pDstControl->CAL_M_VB = pControl->CAL_M_VB;
-    pDstControl->CAL_M_IC = pControl->CAL_M_IC;
-    pDstControl->CAL_M_VC = pControl->CAL_M_VC;
-    pDstControl->CAL_M_IN = pControl->CAL_M_IN;
-    pDstControl->CAL_PH_IA = pControl->CAL_PH_IA;
-    pDstControl->CAL_PH_VA = pControl->CAL_PH_VA;
-    pDstControl->CAL_PH_IB = pControl->CAL_PH_IB;
-    pDstControl->CAL_PH_VB = pControl->CAL_PH_VB;
-    pDstControl->CAL_PH_IC = pControl->CAL_PH_IC;
-    pDstControl->CAL_PH_VC = pControl->CAL_PH_VC;
-    pDstControl->CAL_PH_IN = pControl->CAL_PH_IN;
-    pDstControl->CAPTURE_CTRL = pControl->CAPTURE_CTRL;
-    pDstControl->ATSENSE_CTRL_20_23 = pControl->ATSENSE_CTRL_20_23;
-    pDstControl->ATSENSE_CTRL_24_27 = pControl->ATSENSE_CTRL_24_27;
-    pDstControl->ATSENSE_CTRL_28_2B = pControl->ATSENSE_CTRL_28_2B;
-    pDstControl->POWER_OFFSET_P_A = pControl->POWER_OFFSET_P_A;
-    pDstControl->POWER_OFFSET_P_B = pControl->POWER_OFFSET_P_B;
-    pDstControl->POWER_OFFSET_P_C = pControl->POWER_OFFSET_P_C;
-    pDstControl->POWER_OFFSET_Q_A = pControl->POWER_OFFSET_Q_A;
-    pDstControl->POWER_OFFSET_Q_B = pControl->POWER_OFFSET_Q_B;
-    pDstControl->POWER_OFFSET_Q_C = pControl->POWER_OFFSET_Q_C;
+    
+    /* Keep State Control Register value */
+    pControl->STATE_CTRL = pDstControl->STATE_CTRL;
+    *pDstControl = *pControl;
 }
 
 uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)

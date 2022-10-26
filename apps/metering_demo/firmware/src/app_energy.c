@@ -539,7 +539,7 @@ void APP_ENERGY_Initialize (void)
     app_energyData.minRtcBackup = APP_ENERGY_MIN_RTC_BACKUP;
 
     /* Clear Energy accumulators */
-    memset(&app_energyData.energyAccumulator.tariff, 0, sizeof(APP_ENERGY_ACCUMULATORS));
+    memset(&app_energyData.energyAccumulator, 0, sizeof(APP_ENERGY_ACCUMULATORS));
 
     /* Clear Demand data */
     memset(&app_energyData.demand, 0, sizeof(APP_ENERGY_DEMAND));
@@ -780,7 +780,7 @@ void APP_ENERGY_Tasks (void)
                     app_energyData.eventMonth = false;
 
                     /* Clear Energy Accumulators */
-                    memset(app_energyData.energyAccumulator.tariff, 0, sizeof(APP_ENERGY_ACCUMULATORS));
+                    memset(&app_energyData.energyAccumulator, 0, sizeof(APP_ENERGY_ACCUMULATORS));
 
                     /* Clear MaxDemand data */
                     memset(&app_energyData.demand.maxDemand, 0, sizeof(APP_ENERGY_MAX_DEMAND));
@@ -822,19 +822,32 @@ void APP_ENERGY_Tasks (void)
         case APP_ENERGY_STATE_GET_MONTH_ENERGY:
         {
             APP_DATALOG_DATE date;
+            struct tm sysTime;
+    
+            RTC_TimeGet(&sysTime);
             
-            /* Reset flag to request data to datalog app */
-            app_energyData.dataIsRdy = false;
-            
-            date.month = app_energyData.timeResponse.tm_mon + 1;
-            date.year = app_energyData.timeResponse.tm_year - 100;
-            /* Check if there are ENERGY data in memory */
-            if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, &date))
+            if ((sysTime.tm_mon == app_energyData.timeResponse.tm_mon) && 
+                    (sysTime.tm_year == app_energyData.timeResponse.tm_year))
             {
-                /* ENERGY data exists */
-                _APP_ENERGY_LoadEnergyDataFromMemory(&app_energyData.timeResponse, app_energyData.pMonthEnergyResponse);
-                /* Wait for the semaphore to load data from memory */
-                OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+                /* return current accumulated value */
+                *app_energyData.pMonthEnergyResponse = app_energyData.energyAccumulator;
+                app_energyData.dataIsRdy = true;
+            }
+            else
+            {
+                /* Reset flag to request data to datalog app */
+                app_energyData.dataIsRdy = false;
+
+                date.month = app_energyData.timeResponse.tm_mon + 1;
+                date.year = app_energyData.timeResponse.tm_year - 100;
+                /* Check if there are ENERGY data in memory */
+                if (APP_DATALOG_FileExists(APP_DATALOG_USER_ENERGY, &date))
+                {
+                    /* ENERGY data exists */
+                    _APP_ENERGY_LoadEnergyDataFromMemory(&app_energyData.timeResponse, app_energyData.pMonthEnergyResponse);
+                    /* Wait for the semaphore to load data from memory */
+                    OSAL_SEM_Pend(&appEnergySemID, OSAL_WAIT_FOREVER);
+                }
             }
             
             app_energyData.monthEnergyCallback(&app_energyData.timeResponse, app_energyData.dataIsRdy);
@@ -899,6 +912,8 @@ void APP_ENERGY_ClearEnergy(void)
 {
     /* Erase all the energy records stored in non volatile memory */
     APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY);
+    /* Clear Energy Accumulators */
+    memset(&app_energyData.energyAccumulator, 0, sizeof(APP_ENERGY_ACCUMULATORS));
 }
 
 void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
