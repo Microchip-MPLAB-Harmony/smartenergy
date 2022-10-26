@@ -777,10 +777,9 @@ static void _commandDCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 1)
     {
-        SYS_CMD_MESSAGE("Entering Low Power\n\r");
-        
-        // Go to Low Power mode
-        APP_METROLOGY_SetLowPowerMode();
+        app_consoleData.state = APP_CONSOLE_STATE_LOW_POWER_MODE;
+        // Post semaphore to wakeup task
+        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -2746,6 +2745,20 @@ void APP_CONSOLE_Tasks ( void )
             }
         
             vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+            break;
+        }
+        
+        case APP_CONSOLE_STATE_LOW_POWER_MODE:
+        {
+            // Remove Prompt symbol
+            _removePrompt();
+            
+            SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\n\r");
+            /* Wait time to show message through the Console */
+            vTaskDelay(100 / portTICK_PERIOD_MS);
+
+            // Go to Low Power mode
+            APP_METROLOGY_SetLowPowerMode();
             break;
         }
 

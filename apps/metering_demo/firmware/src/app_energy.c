@@ -493,15 +493,9 @@ static void _APP_ENERGY_CheckTamperDetection(void)
         struct tm tamperTime;
         
         RTC_LastTimeStampGet(&tamperTime, 0);
-        SYS_CMD_PRINT("Detected TAMPER event: [%02u/%02u/%04u %02u:%02u:%02u]\r\n",
+        SYS_CMD_PRINT("\bDetected TAMPER event: [%02u/%02u/%04u %02u:%02u:%02u]\r\n>",
 				  tamperTime.tm_mon + 1, tamperTime.tm_mday, tamperTime.tm_year + 1900,
 				  tamperTime.tm_hour, tamperTime.tm_min, tamperTime.tm_sec);
-    
-        SYS_CMD_MESSAGE("\r\nReading GPBR registers:\r\n");
-        reg = SUPC_GPBRRead(GPBR_REGS_0);
-        SYS_CMD_PRINT("\tGPBR_REGS_0  = 0x%08x\r\n", reg);
-        reg = SUPC_GPBRRead(GPBR_REGS_23);
-        SYS_CMD_PRINT("\tGPBR_REGS_23 = 0x%08x\r\n\r\n", reg );
     }
 }
 
