@@ -361,7 +361,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.P_B < 0)
         {
@@ -374,7 +374,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.P_C < 0)
         {
@@ -387,7 +387,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
     }
     else
     {
@@ -403,7 +403,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.Q_B < 0)
         {
@@ -416,7 +416,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.Q_C < 0)
         {
@@ -429,7 +429,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
     }
 
     k = k / 3600;         /* xxxxxx (Wh/Varh) */
