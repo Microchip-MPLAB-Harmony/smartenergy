@@ -353,6 +353,40 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
 
 void APP_DISPLAY_SetCommIcon(void);
 
+/*******************************************************************************
+  Function:
+    void APP_DISPLAY_ShowLowPowerMode(void)
+
+  Summary:
+    Function to show low power mode indicator.
+
+  Description:
+    This function clear the display and show low battery icon.
+
+  Precondition:
+    The system and application initialization ("SYS_Initialize" and 
+    "APP_DISPLAY_Initialize") should be called before calling this.
+
+  Parameters:
+    None.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    static void Command_xx(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+    {
+        APP_DISPLAY_ShowLowPowerMode(void);
+    }
+    </code>
+
+  Remarks:
+    None.
+ */
+
+void APP_DISPLAY_ShowLowPowerMode(void);
+
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
 }

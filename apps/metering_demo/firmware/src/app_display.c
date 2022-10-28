@@ -690,17 +690,33 @@ void APP_DISPLAY_Tasks ( void )
             if (OSAL_SEM_Pend(&appDisplaySemID, 1000) == OSAL_RESULT_TRUE)
             {
                 /* If any button has been pressed, change the information */
+                if (app_displayData.scrdown_pressed)
+                {
+                    if (SWITCH_SCRUP_Get() == 0)
+                    {
+                        SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\n\r");
+            
+                        // Update display info
+                        APP_DISPLAY_ShowLowPowerMode();
+
+                        // Wait time to show message through the Console 
+                        vTaskDelay(100 / portTICK_PERIOD_MS);
+
+                        // Go to Low Power mode
+                        APP_METROLOGY_SetLowPowerMode();
+
+                        // Execution should not come here during normal operation
+                    }
+                    
+                    app_displayData.scrdown_pressed = false;
+                    app_displayData.direction = APP_DISPLAY_BACKWARD;
+                    APP_DISPLAY_ChangeInfo();
+                }
+                
                 if (app_displayData.scrup_pressed)
                 {
                     app_displayData.scrup_pressed = false;
                     app_displayData.direction = APP_DISPLAY_FORWARD;
-                    APP_DISPLAY_ChangeInfo();
-                }
-
-                if (app_displayData.scrdown_pressed)
-                {
-                    app_displayData.scrdown_pressed = false;
-                    app_displayData.direction = APP_DISPLAY_BACKWARD;
                     APP_DISPLAY_ChangeInfo();
                 }
                 
@@ -793,6 +809,20 @@ void APP_DISPLAY_SetCommIcon(void)
     cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
     cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
     app_displayData.comm_time = 2;
+}
+
+/******************************************************************************
+  Function:
+    void APP_DISPLAY_ShowLowPowerMode(void)
+
+  Remarks:
+    See prototype in app_display.h.
+ */
+
+void APP_DISPLAY_ShowLowPowerMode(void)
+{
+    cl010_clear_all();
+    cl010_show_icon(CL010_ICON_BATTERY_LOW);
 }
 
 /*******************************************************************************

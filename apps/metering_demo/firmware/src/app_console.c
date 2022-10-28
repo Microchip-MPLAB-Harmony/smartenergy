@@ -2754,7 +2754,11 @@ void APP_CONSOLE_Tasks ( void )
             _removePrompt();
             
             SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\n\r");
-            /* Wait time to show message through the Console */
+            
+            // Update display info
+            APP_DISPLAY_ShowLowPowerMode();
+            
+            // Wait time to show message through the Console 
             vTaskDelay(100 / portTICK_PERIOD_MS);
 
             // Go to Low Power mode
