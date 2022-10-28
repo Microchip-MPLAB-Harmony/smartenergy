@@ -158,6 +158,7 @@ typedef struct
     uint8_t harRegToRead;
     uint32_t *rawData;
     size_t rawDataLen;
+    bool rawDataFlag;
     APP_CONSOLE_REG regsToModify[APP_CONSOLE_MAX_REGS];
     struct tm timeRequest;
     struct tm sysTime;

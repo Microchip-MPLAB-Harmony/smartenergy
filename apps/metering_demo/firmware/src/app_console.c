@@ -128,7 +128,10 @@ static char sign[2] = {' ', '-'};
 // *****************************************************************************
 // *****************************************************************************
 static void _commandBUF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
-static void _commandCAL (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALA(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
+static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandCNF (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandDAR (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static void _commandDCB (SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
@@ -160,7 +163,10 @@ static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
 static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
 {
     {"BUF", _commandBUF, ": Read waveform capture data (if a parameter is used, only a 512 samples sector is returned)"},
-    {"CAL", _commandCAL, ": Automatic calibration"},
+    {"CAL_A", _commandCALA, ": Automatic calibration phase A"},
+    {"CAL_B", _commandCALB, ": Automatic calibration phase B"},
+    {"CAL_C", _commandCALC, ": Automatic calibration phase C"},
+    {"CAL_T", _commandCALT, ": Automatic calibration three phases A,B,C"},
     {"CNF", _commandCNF, ": Automatic configuration"},
     {"DAR", _commandDAR, ": Read DSP_ACC register"},
     {"DCB", _commandDCB, ": Go to low power mode"},
@@ -397,9 +403,10 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     
         app_consoleData.rawDataLen = 512;
         app_consoleData.rawData = (uint32_t *)captureAddress;
-        app_consoleData.rawData += (512 * idx);
+        app_consoleData.rawData += (idx << 9);
     }
     
+    app_consoleData.rawDataFlag = true;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA;
     // Post semaphore to wakeup task
     OSAL_SEM_Post(&appConsoleSemID);
@@ -427,128 +434,165 @@ static bool _getCalibrationValue(char * argv, char * substring, double * value)
     return false;
 }
 
-static void _commandCAL(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+static void _commandCALA(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     APP_METROLOGY_CALIBRATION newCalibration = {0};
     bool parseError = false;
     
-    if ((argc != 5) && (argc != 11)) {
+    if (argc != 4) {
         SYS_CMD_MESSAGE("Unsupported Command !\n\r");
         return;
     }
     
-    switch (*argv[1])
-    {
-        case 'A':
-            newCalibration.lineId = PHASE_A;
-            break;
-            
-        case 'B':
-            newCalibration.lineId = PHASE_B;
-            break;
-            
-        case 'C':
-            newCalibration.lineId = PHASE_C;
-            break;
-            
-        case 'T':
-            newCalibration.lineId = PHASE_T;
-            break;
-            
-        default:
-            SYS_CMD_MESSAGE("Unsupported Command !\n\r");
-            return;
-    }
+    newCalibration.lineId = PHASE_A;
     
-    if (newCalibration.lineId == PHASE_A)
+    if(_getCalibrationValue(argv[1], "UA", &newCalibration.aimVA) == false)
     {
-        if(_getCalibrationValue(argv[2], "Ua", &newCalibration.aimVA) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[3], "Ia", &newCalibration.aimIA) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[4], "Aa", &newCalibration.angleA) == false)
-        {
-            parseError = true;
-        }
+        parseError = true;
     }
-    else if (newCalibration.lineId == PHASE_B)
+    else if(_getCalibrationValue(argv[2], "IA", &newCalibration.aimIA) == false)
     {
-        if(_getCalibrationValue(argv[2], "Ub", &newCalibration.aimVB) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[3], "Ib", &newCalibration.aimIB) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[4], "Ab", &newCalibration.angleB) == false)
-        {
-            parseError = true;
-        }
+        parseError = true;
     }
-    else if (newCalibration.lineId == PHASE_C)
+    else if(_getCalibrationValue(argv[3], "AA", &newCalibration.angleA) == false)
     {
-        if(_getCalibrationValue(argv[2], "Uc", &newCalibration.aimVC) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[3], "Ic", &newCalibration.aimIC) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[4], "Ac", &newCalibration.angleC) == false)
-        {
-            parseError = true;
-        }
-    }
-    else if (newCalibration.lineId == PHASE_T)
-    {
-        if(_getCalibrationValue(argv[2], "Ua", &newCalibration.aimVA) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[3], "Ia", &newCalibration.aimIA) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[4], "Aa", &newCalibration.angleA) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[5], "Ub", &newCalibration.aimVB) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[6], "Ib", &newCalibration.aimIB) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[7], "Ab", &newCalibration.angleB) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[8], "Uc", &newCalibration.aimVC) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[9], "Ic", &newCalibration.aimIC) == false)
-        {
-            parseError = true;
-        }
-        else if(_getCalibrationValue(argv[10], "Ac", &newCalibration.angleC) == false)
-        {
-            parseError = true;
-        }
+        parseError = true;
     }
 
     if (parseError) {
         SYS_CMD_MESSAGE("Unsupported Command !\n\r");
     }
-    else {
+    else 
+    {
+        SYS_CMD_MESSAGE("Calibrating...\n\r");
+        APP_METROLOGY_StartCalibration(&newCalibration);
+    }
+}
+
+static void _commandCALB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
+    bool parseError = false;
+    
+    if (argc != 4) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+        return;
+    }
+    
+    newCalibration.lineId = PHASE_B;
+    
+    if(_getCalibrationValue(argv[1], "UB", &newCalibration.aimVB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[2], "IB", &newCalibration.aimIB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[3], "AB", &newCalibration.angleB) == false)
+    {
+        parseError = true;
+    }
+
+    if (parseError) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+    }
+    else 
+    {
+        SYS_CMD_MESSAGE("Calibrating...\n\r");
+        APP_METROLOGY_StartCalibration(&newCalibration);
+    }
+}
+
+static void _commandCALC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
+    bool parseError = false;
+    
+    if (argc != 4) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+        return;
+    }
+    
+    newCalibration.lineId = PHASE_C;
+    
+    if(_getCalibrationValue(argv[1], "UC", &newCalibration.aimVC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[2], "IC", &newCalibration.aimIC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[3], "AC", &newCalibration.angleC) == false)
+    {
+        parseError = true;
+    }
+
+    if (parseError) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+    }
+    else 
+    {
+        SYS_CMD_MESSAGE("Calibrating...\n\r");
+        APP_METROLOGY_StartCalibration(&newCalibration);
+    }
+}
+
+static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
+{
+    APP_METROLOGY_CALIBRATION newCalibration = {0};
+    bool parseError = false;
+    
+    if (argc != 10) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+        return;
+    }
+    
+    newCalibration.lineId = PHASE_T;
+    
+    if(_getCalibrationValue(argv[1], "UA", &newCalibration.aimVA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[2], "IA", &newCalibration.aimIA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[3], "AA", &newCalibration.angleA) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[4], "UB", &newCalibration.aimVB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[5], "IB", &newCalibration.aimIB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[6], "AB", &newCalibration.angleB) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[7], "UCc", &newCalibration.aimVC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[8], "IC", &newCalibration.aimIC) == false)
+    {
+        parseError = true;
+    }
+    else if(_getCalibrationValue(argv[9], "AC", &newCalibration.angleC) == false)
+    {
+        parseError = true;
+    }
+
+    if (parseError) {
+        SYS_CMD_MESSAGE("Unsupported Command !\n\r");
+    }
+    else 
+    {
         SYS_CMD_MESSAGE("Calibrating...\n\r");
         APP_METROLOGY_StartCalibration(&newCalibration);
     }
@@ -1813,7 +1857,7 @@ void APP_CONSOLE_Tasks ( void )
 
         case APP_CONSOLE_STATE_IDLE:
         {
-            SYS_CMD_MESSAGE("\r\n>");
+            SYS_CMD_MESSAGE(">");
             OSAL_SEM_Pend(&appConsoleSemID, OSAL_WAIT_FOREVER);
             break;
         }
@@ -2675,6 +2719,13 @@ void APP_CONSOLE_Tasks ( void )
         case APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA:
         {
             uint8_t idx;
+            
+            if (app_consoleData.rawDataFlag)
+            {
+                _removePrompt();
+                app_consoleData.rawDataFlag = false;
+            }
+            
             for (idx = 0; idx < 10; idx++) {
                 if (app_consoleData.rawDataLen > 0) 
                 {
