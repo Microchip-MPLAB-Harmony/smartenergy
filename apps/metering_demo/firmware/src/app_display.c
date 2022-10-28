@@ -167,8 +167,6 @@ static void APP_DISPLAY_ChangeInfo(void)
 {
     if (app_displayData.loop_max <= APP_DISPLAY_MAX_TYPE) 
     {
-        app_displayData.display_info = app_displayData.loop_info[app_displayData.loop_idx];
-
         if ((app_displayData.direction & APP_DISPLAY_FORWARD) == APP_DISPLAY_FORWARD) 
         {
             if (++app_displayData.loop_idx >= app_displayData.loop_max) 
@@ -183,9 +181,8 @@ static void APP_DISPLAY_ChangeInfo(void)
                 app_displayData.loop_idx = app_displayData.loop_max - 1;
             }
         }
-
-        /* Reload time */
-        app_displayData.display_time = app_displayData.reload_display_time;
+        
+        app_displayData.display_info = app_displayData.loop_info[app_displayData.loop_idx];
     }
 }
 
@@ -710,17 +707,19 @@ void APP_DISPLAY_Tasks ( void )
                     
                     app_displayData.scrdown_pressed = false;
                     app_displayData.direction = APP_DISPLAY_BACKWARD;
-                    APP_DISPLAY_ChangeInfo();
                 }
                 
                 if (app_displayData.scrup_pressed)
                 {
                     app_displayData.scrup_pressed = false;
                     app_displayData.direction = APP_DISPLAY_FORWARD;
-                    APP_DISPLAY_ChangeInfo();
                 }
                 
+                APP_DISPLAY_ChangeInfo();
                 APP_DISPLAY_Process();
+                
+                /* Reload time */
+                app_displayData.display_time = app_displayData.reload_display_time;
             }
             else 
             {
@@ -728,11 +727,14 @@ void APP_DISPLAY_Tasks ( void )
                 if (app_displayData.display_time != 0)
                 {
                     --app_displayData.display_time;
-                    APP_DISPLAY_Process();
                 } 
                 else 
                 {
-                    APP_DISPLAY_ChangeInfo();    
+                    APP_DISPLAY_ChangeInfo();  
+                    APP_DISPLAY_Process();  
+
+                    /* Reload time */
+                    app_displayData.display_time = app_displayData.reload_display_time;
                 }
                 
                 /* Clear communication icon */

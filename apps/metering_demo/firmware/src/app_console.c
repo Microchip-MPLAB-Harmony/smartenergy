@@ -2552,11 +2552,11 @@ void APP_CONSOLE_Tasks ( void )
             pDataMax = &maxDemandLocalObject.maxDemad;
             pDataTariff = &maxDemandLocalObject.tariff[0];
             SYS_CMD_PRINT("TT=%.3fkW %d-%d %02d:%02d T1=%.3fkW %d-%d %02d:%02d T2=%.3fkW %d-%d %02d:%02d T3=%.3fkW %d-%d %02d:%02d T4=%.3fkW %d-%d %02d:%02d\n\r",
-                    (float)pDataMax->value/1000, pDataMax->month, pDataMax->day, pDataMax->hour, pDataMax->minute,
-                    (float)pDataTariff->value/1000, pDataTariff->month, pDataTariff->day, pDataTariff->hour, pDataTariff->minute,
-                    (float)(pDataTariff + 1)->value/1000, (pDataTariff + 1)->month, (pDataTariff + 1)->day, (pDataTariff + 1)->hour, (pDataTariff + 1)->minute,
-                    (float)(pDataTariff + 2)->value/1000, (pDataTariff + 2)->month, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
-                    (float)(pDataTariff + 3)->value/1000, (pDataTariff + 3)->month, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
+                    (float)pDataMax->value/1000, pDataMax->month + 1, pDataMax->day, pDataMax->hour, pDataMax->minute,
+                    (float)pDataTariff->value/1000, pDataTariff->month + 1, pDataTariff->day, pDataTariff->hour, pDataTariff->minute,
+                    (float)(pDataTariff + 1)->value/1000, (pDataTariff + 1)->month + 1, (pDataTariff + 1)->day, (pDataTariff + 1)->hour, (pDataTariff + 1)->minute,
+                    (float)(pDataTariff + 2)->value/1000, (pDataTariff + 2)->month + 1, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
+                    (float)(pDataTariff + 3)->value/1000, (pDataTariff + 3)->month + 1, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
             
             // Check pending monthly requests 
             app_consoleData.requestCounter--;

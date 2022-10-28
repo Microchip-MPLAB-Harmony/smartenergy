@@ -76,11 +76,11 @@ typedef struct {
 } APP_ENERGY_QUEUE_DATA;
 
 typedef enum {
-  TARIFF_1 = 1,
+  TARIFF_1 = 0,
   TARIFF_2,
   TARIFF_3,
   TARIFF_4,
-  TARIFF_NUM_TYPE = TARIFF_4,
+  TARIFF_NUM_TYPE,
   TARIFF_INVALID = 0xFF
 } APP_ENERGY_TARIFF_TYPE;
 
@@ -120,7 +120,7 @@ typedef struct {
 } APP_ENERGY_ACCUMULATORS;
 
 /* Energy threshold to update energy register stored in external memory */
-#define APP_ENERGY_TOU_THRESHOLD  10000 // 0.01kWh (Units: 10^-4 Wh)
+#define APP_ENERGY_TOU_THRESHOLD  100000 // 0.01kWh (Units: 10^-4 Wh)
 
 typedef void (* APP_ENERGY_MAXDEMAND_CALLBACK) (struct tm * time, bool dataValid);
 typedef void (* APP_ENERGY_MONTH_CALLBACK) (struct tm * time, bool dataValid);

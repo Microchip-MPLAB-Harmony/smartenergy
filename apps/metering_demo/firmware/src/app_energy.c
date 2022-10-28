@@ -296,59 +296,44 @@ static void _APP_ENERGY_InitializeTOU(bool dataValid)
 
 static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
 {
+    uint32_t demandMax = 0;
+    uint8_t  index = 0;
+    
     app_energyData.demand.window[time->tm_min] = demand;
 
-    if ((time->tm_min % 15) == 0)
+    if (time->tm_min != 59)
     {
-        uint32_t demandMax = 0;
-        uint8_t  index = 0;
-        uint8_t winStartOffset = 0;
-        bool update = false;
-
-        if (time->tm_min == 0)
-        {
-            winStartOffset = 45;
-        }
-        else
-        {
-            winStartOffset = time->tm_min - 15;
-        }
-
-        /* Get Max Demand : averaged over the last 15 minutes */
-        for (index = 0; index < 15; index++)
-        {
-            demandMax += app_energyData.demand.window[winStartOffset + index];
-        }
-        demandMax /= 9000; /* Units are 0.1W, so divided by 10; additionally, 15 minutes, so divided by 15 */
-
-        /* Update Demand Max according TOU Zone */
-        if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].value < demandMax)
-        {
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].value = demandMax;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].month = time->tm_mon;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].day = time->tm_mday;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].hour = time->tm_hour;
-            app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff - 1].minute = time->tm_min;
-
-            update = true;
-        }
-
-        /* Update Demand Max in total */
-        if (app_energyData.demand.maxDemand.maxDemad.value < demandMax)
-        {
-            app_energyData.demand.maxDemand.maxDemad.value = demandMax;
-            app_energyData.demand.maxDemand.maxDemad.month = time->tm_mon;
-            app_energyData.demand.maxDemand.maxDemad.day = time->tm_mday;
-            app_energyData.demand.maxDemand.maxDemad.hour = time->tm_hour;
-            app_energyData.demand.maxDemand.maxDemad.minute = time->tm_min;
-
-            update = true;
-        }
-
-        return update;
+        return false;
     }
 
-    return false;
+    /* Get Max Demand : averaged over the last 15 minutes */
+    for (index = 0; index < 60; index++)
+    {
+        demandMax += app_energyData.demand.window[index];
+    }
+    demandMax /= 9000; /* Units are 0.1W, so divided by 10; additionally, 15 minutes, so divided by 15 */
+
+    /* Update Demand Max according TOU Zone */
+    if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].value < demandMax)
+    {
+        app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].value = demandMax;
+        app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].month = time->tm_mon + 1;
+        app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].day = time->tm_mday;
+        app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].hour = time->tm_hour;
+        app_energyData.demand.maxDemand.tariff[app_energyData.currentTariff].minute = time->tm_min;
+    }
+
+    /* Update Demand Max in total */
+    if (app_energyData.demand.maxDemand.maxDemad.value < demandMax)
+    {
+        app_energyData.demand.maxDemand.maxDemad.value = demandMax;
+        app_energyData.demand.maxDemand.maxDemad.month = time->tm_mon + 1;
+        app_energyData.demand.maxDemand.maxDemad.day = time->tm_mday;
+        app_energyData.demand.maxDemand.maxDemad.hour = time->tm_hour;
+        app_energyData.demand.maxDemand.maxDemad.minute = time->tm_min;
+    }
+
+    return true;
 }
 
 static bool _APP_ENERGY_CheckEnergyThreshold(APP_ENERGY_ACCUMULATORS * pAccumulatorsDiff)
@@ -724,13 +709,13 @@ void APP_ENERGY_Tasks (void)
             if (xQueueReceive(appEnergyQueueID, &app_energyData.newQueuedData, 250 / portTICK_PERIOD_MS) == pdPASS)
             {
                 /* Update Energy Accumulator */
-                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff - 1] += app_energyData.newQueuedData.energy;
+                app_energyData.energyAccumulator.tariff[app_energyData.currentTariff] += app_energyData.newQueuedData.energy;
 
                 /* Update Demand Accumulator */
                 app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
 
                 /* Check TIME Event (minute) */
-                /* Don't update the RTC because we need to handle the energy accumulated in the previous minute */
+                /* Update the RTC at the end of this routine because we need to handle the energy accumulated in the previous minute */
                 if (app_energyData.eventMinute)
                 {
                     APP_ENERGY_ACCUMULATORS dataLogEnergy = {0};
@@ -744,7 +729,7 @@ void APP_ENERGY_Tasks (void)
                     /* Update demand values */
                     if (_APP_ENERGY_UpdateDemand(app_energyData.demandAccumulator, &app_energyData.time))
                     {
-                        /* Update maximum demand each 15 minutes */
+                        /* Update maximum demand each 60 minutes */
                         _APP_ENERGY_StoreDemandDataInMemory(&app_energyData.time, &app_energyData.demand.maxDemand);
                     }
                     app_energyData.demandAccumulator = 0;
@@ -760,11 +745,13 @@ void APP_ENERGY_Tasks (void)
                     {
                         app_energyData.minRtcBackup = APP_ENERGY_MIN_RTC_BACKUP;
 
-                        /* Read RTC */
-                        RTC_TimeGet(&app_energyData.time);
+                        
                         /* Update RTC data in memory */
                         _APP_ENERGY_StoreRTCDataInMemory();
                     }
+                    
+                    /* Read RTC */
+                    RTC_TimeGet(&app_energyData.time);
                 }
 
                 /* Check CALENDAR Event (month) */
