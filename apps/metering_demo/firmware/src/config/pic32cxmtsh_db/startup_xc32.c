@@ -91,6 +91,7 @@ __STATIC_INLINE void CMCC_Configure(void)
 
 }
 
+
 #if (__ARM_FP==14) || (__ARM_FP==4)
 
 /* Enable FPU */

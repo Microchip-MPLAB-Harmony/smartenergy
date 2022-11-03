@@ -179,7 +179,8 @@ static void _DRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
 
 void IPC1_Handler (void)
 {
-    uint32_t status = IPC1_REGS->IPC_ISR & IPC1_REGS->IPC_IMR;
+    uint32_t status = IPC1_REGS->IPC_ISR;
+    status &= IPC1_REGS->IPC_IMR;
 
     if (status & DRV_METROLOGY_IPC_INIT_IRQ_MSK)
     {
@@ -195,16 +196,9 @@ void IPC1_Handler (void)
             /* Update Harmonics Data */
             _DRV_Metrology_copy((uintptr_t)&gDrvMetObj.metHarData, (uintptr_t)&gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_HARMONICS));
         }
-
-        if (gDrvMetObj.integrationCallback)
-        {
-            gDrvMetObj.integrationCallback();
-        }
     }
 
-    IPC1_REGS->IPC_IDCR = status;
     IPC1_REGS->IPC_ICCR = status;
-    IPC1_REGS->IPC_IECR = status;
     
     /* Signal Metrology thread to update measurements for an integration period */
     OSAL_SEM_PostISR(&drvMetrologySemID);

@@ -23,7 +23,6 @@
 #include <stdbool.h>
 #include "device.h"
 #include "plib_clk.h"
-
 #define PLLA_RECOMMENDED_ACR    0x0F000038U
 #define PLLB_RECOMMENDED_ACR    0x28000058U
 #define PLLC_RECOMMENDED_ACR    0x28000058U
@@ -203,6 +202,18 @@ static void CPUClockInitialize(void)
 
 
 /*********************************************************************************
+                    Enable/Disable flash patch based on core frequency
+*********************************************************************************/
+static void ApplyFlashPatch(void)
+{
+    SFR_REGS->SFR_WPMR = SFR_WPMR_WPKEY_PASSWD;
+    /*Enable Flash high speed patch */
+    SFR_REGS->SFR_FLASH = 0x0U;
+    SFR_REGS->SFR_WPMR = (SFR_WPMR_WPKEY_PASSWD | SFR_WPMR_WPEN_Msk);
+}
+
+
+/*********************************************************************************
                         Initialize Programmable clocks
 *********************************************************************************/
 static void PCKInitialize(void)
@@ -265,19 +276,6 @@ static void PeripheralClockInitialize(void)
         i++;
     }
 }
-
-
-/*********************************************************************************
-                    Enable/Disable flash patch based on core frequency
-*********************************************************************************/
-static void ApplyFlashPatch(void)
-{
-    SFR_REGS->SFR_WPMR = SFR_WPMR_WPKEY_PASSWD;
-    /*Enable Flash high speed patch */
-    SFR_REGS->SFR_FLASH = 0x0U;
-    SFR_REGS->SFR_WPMR = (SFR_WPMR_WPKEY_PASSWD | SFR_WPMR_WPEN_Msk);
-}
-
 
 /*********************************************************************************
                                 Clock Initialize

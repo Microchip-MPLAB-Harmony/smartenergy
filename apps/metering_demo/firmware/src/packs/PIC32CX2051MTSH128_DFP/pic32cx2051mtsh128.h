@@ -20,7 +20,7 @@
  *
  */
 
-/* File generated from device description version 2022-07-26T09:53:37Z */
+/* File generated from device description version 2022-10-10T14:22:37Z */
 #ifndef _PIC32CX2051MTSH128_H_
 #define _PIC32CX2051MTSH128_H_
 

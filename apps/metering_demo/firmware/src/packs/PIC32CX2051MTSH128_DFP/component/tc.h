@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-07-26T09:53:40Z */
+/* file generated from device description version 2022-10-10T14:22:37Z */
 #ifndef _PIC32CXMTSH_TC_COMPONENT_H_
 #define _PIC32CXMTSH_TC_COMPONENT_H_
 
@@ -104,9 +104,6 @@
 #define TC_CMR_CAPTURE_CPCTRG_Pos             _UINT32_(14)                                         /* (TC_CMR) RC Compare Trigger Enable Position */
 #define TC_CMR_CAPTURE_CPCTRG_Msk             (_UINT32_(0x1) << TC_CMR_CAPTURE_CPCTRG_Pos)         /* (TC_CMR) RC Compare Trigger Enable Mask */
 #define TC_CMR_CAPTURE_CPCTRG(value)          (TC_CMR_CAPTURE_CPCTRG_Msk & (_UINT32_(value) << TC_CMR_CAPTURE_CPCTRG_Pos))
-#define TC_CMR_CAPTURE_WAVE_Pos               _UINT32_(15)                                         /* (TC_CMR) Waveform Mode Position */
-#define TC_CMR_CAPTURE_WAVE_Msk               (_UINT32_(0x1) << TC_CMR_CAPTURE_WAVE_Pos)           /* (TC_CMR) Waveform Mode Mask */
-#define TC_CMR_CAPTURE_WAVE(value)            (TC_CMR_CAPTURE_WAVE_Msk & (_UINT32_(value) << TC_CMR_CAPTURE_WAVE_Pos))
 #define TC_CMR_CAPTURE_LDRA_Pos               _UINT32_(16)                                         /* (TC_CMR) RA Loading Edge Selection Position */
 #define TC_CMR_CAPTURE_LDRA_Msk               (_UINT32_(0x3) << TC_CMR_CAPTURE_LDRA_Pos)           /* (TC_CMR) RA Loading Edge Selection Mask */
 #define TC_CMR_CAPTURE_LDRA(value)            (TC_CMR_CAPTURE_LDRA_Msk & (_UINT32_(value) << TC_CMR_CAPTURE_LDRA_Pos))
@@ -142,7 +139,7 @@
 #define TC_CMR_CAPTURE_SBSMPLR_FOURTH         (TC_CMR_CAPTURE_SBSMPLR_FOURTH_Val << TC_CMR_CAPTURE_SBSMPLR_Pos) /* (TC_CMR) Load a Capture register every 4 selected edges Position  */
 #define TC_CMR_CAPTURE_SBSMPLR_EIGHTH         (TC_CMR_CAPTURE_SBSMPLR_EIGHTH_Val << TC_CMR_CAPTURE_SBSMPLR_Pos) /* (TC_CMR) Load a Capture register every 8 selected edges Position  */
 #define TC_CMR_CAPTURE_SBSMPLR_SIXTEENTH      (TC_CMR_CAPTURE_SBSMPLR_SIXTEENTH_Val << TC_CMR_CAPTURE_SBSMPLR_Pos) /* (TC_CMR) Load a Capture register every 16 selected edges Position  */
-#define TC_CMR_CAPTURE_Msk                    _UINT32_(0x007FC7C0)                                  /* (TC_CMR_CAPTURE) Register Mask  */
+#define TC_CMR_CAPTURE_Msk                    _UINT32_(0x007F47C0)                                  /* (TC_CMR_CAPTURE) Register Mask  */
 
 /* WAVEFORM mode */
 #define TC_CMR_WAVEFORM_CPCSTOP_Pos           _UINT32_(6)                                          /* (TC_CMR) Counter Clock Stopped with RC Compare Position */

@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-07-26T09:53:40Z */
+/* file generated from device description version 2022-10-10T14:22:37Z */
 #ifndef _PIC32CXMTSH_QSPI_INSTANCE_
 #define _PIC32CXMTSH_QSPI_INSTANCE_
 
