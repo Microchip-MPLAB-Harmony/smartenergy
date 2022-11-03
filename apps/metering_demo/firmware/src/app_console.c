@@ -2021,7 +2021,7 @@ void APP_CONSOLE_Tasks ( void )
             // Read register value
             if (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0])) 
             {
-                SYS_CMD_PRINT("%s\n\r%X\n\r", regName[0], regValue64[0]);
+                SYS_CMD_PRINT("%s\n\r%llX\n\r", regName[0], regValue64[0]);
             }
             else 
             {
@@ -2054,7 +2054,7 @@ void APP_CONSOLE_Tasks ( void )
                         (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 3, &regValue64[3], regName[3]))) 
                     {
                         SYS_CMD_PRINT("%-19s%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2], regName[3]);
-                        SYS_CMD_PRINT("%-19X%-19X%-19X%-19X\n\r", regValue64[0], regValue64[1], regValue64[2], regValue64[3]);
+                        SYS_CMD_PRINT("%-19llX%-19llX%-19llX%-19llX\n\r", regValue64[0], regValue64[1], regValue64[2], regValue64[3]);
                     }
                     else 
                     {
@@ -2071,7 +2071,7 @@ void APP_CONSOLE_Tasks ( void )
                         (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 2, &regValue64[2], regName[2]))) 
                     {
                         SYS_CMD_PRINT("%-19s%-19s%-19s\n\r", regName[0], regName[1], regName[2]);
-                        SYS_CMD_PRINT("%-19X%-19X%-19X\n\r", regValue64[0], regValue64[1], regValue64[2]);
+                        SYS_CMD_PRINT("%-19llX%-19llX%-19llX\n\r", regValue64[0], regValue64[1], regValue64[2]);
                     }
                     else 
                     {
@@ -2087,7 +2087,7 @@ void APP_CONSOLE_Tasks ( void )
                         (APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead + 1, &regValue64[1], regName[1]))) 
                     {
                         SYS_CMD_PRINT("%-19s%-19s\n\r", regName[0], regName[1]);
-                        SYS_CMD_PRINT("%-19X%-19X\n\r", regValue64[0], regValue64[1]);
+                        SYS_CMD_PRINT("%-19llX%-19llX\n\r", regValue64[0], regValue64[1]);
                     }
                     else 
                     {
@@ -2101,7 +2101,7 @@ void APP_CONSOLE_Tasks ( void )
                 {
                     if ((APP_METROLOGY_GetAccumulatorRegister((ACCUMULATOR_REG_ID)app_consoleData.accumRegToRead, &regValue64[0], regName[0]))) {
                         SYS_CMD_PRINT("%-19s\n\r", regName[0]);
-                        SYS_CMD_PRINT("%-19X\n\r", regValue64[0]);
+                        SYS_CMD_PRINT("%-19llX\n\r", regValue64[0]);
                     }
                     else 
                     {
