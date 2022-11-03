@@ -76,11 +76,11 @@ typedef struct {
 } APP_ENERGY_QUEUE_DATA;
 
 typedef enum {
-  TARIFF_1 = 0,
+  TARIFF_1 = 1,
   TARIFF_2,
   TARIFF_3,
   TARIFF_4,
-  TARIFF_NUM_TYPE,
+  TARIFF_NUM_TYPE = TARIFF_4,
   TARIFF_INVALID = 0xFF
 } APP_ENERGY_TARIFF_TYPE;
 
@@ -172,7 +172,7 @@ typedef struct
 
     APP_ENERGY_QUEUE_DATA newQueuedData;
 
-    APP_ENERGY_TARIFF_TYPE currentTariff;
+    APP_ENERGY_TARIFF_TYPE currentTariffIndex;
 
     uint32_t energyThreshold;
 
