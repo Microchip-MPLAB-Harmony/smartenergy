@@ -59,9 +59,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#define CONSOLE_HEADER   "\r\n-- Microchip Demo Meter --\r\n" \
-  "-- Compiled: "__DATE__ " "__TIME__ " -- \r\n"
-
 /* Structure containing data to be stored in non volatile memory */
 typedef struct
 {
@@ -1079,7 +1076,7 @@ static void _commandENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint8_t monthIndex;
     
-    if (argc >2)
+    if (argc > 2)
     {
         // Incorrect parameter number
         SYS_CMD_MESSAGE("Incorrect param number\n\r");
@@ -1755,7 +1752,6 @@ void APP_CONSOLE_Initialize ( void )
     else
     {
         SYS_CMD_CallbackRegister(appCmdTbl, _preprocessorCallback, 0);
-        SYS_CONSOLE_Print(SYS_CONSOLE_INDEX_0, CONSOLE_HEADER);
     }
 }
 
