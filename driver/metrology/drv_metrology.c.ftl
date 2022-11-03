@@ -185,7 +185,8 @@ static void _DRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
 
 void IPC1_Handler (void)
 {
-    uint32_t status = IPC1_REGS->IPC_ISR & IPC1_REGS->IPC_IMR;
+    uint32_t status = IPC1_REGS->IPC_ISR;
+    status &= IPC1_REGS->IPC_IMR;
 
     if (status & DRV_METROLOGY_IPC_INIT_IRQ_MSK)
     {
@@ -200,11 +201,6 @@ void IPC1_Handler (void)
             _DRV_Metrology_copy((uintptr_t)&gDrvMetObj.metAccData, (uintptr_t)&gDrvMetObj.metRegisters->MET_ACCUMULATORS, sizeof(DRV_METROLOGY_ACCUMULATORS));
             /* Update Harmonics Data */
             _DRV_Metrology_copy((uintptr_t)&gDrvMetObj.metHarData, (uintptr_t)&gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_HARMONICS));
-        }
-
-        if (gDrvMetObj.integrationCallback)
-        {
-            gDrvMetObj.integrationCallback();
         }
     }
 
@@ -268,9 +264,7 @@ void IPC1_Handler (void)
     }
 
 </#if>
-    IPC1_REGS->IPC_IDCR = status;
     IPC1_REGS->IPC_ICCR = status;
-    IPC1_REGS->IPC_IECR = status;
     
     /* Signal Metrology thread to update measurements for an integration period */
     OSAL_SEM_PostISR(&drvMetrologySemID);
@@ -427,7 +421,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.P_B < 0)
         {
@@ -440,7 +434,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.P_C < 0)
         {
@@ -453,7 +447,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
     }
     else
     {
@@ -469,7 +463,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.Q_B < 0)
         {
@@ -482,7 +476,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
 
         if (gDrvMetObj.metAccData.Q_C < 0)
         {
@@ -495,7 +489,7 @@ static uint32_t _DRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 
         m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
         m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / gDrvMetObj.metRegisters->MET_STATUS.N);
+        k += (m / 4000);                /* k =k/fs */
     }
 
     k = k / 3600;         /* xxxxxx (Wh/Varh) */
