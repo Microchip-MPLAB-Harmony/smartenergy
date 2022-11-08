@@ -262,7 +262,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU1_ENERGY:
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
-            total = EnergyAcc.tariff[TARIFF_1];
+            total = EnergyAcc.tariff[0];
             APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      1");
@@ -274,7 +274,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU2_ENERGY:
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
-            total = EnergyAcc.tariff[TARIFF_2];
+            total = EnergyAcc.tariff[1];
             APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      2");
@@ -286,7 +286,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU3_ENERGY:
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
-            total = EnergyAcc.tariff[TARIFF_3];
+            total = EnergyAcc.tariff[2];
             APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      3");
@@ -298,7 +298,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU4_ENERGY:
         {
             APP_ENERGY_GetCurrentEnergy(&EnergyAcc);
-            total = EnergyAcc.tariff[TARIFF_4];
+            total = EnergyAcc.tariff[3];
             APP_DISPLAY_ShowEnergyDataUnits(total);
             cl010_show_icon(CL010_ICON_CUM);
             sprintf((char *)buff1, "      4");
@@ -439,7 +439,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU1_MAX_DEMAND:
         {
             APP_ENERGY_GetCurrentMaxDemand(&MaxDemand);
-            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[TARIFF_1].value);
+            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[0].value);
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_W);
             cl010_show_icon(CL010_ICON_MD);
@@ -452,7 +452,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU2_MAX_DEMAND:
         {
             APP_ENERGY_GetCurrentMaxDemand(&MaxDemand);
-            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[TARIFF_2].value);
+            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[1].value);
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_W);
             cl010_show_icon(CL010_ICON_MD);
@@ -465,7 +465,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU3_MAX_DEMAND:
         {
             APP_ENERGY_GetCurrentMaxDemand(&MaxDemand);
-            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[TARIFF_3].value);
+            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[2].value);
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_W);
             cl010_show_icon(CL010_ICON_MD);
@@ -478,7 +478,7 @@ static void APP_DISPLAY_Process(void)
         case APP_DISPLAY_TOU4_MAX_DEMAND:
         {
             APP_ENERGY_GetCurrentMaxDemand(&MaxDemand);
-            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[TARIFF_4].value);
+            sprintf((char *)buff1, "%8u", (unsigned int)MaxDemand.tariff[3].value);
             cl010_show_numeric_string(CL010_LINE_UP, buff1);
             cl010_show_units(CL010_UNIT_W);
             cl010_show_icon(CL010_ICON_MD);
@@ -691,7 +691,7 @@ void APP_DISPLAY_Tasks ( void )
                 {
                     if (SWITCH_SCRUP_Get() == 0)
                     {
-                        SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\n\r");
+                        SYS_CMD_MESSAGE("Entering Low Power... Press FWUP/TAMPER switch to wake up.\r\n");
             
                         // Update display info
                         APP_DISPLAY_ShowLowPowerMode();

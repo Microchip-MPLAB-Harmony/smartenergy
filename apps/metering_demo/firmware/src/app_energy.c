@@ -163,26 +163,41 @@ static uint8_t _APP_ENERGY_getTOUIndex(struct tm * time)
     uint32_t value, slotValue;
     uint8_t index;
     uint8_t counterZones;
+    uint8_t result = 0;
 
     counterZones = app_energyData.tou.usedZones;
+    result = counterZones - 1;
+    
     value = (time->tm_hour * 100) + time->tm_min;
     for (index = 0; index < counterZones; index++)
     {
         slotValue = (app_energyData.tou.timeZone[index].hour * 100) + app_energyData.tou.timeZone[index].minute;
         if (value < slotValue)
         {
-            if (index == 0)
+            if (index != 0)
             {
-                return counterZones - 1;
+                result = index - 1;
             }
-            else
-            {
-                return index - 1;
-            }
+            
+            break;
         }
     }
 
-    return counterZones - 1;
+    if ((app_energyData.tou.timeZone[result].hour == time->tm_hour) && 
+        (app_energyData.tou.timeZone[result].minute == time->tm_min))
+    {
+        if (result == 0)
+        {
+            result = counterZones - 1;
+        }
+        else
+        {
+            result--;
+        }
+        
+    }
+    
+    return result;
 }
 
 static APP_ENERGY_TARIFF_TYPE _APP_ENERGY_getTariffIndex(struct tm * time)
@@ -296,39 +311,50 @@ static void _APP_ENERGY_InitializeTOU(bool dataValid)
 
 static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
 {
+    uint32_t demandPeriod = 0;
     uint32_t demandMax = 0;
+    uint8_t index = 0;
+    uint8_t winStartOffset = 0;
+    uint8_t minIndex = 0;
     bool update = false;
-        
-    app_energyData.demand.window[time->tm_min] = demand;
-
-    if ((time->tm_min % 15) == 0)
+    
+    demandPeriod = demand / app_energyData.counterIntegrationPeriods;
+    
+    // Update Min index to fill previous minute data
+    if (time->tm_min == 0)
     {
-        uint8_t  index = 0;
-        uint8_t winStartOffset = 0;
-
-        if (time->tm_min == 0)
-        {
-            winStartOffset = 45;
-        }
-        else
-        {
-            winStartOffset = time->tm_min - 15;
-        }
-
-        /* Get Max Demand : averaged over the last 15 minutes */
-        for (index = 0; index < 15; index++)
-        {
-            demandMax += app_energyData.demand.window[winStartOffset + index];
-        }
+        minIndex = 59;
     }
     else
     {
-        demandMax = (time->tm_min % 15) * demand;
+        minIndex = time->tm_min - 1;
     }
     
-    demandMax /= 9000; /* Units are 0.1W, so divided by 10; additionally, 15 minutes, so divided by 15 */
+    app_energyData.demand.window[minIndex] = demandPeriod;
     
-//    SYS_CMD_PRINT("[%02u:%02u:%02u] T%u Dmax[%u]\n\r", time->tm_hour, time->tm_min, time->tm_sec, app_energyData.currentTariffIndex + 1, demandMax);
+    /* Get Max Demand : averaged over 15 minutes window */
+    if (minIndex >= 45)
+    {
+        winStartOffset = 45;
+    }
+    else if (time->tm_min >= 30)
+    {
+        winStartOffset = 30;
+    }
+    else if (time->tm_min >= 15)
+    {
+        winStartOffset = 15;
+    }
+    
+    for (index = 0; index < 15; index++)
+    {
+        demandMax += app_energyData.demand.window[winStartOffset + index];
+    }
+    
+    /* Divided by 15. Units are 0.1W, so divided by 10 */
+    demandMax /= 150; 
+    
+//    SYS_CMD_PRINT("[%02u:%02u:%02u] T%u Dmax[%u]\r\n", time->tm_hour, time->tm_min, time->tm_sec, app_energyData.currentTariffIndex + 1, demandMax);
 
     /* Update Demand Max according TOU Zone */
     if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariffIndex].value < demandMax)
@@ -353,7 +379,13 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
 
         update = true;
     }
-
+    
+    // Clean Demand Window
+    if (time->tm_min == 0)
+    {
+        memset(app_energyData.demand.window, 0, sizeof(app_energyData.demand.window));
+    }
+    
     return update;
 }
 
@@ -542,6 +574,9 @@ void APP_ENERGY_Initialize (void)
 
     /* Clear Demand data */
     memset(&app_energyData.demand, 0, sizeof(APP_ENERGY_DEMAND));
+    
+    /* Clear the counter of integration periods */
+    app_energyData.counterIntegrationPeriods = 0;
 
     /* Set Energy TOU Threshold */
     app_energyData.energyThreshold = APP_ENERGY_TOU_THRESHOLD;
@@ -729,13 +764,22 @@ void APP_ENERGY_Tasks (void)
         {
             if (xQueueReceive(appEnergyQueueID, &app_energyData.newQueuedData, 250 / portTICK_PERIOD_MS) == pdPASS)
             {
+                /* Read RTC */
+                RTC_TimeGet(&app_energyData.time);
+
+                /* Update current Tariff type */
+                app_energyData.currentTariffIndex = _APP_ENERGY_getTariffIndex(&app_energyData.time);
+                
+                /* Update counter of integration periods */
+                app_energyData.counterIntegrationPeriods++;
+                
                 /* Update Energy Accumulator */
                 app_energyData.energyAccumulator.tariff[app_energyData.currentTariffIndex] += app_energyData.newQueuedData.energy;
 
                 /* Update Demand Accumulator */
                 app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
     
-//                SYS_CMD_PRINT("[%02u:%02u:%02u] T%u E[0x%08X]-D[0x%08X]\n\r", 
+//                SYS_CMD_PRINT("[%02u:%02u:%02u] T%u E[0x%08X]-D[0x%08X]\r\n", 
 //                    app_energyData.time.tm_hour, app_energyData.time.tm_min, app_energyData.time.tm_sec, app_energyData.currentTariffIndex + 1,
 //                    app_energyData.newQueuedData.energy,
 //                    app_energyData.newQueuedData.Pt);
@@ -756,7 +800,10 @@ void APP_ENERGY_Tasks (void)
                         /* Update maximum demand */
                         _APP_ENERGY_StoreDemandDataInMemory(&app_energyData.time, &app_energyData.demand.maxDemand);
                     }
+                    
+                    // Restart demand accumulator and counter of integration periods
                     app_energyData.demandAccumulator = 0;
+                    app_energyData.counterIntegrationPeriods = 0;
 
                     /* Update DATALOG if accumulators has increased more than APP_ENERGY_TOU_THRESHOLD */
                     if (_APP_ENERGY_CheckEnergyThreshold(&dataLogEnergy))
@@ -786,12 +833,6 @@ void APP_ENERGY_Tasks (void)
                     /* Clear MaxDemand data */
                     memset(&app_energyData.demand.maxDemand, 0, sizeof(APP_ENERGY_MAX_DEMAND));
                 }
-                    
-                /* Read RTC */
-                RTC_TimeGet(&app_energyData.time);
-
-                /* Update current Tariff type */
-                app_energyData.currentTariffIndex = _APP_ENERGY_getTariffIndex(&app_energyData.time);
             }
 
             /* Check TAMPER detection */
@@ -915,10 +956,13 @@ void APP_ENERGY_GetCurrentEnergy(APP_ENERGY_ACCUMULATORS * pEnergy)
     }
 }
 
-void APP_ENERGY_ClearEnergy(void)
+void APP_ENERGY_ClearEnergy(bool clearPersistentData)
 {
-    /* Erase all the energy records stored in non volatile memory */
-    APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY);
+    if (clearPersistentData)
+    {
+        /* Erase all the energy records stored in non volatile memory */
+        APP_DATALOG_ClearData(APP_DATALOG_USER_ENERGY);
+    }
     /* Clear Energy Accumulators */
     memset(&app_energyData.energyAccumulator, 0, sizeof(APP_ENERGY_ACCUMULATORS));
 }
@@ -950,12 +994,17 @@ void APP_ENERGY_GetCurrentMaxDemand(APP_ENERGY_MAX_DEMAND * pMaxDemand)
     }
 }
 
-void APP_ENERGY_ClearMaxDemand(void)
+void APP_ENERGY_ClearMaxDemand(bool clearPersistentData)
 {
-    /* Erase all the demand records stored in non volatile memory */
-    APP_DATALOG_ClearData(APP_DATALOG_USER_DEMAND);
+    if (clearPersistentData)
+    {
+        /* Erase all the demand records stored in non volatile memory */
+        APP_DATALOG_ClearData(APP_DATALOG_USER_DEMAND);
+    }
     /* Clear Demand Accumulators */
     app_energyData.demandAccumulator = 0;
+    /* Clear Demand data */
+    memset(&app_energyData.demand, 0, sizeof(APP_ENERGY_DEMAND));
 }
 
 

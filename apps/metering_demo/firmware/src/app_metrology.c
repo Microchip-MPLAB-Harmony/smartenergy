@@ -376,6 +376,9 @@ void APP_METROLOGY_Initialize (void)
     /* Place the App state machine in its initial state. */
     app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
     
+    /* Flag to indicate if configuration should be applied */
+    app_metrologyData.setConfiguration = false;
+    
     /* Detection of the WDOG0 Reset */
     if (RSTC_ResetCauseGet() == RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
@@ -441,6 +444,21 @@ void APP_METROLOGY_Tasks (void)
         {
             if (APP_DATALOG_GetStatus() == APP_DATALOG_STATE_READY)
             {
+                /* Check if there are Metrology data in memory */
+                if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL))
+                {
+                    /* Metrology data exists */
+                    _APP_METROLOGY_LoadControlFromMemory(&app_metrologyData.configuration);
+                    /* Wait for the semaphore to load data from memory */
+                    OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
+
+                    /* Apply COnfiguration Data */
+                    if (app_metrologyData.dataIsRdy)
+                    {
+                        /* Update Flag to apply external configuration */
+                        app_metrologyData.setConfiguration = true;
+                    }
+                }
                 app_metrologyData.state = APP_METROLOGY_STATE_INIT;
             }
 
@@ -450,7 +468,15 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_INIT:
         {
-            if (DRV_METROLOGY_Open(app_metrologyData.startMode) == DRV_METROLOGY_SUCCESS)
+            DRV_METROLOGY_CONTROL * pConfiguration = NULL;
+            
+            /* Check if external configuration should be applied */
+            if (app_metrologyData.setConfiguration)
+            {
+                pConfiguration = &app_metrologyData.configuration;
+            }
+            
+            if (DRV_METROLOGY_Open(app_metrologyData.startMode, pConfiguration) == DRV_METROLOGY_SUCCESS)
             {
                 if (app_metrologyData.startMode == DRV_METROLOGY_START_HARD)
                 {
@@ -475,22 +501,7 @@ void APP_METROLOGY_Tasks (void)
             if (DRV_METROLOGY_GetState() == DRV_METROLOGY_STATE_READY)
             {
                 /* Check if there are Metrology data in memory */
-                if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL))
-                {
-                    DRV_METROLOGY_CONTROL controlReg;
-
-                    /* Metrology data exists */
-                    _APP_METROLOGY_LoadControlFromMemory(&controlReg);
-                    /* Wait for the semaphore to load data from memory */
-                    OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-                    /* Apply Control Data */
-                    if (app_metrologyData.dataIsRdy)
-                    {
-                        DRV_METROLOGY_SetControl(&controlReg);
-                    }
-                }
-                else
+                if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL) == false)
                 {
                     /* Metrology data does not exists. Store in NVM */
                     _APP_METROLOGY_StoreControlInMemory(app_metrologyData.pMetControl);
@@ -537,7 +548,7 @@ void APP_METROLOGY_Tasks (void)
             }
             else
             {
-                SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\n\r");
+                SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
             }
             
             // Send new Events to the Events Task
@@ -550,7 +561,7 @@ void APP_METROLOGY_Tasks (void)
             }
             else
             {
-                SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\n\r");
+                SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
             }
             
             break;

@@ -8158,7 +8158,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>8178e6e626ebde294b56c33d10d5a8b3658848a88955b6ae2e3e091c03948077</hash>
+         <hash>bb57a749088b779a7f1cdc966cce02cd55dde819325a0b680167ec07a5b0d46f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8186,7 +8186,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>b68002b5b69041bc127b7bb7e59950e2b2f54c68283fcd445d924d8ab87eb929</hash>
+         <hash>940a6b9c237bb11b4442d745a7b1fc85ec3894900f75d648c51139a07c182b89</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -8318,7 +8318,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>793c7b75f26f38d724409bfb5f97959c6dff57ab2a839e7ba0bda2aabafa7d6d</hash>
+         <hash>90fd54078ad4a21a548ee566ee800bcfd82580974da75baeca91a811b63bb791</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8506,7 +8506,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>421fcbd1be06764b34d7ed969ea367e7c4d1948fe4e509e04cb73b25c117b34f</hash>
+         <hash>d614398ae62c5ba8625722ab47f8cb7e3bdead104a67fefc0d3d12603bb4879f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -8746,7 +8746,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>b0ffbb7823dddac0027c74ab533d9e977f7560a18f0b8779b7db3a5d946d746d</hash>
+         <hash>e7c12be532abf3afd2b7c3b3cc401a5961b7eecb54cac0185a3cac9fa32ae474</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc0.c</file>
@@ -9122,7 +9122,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>43e82ae3bcd080329a73fd4f1ff7619f2612bb77e16347193da7520b1c0a7e24</hash>
+         <hash>ba61ae2a63b1c7f5a26c1796445c3946b33b2cc80f1f6b534c024f8a40b98442</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

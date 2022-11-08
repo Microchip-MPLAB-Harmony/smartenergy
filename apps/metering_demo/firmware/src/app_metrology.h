@@ -310,6 +310,7 @@ typedef struct
     APP_METROLOGY_STATES state;
     
     DRV_METROLOGY_START_MODE startMode;
+    DRV_METROLOGY_CONTROL configuration;
 
     DRV_METROLOGY_CONTROL * pMetControl;
     DRV_METROLOGY_STATUS * pMetStatus;
@@ -323,7 +324,9 @@ typedef struct
     DRV_METROLOGY_CALIBRATION_CALLBACK pCalibrationCallback;
     
     uint32_t queueFree;
-
+    
+    bool setConfiguration;
+    
     bool dataIsRdy;
 
 } APP_METROLOGY_DATA;

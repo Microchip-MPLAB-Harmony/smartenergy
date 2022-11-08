@@ -206,7 +206,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
 // *****************************************************************************
 /* Function:
     DRV_METROLOGY_RESULT DRV_METROLOGY_Open (
-        DRV_METROLOGY_START_MODE mode
+        DRV_METROLOGY_START_MODE mode,
+        DRV_METROLOGY_CONTROL * pConfiguration
     );
 
   Summary:
@@ -221,6 +222,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
 
   Parameters:
     mode - Metrology Driver Start mode
+    pConfiguration - Pointer to CONTROL configuration. In case of NULL, the MCC default configuration will be loaded.
 
   Returns:
     If successful, returns DRV_METROLOGY_SUCCESS. Otherwise, it returns DRV_METROLOGY_ERROR.
@@ -244,7 +246,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
         {
             if (DRV_METROLOGY_Open(app_metrologyData.startMode) == DRV_METROLOGY_SUCCESS)
             {
-                if (app_metrologyData.startMode == DRV_METROLOGY_START_HARD)
+                if (DRV_METROLOGY_Open(app_metrologyData.startMode, 
+                    NULL) == DRV_METROLOGY_SUCCESS)
                 {
                     app_metrologyData.state = APP_METROLOGY_STATE_START;
                 }
@@ -265,7 +268,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
   Remarks:
     None. 
 */
-DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode);
+DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode, DRV_METROLOGY_CONTROL * pConfiguration);
 
 // *****************************************************************************
 /* Function:

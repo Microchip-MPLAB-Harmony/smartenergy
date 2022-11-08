@@ -192,6 +192,7 @@ typedef struct {
     - Rest of the values are internally used to perform the calibration process.
 */
 typedef struct {
+    DRV_METROLOGY_CONTROL metControlConf;
     DRV_METROLOGY_CALIBRATION_REFS references;
     uint32_t featureCtrl0Backup;
     double freq;                     

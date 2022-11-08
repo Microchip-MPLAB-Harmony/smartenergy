@@ -47,7 +47,6 @@
 #include "drv_metrology.h"
 #include "drv_metrology_definitions.h"
 #include "osal/osal.h"
-
 #include "peripheral/pio/plib_pio.h"
 
 #ifdef __cplusplus // Provide C++ Compatibility
@@ -543,7 +542,7 @@ static bool _DRV_METROLOGY_UpdateCalibrationValues(void)
     DRV_METROLOGY_ACCUMULATORS * pMetAccRegs;
     
     pCalibrationData = &gDrvMetObj.calibrationData;
-    pMetAccRegs = &gDrvMetObj.metRegisters->MET_ACCUMULATORS;
+    pMetAccRegs = &gDrvMetObj.metAccData;
     
     if (pCalibrationData->numIntegrationPeriods)
     {
@@ -701,7 +700,7 @@ static bool _DRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
         uint8_t index;
         uint32_t harTemp[12];
 
-        pHarReg = (uint32_t *)&gDrvMetObj.metRegisters->MET_HARMONICS;
+        pHarReg = (uint32_t *)&gDrvMetObj.metHarData;
         for (index = 0; index < 14; index++, pHarReg++) {
             if (*pHarReg > RMS_HARMONIC) {
                 harTemp[index] = (~(*pHarReg)) + 1;
@@ -868,7 +867,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     return (SYS_MODULE_OBJ)&gDrvMetObj;
 }
 
-DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
+DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METROLOGY_CONTROL * pConfiguration)
 {
     if (gDrvMetObj.inUse == false)
     {
@@ -897,9 +896,19 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode)
 
         /* Keep Metrology Lib in reset */
         gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
-
-        /* Load default Control values */
-        memcpy(&gDrvMetObj.metRegisters->MET_CONTROL, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
+        
+        if (pConfiguration)
+        {
+            /* Overwrite STATE CTRL register */
+            pConfiguration->STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
+            /* Load external Control values */
+            memcpy(&gDrvMetObj.metRegisters->MET_CONTROL, pConfiguration, sizeof(DRV_METROLOGY_CONTROL));
+        }
+        else
+        {
+            /* Load default Control values */
+            memcpy(&gDrvMetObj.metRegisters->MET_CONTROL, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
+        }
 
         /* Set Metrology Lib state as Init */
         gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
@@ -1004,15 +1013,6 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
     /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
     OSAL_SEM_Pend(&drvMetrologySemID, OSAL_WAIT_FOREVER);
     
-    /* Update measurements from metrology library registers */
-    _DRV_METROLOGY_UpdateMeasurements();
-
-    /* Launch integration callback */
-    if (gDrvMetObj.integrationCallback)
-    {
-        gDrvMetObj.integrationCallback();
-    }
-    
     /* Check if there is a calibration process running */
     if (gDrvMetObj.calibrationData.running)
     {
@@ -1025,16 +1025,27 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             }
         }
     }
-    
-    /* Check if there is a harmonic analysis process running */
-    if (gDrvMetObj.harmonicAnalysisData.running)
+    else
     {
-        if (_DRV_METROLOGY_UpdateHarmonicAnalysisValues())
+        /* Update measurements from metrology library registers */
+        _DRV_METROLOGY_UpdateMeasurements();
+
+        /* Launch integration callback */
+        if (gDrvMetObj.integrationCallback)
         {
-            /* Launch calibration callback */
-            if (gDrvMetObj.harmonicAnalysisCallback)
+            gDrvMetObj.integrationCallback();
+        }
+        
+        /* Check if there is a harmonic analysis process running */
+        if (gDrvMetObj.harmonicAnalysisData.running)
+        {
+            if (_DRV_METROLOGY_UpdateHarmonicAnalysisValues())
             {
-                gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+                /* Launch calibration callback */
+                if (gDrvMetObj.harmonicAnalysisCallback)
+                {
+                    gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+                }
             }
         }
     }
@@ -1072,14 +1083,15 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl)
 {
-    DRV_METROLOGY_CONTROL * pDstControl;
+    uint32_t * pDstControl;
+    uint32_t * pSrcControl;
     
-    /* Get Pointer to Control registers */
-    pDstControl = &gDrvMetObj.metRegisters->MET_CONTROL;
+    pDstControl = (uint32_t *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0;
+    pSrcControl = (uint32_t *)&pControl->FEATURE_CTRL0;
     
     /* Keep State Control Register value */
-    pControl->STATE_CTRL = pDstControl->STATE_CTRL;
-    *pDstControl = *pControl;
+    memcpy(pDstControl, pSrcControl, sizeof(DRV_METROLOGY_CONTROL) - sizeof(uint32_t));
+    
 }
 
 uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
@@ -1150,22 +1162,13 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     uint64_t m;
     DRV_METROLOGY_CONTROL *pControl;
     uint32_t i;
-    uint32_t restoreCaptureBuffSize;
-    uint32_t restoreCaptureAddress;
-    uint32_t restoreCaptureControl;
     uint32_t reg;
     
     /* Store Calibration parameters */
     gDrvMetObj.calibrationData.freq = config->freq;
 
-    pControl = &gDrvMetObj.metRegisters->MET_CONTROL;
-
-    restoreCaptureBuffSize = pControl->CAPTURE_BUFF_SIZE;
-    restoreCaptureAddress = pControl->CAPTURE_ADDR;
-    restoreCaptureControl = pControl->CAPTURE_CTRL;
-
-    /* Load default Control values */
-    memcpy(pControl, &gDrvMetControlDefault, sizeof(DRV_METROLOGY_CONTROL));
+    pControl = &gDrvMetObj.calibrationData.metControlConf;
+    *pControl = gDrvMetObj.metRegisters->MET_CONTROL;
 
     m = 1000000000 / (config->mc);
     m = (m << GAIN_P_K_T_Q);
@@ -1233,14 +1236,9 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     pControl->K_VA = i;
     pControl->K_VB = i;
     pControl->K_VC = i;
+    
+    gDrvMetObj.metRegisters->MET_CONTROL = *pControl;
 
-    /* Restore Capture Buffer */
-    pControl->CAPTURE_ADDR = restoreCaptureAddress;
-    pControl->CAPTURE_BUFF_SIZE = restoreCaptureBuffSize;
-    pControl->CAPTURE_CTRL = restoreCaptureControl;
-
-    /* Set Metrology Lib state as Init */
-    pControl->STATE_CTRL = STATE_CTRL_STATE_CTRL_INIT_Val;
 }
 
 void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events)
@@ -1258,6 +1256,17 @@ void DRV_METROLOGY_StartCalibration(void)
     
         /* Set the number of integration periods to improve the accuracy of the calibration */
         pCalibrationData->numIntegrationPeriods = 4;
+        
+        /* Increase accuracy of references for calibrating procedure */
+        pCalibrationData->references.aimIA *= 10000;
+        pCalibrationData->references.aimVA *= 10000;
+        pCalibrationData->references.angleA *= 1000;
+        pCalibrationData->references.aimIB *= 10000;
+        pCalibrationData->references.aimVB *= 10000;
+        pCalibrationData->references.angleB *= 1000;
+        pCalibrationData->references.aimIC *= 10000;
+        pCalibrationData->references.aimVC *= 10000;
+        pCalibrationData->references.angleC *= 1000;
 
         /* Save FEATURE_CTRL0 register value, to be restored after calibration */
         pCalibrationData->featureCtrl0Backup = pMetControlRegs->FEATURE_CTRL0;

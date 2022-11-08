@@ -184,6 +184,8 @@ typedef struct
 
     uint32_t demandAccumulator;
 
+    uint32_t counterIntegrationPeriods;
+
     bool eventMinute;
 
     bool eventMonth;
@@ -293,12 +295,12 @@ void APP_ENERGY_SetMonthEnergyCallback(APP_ENERGY_MONTH_CALLBACK callback,
         APP_ENERGY_ACCUMULATORS * pMonthEnergyResponse);
 bool APP_ENERGY_GetMonthEnergy(struct tm * time);
 void APP_ENERGY_GetCurrentEnergy(APP_ENERGY_ACCUMULATORS * pEnergy);
-void APP_ENERGY_ClearEnergy(void);
+void APP_ENERGY_ClearEnergy(bool clearPersistentData);
 void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
         APP_ENERGY_MAX_DEMAND * pMaxDemandResponse);
 bool APP_ENERGY_GetMonthMaxDemand(struct tm * time);
 void APP_ENERGY_GetCurrentMaxDemand(APP_ENERGY_MAX_DEMAND * pMaxDemand);
-void APP_ENERGY_ClearMaxDemand(void);
+void APP_ENERGY_ClearMaxDemand(bool clearPersistentData);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus
