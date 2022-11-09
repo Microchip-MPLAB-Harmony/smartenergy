@@ -354,8 +354,6 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
     /* Divided by 15. Units are 0.1W, so divided by 10 */
     demandMax /= 150; 
     
-//    SYS_CMD_PRINT("[%02u:%02u:%02u] T%u Dmax[%u]\r\n", time->tm_hour, time->tm_min, time->tm_sec, app_energyData.currentTariffIndex + 1, demandMax);
-
     /* Update Demand Max according TOU Zone */
     if (app_energyData.demand.maxDemand.tariff[app_energyData.currentTariffIndex].value < demandMax)
     {
@@ -779,11 +777,6 @@ void APP_ENERGY_Tasks (void)
                 /* Update Demand Accumulator */
                 app_energyData.demandAccumulator += app_energyData.newQueuedData.Pt;
     
-//                SYS_CMD_PRINT("[%02u:%02u:%02u] T%u E[0x%08X]-D[0x%08X]\r\n", 
-//                    app_energyData.time.tm_hour, app_energyData.time.tm_min, app_energyData.time.tm_sec, app_energyData.currentTariffIndex + 1,
-//                    app_energyData.newQueuedData.energy,
-//                    app_energyData.newQueuedData.Pt);
-
                 /* Check TIME Event (minute) */
                 /* Update the RTC at the end of this routine because we need to handle the energy accumulated in the previous minute */
                 if (app_energyData.eventMinute)
@@ -796,7 +789,6 @@ void APP_ENERGY_Tasks (void)
                     /* Update demand values */
                     if (_APP_ENERGY_UpdateDemand(app_energyData.demandAccumulator, &app_energyData.time))
                     {
-//                        SYS_CMD_MESSAGE("Update maximum demand in SST");
                         /* Update maximum demand */
                         _APP_ENERGY_StoreDemandDataInMemory(&app_energyData.time, &app_energyData.demand.maxDemand);
                     }

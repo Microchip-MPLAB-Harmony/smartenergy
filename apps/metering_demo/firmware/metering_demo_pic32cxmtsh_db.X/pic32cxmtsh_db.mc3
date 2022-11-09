@@ -760,7 +760,7 @@
         &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc0&quot; x=&quot;516&quot; y=&quot;66&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;516&quot; y=&quot;139&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;31&quot; y=&quot;93&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;521&quot; y=&quot;316&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;519&quot; y=&quot;300&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;354&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;466&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;sys_time&quot; x=&quot;185&quot; y=&quot;99&quot;/&gt;
@@ -7001,7 +7001,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
   &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_LPDBC0&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;1&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/supc&gt;
 &lt;/supc&gt;
@@ -8630,7 +8630,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
-         <hash>de096309add028ea960723a8b38fc81425a1b18a0894a4eea5421f35760ab75b</hash>
+         <hash>4fcd3922f7a1d06f876ab5fd954ab0607278f08210d07b34e6fa9f7292e0aa97</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\cmcc0.h</file>
