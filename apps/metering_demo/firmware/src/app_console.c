@@ -362,6 +362,7 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     uint32_t captureAddress;
     size_t captureSize;
+    uint8_t idxMax;
     uint8_t idx = 0xFF;
     
     if (argc > 2)
@@ -385,21 +386,32 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         return;
     }
     
-    if (idx == 0xFF)
+    app_consoleData.rawDataLen = captureSize;
+    app_consoleData.rawData = (uint32_t *)captureAddress;
+    
+    idxMax = (captureSize - 1) >> 9;
+    
+    if (idx != 0xFF)
     {
-        app_consoleData.rawDataLen = captureSize;
-        app_consoleData.rawData = (uint32_t *)captureAddress;
-    }
-    else
-    {
-        if (idx > (captureSize >> 9))
+        if (idx > idxMax)
         {
             SYS_CMD_MESSAGE("Parameter is out of range.\r\n");
             return;
         }
-    
-        app_consoleData.rawDataLen = 512;
-        app_consoleData.rawData = (uint32_t *)captureAddress;
+        
+        if (captureSize > 512)
+        {
+            /* Check if it is the last fragment */
+            if (idx == idxMax)
+            {
+                app_consoleData.rawDataLen = captureSize - (idx << 9);
+            }
+            else
+            {
+                app_consoleData.rawDataLen = 512;
+            }
+        }
+
         app_consoleData.rawData += (idx << 9);
     }
     
