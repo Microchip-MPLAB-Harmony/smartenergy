@@ -68,6 +68,12 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
+typedef enum
+{
+    APP_METROLOGY_PHASE_A = 1 << 8,
+    APP_METROLOGY_PHASE_B = 1 << 9,
+    APP_METROLOGY_PHASE_C = 1 << 10,
+} APP_METROLOGY_PHASE_ID;
     
 typedef enum
 {
@@ -289,7 +295,7 @@ typedef enum
     APP_METROLOGY_STATE_CHECK_CALIBRATION,
     APP_METROLOGY_STATE_ERROR
 
-} APP_METROLOGY_STATES;
+} APP_METROLOGY_STATE;
 
 // *****************************************************************************
 /* Application Data
@@ -307,7 +313,7 @@ typedef enum
 typedef struct
 {
     /* The application's current state */
-    APP_METROLOGY_STATES state;
+    APP_METROLOGY_STATE state;
     
     DRV_METROLOGY_START_MODE startMode;
     DRV_METROLOGY_CONTROL configuration;
@@ -410,7 +416,7 @@ void APP_METROLOGY_Initialize (void);
  */
 
 void APP_METROLOGY_Tasks(void);
-
+APP_METROLOGY_STATE APP_METROLOGY_GetState(void);
 bool APP_METROLOGY_GetControlRegister(CONTROL_REG_ID regId, uint32_t * regValue, char *regName);
 bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value);
 bool APP_METROLOGY_GetStatusRegister(STATUS_REG_ID regId, uint32_t * regValue, char *regName);
@@ -428,6 +434,7 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_C
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse);
 void APP_METROLOGY_Restart(void);
 void APP_METROLOGY_SetLowPowerMode (void);
+bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

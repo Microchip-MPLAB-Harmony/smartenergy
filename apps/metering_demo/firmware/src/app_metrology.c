@@ -588,6 +588,11 @@ void APP_METROLOGY_Tasks (void)
     }
 }
 
+APP_METROLOGY_STATE APP_METROLOGY_GetState(void)
+{
+    return app_metrologyData.state;
+}
+
 bool APP_METROLOGY_GetControlRegister(CONTROL_REG_ID regId, uint32_t * regValue, char *regName)
 {
     uint32_t *pData;
@@ -803,6 +808,20 @@ void APP_METROLOGY_Restart (void)
 void APP_METROLOGY_SetLowPowerMode (void)
 {
     SUPC_BackupModeEnter();
+}
+
+bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase)
+{
+    uint32_t regValue = app_metrologyData.pMetControl->FEATURE_CTRL0;
+    
+    if (regValue & phase)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 /*******************************************************************************

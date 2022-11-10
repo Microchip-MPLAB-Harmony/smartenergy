@@ -250,6 +250,13 @@ def instantiateComponent(metComponentCommon):
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
+
+    if ("MTC" in str(Variables.get("__PROCESSOR"))):
+        enablePhase3 = 1
+        featCtrl0Value = 0x00000700
+    else:
+        enablePhase3 = 0
+        featCtrl0Value = 0x00000300
     
     drvMetRegBaseAddress = metComponentCommon.createHexSymbol("DRV_MET_BASE_ADDRESS", None)
     drvMetRegBaseAddress.setLabel("Register Base Address")
@@ -403,12 +410,12 @@ def instantiateComponent(metComponentCommon):
 
     drvMetConfI3 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_I3", drvMetConfChannels)
     drvMetConfI3.setLabel("Enable Channel I3")
-    drvMetConfI3.setDefaultValue(0)
+    drvMetConfI3.setDefaultValue(enablePhase3)
     drvMetConfI3.setHelp(srv_met_helpkeyword)
 
     drvMetConfV3 = metComponentCommon.createBooleanSymbol("DRV_MET_CONF_V3", drvMetConfChannels)
     drvMetConfV3.setLabel("Enable Channel V3")
-    drvMetConfV3.setDefaultValue(0)
+    drvMetConfV3.setDefaultValue(enablePhase3)
     drvMetConfV3.setHelp(srv_met_helpkeyword)
     
     drvMetConfByfDef = metComponentCommon.createMenuSymbol("DRV_MET_CONF_BY_DEFAULT", None)
@@ -750,7 +757,7 @@ def instantiateComponent(metComponentCommon):
     drvMetRegFEATCTRL0 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_FEATCTRL0", None)
     drvMetRegFEATCTRL0.setLabel("FEATURE_CTRL0")
     drvMetRegFEATCTRL0.setVisible(False)
-    drvMetRegFEATCTRL0.setDefaultValue(0x00000300)
+    drvMetRegFEATCTRL0.setDefaultValue(featCtrl0Value)
     drvMetRegFEATCTRL0.setReadOnly(True)
     drvMetRegFEATCTRL0.setDependencies(updateConfigFeatCtrl0, ["DRV_MET_CONF_I1", "DRV_MET_CONF_V1", "DRV_MET_CONF_I2", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
 

@@ -523,25 +523,23 @@ static void APP_DISPLAY_Process(void)
         APP_EVENTS_FLAGS eventFlags;
         APP_EVENTS_GetLastEventFlags(&eventFlags);
         
-        if (eventFlags.sagA) 
+        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_A) && (eventFlags.sagA))
         {
             /* "A alarm" phase */
             cl010_show_icon(CL010_ICON_PHASE_1);
         }
 
-        if (eventFlags.sagB) 
+        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_B) && (eventFlags.sagB))
         {
             /* "A alarm" phase */
             cl010_show_icon(CL010_ICON_PHASE_2);
         }
         
-//#if BOARD==PIC32CXMTC_DB
-//        if (eventFlags.sagC) 
-//        {
-//            /* "A alarm" phase */
-//            cl010_show_icon(CL010_ICON_PHASE_3);
-//	}
-//#endif
+        if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_C) && (eventFlags.sagC))
+        {
+            /* "A alarm" phase */
+            cl010_show_icon(CL010_ICON_PHASE_3);
+        }
         
         if (eventFlags.ptDir) 
         {
@@ -620,31 +618,12 @@ void APP_DISPLAY_Initialize ( void )
     /* Configure display timer loop */
     APP_DISPLAY_SetTimerLoop(3);
     
-    /* Configure display measurements */
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_BOARD_ID);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_DEMO_VERSION);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOTAL_ENERGY);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU1_ENERGY);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_ENERGY);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU3_ENERGY);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_ENERGY);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_RTC_TIME);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_RTC_DATE);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VA_RMS);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VB_RMS);
-//    #if BOARD==PIC32CXMTC_DB
-//    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VC_RMS);
-//    #endif
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IA_RMS);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IB_RMS);
-//    #if BOARD==PIC32CXMTC_DB
-//    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IC_RMS);
-//    #endif
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOTAL_MAX_DEMAND);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU1_MAX_DEMAND);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_MAX_DEMAND);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU3_MAX_DEMAND);
-    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_MAX_DEMAND);
+    /* Configure Switches */
+    PIO_PinInterruptCallbackRegister(SWITCH_SCRUP_PIN, 
+            APP_DISPLAY_ScrollUp_Callback, (uintptr_t)NULL);
+
+    PIO_PinInterruptCallbackRegister(SWITCH_SCRDOWN_PIN, 
+            APP_DISPLAY_ScrollDown_Callback, (uintptr_t)NULL);
     
     /* Create the Display Semaphore */
     if (OSAL_SEM_Create(&appDisplaySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
@@ -668,16 +647,63 @@ void APP_DISPLAY_Tasks ( void )
     {
         case APP_DISPLAY_STATE_INIT:
         {
-            PIO_PinInterruptCallbackRegister(SWITCH_SCRUP_PIN, 
-                    APP_DISPLAY_ScrollUp_Callback, (uintptr_t)NULL);
+            if (APP_METROLOGY_GetState() == APP_METROLOGY_STATE_RUNNING)
+            {
+                /* Configure display measurements */
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_BOARD_ID);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_DEMO_VERSION);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOTAL_ENERGY);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU1_ENERGY);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_ENERGY);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU3_ENERGY);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_ENERGY);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_RTC_TIME);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_RTC_DATE);
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_A))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VA_RMS);
+                }
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_B))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VB_RMS);
+                }
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_C))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_VC_RMS);
+                }
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_A))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IA_RMS);
+                }
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_B))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IB_RMS);
+                }
+
+                if (APP_METROLOGY_CheckPhaseEnabled(APP_METROLOGY_PHASE_C))
+                {
+                    APP_DISPLAY_AddLoopInfo(APP_DISPLAY_IC_RMS);
+                }
+
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOTAL_MAX_DEMAND);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU1_MAX_DEMAND);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU2_MAX_DEMAND);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU3_MAX_DEMAND);
+                APP_DISPLAY_AddLoopInfo(APP_DISPLAY_TOU4_MAX_DEMAND);
+    
+                /* Enable Switches interrupts */
+                PIO_PinInterruptEnable(SWITCH_SCRUP_PIN);
+                PIO_PinInterruptEnable(SWITCH_SCRDOWN_PIN);
+
+                app_displayData.state = APP_DISPLAY_STATE_SERVICE_TASKS;
+            }
             
-            PIO_PinInterruptCallbackRegister(SWITCH_SCRDOWN_PIN, 
-                    APP_DISPLAY_ScrollDown_Callback, (uintptr_t)NULL);
-            
-            PIO_PinInterruptEnable(SWITCH_SCRUP_PIN);
-            PIO_PinInterruptEnable(SWITCH_SCRDOWN_PIN);
-            
-            app_displayData.state = APP_DISPLAY_STATE_SERVICE_TASKS;
+            vTaskDelay(100 / portTICK_PERIOD_MS);
             break;
         }
 

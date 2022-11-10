@@ -750,7 +750,7 @@
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;dfp&quot; x=&quot;14&quot; y=&quot;21&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;515&quot; y=&quot;220&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;drvMet&quot; x=&quot;515&quot; y=&quot;221&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;drv_memory&quot; x=&quot;351&quot; y=&quot;428&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;drv_sst26&quot; x=&quot;184&quot; y=&quot;446&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;flexcom0&quot; x=&quot;194&quot; y=&quot;326&quot;/&gt;
@@ -760,7 +760,7 @@
         &lt;ElementPosition dnOrder=&quot;13&quot; id=&quot;rtc&quot; x=&quot;519&quot; y=&quot;19&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc0&quot; x=&quot;516&quot; y=&quot;66&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;516&quot; y=&quot;139&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;31&quot; y=&quot;93&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;31&quot; y=&quot;91&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;519&quot; y=&quot;300&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;354&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;544&quot; y=&quot;466&quot;/&gt;
@@ -8174,7 +8174,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>ba61ae2a63b1c7f5a26c1796445c3946b33b2cc80f1f6b534c024f8a40b98442</hash>
+         <hash>776ac5057341dd50fee388abd607a8bac482ea3016ef3291f42da8d35ecab412</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\device.h</file>
@@ -8226,7 +8226,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>bb57a749088b779a7f1cdc966cce02cd55dde819325a0b680167ec07a5b0d46f</hash>
+         <hash>6a5b5dca3a667206bd27ffb3e023e61e4ff0c9761b750f4b44805e142fa6616e</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
@@ -8290,7 +8290,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>90fd54078ad4a21a548ee566ee800bcfd82580974da75baeca91a811b63bb791</hash>
+         <hash>793c7b75f26f38d724409bfb5f97959c6dff57ab2a839e7ba0bda2aabafa7d6d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>

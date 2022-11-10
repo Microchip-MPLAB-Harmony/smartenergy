@@ -994,15 +994,6 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
     SYS_INT_SourceDisable(IPC1_IRQn);
     NVIC_ClearPendingIRQ(IPC1_IRQn);
     
-    /* BOARD == PIC32CXMTSH_DB ***********************************/
-    /* Disable EMAFE clock */
-    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_PID(ID_EMAFE);
-    /* Put ATSense into hardware RESET */
-    PIO_PortClear(PIO_PORT_D, (_UINT32_(1) << 30));
-    /*************************************************************/
-    /* Disable ATSense clock */
-    PMC_REGS->PMC_SCDR |= PMC_SCDR_PCK2_Msk;
-    
     /* Update Driver state */
     gDrvMetObj.state = DRV_METROLOGY_STATE_HALT;
     gDrvMetObj.status = SYS_STATUS_BUSY;
@@ -1305,7 +1296,7 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 {
     uint64_t m;
     DRV_METROLOGY_CONTROL *pControl;
-    uint32_t i;
+    uint32_t i = 0;
     uint32_t reg;
     
     /* Store Calibration parameters */

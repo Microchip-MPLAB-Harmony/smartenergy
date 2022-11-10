@@ -1826,6 +1826,8 @@ void APP_CONSOLE_Tasks ( void )
             {
                app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE;
             }
+            
+            vTaskDelay(100 / portTICK_PERIOD_MS);
             break;
         }
 
