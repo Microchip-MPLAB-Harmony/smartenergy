@@ -66,7 +66,7 @@ extern "C" {
     This is the display board identifier.
 */
 
-#define APP_DISPLAY_BOARD_VERSION           0x0001
+#define APP_DISPLAY_BOARD_VERSION           0x0002
     
 // *****************************************************************************
 /* Demo application major version
