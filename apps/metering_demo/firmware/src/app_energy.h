@@ -119,9 +119,6 @@ typedef struct {
     uint64_t tariff[TARIFF_NUM_TYPE];
 } APP_ENERGY_ACCUMULATORS;
 
-/* Energy threshold to update energy register stored in external memory */
-#define APP_ENERGY_TOU_THRESHOLD  100000 // 0.01kWh (Units: 10^-4 Wh)
-
 typedef void (* APP_ENERGY_MAXDEMAND_CALLBACK) (struct tm * time, bool dataValid);
 typedef void (* APP_ENERGY_MONTH_CALLBACK) (struct tm * time, bool dataValid);
 // *****************************************************************************
@@ -191,7 +188,7 @@ typedef struct
     bool eventMonth;
 
     bool dataIsRdy;
-
+    
     APP_ENERGY_MAXDEMAND_CALLBACK maxDemandCallback;
 
     APP_ENERGY_MAX_DEMAND * pMaxDemandResponse;

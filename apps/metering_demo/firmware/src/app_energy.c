@@ -387,26 +387,6 @@ static bool _APP_ENERGY_UpdateDemand(uint32_t demand, struct tm * time)
     return update;
 }
 
-static bool _APP_ENERGY_CheckEnergyThreshold(APP_ENERGY_ACCUMULATORS * pAccumulatorsDiff)
-{
-    uint64_t totalEnergy = 0;
-    uint64_t totalEnergyDiff = 0;
-    uint8_t index;
-
-    for (index = 0; index < TARIFF_NUM_TYPE; index++)
-    {
-        totalEnergy += app_energyData.energyAccumulator.tariff[index];
-        totalEnergyDiff += pAccumulatorsDiff->tariff[index];
-    }
-
-    if ((totalEnergy - totalEnergyDiff) >= app_energyData.energyThreshold)
-    {
-        return true;
-    }
-
-    return false;
-}
-
 static void _APP_ENERGY_LoadRTCDataFromMemory(void)
 {
     appEnergyDatalogQueueData.userId = APP_DATALOG_USER_RTC;
@@ -575,9 +555,6 @@ void APP_ENERGY_Initialize (void)
     
     /* Clear the counter of integration periods */
     app_energyData.counterIntegrationPeriods = 0;
-
-    /* Set Energy TOU Threshold */
-    app_energyData.energyThreshold = APP_ENERGY_TOU_THRESHOLD;
 
     /* Create a queue capable of containing 5 queue data elements. */
     appEnergyQueueID = xQueueCreate(5, sizeof(APP_ENERGY_QUEUE_DATA));
@@ -781,8 +758,6 @@ void APP_ENERGY_Tasks (void)
                 /* Update the RTC at the end of this routine because we need to handle the energy accumulated in the previous minute */
                 if (app_energyData.eventMinute)
                 {
-                    APP_ENERGY_ACCUMULATORS dataLogEnergy = {0};
-
                     /* Clear TIME Event flag */
                     app_energyData.eventMinute = false;
 
@@ -797,8 +772,8 @@ void APP_ENERGY_Tasks (void)
                     app_energyData.demandAccumulator = 0;
                     app_energyData.counterIntegrationPeriods = 0;
 
-                    /* Update DATALOG if accumulators has increased more than APP_ENERGY_TOU_THRESHOLD */
-                    if (_APP_ENERGY_CheckEnergyThreshold(&dataLogEnergy))
+                    /* Update ENERGY DATALOG once per hour. Ensure SST endurance. */
+                    if (app_energyData.time.tm_min == 0) 
                     {
                         _APP_ENERGY_StoreEnergyDataInMemory(&app_energyData.time, &app_energyData.energyAccumulator);
                     }
