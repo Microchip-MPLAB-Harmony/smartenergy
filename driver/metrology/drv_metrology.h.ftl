@@ -199,7 +199,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetVa
     </code>
 
   Remarks:
-    This routine must be called before any other DRV_METROLOGY routine is called. 
+    This routine must be called after DRV_METROLOGY_Initialize routine is called. 
 */
 SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
 
@@ -214,7 +214,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
     Opens the metrology driver according to the mode parameter.  
 
   Description:
-    This routine enables the IPC peripheral and, only if a HARD start mode has been selected, also handles the reset and clock lines for enabling the metrology library application.
+    This routine enables the IPC peripheral and, only if a HARD start mode has been selected, 
+    also handles the reset and clock lines for enabling the metrology library application.
     On the other hand, SOFT mode does not any effects on metrology library application running in the second processor.
 
   Precondition:

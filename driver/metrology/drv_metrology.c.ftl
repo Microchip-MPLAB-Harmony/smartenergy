@@ -382,12 +382,12 @@ static uint32_t _DRV_Metrology_GetSRMS(int64_t pv, int64_t qv, uint32_t k_ix, ui
 
 static uint32_t _DRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
 {
-    float m;
+    double m;
     int32_t n;
 
     m = atan2(q, p);
     m = 180 * m;
-    m = m * 1000;
+    m = m * 100000;
     m = m / CONST_Pi;
     n = (int32_t)m;
 
@@ -511,21 +511,31 @@ static uint32_t _DRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     uint64_t m;
         
     measured_angle = measured;
-    if (measured & 0x80000000) {
+    if (measured & 0x80000000) 
+    {
         measured_angle = 0x80000000 - measured_angle;
     }
-    correction_angle = measured_angle - reference;
+    
+    /* Improve accuracy */
+    reference *= 100;
+    correction_angle = measured_angle - (int64_t)reference;
+    
     /* Correction angle should be between -180 and 180 degrees */
-    while (correction_angle < (-180000)) {
-        correction_angle += 360000;
+    while (correction_angle < (-18000000)) 
+    {
+        correction_angle += 36000000;
     }
-    while (correction_angle > 180000 ) {
-        correction_angle -= 360000;
+    
+    while (correction_angle > 18000000) 
+    {
+        correction_angle -= 36000000;
     }
-    correction_angle = (correction_angle * 7158278827) / gDrvMetObj.calibrationData.freq;
+    
+    correction_angle = (correction_angle * 7158278827) / (gDrvMetObj.calibrationData.freq * 10000);
     correction_angle = (correction_angle + 50) / 100;
     m = (uint64_t)(abs(correction_angle));
-    if (correction_angle < 0) {
+    if (correction_angle < 0) 
+    {
         m = (~m) + 1;
     }
     
@@ -621,12 +631,12 @@ static bool _DRV_METROLOGY_UpdateCalibrationValues(void)
         pCalibrationData->dspAccUa += pMetAccRegs->V_A;
         pCalibrationData->dspAccUb += pMetAccRegs->V_B;
         pCalibrationData->dspAccUc += pMetAccRegs->V_C;
-        pCalibrationData->dspAccPa += pMetAccRegs->P_A;
-        pCalibrationData->dspAccPb += pMetAccRegs->P_B;
-        pCalibrationData->dspAccPc += pMetAccRegs->P_C;
-        pCalibrationData->dspAccQa += pMetAccRegs->Q_A;
-        pCalibrationData->dspAccQb += pMetAccRegs->Q_B;
-        pCalibrationData->dspAccQc += pMetAccRegs->Q_C;
+        pCalibrationData->dspAccPa += pMetAccRegs->P_A_F;
+        pCalibrationData->dspAccPb += pMetAccRegs->P_B_F;
+        pCalibrationData->dspAccPc += pMetAccRegs->P_C_F;
+        pCalibrationData->dspAccQa += pMetAccRegs->Q_A_F;
+        pCalibrationData->dspAccQb += pMetAccRegs->Q_B_F;
+        pCalibrationData->dspAccQc += pMetAccRegs->Q_C_F;
         
         return false;
     }
@@ -1243,7 +1253,25 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
 
 uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type)
 {
-    return gDrvMetObj.metAFEData.RMS[type];
+    int32_t value;
+    
+    value = gDrvMetObj.metAFEData.RMS[type];
+    
+    if (type >= RMS_ANGLEA)
+    {
+        if (value & 0x80000000) 
+        {
+            value &= 0x7FFFFFFF;
+        }
+        
+        /* Absolute value should be between 0 and 180 degrees */
+        while (value > 18000000) 
+        {
+            value -= 36000000;
+        }
+    }
+    
+    return (uint32_t)value;
 }
 
 DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)

@@ -423,7 +423,6 @@ void APP_METROLOGY_Initialize (void)
     }
 }
 
-
 /******************************************************************************
   Function:
     void APP_METROLOGY_Tasks (void)

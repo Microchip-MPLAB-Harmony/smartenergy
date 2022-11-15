@@ -2727,8 +2727,8 @@ void APP_CONSOLE_Tasks ( void )
             APP_METROLOGY_GetRMS(RMS_ANGLEN, &an, &signn);
             // Show received data on console
             SYS_CMD_PRINT("Voltage and current angle is : \r\nAngle_A=%c%.3f Angle_B=%c%.3f Angle_C=%c%.3f Angle_N=%c%.3f\r\n",
-                    sign[signa], (float)(aa & 0xFFFFF)/1000, sign[signb], (float)(ab & 0xFFFFF)/1000,
-                    sign[signc], (float)(ac & 0xFFFFF)/1000, sign[signn], (float)(an & 0xFFFFF)/1000);
+                    sign[signa], (float)aa/100000, sign[signb], (float)ab/100000,
+                    sign[signc], (float)ac/100000, sign[signn], (float)an/100000);
 
             // Go back to IDLE
             app_consoleData.state = APP_CONSOLE_STATE_IDLE;

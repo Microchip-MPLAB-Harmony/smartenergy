@@ -628,8 +628,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTC_Development_Board&quot; x=&quot;18&quot; y=&quot;51&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;328&quot; y=&quot;160&quot;/&gt;
@@ -655,6 +654,7 @@
         &lt;ElementPosition dnOrder=&quot;21&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -5696,7 +5696,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>940a6b9c237bb11b4442d745a7b1fc85ec3894900f75d648c51139a07c182b89</hash>
+         <hash>c89438e3033fa90553f8fab197b286e96b86fcd108f0ef5e56d59c88623af4e9</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stream_buffer.h</file>
@@ -5728,7 +5728,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>6a5b5dca3a667206bd27ffb3e023e61e4ff0c9761b750f4b44805e142fa6616e</hash>
+         <hash>f0f6f3e8cb4f981d5d6a62370851765b234283e498377c338564a9f302674a13</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
@@ -6392,7 +6392,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>fe847c3182106ee7add2cabaca1dce36da690f8819323f6e7484f42c25e81c5a</hash>
+         <hash>79f83f4f3a1bf14465a99d9408e386f4cd59c32b58041790e1d2aa6165ef63e4</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>
@@ -6588,7 +6588,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>
-         <hash>6c69920b5e5df197a871ce244657488804bf4de2b657611b253947ddb5f1b07f</hash>
+         <hash>b105f1d3f2ed637243fd85d759c8b25a958e8d5258505999f3974044b1c00ff4</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\system.h</file>
