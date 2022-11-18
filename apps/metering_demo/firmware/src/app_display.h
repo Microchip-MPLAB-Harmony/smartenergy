@@ -197,6 +197,9 @@ typedef struct
     
     /* Current index in the information loop */
     uint8_t loop_idx;
+    
+    /* Flag to indicate if DWDT0 should be reloaded */
+    bool reloadDWDT0;
 
 } APP_DISPLAY_DATA;
 

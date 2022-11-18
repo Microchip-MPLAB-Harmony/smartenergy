@@ -232,7 +232,7 @@ static void APP_DISPLAY_Process(void)
     struct tm current_time;
     APP_ENERGY_ACCUMULATORS EnergyAcc;
     APP_ENERGY_MAX_DEMAND MaxDemand;
-
+    
     if (app_displayData.display_info != 0xFF) 
     {
         cl010_clear_all();
@@ -630,8 +630,11 @@ void APP_DISPLAY_Initialize ( void )
     {
         /* Handle error condition. Not sufficient memory to create semaphore */
     }
-}
 
+    /* Reload DWDT0 at startup */
+    DWDT_WDT0_Clear();
+    app_displayData.reloadDWDT0 = true;
+}
 
 /******************************************************************************
   Function:
@@ -643,6 +646,11 @@ void APP_DISPLAY_Initialize ( void )
 
 void APP_DISPLAY_Tasks ( void )
 {
+    if (app_displayData.reloadDWDT0)
+    {
+        DWDT_WDT0_Clear();
+    }
+    
     switch ( app_displayData.state )
     {
         case APP_DISPLAY_STATE_INIT:
@@ -737,6 +745,14 @@ void APP_DISPLAY_Tasks ( void )
                 
                 if (app_displayData.scrup_pressed)
                 {
+                    if (SWITCH_SCRDOWN_Get() == 0)
+                    {
+                        SYS_CMD_MESSAGE("Emulating application holds ... Resetting by DWDT0.\r\n");
+            
+                        // Forcing no reload DWDT0 
+                        app_displayData.reloadDWDT0 = false;
+                    }
+                    
                     app_displayData.scrup_pressed = false;
                     app_displayData.direction = APP_DISPLAY_FORWARD;
                 }
