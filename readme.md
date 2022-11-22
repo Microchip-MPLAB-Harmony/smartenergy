@@ -29,9 +29,10 @@ reference information.
 
 | Folder     | Description                                                           |
 |------------|-----------------------------------------------------------------------|
+| apps       | Metering demo application                                             |
 | driver     | Drivers for PLC and RF devices                                        |
 | service    | Common PLC services for communication stacks (G3, PRIME)              |
-| docs       | PLC library help documentation                                        |
+| docs       | Smart Energy help documentation                                       |
 
 ____
 
