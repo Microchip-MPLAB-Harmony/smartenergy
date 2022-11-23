@@ -23,6 +23,8 @@
 #include <stdbool.h>
 #include "device.h"
 #include "plib_clk.h"
+#include "peripheral/rstc/plib_rstc.h"
+
 #define PLLA_RECOMMENDED_ACR    0x0F000038U
 #define PLLB_RECOMMENDED_ACR    0x28000058U
 #define PLLC_RECOMMENDED_ACR    0x28000058U
@@ -282,30 +284,38 @@ static void PeripheralClockInitialize(void)
 *********************************************************************************/
 void CLK_Initialize( void )
 {
-    /* Initialize TD slow clock */
-    SlowClockInitialize();
+    if(RSTC_PMCResetStatusGet())
+    {
+        /* Initialize TD slow clock */
+        SlowClockInitialize();
 
-    /* Initialize PLLA */
-    PLLInitialize(PLLA, &plla_cfg);
+        /* Initialize PLLA */
+        PLLInitialize(PLLA, &plla_cfg);
 
-    /* Initialize PLLB */
-    PLLInitialize(PLLB, &pllb_cfg);
+        /* Initialize PLLB */
+        PLLInitialize(PLLB, &pllb_cfg);
 
-    /* Initialize PLLC */
-    PLLInitialize(PLLC, &pllc_cfg);
+        /* Initialize PLLC */
+        PLLInitialize(PLLC, &pllc_cfg);
 
-    /* Apply flash patch */
-    ApplyFlashPatch();
+        /* Apply flash patch */
+        ApplyFlashPatch();
 
-    /* Initialize CPU clock */
-    CPUClockInitialize();
+        /* Initialize CPU clock */
+        CPUClockInitialize();
 
-    /* Initialize Programmable clock */
-    PCKInitialize();
+        /* Initialize Programmable clock */
+        PCKInitialize();
 
-    /* Initialize Peripheral clock */
-    PeripheralClockInitialize();
+        /* Initialize Peripheral clock */
+        PeripheralClockInitialize();
 
-    /* Disable Main RC Oscillator */
-    DisableMainRCOscillator();
+        /* Disable Main RC Oscillator */
+        DisableMainRCOscillator();
+    }
+    else
+    {
+        /* Apply flash patch */
+        ApplyFlashPatch();
+    }
 }

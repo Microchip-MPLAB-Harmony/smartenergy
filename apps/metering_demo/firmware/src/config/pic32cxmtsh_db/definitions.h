@@ -50,8 +50,8 @@
 #include <stdbool.h>
 #include "system/command/sys_command.h"
 #include "peripheral/dwdt/plib_dwdt.h"
-#include "peripheral/clk/plib_clk.h"
 #include "peripheral/rstc/plib_rstc.h"
+#include "peripheral/clk/plib_clk.h"
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/cmcc/plib_cmcc.h"
 #include "peripheral/pio/plib_pio.h"
