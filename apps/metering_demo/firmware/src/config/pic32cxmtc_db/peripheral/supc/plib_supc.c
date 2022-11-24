@@ -48,7 +48,9 @@
 #include "peripheral/clk/plib_clk.h"
 #include "peripheral/sefc/plib_sefc0.h"
 #include "peripheral/sefc/plib_sefc1.h"
+#include "peripheral/rstc/plib_rstc.h"
 #include "interrupts.h"
+
 
 
 static void WaitEntryClockSetup(bool xtal_disable)
@@ -101,20 +103,22 @@ static void WaitEntryClockSetup(bool xtal_disable)
 // *****************************************************************************
 // *****************************************************************************
 
+
 void SUPC_Initialize(void)
 {
-    SUPC_REGS->SUPC_SMMR = SUPC_SMMR_VDD3V3SMSMPL(0x1) | SUPC_SMMR_VDD3V3SMTH(10) | SUPC_SMMR_VDD3V3SMPWRM(0) ;
+    if(RSTC_PMCResetStatusGet())
+    {
+        SUPC_REGS->SUPC_SMMR = SUPC_SMMR_VDD3V3SMSMPL(0x1) | SUPC_SMMR_VDD3V3SMTH(10) | SUPC_SMMR_VDD3V3SMPWRM(0) ;
 
-    SUPC_REGS->SUPC_MR = (SUPC_REGS->SUPC_MR & ~SUPC_MR_Msk) | (SUPC_REGS->SUPC_MR & SUPC_MR_OSCBYPASS_Msk) | SUPC_MR_KEY_PASSWD | SUPC_MR_IO_BACKUP_ISO_Msk | SUPC_MR_CORSMRSTEN_Msk | SUPC_MR_VREGDIS_Msk | SUPC_MR_CORSMM_Msk;
+        SUPC_REGS->SUPC_MR = (SUPC_REGS->SUPC_MR & ~SUPC_MR_Msk) | (SUPC_REGS->SUPC_MR & SUPC_MR_OSCBYPASS_Msk) | SUPC_MR_KEY_PASSWD | SUPC_MR_IO_BACKUP_ISO_Msk | SUPC_MR_CORSMRSTEN_Msk | SUPC_MR_VREGDIS_Msk | SUPC_MR_CORSMM_Msk;
 
-    SUPC_REGS->SUPC_BMR = (SUPC_REGS->SUPC_BMR & ~SUPC_BMR_Msk) | SUPC_BMR_KEY_PASSWD | SUPC_BMR_FWUPEN_Msk | SUPC_BMR_VDD3V3SMWKEN_Msk | SUPC_BMR_MRTCOUT_Msk ;
+        SUPC_REGS->SUPC_BMR = (SUPC_REGS->SUPC_BMR & ~SUPC_BMR_Msk) | SUPC_BMR_KEY_PASSWD | SUPC_BMR_FWUPEN_Msk | SUPC_BMR_VDD3V3SMWKEN_Msk | SUPC_BMR_MRTCOUT_Msk ;
 
-    SUPC_REGS->SUPC_WUMR = SUPC_WUMR_LPDBC0(0x2) | SUPC_WUMR_LPDBC1(0x0) | SUPC_WUMR_LPDBC2(0x0) | SUPC_WUMR_LPDBC3(0x0) | SUPC_WUMR_LPDBC4(0x0) | SUPC_WUMR_WKUPDBC(0x2) | SUPC_WUMR_FWUPDBC(0x2) | SUPC_WUMR_LPDBCEN0_Msk ;
+        SUPC_REGS->SUPC_WUMR = SUPC_WUMR_LPDBC0(0x2) | SUPC_WUMR_LPDBC1(0x0) | SUPC_WUMR_LPDBC2(0x0) | SUPC_WUMR_LPDBC3(0x0) | SUPC_WUMR_LPDBC4(0x0) | SUPC_WUMR_WKUPDBC(0x2) | SUPC_WUMR_FWUPDBC(0x2) | SUPC_WUMR_LPDBCEN0_Msk ;
 
-    SUPC_REGS->SUPC_WUIR = SUPC_WUIR_WKUPEN0(1);
+       SUPC_REGS->SUPC_IER = SUPC_IER_LPDBC0_Msk | SUPC_IER_VDD3V3SMEV_Msk;
 
-    SUPC_REGS->SUPC_IER = SUPC_IER_LPDBC0_Msk | SUPC_IER_VDD3V3SMEV_Msk;
-
+    }
 }
 
 void SUPC_SleepModeEnter(void)
@@ -216,7 +220,6 @@ void SUPC_InterruptHandler(void)
         supcObj.callback(supc_status, supcObj.context);
     }
 }
-
 uint32_t SUPC_GPBRRead(GPBR_REGS_INDEX reg)
 {
     return GPBR_REGS->SYS_GPBR[reg];

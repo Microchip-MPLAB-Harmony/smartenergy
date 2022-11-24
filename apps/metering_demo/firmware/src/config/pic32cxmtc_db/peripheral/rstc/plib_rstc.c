@@ -49,21 +49,21 @@
 #define NUM_RESET_MD_CLOCK_CYCLES 2U
 #define RESET_WAIT_COUNT  ((200000000U / 32000U) * NUM_RESET_MD_CLOCK_CYCLES)
 
-
 void RSTC_Initialize (void)
 {
-    RSTC_REGS->RSTC_MR = ( RSTC_MR_KEY_PASSWD | RSTC_MR_ERSTL(0U) | RSTC_MR_PWRSW(0x0U)
-                          | RSTC_MR_CPEREN_Msk
-                          | RSTC_MR_WDTPMC1_Msk
-                          | RSTC_MR_SFTPMCRS_Msk
-                          | RSTC_MR_URSTEN_Msk
-                          );
-    for(uint32_t i = 0U; i < RESET_WAIT_COUNT; i++)
+    if(RSTC_PMCResetStatusGet())
     {
-        /* Wait for 2 MD_SLCK cycles after deasserting reset */
+        RSTC_REGS->RSTC_MR = ( RSTC_MR_KEY_PASSWD | RSTC_MR_ERSTL(0U) | RSTC_MR_PWRSW(0x0U)
+                                | RSTC_MR_CPEREN_Msk
+                                | RSTC_MR_URSTASYNC_Msk
+                                | RSTC_MR_URSTEN_Msk
+                            );
+        for(uint32_t i = 0U; i < RESET_WAIT_COUNT; i++)
+        {
+            /* Wait for 2 MD_SLCK cycles after deasserting reset */
+        }
     }
 }
-
 
 void RSTC_Reset (RSTC_RESET_TYPE type)
 {
@@ -110,3 +110,24 @@ void RSTC_CoProcessorPeripheralEnable(bool enable)
         /* Wait for 2 MD_SLCK cycles after deasserting reset */
     }
 }
+
+bool RSTC_PMCResetStatusGet(void)
+{
+    bool pmc_reset = true;
+        /* Reset cause is WDT0 and WDT0 do not reset PMC */
+    if ((((RSTC_REGS->RSTC_SR & RSTC_SR_RSTTYP_Msk) == RSTC_SR_RSTTYP_WDT0_RST) &&
+         ((RSTC_REGS->RSTC_MR & RSTC_MR_WDTPMC0_Msk) == 0U)) ||
+
+        /* Reset cause is WDT1 and WDT1 do not reset PMC */
+        (((RSTC_REGS->RSTC_SR & RSTC_SR_RSTTYP_Msk) == RSTC_SR_RSTTYP_WDT1_RST) &&
+         ((RSTC_REGS->RSTC_MR & RSTC_MR_WDTPMC1_Msk) == 0U)) ||
+
+        /* Reset cause is SW and SW reset do not reset PMC */
+        (((RSTC_REGS->RSTC_SR & RSTC_SR_RSTTYP_Msk) == RSTC_SR_RSTTYP_SOFT_RST) &&
+         ((RSTC_REGS->RSTC_MR & RSTC_MR_SFTPMCRS_Msk) == 0U)))
+    {
+        pmc_reset = false;
+    }
+    return pmc_reset;
+}
+

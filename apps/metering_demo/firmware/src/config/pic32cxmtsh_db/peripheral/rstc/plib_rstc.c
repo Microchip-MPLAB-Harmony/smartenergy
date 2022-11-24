@@ -56,7 +56,6 @@ void RSTC_Initialize (void)
         RSTC_REGS->RSTC_MR = ( RSTC_MR_KEY_PASSWD | RSTC_MR_ERSTL(0U) | RSTC_MR_PWRSW(0x0U)
                                 | RSTC_MR_CPEREN_Msk
                                 | RSTC_MR_URSTASYNC_Msk
-                                | RSTC_MR_WDTPMC1_Msk
                                 | RSTC_MR_URSTEN_Msk
                             );
         for(uint32_t i = 0U; i < RESET_WAIT_COUNT; i++)

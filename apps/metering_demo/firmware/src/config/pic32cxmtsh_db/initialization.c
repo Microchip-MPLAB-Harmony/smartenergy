@@ -310,16 +310,16 @@ void SYS_Initialize ( void* data )
     SEFC1_Initialize();
   
     DWDT_Initialize();
-    
     CLK_Initialize();
     PIO_Initialize();
-
-
-
     SUPC_Initialize();
-    RSTC_Initialize();
-    
 
+    RSTC_Initialize();
+
+
+
+
+ 
     TC0_CH0_TimerInitialize(); 
      
     

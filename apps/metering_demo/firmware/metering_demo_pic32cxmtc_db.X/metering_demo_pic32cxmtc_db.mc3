@@ -1,4 +1,4 @@
-<config configName="pic32cxmtc_db" projectName="metering_demo_pic32cxmtc_db" configVersion="1.1" device="PIC32CX2051MTC128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.13">
+<config configName="pic32cxmtc_db" projectName="metering_demo_pic32cxmtc_db" configVersion="1.1" device="PIC32CX2051MTC128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.14">
    <usedPackages class="java.util.ArrayList">
       <package packageName="CMSIS-FreeRTOS" version="10.3.1" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
@@ -89,10 +89,6 @@
       </entry>
       <entry>
          <string>sefc1</string>
-         <string>class com.microchip.mcc.harmony.HarmonyModule</string>
-      </entry>
-      <entry>
-         <string>supc</string>
          <string>class com.microchip.mcc.harmony.HarmonyModule</string>
       </entry>
       <entry>
@@ -646,12 +642,11 @@
         &lt;ElementPosition dnOrder=&quot;13&quot; id=&quot;rtc&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;14&quot; id=&quot;sefc0&quot; x=&quot;479&quot; y=&quot;70&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;15&quot; id=&quot;sefc1&quot; x=&quot;479&quot; y=&quot;143&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;supc&quot; x=&quot;33&quot; y=&quot;89&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_command&quot; x=&quot;491&quot; y=&quot;339&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_console&quot; x=&quot;330&quot; y=&quot;301&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_fs&quot; x=&quot;515&quot; y=&quot;532&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;sys_time&quot; x=&quot;184&quot; y=&quot;91&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;21&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;16&quot; id=&quot;sys_command&quot; x=&quot;491&quot; y=&quot;339&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;17&quot; id=&quot;sys_console&quot; x=&quot;334&quot; y=&quot;301&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;18&quot; id=&quot;sys_fs&quot; x=&quot;515&quot; y=&quot;532&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;sys_time&quot; x=&quot;184&quot; y=&quot;91&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
     &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;1&quot;/&gt;
@@ -1235,7 +1230,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_0_0_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1246,7 +1241,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_0_0_HANDLER&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SUPC_InterruptHandler&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SUPC_Handler&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1257,7 +1252,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_0_0_HANDLER_LOCK&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3167,6 +3162,39 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="RSTC_MR_SFTPMCRS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;RSTC_MR_SFTPMCRS&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="RSTC_MR_WDTPMC0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;RSTC_MR_WDTPMC0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="RSTC_MR_WDTPMC1"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;RSTC_MR_WDTPMC1&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="RTC_INTERRUPT_ENABLE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;RTC_INTERRUPT_ENABLE&quot;&gt;
@@ -3244,11 +3272,66 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_BMR_FWUPEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_FWUPEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_BMR_MRTCOUT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_MRTCOUT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_BMR_VDD3V3SMWKEN"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_VDD3V3SMWKEN&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_IER_LPDBC0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_IER_LPDBC0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_IER_VDD3V3SMEV"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_IER_VDD3V3SMEV&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_INTERRUPT_ENABLE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_INTERRUPT_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3259,7 +3342,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_INTERRUPT_ENABLE_UPDATE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3270,7 +3353,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_INTERRUPT_HANDLER&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;SUPC_InterruptHandler&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;SUPC_Handler&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3281,7 +3364,85 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_INTERRUPT_HANDLER_LOCK&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_SMMR_VDD3V3SMSMPL"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_SMMR_VDD3V3SMSMPL&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;1&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_SMMR_VDD3V3SMTH"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_SMMR_VDD3V3SMTH&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;15&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;10&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_WUIR_WKUPEN0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPEN0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_WUMR_FWUPDBC"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_FWUPDBC&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_WUMR_LPDBC0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_LPDBC0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_WUMR_LPDBCEN0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_LPDBCEN0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SUPC_WUMR_WKUPDBC"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_WKUPDBC&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -4711,308 +4872,6 @@
 </value>
       </entry>
       <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="#&amp;__MCC_Group_Parrent_id"/>
-         <value>__ROOTVIEW</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_BMR_FWUPEN"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_FWUPEN&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_BMR_MRTCOUT"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_MRTCOUT&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_BMR_VDD3V3SMWKEN"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_BMR_VDD3V3SMWKEN&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_IER_LPDBC0"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_IER_LPDBC0&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_IER_VDD3V3SMEV"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_IER_VDD3V3SMEV&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_SMMR_VDD3V3SMSMPL"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_SMMR_VDD3V3SMSMPL&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;1&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_SMMR_VDD3V3SMTH"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_SMMR_VDD3V3SMTH&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;15&quot;/&gt;
-      &lt;User dnOrder=&quot;1&quot; value=&quot;10&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPEN0"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPEN0&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;false&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT0"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT0&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT1"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT1&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT10"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT10&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT11"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT11&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT12"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT12&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT13"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT13&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT14"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT14&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT2"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT2&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT3"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT3&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT4"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT4&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT5"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT5&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT6"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT6&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT7"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT7&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT8"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT8&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUIR_WKUPT9"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUIR_WKUPT9&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;supc&quot; value=&quot;0&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUMR_FWUPDBC"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_FWUPDBC&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUMR_LPDBC0"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_LPDBC0&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUMR_LPDBCEN0"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_LPDBCEN0&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="supc" name="SUPC_WUMR_WKUPDBC"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;supc&gt;
-  &lt;supc dnOrder=&quot;0&quot; id=&quot;SUPC_WUMR_WKUPDBC&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;2&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/supc&gt;
-&lt;/supc&gt;
-</value>
-      </entry>
-      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sys_command" name="!@#harmonyAttachmentState"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sys_command&gt;
   &lt;sys_command dnOrder=&quot;0&quot;&gt;
@@ -5695,12 +5554,12 @@
          <hash>0d16405e621a2c4b003b5f0324b9713cd4865364133df6f742f482a6b2dbc773</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>c89438e3033fa90553f8fab197b286e96b86fcd108f0ef5e56d59c88623af4e9</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stream_buffer.h</file>
          <hash>0607fcca1927ba782a29a3814481d69db3569e6e53a68ebf2c01f5598a3af2b8</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
+         <hash>c89438e3033fa90553f8fab197b286e96b86fcd108f0ef5e56d59c88623af4e9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\pin_configurations.csv</file>
@@ -5776,7 +5635,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\src\sys_time.c</file>
-         <hash>b722ac0c5d955d289bd906609ab6f302342166c5ba66f87b30cac17ac6bfdcd9</hash>
+         <hash>1146b57f815d373883ae1a6b3bc27eb038ec6943aedac2c3340f660bfd7fa4a6</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\component\pio.h</file>
@@ -5956,7 +5815,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\sys_time_definitions.h</file>
-         <hash>904195d4340ba6b97cf19c25b9695d2a9f37ed67cf6abdf8ee1ee839506e2801</hash>
+         <hash>8b6254cec91c435e0c24220e27a5f8dc646d0200ee974223f13851338a5b2ad9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\driver_common.h</file>
@@ -6000,7 +5859,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\nvic\plib_nvic.c</file>
-         <hash>411ef03ffc7f29a6dee44e15404d624447c971eccd0caf4221f24ccb8fc1523b</hash>
+         <hash>44c5aa948c162700d7cd66c11197ebaa059a46cb5558f7703b2705f5d84f9fe9</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\fuses.h</file>
@@ -6332,7 +6191,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.c</file>
-         <hash>4fcd3922f7a1d06f876ab5fd954ab0607278f08210d07b34e6fa9f7292e0aa97</hash>
+         <hash>0bed545575a995947ee796c1eff15989b55365fad9c012a2dac91d441e067285</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\acc.h</file>
@@ -6352,7 +6211,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.h</file>
-         <hash>f4ff1afb9c4c52c0f07e1b889d6810295fd46c5b617c9ccd4d7dcaa61a94038d</hash>
+         <hash>ced7a1375cd295736c81520e205a2968f3e559a5f44946e9aadb4a130b84881c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\cache\sys_cache.h</file>
@@ -6375,12 +6234,12 @@
          <hash>869640702d811c4c63abb52206715c891a93fd03be954df5ad40d378355af3d6</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>aa49e3dda6bf4dc29c445d57bc23298e46b2583d0ffe55b6bfeb0816d55e4504</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\queue.h</file>
          <hash>39d58a203f1b67fdb1099293914a2af9722d223586cfc5ff06e230e047919dea</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
+         <hash>aa49e3dda6bf4dc29c445d57bc23298e46b2583d0ffe55b6bfeb0816d55e4504</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\cmcc\plib_cmcc.c</file>
@@ -6392,7 +6251,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>79f83f4f3a1bf14465a99d9408e386f4cd59c32b58041790e1d2aa6165ef63e4</hash>
+         <hash>52eb902919a8a6144222b2aff5ec907f36696664a1489cc230bba19abc988e0c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>
@@ -6452,7 +6311,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.c</file>
-         <hash>be93460eef048439f80cfb4de022fcb6ce38d7d393ceb51aace65a3e66f7984b</hash>
+         <hash>221a903202fe9935067e619cc050a5016c83c4b531536c2a9de4627de260febe</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\fat_fs\file_system\ffconf.h</file>
@@ -6524,7 +6383,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rstc\plib_rstc.c</file>
-         <hash>00e2137dffc6d5a20da5ed5c7d407e1e58dd68188c195aadacec20c4e6b8910f</hash>
+         <hash>9dd207ec48a0537137a0cfa7a26752b5248b23f1a9c693572c370e523c5e8870</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\ipc0.h</file>
@@ -6532,7 +6391,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rstc\plib_rstc.h</file>
-         <hash>3c385237fef6a580449001762742415424893800cbac6d6f3752403f7d907853</hash>
+         <hash>e2279b434403c1f16a5da80447b78283566301636cbec855c6c5d8591507d8ba</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -6572,7 +6431,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.c</file>
-         <hash>3f2be85eacf1237443f1fb78f36c674e13fb384205974c6c7895ccc5691dd931</hash>
+         <hash>7c9a17e225992fc92c03f16385ab0286f48cf889d4f19823afe9057b481ef8ce</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\pio\pic32cx2051mtc128.h</file>
@@ -6580,7 +6439,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.h</file>
-         <hash>89e72fd3d9373d0a319b7ff62e7d60221b89dd5f00f02fe673548852734e4755</hash>
+         <hash>d24f861748a80b1476f251a06728a3d23b73da4ae68477f55d33df56c7e92318</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\event_groups.h</file>
@@ -6588,7 +6447,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>
-         <hash>b105f1d3f2ed637243fd85d759c8b25a958e8d5258505999f3974044b1c00ff4</hash>
+         <hash>a03ff0ec54f03e6d6090e871f449c41a7c80dbfead98e3d8f1230eaaa70b5b84</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\system.h</file>
@@ -6596,7 +6455,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\src\sys_time_local.h</file>
-         <hash>d3ef06b59d9a89efe9e8eb54fcf3b75120d56156cc21f6847ca4f9e902eb7c9d</hash>
+         <hash>f2fcf9aac8d81072e70e05cdf0f366bca245a428229d4ed7cc5635c1a9c03fcb</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -6604,7 +6463,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\sys_time.h</file>
-         <hash>f21b100d8f0b8b79af9217315098d51df855d9015f05a7e25ad77414cd19b2c3</hash>
+         <hash>6357468f7670698b16bfb6439d9919ed38eba99d4f03277a8b43ac34586fa1b3</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_local.h</file>

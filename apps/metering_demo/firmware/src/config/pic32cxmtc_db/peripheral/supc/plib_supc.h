@@ -64,7 +64,6 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-
 typedef enum
 {
     GPBR_REGS_0,
@@ -155,11 +154,13 @@ void SUPC_WaitModeEnter(WAITMODE_FLASH_STATE flash_lpm, WAITMODE_WKUP_SOURCE sou
 
 void SUPC_BackupModeEnter(void);
 
+void SUPC_CallbackRegister(SUPC_CALLBACK callback, uintptr_t context);
+
 uint32_t SUPC_GPBRRead(GPBR_REGS_INDEX reg);
 
 void SUPC_GPBRWrite(GPBR_REGS_INDEX reg, uint32_t data);
 
-void SUPC_CallbackRegister(SUPC_CALLBACK callback, uintptr_t context);
+
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
