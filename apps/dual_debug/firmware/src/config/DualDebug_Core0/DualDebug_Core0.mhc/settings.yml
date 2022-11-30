@@ -1,0 +1,14 @@
+format_version: v1.0
+configName: DualDebug_Core0
+folderName: DualDebug_Core0
+frameworkPath: C:\0_CHRIS\Proyectos\03_MCHP_Harmony_3\BitBucket
+processor: PIC32CX2051MTSH128
+projectName: DualDebug_Core0
+settings:
+  PackageFilter: ''
+  FORCE_OPTIMIZATION: 'false'
+  GENERATE_BACKUP: 'true'
+  TRUSTZONE: 'false'
+  CMSISPath: dev_packs\arm\CMSIS\5.8.0
+  MERGE_STRATEGY: USER_ALL
+  DFPPath: dev_packs\Microchip\PIC32CX-MT_DFP\1.0.6\PIC32CX-MTSH\atdf\PIC32CX2051MTSH128.atdf
