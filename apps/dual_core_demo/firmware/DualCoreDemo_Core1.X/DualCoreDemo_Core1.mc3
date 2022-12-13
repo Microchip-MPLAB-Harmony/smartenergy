@@ -330,7 +330,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;IPC1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -364,6 +364,28 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;IPC1_INTERRUPT_HANDLER&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;ipc1&quot; value=&quot;IPC1_InterruptHandler&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="NVIC_-1_0_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_-1_0_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="NVIC_-1_0_HANDLER_LOCK"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;NVIC_-1_0_HANDLER_LOCK&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -802,6 +824,39 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SysTick_INTERRUPT_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SysTick_INTERRUPT_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SysTick_INTERRUPT_ENABLE_UPDATE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SysTick_INTERRUPT_ENABLE_UPDATE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="SysTick_INTERRUPT_HANDLER_LOCK"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;SysTick_INTERRUPT_HANDLER_LOCK&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="TC2_CH0_CLOCK_FREQUENCY"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;TC2_CH0_CLOCK_FREQUENCY&quot;&gt;
@@ -1022,11 +1077,27 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="USE_SYSTICK_INTERRUPT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;USE_SYSTICK_INTERRUPT&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="systickEnable"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;systickEnable&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1443,7 +1514,18 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;ipc0&gt;
   &lt;ipc0 dnOrder=&quot;0&quot; id=&quot;IPC_IRQ0_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/ipc0&gt;
+&lt;/ipc0&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="ipc0" name="IPC_IRQ1_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;ipc0&gt;
+  &lt;ipc0 dnOrder=&quot;0&quot; id=&quot;IPC_IRQ1_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/ipc0&gt;
 &lt;/ipc0&gt;
@@ -2028,11 +2110,11 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\initialization.c</file>
-         <hash>799cdfe491fd00450d4fda0cd0396167c35dfea94f001eeb0f522ebbb102c72b</hash>
+         <hash>b3161fe5494f10eda513b0c6e02f283a3b2a824d7fe52c1868902d9a42b26b5f</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.c</file>
-         <hash>7c20ba94be2b8c69263c3b06b1d6b9304c2bd16d68935d264aebd3a07bda6fdd</hash>
+         <hash>5013248a531308cd18100fed68188dcd8110c3a01de876f433496e8b35632510</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\chipid.h</file>
@@ -2195,20 +2277,12 @@
          <hash>222cdc284bd651e83188b9641cc57c133cf86563dbeb5d5523766d4a36087165</hash>
       </entry>
       <entry>
-         <file>..\src\config\DualCoreDemo_Core1\peripheral\systick\plib_systick.c</file>
-         <hash>fd02bff8fe0a2e36a84a387cf95c0ae4c2ceac31c97ab62c7a9b581bd55cf79e</hash>
-      </entry>
-      <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\time\src\sys_time_local.h</file>
          <hash>f2fcf9aac8d81072e70e05cdf0f366bca245a428229d4ed7cc5635c1a9c03fcb</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang.h</file>
          <hash>11b39b96ddc1125124762b3423a77b90dd40ea5b4582a3513830245046b24311</hash>
-      </entry>
-      <entry>
-         <file>..\src\config\DualCoreDemo_Core1\peripheral\systick\plib_systick.h</file>
-         <hash>a8bd169994cd311ca7ddf66c41eadd4ecf606227e737d21bded26fec4606d9e9</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\supc.h</file>
@@ -2312,7 +2386,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\definitions.h</file>
-         <hash>4b8d78ce9051f7d4991b6893e2c3ec07ca3717ceebf9022802dec09afe345118</hash>
+         <hash>4a30665d388ed9fa2c0ac0bb77aba34fb9518eebcb419add129fc7133ffe3eee</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\mcspi.h</file>
@@ -2324,7 +2398,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.h</file>
-         <hash>36e853935050bd4d3f4e7b3572379a8249e0f774c8bcc6e4648934ab32f64d8a</hash>
+         <hash>277612e993d15e55823cf233379dccb9b3561eaf8cc8e40477bdf5a94b8a3c96</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
@@ -2332,7 +2406,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.c</file>
-         <hash>8f029bb90e71c25cbffb51ea024abec49985395cbfc1d17b0b7372dc4414c325</hash>
+         <hash>2101668b28aca91566bfa0b39c207a3a5fac5e2edbb9a594a812a4e26ae754b1</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\pdc.h</file>

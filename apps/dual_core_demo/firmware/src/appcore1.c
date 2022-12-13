@@ -90,7 +90,7 @@ APPCORE1_DATA appcore1Data;
 // *****************************************************************************
 // *****************************************************************************
 
-static void _APPCORE1_IPC0Callback(ipc_irq_mask_t irq_mask, uintptr_t context)
+static void _APPCORE1_IPC1Callback(ipc_irq_mask_t irq_mask, uintptr_t context)
 {
     if (irq_mask == IPC_IRQ0_MASK)
     {
@@ -139,7 +139,7 @@ void APPCORE1_Initialize ( void )
             APPCORE1_TIMER_LED_MS, SYS_TIME_PERIODIC);
     
     /* Set IPC0 callback to attend the IPC signals from Core 0 */
-    IPC1_SetIRQHandler(IPC_IRQ0_MASK, _APPCORE1_IPC0Callback, 0);
+    IPC1_SetIRQHandler(IPC_IRQ0_MASK, _APPCORE1_IPC1Callback, 0);
 }
 
 
@@ -191,7 +191,7 @@ void APPCORE1_Tasks ( void )
             if (SYS_TIME_DelayIsComplete(appcore1Data.timer) == true)
             {
                 printf("Send C1->C0\r\n");
-                // Send IPC command to Core 0 through IPC1
+                // Send IPC command to Core 0 through IPC0
                 IPC0_SetIRQ(IPC_IRQ1_MASK);
 
                 appcore1Data.state = APPCORE1_STATE_WAIT_CMD;

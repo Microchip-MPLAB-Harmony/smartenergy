@@ -159,7 +159,6 @@ void SYS_Initialize ( void* data )
 
     FLEXCOM0_USART_Initialize();
 
-    IPC1_Initialize();
 
 	BSP_Initialize();
 

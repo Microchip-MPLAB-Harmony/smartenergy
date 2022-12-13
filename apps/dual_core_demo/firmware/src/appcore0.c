@@ -220,7 +220,7 @@ void APPCORE0_Tasks ( void )
             {
                 printf("Send C0->C1\r\n");
                 appcore0Data.timerExpired = false;
-                // Send IPC command to Core 0 through IPC1
+                // Send IPC command to Core 1 through IPC1
                 IPC1_SetIRQ(IPC_IRQ0_MASK);
 
                 appcore0Data.state = APPCORE0_STATE_WAIT_CMD;

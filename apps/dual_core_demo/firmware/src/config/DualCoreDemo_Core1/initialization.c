@@ -137,14 +137,12 @@ void SYS_Initialize ( void* data )
 
 
 
-	SYSTICK_TimerInitialize();
-    IPC0_Initialize();
 
- 
+
     TC2_CH0_TimerInitialize(); 
      
     
-    FLEXCOM0_USART_Initialize();
+//    FLEXCOM0_USART_Initialize();
 
     IPC1_Initialize();
 

@@ -326,8 +326,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.0.6"/>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
+        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.0.6"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -361,7 +361,7 @@
                           DD="dist/DualCoreDemo_Core1/debug/DualCoreDemo_Core1.X.debug.elf">
             </makeArtifact>
             <simage>DualCoreDemo_Core1</simage>
-            <saddress>0x20088000</saddress>
+            <saddress>0x20080000</saddress>
             <scextraargs>
               <scextraarg>Manual</scextraarg>
             </scextraargs>

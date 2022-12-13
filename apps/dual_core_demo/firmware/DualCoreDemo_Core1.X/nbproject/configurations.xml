@@ -38,9 +38,6 @@
             <logicalFolder name="pio" displayName="pio" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core1/peripheral/pio/plib_pio.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="systick" displayName="systick" projectFiles="true">
-              <itemPath>../src/config/DualCoreDemo_Core1/peripheral/systick/plib_systick.h</itemPath>
-            </logicalFolder>
             <logicalFolder name="tc" displayName="tc" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core1/peripheral/tc/plib_tc2.h</itemPath>
               <itemPath>../src/config/DualCoreDemo_Core1/peripheral/tc/plib_tc_common.h</itemPath>
@@ -235,9 +232,6 @@
             </logicalFolder>
             <logicalFolder name="pio" displayName="pio" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core1/peripheral/pio/plib_pio.c</itemPath>
-            </logicalFolder>
-            <logicalFolder name="systick" displayName="systick" projectFiles="true">
-              <itemPath>../src/config/DualCoreDemo_Core1/peripheral/systick/plib_systick.c</itemPath>
             </logicalFolder>
             <logicalFolder name="tc" displayName="tc" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core1/peripheral/tc/plib_tc2.c</itemPath>

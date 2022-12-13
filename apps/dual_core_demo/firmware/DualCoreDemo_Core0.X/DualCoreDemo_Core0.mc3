@@ -215,8 +215,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;406&quot; canvasWidth=&quot;892&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;17&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;HarmonyCore&quot; x=&quot;630&quot; y=&quot;24&quot;/&gt;
@@ -233,6 +232,7 @@
         &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;tc0&quot; x=&quot;36&quot; y=&quot;134&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;406&quot; canvasWidth=&quot;892&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -378,7 +378,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;IPC1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -1560,11 +1560,22 @@
          <value>__ROOTVIEW</value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="ipc1" name="IPC_IRQ0_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;ipc1&gt;
+  &lt;ipc1 dnOrder=&quot;0&quot; id=&quot;IPC_IRQ0_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/ipc1&gt;
+&lt;/ipc1&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="ipc1" name="IPC_IRQ1_ENABLE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;ipc1&gt;
   &lt;ipc1 dnOrder=&quot;0&quot; id=&quot;IPC_IRQ1_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/ipc1&gt;
 &lt;/ipc1&gt;
@@ -1934,7 +1945,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\peripheral\ipc\plib_ipc1.h</file>
-         <hash>400e22f90f1a1593cd097b617eb5ea13f3d25fbac560761b0a3a0f0808e83bb1</hash>
+         <hash>da42e58092377931dd64cbeafafa575640b1f748ef0b7960f4e93d563d805100</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\system\time\sys_time.h</file>
@@ -1942,7 +1953,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\peripheral\ipc\plib_ipc1.c</file>
-         <hash>9bb2d1116267939a4e221db0e6eb846ffc03c933812b373177c9b223d745964d</hash>
+         <hash>607a9a64c9d001ef2d7d39af06c1c0c5903c5c5737e02e695364040d859793c4</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\system\time\sys_time_definitions.h</file>
@@ -2130,7 +2141,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\peripheral\clk\plib_clk.c</file>
-         <hash>d9d0a972a56386b457572619f938913a1b6bda2c3f08ea2b2256087619e0d8e5</hash>
+         <hash>0033d327f6a244854971db8a88f4392adaa8c8b18fcb97750bb45a78fe1ab941</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\interrupts.c</file>
@@ -2166,7 +2177,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core0\initialization.c</file>
-         <hash>c5c1cb3571e365e0f40a647bf231220a817b3b4f26f725fb7bc8abefc1768605</hash>
+         <hash>5e4eec0e43884b764df88ccbb1fa58f41c9520d1393aebd3115720fabbc9d4d3</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\pio1.h</file>

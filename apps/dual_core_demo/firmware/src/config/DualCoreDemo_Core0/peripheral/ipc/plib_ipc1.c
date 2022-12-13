@@ -54,14 +54,6 @@ typedef struct
 
 static ipc1_callback_object_t ipc1_callback_obj[TOTAL_IPC_IRQS];
 
-void  IPC1_Initialize(void)
-{
-    /* Clear interrupts */
-    IPC1_REGS->IPC_ICCR = IPC_ICCR_Msk;
-    /* Enable interrupts */
-    IPC1_REGS->IPC_IECR = (IPC_IECR_IRQ1_Msk);
-
-}
 
 void IPC1_SetIRQHandler(ipc_irq_mask_t irq_mask, IPC_CALLBACK handler, uintptr_t context)
 {

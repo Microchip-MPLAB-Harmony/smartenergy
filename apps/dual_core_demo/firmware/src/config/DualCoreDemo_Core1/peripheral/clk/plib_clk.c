@@ -26,6 +26,21 @@
 /*********************************************************************************
                         Initialize Peripheral clocks
 *********************************************************************************/
+static uint32_t PeripheralClockStatus(uint32_t periphId)
+{
+    if (periphId < 32) {
+		return ((PMC_REGS->PMC_CSR0 & PMC_CSR0_Msk) & (1 << periphId));
+	} else if (periphId < 64) {
+		return ((PMC_REGS->PMC_CSR1 & PMC_CSR1_Msk) & (1 << (periphId - 32)));
+	} else if (periphId < 96) {
+		return ((PMC_REGS->PMC_CSR2 & PMC_CSR2_Msk) & (1 << (periphId - 64)));
+	} else if (periphId <= ID_PERIPH_MAX) {
+		return ((PMC_REGS->PMC_CSR3 & PMC_CSR3_Msk) & (1 << (periphId - 96)));
+	} else {
+		return 0;
+	}
+}
+
 static void PeripheralClockInitialize(void)
 {
     struct {
@@ -40,6 +55,8 @@ static void PeripheralClockInitialize(void)
 
         { ID_PIOD, 1U, 0U, 0U, 0U},
 
+        { ID_IPC1, 1U, 0U, 0U, 0U},
+
         { ID_PERIPH_MAX + 1, 0, 0, 0, 0}//end of list marker
     };
     uint32_t count = sizeof(periphList)/sizeof(periphList[0]);
@@ -53,6 +70,9 @@ static void PeripheralClockInitialize(void)
                             PMC_PCR_GCLKDIV(periphList[i].div) |\
                             PMC_PCR_GCLKCSS(periphList[i].css) |\
                             PMC_PCR_PID(periphList[i].id);
+        
+        while(PeripheralClockStatus(periphList[i].id) == 0);
+            
         i++;
     }
 }
