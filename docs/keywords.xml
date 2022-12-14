@@ -14,7 +14,7 @@
           pubid=""
           reachid=""
           description=""
-          lastmodified="30/08/2022 11:36:43"
+          lastmodified="14/12/2022 15:08:00"
           covertitle="MPLAB Harmony Smart Energy Library"
           frontcover="">
    <keyworditem topicid="GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789"
@@ -952,6 +952,523 @@
       <bitfield/>
       <keyword>DRV_G3_MACRT_INIT</keyword>
    </keyworditem>
+   <keyworditem topicid="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Metrology Driver</register>
+      <title>Metrology Driver</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-21C6829A-CB89-4FE2-A0B6-7467DEAB58C5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>How the Metrology driver library works</register>
+      <title>How the Metrology driver library works</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E64151E5-311B-4866-A4CC-6D01A162D076"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Using The Library</register>
+      <title>Using The Library</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2356AE43-5731-46E5-8556-A282237A8145"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Metrology driver Configurations</register>
+      <title>Metrology driver Configurations</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-760CFE1C-CBE5-4B83-9F96-A1276BC1D5F6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Library Interface</register>
+      <title>Library Interface</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-15B110AF-D87C-4DFC-A9B4-B32D12B324A0"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Initialize Function</register>
+      <title>DRV_METROLOGY_Initialize Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0D323609-4067-4759-A4E0-F8CE70D88B7F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Reinitialize Function</register>
+      <title>DRV_METROLOGY_Reinitialize Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B4522710-73A2-4AC6-8FAA-A46B8AFEF0D3"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Open Function</register>
+      <title>DRV_METROLOGY_Open Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A33FE9DF-132B-4BE0-8D69-E474D59DAF49"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Close Function</register>
+      <title>DRV_METROLOGY_Close Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-065E9B11-C994-458B-81A0-245A6DDCA060"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Start Function</register>
+      <title>DRV_METROLOGY_Start Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-47718A7D-D9A0-4D2D-BFB3-2F98E35874CA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_Tasks Function</register>
+      <title>DRV_METROLOGY_Tasks Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E8DB02F0-91A9-4650-AD55-7583FDCE6EF1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_IntegrationCallbackRegister Function</register>
+      <title>DRV_METROLOGY_IntegrationCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C9D39EA4-E773-4EB2-BB18-A881CF467777"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CalibrationCallbackRegister Function</register>
+      <title>DRV_METROLOGY_CalibrationCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DCC4ACEB-0D26-4F64-A3E7-C6967F02FF75"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_HarmonicAnalysisCallbackRegister Function</register>
+      <title>DRV_METROLOGY_HarmonicAnalysisCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-000D4A61-94C6-4D5C-BCA3-4D0D98D90389"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetState Function</register>
+      <title>DRV_METROLOGY_GetState Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7A6D3728-F774-40C8-A34F-893A562AB3FA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetControl Function</register>
+      <title>DRV_METROLOGY_GetControl Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E9F1A57F-112B-48C1-BA59-D53D58162D10"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetControlByDefault Function</register>
+      <title>DRV_METROLOGY_GetControlByDefault Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AC680876-B0BE-403F-B362-21FD96EB06B3"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetStatus Function</register>
+      <title>DRV_METROLOGY_GetStatus Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2C3CD0E2-6C3D-459E-BFED-C275DBCEF3E1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetAccData Function</register>
+      <title>DRV_METROLOGY_GetAccData Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C0265DE4-9BE3-4A22-A9C0-9E76AE1D1E61"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetHarData Function</register>
+      <title>DRV_METROLOGY_GetHarData Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-14C662AB-69E2-4C87-9869-99B3A87461C8"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_SetControl Function</register>
+      <title>DRV_METROLOGY_SetControl Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-4ED8B3F6-0288-41C8-BA4B-F0A0FEE81E7A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetEnergyValue Function</register>
+      <title>DRV_METROLOGY_GetEnergyValue Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5DD54744-A308-4CFC-9EC7-2A74AE260057"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetRMSValue Function</register>
+      <title>DRV_METROLOGY_GetRMSValue Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-42DAEFE9-160F-4E01-961A-6BA11105CD6F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetRMSSign Function</register>
+      <title>DRV_METROLOGY_GetRMSSign Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D4D6B9B8-E622-43E0-8A4F-58303A16AB3C"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_SetConfiguration Function</register>
+      <title>DRV_METROLOGY_SetConfiguration Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B2ABF750-2622-4A16-BD06-60AF4EA9E6EA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetEventsData Function</register>
+      <title>DRV_METROLOGY_GetEventsData Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A5A33003-F6F9-43F2-9625-337590CBC7E1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GetCalibrationReferences Function</register>
+      <title>DRV_METROLOGY_GetCalibrationReferences Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2D4B1FB0-E202-4D55-BD07-801884E97291"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>APP_METROLOGY_StartCalibration Function</register>
+      <title>APP_METROLOGY_StartCalibration Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EB8372C5-89A0-4063-B212-93D39E201E1C"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_StartHarmonicAnalysis Function</register>
+      <title>DRV_METROLOGY_StartHarmonicAnalysis Function</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8C5F5F6E-5B77-4AC5-9274-D0E6AE292759"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_RESULT Enum</register>
+      <title>DRV_METROLOGY_RESULT Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6947C4CA-0A47-43CA-9928-DDC533406CBE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_START_MODE Enum</register>
+      <title>DRV_METROLOGY_START_MODE Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B0D43890-3087-41AD-B694-E10EB97EB0D8"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_RMS_SIGN Enum</register>
+      <title>DRV_METROLOGY_RMS_SIGN Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B30E0A99-F577-4040-B9DB-4BF69AC7D3E8"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CALLBACK Typedef</register>
+      <title>DRV_METROLOGY_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CE77D416-518D-43EB-89C8-21D8BD828297"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CALIBRATION_CALLBACK Typedef</register>
+      <title>DRV_METROLOGY_CALIBRATION_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-23C053D8-E569-439C-B230-D50BA21A43CF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK Typedef</register>
+      <title>DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C68E12F8-5625-420D-B82B-D586E15D9F3A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_SENSOR_TYPE Enum</register>
+      <title>DRV_METROLOGY_SENSOR_TYPE Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-43E7E120-2618-422D-AC8B-23E78FF268AE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_GAIN_TYPE Enum</register>
+      <title>DRV_METROLOGY_GAIN_TYPE Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FB4BC534-FE65-4396-85AA-33E97F8474F2"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_PHASE_ID Enum</register>
+      <title>DRV_METROLOGY_PHASE_ID Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1C383DE6-835B-43D8-812B-E35155090B0F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CALIBRATION_REFS Struct</register>
+      <title>DRV_METROLOGY_CALIBRATION_REFS Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-18109125-3906-41A5-8221-A41436ADE4A4"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CALIBRATION Struct</register>
+      <title>DRV_METROLOGY_CALIBRATION Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A92CAB0B-51F2-4706-938C-5E993E3CD6BD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_AFE_EVENTS Struct</register>
+      <title>DRV_METROLOGY_AFE_EVENTS Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EDB3D0B3-3F3F-42A7-ABCB-F42A6AE36965"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_HARMONIC Struct</register>
+      <title>DRV_METROLOGY_HARMONIC Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DFA024DD-029D-43F9-A6C2-6D65EFA83011"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_RMS_TYPE Enum</register>
+      <title>DRV_METROLOGY_RMS_TYPE Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1EB20D0D-FAB8-46CF-B99E-66BDD7CB6A0F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_AFE_DATA Struct</register>
+      <title>DRV_METROLOGY_AFE_DATA Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-87E6C7E7-6BA7-4E96-BA40-DD5CF7349793"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_CONFIGURATION Struct</register>
+      <title>DRV_METROLOGY_CONFIGURATION Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0E9A7DEF-904D-451D-A356-FACF9360BA4F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_STATE Enum</register>
+      <title>DRV_METROLOGY_STATE Enum</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-388C8E2A-F0FE-40EC-8115-8680F569945E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_METROLOGY_INIT Struct</register>
+      <title>DRV_METROLOGY_INIT Struct</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
    <keyworditem topicid="GUID-BAD839D0-DC99-40E6-B406-813928767344"
                 nocomponent="true"
                 parent="">
@@ -1050,6 +1567,28 @@
       <title>SRV_PCOUP_Get_Channel_Config Function</title>
       <bitfield/>
       <keyword>SRV_PCOUP_Get_Channel_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A74E4416-E7F9-4A02-8A29-FC1F2A00BF93"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Set_Channel_Config Function</register>
+      <title>SRV_PCOUP_Set_Channel_Config Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Set_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3778B1C9-F454-4097-93C1-EB63083FD1AD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PLC_PCOUP_CHANNEL_DATA Struct</register>
+      <title>SRV_PLC_PCOUP_CHANNEL_DATA Struct</title>
+      <bitfield/>
+      <keyword>SRV_PLC_PCOUP_CHANNEL_DATA</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-1279B3B1-7AC6-4986-8E88-539CBCEF5F52"
                 nocomponent="true"
@@ -1282,28 +1821,6 @@
       <bitfield/>
       <keyword>mcc_h3_srv_pvddmon_configurations</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-3778B1C9-F454-4097-93C1-EB63083FD1AD"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PLC_PCOUP_CHANNEL_DATA Struct</register>
-      <title>SRV_PLC_PCOUP_CHANNEL_DATA Struct</title>
-      <bitfield/>
-      <keyword>SRV_PLC_PCOUP_CHANNEL_DATA</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-A74E4416-E7F9-4A02-8A29-FC1F2A00BF93"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PCOUP_Set_Channel_Config Function</register>
-      <title>SRV_PCOUP_Set_Channel_Config Function</title>
-      <bitfield/>
-      <keyword>SRV_PCOUP_Set_Config</keyword>
-   </keyworditem>
    <keyworditem topicid="GUID-FBA5ADF9-861F-4690-AAE9-9188BCD3A6AE"
                 nocomponent="true"
                 parent="">
@@ -1381,6 +1898,39 @@
       <bitfield/>
       <keyword>srv_pcrc_configurations</keyword>
    </keyworditem>
+   <keyworditem topicid="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Configuring The Library</register>
+      <title>Configuring The Library</title>
+      <bitfield/>
+      <keyword>mcc_h3_srv_usi_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7C8F8FE0-76A1-4138-81CD-E2A7D3533A92"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>PCRC_CRC_TYPE Enum</register>
+      <title>PCRC_CRC_TYPE Enum</title>
+      <bitfield/>
+      <keyword>PCRC_CRC_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CD78B395-BA9B-4279-B2D4-BD3C9E156205"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>PCRC_HEADER_TYPE Enum</register>
+      <title>PCRC_HEADER_TYPE Enum</title>
+      <bitfield/>
+      <keyword>PCRC_HEADER_TYPE</keyword>
+   </keyworditem>
    <keyworditem topicid="GUID-95B97160-5425-444C-A258-8746A620D3F9"
                 nocomponent="true"
                 parent="">
@@ -1403,38 +1953,27 @@
       <bitfield/>
       <keyword>SRV_PCRC_SetSNAValue</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-CD78B395-BA9B-4279-B2D4-BD3C9E156205"
+   <keyworditem topicid="GUID-B3A181FF-1B0E-4CF1-8EBB-0D9000DB82EF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>PCRC_HEADER_TYPE Enum</register>
-      <title>PCRC_HEADER_TYPE Enum</title>
+      <register>SRV_USI_Close Function</register>
+      <title>SRV_USI_Close Function</title>
       <bitfield/>
-      <keyword>PCRC_HEADER_TYPE</keyword>
+      <keyword>SRV_USI_Close</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-7C8F8FE0-76A1-4138-81CD-E2A7D3533A92"
+   <keyworditem topicid="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>PCRC_CRC_TYPE Enum</register>
-      <title>PCRC_CRC_TYPE Enum</title>
+      <register>SRV_USI_CallbackRegister Function</register>
+      <title>SRV_USI_CallbackRegister Function</title>
       <bitfield/>
-      <keyword>PCRC_CRC_TYPE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>Configuring The Library</register>
-      <title>Configuring The Library</title>
-      <bitfield/>
-      <keyword>mcc_h3_srv_usi_configurations</keyword>
+      <keyword>SRV_USI_CallbackRegister</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-621D854B-54BF-4473-91C6-B37A25840333"
                 nocomponent="true"
@@ -1458,17 +1997,6 @@
       <bitfield/>
       <keyword>SRV_USI_Open</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-B3A181FF-1B0E-4CF1-8EBB-0D9000DB82EF"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_USI_Close Function</register>
-      <title>SRV_USI_Close Function</title>
-      <bitfield/>
-      <keyword>SRV_USI_Close</keyword>
-   </keyworditem>
    <keyworditem topicid="GUID-AEB8DFE3-0BED-4D89-98D8-78F367814AA1"
                 nocomponent="true"
                 parent="">
@@ -1479,17 +2007,6 @@
       <title>SRV_USI_Status Function</title>
       <bitfield/>
       <keyword>SRV_USI_Status</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_USI_CallbackRegister Function</register>
-      <title>SRV_USI_CallbackRegister Function</title>
-      <bitfield/>
-      <keyword>SRV_USI_CallbackRegister</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-E0E5E6A7-18F0-4315-B9C1-E4D3011230A8"
                 nocomponent="true"
@@ -1513,16 +2030,16 @@
       <bitfield/>
       <keyword>SRV_USI_Send_Message</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF"
+   <keyworditem topicid="GUID-9C3076C9-0171-469B-B059-048A45B45047"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_PROTOCOL_ID Enum</register>
-      <title>SRV_USI_PROTOCOL_ID Enum</title>
+      <register>SRV_USI_HANDLE Typedef</register>
+      <title>SRV_USI_HANDLE Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_PROTOCOL_ID</keyword>
+      <keyword>SRV_USI_HANDLE</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-FA6D55E0-FFF4-4BE5-A80C-C57E20F20172"
                 nocomponent="true"
@@ -1535,27 +2052,16 @@
       <bitfield/>
       <keyword>SRV_USI_STATUS</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-9C3076C9-0171-469B-B059-048A45B45047"
+   <keyworditem topicid="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_HANDLE Typedef</register>
-      <title>SRV_USI_HANDLE Typedef</title>
+      <register>SRV_USI_PROTOCOL_ID Enum</register>
+      <title>SRV_USI_PROTOCOL_ID Enum</title>
       <bitfield/>
-      <keyword>SRV_USI_HANDLE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-ABD93EB0-3099-42B8-9559-30F072F02739"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_USI_HANDLE_INVALID Macro</register>
-      <title>SRV_USI_HANDLE_INVALID Macro</title>
-      <bitfield/>
-      <keyword>SRV_USI_HANDLE_INVALID</keyword>
+      <keyword>SRV_USI_PROTOCOL_ID</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-48BB87BF-AAC0-4DE0-A21F-6F00E5B1FF24"
                 nocomponent="true"
@@ -1567,6 +2073,17 @@
       <title>SRV_USI_CALLBACK Typedef</title>
       <bitfield/>
       <keyword>SRV_USI_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-ABD93EB0-3099-42B8-9559-30F072F02739"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_USI_HANDLE_INVALID Macro</register>
+      <title>SRV_USI_HANDLE_INVALID Macro</title>
+      <bitfield/>
+      <keyword>SRV_USI_HANDLE_INVALID</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-95D6239D-4487-418B-ADEC-587C659BFEE0"
                 nocomponent="true"

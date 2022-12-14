@@ -1,316 +1,290 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
-<meta name="DC.rights.owner" content="(C) Copyright 2022" />
-<meta name="DC.type" content="topic" />
-<meta name="DC.title" content="How the Library Works" />
-<meta name="DC.relation" scheme="URI" content="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html" />
-<meta name="DC.format" content="XHTML" />
-<meta name="DC.identifier" content="how-the-library-works" />
-<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<title>How the Library Works</title>
-<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-how-the-library-works" />
-<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
-<meta name="Microsoft.Help.TocOrder" content="0" />
-<meta name="Microsoft.Help.Locale" content="en-US" />
-<meta name="Microsoft.Help.TopicLocale" content="en-US" />
-<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
-<script language="javascript">
-       
-       if (window.parent.location.protocol != 'file:') {
-				document.addEventListener('click', function(e) {
-				    if (e.target) {
-               if (e.target.nodeName == "A" ) {
-                    if (!e.target.target) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                              
-                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
-                      if (origUrl.length === 0) {
-                          origUrl = window.parent.location.href;
-                      }
-                      var href= e.target.getAttribute("href");
-                      var parts = href.split("#");
-          
-                      var url = "";
-                      if (parts.length == 2 ) {
-                        if (!parts[0].length) {
-                            url = window.parent.location.search.replace('?','')
-                        } else {
-                            url = parts[0].replace('.html','');
-                        }
-                      } else {
-                        url = parts[0].replace('.html','');
-                      }
-
-                      if (parts.length == 2) {
-                          url += "#" + parts[1];
-                      }
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us" data-whc_version="24.1">
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><link rel="icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="USI service is a wrapper that provides the interface between the Smart Energy stacks and the serial communications channel (UART or USB CDC). For USI message transmission, SRV_USI_Send_Message ..."/><meta name="copyright" content="(C) Copyright 2022"/><meta name="DC.rights.owner" content="(C) Copyright 2022"/><meta name="DC.type" content="topic"/><meta name="DC.relation" content="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.md"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="how-the-library-works"/><title>1.2.6.1 How the Library Works</title><!--  Generated with Oxygen version 24.1, build number 2022062014.  --><meta name="wh-path2root" content=""/><meta name="wh-toc-id" content="&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;?workdir /D:\InfoShare\Data\Publish\Data\qz5jhalnxoc\work\temp?&gt;&lt;?workdir-uri file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/temp/?&gt;&lt;?path2project?&gt;&lt;?path2project-uri ./?&gt;&lt;?path2rootmap-uri ./?&gt;&lt;topic xmlns:ditaarch=&#34;http://dita.oasis-open.org/architecture/2005/&#34; xmlns:dita-ot=&#34;http://dita-ot.sourceforge.net/ns/201007/dita-ot&#34; class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;how-the-library-works&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;topic:1;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:1;182:3&#34;&gt;How the Library Works&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;body:1;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:1;182:3&#34;&gt;USI service is a wrapper that provides the interface between the Smart Energy stacks and the serial communications channel (UART or USB CDC).&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:2;182:3&#34;&gt;For USI message transmission, &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:1;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:1;182:3&#34;&gt;SRV_USI_Send_Message&lt;/i&gt;&lt;/xref&gt; function is provided, which packs the data into USI frame format and sends the message through serial interface.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:3;182:3&#34;&gt;For USI message reception, the service unpacks the data and passes it through callback (&lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:2;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:2;182:3&#34;&gt;SRV_USI_CallbackRegister&lt;/i&gt;&lt;/xref&gt;) to the corresponding client depending on the USI protocol.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:4;182:3&#34;&gt;In the other side of the serial interface, a similar implementation is needed in an external device to pack/unpack USI messages for the corresponding USI protocol. Microchip provides PC tools and Python libraries, which are used to manage different layers of the Smart Energy stacks.&lt;/p&gt;&lt;/body&gt;&lt;related-links class=&#34;- topic/related-links &#34;&gt;&lt;linkpool class=&#34;- topic/linkpool &#34; mapkeyref=&#34;GUID-F454DB36-5AD7-4DBC-882C-6FC64DF4ADB2&#34; xtrc=&#34;topicref:2;3:1496&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-B6E685EF-8202-40E6-B8E5-D50F98B10BE9.ditamap&#34;&gt;&lt;link class=&#34;- topic/link &#34; format=&#34;dita&#34; href=&#34;GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.md&#34; mapclass=&#34;- map/topicref &#34; role=&#34;parent&#34; scope=&#34;local&#34; type=&#34;topic&#34; xtrc=&#34;topicref:1;3:1361&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-B6E685EF-8202-40E6-B8E5-D50F98B10BE9.ditamap&#34;&gt;&lt;?ditaot usertext?&gt;&lt;linktext class=&#34;- topic/linktext &#34;&gt;&lt;?ditaot gentext?&gt;USI Service&lt;/linktext&gt;&lt;/link&gt;&lt;/linkpool&gt;&lt;/related-links&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;usi-frame-format&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;topic:2;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:2;182:3&#34;&gt;USI Frame Format&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;body:2;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:5;182:3&#34;&gt;The USI frame format is based on the HDLC specification used along with DLMS. The Serial Communications Profile of the Management Plane defined in the PRIME specification also uses the same format. Below is the structure of the USI frame and field description.&lt;/p&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;fig:1;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:3;182:3&#34;&gt;USI Frame Format&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-58E362D0-40B9-4360-B2B7-7610E2404FE0-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;image:1;182:3&#34; dita-ot:image-width=&#34;614&#34; dita-ot:image-height=&#34;45&#34; dita-ot:horizontal-dpi=&#34;120&#34; dita-ot:vertical-dpi=&#34;120&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;alt:1;182:3&#34;&gt;USI general frame format&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;ul:1;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:1;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:6;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:1;182:3&#34;&gt;0x7E&lt;/b&gt;: Frame start/end identifier.&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:2;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:7;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:2;182:3&#34;&gt;MSG LENGTH&lt;/b&gt;: Message payload length in bytes (&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:3;182:3&#34;&gt;MESSAGE DATA&lt;/b&gt; field).&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:3;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:8;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:4;182:3&#34;&gt;PROTOCOL ID&lt;/b&gt;: USI protocol identifier.&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:4;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:9;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:5;182:3&#34;&gt;MESSAGE DATA&lt;/b&gt;: Message payload (variable length). The format is defined by each protocol.&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:5;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:10;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:6;182:3&#34;&gt;CRC&lt;/b&gt;: Error detection code for the message. The CRC size is defined by each protocol (see the table below). For more information about CRC format, see &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:3;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:3;182:3&#34;&gt;PLC CRC Service&lt;/i&gt;&lt;/xref&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;table class=&#34;- topic/table &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;table:1;182:3&#34;&gt;&lt;tgroup class=&#34;- topic/tgroup &#34; cols=&#34;3&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;tgroup:1;182:3&#34;&gt;&lt;colspec class=&#34;- topic/colspec &#34; colname=&#34;col1&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;colspec:1;182:3&#34; colnum=&#34;1&#34;/&gt;&lt;colspec class=&#34;- topic/colspec &#34; colname=&#34;col2&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;colspec:2;182:3&#34; colnum=&#34;2&#34;/&gt;&lt;colspec class=&#34;- topic/colspec &#34; colname=&#34;col3&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;colspec:3;182:3&#34; colnum=&#34;3&#34;/&gt;&lt;thead class=&#34;- topic/thead &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;thead:1;182:3&#34;&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:1;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:1;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;1&#34;&gt;USI Protocol (&lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:4;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:4;182:3&#34;&gt;SRV_USI_PROTOCOL_ID Enum&lt;/i&gt;&lt;/xref&gt;)&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:2;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;1&#34;&gt;PROTOCOL ID&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:3;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;1&#34;&gt;CRC size (bits)&lt;/entry&gt;&lt;/row&gt;&lt;/thead&gt;&lt;tbody class=&#34;- topic/tbody &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;tbody:1;182:3&#34;&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:2;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:4;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;2&#34;&gt;SRV_USI_PROT_ID_MNGP_PRIME&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:5;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;2&#34;&gt;0x00-0x07&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:6;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;2&#34;&gt;32&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:3;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:7;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;3&#34;&gt;SRV_USI_PROT_ID_SNIF_PRIME&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:8;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;3&#34;&gt;0x13&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:9;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;3&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:4;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:10;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;4&#34;&gt;SRV_USI_PROT_ID_PHY_SERIAL_PRIME&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:11;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;4&#34;&gt;0x1F&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:12;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;4&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:5;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:13;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;5&#34;&gt;SRV_USI_PROT_ID_PHY&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:14;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;5&#34;&gt;0x22&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:15;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;5&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:6;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:16;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;6&#34;&gt;SRV_USI_PROT_ID_SNIFF_G3&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:17;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;6&#34;&gt;0x23&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:18;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;6&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:7;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:19;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;7&#34;&gt;SRV_USI_PROT_ID_MAC_G3&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:20;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;7&#34;&gt;0x24&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:21;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;7&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:8;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:22;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;8&#34;&gt;SRV_USI_PROT_ID_ADP_G3&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:23;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;8&#34;&gt;0x25&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:24;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;8&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:9;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:25;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;9&#34;&gt;SRV_USI_PROT_ID_COORD_G3&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:26;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;9&#34;&gt;0x26&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:27;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;9&#34;&gt;16&lt;/entry&gt;&lt;/row&gt;&lt;row class=&#34;- topic/row &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;row:10;182:3&#34;&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;left&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:28;182:3&#34; colname=&#34;col1&#34; dita-ot:x=&#34;1&#34; dita-ot:y=&#34;10&#34;&gt;SRV_USI_PROT_ID_PRIME_API&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:29;182:3&#34; colname=&#34;col2&#34; dita-ot:x=&#34;2&#34; dita-ot:y=&#34;10&#34;&gt;0x30&lt;/entry&gt;&lt;entry class=&#34;- topic/entry &#34; align=&#34;center&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;entry:30;182:3&#34; colname=&#34;col3&#34; dita-ot:x=&#34;3&#34; dita-ot:y=&#34;10&#34;&gt;8&lt;/entry&gt;&lt;/row&gt;&lt;/tbody&gt;&lt;/tgroup&gt;&lt;/table&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:11;182:3&#34;&gt;In order to detect the end of the message properly, it is needed to add escape bytes to all fields described above:&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;ul:2;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:6;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:12;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:7;182:3&#34;&gt;0x7E&lt;/b&gt; bytes are replaced by &lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:8;182:3&#34;&gt;0x7D5E&lt;/b&gt; (2 bytes)&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;li:7;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:13;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:9;182:3&#34;&gt;0x7D&lt;/b&gt; bytes are replaced by &lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;b:10;182:3&#34;&gt;0x7D5D&lt;/b&gt; (2 bytes)&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:14;182:3&#34;&gt;This adds overhead and has to be considered when configuring the &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:5;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:5;182:3&#34;&gt;size of USI service buffers&lt;/i&gt;&lt;/xref&gt;. The size of transmission buffers must be at least twice the size of the biggest message payload used (for the very worst case, all bytes 0x7E or 0x7D).&lt;/p&gt;&lt;/body&gt;&lt;/topic&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;usi-protocols&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;topic:3;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:4;182:3&#34;&gt;USI Protocols&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;body:3;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:15;182:3&#34;&gt;Each protocol defines its own frame format for the USI payload data. A specific PC tool or Python library is provided for each protocol.&lt;/p&gt;&lt;/body&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;phy-sniffer&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;topic:4;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:5;182:3&#34;&gt;PHY Sniffer&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;body:4;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:16;182:3&#34;&gt;There are two USI protocols used to communicate with &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:6;182:3&#34;&gt;Microchip Hybrid Sniffer Tool&lt;/i&gt;, one for PRIME (&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:7;182:3&#34;&gt;SRV_USI_PROT_ID_SNIF_PRIME&lt;/i&gt;) and one for G3 (&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:8;182:3&#34;&gt;SRV_USI_PROT_ID_SNIFF_G3&lt;/i&gt;).&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:17;182:3&#34;&gt;For more information, see &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:6;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:9;182:3&#34;&gt;PLC PHY Sniffer Service&lt;/i&gt;&lt;/xref&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/topic&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;plc-phy-serial&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;topic:5;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;title:6;182:3&#34;&gt;PLC PHY Serial&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;body:5;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:18;182:3&#34;&gt;There is one USI protocol used to serialize PLC PHY API (&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:10;182:3&#34;&gt;SRV_USI_PROT_ID_PHY&lt;/i&gt;) and communicate with &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:11;182:3&#34;&gt;Microchip PLC PHY Tester Tool&lt;/i&gt; or &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:12;182:3&#34;&gt;Microchip PLC PHY Python Libraries&lt;/i&gt;. The protocol defines different sub-format for G3 and PRIME.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;p:19;182:3&#34;&gt;For more information, see &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;xref:7;182:3&#34;&gt;&lt;?ditaot usertext?&gt;&lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md&#34; xtrc=&#34;i:13;182:3&#34;&gt;PLC PHY Serial Service&lt;/i&gt;&lt;/xref&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/topic&gt;&lt;/topic&gt;&lt;/topic&gt;"/><meta name="wh-source-relpath" content="GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.md"/><meta name="wh-out-relpath" content="GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.html"/>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
     
-                      window.parent.location.href = origUrl + "?" + url;
+    <link rel="stylesheet" href="./oxygen-webhelp/lib/jquery-ui/jquery-ui.min.css"/>
+    
+    <!-- Template default styles  -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/app/topic-page.css?buildId=2022062014"/>
+    
+    
+    <script src="./oxygen-webhelp/lib/jquery/jquery-3.5.1.min.js"></script>
+    
+    <script data-main="./oxygen-webhelp/app/topic-page.js" src="./oxygen-webhelp/lib/requirejs/require.js"></script>
+<link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/microchip.css?buildId=2022062014"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/notes.css?buildId=2022062014"/>
+<script src="mchp-context-help.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async="" type="text/javascript"></script>
+</head>
 
-                      return false;
-                    }
-               }
-            }
-				});
-			}
-
-		</script><script language="javascript">
-         
-         function copyContent(content, button) {
-         
-            var textArea = document.createElement("textarea");
-            
-            // Place in the top-left corner of screen regardless of scroll position.
-            textArea.style.position = 'fixed';
-            textArea.style.top = 0;
-            textArea.style.left = 0;
-            
-            // Ensure it has a small width and height. Setting to 1px / 1em
-            // doesn't work as this gives a negative w/h on some browsers.
-            textArea.style.width = '2em';
-            textArea.style.height = '2em';
-            
-            // We don't need padding, reducing the size if it does flash render.
-            textArea.style.padding = 0;
-            
-            // Clean up any borders.
-            textArea.style.border = 'none';
-            textArea.style.outline = 'none';
-            textArea.style.boxShadow = 'none';
-            
-            // Avoid flash of the white box if rendered for any reason.
-            textArea.style.background = 'transparent';
-            
-            textArea.value = content;
-            
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            try {
-               var successful = document.execCommand('copy');
-               var msg = successful ? 'successful' : 'unsuccessful';
-               if (!button.classList.contains("copied")){
-                  button.textContent = "Copied";
-                  button.classList.add("copied");
-                  setTimeout(function(){
-                     button.textContent = "Copy";
-                     button.classList.remove("copied");
-                  },1000);
-               }
-            } catch (err) {
-               console.log('Oops, unable to copy');
-            }
-            
-            document.body.removeChild(textArea);
-         }
-         
-         function cpy(id, button) {
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
-            
-            copyContent(content, button);
-         }
-         
-         document.addEventListener("DOMContentLoaded", function(event) {
-            document.querySelectorAll(".codeblock").forEach(function(elem) {
-               elem.style.position = "relative";
-               var copy = document.createElement("button");
-               copy.textContent = "Copy";
-               copy.setAttribute("class", "copy-code");
-               
-               var content = elem.textContent;
-               
-               copy.addEventListener("click", function(){
-                  copyContent(content, copy);
-               });
-               
-               elem.addEventListener("mouseenter", function(evt){
-                  elem.prepend(copy);
-               });
-            });
-            
-            document.querySelectorAll(".codeblock").forEach(function(elem) {
-               elem.addEventListener("mouseleave", function(evt){
-                  document.querySelector(".copy-code").remove();
-               });
-            });
-         });
-         
-      </script><script language="javascript">
-          
-          // Add the MathML namespace to html
-          var html = document.getElementsByTagName("html")[0],
-          head = document.getElementsByTagName("head")[0];
-          
-          var mathJax = document.createElement("script");
-          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
-          head.appendChild(mathJax);
-          
-          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
-          
-          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
-          
-          if (!inIframe()) { 
-          
-          var Default = "index.html?GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428"; 
-          
-          var displaylocation = "value" + window.location.href;
-          
-          var GUIDS = displaylocation.split('GUID');          
-          
-          if (displaylocation.indexOf('#GUID') != -1) {            
-          var First = GUIDS[1].split('.html');  
-          if (GUIDS[3]){First = GUIDS[2].split('.html');}
-          if (GUIDS[4]){First = GUIDS[3].split('.html');}
-          if (GUIDS[5]){First = GUIDS[4].split('.html');}
-          
-          var Second = GUIDS[2].split('#');   
-          if (GUIDS[3]){Second = GUIDS[3].split('#');}
-          if (GUIDS[4]){Second = GUIDS[4].split('#');}
-          if (GUIDS[5]){Second = GUIDS[5].split('#');}
-          
-          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
-          }                    
-          window.top.location = Default;
-          }       
-          
-        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
-        
-          button.copy-code{
-            display:none;
-            padding:0.7em 1.4em;
-            margin:0 0.3em 0.3em 0;
-            border-radius:0.15em;
-            box-sizing: border-box;
-            text-decoration:none;
-            font-family:'Roboto',sans-serif;
-            text-transform:uppercase;
-            font-weight:400;
-            color:#FFFFFF;
-            background-color:#9c9c9c;
-            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
-            text-align:center;
-            position:relative;
-            border: 0;
-            float: right;
-            border-radius: .5em;
-            cursor: pointer;
-          }
-          button.copy-code:active{
-            top:0.1em;
-          }
-          
-          pre:hover button.copy-code{
-            display: inline-block !important;
-          }
-          button.copy-code.copied {
-            cursor: default !important;
-          }
-          
-          
-          @media all and (max-width:30em){
-            button.copy-code{
-              display:block;
-              margin:0.4em auto;
-            }
-          }
+    <body id="how-the-library-works" class="wh_topic_page frmBody">
+        <a href="#wh_topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
         
         
-      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
-<body id="how-the-library-works">
-<h1 class="title topictitle1" id="ariaid-title1">How the Library Works</h1><div class="body"><p class="p">USI service is a wrapper that provides the interface between the Smart Energy stacks and the serial communications channel (UART or USB CDC).</p>
-<p class="p">For USI message transmission, <a class="xref" href="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html"><em class="ph i">SRV_USI_Send_Message</em></a> function is provided, which packs the data into USI frame format and sends the message through serial interface.</p>
-<p class="p">For USI message reception, the service unpacks the data and passes it through callback (<a class="xref" href="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29.html"><em class="ph i">SRV_USI_CallbackRegister</em></a>) to the corresponding client depending on the USI protocol.</p>
-<p class="p">In the other side of the serial interface, a similar implementation is needed in an external device to pack/unpack USI messages for the corresponding USI protocol. Microchip provides PC tools and Python libraries, which are used to manage different layers of the Smart Energy stacks.</p>
-</div>
-<div class="related-links">
-<div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html">USI Service</a></div>
-</div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="usi-frame-format"><h2 class="title topictitle2" id="ariaid-title2">USI Frame Format</h2><div class="body"><p class="p">The USI frame format is based on the HDLC specification used along with DLMS. The Serial Communications Profile of the Management Plane defined in the PRIME specification also uses the same format. Below is the structure of the USI frame and field description.</p>
-<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>USI Frame Format</div><img class="image" src="GUID-58E362D0-40B9-4360-B2B7-7610E2404FE0-low.png" alt="USI general frame format" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">0x7E</strong>: Frame start/end identifier.</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">MSG LENGTH</strong>: Message payload length in bytes (<strong class="ph b">MESSAGE DATA</strong> field).</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PROTOCOL ID</strong>: USI protocol identifier.</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">MESSAGE DATA</strong>: Message payload (variable length). The format is defined by each protocol.</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">CRC</strong>:  Error detection code for the message. The CRC size is defined by each protocol (see the table below). For more information about CRC format, see <a class="xref" href="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html"><em class="ph i">PLC CRC Service</em></a></p>
-</li>
-</ul>
+        
+        
+        <header class="navbar navbar-default wh_header">
+    <div class="container-fluid">
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-dark">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <a href="index.html" class=" wh_logo d-none d-sm-block "><img src="oxygen-webhelp\template\resources/images/microchip.png" alt="MPLAB Harmony Smart Energy Library "/></a>
+                    <div class=" wh_publication_title "><a href="index.html">MPLAB Harmony Smart Energy Library </a></div>
+                    
+                </div>
+                
+                
+            </div>
 
-<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all"><col style="width:" /><col style="width:" /><col style="width:" /><thead class="thead" style="text-align:left;"><tr class="row"><th class="entry cellrowborder" style="text-align:left;vertical-align:middle;" id="d6207e87"><span>USI Protocol (<a class="xref" href="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF.html"><em class="ph i">SRV_USI_PROTOCOL_ID Enum</em></a>)</span></th>
-<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d6207e94"><span>PROTOCOL ID</span></th>
-<th class="entry cellrowborder" style="text-align:center;vertical-align:middle;" id="d6207e96"><span>CRC size (bits)</span></th>
-</tr>
-</thead>
-<tbody class="tbody"><tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_MNGP_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x00-0x07</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>32</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_SNIF_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x13</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PHY_SERIAL_PRIME</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x1F</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PHY</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x22</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_SNIFF_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x23</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_MAC_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x24</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_ADP_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x25</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_COORD_G3</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x26</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>16</span></td>
-</tr>
-<tr class="row"><td class="entry cellrowborder" style="text-align:left;vertical-align:middle;" headers="d6207e87 "><span>SRV_USI_PROT_ID_PRIME_API</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e94 "><span>0x30</span></td>
-<td class="entry cellrowborder" style="text-align:center;vertical-align:middle;" headers="d6207e96 "><span>8</span></td>
-</tr>
-</tbody>
-</table>
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</header>
+        
+        
+         
+        
+        <div class=" wh_search_input navbar-form wh_topic_page_search search " role="form">
+            
+            
+            
+            <form id="searchForm" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form>
+            
+            <div class="mchp-color-stripe-grid-container">
+  <div class="mchp-main-bar mchp-orange-bar"></div>
+  <div class="mchp-main-bar mchp-blue-bar"></div>
+  <div class="mchp-main-bar mchp-green-bar"></div>
 </div>
-<p class="p">In order to detect the end of the message properly, it is needed to add escape bytes to all fields described above:</p>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">0x7E</strong> bytes are replaced by <strong class="ph b">0x7D5E</strong> (2 bytes)</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">0x7D</strong> bytes are replaced by <strong class="ph b">0x7D5D</strong> (2 bytes)</p>
-</li>
-</ul>
-<p class="p">This adds overhead and has to be considered when configuring the <a class="xref" href="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123.html"><em class="ph i">size of USI service buffers</em></a>. The size of transmission buffers must be at least twice the size of the biggest message payload used (for the very worst case, all bytes 0x7E or 0x7D).</p>
+            
+        </div>
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "><ol class="d-print-none"><li><span class="home"><a href="index.html"><span>Home</span></a></span></li><li><div class="topicref" data-id="mplab-harmony-smart-energy-library"><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
+MPLAB® Harmony Smart Energy Library</a></div></div></li><li><div class="topicref" data-id="service-libraries"><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
+Service Libraries</a></div></div></li><li><div class="topicref" data-id="usi-service"><div class="title"><a href="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6</ph>
+USI Service</a></div></div></li><li class="active"><div class="topicref" data-id="how-the-library-works"><div class="title"><a href="GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6.1</ph>
+How the Library Works</a></div></div></li></ol></div>
+                    
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        
+                        
+                        
+                        
+                        <div class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page"></button></div>
+                        
+                        <button type="button" id="wh_toc_button" class="custom-toggler navbar-toggler collapsed wh_toggle_button navbar-light" aria-expanded="false" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    
+                </nav>
+            </div>
+            
+            
+            
+            
+            <div class="wh_content_area">
+                <div class="row">
+                    
+                        <nav id="wh_publication_toc" class="col-lg-3 col-md-3 col-sm-12 d-md-block d-none d-print-none" aria-label="Table of Contents Container">
+                            <div id="wh_publication_toc_content">
+		                        
+                            	<div class=" wh_publication_toc " data-tooltip-position="right"><span class="expand-button-action-labels"><span id="button-expand-action" role="button" aria-label="Expand"></span><span id="button-collapse-action" role="button" aria-label="Collapse"></span><span id="button-pending-action" role="button" aria-label="Pending"></span></span><ul role="tree" aria-label="Table of Contents"><li role="treeitem" aria-expanded="true"><div data-tocid="mplab-harmony-smart-energy-library-d2652e9" class="topicref" data-id="mplab-harmony-smart-energy-library" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action mplab-harmony-smart-energy-library-d2652e9-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html" id="mplab-harmony-smart-energy-library-d2652e9-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
+MPLAB® Harmony Smart Energy Library</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="false"><div data-tocid="driver-libraries-d2652e17" class="topicref" data-id="driver-libraries" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action driver-libraries-d2652e17-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-97853572-2DF9-4BDC-8CC2-427931EE96D9.html" id="driver-libraries-d2652e17-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1</ph>
+Driver Libraries</a></div></div></li><li role="treeitem" aria-expanded="true"><div data-tocid="service-libraries-d2652e1211" class="topicref" data-id="service-libraries" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action service-libraries-d2652e1211-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html" id="service-libraries-d2652e1211-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
+Service Libraries</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-coupling-service-d2652e1219" class="topicref" data-id="plc-phy-coupling-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-coupling-service-d2652e1219-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.html" id="plc-phy-coupling-service-d2652e1219-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1</ph>
+PLC PHY Coupling Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-sniffer-service-d2652e1371" class="topicref" data-id="plc-phy-sniffer-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-sniffer-service-d2652e1371-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html" id="plc-phy-sniffer-service-d2652e1371-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.2</ph>
+PLC PHY Sniffer Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-serial-service-d2652e1483" class="topicref" data-id="plc-phy-serial-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-serial-service-d2652e1483-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html" id="plc-phy-serial-service-d2652e1483-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.3</ph>
+PLC PHY Serial Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-pvdd-monitor-service-d2652e1595" class="topicref" data-id="plc-pvdd-monitor-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-pvdd-monitor-service-d2652e1595-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-A95FDE79-4A31-43E5-B7E2-A923B08DBEFA.html" id="plc-pvdd-monitor-service-d2652e1595-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.4</ph>
+PLC PVDD Monitor Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-crc-service-d2652e1683" class="topicref" data-id="plc-crc-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-crc-service-d2652e1683-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html" id="plc-crc-service-d2652e1683-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.5</ph>
+PLC CRC Service</a></div></div></li><li role="treeitem" aria-expanded="true"><div data-tocid="usi-service-d2652e1755" class="topicref" data-id="usi-service" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action usi-service-d2652e1755-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html" id="usi-service-d2652e1755-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6</ph>
+USI Service</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" class="active"><div data-tocid="how-the-library-works-d2652e1763" class="topicref" data-id="how-the-library-works" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-0C282E5D-31BB-452A-B8CB-BEF5DDA61428.html" id="how-the-library-works-d2652e1763-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6.1</ph>
+How the Library Works</a></div></div></li><li role="treeitem"><div data-tocid="using-the-library-d2652e1771" class="topicref" data-id="using-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-B12673FB-2A40-402F-A99F-3B767C712E77.html" id="using-the-library-d2652e1771-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6.2</ph>
+Using The Library</a></div></div></li><li role="treeitem"><div data-tocid="configuring-the-library-d2652e1779" class="topicref" data-id="configuring-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123.html" id="configuring-the-library-d2652e1779-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6.3</ph>
+Configuring The Library</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="library-interface-d2652e1787" class="topicref" data-id="library-interface" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action library-interface-d2652e1787-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-84FD9F74-C47E-483C-BC6D-6C0F486D7D7D.html" id="library-interface-d2652e1787-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6.4</ph>
+Library Interface</a></div></div></li></ul></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="demo-applications-d2652e1908" class="topicref" data-id="demo-applications" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action demo-applications-d2652e1908-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2188B5B7-760D-4261-AEB9-DDCD9B01A109.html" id="demo-applications-d2652e1908-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.3</ph>
+Demo Applications</a></div></div></li></ul></li></ul></div>
+		                        
+                            </div>
+                        </nav>
+                    
+                    
+                    <div class="col-lg-7 col-md-9 col-sm-12" id="wh_topic_body">
+                        <button id="wh_close_publication_toc_button" class="close-toc-button d-none" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc" aria-expanded="true">
+                            <span class="close-toc-icon-container">
+                                <span class="close-toc-icon"></span>     
+                            </span>
+                        </button>
+                        <button id="wh_close_topic_toc_button" class="close-toc-button d-none" aria-label="Toggle topic table of content" aria-controls="wh_topic_toc" aria-expanded="true">
+                            <span class="close-toc-icon-container">
+                                <span class="close-toc-icon"></span>     
+                            </span>
+                        </button>
+                        
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><h1 class="- topic/title title topictitle1" id="ariaid-title1" style="">1.2.6.1 How the Library Works</h1><div class="- topic/body body"><p class="- topic/p p">USI service is a wrapper that provides the interface between the Smart Energy stacks and the serial communications channel (UART or USB CDC).</p><p class="- topic/p p">For USI message transmission, <a class="- topic/xref xref" href="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530.html"><em class="+ topic/ph hi-d/i ph i">SRV_USI_Send_Message</em></a> function is provided, which packs the data into USI frame format and sends the message through serial interface.</p><p class="- topic/p p">For USI message reception, the service unpacks the data and passes it through callback (<a class="- topic/xref xref" href="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29.html"><em class="+ topic/ph hi-d/i ph i">SRV_USI_CallbackRegister</em></a>) to the corresponding client depending on the USI protocol.</p><p class="- topic/p p">In the other side of the serial interface, a similar implementation is needed in an external device to pack/unpack USI messages for the corresponding USI protocol. Microchip provides PC tools and Python libraries, which are used to manage different layers of the Smart Energy stacks.</p></div><article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2" id="usi-frame-format"><h2 class="- topic/title title topictitle2" id="ariaid-title2" style=""> USI Frame Format</h2><div class="- topic/body body"><p class="- topic/p p">The USI frame format is based on the HDLC specification used along with DLMS. The Serial Communications Profile of the Management Plane defined in the PRIME specification also uses the same format. Below is the structure of the USI frame and field description.</p><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">USI Frame Format</span></span></figcaption><img class="- topic/image image" src="GUID-58E362D0-40B9-4360-B2B7-7610E2404FE0-low.png" alt="USI general frame format"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">0x7E</strong>: Frame start/end identifier.</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">MSG LENGTH</strong>: Message payload length in bytes (<strong class="+ topic/ph hi-d/b ph b">MESSAGE DATA</strong> field).</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PROTOCOL ID</strong>: USI protocol identifier.</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">MESSAGE DATA</strong>: Message payload (variable length). The format is defined by each protocol.</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">CRC</strong>:  Error detection code for the message. The CRC size is defined by each protocol (see the table below). For more information about CRC format, see <a class="- topic/xref xref" href="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html"><em class="+ topic/ph hi-d/i ph i">PLC CRC Service</em></a></p></li></ul><div class="table-container"><table class="- topic/table table" data-cols="3"><caption></caption><colgroup><col/><col/><col/></colgroup><thead class="- topic/thead thead"><tr class="- topic/row"><th class="- topic/entry entry align-left colsep-0 rowsep-0" id="usi-frame-format__entry__1">USI Protocol (<a class="- topic/xref xref" href="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF.html"><em class="+ topic/ph hi-d/i ph i">SRV_USI_PROTOCOL_ID Enum</em></a>)</th><th class="- topic/entry entry align-center colsep-0 rowsep-0" id="usi-frame-format__entry__2">PROTOCOL ID</th><th class="- topic/entry entry align-center colsep-0 rowsep-0" id="usi-frame-format__entry__3">CRC size (bits)</th></tr></thead><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_MNGP_PRIME</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x00-0x07</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">32</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_SNIF_PRIME</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x13</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_PHY_SERIAL_PRIME</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x1F</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_PHY</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x22</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_SNIFF_G3</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x23</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_MAC_G3</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x24</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_ADP_G3</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x25</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_COORD_G3</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x26</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">16</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-left colsep-0 rowsep-0" headers="usi-frame-format__entry__1">SRV_USI_PROT_ID_PRIME_API</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__2">0x30</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" headers="usi-frame-format__entry__3">8</td></tr></tbody></table></div><p class="- topic/p p">In order to detect the end of the message properly, it is needed to add escape bytes to all fields described above:</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">0x7E</strong> bytes are replaced by <strong class="+ topic/ph hi-d/b ph b">0x7D5E</strong> (2 bytes)</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">0x7D</strong> bytes are replaced by <strong class="+ topic/ph hi-d/b ph b">0x7D5D</strong> (2 bytes)</p></li></ul><p class="- topic/p p">This adds overhead and has to be considered when configuring the <a class="- topic/xref xref" href="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123.html"><em class="+ topic/ph hi-d/i ph i">size of USI service buffers</em></a>. The size of transmission buffers must be at least twice the size of the biggest message payload used (for the very worst case, all bytes 0x7E or 0x7D).</p></div></article><article class="- topic/topic topic nested1" aria-labelledby="ariaid-title3" id="usi-protocols"><h2 class="- topic/title title topictitle2" id="ariaid-title3" style=""> USI Protocols</h2><div class="- topic/body body"><p class="- topic/p p">Each protocol defines its own frame format for the USI payload data. A specific PC tool or Python library is provided for each protocol.</p></div><article class="- topic/topic topic nested2" aria-labelledby="ariaid-title4" id="phy-sniffer"><h3 class="- topic/title title topictitle3" id="ariaid-title4" style=""> PHY Sniffer</h3><div class="- topic/body body"><p class="- topic/p p">There are two USI protocols used to communicate with <em class="+ topic/ph hi-d/i ph i">Microchip Hybrid Sniffer Tool</em>, one for PRIME (<em class="+ topic/ph hi-d/i ph i">SRV_USI_PROT_ID_SNIF_PRIME</em>) and one for G3 (<em class="+ topic/ph hi-d/i ph i">SRV_USI_PROT_ID_SNIFF_G3</em>).</p><p class="- topic/p p">For more information, see <a class="- topic/xref xref" href="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html"><em class="+ topic/ph hi-d/i ph i">PLC PHY Sniffer Service</em></a>.</p></div></article><article class="- topic/topic topic nested2" aria-labelledby="ariaid-title5" id="plc-phy-serial"><h3 class="- topic/title title topictitle3" id="ariaid-title5" style=""> PLC PHY Serial</h3><div class="- topic/body body"><p class="- topic/p p">There is one USI protocol used to serialize PLC PHY API (<em class="+ topic/ph hi-d/i ph i">SRV_USI_PROT_ID_PHY</em>) and communicate with <em class="+ topic/ph hi-d/i ph i">Microchip PLC PHY Tester Tool</em> or <em class="+ topic/ph hi-d/i ph i">Microchip PLC PHY Python Libraries</em>. The protocol defines different sub-format for G3 and PRIME.</p><p class="- topic/p p">For more information, see <a class="- topic/xref xref" href="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html"><em class="+ topic/ph hi-d/i ph i">PLC PHY Serial Service</em></a>.</p></div></article></article></article></main></div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    
+                        <nav role="navigation" id="wh_topic_toc" aria-label="On this page" class="col-lg-2 d-none d-lg-block navbar d-print-none"> 
+                            <div id="wh_topic_toc_content">
+		                        
+	                            <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#usi-frame-format" data-tocid="usi-frame-format"> USI Frame Format</a></li><li class="topic-item"><a href="#usi-protocols" data-tocid="usi-protocols"> USI Protocols</a><ul><li class="topic-item"><a href="#phy-sniffer" data-tocid="phy-sniffer"> PHY Sniffer</a></li><li class="topic-item"><a href="#plc-phy-serial" data-tocid="plc-phy-serial"> PLC PHY Serial</a></li></ul></li></ul></div>
+	                        	
+                        	</div>
+                        </nav>
+                    
+                </div>
+            </div>
+            
+            
+            
+        </div> 
+        <footer class="navbar navbar-default wh_footer">
+  <div class=" footer-container mx-auto ">
+    <div class="footer">
+  <div class="mchp-wh-footer">
+    <div class="mchp-footer">
+      <div class="mchp-footer-tier1">
+        <div class="spacer"></div>
+        <div class="mchp-footer-container">
+          <div class="mchp-footer-links mchp-social-media-links">
+            <div class="mchp-component-items">
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.facebook.com/pages/Microchip-Technology-Inc/20320981741" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Facebook" src="oxygen-webhelp/template/resources/images/201016-corp-facebook.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.linkedin.com/company/microchip-technology" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip LinkedIn" src="oxygen-webhelp/template/resources/images/201016-corp-linkedin.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://twitter.com/MicrochipTech" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Twitter" src="oxygen-webhelp/template/resources/images/201016-corp-twitter.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.youtube.com/user/MicrochipTechnology" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip YouTube" src="oxygen-webhelp/template/resources/images/201016-corp-youtube.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.instagram.com/microchiptechnologyinc/" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Instagram" src="oxygen-webhelp/template/resources/images/201016-corp-instagram.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.weibo.com/microchiptech" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Weibo" src="oxygen-webhelp/template/resources/images/201016-corp-weibo.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.microchip.com/en-us/about/blog" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Blog" src="oxygen-webhelp/template/resources/images/201016-corp-blog.png"/>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mchp-footer-links">
+            <div class="mchp-component-items">
+              <div class="mchp-component-item">
+                <div class="link">
+                  <a href="https://www.microchip.com/about-us/contact-us" class="mchp-link__link">Contact</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information" class="mchp-link__link">Legal</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information/privacy-policy" class="mchp-link__link">Privacy Policy</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information/microchip-cookie-statement" class="mchp-link__link">Cookies</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item">
+                <div class="link">
+                  <a href="https://careers.microchip.com/" class="mchp-link__link">Careers</a>
+                  <span class="mchp-link__separator"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mchp-footer-newsletter">
+            <div class="cmp-text">
+              <p>Stay on the leading edge with our blog</p>
+            </div>
+            <div class="mchp-button-wrapper">
+              <a role="button" href="https://www.microchip.com/en-us/about/blog" class="mchp-button mchp-button-regular solid">
+                <span class="mchp-button__span">MicroSolutions</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="graphic">
+          <img src="oxygen-webhelp/template/resources/images/footer-graphic.png"/>
+        </div>
+      </div>
+      <div class="mchp-footer-tier2">
+        <p class="mchp-copyright">© Copyright 1998-2022 Microchip Technology Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-2724382-19"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];  
+    function gtag(){dataLayer.push(arguments);}  
+    gtag('js', new Date());   
+    gtag('config', 'UA-2724382-19');
+  </script>
 </div>
-</div>
-<div class="topic nested1" aria-labelledby="ariaid-title3" id="usi-protocols"><h2 class="title topictitle2" id="ariaid-title3">USI Protocols</h2><div class="body"><p class="p">Each protocol defines its own frame format for the USI payload data. A specific PC tool or Python library is provided for each protocol.</p>
-</div>
-<div class="topic nested2" aria-labelledby="ariaid-title4" id="phy-sniffer"><h3 class="title topictitle3" id="ariaid-title4">PHY Sniffer</h3><div class="body"><p class="p">There are two USI protocols used to communicate with <em class="ph i">Microchip Hybrid Sniffer Tool</em>, one for PRIME (<em class="ph i">SRV_USI_PROT_ID_SNIF_PRIME</em>) and one for G3 (<em class="ph i">SRV_USI_PROT_ID_SNIFF_G3</em>).</p>
-<p class="p">For more information, see <a class="xref" href="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html"><em class="ph i">PLC PHY Sniffer Service</em></a>.</p>
-</div>
-</div>
-<div class="topic nested2" aria-labelledby="ariaid-title5" id="plc-phy-serial"><h3 class="title topictitle3" id="ariaid-title5">PLC PHY Serial</h3><div class="body"><p class="p">There is one USI protocol used to serialize PLC PHY API (<em class="ph i">SRV_USI_PROT_ID_PHY</em>) and communicate with <em class="ph i">Microchip PLC PHY Tester Tool</em> or <em class="ph i">Microchip PLC PHY Python Libraries</em>. The protocol defines different sub-format for G3 and PRIME.</p>
-<p class="p">For more information, see <a class="xref" href="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html"><em class="ph i">PLC PHY Serial Service</em></a>.</p>
-</div>
-</div>
-</div>
-</body>
+  </div>
+</footer>
+        
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <div id="modal_img_container"></div>
+            <div id="caption"></div>
+        </div>
+        
+        
+        
+    </body>
 </html>

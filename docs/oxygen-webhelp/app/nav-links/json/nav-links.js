@@ -1,0 +1,1 @@
+define({"title":"MPLAB Harmony Smart Energy Library ","topics":[{"title":"<ph>1<\/ph>\nMPLAB® Harmony Smart Energy Library","href":"GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html","attributes":{"data-id":"mplab-harmony-smart-energy-library"},"menu":{"hasChildren":true},"tocID":"mplab-harmony-smart-energy-library-d2652e9","next":"mplab-harmony-smart-energy-library-d2652e9"}]});

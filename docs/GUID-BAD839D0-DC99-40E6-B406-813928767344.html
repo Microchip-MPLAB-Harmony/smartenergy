@@ -1,445 +1,290 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11" /><meta name="copyright" content="(C) Copyright 2022" />
-<meta name="DC.rights.owner" content="(C) Copyright 2022" />
-<meta name="DC.type" content="topic" />
-<meta name="DC.title" content="Configuring The Library" />
-<meta name="DC.relation" scheme="URI" content="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.html" />
-<meta name="DC.format" content="XHTML" />
-<meta name="DC.identifier" content="configuring-the-library" />
-<link rel="stylesheet" type="text/css" href="stylesheets/atmel.css" />
-<title>Configuring The Library</title>
-<meta name="Microsoft.Help.Id" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-configuring-the-library" />
-<meta name="Microsoft.Help.TocParent" content="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B" />
-<meta name="Microsoft.Help.TocOrder" content="0" />
-<meta name="Microsoft.Help.Locale" content="en-US" />
-<meta name="Microsoft.Help.TopicLocale" content="en-US" />
-<meta name="Microsoft.Help.DisplayVersion" content="MPLAB Harmony Smart Energy Library Reference A 02/2022" />
-<script language="javascript">
-       
-       if (window.parent.location.protocol != 'file:') {
-				document.addEventListener('click', function(e) {
-				    if (e.target) {
-               if (e.target.nodeName == "A" ) {
-                    if (!e.target.target) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                              
-                      var origUrl = window.parent.location.href.substr(0, window.parent.location.href.indexOf("?"));
-                      if (origUrl.length === 0) {
-                          origUrl = window.parent.location.href;
-                      }
-                      var href= e.target.getAttribute("href");
-                      var parts = href.split("#");
-          
-                      var url = "";
-                      if (parts.length == 2 ) {
-                        if (!parts[0].length) {
-                            url = window.parent.location.search.replace('?','')
-                        } else {
-                            url = parts[0].replace('.html','');
-                        }
-                      } else {
-                        url = parts[0].replace('.html','');
-                      }
-
-                      if (parts.length == 2) {
-                          url += "#" + parts[1];
-                      }
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us" data-whc_version="24.1">
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><link rel="icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="PLC PHY Coupling Service can be configured via MCC. Alternatevely, the generated source/header files can be modified for custom configuration. The following snapshots show the MCC configuration window ..."/><meta name="copyright" content="(C) Copyright 2022"/><meta name="DC.rights.owner" content="(C) Copyright 2022"/><meta name="DC.type" content="topic"/><meta name="DC.relation" content="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.md"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="configuring-the-library"/><title>1.2.1.3 Configuring The Library</title><!--  Generated with Oxygen version 24.1, build number 2022062014.  --><meta name="wh-path2root" content=""/><meta name="wh-toc-id" content="&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;?workdir /D:\InfoShare\Data\Publish\Data\qz5jhalnxoc\work\temp?&gt;&lt;?workdir-uri file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/temp/?&gt;&lt;?path2project?&gt;&lt;?path2project-uri ./?&gt;&lt;?path2rootmap-uri ./?&gt;&lt;topic xmlns:ditaarch=&#34;http://dita.oasis-open.org/architecture/2005/&#34; xmlns:dita-ot=&#34;http://dita-ot.sourceforge.net/ns/201007/dita-ot&#34; class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;configuring-the-library&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:1;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:1;182:3&#34;&gt;Configuring The Library&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:1;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:1;182:3&#34;&gt;PLC PHY Coupling Service can be configured via MCC.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:2;182:3&#34;&gt;Alternatevely, the generated source/header files can be modified for custom configuration.&lt;/p&gt;&lt;/body&gt;&lt;related-links class=&#34;- topic/related-links &#34;&gt;&lt;linkpool class=&#34;- topic/linkpool &#34; mapkeyref=&#34;GUID-F454DB36-5AD7-4DBC-882C-6FC64DF4ADB2&#34; xtrc=&#34;topicref:6;3:2106&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-950D6A85-5181-4A1A-A93A-948F9BB946A8.ditamap&#34;&gt;&lt;link class=&#34;- topic/link &#34; format=&#34;dita&#34; href=&#34;GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.md&#34; mapclass=&#34;- map/topicref &#34; role=&#34;parent&#34; scope=&#34;local&#34; type=&#34;topic&#34; xtrc=&#34;topicref:1;3:1387&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-950D6A85-5181-4A1A-A93A-948F9BB946A8.ditamap&#34;&gt;&lt;?ditaot usertext?&gt;&lt;linktext class=&#34;- topic/linktext &#34;&gt;&lt;?ditaot gentext?&gt;PLC PHY Coupling Service&lt;/linktext&gt;&lt;/link&gt;&lt;/linkpool&gt;&lt;/related-links&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;configuring-via-mcc&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:2;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:2;182:3&#34;&gt;Configuring via MCC&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:2;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:3;182:3&#34;&gt;The following snapshots show the MCC configuration window for PLC PHY Coupling Service and brief description.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:4;182:3&#34;&gt;The configuration options will vary depending on the PLC protocol used by the PLC Driver (G3 or PRIME).&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:5;182:3&#34;&gt;The configuration dynamic values (purple colour) will be updated, depending on &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:1;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:1;182:3&#34;&gt;PLC Driver Mode&lt;/b&gt;&lt;/i&gt; and &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:2;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:2;182:3&#34;&gt;PLC Coupling Settings&lt;/b&gt;&lt;/i&gt; in &lt;xref class=&#34;- topic/xref &#34; href=&#34;GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789.html&#34; format=&#34;html&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;xref:1;182:3&#34;&gt;&lt;?ditaot usertext?&gt;PLC Driver MCC configuration&lt;/xref&gt;, in order to apply the configuration/calibration values for Evaluation Kits and/or reference designs.&lt;/p&gt;&lt;/body&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;g3-configuration-options&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:3;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:3;182:3&#34;&gt;G3 Configuration Options&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:3;182:3&#34;&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;fig:1;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:4;182:3&#34;&gt;PLC PHY Coupling configuration options (G3)&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-267B04EF-A19D-45F0-923B-25DF58184F4C-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;image:1;182:3&#34; dita-ot:image-width=&#34;867&#34; dita-ot:image-height=&#34;593&#34; dita-ot:horizontal-dpi=&#34;96&#34; dita-ot:vertical-dpi=&#34;96&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;alt:1;182:3&#34;&gt;SRV_PCOUP_mcc_g3&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:1;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:1;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:6;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:3;182:3&#34;&gt;Transmission Branches:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:2;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:2;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:7;182:3&#34;&gt;Available only if G3 selected as &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:3;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:4;182:3&#34;&gt;PLC Profile&lt;/b&gt;&lt;/i&gt; in PLC PHY Driver MCC configuration, or G3 MAC RT Driver used&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:3;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:8;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:5;182:3&#34;&gt;Main Transmission branch:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:3;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:4;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:9;182:3&#34;&gt;PLC PHY Coupling configuration for Main Transmission branch&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:5;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:10;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:6;182:3&#34;&gt;Auxiliary Transmission branch:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:4;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:6;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:11;182:3&#34;&gt;PLC PHY Coupling configuration for Auxiliary Transmission branch&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:7;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:12;182:3&#34;&gt;Available only if &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:4;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:7;182:3&#34;&gt;Multiband&lt;/b&gt;&lt;/i&gt; enabled in PLC Driver MCC configuration&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:13;182:3&#34;&gt;Each transmission branch is configured inependentely. In addition to &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:5;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:8;182:3&#34;&gt;Common Configuration Options&lt;/b&gt;&lt;/i&gt;, the following options are available for each transmission branch:&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:5;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:8;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:14;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:9;182:3&#34;&gt;G3-PLC PHY Band:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:6;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:9;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:15;182:3&#34;&gt;Indicates the frequency band associated to the corresponding transmission branch, as selected in PLC Driver MCC configuration&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:10;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:16;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:10;182:3&#34;&gt;PLC DACC peripheral settings:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:7;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:11;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:17;182:3&#34;&gt;PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG)&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:12;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:18;182:3&#34;&gt;These values should not be modified by the user&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/topic&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;prime-configuration-options&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:4;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:5;182:3&#34;&gt;PRIME Configuration Options&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:4;182:3&#34;&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;fig:2;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:6;182:3&#34;&gt;PLC PHY Coupling configuration options (PRIME)&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-C635F46D-159B-4C8B-A287-9D79E8A34221-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;image:2;182:3&#34; dita-ot:image-width=&#34;874&#34; dita-ot:image-height=&#34;788&#34; dita-ot:horizontal-dpi=&#34;96&#34; dita-ot:vertical-dpi=&#34;96&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;alt:2;182:3&#34;&gt;SRV_PCOUP_mcc_prime&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:8;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:13;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:19;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:11;182:3&#34;&gt;Transmission Channels:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:9;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:14;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:20;182:3&#34;&gt;Available only if PRIME is selected as PLC Profile in PLC PHY Driver&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:15;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:21;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:12;182:3&#34;&gt;PLC DACC peripheral settings (Channel 1):&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:16;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:22;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:13;182:3&#34;&gt;PLC DACC peripheral settings (Channel 2 - Channel 8):&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:17;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:23;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:14;182:3&#34;&gt;PLC DACC peripheral settings (Double Channel):&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:10;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:18;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:24;182:3&#34;&gt;PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG) for single channel 1 / single channels 2 to 8 / double channels&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:19;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:25;182:3&#34;&gt;These values should not be modified by the user&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:20;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:26;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:15;182:3&#34;&gt;Channel &#34;i&#34;:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:11;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:21;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:27;182:3&#34;&gt;PLC PHY Coupling configuration for single channel &#34;i&#34;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:22;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:28;182:3&#34;&gt;Available only if &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:6;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:16;182:3&#34;&gt;Channel &#34;i&#34;&lt;/b&gt;&lt;/i&gt; is enabled in PLC PHY Driver MCC configuration&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:23;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:29;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:17;182:3&#34;&gt;Channels &#34;i - j&#34;:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:12;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:24;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:30;182:3&#34;&gt;PLC PHY Coupling configuration for double channel &#34;i - j&#34; (two consecutive channels)&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:25;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:31;182:3&#34;&gt;Available only if &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:7;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:18;182:3&#34;&gt;Channels &#34;i - j&#34;&lt;/b&gt;&lt;/i&gt; is enabled in PLC PHY Driver MCC configuration&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:32;182:3&#34;&gt;Each channel is configured inependentely. &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:8;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:19;182:3&#34;&gt;Common Configuration Options&lt;/b&gt;&lt;/i&gt; are available for each enabled channel.&lt;/p&gt;&lt;/body&gt;&lt;/topic&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;common-configuration-options&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:5;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:7;182:3&#34;&gt;Common Configuration Options&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:5;182:3&#34;&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:13;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:26;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:33;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:20;182:3&#34;&gt;Number of TX levels:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:14;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:27;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:34;182:3&#34;&gt;PHY PIB: PLC_ID_NUM_TX_LEVELS&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:28;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:35;182:3&#34;&gt;Number of transmission attenuation levels supporting dynamic capabilities&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:15;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:29;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:36;182:3&#34;&gt;G3: transmission attenuation levels in 3 dB steps&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:30;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:37;182:3&#34;&gt;PRIME: transmission attenuation levels in 1 dB steps&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;fig:3;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:8;182:3&#34;&gt;Target RMS configuration options&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-B425E36C-BDF7-4677-8225-00ABF71C31AC-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;image:3;182:3&#34; dita-ot:image-width=&#34;368&#34; dita-ot:image-height=&#34;399&#34; dita-ot:horizontal-dpi=&#34;96&#34; dita-ot:vertical-dpi=&#34;96&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;alt:3;182:3&#34;&gt;SRV_PCOUP_mcc_target_rms&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:16;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:31;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:38;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:21;182:3&#34;&gt;Target RMS values in HIGH mode for dynamic Tx gain:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:17;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:32;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:39;182:3&#34;&gt;PHY PIB: PLC_ID_MAX_RMS_TABLE_HI&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:33;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:40;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:22;182:3&#34;&gt;RMS_HIGH_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:18;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:34;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:41;182:3&#34;&gt;Target RMS values in HIGH Tx mode for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:35;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:42;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:23;182:3&#34;&gt;Target RMS values in VLOW mode for dynamic Tx gain:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:19;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:36;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:43;182:3&#34;&gt;PHY PIB: PLC_ID_MAX_RMS_TABLE_VLO&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:37;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:44;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:24;182:3&#34;&gt;RMS_VLOW_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:20;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:38;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:45;182:3&#34;&gt;Target RMS values in VLOW Tx mode for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;fig:4;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:9;182:3&#34;&gt;Threshold RMS configuration options&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-67FE128F-C52C-4C65-94B7-67E482F893BD-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;image:4;182:3&#34; dita-ot:image-width=&#34;395&#34; dita-ot:image-height=&#34;750&#34; dita-ot:horizontal-dpi=&#34;96&#34; dita-ot:vertical-dpi=&#34;96&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;alt:4;182:3&#34;&gt;SRV_PCOUP_mcc_threshold_rms&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:21;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:39;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:46;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:25;182:3&#34;&gt;Threshold RMS values in HIGH mode for dynamic Tx mode:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:22;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:40;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:47;182:3&#34;&gt;PHY PIB: PLC_ID_THRESHOLDS_TABLE_HI&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:41;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:48;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:26;182:3&#34;&gt;THRESHOLD_HIGH_LOW_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:23;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:42;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:49;182:3&#34;&gt;Threshold RMS values to update Tx mode from HIGH to LOW for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:43;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:50;182:3&#34;&gt;Set to 0 to disable&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:44;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:51;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:27;182:3&#34;&gt;THRESHOLD_HIGH_VLOW_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:24;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:45;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:52;182:3&#34;&gt;Threshold values to update Tx mode from HIGH to VLOW for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:46;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:53;182:3&#34;&gt;Set to 0 to disable&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:47;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:54;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:28;182:3&#34;&gt;Threshold RMS values in VLOW mode for dynamic Tx mode:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:25;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:48;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:55;182:3&#34;&gt;PHY PIB: PLC_ID_THRESHOLDS_TABLE_VLO&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:49;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:56;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:29;182:3&#34;&gt;THRESHOLD_VLOW_LOW_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:26;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:50;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:57;182:3&#34;&gt;Threshold values to update Tx mode from VLOW to LOW for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:51;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:58;182:3&#34;&gt;Set to 0 to disable&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:52;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:59;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:30;182:3&#34;&gt;THRESHOLD_VLOW_HIGH_x:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:27;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:53;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:60;182:3&#34;&gt;Threshold values to update Tx mode from VLOW to HIGH for transmission attenuation level &#34;x&#34;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:54;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:61;182:3&#34;&gt;Set to maximum value to disable&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;fig class=&#34;- topic/fig &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;fig:5;182:3&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:10;182:3&#34;&gt;Transmission digital gain configuration options&lt;/title&gt;&lt;image class=&#34;- topic/image &#34; href=&#34;GUID-B9C64E60-9FD5-4B8F-A2AC-8DE5E5CB9814-low.png&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;image:5;182:3&#34; dita-ot:image-width=&#34;279&#34; dita-ot:image-height=&#34;176&#34; dita-ot:horizontal-dpi=&#34;96&#34; dita-ot:vertical-dpi=&#34;96&#34;&gt;&lt;alt class=&#34;- topic/alt &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;alt:5;182:3&#34;&gt;SRV_PCOUP_mcc_gain&lt;/alt&gt;&lt;/image&gt;&lt;/fig&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:28;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:55;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:62;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:31;182:3&#34;&gt;Tx gain values for HIGH mode:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:29;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:56;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:63;182:3&#34;&gt;PHY PIB: PLC_ID_GAIN_TABLE_HI&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:30;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:57;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:64;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:32;182:3&#34;&gt;GAIN_HIGH_INI:&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:58;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:65;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:33;182:3&#34;&gt;GAIN_HIGH_MIN:&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:59;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:66;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:34;182:3&#34;&gt;GAIN_HIGH_MAX:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:31;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:60;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:67;182:3&#34;&gt;Initial/minimum/maximum transmission digital gain value for HIGH Tx mode&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:61;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:68;182:3&#34;&gt;Set all to same value to disable dynamic Tx gain for HIGH Tx mode&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:62;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:69;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:35;182:3&#34;&gt;Tx gain values for VLOW mode:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:32;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:63;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:70;182:3&#34;&gt;PHY PIB: PLC_ID_GAIN_TABLE_VLO&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:33;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:64;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:71;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:36;182:3&#34;&gt;GAIN_VLOW_INI:&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:65;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:72;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:37;182:3&#34;&gt;GAIN_VLOW_MIN:&lt;/b&gt;&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:66;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:73;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:38;182:3&#34;&gt;GAIN_VLOW_MAX:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:34;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:67;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:74;182:3&#34;&gt;Initial/minimum/maximum transmission digital gain value for VLOW Tx mode&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:68;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:75;182:3&#34;&gt;Set all to same value to disable dynamic Tx gain for VLOW Tx mode&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:69;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:76;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:39;182:3&#34;&gt;PLC Line Driver settings:&lt;/b&gt;&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:35;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:70;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:77;182:3&#34;&gt;PHY PIB: PLC_ID_IC_DRIVER_CFG&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:71;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:78;182:3&#34;&gt;PLC Device and branch configuration. One value for PL360, three values for PL460:&lt;/p&gt;&lt;ul class=&#34;- topic/ul &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;ul:36;182:3&#34;&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:72;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:79;182:3&#34;&gt;0: PL360&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:73;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:80;182:3&#34;&gt;5: PL460 using Main Transmission Branch with a single external filter. When transmitting, both ASO pins are activated simultaneously&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:74;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:81;182:3&#34;&gt;7: PL460 using Main Transmission Branch with two external filters. When transmitting, ASO0 is activated for HIGH Tx mode, while ASO1 is activated for LOW/VLOW Tx modes&lt;/p&gt;&lt;/li&gt;&lt;li class=&#34;- topic/li &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;li:75;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:82;182:3&#34;&gt;8: PL460 using Auxiliary Transmission Branch&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/topic&gt;&lt;/topic&gt;&lt;topic class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;modifying-generated-source-code&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;topic:6;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;title:11;182:3&#34;&gt;Modifying Generated Source Code&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;body:6;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:83;182:3&#34;&gt;PLC PHY Coupling Service generates the &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:9;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:40;182:3&#34;&gt;srv_pcoup.c&lt;/b&gt;&lt;/i&gt; and &lt;i class=&#34;+ topic/ph hi-d/i &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;i:10;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;b:41;182:3&#34;&gt;srv_pcoup.h&lt;/b&gt;&lt;/i&gt; files. In the header file there are definition macros with the values configured via MCC.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:84;182:3&#34;&gt;The user can modify these files instead of using MCC interface.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/qz5jhalnxoc/work/1/en-US/GUID-BAD839D0-DC99-40E6-B406-813928767344.md&#34; xtrc=&#34;p:85;182:3&#34;&gt;In the current version, this is the only method to customize Tx Equalization values (not supported in MCC configuration window for PLC PHY Coupling Service).&lt;/p&gt;&lt;/body&gt;&lt;/topic&gt;&lt;/topic&gt;"/><meta name="wh-source-relpath" content="GUID-BAD839D0-DC99-40E6-B406-813928767344.md"/><meta name="wh-out-relpath" content="GUID-BAD839D0-DC99-40E6-B406-813928767344.html"/>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
     
-                      window.parent.location.href = origUrl + "?" + url;
+    <link rel="stylesheet" href="./oxygen-webhelp/lib/jquery-ui/jquery-ui.min.css"/>
+    
+    <!-- Template default styles  -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/app/topic-page.css?buildId=2022062014"/>
+    
+    
+    <script src="./oxygen-webhelp/lib/jquery/jquery-3.5.1.min.js"></script>
+    
+    <script data-main="./oxygen-webhelp/app/topic-page.js" src="./oxygen-webhelp/lib/requirejs/require.js"></script>
+<link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/microchip.css?buildId=2022062014"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/notes.css?buildId=2022062014"/>
+<script src="mchp-context-help.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async="" type="text/javascript"></script>
+</head>
 
-                      return false;
-                    }
-               }
-            }
-				});
-			}
+    <body id="configuring-the-library" class="wh_topic_page frmBody">
+        <a href="#wh_topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
+        
+        
+        
+        
+        <header class="navbar navbar-default wh_header">
+    <div class="container-fluid">
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-dark">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <a href="index.html" class=" wh_logo d-none d-sm-block "><img src="oxygen-webhelp\template\resources/images/microchip.png" alt="MPLAB Harmony Smart Energy Library "/></a>
+                    <div class=" wh_publication_title "><a href="index.html">MPLAB Harmony Smart Energy Library </a></div>
+                    
+                </div>
+                
+                
+            </div>
 
-		</script><script language="javascript">
-         
-         function copyContent(content, button) {
-         
-            var textArea = document.createElement("textarea");
-            
-            // Place in the top-left corner of screen regardless of scroll position.
-            textArea.style.position = 'fixed';
-            textArea.style.top = 0;
-            textArea.style.left = 0;
-            
-            // Ensure it has a small width and height. Setting to 1px / 1em
-            // doesn't work as this gives a negative w/h on some browsers.
-            textArea.style.width = '2em';
-            textArea.style.height = '2em';
-            
-            // We don't need padding, reducing the size if it does flash render.
-            textArea.style.padding = 0;
-            
-            // Clean up any borders.
-            textArea.style.border = 'none';
-            textArea.style.outline = 'none';
-            textArea.style.boxShadow = 'none';
-            
-            // Avoid flash of the white box if rendered for any reason.
-            textArea.style.background = 'transparent';
-            
-            textArea.value = content;
-            
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            try {
-               var successful = document.execCommand('copy');
-               var msg = successful ? 'successful' : 'unsuccessful';
-               if (!button.classList.contains("copied")){
-                  button.textContent = "Copied";
-                  button.classList.add("copied");
-                  setTimeout(function(){
-                     button.textContent = "Copy";
-                     button.classList.remove("copied");
-                  },1000);
-               }
-            } catch (err) {
-               console.log('Oops, unable to copy');
-            }
-            
-            document.body.removeChild(textArea);
-         }
-         
-         function cpy(id, button) {
-            var element = document.getElementById(id);
-            var content = element.getAttribute("content");
-            
-            copyContent(content, button);
-         }
-         
-         document.addEventListener("DOMContentLoaded", function(event) {
-            document.querySelectorAll(".codeblock").forEach(function(elem) {
-               elem.style.position = "relative";
-               var copy = document.createElement("button");
-               copy.textContent = "Copy";
-               copy.setAttribute("class", "copy-code");
-               
-               var content = elem.textContent;
-               
-               copy.addEventListener("click", function(){
-                  copyContent(content, copy);
-               });
-               
-               elem.addEventListener("mouseenter", function(evt){
-                  elem.prepend(copy);
-               });
-            });
-            
-            document.querySelectorAll(".codeblock").forEach(function(elem) {
-               elem.addEventListener("mouseleave", function(evt){
-                  document.querySelector(".copy-code").remove();
-               });
-            });
-         });
-         
-      </script><script language="javascript">
-          
-          // Add the MathML namespace to html
-          var html = document.getElementsByTagName("html")[0],
-          head = document.getElementsByTagName("head")[0];
-          
-          var mathJax = document.createElement("script");
-          mathJax.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML";
-          head.appendChild(mathJax);
-          
-          html.setAttribute("xmlns:m","http://www.w3.org/1998/Math/MathML");
-          
-          function inIframe() { try { return window.self !== window.top; } catch (e) { return true; } }
-          
-          if (!inIframe()) { 
-          
-          var Default = "index.html?GUID-BAD839D0-DC99-40E6-B406-813928767344"; 
-          
-          var displaylocation = "value" + window.location.href;
-          
-          var GUIDS = displaylocation.split('GUID');          
-          
-          if (displaylocation.indexOf('#GUID') != -1) {            
-          var First = GUIDS[1].split('.html');  
-          if (GUIDS[3]){First = GUIDS[2].split('.html');}
-          if (GUIDS[4]){First = GUIDS[3].split('.html');}
-          if (GUIDS[5]){First = GUIDS[4].split('.html');}
-          
-          var Second = GUIDS[2].split('#');   
-          if (GUIDS[3]){Second = GUIDS[3].split('#');}
-          if (GUIDS[4]){Second = GUIDS[4].split('#');}
-          if (GUIDS[5]){Second = GUIDS[5].split('#');}
-          
-          Default = "index.html?" + "GUID" + First[0] + "GUID" + Second[0];     
-          }                    
-          window.top.location = Default;
-          }       
-          
-        </script><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /><style xml:space="">
-        
-          button.copy-code{
-            display:none;
-            padding:0.7em 1.4em;
-            margin:0 0.3em 0.3em 0;
-            border-radius:0.15em;
-            box-sizing: border-box;
-            text-decoration:none;
-            font-family:'Roboto',sans-serif;
-            text-transform:uppercase;
-            font-weight:400;
-            color:#FFFFFF;
-            background-color:#9c9c9c;
-            box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
-            text-align:center;
-            position:relative;
-            border: 0;
-            float: right;
-            border-radius: .5em;
-            cursor: pointer;
-          }
-          button.copy-code:active{
-            top:0.1em;
-          }
-          
-          pre:hover button.copy-code{
-            display: inline-block !important;
-          }
-          button.copy-code.copied {
-            cursor: default !important;
-          }
-          
-          
-          @media all and (max-width:30em){
-            button.copy-code{
-              display:block;
-              margin:0.4em auto;
-            }
-          }
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</header>
         
         
-      </style><link rel="stylesheet" type="text/css" href="syntax-highlight.css" /></head>
-<body id="configuring-the-library">
-<h1 class="title topictitle1" id="ariaid-title1">Configuring The Library</h1><div class="body"><p class="p">PLC PHY Coupling Service can be configured via MCC.</p>
-<p class="p">Alternatevely, the generated source/header files can be modified for custom configuration.</p>
+         
+        
+        <div class=" wh_search_input navbar-form wh_topic_page_search search " role="form">
+            
+            
+            
+            <form id="searchForm" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form>
+            
+            <div class="mchp-color-stripe-grid-container">
+  <div class="mchp-main-bar mchp-orange-bar"></div>
+  <div class="mchp-main-bar mchp-blue-bar"></div>
+  <div class="mchp-main-bar mchp-green-bar"></div>
 </div>
-<div class="related-links">
-<div class="familylinks">
-<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.html">PLC PHY Coupling Service</a></div>
+            
+        </div>
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "><ol class="d-print-none"><li><span class="home"><a href="index.html"><span>Home</span></a></span></li><li><div class="topicref" data-id="mplab-harmony-smart-energy-library"><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
+MPLAB® Harmony Smart Energy Library</a></div></div></li><li><div class="topicref" data-id="service-libraries"><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
+Service Libraries</a></div></div></li><li><div class="topicref" data-id="plc-phy-coupling-service"><div class="title"><a href="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1</ph>
+PLC PHY Coupling Service</a></div></div></li><li class="active"><div class="topicref" data-id="configuring-the-library"><div class="title"><a href="GUID-BAD839D0-DC99-40E6-B406-813928767344.html"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1.3</ph>
+Configuring The Library</a></div></div></li></ol></div>
+                    
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        
+                        
+                        
+                        
+                        <div class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page"></button></div>
+                        
+                        <button type="button" id="wh_toc_button" class="custom-toggler navbar-toggler collapsed wh_toggle_button navbar-light" aria-expanded="false" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    
+                </nav>
+            </div>
+            
+            
+            
+            
+            <div class="wh_content_area">
+                <div class="row">
+                    
+                        <nav id="wh_publication_toc" class="col-lg-3 col-md-3 col-sm-12 d-md-block d-none d-print-none" aria-label="Table of Contents Container">
+                            <div id="wh_publication_toc_content">
+		                        
+                            	<div class=" wh_publication_toc " data-tooltip-position="right"><span class="expand-button-action-labels"><span id="button-expand-action" role="button" aria-label="Expand"></span><span id="button-collapse-action" role="button" aria-label="Collapse"></span><span id="button-pending-action" role="button" aria-label="Pending"></span></span><ul role="tree" aria-label="Table of Contents"><li role="treeitem" aria-expanded="true"><div data-tocid="mplab-harmony-smart-energy-library-d2652e9" class="topicref" data-id="mplab-harmony-smart-energy-library" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action mplab-harmony-smart-energy-library-d2652e9-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html" id="mplab-harmony-smart-energy-library-d2652e9-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
+MPLAB® Harmony Smart Energy Library</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="false"><div data-tocid="driver-libraries-d2652e17" class="topicref" data-id="driver-libraries" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action driver-libraries-d2652e17-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-97853572-2DF9-4BDC-8CC2-427931EE96D9.html" id="driver-libraries-d2652e17-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1</ph>
+Driver Libraries</a></div></div></li><li role="treeitem" aria-expanded="true"><div data-tocid="service-libraries-d2652e1211" class="topicref" data-id="service-libraries" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action service-libraries-d2652e1211-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html" id="service-libraries-d2652e1211-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
+Service Libraries</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="true"><div data-tocid="plc-phy-coupling-service-d2652e1219" class="topicref" data-id="plc-phy-coupling-service" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action plc-phy-coupling-service-d2652e1219-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-80ABA2A7-287D-4A30-B31E-561FA3322D9A.html" id="plc-phy-coupling-service-d2652e1219-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1</ph>
+PLC PHY Coupling Service</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem"><div data-tocid="how-the-library-works-d2652e1227" class="topicref" data-id="how-the-library-works" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-7CBC706E-193F-491A-88C3-356E7E7FDD5C.html" id="how-the-library-works-d2652e1227-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1.1</ph>
+How the Library Works</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="using-the-library-d2652e1235" class="topicref" data-id="using-the-library" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action using-the-library-d2652e1235-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-6AC86335-EDE5-40ED-8D96-800FFF8D9748.html" id="using-the-library-d2652e1235-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1.2</ph>
+Using The Library</a></div></div></li><li role="treeitem" class="active"><div data-tocid="configuring-the-library-d2652e1259" class="topicref" data-id="configuring-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-BAD839D0-DC99-40E6-B406-813928767344.html" id="configuring-the-library-d2652e1259-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1.3</ph>
+Configuring The Library</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="library-interface-d2652e1267" class="topicref" data-id="library-interface" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action library-interface-d2652e1267-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-29D4D959-1677-4A62-8B08-BE81ECEAB8E6.html" id="library-interface-d2652e1267-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.1.4</ph>
+Library Interface</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-sniffer-service-d2652e1371" class="topicref" data-id="plc-phy-sniffer-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-sniffer-service-d2652e1371-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-BF84994F-1D02-4912-91AB-DCB62487A732.html" id="plc-phy-sniffer-service-d2652e1371-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.2</ph>
+PLC PHY Sniffer Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-serial-service-d2652e1483" class="topicref" data-id="plc-phy-serial-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-serial-service-d2652e1483-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-9CCE1919-6FB5-41BE-90E8-9A12F57D6D61.html" id="plc-phy-serial-service-d2652e1483-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.3</ph>
+PLC PHY Serial Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-pvdd-monitor-service-d2652e1595" class="topicref" data-id="plc-pvdd-monitor-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-pvdd-monitor-service-d2652e1595-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-A95FDE79-4A31-43E5-B7E2-A923B08DBEFA.html" id="plc-pvdd-monitor-service-d2652e1595-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.4</ph>
+PLC PVDD Monitor Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="plc-crc-service-d2652e1683" class="topicref" data-id="plc-crc-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-crc-service-d2652e1683-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-4E896D85-86B1-4721-880B-214CEE3819BE.html" id="plc-crc-service-d2652e1683-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.5</ph>
+PLC CRC Service</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="usi-service-d2652e1755" class="topicref" data-id="usi-service" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action usi-service-d2652e1755-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-F2657150-3DEB-4EEC-B99F-22FCD8A400C0.html" id="usi-service-d2652e1755-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2.6</ph>
+USI Service</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="demo-applications-d2652e1908" class="topicref" data-id="demo-applications" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action demo-applications-d2652e1908-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2188B5B7-760D-4261-AEB9-DDCD9B01A109.html" id="demo-applications-d2652e1908-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.3</ph>
+Demo Applications</a></div></div></li></ul></li></ul></div>
+		                        
+                            </div>
+                        </nav>
+                    
+                    
+                    <div class="col-lg-7 col-md-9 col-sm-12" id="wh_topic_body">
+                        <button id="wh_close_publication_toc_button" class="close-toc-button d-none" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc" aria-expanded="true">
+                            <span class="close-toc-icon-container">
+                                <span class="close-toc-icon"></span>     
+                            </span>
+                        </button>
+                        <button id="wh_close_topic_toc_button" class="close-toc-button d-none" aria-label="Toggle topic table of content" aria-controls="wh_topic_toc" aria-expanded="true">
+                            <span class="close-toc-icon-container">
+                                <span class="close-toc-icon"></span>     
+                            </span>
+                        </button>
+                        
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><h1 class="- topic/title title topictitle1" id="ariaid-title1" style="">1.2.1.3 Configuring The Library</h1><div class="- topic/body body"><p class="- topic/p p">PLC PHY Coupling Service can be configured via MCC.</p><p class="- topic/p p">Alternatevely, the generated source/header files can be modified for custom configuration.</p></div><article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2" id="configuring-via-mcc"><h2 class="- topic/title title topictitle2" id="ariaid-title2" style=""> Configuring via MCC</h2><div class="- topic/body body"><p class="- topic/p p">The following snapshots show the MCC configuration window for PLC PHY Coupling Service and brief description.</p><p class="- topic/p p">The configuration options will vary depending on the PLC protocol used by the PLC Driver (G3 or PRIME).</p><p class="- topic/p p">The configuration dynamic values (purple colour) will be updated, depending on <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">PLC Driver Mode</strong></em> and <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">PLC Coupling Settings</strong></em> in <a class="- topic/xref xref" href="GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789.html">PLC Driver MCC configuration</a>, in order to apply the configuration/calibration values for Evaluation Kits and/or reference designs.</p></div><article class="- topic/topic topic nested2" aria-labelledby="ariaid-title3" id="g3-configuration-options"><h3 class="- topic/title title topictitle3" id="ariaid-title3" style=""> G3 Configuration Options</h3><div class="- topic/body body"><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">PLC PHY Coupling configuration options (G3)</span></span></figcaption><img class="- topic/image image" src="GUID-267B04EF-A19D-45F0-923B-25DF58184F4C-low.png" alt="SRV_PCOUP_mcc_g3"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Transmission Branches:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Available only if G3 selected as <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">PLC Profile</strong></em> in PLC PHY Driver MCC configuration, or G3 MAC RT Driver used</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Main Transmission branch:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC PHY Coupling configuration for Main Transmission branch</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Auxiliary Transmission branch:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC PHY Coupling configuration for Auxiliary Transmission branch</p></li><li class="- topic/li li"><p class="- topic/p p">Available only if <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">Multiband</strong></em> enabled in PLC Driver MCC configuration</p></li></ul></li></ul></li></ul><p class="- topic/p p">Each transmission branch is configured inependentely. In addition to <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">Common Configuration Options</strong></em>, the following options are available for each transmission branch:</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">G3-PLC PHY Band:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Indicates the frequency band associated to the corresponding transmission branch, as selected in PLC Driver MCC configuration</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PLC DACC peripheral settings:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG)</p></li><li class="- topic/li li"><p class="- topic/p p">These values should not be modified by the user</p></li></ul></li></ul></div></article><article class="- topic/topic topic nested2" aria-labelledby="ariaid-title4" id="prime-configuration-options"><h3 class="- topic/title title topictitle3" id="ariaid-title4" style=""> PRIME Configuration Options</h3><div class="- topic/body body"><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">PLC PHY Coupling configuration options (PRIME)</span></span></figcaption><img class="- topic/image image" src="GUID-C635F46D-159B-4C8B-A287-9D79E8A34221-low.png" alt="SRV_PCOUP_mcc_prime"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Transmission Channels:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Available only if PRIME is selected as PLC Profile in PLC PHY Driver</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PLC DACC peripheral settings (Channel 1):</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PLC DACC peripheral settings (Channel 2 - Channel 8):</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PLC DACC peripheral settings (Double Channel):</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG) for single channel 1 / single channels 2 to 8 / double channels</p></li><li class="- topic/li li"><p class="- topic/p p">These values should not be modified by the user</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Channel "i":</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC PHY Coupling configuration for single channel "i"</p></li><li class="- topic/li li"><p class="- topic/p p">Available only if <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">Channel "i"</strong></em> is enabled in PLC PHY Driver MCC configuration</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Channels "i - j":</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PLC PHY Coupling configuration for double channel "i - j" (two consecutive channels)</p></li><li class="- topic/li li"><p class="- topic/p p">Available only if <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">Channels "i - j"</strong></em> is enabled in PLC PHY Driver MCC configuration</p></li></ul></li></ul></li></ul><p class="- topic/p p">Each channel is configured inependentely. <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">Common Configuration Options</strong></em> are available for each enabled channel.</p></div></article><article class="- topic/topic topic nested2" aria-labelledby="ariaid-title5" id="common-configuration-options"><h3 class="- topic/title title topictitle3" id="ariaid-title5" style=""> Common Configuration Options</h3><div class="- topic/body body"><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Number of TX levels:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_NUM_TX_LEVELS</p></li><li class="- topic/li li"><p class="- topic/p p">Number of transmission attenuation levels supporting dynamic capabilities</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">G3: transmission attenuation levels in 3 dB steps</p></li><li class="- topic/li li"><p class="- topic/p p">PRIME: transmission attenuation levels in 1 dB steps</p></li></ul></li></ul></li></ul><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">Target RMS configuration options</span></span></figcaption><img class="- topic/image image" src="GUID-B425E36C-BDF7-4677-8225-00ABF71C31AC-low.png" alt="SRV_PCOUP_mcc_target_rms"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Target RMS values in HIGH mode for dynamic Tx gain:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_MAX_RMS_TABLE_HI</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">RMS_HIGH_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Target RMS values in HIGH Tx mode for transmission attenuation level "x"</p></li></ul></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Target RMS values in VLOW mode for dynamic Tx gain:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_MAX_RMS_TABLE_VLO</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">RMS_VLOW_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Target RMS values in VLOW Tx mode for transmission attenuation level "x"</p></li></ul></li></ul></li></ul><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">Threshold RMS configuration options</span></span></figcaption><img class="- topic/image image" src="GUID-67FE128F-C52C-4C65-94B7-67E482F893BD-low.png" alt="SRV_PCOUP_mcc_threshold_rms"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Threshold RMS values in HIGH mode for dynamic Tx mode:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_THRESHOLDS_TABLE_HI</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">THRESHOLD_HIGH_LOW_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Threshold RMS values to update Tx mode from HIGH to LOW for transmission attenuation level "x"</p></li><li class="- topic/li li"><p class="- topic/p p">Set to 0 to disable</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">THRESHOLD_HIGH_VLOW_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Threshold values to update Tx mode from HIGH to VLOW for transmission attenuation level "x"</p></li><li class="- topic/li li"><p class="- topic/p p">Set to 0 to disable</p></li></ul></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Threshold RMS values in VLOW mode for dynamic Tx mode:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_THRESHOLDS_TABLE_VLO</p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">THRESHOLD_VLOW_LOW_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Threshold values to update Tx mode from VLOW to LOW for transmission attenuation level "x"</p></li><li class="- topic/li li"><p class="- topic/p p">Set to 0 to disable</p></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">THRESHOLD_VLOW_HIGH_x:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Threshold values to update Tx mode from VLOW to HIGH for transmission attenuation level "x"</p></li><li class="- topic/li li"><p class="- topic/p p">Set to maximum value to disable</p></li></ul></li></ul></li></ul><figure class="- topic/fig fig fignone"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure . <span class="fig--title">Transmission digital gain configuration options</span></span></figcaption><img class="- topic/image image" src="GUID-B9C64E60-9FD5-4B8F-A2AC-8DE5E5CB9814-low.png" alt="SRV_PCOUP_mcc_gain"/></figure><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Tx gain values for HIGH mode:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_GAIN_TABLE_HI</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_HIGH_INI:</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_HIGH_MIN:</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_HIGH_MAX:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Initial/minimum/maximum transmission digital gain value for HIGH Tx mode</p></li><li class="- topic/li li"><p class="- topic/p p">Set all to same value to disable dynamic Tx gain for HIGH Tx mode</p></li></ul></li></ul></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Tx gain values for VLOW mode:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_GAIN_TABLE_VLO</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_VLOW_INI:</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_VLOW_MIN:</strong></p></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">GAIN_VLOW_MAX:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">Initial/minimum/maximum transmission digital gain value for VLOW Tx mode</p></li><li class="- topic/li li"><p class="- topic/p p">Set all to same value to disable dynamic Tx gain for VLOW Tx mode</p></li></ul></li></ul></li></ul></li><li class="- topic/li li"><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">PLC Line Driver settings:</strong></p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">PHY PIB: PLC_ID_IC_DRIVER_CFG</p></li><li class="- topic/li li"><p class="- topic/p p">PLC Device and branch configuration. One value for PL360, three values for PL460:</p><ul class="- topic/ul ul"><li class="- topic/li li"><p class="- topic/p p">0: PL360</p></li><li class="- topic/li li"><p class="- topic/p p">5: PL460 using Main Transmission Branch with a single external filter. When transmitting, both ASO pins are activated simultaneously</p></li><li class="- topic/li li"><p class="- topic/p p">7: PL460 using Main Transmission Branch with two external filters. When transmitting, ASO0 is activated for HIGH Tx mode, while ASO1 is activated for LOW/VLOW Tx modes</p></li><li class="- topic/li li"><p class="- topic/p p">8: PL460 using Auxiliary Transmission Branch</p></li></ul></li></ul></li></ul></div></article></article><article class="- topic/topic topic nested1" aria-labelledby="ariaid-title6" id="modifying-generated-source-code"><h2 class="- topic/title title topictitle2" id="ariaid-title6" style=""> Modifying Generated Source Code</h2><div class="- topic/body body"><p class="- topic/p p">PLC PHY Coupling Service generates the <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">srv_pcoup.c</strong></em> and <em class="+ topic/ph hi-d/i ph i"><strong class="+ topic/ph hi-d/b ph b">srv_pcoup.h</strong></em> files. In the header file there are definition macros with the values configured via MCC.</p><p class="- topic/p p">The user can modify these files instead of using MCC interface.</p><p class="- topic/p p">In the current version, this is the only method to customize Tx Equalization values (not supported in MCC configuration window for PLC PHY Coupling Service).</p></div></article></article></main></div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    
+                        <nav role="navigation" id="wh_topic_toc" aria-label="On this page" class="col-lg-2 d-none d-lg-block navbar d-print-none"> 
+                            <div id="wh_topic_toc_content">
+		                        
+	                            <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#configuring-via-mcc" data-tocid="configuring-via-mcc"> Configuring via MCC</a><ul><li class="topic-item"><a href="#g3-configuration-options" data-tocid="g3-configuration-options"> G3 Configuration Options</a></li><li class="topic-item"><a href="#prime-configuration-options" data-tocid="prime-configuration-options"> PRIME Configuration Options</a></li><li class="topic-item"><a href="#common-configuration-options" data-tocid="common-configuration-options"> Common Configuration Options</a></li></ul></li><li class="topic-item"><a href="#modifying-generated-source-code" data-tocid="modifying-generated-source-code"> Modifying Generated Source Code</a></li></ul></div>
+	                        	
+                        	</div>
+                        </nav>
+                    
+                </div>
+            </div>
+            
+            
+            
+        </div> 
+        <footer class="navbar navbar-default wh_footer">
+  <div class=" footer-container mx-auto ">
+    <div class="footer">
+  <div class="mchp-wh-footer">
+    <div class="mchp-footer">
+      <div class="mchp-footer-tier1">
+        <div class="spacer"></div>
+        <div class="mchp-footer-container">
+          <div class="mchp-footer-links mchp-social-media-links">
+            <div class="mchp-component-items">
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.facebook.com/pages/Microchip-Technology-Inc/20320981741" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Facebook" src="oxygen-webhelp/template/resources/images/201016-corp-facebook.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.linkedin.com/company/microchip-technology" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip LinkedIn" src="oxygen-webhelp/template/resources/images/201016-corp-linkedin.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://twitter.com/MicrochipTech" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Twitter" src="oxygen-webhelp/template/resources/images/201016-corp-twitter.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.youtube.com/user/MicrochipTechnology" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip YouTube" src="oxygen-webhelp/template/resources/images/201016-corp-youtube.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.instagram.com/microchiptechnologyinc/" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Instagram" src="oxygen-webhelp/template/resources/images/201016-corp-instagram.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.weibo.com/microchiptech" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Weibo" src="oxygen-webhelp/template/resources/images/201016-corp-weibo.png"/>
+                </a>
+              </div>
+              <div class="mchp-component-item">
+                <a class="cmp-image__link" href="https://www.microchip.com/en-us/about/blog" target="_blank">
+                  <img class="cmp-image__image" alt="Microchip Blog" src="oxygen-webhelp/template/resources/images/201016-corp-blog.png"/>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mchp-footer-links">
+            <div class="mchp-component-items">
+              <div class="mchp-component-item">
+                <div class="link">
+                  <a href="https://www.microchip.com/about-us/contact-us" class="mchp-link__link">Contact</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information" class="mchp-link__link">Legal</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information/privacy-policy" class="mchp-link__link">Privacy Policy</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item ">
+                <div class="link">
+                  <a href="https://www.microchip.com/en-us/about/legal-information/microchip-cookie-statement" class="mchp-link__link">Cookies</a>
+                  <span class="mchp-link__separator">|</span>
+                </div>
+              </div>
+              <div class="mchp-component-item">
+                <div class="link">
+                  <a href="https://careers.microchip.com/" class="mchp-link__link">Careers</a>
+                  <span class="mchp-link__separator"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mchp-footer-newsletter">
+            <div class="cmp-text">
+              <p>Stay on the leading edge with our blog</p>
+            </div>
+            <div class="mchp-button-wrapper">
+              <a role="button" href="https://www.microchip.com/en-us/about/blog" class="mchp-button mchp-button-regular solid">
+                <span class="mchp-button__span">MicroSolutions</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="graphic">
+          <img src="oxygen-webhelp/template/resources/images/footer-graphic.png"/>
+        </div>
+      </div>
+      <div class="mchp-footer-tier2">
+        <p class="mchp-copyright">© Copyright 1998-2022 Microchip Technology Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-2724382-19"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];  
+    function gtag(){dataLayer.push(arguments);}  
+    gtag('js', new Date());   
+    gtag('config', 'UA-2724382-19');
+  </script>
 </div>
-</div><div class="topic nested1" aria-labelledby="ariaid-title2" id="configuring-via-mcc"><h2 class="title topictitle2" id="ariaid-title2">Configuring via MCC</h2><div class="body"><p class="p">The following snapshots show the MCC configuration window for PLC PHY Coupling Service and brief description.</p>
-<p class="p">The configuration options will vary depending on the PLC protocol used by the PLC Driver (G3 or PRIME).</p>
-<p class="p">The configuration dynamic values (purple colour) will be updated, depending on <em class="ph i"><strong class="ph b">PLC Driver Mode</strong></em> and <em class="ph i"><strong class="ph b">PLC Coupling Settings</strong></em> in <a class="xref" href="GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789.html">PLC Driver MCC configuration</a>, in order to apply the configuration/calibration values for Evaluation Kits and/or reference designs.</p>
-</div>
-<div class="topic nested2" aria-labelledby="ariaid-title3" id="g3-configuration-options"><h3 class="title topictitle3" id="ariaid-title3">G3 Configuration Options</h3><div class="body"><div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 1. </span>PLC PHY Coupling configuration options (G3)</div><img class="image" src="GUID-267B04EF-A19D-45F0-923B-25DF58184F4C-low.png" alt="SRV_PCOUP_mcc_g3" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Transmission Branches:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Available only if G3 selected as <em class="ph i"><strong class="ph b">PLC Profile</strong></em> in PLC PHY Driver MCC configuration, or G3 MAC RT Driver used</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Main Transmission branch:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC PHY Coupling configuration for Main Transmission branch</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Auxiliary Transmission branch:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC PHY Coupling configuration for Auxiliary Transmission branch</p>
-</li>
-<li class="li"><p class="p">Available only if <em class="ph i"><strong class="ph b">Multiband</strong></em> enabled in PLC Driver MCC configuration</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="p">Each transmission branch is configured inependentely. In addition to <em class="ph i"><strong class="ph b">Common Configuration Options</strong></em>, the following options are available for each transmission branch:</p>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">G3-PLC PHY Band:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Indicates the frequency band associated to the corresponding transmission branch, as selected in PLC Driver MCC configuration</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PLC DACC peripheral settings:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG)</p>
-</li>
-<li class="li"><p class="p">These values should not be modified by the user</p>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="topic nested2" aria-labelledby="ariaid-title4" id="prime-configuration-options"><h3 class="title topictitle3" id="ariaid-title4">PRIME Configuration Options</h3><div class="body"><div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 2. </span>PLC PHY Coupling configuration options (PRIME)</div><img class="image" src="GUID-C635F46D-159B-4C8B-A287-9D79E8A34221-low.png" alt="SRV_PCOUP_mcc_prime" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Transmission Channels:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Available only if PRIME is selected as PLC Profile in PLC PHY Driver</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PLC DACC peripheral settings (Channel 1):</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PLC DACC peripheral settings (Channel 2 - Channel 8):</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PLC DACC peripheral settings (Double Channel):</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC Device's DACC peripheral register values (PHY PIB PLC_ID_DACC_TABLE_CFG) for single channel 1 / single channels 2 to 8 / double channels</p>
-</li>
-<li class="li"><p class="p">These values should not be modified by the user</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Channel "i":</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC PHY Coupling configuration for single channel "i"</p>
-</li>
-<li class="li"><p class="p">Available only if <em class="ph i"><strong class="ph b">Channel "i"</strong></em> is enabled in PLC PHY Driver MCC configuration</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Channels "i - j":</strong></p>
-<ul class="ul"><li class="li"><p class="p">PLC PHY Coupling configuration for double channel "i - j" (two consecutive channels)</p>
-</li>
-<li class="li"><p class="p">Available only if <em class="ph i"><strong class="ph b">Channels "i - j"</strong></em> is enabled in PLC PHY Driver MCC configuration</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="p">Each channel is configured inependentely. <em class="ph i"><strong class="ph b">Common Configuration Options</strong></em> are available for each enabled channel.</p>
-</div>
-</div>
-<div class="topic nested2" aria-labelledby="ariaid-title5" id="common-configuration-options"><h3 class="title topictitle3" id="ariaid-title5">Common Configuration Options</h3><div class="body"><ul class="ul"><li class="li"><p class="p"><strong class="ph b">Number of TX levels:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_NUM_TX_LEVELS</p>
-</li>
-<li class="li"><p class="p">Number of transmission attenuation levels supporting dynamic capabilities</p>
-<ul class="ul"><li class="li"><p class="p">G3: transmission attenuation levels in 3 dB steps</p>
-</li>
-<li class="li"><p class="p">PRIME: transmission attenuation levels in 1 dB steps</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 3. </span>Target RMS configuration options</div><img class="image" src="GUID-B425E36C-BDF7-4677-8225-00ABF71C31AC-low.png" alt="SRV_PCOUP_mcc_target_rms" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Target RMS values in HIGH mode for dynamic Tx gain:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_MAX_RMS_TABLE_HI</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">RMS_HIGH_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Target RMS values in HIGH Tx mode for transmission attenuation level "x"</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Target RMS values in VLOW mode for dynamic Tx gain:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_MAX_RMS_TABLE_VLO</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">RMS_VLOW_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Target RMS values in VLOW Tx mode for transmission attenuation level "x"</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 4. </span>Threshold RMS configuration options</div><img class="image" src="GUID-67FE128F-C52C-4C65-94B7-67E482F893BD-low.png" alt="SRV_PCOUP_mcc_threshold_rms" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Threshold RMS values in HIGH mode for dynamic Tx mode:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_THRESHOLDS_TABLE_HI</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">THRESHOLD_HIGH_LOW_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Threshold RMS values to update Tx mode from HIGH to LOW for transmission attenuation level "x"</p>
-</li>
-<li class="li"><p class="p">Set to 0 to disable</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">THRESHOLD_HIGH_VLOW_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Threshold values to update Tx mode from HIGH to VLOW for transmission attenuation level "x"</p>
-</li>
-<li class="li"><p class="p">Set to 0 to disable</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Threshold RMS values in VLOW mode for dynamic Tx mode:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_THRESHOLDS_TABLE_VLO</p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">THRESHOLD_VLOW_LOW_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Threshold values to update Tx mode from VLOW to LOW for transmission attenuation level "x"</p>
-</li>
-<li class="li"><p class="p">Set to 0 to disable</p>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">THRESHOLD_VLOW_HIGH_x:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Threshold values to update Tx mode from VLOW to HIGH for transmission attenuation level "x"</p>
-</li>
-<li class="li"><p class="p">Set to maximum value to disable</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="fig fignone"><div class="figcap"><span class="fig--title-label">Figure 5. </span>Transmission digital gain configuration options</div><img class="image" src="GUID-B9C64E60-9FD5-4B8F-A2AC-8DE5E5CB9814-low.png" alt="SRV_PCOUP_mcc_gain" /><br /></div>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">Tx gain values for HIGH mode:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_GAIN_TABLE_HI</p>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">GAIN_HIGH_INI:</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">GAIN_HIGH_MIN:</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">GAIN_HIGH_MAX:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Initial/minimum/maximum transmission digital gain value for HIGH Tx mode</p>
-</li>
-<li class="li"><p class="p">Set all to same value to disable dynamic Tx gain for HIGH Tx mode</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">Tx gain values for VLOW mode:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_GAIN_TABLE_VLO</p>
-<ul class="ul"><li class="li"><p class="p"><strong class="ph b">GAIN_VLOW_INI:</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">GAIN_VLOW_MIN:</strong></p>
-</li>
-<li class="li"><p class="p"><strong class="ph b">GAIN_VLOW_MAX:</strong></p>
-<ul class="ul"><li class="li"><p class="p">Initial/minimum/maximum transmission digital gain value for VLOW Tx mode</p>
-</li>
-<li class="li"><p class="p">Set all to same value to disable dynamic Tx gain for VLOW Tx mode</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="li"><p class="p"><strong class="ph b">PLC Line Driver settings:</strong></p>
-<ul class="ul"><li class="li"><p class="p">PHY PIB: PLC_ID_IC_DRIVER_CFG</p>
-</li>
-<li class="li"><p class="p">PLC Device and branch configuration. One value for PL360, three values for PL460:</p>
-<ul class="ul"><li class="li"><p class="p">0: PL360</p>
-</li>
-<li class="li"><p class="p">5: PL460 using Main Transmission Branch with a single external filter. When transmitting, both ASO pins are activated simultaneously</p>
-</li>
-<li class="li"><p class="p">7: PL460 using Main Transmission Branch with two external filters. When transmitting, ASO0 is activated for HIGH Tx mode, while ASO1 is activated for LOW/VLOW Tx modes</p>
-</li>
-<li class="li"><p class="p">8: PL460 using Auxiliary Transmission Branch</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="topic nested1" aria-labelledby="ariaid-title6" id="modifying-generated-source-code"><h2 class="title topictitle2" id="ariaid-title6">Modifying Generated Source Code</h2><div class="body"><p class="p">PLC PHY Coupling Service generates the <em class="ph i"><strong class="ph b">srv_pcoup.c</strong></em> and <em class="ph i"><strong class="ph b">srv_pcoup.h</strong></em> files. In the header file there are definition macros with the values configured via MCC.</p>
-<p class="p">The user can modify these files instead of using MCC interface.</p>
-<p class="p">In the current version, this is the only method to customize Tx Equalization values (not supported in MCC configuration window for PLC PHY Coupling Service).</p>
-</div>
-</div>
-</body>
+  </div>
+</footer>
+        
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <div id="modal_img_container"></div>
+            <div id="caption"></div>
+        </div>
+        
+        
+        
+    </body>
 </html>
