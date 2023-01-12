@@ -85,9 +85,6 @@ extern "C" {
 #define SYS_CMD_PRINT_BUFFER_SIZE          512
 #define SYS_CMD_BUFFER_DMA_READY
 
-/* Command System Service RTOS Configurations*/
-#define SYS_CMD_RTOS_STACK_SIZE                512
-#define SYS_CMD_RTOS_TASK_PRIORITY             1
 
 /* TIME System Service Configuration Options */
 #define SYS_TIME_INDEX_0                            (0)
@@ -113,9 +110,6 @@ extern "C" {
 #define SYS_FS_FILE_NAME_LEN              255
 #define SYS_FS_CWD_STRING_LEN             1024
 
-/* File System RTOS Configurations*/
-#define SYS_FS_STACK_SIZE                 256
-#define SYS_FS_PRIORITY                   1
 
 #define SYS_FS_FAT_VERSION                "v0.14b"
 #define SYS_FS_FAT_READONLY               false
@@ -159,10 +153,6 @@ extern "C" {
 #define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
 #define DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0    1
 
-/* Memory Driver Instance 0 RTOS Configurations*/
-#define DRV_MEMORY_STACK_SIZE_IDX0           1024
-#define DRV_MEMORY_PRIORITY_IDX0             1
-#define DRV_MEMORY_RTOS_DELAY_IDX0                         10
 
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
@@ -203,9 +193,6 @@ extern "C" {
 /* Metrology Default Config: Capture Buffer Size */
 #define DRV_METROLOGY_CAPTURE_BUF_SIZE        32000
 
-/* Metrology Driver RTOS Configurations */
-#define DRV_METROLOGY_RTOS_STACK_SIZE         256
-#define DRV_METROLOGY_RTOS_TASK_PRIORITY      1
 
 
 

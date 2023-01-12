@@ -49,7 +49,7 @@
 #include <device.h>
 #include <stdio.h>
 #include "drv_gfx_slcdc.h"
-#include "../PIC32CX2051MTSH128_DFP/component/supc.h"
+#include "component/supc.h"
 #include "cl010.h"
 #include "cl010_font.h"
 
