@@ -318,12 +318,12 @@ void SYS_Initialize ( void* data )
 
 
 	BSP_Initialize();
-    RTC_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
     
+    RTC_Initialize();
+
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();

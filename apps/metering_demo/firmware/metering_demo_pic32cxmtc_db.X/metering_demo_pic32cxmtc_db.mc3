@@ -624,7 +624,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTC_Development_Board&quot; x=&quot;18&quot; y=&quot;51&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;328&quot; y=&quot;160&quot;/&gt;
@@ -649,7 +650,6 @@
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -3803,6 +3803,174 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_DBG0HLT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_DBG0HLT&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_DBG1HLT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_DBG1HLT&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_ENABLE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_EVENT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_EVENT&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_IDLEHLT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_IDLEHLT&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_LEVEL_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_LEVEL_ENABLE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_NRSTDIS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_NRSTDIS&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_PERIOD"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_PERIOD&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;1000&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_PERIOD_MS"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_PERIOD_MS&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;4000&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_RLDERR_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_RLDERR_ENABLE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_RPTH_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_RPTH_ENABLE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_W1PERINT_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_W1PERINT_ENABLE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="WDT0_W1RPTHINT_ENABLE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;WDT0_W1RPTHINT_ENABLE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="XC32_HEAP_SIZE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;XC32_HEAP_SIZE&quot;&gt;
@@ -5603,7 +5771,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\tc\plib_tc_common.h</file>
-         <hash>444f1845776c5bbdd53278a60d8f2101e23eb3605b8b3950811ef24f9fd05ec0</hash>
+         <hash>aa07077b6355fa1dc9e938cb4def1c725bffddf452ffc55e4f982f83d3988a9e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\flexcom2.h</file>
@@ -5779,7 +5947,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\gfx\driver\controller\slcdc\cl010_slcdc.c</file>
-         <hash>95493c5c1512da6d38e03225b46d7ba2e2b877bf4c825e1f79af2300f706362e</hash>
+         <hash>b2fe12ca02afb5185f665ab3158150a616a978df3e084ee27a4e557cb7126321</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\component\sfrbu.h</file>
@@ -5791,7 +5959,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>e7c12be532abf3afd2b7c3b3cc401a5961b7eecb54cac0185a3cac9fa32ae474</hash>
+         <hash>8d4136dbc7c0e487aded4163d92ae3b3693865abf98f49f95320a72ce74e0d43</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\deprecated_definitions.h</file>
@@ -5991,7 +6159,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\dwdt\plib_dwdt.h</file>
-         <hash>b4593d5f3443493f70c78683d85bc881e9b32bfd17dbdad3a3e2bf6f6f6811ce</hash>
+         <hash>ac1567a50ab62f6d487d67b166905cf3769d68b2aca4583be9466fe4663ddc3b</hash>
       </entry>
       <entry>
          <file>..\src\app_display.c</file>
@@ -6023,7 +6191,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\dwdt\plib_dwdt.c</file>
-         <hash>3a7bb6805229f1ac8070816c089838346738a79695b9c3fb3fceb6e7ada5a353</hash>
+         <hash>10c4c7f59704542e08cca4b7b9fedf9bbb463da403ae37df76d84e04e2f07e19</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\mem2mem1.h</file>
@@ -6167,7 +6335,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\tc\plib_tc0.c</file>
-         <hash>7c035ef805b10d81d76eb3528af785715461bf3ff984286e51a07b9815363dba</hash>
+         <hash>36b01c673b59802512f68614c0af136bccffd3bd6d44a1914a52e7776c35fc2a</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device_cache.h</file>
@@ -6191,7 +6359,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\supc\plib_supc.c</file>
-         <hash>0bed545575a995947ee796c1eff15989b55365fad9c012a2dac91d441e067285</hash>
+         <hash>ea03aad134fcd559d03b70942e43901ab0f36f7d9bdfcfe61717b22660183b2b</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\acc.h</file>
@@ -6251,7 +6419,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>52eb902919a8a6144222b2aff5ec907f36696664a1489cc230bba19abc988e0c</hash>
+         <hash>8cf7f1b2326c8db8f028a4ffc8a55a7009fba8c743437eceee915ef7a92bd501</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>
@@ -6311,7 +6479,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.c</file>
-         <hash>221a903202fe9935067e619cc050a5016c83c4b531536c2a9de4627de260febe</hash>
+         <hash>66cc0eb4e97eb4c17fa438049d376c9c0a67e17bc266db04c746cda72d3d8d2e</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\fat_fs\file_system\ffconf.h</file>
@@ -6327,7 +6495,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\clk\plib_clk.h</file>
-         <hash>3cc6800ff05d15c41518ee4087d7ee94a9e66d9896050b5262567781036e1871</hash>
+         <hash>9177df6b8646844c6be93f20ba1e4e23e972c9c38c6c2334c0fc331e4e7e38cb</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\component\trng.h</file>
@@ -6383,7 +6551,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\rstc\plib_rstc.c</file>
-         <hash>9dd207ec48a0537137a0cfa7a26752b5248b23f1a9c693572c370e523c5e8870</hash>
+         <hash>99d972eab13a847cc60dda8b351130d3644633e0bf6132ed8e9309eef3d40533</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\ipc0.h</file>
@@ -6447,7 +6615,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>
-         <hash>a03ff0ec54f03e6d6090e871f449c41a7c80dbfead98e3d8f1230eaaa70b5b84</hash>
+         <hash>7f74f080d555b34e35474f7b9b921574caf60b23857e3c11ef61264c5a022aac</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\system.h</file>
