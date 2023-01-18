@@ -20,21 +20,22 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_TC3_INSTANCE_
 #define _PIC32CXMTC_TC3_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for TC3 peripheral ========== */
-#define TC3_INSTANCE_ID_CHANNEL0                 (79)       
 #define TC3_CLOCK_ID_CHANNEL0                    (79)       
-#define TC3_INSTANCE_ID_CHANNEL1                 (80)       
 #define TC3_CLOCK_ID_CHANNEL1                    (80)       
-#define TC3_INSTANCE_ID_CHANNEL2                 (81)       
 #define TC3_CLOCK_ID_CHANNEL2                    (81)       
 #define TC3_INSTANCE_ID_C0SEC                    (82)       
 #define TC3_INSTANCE_ID_C1SEC                    (83)       
 #define TC3_INSTANCE_ID_C2SEC                    (84)       
+#define TC3_INSTANCE_ID_CHANNEL0                 (79)       
+#define TC3_INSTANCE_ID_CHANNEL1                 (80)       
+#define TC3_INSTANCE_ID_CHANNEL2                 (81)       
+#define TC3_NUM_INTERRUPT_LINES                  (3)        
 #define TC3_TCCLKS_                              (0)        /* MCK0DIV */
 #define TC3_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
 #define TC3_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0DIV/8 */
@@ -44,7 +45,6 @@
 #define TC3_TCCLKS_XC0                           (6)        /* XC0 */
 #define TC3_TCCLKS_XC1                           (7)        /* XC1 */
 #define TC3_TCCLKS_XC2                           (8)        /* XC2 */
-#define TC3_NUM_INTERRUPT_LINES                  (3)        
 #define TC3_TIMER_WIDTH                          (32)       
 
 #endif /* _PIC32CXMTC_TC3_INSTANCE_ */

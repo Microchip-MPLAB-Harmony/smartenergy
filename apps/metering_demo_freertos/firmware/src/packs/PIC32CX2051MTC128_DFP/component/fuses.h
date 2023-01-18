@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:43Z */
 #ifndef _PIC32CXMTC_FUSES_COMPONENT_H_
 #define _PIC32CXMTC_FUSES_COMPONENT_H_
 

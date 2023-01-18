@@ -20,13 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_QSPI_INSTANCE_
 #define _PIC32CXMTC_QSPI_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for QSPI peripheral ========== */
-#define QSPI_INSTANCE_ID                         (23)       
 #define QSPI_CLOCK_ID                            (23)       
+#define QSPI_INSTANCE_ID                         (23)       
 
 #endif /* _PIC32CXMTC_QSPI_INSTANCE_ */

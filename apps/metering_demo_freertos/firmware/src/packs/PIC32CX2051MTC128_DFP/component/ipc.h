@@ -20,116 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_IPC_COMPONENT_H_
 #define _PIC32CXMTC_IPC_COMPONENT_H_
 
 /* ************************************************************************** */
 /*   SOFTWARE API DEFINITION FOR IPC                                          */
 /* ************************************************************************** */
-
-/* -------- IPC_ISCR : (IPC Offset: 0x00) ( /W 32) Interrupt Set Command Register -------- */
-#define IPC_ISCR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ0_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ0_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ0(value)                  (IPC_ISCR_IRQ0_Msk & (_UINT32_(value) << IPC_ISCR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ1_Pos                     _UINT32_(1)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ1_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ1_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ1(value)                  (IPC_ISCR_IRQ1_Msk & (_UINT32_(value) << IPC_ISCR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ2_Pos                     _UINT32_(2)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ2_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ2_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ2(value)                  (IPC_ISCR_IRQ2_Msk & (_UINT32_(value) << IPC_ISCR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ3_Pos                     _UINT32_(3)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ3_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ3_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ3(value)                  (IPC_ISCR_IRQ3_Msk & (_UINT32_(value) << IPC_ISCR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ4_Pos                     _UINT32_(4)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ4_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ4_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ4(value)                  (IPC_ISCR_IRQ4_Msk & (_UINT32_(value) << IPC_ISCR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ5_Pos                     _UINT32_(5)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ5_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ5_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ5(value)                  (IPC_ISCR_IRQ5_Msk & (_UINT32_(value) << IPC_ISCR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ6_Pos                     _UINT32_(6)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ6_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ6_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ6(value)                  (IPC_ISCR_IRQ6_Msk & (_UINT32_(value) << IPC_ISCR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ7_Pos                     _UINT32_(7)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ7_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ7_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ7(value)                  (IPC_ISCR_IRQ7_Msk & (_UINT32_(value) << IPC_ISCR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ8_Pos                     _UINT32_(8)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ8_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ8_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ8(value)                  (IPC_ISCR_IRQ8_Msk & (_UINT32_(value) << IPC_ISCR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ9_Pos                     _UINT32_(9)                                          /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ9_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ9_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ9(value)                  (IPC_ISCR_IRQ9_Msk & (_UINT32_(value) << IPC_ISCR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ10_Pos                    _UINT32_(10)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ10_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ10_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ10(value)                 (IPC_ISCR_IRQ10_Msk & (_UINT32_(value) << IPC_ISCR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ11_Pos                    _UINT32_(11)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ11_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ11_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ11(value)                 (IPC_ISCR_IRQ11_Msk & (_UINT32_(value) << IPC_ISCR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ12_Pos                    _UINT32_(12)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ12_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ12_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ12(value)                 (IPC_ISCR_IRQ12_Msk & (_UINT32_(value) << IPC_ISCR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ13_Pos                    _UINT32_(13)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ13_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ13_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ13(value)                 (IPC_ISCR_IRQ13_Msk & (_UINT32_(value) << IPC_ISCR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ14_Pos                    _UINT32_(14)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ14_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ14_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ14(value)                 (IPC_ISCR_IRQ14_Msk & (_UINT32_(value) << IPC_ISCR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ15_Pos                    _UINT32_(15)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ15_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ15_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ15(value)                 (IPC_ISCR_IRQ15_Msk & (_UINT32_(value) << IPC_ISCR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ16_Pos                    _UINT32_(16)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ16_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ16_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ16(value)                 (IPC_ISCR_IRQ16_Msk & (_UINT32_(value) << IPC_ISCR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ17_Pos                    _UINT32_(17)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ17_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ17_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ17(value)                 (IPC_ISCR_IRQ17_Msk & (_UINT32_(value) << IPC_ISCR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ18_Pos                    _UINT32_(18)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ18_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ18_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ18(value)                 (IPC_ISCR_IRQ18_Msk & (_UINT32_(value) << IPC_ISCR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ19_Pos                    _UINT32_(19)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ19_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ19_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ19(value)                 (IPC_ISCR_IRQ19_Msk & (_UINT32_(value) << IPC_ISCR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ20_Pos                    _UINT32_(20)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ20_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ20_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ20(value)                 (IPC_ISCR_IRQ20_Msk & (_UINT32_(value) << IPC_ISCR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ21_Pos                    _UINT32_(21)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ21_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ21_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ21(value)                 (IPC_ISCR_IRQ21_Msk & (_UINT32_(value) << IPC_ISCR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ22_Pos                    _UINT32_(22)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ22_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ22_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ22(value)                 (IPC_ISCR_IRQ22_Msk & (_UINT32_(value) << IPC_ISCR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ23_Pos                    _UINT32_(23)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ23_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ23_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ23(value)                 (IPC_ISCR_IRQ23_Msk & (_UINT32_(value) << IPC_ISCR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ24_Pos                    _UINT32_(24)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ24_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ24_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ24(value)                 (IPC_ISCR_IRQ24_Msk & (_UINT32_(value) << IPC_ISCR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ25_Pos                    _UINT32_(25)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ25_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ25_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ25(value)                 (IPC_ISCR_IRQ25_Msk & (_UINT32_(value) << IPC_ISCR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ26_Pos                    _UINT32_(26)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ26_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ26_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ26(value)                 (IPC_ISCR_IRQ26_Msk & (_UINT32_(value) << IPC_ISCR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ27_Pos                    _UINT32_(27)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ27_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ27_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ27(value)                 (IPC_ISCR_IRQ27_Msk & (_UINT32_(value) << IPC_ISCR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ28_Pos                    _UINT32_(28)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ28_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ28_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ28(value)                 (IPC_ISCR_IRQ28_Msk & (_UINT32_(value) << IPC_ISCR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ29_Pos                    _UINT32_(29)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ29_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ29_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ29(value)                 (IPC_ISCR_IRQ29_Msk & (_UINT32_(value) << IPC_ISCR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ30_Pos                    _UINT32_(30)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ30_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ30_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ30(value)                 (IPC_ISCR_IRQ30_Msk & (_UINT32_(value) << IPC_ISCR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_ISCR register */
-#define IPC_ISCR_IRQ31_Pos                    _UINT32_(31)                                         /* (IPC_ISCR) Interrupt Set Position */
-#define IPC_ISCR_IRQ31_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ31_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
-#define IPC_ISCR_IRQ31(value)                 (IPC_ISCR_IRQ31_Msk & (_UINT32_(value) << IPC_ISCR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_ISCR register */
-#define IPC_ISCR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (IPC_ISCR) Register Mask  */
-
-#define IPC_ISCR_IRQ_Pos                      _UINT32_(0)                                          /* (IPC_ISCR Position) Interrupt Set */
-#define IPC_ISCR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_ISCR_IRQ_Pos)           /* (IPC_ISCR Mask) IRQ */
-#define IPC_ISCR_IRQ(value)                   (IPC_ISCR_IRQ_Msk & (_UINT32_(value) << IPC_ISCR_IRQ_Pos)) 
 
 /* -------- IPC_ICCR : (IPC Offset: 0x04) ( /W 32) Interrupt Clear Command Register -------- */
 #define IPC_ICCR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_ICCR) Interrupt Clear Position */
@@ -234,108 +131,108 @@
 #define IPC_ICCR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_ICCR_IRQ_Pos)           /* (IPC_ICCR Mask) IRQ */
 #define IPC_ICCR_IRQ(value)                   (IPC_ICCR_IRQ_Msk & (_UINT32_(value) << IPC_ICCR_IRQ_Pos)) 
 
-/* -------- IPC_IPR : (IPC Offset: 0x08) ( R/ 32) Interrupt Pending Register -------- */
-#define IPC_IPR_IRQ0_Pos                      _UINT32_(0)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ0_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ0_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ0(value)                   (IPC_IPR_IRQ0_Msk & (_UINT32_(value) << IPC_IPR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_IPR register */
-#define IPC_IPR_IRQ1_Pos                      _UINT32_(1)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ1_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ1_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ1(value)                   (IPC_IPR_IRQ1_Msk & (_UINT32_(value) << IPC_IPR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_IPR register */
-#define IPC_IPR_IRQ2_Pos                      _UINT32_(2)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ2_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ2_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ2(value)                   (IPC_IPR_IRQ2_Msk & (_UINT32_(value) << IPC_IPR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_IPR register */
-#define IPC_IPR_IRQ3_Pos                      _UINT32_(3)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ3_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ3_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ3(value)                   (IPC_IPR_IRQ3_Msk & (_UINT32_(value) << IPC_IPR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_IPR register */
-#define IPC_IPR_IRQ4_Pos                      _UINT32_(4)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ4_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ4_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ4(value)                   (IPC_IPR_IRQ4_Msk & (_UINT32_(value) << IPC_IPR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_IPR register */
-#define IPC_IPR_IRQ5_Pos                      _UINT32_(5)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ5_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ5_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ5(value)                   (IPC_IPR_IRQ5_Msk & (_UINT32_(value) << IPC_IPR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_IPR register */
-#define IPC_IPR_IRQ6_Pos                      _UINT32_(6)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ6_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ6_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ6(value)                   (IPC_IPR_IRQ6_Msk & (_UINT32_(value) << IPC_IPR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_IPR register */
-#define IPC_IPR_IRQ7_Pos                      _UINT32_(7)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ7_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ7_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ7(value)                   (IPC_IPR_IRQ7_Msk & (_UINT32_(value) << IPC_IPR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_IPR register */
-#define IPC_IPR_IRQ8_Pos                      _UINT32_(8)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ8_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ8_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ8(value)                   (IPC_IPR_IRQ8_Msk & (_UINT32_(value) << IPC_IPR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_IPR register */
-#define IPC_IPR_IRQ9_Pos                      _UINT32_(9)                                          /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ9_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ9_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ9(value)                   (IPC_IPR_IRQ9_Msk & (_UINT32_(value) << IPC_IPR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_IPR register */
-#define IPC_IPR_IRQ10_Pos                     _UINT32_(10)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ10_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ10_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ10(value)                  (IPC_IPR_IRQ10_Msk & (_UINT32_(value) << IPC_IPR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_IPR register */
-#define IPC_IPR_IRQ11_Pos                     _UINT32_(11)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ11_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ11_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ11(value)                  (IPC_IPR_IRQ11_Msk & (_UINT32_(value) << IPC_IPR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_IPR register */
-#define IPC_IPR_IRQ12_Pos                     _UINT32_(12)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ12_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ12_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ12(value)                  (IPC_IPR_IRQ12_Msk & (_UINT32_(value) << IPC_IPR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_IPR register */
-#define IPC_IPR_IRQ13_Pos                     _UINT32_(13)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ13_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ13_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ13(value)                  (IPC_IPR_IRQ13_Msk & (_UINT32_(value) << IPC_IPR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_IPR register */
-#define IPC_IPR_IRQ14_Pos                     _UINT32_(14)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ14_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ14_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ14(value)                  (IPC_IPR_IRQ14_Msk & (_UINT32_(value) << IPC_IPR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_IPR register */
-#define IPC_IPR_IRQ15_Pos                     _UINT32_(15)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ15_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ15_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ15(value)                  (IPC_IPR_IRQ15_Msk & (_UINT32_(value) << IPC_IPR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_IPR register */
-#define IPC_IPR_IRQ16_Pos                     _UINT32_(16)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ16_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ16_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ16(value)                  (IPC_IPR_IRQ16_Msk & (_UINT32_(value) << IPC_IPR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_IPR register */
-#define IPC_IPR_IRQ17_Pos                     _UINT32_(17)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ17_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ17_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ17(value)                  (IPC_IPR_IRQ17_Msk & (_UINT32_(value) << IPC_IPR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_IPR register */
-#define IPC_IPR_IRQ18_Pos                     _UINT32_(18)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ18_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ18_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ18(value)                  (IPC_IPR_IRQ18_Msk & (_UINT32_(value) << IPC_IPR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_IPR register */
-#define IPC_IPR_IRQ19_Pos                     _UINT32_(19)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ19_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ19_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ19(value)                  (IPC_IPR_IRQ19_Msk & (_UINT32_(value) << IPC_IPR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_IPR register */
-#define IPC_IPR_IRQ20_Pos                     _UINT32_(20)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ20_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ20_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ20(value)                  (IPC_IPR_IRQ20_Msk & (_UINT32_(value) << IPC_IPR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_IPR register */
-#define IPC_IPR_IRQ21_Pos                     _UINT32_(21)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ21_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ21_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ21(value)                  (IPC_IPR_IRQ21_Msk & (_UINT32_(value) << IPC_IPR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_IPR register */
-#define IPC_IPR_IRQ22_Pos                     _UINT32_(22)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ22_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ22_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ22(value)                  (IPC_IPR_IRQ22_Msk & (_UINT32_(value) << IPC_IPR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_IPR register */
-#define IPC_IPR_IRQ23_Pos                     _UINT32_(23)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ23_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ23_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ23(value)                  (IPC_IPR_IRQ23_Msk & (_UINT32_(value) << IPC_IPR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_IPR register */
-#define IPC_IPR_IRQ24_Pos                     _UINT32_(24)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ24_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ24_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ24(value)                  (IPC_IPR_IRQ24_Msk & (_UINT32_(value) << IPC_IPR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_IPR register */
-#define IPC_IPR_IRQ25_Pos                     _UINT32_(25)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ25_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ25_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ25(value)                  (IPC_IPR_IRQ25_Msk & (_UINT32_(value) << IPC_IPR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_IPR register */
-#define IPC_IPR_IRQ26_Pos                     _UINT32_(26)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ26_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ26_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ26(value)                  (IPC_IPR_IRQ26_Msk & (_UINT32_(value) << IPC_IPR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_IPR register */
-#define IPC_IPR_IRQ27_Pos                     _UINT32_(27)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ27_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ27_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ27(value)                  (IPC_IPR_IRQ27_Msk & (_UINT32_(value) << IPC_IPR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_IPR register */
-#define IPC_IPR_IRQ28_Pos                     _UINT32_(28)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ28_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ28_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ28(value)                  (IPC_IPR_IRQ28_Msk & (_UINT32_(value) << IPC_IPR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_IPR register */
-#define IPC_IPR_IRQ29_Pos                     _UINT32_(29)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ29_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ29_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ29(value)                  (IPC_IPR_IRQ29_Msk & (_UINT32_(value) << IPC_IPR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_IPR register */
-#define IPC_IPR_IRQ30_Pos                     _UINT32_(30)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ30_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ30_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ30(value)                  (IPC_IPR_IRQ30_Msk & (_UINT32_(value) << IPC_IPR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_IPR register */
-#define IPC_IPR_IRQ31_Pos                     _UINT32_(31)                                         /* (IPC_IPR) Interrupt Pending Position */
-#define IPC_IPR_IRQ31_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ31_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
-#define IPC_IPR_IRQ31(value)                  (IPC_IPR_IRQ31_Msk & (_UINT32_(value) << IPC_IPR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_IPR register */
-#define IPC_IPR_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (IPC_IPR) Register Mask  */
+/* -------- IPC_IDCR : (IPC Offset: 0x10) ( /W 32) Interrupt Disable Command Register -------- */
+#define IPC_IDCR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ0_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ0_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ0(value)                  (IPC_IDCR_IRQ0_Msk & (_UINT32_(value) << IPC_IDCR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ1_Pos                     _UINT32_(1)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ1_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ1_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ1(value)                  (IPC_IDCR_IRQ1_Msk & (_UINT32_(value) << IPC_IDCR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ2_Pos                     _UINT32_(2)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ2_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ2_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ2(value)                  (IPC_IDCR_IRQ2_Msk & (_UINT32_(value) << IPC_IDCR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ3_Pos                     _UINT32_(3)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ3_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ3_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ3(value)                  (IPC_IDCR_IRQ3_Msk & (_UINT32_(value) << IPC_IDCR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ4_Pos                     _UINT32_(4)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ4_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ4_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ4(value)                  (IPC_IDCR_IRQ4_Msk & (_UINT32_(value) << IPC_IDCR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ5_Pos                     _UINT32_(5)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ5_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ5_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ5(value)                  (IPC_IDCR_IRQ5_Msk & (_UINT32_(value) << IPC_IDCR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ6_Pos                     _UINT32_(6)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ6_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ6_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ6(value)                  (IPC_IDCR_IRQ6_Msk & (_UINT32_(value) << IPC_IDCR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ7_Pos                     _UINT32_(7)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ7_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ7_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ7(value)                  (IPC_IDCR_IRQ7_Msk & (_UINT32_(value) << IPC_IDCR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ8_Pos                     _UINT32_(8)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ8_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ8_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ8(value)                  (IPC_IDCR_IRQ8_Msk & (_UINT32_(value) << IPC_IDCR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ9_Pos                     _UINT32_(9)                                          /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ9_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ9_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ9(value)                  (IPC_IDCR_IRQ9_Msk & (_UINT32_(value) << IPC_IDCR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ10_Pos                    _UINT32_(10)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ10_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ10_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ10(value)                 (IPC_IDCR_IRQ10_Msk & (_UINT32_(value) << IPC_IDCR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ11_Pos                    _UINT32_(11)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ11_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ11_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ11(value)                 (IPC_IDCR_IRQ11_Msk & (_UINT32_(value) << IPC_IDCR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ12_Pos                    _UINT32_(12)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ12_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ12_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ12(value)                 (IPC_IDCR_IRQ12_Msk & (_UINT32_(value) << IPC_IDCR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ13_Pos                    _UINT32_(13)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ13_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ13_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ13(value)                 (IPC_IDCR_IRQ13_Msk & (_UINT32_(value) << IPC_IDCR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ14_Pos                    _UINT32_(14)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ14_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ14_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ14(value)                 (IPC_IDCR_IRQ14_Msk & (_UINT32_(value) << IPC_IDCR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ15_Pos                    _UINT32_(15)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ15_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ15_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ15(value)                 (IPC_IDCR_IRQ15_Msk & (_UINT32_(value) << IPC_IDCR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ16_Pos                    _UINT32_(16)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ16_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ16_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ16(value)                 (IPC_IDCR_IRQ16_Msk & (_UINT32_(value) << IPC_IDCR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ17_Pos                    _UINT32_(17)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ17_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ17_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ17(value)                 (IPC_IDCR_IRQ17_Msk & (_UINT32_(value) << IPC_IDCR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ18_Pos                    _UINT32_(18)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ18_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ18_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ18(value)                 (IPC_IDCR_IRQ18_Msk & (_UINT32_(value) << IPC_IDCR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ19_Pos                    _UINT32_(19)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ19_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ19_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ19(value)                 (IPC_IDCR_IRQ19_Msk & (_UINT32_(value) << IPC_IDCR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ20_Pos                    _UINT32_(20)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ20_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ20_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ20(value)                 (IPC_IDCR_IRQ20_Msk & (_UINT32_(value) << IPC_IDCR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ21_Pos                    _UINT32_(21)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ21_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ21_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ21(value)                 (IPC_IDCR_IRQ21_Msk & (_UINT32_(value) << IPC_IDCR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ22_Pos                    _UINT32_(22)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ22_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ22_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ22(value)                 (IPC_IDCR_IRQ22_Msk & (_UINT32_(value) << IPC_IDCR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ23_Pos                    _UINT32_(23)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ23_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ23_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ23(value)                 (IPC_IDCR_IRQ23_Msk & (_UINT32_(value) << IPC_IDCR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ24_Pos                    _UINT32_(24)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ24_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ24_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ24(value)                 (IPC_IDCR_IRQ24_Msk & (_UINT32_(value) << IPC_IDCR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ25_Pos                    _UINT32_(25)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ25_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ25_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ25(value)                 (IPC_IDCR_IRQ25_Msk & (_UINT32_(value) << IPC_IDCR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ26_Pos                    _UINT32_(26)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ26_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ26_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ26(value)                 (IPC_IDCR_IRQ26_Msk & (_UINT32_(value) << IPC_IDCR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ27_Pos                    _UINT32_(27)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ27_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ27_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ27(value)                 (IPC_IDCR_IRQ27_Msk & (_UINT32_(value) << IPC_IDCR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ28_Pos                    _UINT32_(28)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ28_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ28_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ28(value)                 (IPC_IDCR_IRQ28_Msk & (_UINT32_(value) << IPC_IDCR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ29_Pos                    _UINT32_(29)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ29_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ29_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ29(value)                 (IPC_IDCR_IRQ29_Msk & (_UINT32_(value) << IPC_IDCR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ30_Pos                    _UINT32_(30)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ30_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ30_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ30(value)                 (IPC_IDCR_IRQ30_Msk & (_UINT32_(value) << IPC_IDCR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_IDCR register */
+#define IPC_IDCR_IRQ31_Pos                    _UINT32_(31)                                         /* (IPC_IDCR) Interrupt Disable Position */
+#define IPC_IDCR_IRQ31_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ31_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
+#define IPC_IDCR_IRQ31(value)                 (IPC_IDCR_IRQ31_Msk & (_UINT32_(value) << IPC_IDCR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_IDCR register */
+#define IPC_IDCR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (IPC_IDCR) Register Mask  */
 
-#define IPC_IPR_IRQ_Pos                       _UINT32_(0)                                          /* (IPC_IPR Position) Interrupt Pending */
-#define IPC_IPR_IRQ_Msk                       (_UINT32_(0xFFFFFFFF) << IPC_IPR_IRQ_Pos)            /* (IPC_IPR Mask) IRQ */
-#define IPC_IPR_IRQ(value)                    (IPC_IPR_IRQ_Msk & (_UINT32_(value) << IPC_IPR_IRQ_Pos)) 
+#define IPC_IDCR_IRQ_Pos                      _UINT32_(0)                                          /* (IPC_IDCR Position) Interrupt Disable */
+#define IPC_IDCR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_IDCR_IRQ_Pos)           /* (IPC_IDCR Mask) IRQ */
+#define IPC_IDCR_IRQ(value)                   (IPC_IDCR_IRQ_Msk & (_UINT32_(value) << IPC_IDCR_IRQ_Pos)) 
 
 /* -------- IPC_IECR : (IPC Offset: 0x0C) ( /W 32) Interrupt Enable Command Register -------- */
 #define IPC_IECR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_IECR) Interrupt Enable Position */
@@ -440,109 +337,6 @@
 #define IPC_IECR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_IECR_IRQ_Pos)           /* (IPC_IECR Mask) IRQ */
 #define IPC_IECR_IRQ(value)                   (IPC_IECR_IRQ_Msk & (_UINT32_(value) << IPC_IECR_IRQ_Pos)) 
 
-/* -------- IPC_IDCR : (IPC Offset: 0x10) ( /W 32) Interrupt Disable Command Register -------- */
-#define IPC_IDCR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ0_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ0_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ0(value)                  (IPC_IDCR_IRQ0_Msk & (_UINT32_(value) << IPC_IDCR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ1_Pos                     _UINT32_(1)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ1_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ1_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ1(value)                  (IPC_IDCR_IRQ1_Msk & (_UINT32_(value) << IPC_IDCR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ2_Pos                     _UINT32_(2)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ2_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ2_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ2(value)                  (IPC_IDCR_IRQ2_Msk & (_UINT32_(value) << IPC_IDCR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ3_Pos                     _UINT32_(3)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ3_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ3_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ3(value)                  (IPC_IDCR_IRQ3_Msk & (_UINT32_(value) << IPC_IDCR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ4_Pos                     _UINT32_(4)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ4_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ4_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ4(value)                  (IPC_IDCR_IRQ4_Msk & (_UINT32_(value) << IPC_IDCR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ5_Pos                     _UINT32_(5)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ5_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ5_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ5(value)                  (IPC_IDCR_IRQ5_Msk & (_UINT32_(value) << IPC_IDCR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ6_Pos                     _UINT32_(6)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ6_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ6_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ6(value)                  (IPC_IDCR_IRQ6_Msk & (_UINT32_(value) << IPC_IDCR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ7_Pos                     _UINT32_(7)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ7_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ7_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ7(value)                  (IPC_IDCR_IRQ7_Msk & (_UINT32_(value) << IPC_IDCR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ8_Pos                     _UINT32_(8)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ8_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ8_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ8(value)                  (IPC_IDCR_IRQ8_Msk & (_UINT32_(value) << IPC_IDCR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ9_Pos                     _UINT32_(9)                                          /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ9_Msk                     (_UINT32_(0x1) << IPC_IDCR_IRQ9_Pos)                 /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ9(value)                  (IPC_IDCR_IRQ9_Msk & (_UINT32_(value) << IPC_IDCR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ10_Pos                    _UINT32_(10)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ10_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ10_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ10(value)                 (IPC_IDCR_IRQ10_Msk & (_UINT32_(value) << IPC_IDCR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ11_Pos                    _UINT32_(11)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ11_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ11_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ11(value)                 (IPC_IDCR_IRQ11_Msk & (_UINT32_(value) << IPC_IDCR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ12_Pos                    _UINT32_(12)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ12_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ12_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ12(value)                 (IPC_IDCR_IRQ12_Msk & (_UINT32_(value) << IPC_IDCR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ13_Pos                    _UINT32_(13)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ13_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ13_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ13(value)                 (IPC_IDCR_IRQ13_Msk & (_UINT32_(value) << IPC_IDCR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ14_Pos                    _UINT32_(14)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ14_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ14_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ14(value)                 (IPC_IDCR_IRQ14_Msk & (_UINT32_(value) << IPC_IDCR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ15_Pos                    _UINT32_(15)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ15_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ15_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ15(value)                 (IPC_IDCR_IRQ15_Msk & (_UINT32_(value) << IPC_IDCR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ16_Pos                    _UINT32_(16)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ16_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ16_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ16(value)                 (IPC_IDCR_IRQ16_Msk & (_UINT32_(value) << IPC_IDCR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ17_Pos                    _UINT32_(17)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ17_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ17_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ17(value)                 (IPC_IDCR_IRQ17_Msk & (_UINT32_(value) << IPC_IDCR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ18_Pos                    _UINT32_(18)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ18_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ18_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ18(value)                 (IPC_IDCR_IRQ18_Msk & (_UINT32_(value) << IPC_IDCR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ19_Pos                    _UINT32_(19)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ19_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ19_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ19(value)                 (IPC_IDCR_IRQ19_Msk & (_UINT32_(value) << IPC_IDCR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ20_Pos                    _UINT32_(20)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ20_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ20_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ20(value)                 (IPC_IDCR_IRQ20_Msk & (_UINT32_(value) << IPC_IDCR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ21_Pos                    _UINT32_(21)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ21_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ21_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ21(value)                 (IPC_IDCR_IRQ21_Msk & (_UINT32_(value) << IPC_IDCR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ22_Pos                    _UINT32_(22)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ22_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ22_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ22(value)                 (IPC_IDCR_IRQ22_Msk & (_UINT32_(value) << IPC_IDCR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ23_Pos                    _UINT32_(23)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ23_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ23_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ23(value)                 (IPC_IDCR_IRQ23_Msk & (_UINT32_(value) << IPC_IDCR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ24_Pos                    _UINT32_(24)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ24_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ24_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ24(value)                 (IPC_IDCR_IRQ24_Msk & (_UINT32_(value) << IPC_IDCR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ25_Pos                    _UINT32_(25)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ25_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ25_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ25(value)                 (IPC_IDCR_IRQ25_Msk & (_UINT32_(value) << IPC_IDCR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ26_Pos                    _UINT32_(26)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ26_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ26_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ26(value)                 (IPC_IDCR_IRQ26_Msk & (_UINT32_(value) << IPC_IDCR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ27_Pos                    _UINT32_(27)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ27_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ27_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ27(value)                 (IPC_IDCR_IRQ27_Msk & (_UINT32_(value) << IPC_IDCR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ28_Pos                    _UINT32_(28)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ28_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ28_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ28(value)                 (IPC_IDCR_IRQ28_Msk & (_UINT32_(value) << IPC_IDCR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ29_Pos                    _UINT32_(29)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ29_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ29_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ29(value)                 (IPC_IDCR_IRQ29_Msk & (_UINT32_(value) << IPC_IDCR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ30_Pos                    _UINT32_(30)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ30_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ30_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ30(value)                 (IPC_IDCR_IRQ30_Msk & (_UINT32_(value) << IPC_IDCR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_IDCR register */
-#define IPC_IDCR_IRQ31_Pos                    _UINT32_(31)                                         /* (IPC_IDCR) Interrupt Disable Position */
-#define IPC_IDCR_IRQ31_Msk                    (_UINT32_(0x1) << IPC_IDCR_IRQ31_Pos)                /* (IPC_IDCR) Interrupt Disable Mask */
-#define IPC_IDCR_IRQ31(value)                 (IPC_IDCR_IRQ31_Msk & (_UINT32_(value) << IPC_IDCR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_IDCR register */
-#define IPC_IDCR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (IPC_IDCR) Register Mask  */
-
-#define IPC_IDCR_IRQ_Pos                      _UINT32_(0)                                          /* (IPC_IDCR Position) Interrupt Disable */
-#define IPC_IDCR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_IDCR_IRQ_Pos)           /* (IPC_IDCR Mask) IRQ */
-#define IPC_IDCR_IRQ(value)                   (IPC_IDCR_IRQ_Msk & (_UINT32_(value) << IPC_IDCR_IRQ_Pos)) 
-
 /* -------- IPC_IMR : (IPC Offset: 0x14) ( R/ 32) Interrupt Mask Register -------- */
 #define IPC_IMR_IRQ0_Pos                      _UINT32_(0)                                          /* (IPC_IMR) Interrupt Mask Position */
 #define IPC_IMR_IRQ0_Msk                      (_UINT32_(0x1) << IPC_IMR_IRQ0_Pos)                  /* (IPC_IMR) Interrupt Mask Mask */
@@ -645,6 +439,212 @@
 #define IPC_IMR_IRQ_Pos                       _UINT32_(0)                                          /* (IPC_IMR Position) Interrupt Mask */
 #define IPC_IMR_IRQ_Msk                       (_UINT32_(0xFFFFFFFF) << IPC_IMR_IRQ_Pos)            /* (IPC_IMR Mask) IRQ */
 #define IPC_IMR_IRQ(value)                    (IPC_IMR_IRQ_Msk & (_UINT32_(value) << IPC_IMR_IRQ_Pos)) 
+
+/* -------- IPC_IPR : (IPC Offset: 0x08) ( R/ 32) Interrupt Pending Register -------- */
+#define IPC_IPR_IRQ0_Pos                      _UINT32_(0)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ0_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ0_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ0(value)                   (IPC_IPR_IRQ0_Msk & (_UINT32_(value) << IPC_IPR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_IPR register */
+#define IPC_IPR_IRQ1_Pos                      _UINT32_(1)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ1_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ1_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ1(value)                   (IPC_IPR_IRQ1_Msk & (_UINT32_(value) << IPC_IPR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_IPR register */
+#define IPC_IPR_IRQ2_Pos                      _UINT32_(2)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ2_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ2_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ2(value)                   (IPC_IPR_IRQ2_Msk & (_UINT32_(value) << IPC_IPR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_IPR register */
+#define IPC_IPR_IRQ3_Pos                      _UINT32_(3)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ3_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ3_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ3(value)                   (IPC_IPR_IRQ3_Msk & (_UINT32_(value) << IPC_IPR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_IPR register */
+#define IPC_IPR_IRQ4_Pos                      _UINT32_(4)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ4_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ4_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ4(value)                   (IPC_IPR_IRQ4_Msk & (_UINT32_(value) << IPC_IPR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_IPR register */
+#define IPC_IPR_IRQ5_Pos                      _UINT32_(5)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ5_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ5_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ5(value)                   (IPC_IPR_IRQ5_Msk & (_UINT32_(value) << IPC_IPR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_IPR register */
+#define IPC_IPR_IRQ6_Pos                      _UINT32_(6)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ6_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ6_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ6(value)                   (IPC_IPR_IRQ6_Msk & (_UINT32_(value) << IPC_IPR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_IPR register */
+#define IPC_IPR_IRQ7_Pos                      _UINT32_(7)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ7_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ7_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ7(value)                   (IPC_IPR_IRQ7_Msk & (_UINT32_(value) << IPC_IPR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_IPR register */
+#define IPC_IPR_IRQ8_Pos                      _UINT32_(8)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ8_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ8_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ8(value)                   (IPC_IPR_IRQ8_Msk & (_UINT32_(value) << IPC_IPR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_IPR register */
+#define IPC_IPR_IRQ9_Pos                      _UINT32_(9)                                          /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ9_Msk                      (_UINT32_(0x1) << IPC_IPR_IRQ9_Pos)                  /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ9(value)                   (IPC_IPR_IRQ9_Msk & (_UINT32_(value) << IPC_IPR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_IPR register */
+#define IPC_IPR_IRQ10_Pos                     _UINT32_(10)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ10_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ10_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ10(value)                  (IPC_IPR_IRQ10_Msk & (_UINT32_(value) << IPC_IPR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_IPR register */
+#define IPC_IPR_IRQ11_Pos                     _UINT32_(11)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ11_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ11_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ11(value)                  (IPC_IPR_IRQ11_Msk & (_UINT32_(value) << IPC_IPR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_IPR register */
+#define IPC_IPR_IRQ12_Pos                     _UINT32_(12)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ12_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ12_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ12(value)                  (IPC_IPR_IRQ12_Msk & (_UINT32_(value) << IPC_IPR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_IPR register */
+#define IPC_IPR_IRQ13_Pos                     _UINT32_(13)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ13_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ13_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ13(value)                  (IPC_IPR_IRQ13_Msk & (_UINT32_(value) << IPC_IPR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_IPR register */
+#define IPC_IPR_IRQ14_Pos                     _UINT32_(14)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ14_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ14_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ14(value)                  (IPC_IPR_IRQ14_Msk & (_UINT32_(value) << IPC_IPR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_IPR register */
+#define IPC_IPR_IRQ15_Pos                     _UINT32_(15)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ15_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ15_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ15(value)                  (IPC_IPR_IRQ15_Msk & (_UINT32_(value) << IPC_IPR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_IPR register */
+#define IPC_IPR_IRQ16_Pos                     _UINT32_(16)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ16_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ16_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ16(value)                  (IPC_IPR_IRQ16_Msk & (_UINT32_(value) << IPC_IPR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_IPR register */
+#define IPC_IPR_IRQ17_Pos                     _UINT32_(17)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ17_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ17_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ17(value)                  (IPC_IPR_IRQ17_Msk & (_UINT32_(value) << IPC_IPR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_IPR register */
+#define IPC_IPR_IRQ18_Pos                     _UINT32_(18)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ18_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ18_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ18(value)                  (IPC_IPR_IRQ18_Msk & (_UINT32_(value) << IPC_IPR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_IPR register */
+#define IPC_IPR_IRQ19_Pos                     _UINT32_(19)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ19_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ19_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ19(value)                  (IPC_IPR_IRQ19_Msk & (_UINT32_(value) << IPC_IPR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_IPR register */
+#define IPC_IPR_IRQ20_Pos                     _UINT32_(20)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ20_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ20_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ20(value)                  (IPC_IPR_IRQ20_Msk & (_UINT32_(value) << IPC_IPR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_IPR register */
+#define IPC_IPR_IRQ21_Pos                     _UINT32_(21)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ21_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ21_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ21(value)                  (IPC_IPR_IRQ21_Msk & (_UINT32_(value) << IPC_IPR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_IPR register */
+#define IPC_IPR_IRQ22_Pos                     _UINT32_(22)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ22_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ22_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ22(value)                  (IPC_IPR_IRQ22_Msk & (_UINT32_(value) << IPC_IPR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_IPR register */
+#define IPC_IPR_IRQ23_Pos                     _UINT32_(23)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ23_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ23_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ23(value)                  (IPC_IPR_IRQ23_Msk & (_UINT32_(value) << IPC_IPR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_IPR register */
+#define IPC_IPR_IRQ24_Pos                     _UINT32_(24)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ24_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ24_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ24(value)                  (IPC_IPR_IRQ24_Msk & (_UINT32_(value) << IPC_IPR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_IPR register */
+#define IPC_IPR_IRQ25_Pos                     _UINT32_(25)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ25_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ25_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ25(value)                  (IPC_IPR_IRQ25_Msk & (_UINT32_(value) << IPC_IPR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_IPR register */
+#define IPC_IPR_IRQ26_Pos                     _UINT32_(26)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ26_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ26_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ26(value)                  (IPC_IPR_IRQ26_Msk & (_UINT32_(value) << IPC_IPR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_IPR register */
+#define IPC_IPR_IRQ27_Pos                     _UINT32_(27)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ27_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ27_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ27(value)                  (IPC_IPR_IRQ27_Msk & (_UINT32_(value) << IPC_IPR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_IPR register */
+#define IPC_IPR_IRQ28_Pos                     _UINT32_(28)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ28_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ28_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ28(value)                  (IPC_IPR_IRQ28_Msk & (_UINT32_(value) << IPC_IPR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_IPR register */
+#define IPC_IPR_IRQ29_Pos                     _UINT32_(29)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ29_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ29_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ29(value)                  (IPC_IPR_IRQ29_Msk & (_UINT32_(value) << IPC_IPR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_IPR register */
+#define IPC_IPR_IRQ30_Pos                     _UINT32_(30)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ30_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ30_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ30(value)                  (IPC_IPR_IRQ30_Msk & (_UINT32_(value) << IPC_IPR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_IPR register */
+#define IPC_IPR_IRQ31_Pos                     _UINT32_(31)                                         /* (IPC_IPR) Interrupt Pending Position */
+#define IPC_IPR_IRQ31_Msk                     (_UINT32_(0x1) << IPC_IPR_IRQ31_Pos)                 /* (IPC_IPR) Interrupt Pending Mask */
+#define IPC_IPR_IRQ31(value)                  (IPC_IPR_IRQ31_Msk & (_UINT32_(value) << IPC_IPR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_IPR register */
+#define IPC_IPR_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (IPC_IPR) Register Mask  */
+
+#define IPC_IPR_IRQ_Pos                       _UINT32_(0)                                          /* (IPC_IPR Position) Interrupt Pending */
+#define IPC_IPR_IRQ_Msk                       (_UINT32_(0xFFFFFFFF) << IPC_IPR_IRQ_Pos)            /* (IPC_IPR Mask) IRQ */
+#define IPC_IPR_IRQ(value)                    (IPC_IPR_IRQ_Msk & (_UINT32_(value) << IPC_IPR_IRQ_Pos)) 
+
+/* -------- IPC_ISCR : (IPC Offset: 0x00) ( /W 32) Interrupt Set Command Register -------- */
+#define IPC_ISCR_IRQ0_Pos                     _UINT32_(0)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ0_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ0_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ0(value)                  (IPC_ISCR_IRQ0_Msk & (_UINT32_(value) << IPC_ISCR_IRQ0_Pos)) /* Assigment of value for IRQ0 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ1_Pos                     _UINT32_(1)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ1_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ1_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ1(value)                  (IPC_ISCR_IRQ1_Msk & (_UINT32_(value) << IPC_ISCR_IRQ1_Pos)) /* Assigment of value for IRQ1 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ2_Pos                     _UINT32_(2)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ2_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ2_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ2(value)                  (IPC_ISCR_IRQ2_Msk & (_UINT32_(value) << IPC_ISCR_IRQ2_Pos)) /* Assigment of value for IRQ2 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ3_Pos                     _UINT32_(3)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ3_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ3_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ3(value)                  (IPC_ISCR_IRQ3_Msk & (_UINT32_(value) << IPC_ISCR_IRQ3_Pos)) /* Assigment of value for IRQ3 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ4_Pos                     _UINT32_(4)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ4_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ4_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ4(value)                  (IPC_ISCR_IRQ4_Msk & (_UINT32_(value) << IPC_ISCR_IRQ4_Pos)) /* Assigment of value for IRQ4 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ5_Pos                     _UINT32_(5)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ5_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ5_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ5(value)                  (IPC_ISCR_IRQ5_Msk & (_UINT32_(value) << IPC_ISCR_IRQ5_Pos)) /* Assigment of value for IRQ5 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ6_Pos                     _UINT32_(6)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ6_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ6_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ6(value)                  (IPC_ISCR_IRQ6_Msk & (_UINT32_(value) << IPC_ISCR_IRQ6_Pos)) /* Assigment of value for IRQ6 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ7_Pos                     _UINT32_(7)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ7_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ7_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ7(value)                  (IPC_ISCR_IRQ7_Msk & (_UINT32_(value) << IPC_ISCR_IRQ7_Pos)) /* Assigment of value for IRQ7 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ8_Pos                     _UINT32_(8)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ8_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ8_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ8(value)                  (IPC_ISCR_IRQ8_Msk & (_UINT32_(value) << IPC_ISCR_IRQ8_Pos)) /* Assigment of value for IRQ8 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ9_Pos                     _UINT32_(9)                                          /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ9_Msk                     (_UINT32_(0x1) << IPC_ISCR_IRQ9_Pos)                 /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ9(value)                  (IPC_ISCR_IRQ9_Msk & (_UINT32_(value) << IPC_ISCR_IRQ9_Pos)) /* Assigment of value for IRQ9 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ10_Pos                    _UINT32_(10)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ10_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ10_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ10(value)                 (IPC_ISCR_IRQ10_Msk & (_UINT32_(value) << IPC_ISCR_IRQ10_Pos)) /* Assigment of value for IRQ10 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ11_Pos                    _UINT32_(11)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ11_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ11_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ11(value)                 (IPC_ISCR_IRQ11_Msk & (_UINT32_(value) << IPC_ISCR_IRQ11_Pos)) /* Assigment of value for IRQ11 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ12_Pos                    _UINT32_(12)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ12_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ12_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ12(value)                 (IPC_ISCR_IRQ12_Msk & (_UINT32_(value) << IPC_ISCR_IRQ12_Pos)) /* Assigment of value for IRQ12 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ13_Pos                    _UINT32_(13)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ13_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ13_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ13(value)                 (IPC_ISCR_IRQ13_Msk & (_UINT32_(value) << IPC_ISCR_IRQ13_Pos)) /* Assigment of value for IRQ13 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ14_Pos                    _UINT32_(14)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ14_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ14_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ14(value)                 (IPC_ISCR_IRQ14_Msk & (_UINT32_(value) << IPC_ISCR_IRQ14_Pos)) /* Assigment of value for IRQ14 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ15_Pos                    _UINT32_(15)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ15_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ15_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ15(value)                 (IPC_ISCR_IRQ15_Msk & (_UINT32_(value) << IPC_ISCR_IRQ15_Pos)) /* Assigment of value for IRQ15 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ16_Pos                    _UINT32_(16)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ16_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ16_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ16(value)                 (IPC_ISCR_IRQ16_Msk & (_UINT32_(value) << IPC_ISCR_IRQ16_Pos)) /* Assigment of value for IRQ16 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ17_Pos                    _UINT32_(17)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ17_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ17_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ17(value)                 (IPC_ISCR_IRQ17_Msk & (_UINT32_(value) << IPC_ISCR_IRQ17_Pos)) /* Assigment of value for IRQ17 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ18_Pos                    _UINT32_(18)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ18_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ18_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ18(value)                 (IPC_ISCR_IRQ18_Msk & (_UINT32_(value) << IPC_ISCR_IRQ18_Pos)) /* Assigment of value for IRQ18 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ19_Pos                    _UINT32_(19)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ19_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ19_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ19(value)                 (IPC_ISCR_IRQ19_Msk & (_UINT32_(value) << IPC_ISCR_IRQ19_Pos)) /* Assigment of value for IRQ19 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ20_Pos                    _UINT32_(20)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ20_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ20_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ20(value)                 (IPC_ISCR_IRQ20_Msk & (_UINT32_(value) << IPC_ISCR_IRQ20_Pos)) /* Assigment of value for IRQ20 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ21_Pos                    _UINT32_(21)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ21_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ21_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ21(value)                 (IPC_ISCR_IRQ21_Msk & (_UINT32_(value) << IPC_ISCR_IRQ21_Pos)) /* Assigment of value for IRQ21 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ22_Pos                    _UINT32_(22)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ22_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ22_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ22(value)                 (IPC_ISCR_IRQ22_Msk & (_UINT32_(value) << IPC_ISCR_IRQ22_Pos)) /* Assigment of value for IRQ22 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ23_Pos                    _UINT32_(23)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ23_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ23_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ23(value)                 (IPC_ISCR_IRQ23_Msk & (_UINT32_(value) << IPC_ISCR_IRQ23_Pos)) /* Assigment of value for IRQ23 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ24_Pos                    _UINT32_(24)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ24_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ24_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ24(value)                 (IPC_ISCR_IRQ24_Msk & (_UINT32_(value) << IPC_ISCR_IRQ24_Pos)) /* Assigment of value for IRQ24 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ25_Pos                    _UINT32_(25)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ25_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ25_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ25(value)                 (IPC_ISCR_IRQ25_Msk & (_UINT32_(value) << IPC_ISCR_IRQ25_Pos)) /* Assigment of value for IRQ25 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ26_Pos                    _UINT32_(26)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ26_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ26_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ26(value)                 (IPC_ISCR_IRQ26_Msk & (_UINT32_(value) << IPC_ISCR_IRQ26_Pos)) /* Assigment of value for IRQ26 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ27_Pos                    _UINT32_(27)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ27_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ27_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ27(value)                 (IPC_ISCR_IRQ27_Msk & (_UINT32_(value) << IPC_ISCR_IRQ27_Pos)) /* Assigment of value for IRQ27 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ28_Pos                    _UINT32_(28)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ28_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ28_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ28(value)                 (IPC_ISCR_IRQ28_Msk & (_UINT32_(value) << IPC_ISCR_IRQ28_Pos)) /* Assigment of value for IRQ28 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ29_Pos                    _UINT32_(29)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ29_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ29_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ29(value)                 (IPC_ISCR_IRQ29_Msk & (_UINT32_(value) << IPC_ISCR_IRQ29_Pos)) /* Assigment of value for IRQ29 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ30_Pos                    _UINT32_(30)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ30_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ30_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ30(value)                 (IPC_ISCR_IRQ30_Msk & (_UINT32_(value) << IPC_ISCR_IRQ30_Pos)) /* Assigment of value for IRQ30 in the IPC_ISCR register */
+#define IPC_ISCR_IRQ31_Pos                    _UINT32_(31)                                         /* (IPC_ISCR) Interrupt Set Position */
+#define IPC_ISCR_IRQ31_Msk                    (_UINT32_(0x1) << IPC_ISCR_IRQ31_Pos)                /* (IPC_ISCR) Interrupt Set Mask */
+#define IPC_ISCR_IRQ31(value)                 (IPC_ISCR_IRQ31_Msk & (_UINT32_(value) << IPC_ISCR_IRQ31_Pos)) /* Assigment of value for IRQ31 in the IPC_ISCR register */
+#define IPC_ISCR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (IPC_ISCR) Register Mask  */
+
+#define IPC_ISCR_IRQ_Pos                      _UINT32_(0)                                          /* (IPC_ISCR Position) Interrupt Set */
+#define IPC_ISCR_IRQ_Msk                      (_UINT32_(0xFFFFFFFF) << IPC_ISCR_IRQ_Pos)           /* (IPC_ISCR Mask) IRQ */
+#define IPC_ISCR_IRQ(value)                   (IPC_ISCR_IRQ_Msk & (_UINT32_(value) << IPC_ISCR_IRQ_Pos)) 
 
 /* -------- IPC_ISR : (IPC Offset: 0x18) ( R/ 32) Interrupt Status Register -------- */
 #define IPC_ISR_IRQ0_Pos                      _UINT32_(0)                                          /* (IPC_ISR) Current Interrupt Identifier Position */
@@ -762,12 +762,12 @@
 
 
 /** \brief IPC register offsets definitions */
-#define IPC_ISCR_REG_OFST              _UINT32_(0x00)      /* (IPC_ISCR) Interrupt Set Command Register Offset */
 #define IPC_ICCR_REG_OFST              _UINT32_(0x04)      /* (IPC_ICCR) Interrupt Clear Command Register Offset */
-#define IPC_IPR_REG_OFST               _UINT32_(0x08)      /* (IPC_IPR) Interrupt Pending Register Offset */
-#define IPC_IECR_REG_OFST              _UINT32_(0x0C)      /* (IPC_IECR) Interrupt Enable Command Register Offset */
 #define IPC_IDCR_REG_OFST              _UINT32_(0x10)      /* (IPC_IDCR) Interrupt Disable Command Register Offset */
+#define IPC_IECR_REG_OFST              _UINT32_(0x0C)      /* (IPC_IECR) Interrupt Enable Command Register Offset */
 #define IPC_IMR_REG_OFST               _UINT32_(0x14)      /* (IPC_IMR) Interrupt Mask Register Offset */
+#define IPC_IPR_REG_OFST               _UINT32_(0x08)      /* (IPC_IPR) Interrupt Pending Register Offset */
+#define IPC_ISCR_REG_OFST              _UINT32_(0x00)      /* (IPC_ISCR) Interrupt Set Command Register Offset */
 #define IPC_ISR_REG_OFST               _UINT32_(0x18)      /* (IPC_ISR) Interrupt Status Register Offset */
 #define IPC_WPMR_REG_OFST              _UINT32_(0x1C)      /* (IPC_WPMR) Write Protection Mode Register Offset */
 

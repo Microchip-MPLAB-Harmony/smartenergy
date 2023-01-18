@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:01Z */
 #ifndef _PIC32CXMTSH_SHA_INSTANCE_
 #define _PIC32CXMTSH_SHA_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for SHA peripheral ========== */
-#define SHA_INSTANCE_ID                          (53)       
 #define SHA_CLOCK_ID                             (53)       
+#define SHA_INSTANCE_ID                          (53)       
 #define SHA_INSTANCE_ID_SHASEC                   (54)       
 
 #endif /* _PIC32CXMTSH_SHA_INSTANCE_ */

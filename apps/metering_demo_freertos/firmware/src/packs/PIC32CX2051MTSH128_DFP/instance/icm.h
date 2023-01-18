@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:01Z */
 #ifndef _PIC32CXMTSH_ICM_INSTANCE_
 #define _PIC32CXMTSH_ICM_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for ICM peripheral ========== */
-#define ICM_INSTANCE_ID                          (57)       
 #define ICM_CLOCK_ID                             (57)       
+#define ICM_INSTANCE_ID                          (57)       
 #define ICM_INSTANCE_ID_ICMSEC                   (58)       
 
 #endif /* _PIC32CXMTSH_ICM_INSTANCE_ */

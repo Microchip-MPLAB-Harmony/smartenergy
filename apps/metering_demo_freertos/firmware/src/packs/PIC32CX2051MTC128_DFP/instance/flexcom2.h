@@ -20,16 +20,16 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_FLEXCOM2_INSTANCE_
 #define _PIC32CXMTC_FLEXCOM2_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for FLEXCOM2 peripheral ========== */
-#define FLEXCOM2_INSTANCE_ID                     (11)       
 #define FLEXCOM2_CLOCK_ID                        (11)       
-#define FLEXCOM2_USART_FIFO_SIZE                 (8)        
+#define FLEXCOM2_INSTANCE_ID                     (11)       
 #define FLEXCOM2_SPI_FIFO_SIZE                   (8)        
 #define FLEXCOM2_TWI_FIFO_SIZE                   (8)        
+#define FLEXCOM2_USART_FIFO_SIZE                 (8)        
 
 #endif /* _PIC32CXMTC_FLEXCOM2_INSTANCE_ */

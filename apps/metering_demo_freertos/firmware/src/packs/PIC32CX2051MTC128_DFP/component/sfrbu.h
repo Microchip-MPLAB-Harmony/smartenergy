@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_SFRBU_COMPONENT_H_
 #define _PIC32CXMTC_SFRBU_COMPONENT_H_
 
@@ -28,27 +28,11 @@
 /*   SOFTWARE API DEFINITION FOR SFRBU                                        */
 /* ************************************************************************** */
 
-/* -------- SFRBU_XTAL_TRIM : (SFRBU Offset: 0x10) (R/W 32) XTAL Oscillator Trimming Register -------- */
-#define SFRBU_XTAL_TRIM_XTAL_TRIM_Pos         _UINT32_(0)                                          /* (SFRBU_XTAL_TRIM) 32 kHz Crystal Oscillator Trimming Value Position */
-#define SFRBU_XTAL_TRIM_XTAL_TRIM_Msk         (_UINT32_(0x3) << SFRBU_XTAL_TRIM_XTAL_TRIM_Pos)     /* (SFRBU_XTAL_TRIM) 32 kHz Crystal Oscillator Trimming Value Mask */
-#define SFRBU_XTAL_TRIM_XTAL_TRIM(value)      (SFRBU_XTAL_TRIM_XTAL_TRIM_Msk & (_UINT32_(value) << SFRBU_XTAL_TRIM_XTAL_TRIM_Pos)) /* Assigment of value for XTAL_TRIM in the SFRBU_XTAL_TRIM register */
-#define SFRBU_XTAL_TRIM_Msk                   _UINT32_(0x00000003)                                 /* (SFRBU_XTAL_TRIM) Register Mask  */
-
-
-/* -------- SFRBU_TRIM : (SFRBU Offset: 0x14) ( R/ 32) Trimming Bits Register -------- */
-#define SFRBU_TRIM_RC32_Pos                   _UINT32_(0)                                          /* (SFRBU_TRIM) RC Oscillator Trimming Value Position */
-#define SFRBU_TRIM_RC32_Msk                   (_UINT32_(0x3F) << SFRBU_TRIM_RC32_Pos)              /* (SFRBU_TRIM) RC Oscillator Trimming Value Mask */
-#define SFRBU_TRIM_RC32(value)                (SFRBU_TRIM_RC32_Msk & (_UINT32_(value) << SFRBU_TRIM_RC32_Pos)) /* Assigment of value for RC32 in the SFRBU_TRIM register */
-#define SFRBU_TRIM_CONVBG_Pos                 _UINT32_(8)                                          /* (SFRBU_TRIM) Conversion IP Bandgap Trimming Value Position */
-#define SFRBU_TRIM_CONVBG_Msk                 (_UINT32_(0xF) << SFRBU_TRIM_CONVBG_Pos)             /* (SFRBU_TRIM) Conversion IP Bandgap Trimming Value Mask */
-#define SFRBU_TRIM_CONVBG(value)              (SFRBU_TRIM_CONVBG_Msk & (_UINT32_(value) << SFRBU_TRIM_CONVBG_Pos)) /* Assigment of value for CONVBG in the SFRBU_TRIM register */
-#define SFRBU_TRIM_LDO_Pos                    _UINT32_(16)                                         /* (SFRBU_TRIM) Power Management IP LDO Trimming Value Position */
-#define SFRBU_TRIM_LDO_Msk                    (_UINT32_(0xF) << SFRBU_TRIM_LDO_Pos)                /* (SFRBU_TRIM) Power Management IP LDO Trimming Value Mask */
-#define SFRBU_TRIM_LDO(value)                 (SFRBU_TRIM_LDO_Msk & (_UINT32_(value) << SFRBU_TRIM_LDO_Pos)) /* Assigment of value for LDO in the SFRBU_TRIM register */
-#define SFRBU_TRIM_LCD_Pos                    _UINT32_(24)                                         /* (SFRBU_TRIM) LDO Internal Bandgap Trimming for LCD Driver Position */
-#define SFRBU_TRIM_LCD_Msk                    (_UINT32_(0xF) << SFRBU_TRIM_LCD_Pos)                /* (SFRBU_TRIM) LDO Internal Bandgap Trimming for LCD Driver Mask */
-#define SFRBU_TRIM_LCD(value)                 (SFRBU_TRIM_LCD_Msk & (_UINT32_(value) << SFRBU_TRIM_LCD_Pos)) /* Assigment of value for LCD in the SFRBU_TRIM register */
-#define SFRBU_TRIM_Msk                        _UINT32_(0x0F0F0F3F)                                 /* (SFRBU_TRIM) Register Mask  */
+/* -------- SFRBU_BODCORE : (SFRBU Offset: 0x40) (R/W 32) BOD Core Register -------- */
+#define SFRBU_BODCORE_STATUS_Pos              _UINT32_(0)                                          /* (SFRBU_BODCORE) Core Brownout Detector Position */
+#define SFRBU_BODCORE_STATUS_Msk              (_UINT32_(0x1) << SFRBU_BODCORE_STATUS_Pos)          /* (SFRBU_BODCORE) Core Brownout Detector Mask */
+#define SFRBU_BODCORE_STATUS(value)           (SFRBU_BODCORE_STATUS_Msk & (_UINT32_(value) << SFRBU_BODCORE_STATUS_Pos)) /* Assigment of value for STATUS in the SFRBU_BODCORE register */
+#define SFRBU_BODCORE_Msk                     _UINT32_(0x00000001)                                 /* (SFRBU_BODCORE) Register Mask  */
 
 
 /* -------- SFRBU_BOOT : (SFRBU Offset: 0x20) (R/W 32) Boot Register -------- */
@@ -155,18 +139,34 @@
 #define SFRBU_IO_RETENTION_PD_30__Msk         (_UINT32_(0x1) << SFRBU_IO_RETENTION_PD_30__Pos)     /* (SFRBU_IO_RETENTION Mask) PD_30_ */
 #define SFRBU_IO_RETENTION_PD_30_(value)      (SFRBU_IO_RETENTION_PD_30__Msk & (_UINT32_(value) << SFRBU_IO_RETENTION_PD_30__Pos)) 
 
-/* -------- SFRBU_BODCORE : (SFRBU Offset: 0x40) (R/W 32) BOD Core Register -------- */
-#define SFRBU_BODCORE_STATUS_Pos              _UINT32_(0)                                          /* (SFRBU_BODCORE) Core Brownout Detector Position */
-#define SFRBU_BODCORE_STATUS_Msk              (_UINT32_(0x1) << SFRBU_BODCORE_STATUS_Pos)          /* (SFRBU_BODCORE) Core Brownout Detector Mask */
-#define SFRBU_BODCORE_STATUS(value)           (SFRBU_BODCORE_STATUS_Msk & (_UINT32_(value) << SFRBU_BODCORE_STATUS_Pos)) /* Assigment of value for STATUS in the SFRBU_BODCORE register */
-#define SFRBU_BODCORE_Msk                     _UINT32_(0x00000001)                                 /* (SFRBU_BODCORE) Register Mask  */
-
-
 /* -------- SFRBU_PWS_CNTRL : (SFRBU Offset: 0x50) (R/W 32) Power Switch Control Register -------- */
 #define SFRBU_PWS_CNTRL_UNMASK_Pos            _UINT32_(0)                                          /* (SFRBU_PWS_CNTRL) Unmask Power Switch Control Signals Position */
 #define SFRBU_PWS_CNTRL_UNMASK_Msk            (_UINT32_(0x1) << SFRBU_PWS_CNTRL_UNMASK_Pos)        /* (SFRBU_PWS_CNTRL) Unmask Power Switch Control Signals Mask */
 #define SFRBU_PWS_CNTRL_UNMASK(value)         (SFRBU_PWS_CNTRL_UNMASK_Msk & (_UINT32_(value) << SFRBU_PWS_CNTRL_UNMASK_Pos)) /* Assigment of value for UNMASK in the SFRBU_PWS_CNTRL register */
 #define SFRBU_PWS_CNTRL_Msk                   _UINT32_(0x00000001)                                 /* (SFRBU_PWS_CNTRL) Register Mask  */
+
+
+/* -------- SFRBU_SPARE : (SFRBU Offset: 0xF0) (R/W 32) Spare Register -------- */
+#define SFRBU_SPARE_VALUE_Pos                 _UINT32_(0)                                          /* (SFRBU_SPARE) Spare Position */
+#define SFRBU_SPARE_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << SFRBU_SPARE_VALUE_Pos)      /* (SFRBU_SPARE) Spare Mask */
+#define SFRBU_SPARE_VALUE(value)              (SFRBU_SPARE_VALUE_Msk & (_UINT32_(value) << SFRBU_SPARE_VALUE_Pos)) /* Assigment of value for VALUE in the SFRBU_SPARE register */
+#define SFRBU_SPARE_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (SFRBU_SPARE) Register Mask  */
+
+
+/* -------- SFRBU_TRIM : (SFRBU Offset: 0x14) ( R/ 32) Trimming Bits Register -------- */
+#define SFRBU_TRIM_RC32_Pos                   _UINT32_(0)                                          /* (SFRBU_TRIM) RC Oscillator Trimming Value Position */
+#define SFRBU_TRIM_RC32_Msk                   (_UINT32_(0x3F) << SFRBU_TRIM_RC32_Pos)              /* (SFRBU_TRIM) RC Oscillator Trimming Value Mask */
+#define SFRBU_TRIM_RC32(value)                (SFRBU_TRIM_RC32_Msk & (_UINT32_(value) << SFRBU_TRIM_RC32_Pos)) /* Assigment of value for RC32 in the SFRBU_TRIM register */
+#define SFRBU_TRIM_CONVBG_Pos                 _UINT32_(8)                                          /* (SFRBU_TRIM) Conversion IP Bandgap Trimming Value Position */
+#define SFRBU_TRIM_CONVBG_Msk                 (_UINT32_(0xF) << SFRBU_TRIM_CONVBG_Pos)             /* (SFRBU_TRIM) Conversion IP Bandgap Trimming Value Mask */
+#define SFRBU_TRIM_CONVBG(value)              (SFRBU_TRIM_CONVBG_Msk & (_UINT32_(value) << SFRBU_TRIM_CONVBG_Pos)) /* Assigment of value for CONVBG in the SFRBU_TRIM register */
+#define SFRBU_TRIM_LDO_Pos                    _UINT32_(16)                                         /* (SFRBU_TRIM) Power Management IP LDO Trimming Value Position */
+#define SFRBU_TRIM_LDO_Msk                    (_UINT32_(0xF) << SFRBU_TRIM_LDO_Pos)                /* (SFRBU_TRIM) Power Management IP LDO Trimming Value Mask */
+#define SFRBU_TRIM_LDO(value)                 (SFRBU_TRIM_LDO_Msk & (_UINT32_(value) << SFRBU_TRIM_LDO_Pos)) /* Assigment of value for LDO in the SFRBU_TRIM register */
+#define SFRBU_TRIM_LCD_Pos                    _UINT32_(24)                                         /* (SFRBU_TRIM) LDO Internal Bandgap Trimming for LCD Driver Position */
+#define SFRBU_TRIM_LCD_Msk                    (_UINT32_(0xF) << SFRBU_TRIM_LCD_Pos)                /* (SFRBU_TRIM) LDO Internal Bandgap Trimming for LCD Driver Mask */
+#define SFRBU_TRIM_LCD(value)                 (SFRBU_TRIM_LCD_Msk & (_UINT32_(value) << SFRBU_TRIM_LCD_Pos)) /* Assigment of value for LCD in the SFRBU_TRIM register */
+#define SFRBU_TRIM_Msk                        _UINT32_(0x0F0F0F3F)                                 /* (SFRBU_TRIM) Register Mask  */
 
 
 /* -------- SFRBU_WPMR : (SFRBU Offset: 0xE4) (R/W 32) Write Protection Mode Register -------- */
@@ -191,23 +191,23 @@
 #define SFRBU_WPSR_Msk                        _UINT32_(0x00FFFF01)                                 /* (SFRBU_WPSR) Register Mask  */
 
 
-/* -------- SFRBU_SPARE : (SFRBU Offset: 0xF0) (R/W 32) Spare Register -------- */
-#define SFRBU_SPARE_VALUE_Pos                 _UINT32_(0)                                          /* (SFRBU_SPARE) Spare Position */
-#define SFRBU_SPARE_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << SFRBU_SPARE_VALUE_Pos)      /* (SFRBU_SPARE) Spare Mask */
-#define SFRBU_SPARE_VALUE(value)              (SFRBU_SPARE_VALUE_Msk & (_UINT32_(value) << SFRBU_SPARE_VALUE_Pos)) /* Assigment of value for VALUE in the SFRBU_SPARE register */
-#define SFRBU_SPARE_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (SFRBU_SPARE) Register Mask  */
+/* -------- SFRBU_XTAL_TRIM : (SFRBU Offset: 0x10) (R/W 32) XTAL Oscillator Trimming Register -------- */
+#define SFRBU_XTAL_TRIM_XTAL_TRIM_Pos         _UINT32_(0)                                          /* (SFRBU_XTAL_TRIM) 32 kHz Crystal Oscillator Trimming Value Position */
+#define SFRBU_XTAL_TRIM_XTAL_TRIM_Msk         (_UINT32_(0x3) << SFRBU_XTAL_TRIM_XTAL_TRIM_Pos)     /* (SFRBU_XTAL_TRIM) 32 kHz Crystal Oscillator Trimming Value Mask */
+#define SFRBU_XTAL_TRIM_XTAL_TRIM(value)      (SFRBU_XTAL_TRIM_XTAL_TRIM_Msk & (_UINT32_(value) << SFRBU_XTAL_TRIM_XTAL_TRIM_Pos)) /* Assigment of value for XTAL_TRIM in the SFRBU_XTAL_TRIM register */
+#define SFRBU_XTAL_TRIM_Msk                   _UINT32_(0x00000003)                                 /* (SFRBU_XTAL_TRIM) Register Mask  */
 
 
 /** \brief SFRBU register offsets definitions */
-#define SFRBU_XTAL_TRIM_REG_OFST       _UINT32_(0x10)      /* (SFRBU_XTAL_TRIM) XTAL Oscillator Trimming Register Offset */
-#define SFRBU_TRIM_REG_OFST            _UINT32_(0x14)      /* (SFRBU_TRIM) Trimming Bits Register Offset */
+#define SFRBU_BODCORE_REG_OFST         _UINT32_(0x40)      /* (SFRBU_BODCORE) BOD Core Register Offset */
 #define SFRBU_BOOT_REG_OFST            _UINT32_(0x20)      /* (SFRBU_BOOT) Boot Register Offset */
 #define SFRBU_IO_RETENTION_REG_OFST    _UINT32_(0x30)      /* (SFRBU_IO_RETENTION) IO Retention Register Offset */
-#define SFRBU_BODCORE_REG_OFST         _UINT32_(0x40)      /* (SFRBU_BODCORE) BOD Core Register Offset */
 #define SFRBU_PWS_CNTRL_REG_OFST       _UINT32_(0x50)      /* (SFRBU_PWS_CNTRL) Power Switch Control Register Offset */
+#define SFRBU_SPARE_REG_OFST           _UINT32_(0xF0)      /* (SFRBU_SPARE) Spare Register Offset */
+#define SFRBU_TRIM_REG_OFST            _UINT32_(0x14)      /* (SFRBU_TRIM) Trimming Bits Register Offset */
 #define SFRBU_WPMR_REG_OFST            _UINT32_(0xE4)      /* (SFRBU_WPMR) Write Protection Mode Register Offset */
 #define SFRBU_WPSR_REG_OFST            _UINT32_(0xE8)      /* (SFRBU_WPSR) Write Protection Status Register Offset */
-#define SFRBU_SPARE_REG_OFST           _UINT32_(0xF0)      /* (SFRBU_SPARE) Spare Register Offset */
+#define SFRBU_XTAL_TRIM_REG_OFST       _UINT32_(0x10)      /* (SFRBU_XTAL_TRIM) XTAL Oscillator Trimming Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief SFRBU register API structure */

@@ -20,7 +20,7 @@
  *
  */
 
-/* File generated from device description version 2022-10-10T14:22:37Z */
+/* File generated from device description version 2022-11-09T10:42:58Z */
 #ifndef _PIC32CX2051MTSH128_H_
 #define _PIC32CX2051MTSH128_H_
 
@@ -162,9 +162,9 @@ typedef enum IRQn
   EMAFE_SLINK_IRQn          =  76, /* 76  Energy Metering Analog Front End (EMAFE) */
   EMAFE_DATA_IRQn           =  77, /* 77  Energy Metering Analog Front End (EMAFE) */
   MEM2MEM1_IRQn             =  78, /* 78  Memory to Memory (MEM2MEM1)         */
-  TC3_CHANNEL0_IRQn         =  79, /* 79  Timer Counter (TC3)                 */
-  TC3_CHANNEL1_IRQn         =  80, /* 80  Timer Counter (TC3)                 */
-  TC3_CHANNEL2_IRQn         =  81, /* 81  Timer Counter (TC3)                 */
+  TC3_CH0_IRQn              =  79, /* 79  Timer Counter (TC3)                 */
+  TC3_CH1_IRQn              =  80, /* 80  Timer Counter (TC3)                 */
+  TC3_CH2_IRQn              =  81, /* 81  Timer Counter (TC3)                 */
   TC3_C0SEC_IRQn            =  82, /* 82  Timer Counter (TC3)                 */
   TC3_C1SEC_IRQn            =  83, /* 83  Timer Counter (TC3)                 */
   TC3_C2SEC_IRQn            =  84, /* 84  Timer Counter (TC3)                 */
@@ -283,9 +283,9 @@ typedef struct _DeviceVectors
   void* pfnEMAFE_SLINK_Handler;                  /*  76 Energy Metering Analog Front End (EMAFE) */
   void* pfnEMAFE_DATA_Handler;                   /*  77 Energy Metering Analog Front End (EMAFE) */
   void* pfnMEM2MEM1_Handler;                     /*  78 Memory to Memory (MEM2MEM1) */
-  void* pfnTC3_CHANNEL0_Handler;                 /*  79 Timer Counter (TC3) */
-  void* pfnTC3_CHANNEL1_Handler;                 /*  80 Timer Counter (TC3) */
-  void* pfnTC3_CHANNEL2_Handler;                 /*  81 Timer Counter (TC3) */
+  void* pfnTC3_CH0_Handler;                      /*  79 Timer Counter (TC3) */
+  void* pfnTC3_CH1_Handler;                      /*  80 Timer Counter (TC3) */
+  void* pfnTC3_CH2_Handler;                      /*  81 Timer Counter (TC3) */
   void* pfnTC3_C0SEC_Handler;                    /*  82 Timer Counter (TC3) */
   void* pfnTC3_C1SEC_Handler;                    /*  83 Timer Counter (TC3) */
   void* pfnTC3_C2SEC_Handler;                    /*  84 Timer Counter (TC3) */
@@ -397,9 +397,9 @@ void SUPC_WKUP15_Handler           ( void );
 void EMAFE_SLINK_Handler           ( void );
 void EMAFE_DATA_Handler            ( void );
 void MEM2MEM1_Handler              ( void );
-void TC3_CHANNEL0_Handler          ( void );
-void TC3_CHANNEL1_Handler          ( void );
-void TC3_CHANNEL2_Handler          ( void );
+void TC3_CH0_Handler               ( void );
+void TC3_CH1_Handler               ( void );
+void TC3_CH2_Handler               ( void );
 void TC3_C0SEC_Handler             ( void );
 void TC3_C1SEC_Handler             ( void );
 void TC3_C2SEC_Handler             ( void );

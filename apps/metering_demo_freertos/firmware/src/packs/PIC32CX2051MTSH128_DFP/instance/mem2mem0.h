@@ -20,13 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_MEM2MEM0_INSTANCE_
 #define _PIC32CXMTSH_MEM2MEM0_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for MEM2MEM0 peripheral ========== */
-#define MEM2MEM0_INSTANCE_ID                     (30)       
 #define MEM2MEM0_CLOCK_ID                        (30)       
+#define MEM2MEM0_INSTANCE_ID                     (30)       
 
 #endif /* _PIC32CXMTSH_MEM2MEM0_INSTANCE_ */

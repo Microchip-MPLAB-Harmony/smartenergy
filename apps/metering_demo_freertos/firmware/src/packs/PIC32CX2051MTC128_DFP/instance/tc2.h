@@ -20,21 +20,22 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_TC2_INSTANCE_
 #define _PIC32CXMTC_TC2_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for TC2 peripheral ========== */
-#define TC2_INSTANCE_ID_CHANNEL0                 (37)       
 #define TC2_CLOCK_ID_CHANNEL0                    (37)       
-#define TC2_INSTANCE_ID_CHANNEL1                 (38)       
 #define TC2_CLOCK_ID_CHANNEL1                    (38)       
-#define TC2_INSTANCE_ID_CHANNEL2                 (39)       
 #define TC2_CLOCK_ID_CHANNEL2                    (39)       
 #define TC2_INSTANCE_ID_C0SEC                    (46)       
 #define TC2_INSTANCE_ID_C1SEC                    (47)       
 #define TC2_INSTANCE_ID_C2SEC                    (48)       
+#define TC2_INSTANCE_ID_CHANNEL0                 (37)       
+#define TC2_INSTANCE_ID_CHANNEL1                 (38)       
+#define TC2_INSTANCE_ID_CHANNEL2                 (39)       
+#define TC2_NUM_INTERRUPT_LINES                  (3)        
 #define TC2_TCCLKS_                              (0)        /* MCK0DIV */
 #define TC2_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
 #define TC2_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0DIV/8 */
@@ -44,7 +45,6 @@
 #define TC2_TCCLKS_XC0                           (6)        /* XC0 */
 #define TC2_TCCLKS_XC1                           (7)        /* XC1 */
 #define TC2_TCCLKS_XC2                           (8)        /* XC2 */
-#define TC2_NUM_INTERRUPT_LINES                  (3)        
 #define TC2_TIMER_WIDTH                          (32)       
 
 #endif /* _PIC32CXMTC_TC2_INSTANCE_ */

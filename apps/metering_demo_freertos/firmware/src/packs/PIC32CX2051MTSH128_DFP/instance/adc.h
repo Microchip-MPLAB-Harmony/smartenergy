@@ -20,13 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_ADC_INSTANCE_
 #define _PIC32CXMTSH_ADC_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for ADC peripheral ========== */
-#define ADC_INSTANCE_ID                          (24)       
 #define ADC_CLOCK_ID                             (24)       
+#define ADC_INSTANCE_ID                          (24)       
 
 #endif /* _PIC32CXMTSH_ADC_INSTANCE_ */

@@ -62,13 +62,19 @@ static void WaitEntryClockSetup(bool xtal_disable)
     PMC_REGS->CKGR_MOR |= CKGR_MOR_KEY_PASSWD | CKGR_MOR_MOSCRCEN_Msk;
 
     /* Wait until the RC oscillator clock is ready. */
-    while((PMC_REGS->PMC_SR & PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk);
+    while((PMC_REGS->PMC_SR & PMC_SR_MOSCRCS_Msk) != PMC_SR_MOSCRCS_Msk)
+    {
+        /* Nothing to do */
+    }
 
     /* Switch Main Clock (MAINCK) to the RC Oscillator clock */
     PMC_REGS->CKGR_MOR = (PMC_REGS->CKGR_MOR & ~CKGR_MOR_MOSCSEL_Msk) | CKGR_MOR_KEY_PASSWD;
 
     /* Wait for Main Clock Selection Status */
-    while((PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk);
+    while((PMC_REGS->PMC_SR & PMC_SR_MOSCSELS_Msk) != PMC_SR_MOSCSELS_Msk)
+    {
+        /* Nothing to do */
+    }
 
     /* Program PMC_CPU_CKR.CSS and MCK dividers and Wait for PMC_SR.MCKRDY to be set    */
     reg = (PMC_REGS->PMC_CPU_CKR & ~(PMC_CPU_CKR_CSS_Msk |
@@ -162,17 +168,23 @@ void SUPC_WaitModeEnter(WAITMODE_FLASH_STATE flash_lpm, WAITMODE_WKUP_SOURCE sou
     PMC_REGS->CKGR_MOR |= (CKGR_MOR_KEY_PASSWD | CKGR_MOR_WAITMODE_Msk);
 
     /* Waiting for Master Clock Ready MCKRDY = 1 */
-    while((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk);
+    while((PMC_REGS->PMC_SR & PMC_SR_MCKRDY_Msk) != PMC_SR_MCKRDY_Msk)
+    {
+        /* Nothing to do */
+    }
 
     /* Waiting for MOSCRCEN bit is cleared is strongly recommended
      * to ensure that the core will not execute undesired instructions
      */
-    for (i = 0; i < 500; i++)
+    for (i = 0; i < 500U; i++)
     {
        __NOP();
     }
 
-    while((PMC_REGS->CKGR_MOR & CKGR_MOR_MOSCRCEN_Msk) != CKGR_MOR_MOSCRCEN_Msk);
+    while((PMC_REGS->CKGR_MOR & CKGR_MOR_MOSCRCEN_Msk) != CKGR_MOR_MOSCRCEN_Msk)
+    {
+        /* Nothing to do */
+    }
 
     /* Disable CPU Interrupt */
     __disable_irq();
@@ -204,7 +216,7 @@ void SUPC_BackupModeEnter(void)
     __WFI();
 }
 
-SUPC_OBJECT supcObj;
+static SUPC_OBJECT supcObj;
 
 void SUPC_CallbackRegister(SUPC_CALLBACK callback, uintptr_t context)
 {

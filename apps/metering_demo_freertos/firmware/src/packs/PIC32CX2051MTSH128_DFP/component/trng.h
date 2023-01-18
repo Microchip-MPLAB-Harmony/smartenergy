@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:01Z */
 #ifndef _PIC32CXMTSH_TRNG_COMPONENT_H_
 #define _PIC32CXMTSH_TRNG_COMPONENT_H_
 
@@ -40,37 +40,17 @@
 #define TRNG_CR_Msk                           _UINT32_(0xFFFFFF01)                                 /* (TRNG_CR) Register Mask  */
 
 
-/* -------- TRNG_MR : (TRNG Offset: 0x04) (R/W 32) Mode Register -------- */
-#define TRNG_MR_HALFR_Pos                     _UINT32_(0)                                          /* (TRNG_MR) Half Rate Enable Position */
-#define TRNG_MR_HALFR_Msk                     (_UINT32_(0x1) << TRNG_MR_HALFR_Pos)                 /* (TRNG_MR) Half Rate Enable Mask */
-#define TRNG_MR_HALFR(value)                  (TRNG_MR_HALFR_Msk & (_UINT32_(value) << TRNG_MR_HALFR_Pos)) /* Assigment of value for HALFR in the TRNG_MR register */
-#define   TRNG_MR_HALFR_DISABLED_Val          _UINT32_(0x0)                                        /* (TRNG_MR) Maximum stream rate provided (1 sample every 84 MCK clock cycles).  */
-#define   TRNG_MR_HALFR_ENABLED_Val           _UINT32_(0x1)                                        /* (TRNG_MR) Half maximum stream rate provided if the peripheral clock frequency is above 100 MHz (1 sample every 168 MCK clock cycles).  */
-#define TRNG_MR_HALFR_DISABLED                (TRNG_MR_HALFR_DISABLED_Val << TRNG_MR_HALFR_Pos)    /* (TRNG_MR) Maximum stream rate provided (1 sample every 84 MCK clock cycles). Position  */
-#define TRNG_MR_HALFR_ENABLED                 (TRNG_MR_HALFR_ENABLED_Val << TRNG_MR_HALFR_Pos)     /* (TRNG_MR) Half maximum stream rate provided if the peripheral clock frequency is above 100 MHz (1 sample every 168 MCK clock cycles). Position  */
-#define TRNG_MR_Msk                           _UINT32_(0x00000001)                                 /* (TRNG_MR) Register Mask  */
-
-
-/* -------- TRNG_PKBCR : (TRNG Offset: 0x08) ( /W 32) Private Key Bus Control Register -------- */
-#define TRNG_PKBCR_KID_Pos                    _UINT32_(0)                                          /* (TRNG_PKBCR) Key ID (Must be Always Written to 0) Position */
-#define TRNG_PKBCR_KID_Msk                    (_UINT32_(0x1) << TRNG_PKBCR_KID_Pos)                /* (TRNG_PKBCR) Key ID (Must be Always Written to 0) Mask */
-#define TRNG_PKBCR_KID(value)                 (TRNG_PKBCR_KID_Msk & (_UINT32_(value) << TRNG_PKBCR_KID_Pos)) /* Assigment of value for KID in the TRNG_PKBCR register */
-#define TRNG_PKBCR_KSLAVE_Pos                 _UINT32_(4)                                          /* (TRNG_PKBCR) Key Bus Client Position */
-#define TRNG_PKBCR_KSLAVE_Msk                 (_UINT32_(0x3) << TRNG_PKBCR_KSLAVE_Pos)             /* (TRNG_PKBCR) Key Bus Client Mask */
-#define TRNG_PKBCR_KSLAVE(value)              (TRNG_PKBCR_KSLAVE_Msk & (_UINT32_(value) << TRNG_PKBCR_KSLAVE_Pos)) /* Assigment of value for KSLAVE in the TRNG_PKBCR register */
-#define   TRNG_PKBCR_KSLAVE_AES_ID_Val        _UINT32_(0x0)                                        /* (TRNG_PKBCR) AES  */
-#define   TRNG_PKBCR_KSLAVE_AESB_ID_Val       _UINT32_(0x1)                                        /* (TRNG_PKBCR) AESB  */
-#define TRNG_PKBCR_KSLAVE_AES_ID              (TRNG_PKBCR_KSLAVE_AES_ID_Val << TRNG_PKBCR_KSLAVE_Pos) /* (TRNG_PKBCR) AES Position  */
-#define TRNG_PKBCR_KSLAVE_AESB_ID             (TRNG_PKBCR_KSLAVE_AESB_ID_Val << TRNG_PKBCR_KSLAVE_Pos) /* (TRNG_PKBCR) AESB Position  */
-#define TRNG_PKBCR_KLENGTH_Pos                _UINT32_(8)                                          /* (TRNG_PKBCR) Key Length Position */
-#define TRNG_PKBCR_KLENGTH_Msk                (_UINT32_(0xFF) << TRNG_PKBCR_KLENGTH_Pos)           /* (TRNG_PKBCR) Key Length Mask */
-#define TRNG_PKBCR_KLENGTH(value)             (TRNG_PKBCR_KLENGTH_Msk & (_UINT32_(value) << TRNG_PKBCR_KLENGTH_Pos)) /* Assigment of value for KLENGTH in the TRNG_PKBCR register */
-#define TRNG_PKBCR_WAKEY_Pos                  _UINT32_(16)                                         /* (TRNG_PKBCR) Register Write Access Key Position */
-#define TRNG_PKBCR_WAKEY_Msk                  (_UINT32_(0xFFFF) << TRNG_PKBCR_WAKEY_Pos)           /* (TRNG_PKBCR) Register Write Access Key Mask */
-#define TRNG_PKBCR_WAKEY(value)               (TRNG_PKBCR_WAKEY_Msk & (_UINT32_(value) << TRNG_PKBCR_WAKEY_Pos)) /* Assigment of value for WAKEY in the TRNG_PKBCR register */
-#define   TRNG_PKBCR_WAKEY_PASSWD_Val         _UINT32_(0x524B)                                     /* (TRNG_PKBCR) Writing any other value in this field aborts the write operation.  */
-#define TRNG_PKBCR_WAKEY_PASSWD               (TRNG_PKBCR_WAKEY_PASSWD_Val << TRNG_PKBCR_WAKEY_Pos) /* (TRNG_PKBCR) Writing any other value in this field aborts the write operation. Position  */
-#define TRNG_PKBCR_Msk                        _UINT32_(0xFFFFFF31)                                 /* (TRNG_PKBCR) Register Mask  */
+/* -------- TRNG_IDR : (TRNG Offset: 0x14) ( /W 32) Interrupt Disable Register -------- */
+#define TRNG_IDR_DATRDY_Pos                   _UINT32_(0)                                          /* (TRNG_IDR) Data Ready Interrupt Disable Position */
+#define TRNG_IDR_DATRDY_Msk                   (_UINT32_(0x1) << TRNG_IDR_DATRDY_Pos)               /* (TRNG_IDR) Data Ready Interrupt Disable Mask */
+#define TRNG_IDR_DATRDY(value)                (TRNG_IDR_DATRDY_Msk & (_UINT32_(value) << TRNG_IDR_DATRDY_Pos)) /* Assigment of value for DATRDY in the TRNG_IDR register */
+#define TRNG_IDR_SECE_Pos                     _UINT32_(1)                                          /* (TRNG_IDR) Security and/or Safety Event Interrupt Disable Position */
+#define TRNG_IDR_SECE_Msk                     (_UINT32_(0x1) << TRNG_IDR_SECE_Pos)                 /* (TRNG_IDR) Security and/or Safety Event Interrupt Disable Mask */
+#define TRNG_IDR_SECE(value)                  (TRNG_IDR_SECE_Msk & (_UINT32_(value) << TRNG_IDR_SECE_Pos)) /* Assigment of value for SECE in the TRNG_IDR register */
+#define TRNG_IDR_EOTPKB_Pos                   _UINT32_(2)                                          /* (TRNG_IDR) End Of Transfer on Private Key Bus Interrupt Disable Position */
+#define TRNG_IDR_EOTPKB_Msk                   (_UINT32_(0x1) << TRNG_IDR_EOTPKB_Pos)               /* (TRNG_IDR) End Of Transfer on Private Key Bus Interrupt Disable Mask */
+#define TRNG_IDR_EOTPKB(value)                (TRNG_IDR_EOTPKB_Msk & (_UINT32_(value) << TRNG_IDR_EOTPKB_Pos)) /* Assigment of value for EOTPKB in the TRNG_IDR register */
+#define TRNG_IDR_Msk                          _UINT32_(0x00000007)                                 /* (TRNG_IDR) Register Mask  */
 
 
 /* -------- TRNG_IER : (TRNG Offset: 0x10) ( /W 32) Interrupt Enable Register -------- */
@@ -84,19 +64,6 @@
 #define TRNG_IER_EOTPKB_Msk                   (_UINT32_(0x1) << TRNG_IER_EOTPKB_Pos)               /* (TRNG_IER) End Of Transfer on Private Key Bus Interrupt Enable Mask */
 #define TRNG_IER_EOTPKB(value)                (TRNG_IER_EOTPKB_Msk & (_UINT32_(value) << TRNG_IER_EOTPKB_Pos)) /* Assigment of value for EOTPKB in the TRNG_IER register */
 #define TRNG_IER_Msk                          _UINT32_(0x00000007)                                 /* (TRNG_IER) Register Mask  */
-
-
-/* -------- TRNG_IDR : (TRNG Offset: 0x14) ( /W 32) Interrupt Disable Register -------- */
-#define TRNG_IDR_DATRDY_Pos                   _UINT32_(0)                                          /* (TRNG_IDR) Data Ready Interrupt Disable Position */
-#define TRNG_IDR_DATRDY_Msk                   (_UINT32_(0x1) << TRNG_IDR_DATRDY_Pos)               /* (TRNG_IDR) Data Ready Interrupt Disable Mask */
-#define TRNG_IDR_DATRDY(value)                (TRNG_IDR_DATRDY_Msk & (_UINT32_(value) << TRNG_IDR_DATRDY_Pos)) /* Assigment of value for DATRDY in the TRNG_IDR register */
-#define TRNG_IDR_SECE_Pos                     _UINT32_(1)                                          /* (TRNG_IDR) Security and/or Safety Event Interrupt Disable Position */
-#define TRNG_IDR_SECE_Msk                     (_UINT32_(0x1) << TRNG_IDR_SECE_Pos)                 /* (TRNG_IDR) Security and/or Safety Event Interrupt Disable Mask */
-#define TRNG_IDR_SECE(value)                  (TRNG_IDR_SECE_Msk & (_UINT32_(value) << TRNG_IDR_SECE_Pos)) /* Assigment of value for SECE in the TRNG_IDR register */
-#define TRNG_IDR_EOTPKB_Pos                   _UINT32_(2)                                          /* (TRNG_IDR) End Of Transfer on Private Key Bus Interrupt Disable Position */
-#define TRNG_IDR_EOTPKB_Msk                   (_UINT32_(0x1) << TRNG_IDR_EOTPKB_Pos)               /* (TRNG_IDR) End Of Transfer on Private Key Bus Interrupt Disable Mask */
-#define TRNG_IDR_EOTPKB(value)                (TRNG_IDR_EOTPKB_Msk & (_UINT32_(value) << TRNG_IDR_EOTPKB_Pos)) /* Assigment of value for EOTPKB in the TRNG_IDR register */
-#define TRNG_IDR_Msk                          _UINT32_(0x00000007)                                 /* (TRNG_IDR) Register Mask  */
 
 
 /* -------- TRNG_IMR : (TRNG Offset: 0x18) ( R/ 32) Interrupt Mask Register -------- */
@@ -125,11 +92,44 @@
 #define TRNG_ISR_Msk                          _UINT32_(0x00000007)                                 /* (TRNG_ISR) Register Mask  */
 
 
+/* -------- TRNG_MR : (TRNG Offset: 0x04) (R/W 32) Mode Register -------- */
+#define TRNG_MR_HALFR_Pos                     _UINT32_(0)                                          /* (TRNG_MR) Half Rate Enable Position */
+#define TRNG_MR_HALFR_Msk                     (_UINT32_(0x1) << TRNG_MR_HALFR_Pos)                 /* (TRNG_MR) Half Rate Enable Mask */
+#define TRNG_MR_HALFR(value)                  (TRNG_MR_HALFR_Msk & (_UINT32_(value) << TRNG_MR_HALFR_Pos)) /* Assigment of value for HALFR in the TRNG_MR register */
+#define   TRNG_MR_HALFR_DISABLED_Val          _UINT32_(0x0)                                        /* (TRNG_MR) Maximum stream rate provided (1 sample every 84 MCK clock cycles).  */
+#define   TRNG_MR_HALFR_ENABLED_Val           _UINT32_(0x1)                                        /* (TRNG_MR) Half maximum stream rate provided if the peripheral clock frequency is above 100 MHz (1 sample every 168 MCK clock cycles).  */
+#define TRNG_MR_HALFR_DISABLED                (TRNG_MR_HALFR_DISABLED_Val << TRNG_MR_HALFR_Pos)    /* (TRNG_MR) Maximum stream rate provided (1 sample every 84 MCK clock cycles). Position  */
+#define TRNG_MR_HALFR_ENABLED                 (TRNG_MR_HALFR_ENABLED_Val << TRNG_MR_HALFR_Pos)     /* (TRNG_MR) Half maximum stream rate provided if the peripheral clock frequency is above 100 MHz (1 sample every 168 MCK clock cycles). Position  */
+#define TRNG_MR_Msk                           _UINT32_(0x00000001)                                 /* (TRNG_MR) Register Mask  */
+
+
 /* -------- TRNG_ODATA : (TRNG Offset: 0x50) ( R/ 32) Output Data Register -------- */
 #define TRNG_ODATA_ODATA_Pos                  _UINT32_(0)                                          /* (TRNG_ODATA) Output Data Position */
 #define TRNG_ODATA_ODATA_Msk                  (_UINT32_(0xFFFFFFFF) << TRNG_ODATA_ODATA_Pos)       /* (TRNG_ODATA) Output Data Mask */
 #define TRNG_ODATA_ODATA(value)               (TRNG_ODATA_ODATA_Msk & (_UINT32_(value) << TRNG_ODATA_ODATA_Pos)) /* Assigment of value for ODATA in the TRNG_ODATA register */
 #define TRNG_ODATA_Msk                        _UINT32_(0xFFFFFFFF)                                 /* (TRNG_ODATA) Register Mask  */
+
+
+/* -------- TRNG_PKBCR : (TRNG Offset: 0x08) ( /W 32) Private Key Bus Control Register -------- */
+#define TRNG_PKBCR_KID_Pos                    _UINT32_(0)                                          /* (TRNG_PKBCR) Key ID (Must be Always Written to 0) Position */
+#define TRNG_PKBCR_KID_Msk                    (_UINT32_(0x1) << TRNG_PKBCR_KID_Pos)                /* (TRNG_PKBCR) Key ID (Must be Always Written to 0) Mask */
+#define TRNG_PKBCR_KID(value)                 (TRNG_PKBCR_KID_Msk & (_UINT32_(value) << TRNG_PKBCR_KID_Pos)) /* Assigment of value for KID in the TRNG_PKBCR register */
+#define TRNG_PKBCR_KSLAVE_Pos                 _UINT32_(4)                                          /* (TRNG_PKBCR) Key Bus Client Position */
+#define TRNG_PKBCR_KSLAVE_Msk                 (_UINT32_(0x3) << TRNG_PKBCR_KSLAVE_Pos)             /* (TRNG_PKBCR) Key Bus Client Mask */
+#define TRNG_PKBCR_KSLAVE(value)              (TRNG_PKBCR_KSLAVE_Msk & (_UINT32_(value) << TRNG_PKBCR_KSLAVE_Pos)) /* Assigment of value for KSLAVE in the TRNG_PKBCR register */
+#define   TRNG_PKBCR_KSLAVE_AES_ID_Val        _UINT32_(0x0)                                        /* (TRNG_PKBCR) AES  */
+#define   TRNG_PKBCR_KSLAVE_AESB_ID_Val       _UINT32_(0x1)                                        /* (TRNG_PKBCR) AESB  */
+#define TRNG_PKBCR_KSLAVE_AES_ID              (TRNG_PKBCR_KSLAVE_AES_ID_Val << TRNG_PKBCR_KSLAVE_Pos) /* (TRNG_PKBCR) AES Position  */
+#define TRNG_PKBCR_KSLAVE_AESB_ID             (TRNG_PKBCR_KSLAVE_AESB_ID_Val << TRNG_PKBCR_KSLAVE_Pos) /* (TRNG_PKBCR) AESB Position  */
+#define TRNG_PKBCR_KLENGTH_Pos                _UINT32_(8)                                          /* (TRNG_PKBCR) Key Length Position */
+#define TRNG_PKBCR_KLENGTH_Msk                (_UINT32_(0xFF) << TRNG_PKBCR_KLENGTH_Pos)           /* (TRNG_PKBCR) Key Length Mask */
+#define TRNG_PKBCR_KLENGTH(value)             (TRNG_PKBCR_KLENGTH_Msk & (_UINT32_(value) << TRNG_PKBCR_KLENGTH_Pos)) /* Assigment of value for KLENGTH in the TRNG_PKBCR register */
+#define TRNG_PKBCR_WAKEY_Pos                  _UINT32_(16)                                         /* (TRNG_PKBCR) Register Write Access Key Position */
+#define TRNG_PKBCR_WAKEY_Msk                  (_UINT32_(0xFFFF) << TRNG_PKBCR_WAKEY_Pos)           /* (TRNG_PKBCR) Register Write Access Key Mask */
+#define TRNG_PKBCR_WAKEY(value)               (TRNG_PKBCR_WAKEY_Msk & (_UINT32_(value) << TRNG_PKBCR_WAKEY_Pos)) /* Assigment of value for WAKEY in the TRNG_PKBCR register */
+#define   TRNG_PKBCR_WAKEY_PASSWD_Val         _UINT32_(0x524B)                                     /* (TRNG_PKBCR) Writing any other value in this field aborts the write operation.  */
+#define TRNG_PKBCR_WAKEY_PASSWD               (TRNG_PKBCR_WAKEY_PASSWD_Val << TRNG_PKBCR_WAKEY_Pos) /* (TRNG_PKBCR) Writing any other value in this field aborts the write operation. Position  */
+#define TRNG_PKBCR_Msk                        _UINT32_(0xFFFFFF31)                                 /* (TRNG_PKBCR) Register Mask  */
 
 
 /* -------- TRNG_WPMR : (TRNG Offset: 0xE4) (R/W 32) Write Protection Mode Register -------- */
@@ -194,13 +194,13 @@
 
 /** \brief TRNG register offsets definitions */
 #define TRNG_CR_REG_OFST               _UINT32_(0x00)      /* (TRNG_CR) Control Register Offset */
-#define TRNG_MR_REG_OFST               _UINT32_(0x04)      /* (TRNG_MR) Mode Register Offset */
-#define TRNG_PKBCR_REG_OFST            _UINT32_(0x08)      /* (TRNG_PKBCR) Private Key Bus Control Register Offset */
-#define TRNG_IER_REG_OFST              _UINT32_(0x10)      /* (TRNG_IER) Interrupt Enable Register Offset */
 #define TRNG_IDR_REG_OFST              _UINT32_(0x14)      /* (TRNG_IDR) Interrupt Disable Register Offset */
+#define TRNG_IER_REG_OFST              _UINT32_(0x10)      /* (TRNG_IER) Interrupt Enable Register Offset */
 #define TRNG_IMR_REG_OFST              _UINT32_(0x18)      /* (TRNG_IMR) Interrupt Mask Register Offset */
 #define TRNG_ISR_REG_OFST              _UINT32_(0x1C)      /* (TRNG_ISR) Interrupt Status Register Offset */
+#define TRNG_MR_REG_OFST               _UINT32_(0x04)      /* (TRNG_MR) Mode Register Offset */
 #define TRNG_ODATA_REG_OFST            _UINT32_(0x50)      /* (TRNG_ODATA) Output Data Register Offset */
+#define TRNG_PKBCR_REG_OFST            _UINT32_(0x08)      /* (TRNG_PKBCR) Private Key Bus Control Register Offset */
 #define TRNG_WPMR_REG_OFST             _UINT32_(0xE4)      /* (TRNG_WPMR) Write Protection Mode Register Offset */
 #define TRNG_WPSR_REG_OFST             _UINT32_(0xE8)      /* (TRNG_WPSR) Write Protection Status Register Offset */
 

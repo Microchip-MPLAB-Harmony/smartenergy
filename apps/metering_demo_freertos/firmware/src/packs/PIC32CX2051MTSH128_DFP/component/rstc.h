@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_RSTC_COMPONENT_H_
 #define _PIC32CXMTSH_RSTC_COMPONENT_H_
 
@@ -44,45 +44,6 @@
 #define   RSTC_CR_KEY_PASSWD_Val              _UINT32_(0xA5)                                       /* (RSTC_CR) Writing any other value in this field aborts the write operation.  */
 #define RSTC_CR_KEY_PASSWD                    (RSTC_CR_KEY_PASSWD_Val << RSTC_CR_KEY_Pos)          /* (RSTC_CR) Writing any other value in this field aborts the write operation. Position  */
 #define RSTC_CR_Msk                           _UINT32_(0xFF00000D)                                 /* (RSTC_CR) Register Mask  */
-
-
-/* -------- RSTC_SR : (RSTC Offset: 0x04) ( R/ 32) Status Register -------- */
-#define RSTC_SR_URSTS_Pos                     _UINT32_(0)                                          /* (RSTC_SR) User Reset Status (cleared on read) Position */
-#define RSTC_SR_URSTS_Msk                     (_UINT32_(0x1) << RSTC_SR_URSTS_Pos)                 /* (RSTC_SR) User Reset Status (cleared on read) Mask */
-#define RSTC_SR_URSTS(value)                  (RSTC_SR_URSTS_Msk & (_UINT32_(value) << RSTC_SR_URSTS_Pos)) /* Assigment of value for URSTS in the RSTC_SR register */
-#define RSTC_SR_CORESMS_Pos                   _UINT32_(1)                                          /* (RSTC_SR) VDDCORE Supply Monitor Reset Flag Status (cleared on read) Position */
-#define RSTC_SR_CORESMS_Msk                   (_UINT32_(0x1) << RSTC_SR_CORESMS_Pos)               /* (RSTC_SR) VDDCORE Supply Monitor Reset Flag Status (cleared on read) Mask */
-#define RSTC_SR_CORESMS(value)                (RSTC_SR_CORESMS_Msk & (_UINT32_(value) << RSTC_SR_CORESMS_Pos)) /* Assigment of value for CORESMS in the RSTC_SR register */
-#define RSTC_SR_RSTTYP_Pos                    _UINT32_(8)                                          /* (RSTC_SR) Reset Type Position */
-#define RSTC_SR_RSTTYP_Msk                    (_UINT32_(0xF) << RSTC_SR_RSTTYP_Pos)                /* (RSTC_SR) Reset Type Mask */
-#define RSTC_SR_RSTTYP(value)                 (RSTC_SR_RSTTYP_Msk & (_UINT32_(value) << RSTC_SR_RSTTYP_Pos)) /* Assigment of value for RSTTYP in the RSTC_SR register */
-#define   RSTC_SR_RSTTYP_GENERAL_RST_Val      _UINT32_(0x0)                                        /* (RSTC_SR) First power-up reset, Core and VDD3V3 Supply Monitor if not a PORVDD3V3 reset  */
-#define   RSTC_SR_RSTTYP_BACKUP_RST_Val       _UINT32_(0x1)                                        /* (RSTC_SR) VDDCORE reset. Wake-up from Backup mode  */
-#define   RSTC_SR_RSTTYP_WDT0_RST_Val         _UINT32_(0x2)                                        /* (RSTC_SR) Watchdog 0 fault occurred  */
-#define   RSTC_SR_RSTTYP_SOFT_RST_Val         _UINT32_(0x3)                                        /* (RSTC_SR) Processor reset required by the software  */
-#define   RSTC_SR_RSTTYP_USER_RST_Val         _UINT32_(0x4)                                        /* (RSTC_SR) NRST pin detected low  */
-#define   RSTC_SR_RSTTYP_CORE_SM_RST_Val      _UINT32_(0x5)                                        /* (RSTC_SR) Core Supply Monitor reset  */
-#define   RSTC_SR_RSTTYP_CPU_FAIL_RST_Val     _UINT32_(0x6)                                        /* (RSTC_SR) CPU clock failure detection occurred  */
-#define   RSTC_SR_RSTTYP_SLCK_XTAL_RST_Val    _UINT32_(0x7)                                        /* (RSTC_SR) 32.768 kHz crystal failure detection fault occurred  */
-#define   RSTC_SR_RSTTYP_WDT1_RST_Val         _UINT32_(0x9)                                        /* (RSTC_SR) Watchdog 1 fault occurred  */
-#define   RSTC_SR_RSTTYP_PORVDD3V3_RST_Val    _UINT32_(0xA)                                        /* (RSTC_SR) VDD3V3 PORVDD3V3 reset occurred  */
-#define RSTC_SR_RSTTYP_GENERAL_RST            (RSTC_SR_RSTTYP_GENERAL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) First power-up reset, Core and VDD3V3 Supply Monitor if not a PORVDD3V3 reset Position  */
-#define RSTC_SR_RSTTYP_BACKUP_RST             (RSTC_SR_RSTTYP_BACKUP_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) VDDCORE reset. Wake-up from Backup mode Position  */
-#define RSTC_SR_RSTTYP_WDT0_RST               (RSTC_SR_RSTTYP_WDT0_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Watchdog 0 fault occurred Position  */
-#define RSTC_SR_RSTTYP_SOFT_RST               (RSTC_SR_RSTTYP_SOFT_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Processor reset required by the software Position  */
-#define RSTC_SR_RSTTYP_USER_RST               (RSTC_SR_RSTTYP_USER_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) NRST pin detected low Position  */
-#define RSTC_SR_RSTTYP_CORE_SM_RST            (RSTC_SR_RSTTYP_CORE_SM_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) Core Supply Monitor reset Position  */
-#define RSTC_SR_RSTTYP_CPU_FAIL_RST           (RSTC_SR_RSTTYP_CPU_FAIL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) CPU clock failure detection occurred Position  */
-#define RSTC_SR_RSTTYP_SLCK_XTAL_RST          (RSTC_SR_RSTTYP_SLCK_XTAL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) 32.768 kHz crystal failure detection fault occurred Position  */
-#define RSTC_SR_RSTTYP_WDT1_RST               (RSTC_SR_RSTTYP_WDT1_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Watchdog 1 fault occurred Position  */
-#define RSTC_SR_RSTTYP_PORVDD3V3_RST          (RSTC_SR_RSTTYP_PORVDD3V3_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) VDD3V3 PORVDD3V3 reset occurred Position  */
-#define RSTC_SR_NRSTL_Pos                     _UINT32_(16)                                         /* (RSTC_SR) NRST Pin Level Position */
-#define RSTC_SR_NRSTL_Msk                     (_UINT32_(0x1) << RSTC_SR_NRSTL_Pos)                 /* (RSTC_SR) NRST Pin Level Mask */
-#define RSTC_SR_NRSTL(value)                  (RSTC_SR_NRSTL_Msk & (_UINT32_(value) << RSTC_SR_NRSTL_Pos)) /* Assigment of value for NRSTL in the RSTC_SR register */
-#define RSTC_SR_SRCMP_Pos                     _UINT32_(17)                                         /* (RSTC_SR) Software Reset Command in Progress Position */
-#define RSTC_SR_SRCMP_Msk                     (_UINT32_(0x1) << RSTC_SR_SRCMP_Pos)                 /* (RSTC_SR) Software Reset Command in Progress Mask */
-#define RSTC_SR_SRCMP(value)                  (RSTC_SR_SRCMP_Msk & (_UINT32_(value) << RSTC_SR_SRCMP_Pos)) /* Assigment of value for SRCMP in the RSTC_SR register */
-#define RSTC_SR_Msk                           _UINT32_(0x00030F03)                                 /* (RSTC_SR) Register Mask  */
 
 
 /* -------- RSTC_MR : (RSTC Offset: 0x08) (R/W 32) Mode Register -------- */
@@ -145,10 +106,49 @@
 #define RSTC_MR_WDTPMC_Msk                    (_UINT32_(0x3) << RSTC_MR_WDTPMC_Pos)                /* (RSTC_MR Mask) WDTPMC */
 #define RSTC_MR_WDTPMC(value)                 (RSTC_MR_WDTPMC_Msk & (_UINT32_(value) << RSTC_MR_WDTPMC_Pos)) 
 
+/* -------- RSTC_SR : (RSTC Offset: 0x04) ( R/ 32) Status Register -------- */
+#define RSTC_SR_URSTS_Pos                     _UINT32_(0)                                          /* (RSTC_SR) User Reset Status (cleared on read) Position */
+#define RSTC_SR_URSTS_Msk                     (_UINT32_(0x1) << RSTC_SR_URSTS_Pos)                 /* (RSTC_SR) User Reset Status (cleared on read) Mask */
+#define RSTC_SR_URSTS(value)                  (RSTC_SR_URSTS_Msk & (_UINT32_(value) << RSTC_SR_URSTS_Pos)) /* Assigment of value for URSTS in the RSTC_SR register */
+#define RSTC_SR_CORESMS_Pos                   _UINT32_(1)                                          /* (RSTC_SR) VDDCORE Supply Monitor Reset Flag Status (cleared on read) Position */
+#define RSTC_SR_CORESMS_Msk                   (_UINT32_(0x1) << RSTC_SR_CORESMS_Pos)               /* (RSTC_SR) VDDCORE Supply Monitor Reset Flag Status (cleared on read) Mask */
+#define RSTC_SR_CORESMS(value)                (RSTC_SR_CORESMS_Msk & (_UINT32_(value) << RSTC_SR_CORESMS_Pos)) /* Assigment of value for CORESMS in the RSTC_SR register */
+#define RSTC_SR_RSTTYP_Pos                    _UINT32_(8)                                          /* (RSTC_SR) Reset Type Position */
+#define RSTC_SR_RSTTYP_Msk                    (_UINT32_(0xF) << RSTC_SR_RSTTYP_Pos)                /* (RSTC_SR) Reset Type Mask */
+#define RSTC_SR_RSTTYP(value)                 (RSTC_SR_RSTTYP_Msk & (_UINT32_(value) << RSTC_SR_RSTTYP_Pos)) /* Assigment of value for RSTTYP in the RSTC_SR register */
+#define   RSTC_SR_RSTTYP_GENERAL_RST_Val      _UINT32_(0x0)                                        /* (RSTC_SR) First power-up reset, Core and VDD3V3 Supply Monitor if not a PORVDD3V3 reset  */
+#define   RSTC_SR_RSTTYP_BACKUP_RST_Val       _UINT32_(0x1)                                        /* (RSTC_SR) VDDCORE reset. Wake-up from Backup mode  */
+#define   RSTC_SR_RSTTYP_WDT0_RST_Val         _UINT32_(0x2)                                        /* (RSTC_SR) Watchdog 0 fault occurred  */
+#define   RSTC_SR_RSTTYP_SOFT_RST_Val         _UINT32_(0x3)                                        /* (RSTC_SR) Processor reset required by the software  */
+#define   RSTC_SR_RSTTYP_USER_RST_Val         _UINT32_(0x4)                                        /* (RSTC_SR) NRST pin detected low  */
+#define   RSTC_SR_RSTTYP_CORE_SM_RST_Val      _UINT32_(0x5)                                        /* (RSTC_SR) Core Supply Monitor reset  */
+#define   RSTC_SR_RSTTYP_CPU_FAIL_RST_Val     _UINT32_(0x6)                                        /* (RSTC_SR) CPU clock failure detection occurred  */
+#define   RSTC_SR_RSTTYP_SLCK_XTAL_RST_Val    _UINT32_(0x7)                                        /* (RSTC_SR) 32.768 kHz crystal failure detection fault occurred  */
+#define   RSTC_SR_RSTTYP_WDT1_RST_Val         _UINT32_(0x9)                                        /* (RSTC_SR) Watchdog 1 fault occurred  */
+#define   RSTC_SR_RSTTYP_PORVDD3V3_RST_Val    _UINT32_(0xA)                                        /* (RSTC_SR) VDD3V3 PORVDD3V3 reset occurred  */
+#define RSTC_SR_RSTTYP_GENERAL_RST            (RSTC_SR_RSTTYP_GENERAL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) First power-up reset, Core and VDD3V3 Supply Monitor if not a PORVDD3V3 reset Position  */
+#define RSTC_SR_RSTTYP_BACKUP_RST             (RSTC_SR_RSTTYP_BACKUP_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) VDDCORE reset. Wake-up from Backup mode Position  */
+#define RSTC_SR_RSTTYP_WDT0_RST               (RSTC_SR_RSTTYP_WDT0_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Watchdog 0 fault occurred Position  */
+#define RSTC_SR_RSTTYP_SOFT_RST               (RSTC_SR_RSTTYP_SOFT_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Processor reset required by the software Position  */
+#define RSTC_SR_RSTTYP_USER_RST               (RSTC_SR_RSTTYP_USER_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) NRST pin detected low Position  */
+#define RSTC_SR_RSTTYP_CORE_SM_RST            (RSTC_SR_RSTTYP_CORE_SM_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) Core Supply Monitor reset Position  */
+#define RSTC_SR_RSTTYP_CPU_FAIL_RST           (RSTC_SR_RSTTYP_CPU_FAIL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) CPU clock failure detection occurred Position  */
+#define RSTC_SR_RSTTYP_SLCK_XTAL_RST          (RSTC_SR_RSTTYP_SLCK_XTAL_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) 32.768 kHz crystal failure detection fault occurred Position  */
+#define RSTC_SR_RSTTYP_WDT1_RST               (RSTC_SR_RSTTYP_WDT1_RST_Val << RSTC_SR_RSTTYP_Pos)  /* (RSTC_SR) Watchdog 1 fault occurred Position  */
+#define RSTC_SR_RSTTYP_PORVDD3V3_RST          (RSTC_SR_RSTTYP_PORVDD3V3_RST_Val << RSTC_SR_RSTTYP_Pos) /* (RSTC_SR) VDD3V3 PORVDD3V3 reset occurred Position  */
+#define RSTC_SR_NRSTL_Pos                     _UINT32_(16)                                         /* (RSTC_SR) NRST Pin Level Position */
+#define RSTC_SR_NRSTL_Msk                     (_UINT32_(0x1) << RSTC_SR_NRSTL_Pos)                 /* (RSTC_SR) NRST Pin Level Mask */
+#define RSTC_SR_NRSTL(value)                  (RSTC_SR_NRSTL_Msk & (_UINT32_(value) << RSTC_SR_NRSTL_Pos)) /* Assigment of value for NRSTL in the RSTC_SR register */
+#define RSTC_SR_SRCMP_Pos                     _UINT32_(17)                                         /* (RSTC_SR) Software Reset Command in Progress Position */
+#define RSTC_SR_SRCMP_Msk                     (_UINT32_(0x1) << RSTC_SR_SRCMP_Pos)                 /* (RSTC_SR) Software Reset Command in Progress Mask */
+#define RSTC_SR_SRCMP(value)                  (RSTC_SR_SRCMP_Msk & (_UINT32_(value) << RSTC_SR_SRCMP_Pos)) /* Assigment of value for SRCMP in the RSTC_SR register */
+#define RSTC_SR_Msk                           _UINT32_(0x00030F03)                                 /* (RSTC_SR) Register Mask  */
+
+
 /** \brief RSTC register offsets definitions */
 #define RSTC_CR_REG_OFST               _UINT32_(0x00)      /* (RSTC_CR) Control Register Offset */
-#define RSTC_SR_REG_OFST               _UINT32_(0x04)      /* (RSTC_SR) Status Register Offset */
 #define RSTC_MR_REG_OFST               _UINT32_(0x08)      /* (RSTC_MR) Mode Register Offset */
+#define RSTC_SR_REG_OFST               _UINT32_(0x04)      /* (RSTC_SR) Status Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief RSTC register API structure */

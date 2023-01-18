@@ -20,69 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_PDC_COMPONENT_H_
 #define _PIC32CXMTC_PDC_COMPONENT_H_
 
 /* ************************************************************************** */
 /*   SOFTWARE API DEFINITION FOR PDC                                          */
 /* ************************************************************************** */
-
-/* -------- PDC_PERIPH_RPR : (PDC Offset: 0x00) (R/W 32) Receive Pointer Register -------- */
-#define PDC_PERIPH_RPR_RXPTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_RPR) Receive Pointer Register Position */
-#define PDC_PERIPH_RPR_RXPTR_Msk              (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_RPR_RXPTR_Pos)   /* (PDC_PERIPH_RPR) Receive Pointer Register Mask */
-#define PDC_PERIPH_RPR_RXPTR(value)           (PDC_PERIPH_RPR_RXPTR_Msk & (_UINT32_(value) << PDC_PERIPH_RPR_RXPTR_Pos)) /* Assigment of value for RXPTR in the PDC_PERIPH_RPR register */
-#define PDC_PERIPH_RPR_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_RPR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_RCR : (PDC Offset: 0x04) (R/W 32) Receive Counter Register -------- */
-#define PDC_PERIPH_RCR_RXCTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_RCR) Receive Counter Register Position */
-#define PDC_PERIPH_RCR_RXCTR_Msk              (_UINT32_(0xFFFF) << PDC_PERIPH_RCR_RXCTR_Pos)       /* (PDC_PERIPH_RCR) Receive Counter Register Mask */
-#define PDC_PERIPH_RCR_RXCTR(value)           (PDC_PERIPH_RCR_RXCTR_Msk & (_UINT32_(value) << PDC_PERIPH_RCR_RXCTR_Pos)) /* Assigment of value for RXCTR in the PDC_PERIPH_RCR register */
-#define PDC_PERIPH_RCR_Msk                    _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_RCR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_TPR : (PDC Offset: 0x08) (R/W 32) Transmit Pointer Register -------- */
-#define PDC_PERIPH_TPR_TXPTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_TPR) Transmit Counter Register Position */
-#define PDC_PERIPH_TPR_TXPTR_Msk              (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_TPR_TXPTR_Pos)   /* (PDC_PERIPH_TPR) Transmit Counter Register Mask */
-#define PDC_PERIPH_TPR_TXPTR(value)           (PDC_PERIPH_TPR_TXPTR_Msk & (_UINT32_(value) << PDC_PERIPH_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the PDC_PERIPH_TPR register */
-#define PDC_PERIPH_TPR_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_TPR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_TCR : (PDC Offset: 0x0C) (R/W 32) Transmit Counter Register -------- */
-#define PDC_PERIPH_TCR_TXCTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_TCR) Transmit Counter Register Position */
-#define PDC_PERIPH_TCR_TXCTR_Msk              (_UINT32_(0xFFFF) << PDC_PERIPH_TCR_TXCTR_Pos)       /* (PDC_PERIPH_TCR) Transmit Counter Register Mask */
-#define PDC_PERIPH_TCR_TXCTR(value)           (PDC_PERIPH_TCR_TXCTR_Msk & (_UINT32_(value) << PDC_PERIPH_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the PDC_PERIPH_TCR register */
-#define PDC_PERIPH_TCR_Msk                    _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_TCR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_RNPR : (PDC Offset: 0x10) (R/W 32) Receive Next Pointer Register -------- */
-#define PDC_PERIPH_RNPR_RXNPTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_RNPR) Receive Next Pointer Position */
-#define PDC_PERIPH_RNPR_RXNPTR_Msk            (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_RNPR_RXNPTR_Pos) /* (PDC_PERIPH_RNPR) Receive Next Pointer Mask */
-#define PDC_PERIPH_RNPR_RXNPTR(value)         (PDC_PERIPH_RNPR_RXNPTR_Msk & (_UINT32_(value) << PDC_PERIPH_RNPR_RXNPTR_Pos)) /* Assigment of value for RXNPTR in the PDC_PERIPH_RNPR register */
-#define PDC_PERIPH_RNPR_Msk                   _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_RNPR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_RNCR : (PDC Offset: 0x14) (R/W 32) Receive Next Counter Register -------- */
-#define PDC_PERIPH_RNCR_RXNCTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_RNCR) Receive Next Counter Position */
-#define PDC_PERIPH_RNCR_RXNCTR_Msk            (_UINT32_(0xFFFF) << PDC_PERIPH_RNCR_RXNCTR_Pos)     /* (PDC_PERIPH_RNCR) Receive Next Counter Mask */
-#define PDC_PERIPH_RNCR_RXNCTR(value)         (PDC_PERIPH_RNCR_RXNCTR_Msk & (_UINT32_(value) << PDC_PERIPH_RNCR_RXNCTR_Pos)) /* Assigment of value for RXNCTR in the PDC_PERIPH_RNCR register */
-#define PDC_PERIPH_RNCR_Msk                   _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_RNCR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_TNPR : (PDC Offset: 0x18) (R/W 32) Transmit Next Pointer Register -------- */
-#define PDC_PERIPH_TNPR_TXNPTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_TNPR) Transmit Next Pointer Position */
-#define PDC_PERIPH_TNPR_TXNPTR_Msk            (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_TNPR_TXNPTR_Pos) /* (PDC_PERIPH_TNPR) Transmit Next Pointer Mask */
-#define PDC_PERIPH_TNPR_TXNPTR(value)         (PDC_PERIPH_TNPR_TXNPTR_Msk & (_UINT32_(value) << PDC_PERIPH_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the PDC_PERIPH_TNPR register */
-#define PDC_PERIPH_TNPR_Msk                   _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_TNPR) Register Mask  */
-
-
-/* -------- PDC_PERIPH_TNCR : (PDC Offset: 0x1C) (R/W 32) Transmit Next Counter Register -------- */
-#define PDC_PERIPH_TNCR_TXNCTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_TNCR) Transmit Counter Next Position */
-#define PDC_PERIPH_TNCR_TXNCTR_Msk            (_UINT32_(0xFFFF) << PDC_PERIPH_TNCR_TXNCTR_Pos)     /* (PDC_PERIPH_TNCR) Transmit Counter Next Mask */
-#define PDC_PERIPH_TNCR_TXNCTR(value)         (PDC_PERIPH_TNCR_TXNCTR_Msk & (_UINT32_(value) << PDC_PERIPH_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the PDC_PERIPH_TNCR register */
-#define PDC_PERIPH_TNCR_Msk                   _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_TNCR) Register Mask  */
-
 
 /* -------- PDC_PERIPH_PTCR : (PDC Offset: 0x20) ( /W 32) Transfer Control Register -------- */
 #define PDC_PERIPH_PTCR_RXTEN_Pos             _UINT32_(0)                                          /* (PDC_PERIPH_PTCR) Receiver Transfer Enable Position */
@@ -152,18 +96,74 @@
 #define PDC_PERIPH_PWPMR_Msk                  _UINT32_(0xFFFFFF07)                                 /* (PDC_PERIPH_PWPMR) Register Mask  */
 
 
+/* -------- PDC_PERIPH_RCR : (PDC Offset: 0x04) (R/W 32) Receive Counter Register -------- */
+#define PDC_PERIPH_RCR_RXCTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_RCR) Receive Counter Register Position */
+#define PDC_PERIPH_RCR_RXCTR_Msk              (_UINT32_(0xFFFF) << PDC_PERIPH_RCR_RXCTR_Pos)       /* (PDC_PERIPH_RCR) Receive Counter Register Mask */
+#define PDC_PERIPH_RCR_RXCTR(value)           (PDC_PERIPH_RCR_RXCTR_Msk & (_UINT32_(value) << PDC_PERIPH_RCR_RXCTR_Pos)) /* Assigment of value for RXCTR in the PDC_PERIPH_RCR register */
+#define PDC_PERIPH_RCR_Msk                    _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_RCR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_RNCR : (PDC Offset: 0x14) (R/W 32) Receive Next Counter Register -------- */
+#define PDC_PERIPH_RNCR_RXNCTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_RNCR) Receive Next Counter Position */
+#define PDC_PERIPH_RNCR_RXNCTR_Msk            (_UINT32_(0xFFFF) << PDC_PERIPH_RNCR_RXNCTR_Pos)     /* (PDC_PERIPH_RNCR) Receive Next Counter Mask */
+#define PDC_PERIPH_RNCR_RXNCTR(value)         (PDC_PERIPH_RNCR_RXNCTR_Msk & (_UINT32_(value) << PDC_PERIPH_RNCR_RXNCTR_Pos)) /* Assigment of value for RXNCTR in the PDC_PERIPH_RNCR register */
+#define PDC_PERIPH_RNCR_Msk                   _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_RNCR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_RNPR : (PDC Offset: 0x10) (R/W 32) Receive Next Pointer Register -------- */
+#define PDC_PERIPH_RNPR_RXNPTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_RNPR) Receive Next Pointer Position */
+#define PDC_PERIPH_RNPR_RXNPTR_Msk            (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_RNPR_RXNPTR_Pos) /* (PDC_PERIPH_RNPR) Receive Next Pointer Mask */
+#define PDC_PERIPH_RNPR_RXNPTR(value)         (PDC_PERIPH_RNPR_RXNPTR_Msk & (_UINT32_(value) << PDC_PERIPH_RNPR_RXNPTR_Pos)) /* Assigment of value for RXNPTR in the PDC_PERIPH_RNPR register */
+#define PDC_PERIPH_RNPR_Msk                   _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_RNPR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_RPR : (PDC Offset: 0x00) (R/W 32) Receive Pointer Register -------- */
+#define PDC_PERIPH_RPR_RXPTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_RPR) Receive Pointer Register Position */
+#define PDC_PERIPH_RPR_RXPTR_Msk              (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_RPR_RXPTR_Pos)   /* (PDC_PERIPH_RPR) Receive Pointer Register Mask */
+#define PDC_PERIPH_RPR_RXPTR(value)           (PDC_PERIPH_RPR_RXPTR_Msk & (_UINT32_(value) << PDC_PERIPH_RPR_RXPTR_Pos)) /* Assigment of value for RXPTR in the PDC_PERIPH_RPR register */
+#define PDC_PERIPH_RPR_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_RPR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_TCR : (PDC Offset: 0x0C) (R/W 32) Transmit Counter Register -------- */
+#define PDC_PERIPH_TCR_TXCTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_TCR) Transmit Counter Register Position */
+#define PDC_PERIPH_TCR_TXCTR_Msk              (_UINT32_(0xFFFF) << PDC_PERIPH_TCR_TXCTR_Pos)       /* (PDC_PERIPH_TCR) Transmit Counter Register Mask */
+#define PDC_PERIPH_TCR_TXCTR(value)           (PDC_PERIPH_TCR_TXCTR_Msk & (_UINT32_(value) << PDC_PERIPH_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the PDC_PERIPH_TCR register */
+#define PDC_PERIPH_TCR_Msk                    _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_TCR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_TNCR : (PDC Offset: 0x1C) (R/W 32) Transmit Next Counter Register -------- */
+#define PDC_PERIPH_TNCR_TXNCTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_TNCR) Transmit Counter Next Position */
+#define PDC_PERIPH_TNCR_TXNCTR_Msk            (_UINT32_(0xFFFF) << PDC_PERIPH_TNCR_TXNCTR_Pos)     /* (PDC_PERIPH_TNCR) Transmit Counter Next Mask */
+#define PDC_PERIPH_TNCR_TXNCTR(value)         (PDC_PERIPH_TNCR_TXNCTR_Msk & (_UINT32_(value) << PDC_PERIPH_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the PDC_PERIPH_TNCR register */
+#define PDC_PERIPH_TNCR_Msk                   _UINT32_(0x0000FFFF)                                 /* (PDC_PERIPH_TNCR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_TNPR : (PDC Offset: 0x18) (R/W 32) Transmit Next Pointer Register -------- */
+#define PDC_PERIPH_TNPR_TXNPTR_Pos            _UINT32_(0)                                          /* (PDC_PERIPH_TNPR) Transmit Next Pointer Position */
+#define PDC_PERIPH_TNPR_TXNPTR_Msk            (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_TNPR_TXNPTR_Pos) /* (PDC_PERIPH_TNPR) Transmit Next Pointer Mask */
+#define PDC_PERIPH_TNPR_TXNPTR(value)         (PDC_PERIPH_TNPR_TXNPTR_Msk & (_UINT32_(value) << PDC_PERIPH_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the PDC_PERIPH_TNPR register */
+#define PDC_PERIPH_TNPR_Msk                   _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_TNPR) Register Mask  */
+
+
+/* -------- PDC_PERIPH_TPR : (PDC Offset: 0x08) (R/W 32) Transmit Pointer Register -------- */
+#define PDC_PERIPH_TPR_TXPTR_Pos              _UINT32_(0)                                          /* (PDC_PERIPH_TPR) Transmit Counter Register Position */
+#define PDC_PERIPH_TPR_TXPTR_Msk              (_UINT32_(0xFFFFFFFF) << PDC_PERIPH_TPR_TXPTR_Pos)   /* (PDC_PERIPH_TPR) Transmit Counter Register Mask */
+#define PDC_PERIPH_TPR_TXPTR(value)           (PDC_PERIPH_TPR_TXPTR_Msk & (_UINT32_(value) << PDC_PERIPH_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the PDC_PERIPH_TPR register */
+#define PDC_PERIPH_TPR_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (PDC_PERIPH_TPR) Register Mask  */
+
+
 /** \brief PDC register offsets definitions */
-#define PDC_PERIPH_RPR_REG_OFST        _UINT32_(0x00)      /* (PDC_PERIPH_RPR) Receive Pointer Register Offset */
-#define PDC_PERIPH_RCR_REG_OFST        _UINT32_(0x04)      /* (PDC_PERIPH_RCR) Receive Counter Register Offset */
-#define PDC_PERIPH_TPR_REG_OFST        _UINT32_(0x08)      /* (PDC_PERIPH_TPR) Transmit Pointer Register Offset */
-#define PDC_PERIPH_TCR_REG_OFST        _UINT32_(0x0C)      /* (PDC_PERIPH_TCR) Transmit Counter Register Offset */
-#define PDC_PERIPH_RNPR_REG_OFST       _UINT32_(0x10)      /* (PDC_PERIPH_RNPR) Receive Next Pointer Register Offset */
-#define PDC_PERIPH_RNCR_REG_OFST       _UINT32_(0x14)      /* (PDC_PERIPH_RNCR) Receive Next Counter Register Offset */
-#define PDC_PERIPH_TNPR_REG_OFST       _UINT32_(0x18)      /* (PDC_PERIPH_TNPR) Transmit Next Pointer Register Offset */
-#define PDC_PERIPH_TNCR_REG_OFST       _UINT32_(0x1C)      /* (PDC_PERIPH_TNCR) Transmit Next Counter Register Offset */
 #define PDC_PERIPH_PTCR_REG_OFST       _UINT32_(0x20)      /* (PDC_PERIPH_PTCR) Transfer Control Register Offset */
 #define PDC_PERIPH_PTSR_REG_OFST       _UINT32_(0x24)      /* (PDC_PERIPH_PTSR) Transfer Status Register Offset */
 #define PDC_PERIPH_PWPMR_REG_OFST      _UINT32_(0x28)      /* (PDC_PERIPH_PWPMR) Write Protection Mode Register Offset */
+#define PDC_PERIPH_RCR_REG_OFST        _UINT32_(0x04)      /* (PDC_PERIPH_RCR) Receive Counter Register Offset */
+#define PDC_PERIPH_RNCR_REG_OFST       _UINT32_(0x14)      /* (PDC_PERIPH_RNCR) Receive Next Counter Register Offset */
+#define PDC_PERIPH_RNPR_REG_OFST       _UINT32_(0x10)      /* (PDC_PERIPH_RNPR) Receive Next Pointer Register Offset */
+#define PDC_PERIPH_RPR_REG_OFST        _UINT32_(0x00)      /* (PDC_PERIPH_RPR) Receive Pointer Register Offset */
+#define PDC_PERIPH_TCR_REG_OFST        _UINT32_(0x0C)      /* (PDC_PERIPH_TCR) Transmit Counter Register Offset */
+#define PDC_PERIPH_TNCR_REG_OFST       _UINT32_(0x1C)      /* (PDC_PERIPH_TNCR) Transmit Next Counter Register Offset */
+#define PDC_PERIPH_TNPR_REG_OFST       _UINT32_(0x18)      /* (PDC_PERIPH_TNPR) Transmit Next Pointer Register Offset */
+#define PDC_PERIPH_TPR_REG_OFST        _UINT32_(0x08)      /* (PDC_PERIPH_TPR) Transmit Pointer Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief PDC register API structure */

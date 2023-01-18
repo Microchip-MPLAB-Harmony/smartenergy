@@ -20,13 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:43Z */
 #ifndef _PIC32CXMTC_CPKCC_INSTANCE_
 #define _PIC32CXMTC_CPKCC_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for CPKCC peripheral ========== */
-#define CPKCC_INSTANCE_ID                        (59)       
 #define CPKCC_CLOCK_ID                           (59)       
+#define CPKCC_INSTANCE_ID                        (59)       
 
 #endif /* _PIC32CXMTC_CPKCC_INSTANCE_ */

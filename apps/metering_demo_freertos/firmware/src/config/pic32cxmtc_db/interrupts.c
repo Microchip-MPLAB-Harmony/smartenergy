@@ -153,9 +153,9 @@ extern void SUPC_WKUP13_Handler        ( void ) __attribute__((weak, alias("Dumm
 extern void SUPC_WKUP14_Handler        ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void SUPC_WKUP15_Handler        ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void MEM2MEM1_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL0_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL1_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL2_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH0_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH1_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH2_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C0SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C1SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C2SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
@@ -264,9 +264,9 @@ const H3DeviceVectors exception_table=
     .pfnSUPC_WKUP14_Handler        = SUPC_WKUP14_Handler,
     .pfnSUPC_WKUP15_Handler        = SUPC_WKUP15_Handler,
     .pfnMEM2MEM1_Handler           = MEM2MEM1_Handler,
-    .pfnTC3_CHANNEL0_Handler       = TC3_CHANNEL0_Handler,
-    .pfnTC3_CHANNEL1_Handler       = TC3_CHANNEL1_Handler,
-    .pfnTC3_CHANNEL2_Handler       = TC3_CHANNEL2_Handler,
+    .pfnTC3_CH0_Handler            = TC3_CH0_Handler,
+    .pfnTC3_CH1_Handler            = TC3_CH1_Handler,
+    .pfnTC3_CH2_Handler            = TC3_CH2_Handler,
     .pfnTC3_C0SEC_Handler          = TC3_C0SEC_Handler,
     .pfnTC3_C1SEC_Handler          = TC3_C1SEC_Handler,
     .pfnTC3_C2SEC_Handler          = TC3_C2SEC_Handler,

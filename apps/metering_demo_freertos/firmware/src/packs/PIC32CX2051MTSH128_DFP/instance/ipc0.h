@@ -20,13 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_IPC0_INSTANCE_
 #define _PIC32CXMTSH_IPC0_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for IPC0 peripheral ========== */
-#define IPC0_INSTANCE_ID                         (28)       
 #define IPC0_CLOCK_ID                            (28)       
+#define IPC0_INSTANCE_ID                         (28)       
 
 #endif /* _PIC32CXMTSH_IPC0_INSTANCE_ */

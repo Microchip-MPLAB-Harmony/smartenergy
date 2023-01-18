@@ -20,13 +20,19 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_SUPC_INSTANCE_
 #define _PIC32CXMTSH_SUPC_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for SUPC peripheral ========== */
 #define SUPC_INSTANCE_ID                         (0)        
+#define SUPC_INSTANCE_ID_WKUP10                  (69)       
+#define SUPC_INSTANCE_ID_WKUP11                  (70)       
+#define SUPC_INSTANCE_ID_WKUP12                  (71)       
+#define SUPC_INSTANCE_ID_WKUP13                  (72)       
+#define SUPC_INSTANCE_ID_WKUP14                  (73)       
+#define SUPC_INSTANCE_ID_WKUP15                  (74)       
 #define SUPC_INSTANCE_ID_WKUP3                   (62)       
 #define SUPC_INSTANCE_ID_WKUP4                   (63)       
 #define SUPC_INSTANCE_ID_WKUP5                   (64)       
@@ -34,11 +40,5 @@
 #define SUPC_INSTANCE_ID_WKUP7                   (66)       
 #define SUPC_INSTANCE_ID_WKUP8                   (67)       
 #define SUPC_INSTANCE_ID_WKUP9                   (68)       
-#define SUPC_INSTANCE_ID_WKUP10                  (69)       
-#define SUPC_INSTANCE_ID_WKUP11                  (70)       
-#define SUPC_INSTANCE_ID_WKUP12                  (71)       
-#define SUPC_INSTANCE_ID_WKUP13                  (72)       
-#define SUPC_INSTANCE_ID_WKUP14                  (73)       
-#define SUPC_INSTANCE_ID_WKUP15                  (74)       
 
 #endif /* _PIC32CXMTSH_SUPC_INSTANCE_ */

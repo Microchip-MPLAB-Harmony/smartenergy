@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:43Z */
 #ifndef _PIC32CXMTC_AES_INSTANCE_
 #define _PIC32CXMTC_AES_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for AES peripheral ========== */
-#define AES_INSTANCE_ID                          (49)       
 #define AES_CLOCK_ID                             (49)       
+#define AES_INSTANCE_ID                          (49)       
 #define AES_INSTANCE_ID_AESSEC                   (50)       
 
 #endif /* _PIC32CXMTC_AES_INSTANCE_ */

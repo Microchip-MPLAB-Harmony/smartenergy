@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:43Z */
 #ifndef _PIC32CXMTC_CMCC1_INSTANCE_
 #define _PIC32CXMTC_CMCC1_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for CMCC1 peripheral ========== */
-#define CMCC1_ICACHE_PRESENT                     (0)        
 #define CMCC1_DCACHE_PRESENT                     (1)        
+#define CMCC1_ICACHE_PRESENT                     (0)        
 
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))

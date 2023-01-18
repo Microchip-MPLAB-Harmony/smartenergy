@@ -20,15 +20,15 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:02Z */
 #ifndef _PIC32CXMTSH_EMAFE_INSTANCE_
 #define _PIC32CXMTSH_EMAFE_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for EMAFE peripheral ========== */
-#define EMAFE_INSTANCE_ID                        (75)       
 #define EMAFE_CLOCK_ID                           (75)       
-#define EMAFE_INSTANCE_ID_SLINK                  (76)       
+#define EMAFE_INSTANCE_ID                        (75)       
 #define EMAFE_INSTANCE_ID_DATA                   (77)       
+#define EMAFE_INSTANCE_ID_SLINK                  (76)       
 
 #endif /* _PIC32CXMTSH_EMAFE_INSTANCE_ */

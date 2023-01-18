@@ -20,21 +20,22 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2022-11-09T10:42:44Z */
 #ifndef _PIC32CXMTC_TC0_INSTANCE_
 #define _PIC32CXMTC_TC0_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for TC0 peripheral ========== */
-#define TC0_INSTANCE_ID_CHANNEL0                 (31)       
 #define TC0_CLOCK_ID_CHANNEL0                    (31)       
-#define TC0_INSTANCE_ID_CHANNEL1                 (32)       
 #define TC0_CLOCK_ID_CHANNEL1                    (32)       
-#define TC0_INSTANCE_ID_CHANNEL2                 (33)       
 #define TC0_CLOCK_ID_CHANNEL2                    (33)       
 #define TC0_INSTANCE_ID_C0SEC                    (40)       
 #define TC0_INSTANCE_ID_C1SEC                    (41)       
 #define TC0_INSTANCE_ID_C2SEC                    (42)       
+#define TC0_INSTANCE_ID_CHANNEL0                 (31)       
+#define TC0_INSTANCE_ID_CHANNEL1                 (32)       
+#define TC0_INSTANCE_ID_CHANNEL2                 (33)       
+#define TC0_NUM_INTERRUPT_LINES                  (3)        
 #define TC0_TCCLKS_                              (0)        /* MCK0DIV */
 #define TC0_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
 #define TC0_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0DIV/8 */
@@ -44,7 +45,6 @@
 #define TC0_TCCLKS_XC0                           (6)        /* XC0 */
 #define TC0_TCCLKS_XC1                           (7)        /* XC1 */
 #define TC0_TCCLKS_XC2                           (8)        /* XC2 */
-#define TC0_NUM_INTERRUPT_LINES                  (3)        
 #define TC0_TIMER_WIDTH                          (32)       
 
 #endif /* _PIC32CXMTC_TC0_INSTANCE_ */

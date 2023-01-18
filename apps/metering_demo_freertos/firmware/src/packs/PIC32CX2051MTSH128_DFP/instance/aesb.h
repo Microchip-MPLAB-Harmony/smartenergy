@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2022-11-09T10:43:01Z */
 #ifndef _PIC32CXMTSH_AESB_INSTANCE_
 #define _PIC32CXMTSH_AESB_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for AESB peripheral ========== */
-#define AESB_INSTANCE_ID                         (51)       
 #define AESB_CLOCK_ID                            (51)       
+#define AESB_INSTANCE_ID                         (51)       
 #define AESB_INSTANCE_ID_AESBSEC                 (52)       
 
 #endif /* _PIC32CXMTSH_AESB_INSTANCE_ */
