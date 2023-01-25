@@ -145,10 +145,12 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
 
     /* Configure Peripheral Deselection with DMA */
     spiPCS = (*(sPlcPlib->spiMR) & SPI_MR_PCS_Msk) >> SPI_MR_PCS_Pos;
-    while(spiPCS & 0x01) {
+    while(spiPCS & 0x01) 
+    {
         chipSelect++;
         spiPCS >>= 1;
     }
+    
     /* CS rises if there is no more data to transfer */
     sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSAAT_Msk;
     sPlcPlib->spiCSR[chipSelect] &= ~SPI_CSR_CSNAAT_Msk;
@@ -180,10 +182,16 @@ void DRV_PLC_HAL_Reset(void)
 <#if DRV_PLC_SLEEP_MODE == true>        
 void DRV_PLC_HAL_SetStandBy(bool enable)
 {
-    if (enable) {
+    if (enable) 
+    {
+        /* Enable Reset pin */
+        SYS_PORT_PinClear(sPlcPlib->resetPin);
+        
         /* Enable Stby Pin */
         SYS_PORT_PinSet(sPlcPlib->stByPin);
-    } else {
+    } 
+    else 
+    {
         /* Disable Stby Pin */
         SYS_PORT_PinClear(sPlcPlib->stByPin);
 
@@ -199,9 +207,12 @@ void DRV_PLC_HAL_SetStandBy(bool enable)
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
 bool DRV_PLC_HAL_GetThermalMonitor(void)
 {
-    if (SYS_PORT_PinRead(sPlcPlib->thMonPin)) {
+    if (SYS_PORT_PinRead(sPlcPlib->thMonPin)) 
+    {
         return false;
-    } else {
+    } 
+    else 
+    {
         return true;
     }
 }
@@ -210,10 +221,13 @@ bool DRV_PLC_HAL_GetThermalMonitor(void)
 <#if DRV_PLC_MODE == "PL460"> 
 void DRV_PLC_HAL_SetTxEnable(bool enable)
 {
-    if (enable) {
+    if (enable) 
+    {
         /* Set TX Enable Pin */
         SYS_PORT_PinSet(sPlcPlib->txEnablePin);
-    } else {
+    } 
+    else 
+    {
         /* Clear TX Enable Pin */
         SYS_PORT_PinClear(sPlcPlib->txEnablePin);
     }
@@ -270,10 +284,12 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
         
-        if (pDataWr) {
+        if (pDataWr) 
+        {
             memcpy(pTxData, pDataWr, dataLength);
         }
-        else{
+        else
+        {
             /* Insert dummy data */
             memset(pTxData, 0, dataLength);
         }
@@ -300,7 +316,8 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
 <#else>
     sPlcPlib->spiWriteRead(sTxSpiData, size, sRxSpiData, size);
 </#if>   
-    if (pDataRd) {
+    if (pDataRd) 
+    {
 <#if DRV_PLC_TX_RX_DMA == true>         
         while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
 <#else>
@@ -345,10 +362,13 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     *pTxData++ = (uint8_t)(dataLength);
     *pTxData++ = (uint8_t)(dataLength >> 8);
 
-    if (pCmd->cmd == DRV_PLC_HAL_CMD_WR) {
+    if (pCmd->cmd == DRV_PLC_HAL_CMD_WR) 
+    {
         /* Fill with transmission data */
         memcpy(pTxData, pCmd->pData, pCmd->length);
-    } else {
+    } 
+    else 
+    {
         /* Fill with dummy data */
         memset(pTxData, 0, pCmd->length);
     }
@@ -357,7 +377,8 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 
     cmdSize = pTxData - sTxSpiData;
     
-    if (cmdSize % 2) {
+    if (cmdSize % 2) 
+    {
         *pTxData++ = 0;
         cmdSize++;
     }
@@ -377,7 +398,8 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     sPlcPlib->spiWriteRead(sTxSpiData, cmdSize >> 1, sRxSpiData, cmdSize >> 1);    
 </#if>  
 
-    if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
+    if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) 
+    {
 <#if DRV_PLC_TX_RX_DMA == true>         
         while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx));
         while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx));
