@@ -479,7 +479,7 @@ static void _APP_ENERGY_LoadRTCDataFromMemory(void)
     appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_StoreRTCDataInMemory(void)
@@ -492,7 +492,7 @@ static void _APP_ENERGY_StoreRTCDataInMemory(void)
     appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_LoadTOUDataFromMemory(void)
@@ -505,7 +505,7 @@ static void _APP_ENERGY_LoadTOUDataFromMemory(void)
     appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_StoreTOUDataInMemory(void)
@@ -518,7 +518,7 @@ static void _APP_ENERGY_StoreTOUDataInMemory(void)
     appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_LoadEnergyDataFromMemory(struct tm * time, void *pData)
@@ -531,7 +531,7 @@ static void _APP_ENERGY_LoadEnergyDataFromMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetEnergyDataLogCallback;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_StoreEnergyDataInMemory(struct tm * time, void *pData)
@@ -544,7 +544,7 @@ static void _APP_ENERGY_StoreEnergyDataInMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = NULL;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_LoadDemandDataFromMemory(struct tm * time, void *pData)
@@ -557,7 +557,7 @@ static void _APP_ENERGY_LoadDemandDataFromMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetDemandDataLogCallback;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_StoreDemandDataInMemory(struct tm * time, void *pData)
@@ -570,7 +570,7 @@ static void _APP_ENERGY_StoreDemandDataInMemory(struct tm * time, void *pData)
     appEnergyDatalogQueueData.date.year = time->tm_year - 100;
     appEnergyDatalogQueueData.endCallback = NULL;
 
-    APP_DATALOG_SendEventsData(&appEnergyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
 }
 
 static void _APP_ENERGY_SupplyMonitorCallback(uint32_t supc_status, uintptr_t context)

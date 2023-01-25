@@ -52,7 +52,7 @@
 #ifdef __cplusplus // Provide C++ Compatibility
     extern "C" {
 #endif
-        
+
 /* Define a semaphore to signal the Metrology Tasks to process new integration
  * data */
 OSAL_SEM_DECLARE(drvMetrologySemID);
@@ -198,7 +198,7 @@ void IPC1_Handler (void)
     }
 
     IPC1_REGS->IPC_ICCR = status;
-    
+
     /* Signal Metrology thread to update measurements for an integration period */
     OSAL_SEM_PostISR(&drvMetrologySemID);
 }
@@ -760,7 +760,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
     {
         return SYS_MODULE_OBJ_INVALID;
     }
-    
+
     /* Create the Semaphore */
     if (OSAL_SEM_Create(&drvMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
     {
@@ -907,7 +907,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Open (DRV_METROLOGY_START_MODE mode, DRV_METR
         /* Keep Metrology Lib in reset */
         gDrvMetObj.metRegisters->MET_CONTROL.STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
         
-        if (pConfiguration)
+        if ((pConfiguration) && (pConfiguration->ATSENSE_CTRL_20_23 != 0))
         {
             /* Overwrite STATE CTRL register */
             pConfiguration->STATE_CTRL = STATE_CTRL_STATE_CTRL_RESET_Val;
@@ -1010,10 +1010,10 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
         /* Invalid system object */
         return;
     }
-    
+
     /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
     OSAL_SEM_Pend(&drvMetrologySemID, OSAL_WAIT_FOREVER);
-    
+
     /* Check if there is a calibration process running */
     if (gDrvMetObj.calibrationData.running)
     {

@@ -664,7 +664,7 @@ void APP_DATALOG_Tasks(void)
     }
 }
 
-bool APP_DATALOG_SendEventsData(APP_DATALOG_QUEUE_DATA *datalogData)
+bool APP_DATALOG_SendDatalogData(APP_DATALOG_QUEUE_DATA *datalogData)
 {
     if (appDatalogQueue.dataSize < APP_DATALOG_QUEUE_DATA_SIZE)
     {

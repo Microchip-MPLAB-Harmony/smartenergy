@@ -217,6 +217,16 @@ typedef struct {
     double Vrms_C_m;
 } DRV_METROLOGY_HARMONICS_RMS;
 
+/* Metrology Harmonic Analysis Data
+
+  Summary:
+    Internal data used to perform an harmonic analysis
+
+  Description:
+    - pHarmonicAnalysisResponse. Pointer to store the result of the Harmonic Analysis.
+    - harmonicNum: Store the harmonic number to be analyzed.
+    - running: Flag to indicate that harmonic analysis is in process.
+*/
 typedef struct {
     DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;
     uint8_t harmonicNum;
@@ -407,6 +417,9 @@ typedef struct
 
     /* State of the metrology driver  */
     volatile DRV_METROLOGY_STATE                  state;
+
+    /* Flag to indicate that a new integration period has been completed */
+    volatile bool                                 integrationFlag;
 
     /* Size (in Bytes) of the PLC binary file */
     uint32_t                                      binSize;

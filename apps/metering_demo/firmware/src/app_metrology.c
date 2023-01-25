@@ -282,7 +282,7 @@ static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_CONTROL * control
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appMetrologyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appMetrologyDatalogQueueData);
 }
 
 static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlReg)
@@ -295,7 +295,7 @@ static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlR
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appMetrologyDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appMetrologyDatalogQueueData);
 }
 
 // *****************************************************************************

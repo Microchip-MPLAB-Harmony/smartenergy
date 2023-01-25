@@ -143,7 +143,7 @@ static void _APP_EVENTS_LoadEvenstDataFromMemory(void)
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEventsDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEventsDatalogQueueData);
 }
 
 static void _APP_EVENTS_StoreEventsDataInMemory(void)
@@ -156,7 +156,7 @@ static void _APP_EVENTS_StoreEventsDataInMemory(void)
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    APP_DATALOG_SendEventsData(&appEventsDatalogQueueData);
+    APP_DATALOG_SendDatalogData(&appEventsDatalogQueueData);
 }
 
 static bool _APP_EVENTS_RegisterEvent(APP_EVENTS_EVENT_ID type, bool enabled, struct tm * timeEvent)

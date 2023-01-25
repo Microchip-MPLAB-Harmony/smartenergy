@@ -1,7 +1,7 @@
 /*
  * Component description for CPKCC
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:42:43Z */
+/* file generated from device description version 2023-01-19T09:46:49Z */
 #ifndef _PIC32CXMTC_CPKCC_COMPONENT_H_
 #define _PIC32CXMTC_CPKCC_COMPONENT_H_
 
@@ -28,11 +28,109 @@
 /*   SOFTWARE API DEFINITION FOR CPKCC                                        */
 /* ************************************************************************** */
 
-/* -------- CPKCC_ADDRSIZE : (CPKCC Offset: 0xEC) (R/W 32) ADDRSIZE Register -------- */
-#define CPKCC_ADDRSIZE_VALUE_Pos              _UINT32_(0)                                          /* (CPKCC_ADDRSIZE) CPKCC_ADDRSIZE value Position */
-#define CPKCC_ADDRSIZE_VALUE_Msk              (_UINT32_(0xFFFFFFFF) << CPKCC_ADDRSIZE_VALUE_Pos)   /* (CPKCC_ADDRSIZE) CPKCC_ADDRSIZE value Mask */
-#define CPKCC_ADDRSIZE_VALUE(value)           (CPKCC_ADDRSIZE_VALUE_Msk & (_UINT32_(value) << CPKCC_ADDRSIZE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_ADDRSIZE register */
-#define CPKCC_ADDRSIZE_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_ADDRSIZE) Register Mask  */
+/* -------- CPKCC_R : (CPKCC Offset: 0x00) (R/W 32) R Parameter Register -------- */
+#define CPKCC_R_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_R) CPKCC_R value Position */
+#define CPKCC_R_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_R_VALUE_Pos)          /* (CPKCC_R) CPKCC_R value Mask */
+#define CPKCC_R_VALUE(value)                  (CPKCC_R_VALUE_Msk & (_UINT32_(value) << CPKCC_R_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_R register */
+#define CPKCC_R_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_R) Register Mask  */
+
+
+/* -------- CPKCC_X : (CPKCC Offset: 0x04) (R/W 32) X Parameter Register -------- */
+#define CPKCC_X_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_X) CPKCC_X value Position */
+#define CPKCC_X_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_X_VALUE_Pos)          /* (CPKCC_X) CPKCC_X value Mask */
+#define CPKCC_X_VALUE(value)                  (CPKCC_X_VALUE_Msk & (_UINT32_(value) << CPKCC_X_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_X register */
+#define CPKCC_X_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_X) Register Mask  */
+
+
+/* -------- CPKCC_Y : (CPKCC Offset: 0x08) (R/W 32) Y Parameter Register -------- */
+#define CPKCC_Y_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_Y) CPKCC_Y value Position */
+#define CPKCC_Y_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_Y_VALUE_Pos)          /* (CPKCC_Y) CPKCC_Y value Mask */
+#define CPKCC_Y_VALUE(value)                  (CPKCC_Y_VALUE_Msk & (_UINT32_(value) << CPKCC_Y_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_Y register */
+#define CPKCC_Y_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_Y) Register Mask  */
+
+
+/* -------- CPKCC_Z : (CPKCC Offset: 0x0C) (R/W 32) Z Parameter Register -------- */
+#define CPKCC_Z_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_Z) CPKCC_Z value Position */
+#define CPKCC_Z_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_Z_VALUE_Pos)          /* (CPKCC_Z) CPKCC_Z value Mask */
+#define CPKCC_Z_VALUE(value)                  (CPKCC_Z_VALUE_Msk & (_UINT32_(value) << CPKCC_Z_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_Z register */
+#define CPKCC_Z_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_Z) Register Mask  */
+
+
+/* -------- CPKCC_J : (CPKCC Offset: 0x10) (R/W 32) J Parameter Register -------- */
+#define CPKCC_J_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_J) CPKCC_J value Position */
+#define CPKCC_J_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_J_VALUE_Pos)          /* (CPKCC_J) CPKCC_J value Mask */
+#define CPKCC_J_VALUE(value)                  (CPKCC_J_VALUE_Msk & (_UINT32_(value) << CPKCC_J_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_J register */
+#define CPKCC_J_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_J) Register Mask  */
+
+
+/* -------- CPKCC_K : (CPKCC Offset: 0x14) (R/W 32) K Parameter Register -------- */
+#define CPKCC_K_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_K) CPKCC_K value Position */
+#define CPKCC_K_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_K_VALUE_Pos)          /* (CPKCC_K) CPKCC_K value Mask */
+#define CPKCC_K_VALUE(value)                  (CPKCC_K_VALUE_Msk & (_UINT32_(value) << CPKCC_K_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_K register */
+#define CPKCC_K_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_K) Register Mask  */
+
+
+/* -------- CPKCC_N : (CPKCC Offset: 0x18) (R/W 32) N Parameter Register -------- */
+#define CPKCC_N_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_N) CPKCC_N value Position */
+#define CPKCC_N_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_N_VALUE_Pos)          /* (CPKCC_N) CPKCC_N value Mask */
+#define CPKCC_N_VALUE(value)                  (CPKCC_N_VALUE_Msk & (_UINT32_(value) << CPKCC_N_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_N register */
+#define CPKCC_N_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_N) Register Mask  */
+
+
+/* -------- CPKCC_SMULA : (CPKCC Offset: 0x1C) (R/W 32) SMULA Register -------- */
+#define CPKCC_SMULA_VALUE_Pos                 _UINT32_(0)                                          /* (CPKCC_SMULA) CPKCC_SMULA value Position */
+#define CPKCC_SMULA_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << CPKCC_SMULA_VALUE_Pos)      /* (CPKCC_SMULA) CPKCC_SMULA value Mask */
+#define CPKCC_SMULA_VALUE(value)              (CPKCC_SMULA_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULA_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULA register */
+#define CPKCC_SMULA_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULA) Register Mask  */
+
+
+/* -------- CPKCC_SMULB : (CPKCC Offset: 0x20) (R/W 32) SMULB Register -------- */
+#define CPKCC_SMULB_VALUE_Pos                 _UINT32_(0)                                          /* (CPKCC_SMULB) CPKCC_SMULB value Position */
+#define CPKCC_SMULB_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << CPKCC_SMULB_VALUE_Pos)      /* (CPKCC_SMULB) CPKCC_SMULB value Mask */
+#define CPKCC_SMULB_VALUE(value)              (CPKCC_SMULB_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULB_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULB register */
+#define CPKCC_SMULB_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULB) Register Mask  */
+
+
+/* -------- CPKCC_SMULRL : (CPKCC Offset: 0x24) (R/W 32) SMULRL Register -------- */
+#define CPKCC_SMULRL_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_SMULRL) CPKCC_SMULRL value Position */
+#define CPKCC_SMULRL_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_SMULRL_VALUE_Pos)     /* (CPKCC_SMULRL) CPKCC_SMULRL value Mask */
+#define CPKCC_SMULRL_VALUE(value)             (CPKCC_SMULRL_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULRL_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULRL register */
+#define CPKCC_SMULRL_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULRL) Register Mask  */
+
+
+/* -------- CPKCC_SMULRH : (CPKCC Offset: 0x28) (R/W 32) SMULRH Register -------- */
+#define CPKCC_SMULRH_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_SMULRH) CPKCC_SMULRH value Position */
+#define CPKCC_SMULRH_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_SMULRH_VALUE_Pos)     /* (CPKCC_SMULRH) CPKCC_SMULRH value Mask */
+#define CPKCC_SMULRH_VALUE(value)             (CPKCC_SMULRH_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULRH_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULRH register */
+#define CPKCC_SMULRH_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULRH) Register Mask  */
+
+
+/* -------- CPKCC_IDLE : (CPKCC Offset: 0x2C) (R/W 8) IDLE Register -------- */
+#define CPKCC_IDLE_VALUE_Pos                  _UINT8_(0)                                           /* (CPKCC_IDLE) CPKCC_IDLE value Position */
+#define CPKCC_IDLE_VALUE_Msk                  (_UINT8_(0xFF) << CPKCC_IDLE_VALUE_Pos)              /* (CPKCC_IDLE) CPKCC_IDLE value Mask */
+#define CPKCC_IDLE_VALUE(value)               (CPKCC_IDLE_VALUE_Msk & (_UINT8_(value) << CPKCC_IDLE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IDLE register */
+#define CPKCC_IDLE_Msk                        _UINT8_(0xFF)                                        /* (CPKCC_IDLE) Register Mask  */
+
+
+/* -------- CPKCC_IDLECACHE : (CPKCC Offset: 0x2D) (R/W 8) IDLECACHE Register -------- */
+#define CPKCC_IDLECACHE_VALUE_Pos             _UINT8_(0)                                           /* (CPKCC_IDLECACHE) CPKCC_IDLECACHE value Position */
+#define CPKCC_IDLECACHE_VALUE_Msk             (_UINT8_(0xFF) << CPKCC_IDLECACHE_VALUE_Pos)         /* (CPKCC_IDLECACHE) CPKCC_IDLECACHE value Mask */
+#define CPKCC_IDLECACHE_VALUE(value)          (CPKCC_IDLECACHE_VALUE_Msk & (_UINT8_(value) << CPKCC_IDLECACHE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IDLECACHE register */
+#define CPKCC_IDLECACHE_Msk                   _UINT8_(0xFF)                                        /* (CPKCC_IDLECACHE) Register Mask  */
+
+
+/* -------- CPKCC_CR_C : (CPKCC Offset: 0x30) (R/W 32) CR_C Register -------- */
+#define CPKCC_CR_C_VALUE_Pos                  _UINT32_(0)                                          /* (CPKCC_CR_C) CPKCC_CR_C value Position */
+#define CPKCC_CR_C_VALUE_Msk                  (_UINT32_(0xFFFFFFFF) << CPKCC_CR_C_VALUE_Pos)       /* (CPKCC_CR_C) CPKCC_CR_C value Mask */
+#define CPKCC_CR_C_VALUE(value)               (CPKCC_CR_C_VALUE_Msk & (_UINT32_(value) << CPKCC_CR_C_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_CR_C register */
+#define CPKCC_CR_C_Msk                        _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_CR_C) Register Mask  */
+
+
+/* -------- CPKCC_CR_S : (CPKCC Offset: 0x34) (R/W 32) CR_S Register -------- */
+#define CPKCC_CR_S_VALUE_Pos                  _UINT32_(0)                                          /* (CPKCC_CR_S) CPKCC_CR_S value Position */
+#define CPKCC_CR_S_VALUE_Msk                  (_UINT32_(0xFFFFFFFF) << CPKCC_CR_S_VALUE_Pos)       /* (CPKCC_CR_S) CPKCC_CR_S value Mask */
+#define CPKCC_CR_S_VALUE(value)               (CPKCC_CR_S_VALUE_Msk & (_UINT32_(value) << CPKCC_CR_S_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_CR_S register */
+#define CPKCC_CR_S_Msk                        _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_CR_S) Register Mask  */
 
 
 /* -------- CPKCC_CR : (CPKCC Offset: 0x38) (R/W 32) CR Register -------- */
@@ -67,69 +165,6 @@
 #define CPKCC_CR_VALUE_Msk                    (_UINT32_(0x7FFFFF) << CPKCC_CR_VALUE_Pos)           /* (CPKCC_CR) CPKCC_CR value Mask */
 #define CPKCC_CR_VALUE(value)                 (CPKCC_CR_VALUE_Msk & (_UINT32_(value) << CPKCC_CR_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_CR register */
 #define CPKCC_CR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_CR) Register Mask  */
-
-
-/* -------- CPKCC_CR_C : (CPKCC Offset: 0x30) (R/W 32) CR_C Register -------- */
-#define CPKCC_CR_C_VALUE_Pos                  _UINT32_(0)                                          /* (CPKCC_CR_C) CPKCC_CR_C value Position */
-#define CPKCC_CR_C_VALUE_Msk                  (_UINT32_(0xFFFFFFFF) << CPKCC_CR_C_VALUE_Pos)       /* (CPKCC_CR_C) CPKCC_CR_C value Mask */
-#define CPKCC_CR_C_VALUE(value)               (CPKCC_CR_C_VALUE_Msk & (_UINT32_(value) << CPKCC_CR_C_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_CR_C register */
-#define CPKCC_CR_C_Msk                        _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_CR_C) Register Mask  */
-
-
-/* -------- CPKCC_CR_S : (CPKCC Offset: 0x34) (R/W 32) CR_S Register -------- */
-#define CPKCC_CR_S_VALUE_Pos                  _UINT32_(0)                                          /* (CPKCC_CR_S) CPKCC_CR_S value Position */
-#define CPKCC_CR_S_VALUE_Msk                  (_UINT32_(0xFFFFFFFF) << CPKCC_CR_S_VALUE_Pos)       /* (CPKCC_CR_S) CPKCC_CR_S value Mask */
-#define CPKCC_CR_S_VALUE(value)               (CPKCC_CR_S_VALUE_Msk & (_UINT32_(value) << CPKCC_CR_S_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_CR_S register */
-#define CPKCC_CR_S_Msk                        _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_CR_S) Register Mask  */
-
-
-/* -------- CPKCC_FEATURES : (CPKCC Offset: 0xF8) (R/W 32) FEATURES Register -------- */
-#define CPKCC_FEATURES_VALUE_Pos              _UINT32_(0)                                          /* (CPKCC_FEATURES) CPKCC_FEATURES value Position */
-#define CPKCC_FEATURES_VALUE_Msk              (_UINT32_(0xFFFFFFFF) << CPKCC_FEATURES_VALUE_Pos)   /* (CPKCC_FEATURES) CPKCC_FEATURES value Mask */
-#define CPKCC_FEATURES_VALUE(value)           (CPKCC_FEATURES_VALUE_Msk & (_UINT32_(value) << CPKCC_FEATURES_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_FEATURES register */
-#define CPKCC_FEATURES_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_FEATURES) Register Mask  */
-
-
-/* -------- CPKCC_IDLE : (CPKCC Offset: 0x2C) (R/W 8) IDLE Register -------- */
-#define CPKCC_IDLE_VALUE_Pos                  _UINT8_(0)                                           /* (CPKCC_IDLE) CPKCC_IDLE value Position */
-#define CPKCC_IDLE_VALUE_Msk                  (_UINT8_(0xFF) << CPKCC_IDLE_VALUE_Pos)              /* (CPKCC_IDLE) CPKCC_IDLE value Mask */
-#define CPKCC_IDLE_VALUE(value)               (CPKCC_IDLE_VALUE_Msk & (_UINT8_(value) << CPKCC_IDLE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IDLE register */
-#define CPKCC_IDLE_Msk                        _UINT8_(0xFF)                                        /* (CPKCC_IDLE) Register Mask  */
-
-
-/* -------- CPKCC_IDLECACHE : (CPKCC Offset: 0x2D) (R/W 8) IDLECACHE Register -------- */
-#define CPKCC_IDLECACHE_VALUE_Pos             _UINT8_(0)                                           /* (CPKCC_IDLECACHE) CPKCC_IDLECACHE value Position */
-#define CPKCC_IDLECACHE_VALUE_Msk             (_UINT8_(0xFF) << CPKCC_IDLECACHE_VALUE_Pos)         /* (CPKCC_IDLECACHE) CPKCC_IDLECACHE value Mask */
-#define CPKCC_IDLECACHE_VALUE(value)          (CPKCC_IDLECACHE_VALUE_Msk & (_UINT8_(value) << CPKCC_IDLECACHE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IDLECACHE register */
-#define CPKCC_IDLECACHE_Msk                   _UINT8_(0xFF)                                        /* (CPKCC_IDLECACHE) Register Mask  */
-
-
-/* -------- CPKCC_IPNAME : (CPKCC Offset: 0xF0) (R/W 32) IPNAME1 Register -------- */
-#define CPKCC_IPNAME_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_IPNAME) CPKCC_IPNAME1 value Position */
-#define CPKCC_IPNAME_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_IPNAME_VALUE_Pos)     /* (CPKCC_IPNAME) CPKCC_IPNAME1 value Mask */
-#define CPKCC_IPNAME_VALUE(value)             (CPKCC_IPNAME_VALUE_Msk & (_UINT32_(value) << CPKCC_IPNAME_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IPNAME register */
-#define CPKCC_IPNAME_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_IPNAME) Register Mask  */
-
-
-/* -------- CPKCC_J : (CPKCC Offset: 0x10) (R/W 32) J Parameter Register -------- */
-#define CPKCC_J_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_J) CPKCC_J value Position */
-#define CPKCC_J_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_J_VALUE_Pos)          /* (CPKCC_J) CPKCC_J value Mask */
-#define CPKCC_J_VALUE(value)                  (CPKCC_J_VALUE_Msk & (_UINT32_(value) << CPKCC_J_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_J register */
-#define CPKCC_J_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_J) Register Mask  */
-
-
-/* -------- CPKCC_K : (CPKCC Offset: 0x14) (R/W 32) K Parameter Register -------- */
-#define CPKCC_K_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_K) CPKCC_K value Position */
-#define CPKCC_K_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_K_VALUE_Pos)          /* (CPKCC_K) CPKCC_K value Mask */
-#define CPKCC_K_VALUE(value)                  (CPKCC_K_VALUE_Msk & (_UINT32_(value) << CPKCC_K_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_K register */
-#define CPKCC_K_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_K) Register Mask  */
-
-
-/* -------- CPKCC_N : (CPKCC Offset: 0x18) (R/W 32) N Parameter Register -------- */
-#define CPKCC_N_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_N) CPKCC_N value Position */
-#define CPKCC_N_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_N_VALUE_Pos)          /* (CPKCC_N) CPKCC_N value Mask */
-#define CPKCC_N_VALUE(value)                  (CPKCC_N_VALUE_Msk & (_UINT32_(value) << CPKCC_N_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_N register */
-#define CPKCC_N_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_N) Register Mask  */
 
 
 /* -------- CPKCC_OR : (CPKCC Offset: 0x3C) (R/W 32) Operation Register -------- */
@@ -175,41 +210,6 @@
 #define CPKCC_OR_OPTC_Msk                     (_UINT32_(0x3) << CPKCC_OR_OPTC_Pos)                 /* (CPKCC_OR Mask) OPTC */
 #define CPKCC_OR_OPTC(value)                  (CPKCC_OR_OPTC_Msk & (_UINT32_(value) << CPKCC_OR_OPTC_Pos)) 
 
-/* -------- CPKCC_R : (CPKCC Offset: 0x00) (R/W 32) R Parameter Register -------- */
-#define CPKCC_R_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_R) CPKCC_R value Position */
-#define CPKCC_R_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_R_VALUE_Pos)          /* (CPKCC_R) CPKCC_R value Mask */
-#define CPKCC_R_VALUE(value)                  (CPKCC_R_VALUE_Msk & (_UINT32_(value) << CPKCC_R_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_R register */
-#define CPKCC_R_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_R) Register Mask  */
-
-
-/* -------- CPKCC_SMULA : (CPKCC Offset: 0x1C) (R/W 32) SMULA Register -------- */
-#define CPKCC_SMULA_VALUE_Pos                 _UINT32_(0)                                          /* (CPKCC_SMULA) CPKCC_SMULA value Position */
-#define CPKCC_SMULA_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << CPKCC_SMULA_VALUE_Pos)      /* (CPKCC_SMULA) CPKCC_SMULA value Mask */
-#define CPKCC_SMULA_VALUE(value)              (CPKCC_SMULA_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULA_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULA register */
-#define CPKCC_SMULA_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULA) Register Mask  */
-
-
-/* -------- CPKCC_SMULB : (CPKCC Offset: 0x20) (R/W 32) SMULB Register -------- */
-#define CPKCC_SMULB_VALUE_Pos                 _UINT32_(0)                                          /* (CPKCC_SMULB) CPKCC_SMULB value Position */
-#define CPKCC_SMULB_VALUE_Msk                 (_UINT32_(0xFFFFFFFF) << CPKCC_SMULB_VALUE_Pos)      /* (CPKCC_SMULB) CPKCC_SMULB value Mask */
-#define CPKCC_SMULB_VALUE(value)              (CPKCC_SMULB_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULB_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULB register */
-#define CPKCC_SMULB_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULB) Register Mask  */
-
-
-/* -------- CPKCC_SMULRH : (CPKCC Offset: 0x28) (R/W 32) SMULRH Register -------- */
-#define CPKCC_SMULRH_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_SMULRH) CPKCC_SMULRH value Position */
-#define CPKCC_SMULRH_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_SMULRH_VALUE_Pos)     /* (CPKCC_SMULRH) CPKCC_SMULRH value Mask */
-#define CPKCC_SMULRH_VALUE(value)             (CPKCC_SMULRH_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULRH_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULRH register */
-#define CPKCC_SMULRH_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULRH) Register Mask  */
-
-
-/* -------- CPKCC_SMULRL : (CPKCC Offset: 0x24) (R/W 32) SMULRL Register -------- */
-#define CPKCC_SMULRL_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_SMULRL) CPKCC_SMULRL value Position */
-#define CPKCC_SMULRL_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_SMULRL_VALUE_Pos)     /* (CPKCC_SMULRL) CPKCC_SMULRL value Mask */
-#define CPKCC_SMULRL_VALUE(value)             (CPKCC_SMULRL_VALUE_Msk & (_UINT32_(value) << CPKCC_SMULRL_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_SMULRL register */
-#define CPKCC_SMULRL_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SMULRL) Register Mask  */
-
-
 /* -------- CPKCC_SR : (CPKCC Offset: 0x40) (R/W 32) SR Register -------- */
 #define CPKCC_SR_BUSY_Pos                     _UINT32_(0)                                          /* (CPKCC_SR) BUSY value Position */
 #define CPKCC_SR_BUSY_Msk                     (_UINT32_(0x1) << CPKCC_SR_BUSY_Pos)                 /* (CPKCC_SR) BUSY value Mask */
@@ -238,51 +238,51 @@
 #define CPKCC_SR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_SR) Register Mask  */
 
 
-/* -------- CPKCC_X : (CPKCC Offset: 0x04) (R/W 32) X Parameter Register -------- */
-#define CPKCC_X_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_X) CPKCC_X value Position */
-#define CPKCC_X_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_X_VALUE_Pos)          /* (CPKCC_X) CPKCC_X value Mask */
-#define CPKCC_X_VALUE(value)                  (CPKCC_X_VALUE_Msk & (_UINT32_(value) << CPKCC_X_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_X register */
-#define CPKCC_X_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_X) Register Mask  */
+/* -------- CPKCC_ADDRSIZE : (CPKCC Offset: 0xEC) (R/W 32) ADDRSIZE Register -------- */
+#define CPKCC_ADDRSIZE_VALUE_Pos              _UINT32_(0)                                          /* (CPKCC_ADDRSIZE) CPKCC_ADDRSIZE value Position */
+#define CPKCC_ADDRSIZE_VALUE_Msk              (_UINT32_(0xFFFFFFFF) << CPKCC_ADDRSIZE_VALUE_Pos)   /* (CPKCC_ADDRSIZE) CPKCC_ADDRSIZE value Mask */
+#define CPKCC_ADDRSIZE_VALUE(value)           (CPKCC_ADDRSIZE_VALUE_Msk & (_UINT32_(value) << CPKCC_ADDRSIZE_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_ADDRSIZE register */
+#define CPKCC_ADDRSIZE_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_ADDRSIZE) Register Mask  */
 
 
-/* -------- CPKCC_Y : (CPKCC Offset: 0x08) (R/W 32) Y Parameter Register -------- */
-#define CPKCC_Y_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_Y) CPKCC_Y value Position */
-#define CPKCC_Y_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_Y_VALUE_Pos)          /* (CPKCC_Y) CPKCC_Y value Mask */
-#define CPKCC_Y_VALUE(value)                  (CPKCC_Y_VALUE_Msk & (_UINT32_(value) << CPKCC_Y_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_Y register */
-#define CPKCC_Y_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_Y) Register Mask  */
+/* -------- CPKCC_IPNAME : (CPKCC Offset: 0xF0) (R/W 32) IPNAME1 Register -------- */
+#define CPKCC_IPNAME_VALUE_Pos                _UINT32_(0)                                          /* (CPKCC_IPNAME) CPKCC_IPNAME1 value Position */
+#define CPKCC_IPNAME_VALUE_Msk                (_UINT32_(0xFFFFFFFF) << CPKCC_IPNAME_VALUE_Pos)     /* (CPKCC_IPNAME) CPKCC_IPNAME1 value Mask */
+#define CPKCC_IPNAME_VALUE(value)             (CPKCC_IPNAME_VALUE_Msk & (_UINT32_(value) << CPKCC_IPNAME_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_IPNAME register */
+#define CPKCC_IPNAME_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_IPNAME) Register Mask  */
 
 
-/* -------- CPKCC_Z : (CPKCC Offset: 0x0C) (R/W 32) Z Parameter Register -------- */
-#define CPKCC_Z_VALUE_Pos                     _UINT32_(0)                                          /* (CPKCC_Z) CPKCC_Z value Position */
-#define CPKCC_Z_VALUE_Msk                     (_UINT32_(0xFFFFFFFF) << CPKCC_Z_VALUE_Pos)          /* (CPKCC_Z) CPKCC_Z value Mask */
-#define CPKCC_Z_VALUE(value)                  (CPKCC_Z_VALUE_Msk & (_UINT32_(value) << CPKCC_Z_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_Z register */
-#define CPKCC_Z_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_Z) Register Mask  */
+/* -------- CPKCC_FEATURES : (CPKCC Offset: 0xF8) (R/W 32) FEATURES Register -------- */
+#define CPKCC_FEATURES_VALUE_Pos              _UINT32_(0)                                          /* (CPKCC_FEATURES) CPKCC_FEATURES value Position */
+#define CPKCC_FEATURES_VALUE_Msk              (_UINT32_(0xFFFFFFFF) << CPKCC_FEATURES_VALUE_Pos)   /* (CPKCC_FEATURES) CPKCC_FEATURES value Mask */
+#define CPKCC_FEATURES_VALUE(value)           (CPKCC_FEATURES_VALUE_Msk & (_UINT32_(value) << CPKCC_FEATURES_VALUE_Pos)) /* Assigment of value for VALUE in the CPKCC_FEATURES register */
+#define CPKCC_FEATURES_Msk                    _UINT32_(0xFFFFFFFF)                                 /* (CPKCC_FEATURES) Register Mask  */
 
 
 /** \brief CPKCC register offsets definitions */
-#define CPKCC_ADDRSIZE_REG_OFST        _UINT32_(0xEC)      /* (CPKCC_ADDRSIZE) ADDRSIZE Register Offset */
-#define CPKCC_CR_REG_OFST              _UINT32_(0x38)      /* (CPKCC_CR) CR Register Offset */
-#define CPKCC_CR_C_REG_OFST            _UINT32_(0x30)      /* (CPKCC_CR_C) CR_C Register Offset */
-#define CPKCC_CR_S_REG_OFST            _UINT32_(0x34)      /* (CPKCC_CR_S) CR_S Register Offset */
-#define CPKCC_FEATURES_REG_OFST        _UINT32_(0xF8)      /* (CPKCC_FEATURES) FEATURES Register Offset */
-#define CPKCC_IDLE_REG_OFST            _UINT32_(0x2C)      /* (CPKCC_IDLE) IDLE Register Offset */
-#define CPKCC_IDLECACHE_REG_OFST       _UINT32_(0x2D)      /* (CPKCC_IDLECACHE) IDLECACHE Register Offset */
-#define CPKCC_IPNAME_REG_OFST          _UINT32_(0xF0)      /* (CPKCC_IPNAME) IPNAME1 Register Offset */
-#define CPKCC_IPNAME0_REG_OFST         _UINT32_(0xF0)      /* (CPKCC_IPNAME0) IPNAME1 Register Offset */
-#define CPKCC_IPNAME1_REG_OFST         _UINT32_(0xF4)      /* (CPKCC_IPNAME1) IPNAME1 Register Offset */
-#define CPKCC_J_REG_OFST               _UINT32_(0x10)      /* (CPKCC_J) J Parameter Register Offset */
-#define CPKCC_K_REG_OFST               _UINT32_(0x14)      /* (CPKCC_K) K Parameter Register Offset */
-#define CPKCC_N_REG_OFST               _UINT32_(0x18)      /* (CPKCC_N) N Parameter Register Offset */
-#define CPKCC_OR_REG_OFST              _UINT32_(0x3C)      /* (CPKCC_OR) Operation Register Offset */
 #define CPKCC_R_REG_OFST               _UINT32_(0x00)      /* (CPKCC_R) R Parameter Register Offset */
-#define CPKCC_SMULA_REG_OFST           _UINT32_(0x1C)      /* (CPKCC_SMULA) SMULA Register Offset */
-#define CPKCC_SMULB_REG_OFST           _UINT32_(0x20)      /* (CPKCC_SMULB) SMULB Register Offset */
-#define CPKCC_SMULRH_REG_OFST          _UINT32_(0x28)      /* (CPKCC_SMULRH) SMULRH Register Offset */
-#define CPKCC_SMULRL_REG_OFST          _UINT32_(0x24)      /* (CPKCC_SMULRL) SMULRL Register Offset */
-#define CPKCC_SR_REG_OFST              _UINT32_(0x40)      /* (CPKCC_SR) SR Register Offset */
 #define CPKCC_X_REG_OFST               _UINT32_(0x04)      /* (CPKCC_X) X Parameter Register Offset */
 #define CPKCC_Y_REG_OFST               _UINT32_(0x08)      /* (CPKCC_Y) Y Parameter Register Offset */
 #define CPKCC_Z_REG_OFST               _UINT32_(0x0C)      /* (CPKCC_Z) Z Parameter Register Offset */
+#define CPKCC_J_REG_OFST               _UINT32_(0x10)      /* (CPKCC_J) J Parameter Register Offset */
+#define CPKCC_K_REG_OFST               _UINT32_(0x14)      /* (CPKCC_K) K Parameter Register Offset */
+#define CPKCC_N_REG_OFST               _UINT32_(0x18)      /* (CPKCC_N) N Parameter Register Offset */
+#define CPKCC_SMULA_REG_OFST           _UINT32_(0x1C)      /* (CPKCC_SMULA) SMULA Register Offset */
+#define CPKCC_SMULB_REG_OFST           _UINT32_(0x20)      /* (CPKCC_SMULB) SMULB Register Offset */
+#define CPKCC_SMULRL_REG_OFST          _UINT32_(0x24)      /* (CPKCC_SMULRL) SMULRL Register Offset */
+#define CPKCC_SMULRH_REG_OFST          _UINT32_(0x28)      /* (CPKCC_SMULRH) SMULRH Register Offset */
+#define CPKCC_IDLE_REG_OFST            _UINT32_(0x2C)      /* (CPKCC_IDLE) IDLE Register Offset */
+#define CPKCC_IDLECACHE_REG_OFST       _UINT32_(0x2D)      /* (CPKCC_IDLECACHE) IDLECACHE Register Offset */
+#define CPKCC_CR_C_REG_OFST            _UINT32_(0x30)      /* (CPKCC_CR_C) CR_C Register Offset */
+#define CPKCC_CR_S_REG_OFST            _UINT32_(0x34)      /* (CPKCC_CR_S) CR_S Register Offset */
+#define CPKCC_CR_REG_OFST              _UINT32_(0x38)      /* (CPKCC_CR) CR Register Offset */
+#define CPKCC_OR_REG_OFST              _UINT32_(0x3C)      /* (CPKCC_OR) Operation Register Offset */
+#define CPKCC_SR_REG_OFST              _UINT32_(0x40)      /* (CPKCC_SR) SR Register Offset */
+#define CPKCC_ADDRSIZE_REG_OFST        _UINT32_(0xEC)      /* (CPKCC_ADDRSIZE) ADDRSIZE Register Offset */
+#define CPKCC_IPNAME_REG_OFST          _UINT32_(0xF0)      /* (CPKCC_IPNAME) IPNAME1 Register Offset */
+#define CPKCC_IPNAME0_REG_OFST         _UINT32_(0xF0)      /* (CPKCC_IPNAME0) IPNAME1 Register Offset */
+#define CPKCC_IPNAME1_REG_OFST         _UINT32_(0xF4)      /* (CPKCC_IPNAME1) IPNAME1 Register Offset */
+#define CPKCC_FEATURES_REG_OFST        _UINT32_(0xF8)      /* (CPKCC_FEATURES) FEATURES Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief CPKCC register API structure */

@@ -1,7 +1,7 @@
 /*
  * Instance header file for PIC32CX5112MTC128S1
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,13 +20,19 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2023-01-19T09:46:50Z */
 #ifndef _PIC32CXMTC_SUPC_INSTANCE_
 #define _PIC32CXMTC_SUPC_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for SUPC peripheral ========== */
 #define SUPC_INSTANCE_ID                         (0)        
+#define SUPC_INSTANCE_ID_WKUP10                  (69)       
+#define SUPC_INSTANCE_ID_WKUP11                  (70)       
+#define SUPC_INSTANCE_ID_WKUP12                  (71)       
+#define SUPC_INSTANCE_ID_WKUP13                  (72)       
+#define SUPC_INSTANCE_ID_WKUP14                  (73)       
+#define SUPC_INSTANCE_ID_WKUP15                  (74)       
 #define SUPC_INSTANCE_ID_WKUP3                   (62)       
 #define SUPC_INSTANCE_ID_WKUP4                   (63)       
 #define SUPC_INSTANCE_ID_WKUP5                   (64)       
@@ -34,11 +40,5 @@
 #define SUPC_INSTANCE_ID_WKUP7                   (66)       
 #define SUPC_INSTANCE_ID_WKUP8                   (67)       
 #define SUPC_INSTANCE_ID_WKUP9                   (68)       
-#define SUPC_INSTANCE_ID_WKUP10                  (69)       
-#define SUPC_INSTANCE_ID_WKUP11                  (70)       
-#define SUPC_INSTANCE_ID_WKUP12                  (71)       
-#define SUPC_INSTANCE_ID_WKUP13                  (72)       
-#define SUPC_INSTANCE_ID_WKUP14                  (73)       
-#define SUPC_INSTANCE_ID_WKUP15                  (74)       
 
 #endif /* _PIC32CXMTC_SUPC_INSTANCE_ */

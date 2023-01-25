@@ -526,7 +526,6 @@ APP_DATALOG_STATES APP_DATALOG_GetStatus(void);
 
 bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date);
 
-
 /*******************************************************************************
   Function:
     void APP_DATALOG_ClearData(APP_DATALOG_USER userId)
@@ -559,7 +558,45 @@ bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date);
 
 void APP_DATALOG_ClearData(APP_DATALOG_USER userId);
 
-bool APP_DATALOG_SendEventsData(APP_DATALOG_QUEUE_DATA *datalogData);
+/*******************************************************************************
+  Function:
+    bool APP_DATALOG_SendDatalogData(APP_DATALOG_QUEUE_DATA *datalogData)
+
+  Summary:
+    Send new Datalog data to be processed.
+
+  Description:
+    This routine inserts the new Datalog data in an internal queue.
+    The insertion of the new item in the internal queue is done by copying data.
+    All items included in the internal queue are processed by the Datalog task.
+
+  Precondition:
+    None.
+
+  Parameters:
+    datalogData - Pointer to the data to store in the Datalog Queue.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    appEnergyDatalogQueueData.userId = APP_DATALOG_USER_RTC;
+    appEnergyDatalogQueueData.operation = APP_DATALOG_READ;
+    appEnergyDatalogQueueData.pData = (uint8_t *)&app_energyData.time;
+    appEnergyDatalogQueueData.dataLen = sizeof(struct tm);
+    appEnergyDatalogQueueData.endCallback = _APP_ENERGY_GetRTCDataLogCallback;
+    appEnergyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
+    appEnergyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
+
+    APP_DATALOG_SendDatalogData(&appEnergyDatalogQueueData);
+    </code>
+
+  Remarks:
+    None.
+ */
+ 
+bool APP_DATALOG_SendDatalogData(APP_DATALOG_QUEUE_DATA *datalogData);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

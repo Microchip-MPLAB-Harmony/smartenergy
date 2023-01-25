@@ -1,7 +1,7 @@
 /*
  * Component description for ACC
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:42:44Z */
+/* file generated from device description version 2023-01-19T09:46:50Z */
 #ifndef _PIC32CXMTC_ACC_COMPONENT_H_
 #define _PIC32CXMTC_ACC_COMPONENT_H_
 
@@ -28,56 +28,11 @@
 /*   SOFTWARE API DEFINITION FOR ACC                                          */
 /* ************************************************************************** */
 
-/* -------- ACC_ACR : (ACC Offset: 0x94) (R/W 32) Analog Control Register -------- */
-#define ACC_ACR_MSEL_Pos                      _UINT32_(0)                                          /* (ACC_ACR) Masking Period Selection Position */
-#define ACC_ACR_MSEL_Msk                      (_UINT32_(0x1) << ACC_ACR_MSEL_Pos)                  /* (ACC_ACR) Masking Period Selection Mask */
-#define ACC_ACR_MSEL(value)                   (ACC_ACR_MSEL_Msk & (_UINT32_(value) << ACC_ACR_MSEL_Pos)) /* Assigment of value for MSEL in the ACC_ACR register */
-#define   ACC_ACR_MSEL_0_Val                  _UINT32_(0x0)                                        /* (ACC_ACR) Masks AC output for 16 peripheral clock periods after any write access in ACC_MR or ACC_CR  */
-#define   ACC_ACR_MSEL_1_Val                  _UINT32_(0x1)                                        /* (ACC_ACR) Masks AC output for 128 peripheral clock periods after any write access in ACC_MR or ACC_CR  */
-#define ACC_ACR_MSEL_0                        (ACC_ACR_MSEL_0_Val << ACC_ACR_MSEL_Pos)             /* (ACC_ACR) Masks AC output for 16 peripheral clock periods after any write access in ACC_MR or ACC_CR Position  */
-#define ACC_ACR_MSEL_1                        (ACC_ACR_MSEL_1_Val << ACC_ACR_MSEL_Pos)             /* (ACC_ACR) Masks AC output for 128 peripheral clock periods after any write access in ACC_MR or ACC_CR Position  */
-#define ACC_ACR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_ACR) Register Mask  */
-
-
 /* -------- ACC_CR : (ACC Offset: 0x00) ( /W 32) Control Register -------- */
 #define ACC_CR_SWRST_Pos                      _UINT32_(0)                                          /* (ACC_CR) Software Reset Position */
 #define ACC_CR_SWRST_Msk                      (_UINT32_(0x1) << ACC_CR_SWRST_Pos)                  /* (ACC_CR) Software Reset Mask */
 #define ACC_CR_SWRST(value)                   (ACC_CR_SWRST_Msk & (_UINT32_(value) << ACC_CR_SWRST_Pos)) /* Assigment of value for SWRST in the ACC_CR register */
 #define ACC_CR_Msk                            _UINT32_(0x00000001)                                 /* (ACC_CR) Register Mask  */
-
-
-/* -------- ACC_IDR : (ACC Offset: 0x28) ( /W 32) Interrupt Disable Register -------- */
-#define ACC_IDR_CE_Pos                        _UINT32_(0)                                          /* (ACC_IDR) Comparison Edge Position */
-#define ACC_IDR_CE_Msk                        (_UINT32_(0x1) << ACC_IDR_CE_Pos)                    /* (ACC_IDR) Comparison Edge Mask */
-#define ACC_IDR_CE(value)                     (ACC_IDR_CE_Msk & (_UINT32_(value) << ACC_IDR_CE_Pos)) /* Assigment of value for CE in the ACC_IDR register */
-#define ACC_IDR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IDR) Register Mask  */
-
-
-/* -------- ACC_IER : (ACC Offset: 0x24) ( /W 32) Interrupt Enable Register -------- */
-#define ACC_IER_CE_Pos                        _UINT32_(0)                                          /* (ACC_IER) Comparison Edge Position */
-#define ACC_IER_CE_Msk                        (_UINT32_(0x1) << ACC_IER_CE_Pos)                    /* (ACC_IER) Comparison Edge Mask */
-#define ACC_IER_CE(value)                     (ACC_IER_CE_Msk & (_UINT32_(value) << ACC_IER_CE_Pos)) /* Assigment of value for CE in the ACC_IER register */
-#define ACC_IER_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IER) Register Mask  */
-
-
-/* -------- ACC_IMR : (ACC Offset: 0x2C) ( R/ 32) Interrupt Mask Register -------- */
-#define ACC_IMR_CE_Pos                        _UINT32_(0)                                          /* (ACC_IMR) Comparison Edge Position */
-#define ACC_IMR_CE_Msk                        (_UINT32_(0x1) << ACC_IMR_CE_Pos)                    /* (ACC_IMR) Comparison Edge Mask */
-#define ACC_IMR_CE(value)                     (ACC_IMR_CE_Msk & (_UINT32_(value) << ACC_IMR_CE_Pos)) /* Assigment of value for CE in the ACC_IMR register */
-#define ACC_IMR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IMR) Register Mask  */
-
-
-/* -------- ACC_ISR : (ACC Offset: 0x30) ( R/ 32) Interrupt Status Register -------- */
-#define ACC_ISR_CE_Pos                        _UINT32_(0)                                          /* (ACC_ISR) Comparison Edge (cleared on read) Position */
-#define ACC_ISR_CE_Msk                        (_UINT32_(0x1) << ACC_ISR_CE_Pos)                    /* (ACC_ISR) Comparison Edge (cleared on read) Mask */
-#define ACC_ISR_CE(value)                     (ACC_ISR_CE_Msk & (_UINT32_(value) << ACC_ISR_CE_Pos)) /* Assigment of value for CE in the ACC_ISR register */
-#define ACC_ISR_SCO_Pos                       _UINT32_(1)                                          /* (ACC_ISR) Synchronized Comparator Output Position */
-#define ACC_ISR_SCO_Msk                       (_UINT32_(0x1) << ACC_ISR_SCO_Pos)                   /* (ACC_ISR) Synchronized Comparator Output Mask */
-#define ACC_ISR_SCO(value)                    (ACC_ISR_SCO_Msk & (_UINT32_(value) << ACC_ISR_SCO_Pos)) /* Assigment of value for SCO in the ACC_ISR register */
-#define ACC_ISR_MASK_Pos                      _UINT32_(31)                                         /* (ACC_ISR) Flag Mask Position */
-#define ACC_ISR_MASK_Msk                      (_UINT32_(0x1) << ACC_ISR_MASK_Pos)                  /* (ACC_ISR) Flag Mask Mask */
-#define ACC_ISR_MASK(value)                   (ACC_ISR_MASK_Msk & (_UINT32_(value) << ACC_ISR_MASK_Pos)) /* Assigment of value for MASK in the ACC_ISR register */
-#define ACC_ISR_Msk                           _UINT32_(0x80000003)                                 /* (ACC_ISR) Register Mask  */
 
 
 /* -------- ACC_MR : (ACC Offset: 0x04) (R/W 32) Mode Register -------- */
@@ -143,6 +98,51 @@
 #define ACC_MR_Msk                            _UINT32_(0x00007777)                                 /* (ACC_MR) Register Mask  */
 
 
+/* -------- ACC_IER : (ACC Offset: 0x24) ( /W 32) Interrupt Enable Register -------- */
+#define ACC_IER_CE_Pos                        _UINT32_(0)                                          /* (ACC_IER) Comparison Edge Position */
+#define ACC_IER_CE_Msk                        (_UINT32_(0x1) << ACC_IER_CE_Pos)                    /* (ACC_IER) Comparison Edge Mask */
+#define ACC_IER_CE(value)                     (ACC_IER_CE_Msk & (_UINT32_(value) << ACC_IER_CE_Pos)) /* Assigment of value for CE in the ACC_IER register */
+#define ACC_IER_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IER) Register Mask  */
+
+
+/* -------- ACC_IDR : (ACC Offset: 0x28) ( /W 32) Interrupt Disable Register -------- */
+#define ACC_IDR_CE_Pos                        _UINT32_(0)                                          /* (ACC_IDR) Comparison Edge Position */
+#define ACC_IDR_CE_Msk                        (_UINT32_(0x1) << ACC_IDR_CE_Pos)                    /* (ACC_IDR) Comparison Edge Mask */
+#define ACC_IDR_CE(value)                     (ACC_IDR_CE_Msk & (_UINT32_(value) << ACC_IDR_CE_Pos)) /* Assigment of value for CE in the ACC_IDR register */
+#define ACC_IDR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IDR) Register Mask  */
+
+
+/* -------- ACC_IMR : (ACC Offset: 0x2C) ( R/ 32) Interrupt Mask Register -------- */
+#define ACC_IMR_CE_Pos                        _UINT32_(0)                                          /* (ACC_IMR) Comparison Edge Position */
+#define ACC_IMR_CE_Msk                        (_UINT32_(0x1) << ACC_IMR_CE_Pos)                    /* (ACC_IMR) Comparison Edge Mask */
+#define ACC_IMR_CE(value)                     (ACC_IMR_CE_Msk & (_UINT32_(value) << ACC_IMR_CE_Pos)) /* Assigment of value for CE in the ACC_IMR register */
+#define ACC_IMR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_IMR) Register Mask  */
+
+
+/* -------- ACC_ISR : (ACC Offset: 0x30) ( R/ 32) Interrupt Status Register -------- */
+#define ACC_ISR_CE_Pos                        _UINT32_(0)                                          /* (ACC_ISR) Comparison Edge (cleared on read) Position */
+#define ACC_ISR_CE_Msk                        (_UINT32_(0x1) << ACC_ISR_CE_Pos)                    /* (ACC_ISR) Comparison Edge (cleared on read) Mask */
+#define ACC_ISR_CE(value)                     (ACC_ISR_CE_Msk & (_UINT32_(value) << ACC_ISR_CE_Pos)) /* Assigment of value for CE in the ACC_ISR register */
+#define ACC_ISR_SCO_Pos                       _UINT32_(1)                                          /* (ACC_ISR) Synchronized Comparator Output Position */
+#define ACC_ISR_SCO_Msk                       (_UINT32_(0x1) << ACC_ISR_SCO_Pos)                   /* (ACC_ISR) Synchronized Comparator Output Mask */
+#define ACC_ISR_SCO(value)                    (ACC_ISR_SCO_Msk & (_UINT32_(value) << ACC_ISR_SCO_Pos)) /* Assigment of value for SCO in the ACC_ISR register */
+#define ACC_ISR_MASK_Pos                      _UINT32_(31)                                         /* (ACC_ISR) Flag Mask Position */
+#define ACC_ISR_MASK_Msk                      (_UINT32_(0x1) << ACC_ISR_MASK_Pos)                  /* (ACC_ISR) Flag Mask Mask */
+#define ACC_ISR_MASK(value)                   (ACC_ISR_MASK_Msk & (_UINT32_(value) << ACC_ISR_MASK_Pos)) /* Assigment of value for MASK in the ACC_ISR register */
+#define ACC_ISR_Msk                           _UINT32_(0x80000003)                                 /* (ACC_ISR) Register Mask  */
+
+
+/* -------- ACC_ACR : (ACC Offset: 0x94) (R/W 32) Analog Control Register -------- */
+#define ACC_ACR_MSEL_Pos                      _UINT32_(0)                                          /* (ACC_ACR) Masking Period Selection Position */
+#define ACC_ACR_MSEL_Msk                      (_UINT32_(0x1) << ACC_ACR_MSEL_Pos)                  /* (ACC_ACR) Masking Period Selection Mask */
+#define ACC_ACR_MSEL(value)                   (ACC_ACR_MSEL_Msk & (_UINT32_(value) << ACC_ACR_MSEL_Pos)) /* Assigment of value for MSEL in the ACC_ACR register */
+#define   ACC_ACR_MSEL_0_Val                  _UINT32_(0x0)                                        /* (ACC_ACR) Masks AC output for 16 peripheral clock periods after any write access in ACC_MR or ACC_CR  */
+#define   ACC_ACR_MSEL_1_Val                  _UINT32_(0x1)                                        /* (ACC_ACR) Masks AC output for 128 peripheral clock periods after any write access in ACC_MR or ACC_CR  */
+#define ACC_ACR_MSEL_0                        (ACC_ACR_MSEL_0_Val << ACC_ACR_MSEL_Pos)             /* (ACC_ACR) Masks AC output for 16 peripheral clock periods after any write access in ACC_MR or ACC_CR Position  */
+#define ACC_ACR_MSEL_1                        (ACC_ACR_MSEL_1_Val << ACC_ACR_MSEL_Pos)             /* (ACC_ACR) Masks AC output for 128 peripheral clock periods after any write access in ACC_MR or ACC_CR Position  */
+#define ACC_ACR_Msk                           _UINT32_(0x00000001)                                 /* (ACC_ACR) Register Mask  */
+
+
 /* -------- ACC_WPMR : (ACC Offset: 0xE4) (R/W 32) Write Protection Mode Register -------- */
 #define ACC_WPMR_WPEN_Pos                     _UINT32_(0)                                          /* (ACC_WPMR) Write Protection Configuration Enable Position */
 #define ACC_WPMR_WPEN_Msk                     (_UINT32_(0x1) << ACC_WPMR_WPEN_Pos)                 /* (ACC_WPMR) Write Protection Configuration Enable Mask */
@@ -163,13 +163,13 @@
 
 
 /** \brief ACC register offsets definitions */
-#define ACC_ACR_REG_OFST               _UINT32_(0x94)      /* (ACC_ACR) Analog Control Register Offset */
 #define ACC_CR_REG_OFST                _UINT32_(0x00)      /* (ACC_CR) Control Register Offset */
-#define ACC_IDR_REG_OFST               _UINT32_(0x28)      /* (ACC_IDR) Interrupt Disable Register Offset */
+#define ACC_MR_REG_OFST                _UINT32_(0x04)      /* (ACC_MR) Mode Register Offset */
 #define ACC_IER_REG_OFST               _UINT32_(0x24)      /* (ACC_IER) Interrupt Enable Register Offset */
+#define ACC_IDR_REG_OFST               _UINT32_(0x28)      /* (ACC_IDR) Interrupt Disable Register Offset */
 #define ACC_IMR_REG_OFST               _UINT32_(0x2C)      /* (ACC_IMR) Interrupt Mask Register Offset */
 #define ACC_ISR_REG_OFST               _UINT32_(0x30)      /* (ACC_ISR) Interrupt Status Register Offset */
-#define ACC_MR_REG_OFST                _UINT32_(0x04)      /* (ACC_MR) Mode Register Offset */
+#define ACC_ACR_REG_OFST               _UINT32_(0x94)      /* (ACC_ACR) Analog Control Register Offset */
 #define ACC_WPMR_REG_OFST              _UINT32_(0xE4)      /* (ACC_WPMR) Write Protection Mode Register Offset */
 #define ACC_WPSR_REG_OFST              _UINT32_(0xE8)      /* (ACC_WPSR) Write Protection Status Register Offset */
 

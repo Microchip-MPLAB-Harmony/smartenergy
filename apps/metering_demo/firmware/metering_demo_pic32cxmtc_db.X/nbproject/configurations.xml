@@ -41,9 +41,9 @@
             </logicalFolder>
           </logicalFolder>
           <logicalFolder name="osal" displayName="osal" projectFiles="true">
-            <itemPath>../src/config/pic32cxmtc_db/osal/osal_freertos.h</itemPath>
             <itemPath>../src/config/pic32cxmtc_db/osal/osal_definitions.h</itemPath>
             <itemPath>../src/config/pic32cxmtc_db/osal/osal.h</itemPath>
+            <itemPath>../src/config/pic32cxmtc_db/osal/osal_impl_basic.h</itemPath>
           </logicalFolder>
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
             <logicalFolder name="clk" displayName="clk" projectFiles="true">
@@ -146,42 +146,10 @@
           <itemPath>../src/config/pic32cxmtc_db/user.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/interrupts.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/device.h</itemPath>
-          <itemPath>../src/config/pic32cxmtc_db/FreeRTOSConfig.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/definitions.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/configuration.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/device_cache.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/device_vectors.h</itemPath>
-        </logicalFolder>
-      </logicalFolder>
-      <logicalFolder name="FreeRTOS" displayName="FreeRTOS" projectFiles="true">
-        <logicalFolder name="Source" displayName="Source" projectFiles="true">
-          <logicalFolder name="include" displayName="include" projectFiles="true">
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/mpu_wrappers.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/message_buffer.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/projdefs.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/timers.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/mpu_prototypes.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/stack_macros.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/stream_buffer.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/task.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/portable.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/list.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/queue.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/FreeRTOS.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/event_groups.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/deprecated_definitions.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/croutine.h</itemPath>
-            <itemPath>../src/third_party/rtos/FreeRTOS/Source/include/semphr.h</itemPath>
-          </logicalFolder>
-          <logicalFolder name="portable" displayName="portable" projectFiles="true">
-            <logicalFolder name="GCC" displayName="GCC" projectFiles="true">
-              <logicalFolder name="SAM" displayName="SAM" projectFiles="true">
-                <logicalFolder name="ARM_CM4F" displayName="ARM_CM4F" projectFiles="true">
-                  <itemPath>../src/third_party/rtos/FreeRTOS/Source/portable/GCC/SAM/ARM_CM4F/portmacro.h</itemPath>
-                </logicalFolder>
-              </logicalFolder>
-            </logicalFolder>
-          </logicalFolder>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="packs" displayName="packs" projectFiles="true">
@@ -353,9 +321,6 @@
               </logicalFolder>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="osal" displayName="osal" projectFiles="true">
-            <itemPath>../src/config/pic32cxmtc_db/osal/osal_freertos.c</itemPath>
-          </logicalFolder>
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
             <logicalFolder name="clk" displayName="clk" projectFiles="true">
               <itemPath>../src/config/pic32cxmtc_db/peripheral/clk/plib_clk.c</itemPath>
@@ -441,32 +406,8 @@
           <itemPath>../src/config/pic32cxmtc_db/startup_xc32.c</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/interrupts.c</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/libc_syscalls.c</itemPath>
-          <itemPath>../src/config/pic32cxmtc_db/freertos_hooks.c</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/exceptions.c</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/tasks.c</itemPath>
-        </logicalFolder>
-      </logicalFolder>
-      <logicalFolder name="FreeRTOS" displayName="FreeRTOS" projectFiles="true">
-        <logicalFolder name="Source" displayName="Source" projectFiles="true">
-          <logicalFolder name="portable" displayName="portable" projectFiles="true">
-            <logicalFolder name="GCC" displayName="GCC" projectFiles="true">
-              <logicalFolder name="SAM" displayName="SAM" projectFiles="true">
-                <logicalFolder name="ARM_CM4F" displayName="ARM_CM4F" projectFiles="true">
-                  <itemPath>../src/third_party/rtos/FreeRTOS/Source/portable/GCC/SAM/ARM_CM4F/port.c</itemPath>
-                </logicalFolder>
-              </logicalFolder>
-            </logicalFolder>
-            <logicalFolder name="MemMang" displayName="MemMang" projectFiles="true">
-              <itemPath>../src/third_party/rtos/FreeRTOS/Source/portable/MemMang/heap_1.c</itemPath>
-            </logicalFolder>
-          </logicalFolder>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/timers.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/stream_buffer.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/list.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/event_groups.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/queue.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/croutine.c</itemPath>
-          <itemPath>../src/third_party/rtos/FreeRTOS/Source/FreeRTOS_tasks.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <itemPath>../src/app_display.c</itemPath>
@@ -495,12 +436,12 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>j32</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>4.20</languageToolchainVersion>
+        <languageToolchainVersion>4.21</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
-        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.0.6"/>
+        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.1.9"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -608,7 +549,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-cross-reference-file" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="heap-size" value="1024"/>
+        <property key="heap-size" value="4096"/>
         <property key="input-libraries" value=""/>
         <property key="kseg-length" value=""/>
         <property key="kseg-origin" value=""/>

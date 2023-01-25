@@ -113,7 +113,7 @@ def updateConfigATS2023(symbol, event):
     v1 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_V1")
     i2 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I2")
 
-    reg = (gainValue << 28) | (gainValue << 12) | (gainValue << 4) | (i2 << 24) | (v1 << 16) | (i1 << 8) | i0
+    reg = (gainValue << 28) | (gainValue << 12) | (gainValue << 4) | (i2 << 24) | (v1 << 16) | (i1 << 8) | (1 << 1) | i0
     symbol.setValue(reg)
 
 def updateConfigATS2427(symbol, event):
@@ -801,7 +801,7 @@ def instantiateComponent(metComponentCommon):
     metrologyRTOSSupport = metComponentCommon.createBooleanSymbol("DRV_MET_RTOS_ENABLE", None)
     metrologyRTOSSupport.setLabel("RTOS support")
     metrologyRTOSSupport.setDefaultValue(enable_rtos_settings)
-    metrologyRTOSSupport.setVisible(True)
+    metrologyRTOSSupport.setVisible(False)
 
     # RTOS Settings
     metrologyRTOSMenu = metComponentCommon.createMenuSymbol("DRV_MET_RTOS_MENU", None)

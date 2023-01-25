@@ -1,7 +1,7 @@
 /*
  * Instance header file for PIC32CX5112MTC128S1
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,13 +20,12 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:36Z */
+/* file generated from device description version 2023-01-19T09:46:50Z */
 #ifndef _PIC32CXMTC_PWM_INSTANCE_
 #define _PIC32CXMTC_PWM_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for PWM peripheral ========== */
-#define PWM_INSTANCE_ID                          (90)       
 #define PWM_CLOCK_ID                             (90)       
 #define PWM_FAULT_PWM_ID0                        (0x0)      /* Fault 0 - PWM0_PWMFI0 Input pin */
 #define PWM_FAULT_PWM_ID1                        (0x1)      /* Fault 1 - PWM0_PWMFI1 Input pin */
@@ -36,5 +35,6 @@
 #define PWM_FAULT_PWM_ID5                        (0x5)      /* Fault 5 - TC0 */
 #define PWM_FAULT_PWM_ID6                        (0x6)      /* Fault 6 - TC1 */
 #define PWM_FAULT_PWM_ID7                        (0x7)      /* Fault 7 - TC2 */
+#define PWM_INSTANCE_ID                          (90)       
 
 #endif /* _PIC32CXMTC_PWM_INSTANCE_ */

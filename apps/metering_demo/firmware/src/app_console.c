@@ -1296,8 +1296,7 @@ static void _commandIDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-//            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
-            APP_DATALOG_SendEventsData(&datalogQueueElement);
+            APP_DATALOG_SendDatalogData(&datalogQueueElement);
             SYS_CMD_MESSAGE("Set Meter ID is Ok\r\n");
         
             /* Show console communication icon */
@@ -1527,8 +1526,7 @@ static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                 datalogQueueElement.dataLen = sizeof(struct tm);
                 datalogQueueElement.pData = (uint8_t*)&app_consoleData.sysTime;
                 // Put it in queue
-//                xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
-                APP_DATALOG_SendEventsData(&datalogQueueElement);
+                APP_DATALOG_SendDatalogData(&datalogQueueElement);
             
                 // Clear No-persistent energy/demand data
                 APP_ENERGY_ClearEnergy(false);
@@ -1828,7 +1826,7 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            APP_DATALOG_SendEventsData(&datalogQueueElement);
+            APP_DATALOG_SendDatalogData(&datalogQueueElement);
             
             // Wait for data to be read (semaphore is released in callback)
             app_consoleData.state = APP_CONSOLE_STATE_WAIT_DATA;
@@ -1847,7 +1845,7 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            APP_DATALOG_SendEventsData(&datalogQueueElement);
+            APP_DATALOG_SendDatalogData(&datalogQueueElement);
             // Go to Idle state
             app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;

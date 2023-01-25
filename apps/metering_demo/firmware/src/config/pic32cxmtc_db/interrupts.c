@@ -79,10 +79,11 @@ void __attribute__((optimize("-O1"),section(".text.Dummy_Handler"),long_call, no
 }
 
 /* MISRAC 2012 deviation block start */
-/* MISRA C-2012 Rule 8.6 deviated 85 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
+/* MISRA C-2012 Rule 8.6 deviated 86 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
 /* Device vectors list dummy definition*/
-extern void vPortSVCHandler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void xPortPendSVHandler         ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void SVCall_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void PendSV_Handler             ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void SysTick_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void SUPC_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void RSTC_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void RTT_Handler                ( void ) __attribute__((weak, alias("Dummy_Handler")));
@@ -153,9 +154,9 @@ extern void SUPC_WKUP13_Handler        ( void ) __attribute__((weak, alias("Dumm
 extern void SUPC_WKUP14_Handler        ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void SUPC_WKUP15_Handler        ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void MEM2MEM1_Handler           ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL0_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL1_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void TC3_CHANNEL2_Handler       ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH0_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH1_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
+extern void TC3_CH2_Handler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C0SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C1SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void TC3_C2SEC_Handler          ( void ) __attribute__((weak, alias("Dummy_Handler")));
@@ -186,10 +187,10 @@ const H3DeviceVectors exception_table=
     .pfnMemoryManagement_Handler   = MemoryManagement_Handler,
     .pfnBusFault_Handler           = BusFault_Handler,
     .pfnUsageFault_Handler         = UsageFault_Handler,
-    .pfnSVCall_Handler             = vPortSVCHandler,
+    .pfnSVCall_Handler             = SVCall_Handler,
     .pfnDebugMonitor_Handler       = DebugMonitor_Handler,
-    .pfnPendSV_Handler             = xPortPendSVHandler,
-    .pfnSysTick_Handler            = xPortSysTickHandler,
+    .pfnPendSV_Handler             = PendSV_Handler,
+    .pfnSysTick_Handler            = SysTick_Handler,
     .pfnSUPC_Handler               = SUPC_Handler,
     .pfnRSTC_Handler               = RSTC_Handler,
     .pfnRTC_Handler                = RTC_InterruptHandler,
@@ -264,9 +265,9 @@ const H3DeviceVectors exception_table=
     .pfnSUPC_WKUP14_Handler        = SUPC_WKUP14_Handler,
     .pfnSUPC_WKUP15_Handler        = SUPC_WKUP15_Handler,
     .pfnMEM2MEM1_Handler           = MEM2MEM1_Handler,
-    .pfnTC3_CHANNEL0_Handler       = TC3_CHANNEL0_Handler,
-    .pfnTC3_CHANNEL1_Handler       = TC3_CHANNEL1_Handler,
-    .pfnTC3_CHANNEL2_Handler       = TC3_CHANNEL2_Handler,
+    .pfnTC3_CH0_Handler            = TC3_CH0_Handler,
+    .pfnTC3_CH1_Handler            = TC3_CH1_Handler,
+    .pfnTC3_CH2_Handler            = TC3_CH2_Handler,
     .pfnTC3_C0SEC_Handler          = TC3_C0SEC_Handler,
     .pfnTC3_C1SEC_Handler          = TC3_C1SEC_Handler,
     .pfnTC3_C2SEC_Handler          = TC3_C2SEC_Handler,

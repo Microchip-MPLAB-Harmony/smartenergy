@@ -54,112 +54,6 @@
 #include "definitions.h"
 
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: RTOS "Tasks" Routine
-// *****************************************************************************
-// *****************************************************************************
-void _SYS_CMD_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        SYS_CMD_Tasks();
-        vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
-}
-
-
-
-void _SYS_FS_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        SYS_FS_Tasks();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }
-}
-
-
-void _SLCDC_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        DRV_SLCDC_Update();
-        vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
-}
-
-void _DRV_METROLOGY_Tasks(  void *pvParameters  )
-{
-    while(1)
-    {
-        DRV_METROLOGY_Tasks(sysObj.drvMet);
-    }
-}
-
-/* Handle for the APP_METROLOGY_Tasks. */
-TaskHandle_t xAPP_METROLOGY_Tasks;
-
-void _APP_METROLOGY_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_METROLOGY_Tasks();
-    }
-}
-/* Handle for the APP_CONSOLE_Tasks. */
-TaskHandle_t xAPP_CONSOLE_Tasks;
-
-void _APP_CONSOLE_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_CONSOLE_Tasks();
-    }
-}
-/* Handle for the APP_DATALOG_Tasks. */
-TaskHandle_t xAPP_DATALOG_Tasks;
-
-void _APP_DATALOG_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_DATALOG_Tasks();
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }
-}
-/* Handle for the APP_DISPLAY_Tasks. */
-TaskHandle_t xAPP_DISPLAY_Tasks;
-
-void _APP_DISPLAY_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_DISPLAY_Tasks();
-    }
-}
-/* Handle for the APP_ENERGY_Tasks. */
-TaskHandle_t xAPP_ENERGY_Tasks;
-
-void _APP_ENERGY_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_ENERGY_Tasks();
-    }
-}
-/* Handle for the APP_EVENTS_Tasks. */
-TaskHandle_t xAPP_EVENTS_Tasks;
-
-void _APP_EVENTS_Tasks(  void *pvParameters  )
-{   
-    while(1)
-    {
-        APP_EVENTS_Tasks();
-    }
-}
-
-
 
 
 // *****************************************************************************
@@ -179,45 +73,22 @@ void SYS_Tasks ( void )
 {
     /* Maintain system services */
     
-    xTaskCreate( _SYS_CMD_Tasks,
-        "SYS_CMD_TASKS",
-        SYS_CMD_RTOS_STACK_SIZE,
-        (void*)NULL,
-        SYS_CMD_RTOS_TASK_PRIORITY,
-        (TaskHandle_t*)NULL
-    );
+SYS_CMD_Tasks();
 
 
 
-    xTaskCreate( _SYS_FS_Tasks,
-        "SYS_FS_TASKS",
-        SYS_FS_STACK_SIZE,
-        (void*)NULL,
-        SYS_FS_PRIORITY,
-        (TaskHandle_t*)NULL
-    );
+SYS_FS_Tasks();
 
 
 
 
     /* Maintain Device Drivers */
-    
-    xTaskCreate( _SLCDC_Tasks,
-        "SLCDC_Tasks",
-        2048,
-        (void*)NULL,
-        1,
-        (TaskHandle_t*)NULL
-    );
+    DRV_MEMORY_Tasks(sysObj.drvMemory0);
+
+DRV_SLCDC_Update();
 
 
-    xTaskCreate( _DRV_METROLOGY_Tasks,
-        "DRV_METROLOGY_TASKS",
-        DRV_METROLOGY_RTOS_STACK_SIZE,
-        (void*)NULL,
-        DRV_METROLOGY_RTOS_TASK_PRIORITY,
-        (TaskHandle_t*)NULL
-    );
+DRV_METROLOGY_Tasks(sysObj.drvMet);
 
 
 
@@ -225,63 +96,26 @@ void SYS_Tasks ( void )
     
 
     /* Maintain the application's state machine. */
-        /* Create OS Thread for APP_METROLOGY_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_METROLOGY_Tasks,
-                "APP_METROLOGY_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_METROLOGY_Tasks);
+        /* Call Application task APP_METROLOGY. */
+    APP_METROLOGY_Tasks();
 
-    /* Create OS Thread for APP_CONSOLE_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_CONSOLE_Tasks,
-                "APP_CONSOLE_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_CONSOLE_Tasks);
+    /* Call Application task APP_CONSOLE. */
+    APP_CONSOLE_Tasks();
 
-    /* Create OS Thread for APP_DATALOG_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_DATALOG_Tasks,
-                "APP_DATALOG_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_DATALOG_Tasks);
+    /* Call Application task APP_DATALOG. */
+    APP_DATALOG_Tasks();
 
-    /* Create OS Thread for APP_DISPLAY_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_DISPLAY_Tasks,
-                "APP_DISPLAY_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_DISPLAY_Tasks);
+    /* Call Application task APP_DISPLAY. */
+    APP_DISPLAY_Tasks();
 
-    /* Create OS Thread for APP_ENERGY_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_ENERGY_Tasks,
-                "APP_ENERGY_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_ENERGY_Tasks);
+    /* Call Application task APP_ENERGY. */
+    APP_ENERGY_Tasks();
 
-    /* Create OS Thread for APP_EVENTS_Tasks. */
-    xTaskCreate((TaskFunction_t) _APP_EVENTS_Tasks,
-                "APP_EVENTS_Tasks",
-                1024,
-                NULL,
-                1,
-                &xAPP_EVENTS_Tasks);
+    /* Call Application task APP_EVENTS. */
+    APP_EVENTS_Tasks();
 
 
 
-
-    /* Start RTOS Scheduler. */
-    
-     /**********************************************************************
-     * Create all Threads for APP Tasks before starting FreeRTOS Scheduler *
-     ***********************************************************************/
-    vTaskStartScheduler(); /* This function never returns. */
 
 }
 
