@@ -794,8 +794,14 @@ def instantiateComponent(metComponentCommon):
     
     enable_rtos_settings = False
 
-    if (Database.getSymbolValue("HarmonyCore", "SELECT_RTOS") != "BareMetal"):
+    rtos = Database.getSymbolValue("HarmonyCore", "SELECT_RTOS")
+    if ((rtos != "BareMetal") and (rtos != None)):
         enable_rtos_settings = True
+
+    metrologyRTOSSupport = metComponentCommon.createBooleanSymbol("DRV_MET_RTOS_ENABLE", None)
+    metrologyRTOSSupport.setLabel("RTOS support")
+    metrologyRTOSSupport.setDefaultValue(enable_rtos_settings)
+    metrologyRTOSSupport.setVisible(True)
 
     # RTOS Settings
     metrologyRTOSMenu = metComponentCommon.createMenuSymbol("DRV_MET_RTOS_MENU", None)

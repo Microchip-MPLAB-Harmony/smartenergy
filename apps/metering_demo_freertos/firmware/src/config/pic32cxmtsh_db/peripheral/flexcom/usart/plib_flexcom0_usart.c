@@ -54,8 +54,8 @@
 #define FLEXCOM0_USART_READ_BUFFER_SIZE             256
 #define FLEXCOM0_USART_READ_BUFFER_SIZE_9BIT        (256 >> 1)
 
-#define FLEXCOM0_USART_HW_RX_FIFO_THRES                 4
-#define FLEXCOM0_USART_HW_TX_FIFO_THRES                 4
+#define FLEXCOM0_USART_HW_RX_FIFO_THRES                 1
+#define FLEXCOM0_USART_HW_TX_FIFO_THRES                 1
 
 /* Disable Read, Overrun, Parity and Framing error interrupts */
 #define FLEXCOM0_USART_RX_INT_DISABLE()      do { \

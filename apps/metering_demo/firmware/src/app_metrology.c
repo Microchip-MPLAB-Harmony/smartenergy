@@ -59,17 +59,11 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* Define a semaphore to signal the Metrology Tasks to process new integration
- * data */
-OSAL_SEM_DECLARE(appMetrologySemID);
-/* Define a semaphore to signal the Metrology Calibration Tasks */
-OSAL_SEM_DECLARE(appMetrologyCalibrationSemID);
-
-extern QueueHandle_t appDatalogQueueID;
+extern APP_DATALOG_QUEUE appDatalogQueue;
 APP_DATALOG_QUEUE_DATA appMetrologyDatalogQueueData;
 
-extern QueueHandle_t appEnergyQueueID;
-extern QueueHandle_t appEventsQueueID;
+extern APP_ENERGY_QUEUE appEnergyQueue;
+extern APP_EVENTS_QUEUE appEventsQueue;
 
 extern DRV_METROLOGY_INIT drvMetrologyInitData;
 
@@ -288,7 +282,7 @@ static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_CONTROL * control
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
+    APP_DATALOG_SendEventsData(&appMetrologyDatalogQueueData);
 }
 
 static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlReg)
@@ -301,7 +295,7 @@ static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlR
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
+    APP_DATALOG_SendEventsData(&appMetrologyDatalogQueueData);
 }
 
 // *****************************************************************************
@@ -316,7 +310,7 @@ static void _APP_METROLOGY_IntegrationCallback(void)
         (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION))
     {
         /* Signal Metrology thread to update measurements for an integration period */
-        OSAL_SEM_Post(&appMetrologySemID);
+        app_metrologyData.integrationFlag = true;
     }
 }
 
@@ -334,7 +328,7 @@ static void _APP_METROLOGY_CalibrationCallback(bool result)
     }
     
     /* Signal Metrology to exit calibration status */
-    OSAL_SEM_Post(&appMetrologyCalibrationSemID);
+    app_metrologyData.calibrationFlag = true;
 }
 
 static void _APP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
@@ -353,8 +347,8 @@ static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result)
         app_metrologyData.dataIsRdy = true;
     }
 
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appMetrologySemID);
+    // Handle task state
+    app_metrologyData.dataFlag = true;
 }
 
 // *****************************************************************************
@@ -409,18 +403,12 @@ void APP_METROLOGY_Initialize (void)
     
     /* Clear Calibration Data */
     app_metrologyData.pCalibrationCallback = NULL;
+    app_metrologyData.calibrationFlag = false;
 
-    /* Create the Metrology Integration Semaphore. */
-    if (OSAL_SEM_Create(&appMetrologySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
-    {
-        /* Handle error condition. Not sufficient memory to create semaphore */
-    }
+    /* Initialize integration Flag */
+    app_metrologyData.integrationFlag = false;
+    app_metrologyData.dataFlag = false;
     
-    /* Create the Metrology Calibration Semaphore. */
-    if (OSAL_SEM_Create(&appMetrologyCalibrationSemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
-    {
-        /* Handle error condition. Not sufficient memory to create semaphore */
-    }
 }
 
 /******************************************************************************
@@ -448,20 +436,27 @@ void APP_METROLOGY_Tasks (void)
                 {
                     /* Metrology data exists */
                     _APP_METROLOGY_LoadControlFromMemory(&app_metrologyData.configuration);
-                    /* Wait for the semaphore to load data from memory */
-                    OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-
-                    /* Apply COnfiguration Data */
-                    if (app_metrologyData.dataIsRdy)
-                    {
-                        /* Update Flag to apply external configuration */
-                        app_metrologyData.setConfiguration = true;
-                    }
+                    /* Wait for the loading data from memory */
+                    app_metrologyData.state = APP_METROLOGY_STATE_WAIT_DATA;
                 }
-                app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+                else
+                {
+                    app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+                }
             }
 
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            break;
+        }
+
+        case APP_METROLOGY_STATE_WAIT_DATA:
+        {
+            /* Apply Configuration Data */
+            if (app_metrologyData.dataIsRdy)
+            {
+                /* Update Flag to apply external configuration */
+                app_metrologyData.setConfiguration = true;
+                app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+            }
             break;
         }
 
@@ -491,7 +486,6 @@ void APP_METROLOGY_Tasks (void)
                 app_metrologyData.state = APP_METROLOGY_STATE_ERROR;
             }
 
-            vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
@@ -515,7 +509,6 @@ void APP_METROLOGY_Tasks (void)
                     app_metrologyData.state = APP_METROLOGY_STATE_ERROR;
                 }
 
-                vTaskDelay(10 / portTICK_PERIOD_MS);
             }
 
             break;
@@ -523,57 +516,40 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_RUNNING:
         {
-            /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
-            OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
+            /* Wait for the integration flag to get measurements at the end of the integration period. */
+            if (app_metrologyData.integrationFlag)
+            {
+                app_metrologyData.integrationFlag = false;
             
-            if (app_metrologyData.state == APP_METROLOGY_STATE_INIT)
-            {
-                /* Received Reload Command */
-                break;
-            }
-            else if (app_metrologyData.state == APP_METROLOGY_STATE_CHECK_CALIBRATION)
-            {
-                /* Received Start Calibration Command */
-                break;
-            }            
-
-            // Send new Energy values to the Energy Task
-            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
-            if (app_metrologyData.queueFree)
-            {
+                // Send new Energy values to the Energy Task
                 newMetrologyData.energy = DRV_METROLOGY_GetEnergyValue(true);
                 newMetrologyData.Pt = DRV_METROLOGY_GetRMSValue(RMS_PT);
-                xQueueSend(appEnergyQueueID, &newMetrologyData, (TickType_t) 0);
-            }
-            else
-            {
-                SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
-            }
-            
-            // Send new Events to the Events Task
-            app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
-            if (app_metrologyData.queueFree)
-            {
+                if (APP_ENERGY_SendEnergyData(&newMetrologyData) == false)
+                {
+                    SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
+                }
+
+                // Send new Events to the Events Task
                 RTC_TimeGet(&newEvent.eventTime);
                 DRV_METROLOGY_GetEventsData(&newEvent.eventFlags);
-                xQueueSend(appEventsQueueID, &newEvent, (TickType_t) 0);
+                if (APP_EVENTS_SendEventsData(&newEvent) == false)
+                {
+                    SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
+                }
             }
-            else
-            {
-                SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
-            }
-            
+                
             break;
         }
 
         case APP_METROLOGY_STATE_CHECK_CALIBRATION:
         {
             /* Wait for the metrology semaphore to wait calibration ends. */
-            OSAL_SEM_Pend(&appMetrologyCalibrationSemID, OSAL_WAIT_FOREVER);
+            if (app_metrologyData.calibrationFlag)
+            {
+                app_metrologyData.calibrationFlag = false;
+                app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
+            }
             
-            app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-            
-            vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
@@ -800,8 +776,6 @@ void APP_METROLOGY_Restart (void)
     app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
     
     sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
-    
-    OSAL_SEM_Post(&appMetrologySemID);
 }
 
 void APP_METROLOGY_SetLowPowerMode (void)

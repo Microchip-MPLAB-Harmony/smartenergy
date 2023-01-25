@@ -114,7 +114,12 @@ typedef enum
     APP_DATALOG_STATE_READY,
 
     /* An app error has occurred */
-    APP_DATALOG_STATE_ERROR
+    APP_DATALOG_STATE_ERROR,
+            
+#if SYS_FS_AUTOMOUNT_ENABLE
+    /* Wait for delay */
+    APP_DATALOG_STATE_DELAY,
+#endif             
 
 } APP_DATALOG_STATES;
 
@@ -277,6 +282,40 @@ typedef struct
 
 } APP_DATALOG_QUEUE_DATA;
 
+#define APP_DATALOG_QUEUE_DATA_SIZE     10
+
+typedef struct {
+  APP_DATALOG_QUEUE_DATA data[APP_DATALOG_QUEUE_DATA_SIZE];
+  APP_DATALOG_QUEUE_DATA * dataRd;
+  APP_DATALOG_QUEUE_DATA * dataWr;
+  uint8_t dataSize;
+} APP_DATALOG_QUEUE;
+
+// *****************************************************************************
+/* Application Queue Data in Process
+
+  Summary:
+    Defines data in process by Datalog tasks
+
+  Description:
+    This structure will be used by Datalog service to process the income request.
+
+  Remarks:
+    None.
+ */
+
+typedef struct
+{
+    // Datalog Queue in process
+    APP_DATALOG_QUEUE_DATA data;
+
+    // File Handle
+    SYS_FS_HANDLE fileHandle;
+    
+    // File Name
+    char fileName[32];
+
+} APP_DATALOG_DATA_IN_PROCESS;
 
 // *****************************************************************************
 /* Application Data
@@ -299,11 +338,8 @@ typedef struct
     /* Format Options */
     SYS_FS_FORMAT_PARAM formatOpt;
 
-    /* Element from Queue */
-    APP_DATALOG_QUEUE_DATA newQueueData;
-
-    /* Current File Handle */
-    SYS_FS_HANDLE fileHandle;
+    /* Element extracted from Queue to be processed */
+    APP_DATALOG_DATA_IN_PROCESS newData;
 
     /* Current File Name */
     char fileName[32];
@@ -322,6 +358,17 @@ typedef struct
     
     /* SYS FS File status structure used in clear data routine */
     SYS_FS_FSTAT stat;
+    
+#if SYS_FS_AUTOMOUNT_ENABLE    
+    /* The application's next state */
+    APP_CONSOLE_STATES nextState;
+    
+    /* Timer handler to drive delay function */
+    SYS_TIME_HANDLE timer;
+    
+    /* Delay time in milliseconds */
+    uint32_t delayMs;
+#endif
 
 } APP_DATALOG_DATA;
 
@@ -511,6 +558,8 @@ bool APP_DATALOG_FileExists(APP_DATALOG_USER userId, APP_DATALOG_DATE *date);
  */
 
 void APP_DATALOG_ClearData(APP_DATALOG_USER userId);
+
+bool APP_DATALOG_SendEventsData(APP_DATALOG_QUEUE_DATA *datalogData);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

@@ -311,20 +311,20 @@ void SYS_Initialize ( void* data )
   
     DWDT_Initialize();
     CLK_Initialize();
+    RSTC_Initialize();
+
     PIO_Initialize();
     SUPC_Initialize();
 
-    RSTC_Initialize();
 
 
 
+    RTC_Initialize();
 
  
     TC0_CH0_TimerInitialize(); 
      
     
-    RTC_Initialize();
-
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();

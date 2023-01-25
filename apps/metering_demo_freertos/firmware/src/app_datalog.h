@@ -277,6 +277,31 @@ typedef struct
 
 } APP_DATALOG_QUEUE_DATA;
 
+// *****************************************************************************
+/* Application Queue Data in Process
+
+  Summary:
+    Defines data in process by Datalog tasks
+
+  Description:
+    This structure will be used by Datalog service to process the income request.
+
+  Remarks:
+    None.
+ */
+
+typedef struct
+{
+    // Datalog Queue in process
+    APP_DATALOG_QUEUE_DATA data;
+
+    // File Handle
+    SYS_FS_HANDLE fileHandle;
+    
+    // File Name
+    char fileName[32];
+
+} APP_DATALOG_DATA_IN_PROCESS;
 
 // *****************************************************************************
 /* Application Data
@@ -299,11 +324,8 @@ typedef struct
     /* Format Options */
     SYS_FS_FORMAT_PARAM formatOpt;
 
-    /* Element from Queue */
-    APP_DATALOG_QUEUE_DATA newQueueData;
-
-    /* Current File Handle */
-    SYS_FS_HANDLE fileHandle;
+    /* Element extracted from Queue to be processed */
+    APP_DATALOG_DATA_IN_PROCESS newData;
 
     /* Current File Name */
     char fileName[32];

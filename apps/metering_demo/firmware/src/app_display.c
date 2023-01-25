@@ -65,9 +65,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* Define a semaphore to signal the Display Tasks to handle information */
-OSAL_SEM_DECLARE(appDisplaySemID);
-
 // *****************************************************************************
 /* Application Data
 
@@ -90,16 +87,23 @@ APP_DISPLAY_DATA CACHE_ALIGN app_displayData;
 // Section: Application Callback Functions
 // *****************************************************************************
 // *****************************************************************************
-static void APP_DISPLAY_ScrollUp_Callback ( PIO_PIN pin, uintptr_t context)
+static void _APP_DISPLAY_ScrollUp_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrup_pressed = true;
-    OSAL_SEM_PostISR(&appDisplaySemID);
 }
 
-static void APP_DISPLAY_ScrollDown_Callback ( PIO_PIN pin, uintptr_t context)
+static void _APP_DISPLAY_ScrollDown_Callback ( PIO_PIN pin, uintptr_t context)
 {
     app_displayData.scrdown_pressed = true;
-    OSAL_SEM_PostISR(&appDisplaySemID);
+}
+
+static void _APP_DISPLAY_Timer_Callback ( uintptr_t context)
+{
+    if (--app_displayData.display_time == 0)
+    {
+        app_displayData.timerFlag = true;
+        app_displayData.display_time = app_displayData.reload_display_time;
+    }
 }
 
 // *****************************************************************************
@@ -132,6 +136,35 @@ static status_code_t APP_DISPLAY_InitLCD(void)
 
 /*******************************************************************************
   Function:
+    Timer in milliseconds for creating and waiting the delay.
+ */
+
+static bool APP_DISPLAY_TaskDelay(uint32_t ms, SYS_TIME_HANDLE* handle)
+{
+    // Check if there is the timer has been created and running
+    if (*handle == SYS_TIME_HANDLE_INVALID)
+    {
+        // Create timer
+        if (SYS_TIME_DelayMS(ms, handle) != SYS_TIME_SUCCESS)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        // Check timer
+        if (SYS_TIME_DelayIsComplete(*handle) == true)
+        {
+            *handle = SYS_TIME_HANDLE_INVALID;
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+/*******************************************************************************
+  Function:
     Timer in seconds for changing the info in loop mode.
  */
 
@@ -140,7 +173,23 @@ static void APP_DISPLAY_SetTimerLoop(uint32_t time_sec)
     if (time_sec) 
     {
         /* Set the new time for loop mode */
+        app_displayData.display_time = time_sec;
         app_displayData.reload_display_time = time_sec;
+        
+        /* Check timer to cancel it */
+        if (app_displayData.timer != SYS_TIME_HANDLE_INVALID)
+        {
+            /* Cancel Timer */
+            SYS_TIME_TimerDestroy(app_displayData.timer);
+            
+            /* Clear timer flag */
+            app_displayData.timerFlag = false;
+        }
+        
+        /* Create Task Timer */
+        app_displayData.timer = SYS_TIME_CallbackRegisterMS(_APP_DISPLAY_Timer_Callback, 0, 
+                1000, SYS_TIME_PERIODIC);
+        
     }
 }
 
@@ -587,6 +636,9 @@ void APP_DISPLAY_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     app_displayData.state = APP_DISPLAY_STATE_INIT;
+    
+    /* Init Display Timer */
+    app_displayData.timer = SYS_TIME_HANDLE_INVALID;
 
     /* No buttons pressed */
     app_displayData.scrdown_pressed = false;
@@ -612,24 +664,12 @@ void APP_DISPLAY_Initialize ( void )
     /* Set communication icon time */
     app_displayData.comm_time = 0;
     
-    /* Set display time */
-    app_displayData.display_time = 2;
-    
-    /* Configure display timer loop */
-    APP_DISPLAY_SetTimerLoop(3);
-    
     /* Configure Switches */
     PIO_PinInterruptCallbackRegister(SWITCH_SCRUP_PIN, 
-            APP_DISPLAY_ScrollUp_Callback, (uintptr_t)NULL);
+            _APP_DISPLAY_ScrollUp_Callback, (uintptr_t)NULL);
 
     PIO_PinInterruptCallbackRegister(SWITCH_SCRDOWN_PIN, 
-            APP_DISPLAY_ScrollDown_Callback, (uintptr_t)NULL);
-    
-    /* Create the Display Semaphore */
-    if (OSAL_SEM_Create(&appDisplaySemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
-    {
-        /* Handle error condition. Not sufficient memory to create semaphore */
-    }
+            _APP_DISPLAY_ScrollDown_Callback, (uintptr_t)NULL);
 
     /* Reload DWDT0 at startup */
     DWDT_WDT0_Clear();
@@ -707,19 +747,19 @@ void APP_DISPLAY_Tasks ( void )
                 /* Enable Switches interrupts */
                 PIO_PinInterruptEnable(SWITCH_SCRUP_PIN);
                 PIO_PinInterruptEnable(SWITCH_SCRDOWN_PIN);
-
+    
+                /* Configure display timer loop */
+                APP_DISPLAY_SetTimerLoop(3);
+    
                 app_displayData.state = APP_DISPLAY_STATE_SERVICE_TASKS;
             }
-            
-            vTaskDelay(100 / portTICK_PERIOD_MS);
             break;
         }
 
         case APP_DISPLAY_STATE_SERVICE_TASKS:
         {
-            /* Check if buttons were pressed or wait 1s */
-            if (OSAL_SEM_Pend(&appDisplaySemID, 1000) == OSAL_RESULT_TRUE)
-            {
+                bool updateDisplay = false;
+                
                 /* If any button has been pressed, change the information */
                 if (app_displayData.scrdown_pressed)
                 {
@@ -731,16 +771,14 @@ void APP_DISPLAY_Tasks ( void )
                         APP_DISPLAY_ShowLowPowerMode();
 
                         // Wait time to show message through the Console 
-                        vTaskDelay(100 / portTICK_PERIOD_MS);
-
-                        // Go to Low Power mode
-                        APP_METROLOGY_SetLowPowerMode();
-
-                        // Execution should not come here during normal operation
+                        app_displayData.state = APP_DISPLAY_STATE_DELAY_LOW_POWER;
+                        break;
                     }
                     
                     app_displayData.scrdown_pressed = false;
                     app_displayData.direction = APP_DISPLAY_BACKWARD;
+                    
+                    updateDisplay = true;
                 }
                 
                 if (app_displayData.scrup_pressed)
@@ -755,28 +793,38 @@ void APP_DISPLAY_Tasks ( void )
                     
                     app_displayData.scrup_pressed = false;
                     app_displayData.direction = APP_DISPLAY_FORWARD;
+                    
+                    updateDisplay = true;
                 }
                 
-                APP_DISPLAY_ChangeInfo();
-                APP_DISPLAY_Process();
+                if (updateDisplay)
+                {
+                    /* Update display because any switch has been pressed */
+                    APP_DISPLAY_ChangeInfo();
+                    APP_DISPLAY_Process();
                 
-                /* Reload time */
-                app_displayData.display_time = app_displayData.reload_display_time;
-            }
-            else 
-            {
-                /* Show information in display */
-                if (app_displayData.display_time != 0)
+                    /* Reload time */
+                    APP_DISPLAY_SetTimerLoop(app_displayData.reload_display_time);
+                }
+                
+                if (app_displayData.timerFlag)
                 {
-                    --app_displayData.display_time;
-                } 
-                else 
-                {
+                    app_displayData.timerFlag = false;
+                    
                     APP_DISPLAY_ChangeInfo();  
                     APP_DISPLAY_Process();  
 
                     /* Reload time */
                     app_displayData.display_time = app_displayData.reload_display_time;
+                }
+                
+                /* Show information in display */
+                if (app_displayData.timerFlag)
+                {
+                    app_displayData.timerFlag = false;
+                    
+                    APP_DISPLAY_ChangeInfo();  
+                    APP_DISPLAY_Process();  
                 }
                 
                 /* Clear communication icon */
@@ -793,11 +841,22 @@ void APP_DISPLAY_Tasks ( void )
                     cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
                     cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
                 } 
-            }
 
             break;
         }
 
+        case APP_DISPLAY_STATE_DELAY_LOW_POWER:
+        {
+            // Wait time to show message through the Console 
+            if (APP_DISPLAY_TaskDelay(100, &app_displayData.timer))
+            {
+                // Go to Low Power mode
+                APP_METROLOGY_SetLowPowerMode();
+
+                // Execution should not come here during normal operation
+            }
+            break;
+        }
 
         /* The default state should never be executed. */
         default:

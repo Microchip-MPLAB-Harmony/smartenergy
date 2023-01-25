@@ -68,7 +68,6 @@
 #endif
 
 #define DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY   100
-#define DATALOG_TASK_DELAY_MS_BETWEEN_STATES            10
 
 
 // *****************************************************************************
@@ -92,7 +91,7 @@ APP_DATALOG_DATA CACHE_ALIGN app_datalogData;
 uint8_t CACHE_ALIGN work[SYS_FS_FAT_MAX_SS];
 
 /* Define a queue to signal the Datalog Tasks to store data */
-QueueHandle_t appDatalogQueueID = NULL;
+APP_DATALOG_QUEUE appDatalogQueue;
 
 /* Buffer to get a string name from User IDs */
 static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "calibration", "tou", "rtc", "console", "events", "energy", "demand"};
@@ -109,7 +108,67 @@ static char *userToString[APP_DATALOG_USER_NUM] = {"metrology", "calibration", "
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
+
+static void _APP_DATALOG_InitDatalogQueue(void)
+{
+    /* Clear DataLog Queue data */
+    memset(&appDatalogQueue, 0, sizeof(appDatalogQueue));
+    
+    /* Init Queue pointers */
+    appDatalogQueue.dataRd = &appDatalogQueue.data[0];
+    appDatalogQueue.dataWr = appDatalogQueue.dataRd;
+}
+
+static bool _APP_DATALOG_ReceiveDatalogData(APP_DATALOG_QUEUE_DATA *datalogData)
+{
+    if (appDatalogQueue.dataSize)
+    {
+        /* Copy data to the data pointer */
+        memcpy(datalogData, appDatalogQueue.dataRd, sizeof(APP_DATALOG_QUEUE_DATA));
+        
+        /* Update Queue as a circular buffer */
+        appDatalogQueue.dataSize--;
+        if (appDatalogQueue.dataRd == &appDatalogQueue.data[APP_DATALOG_QUEUE_DATA_SIZE - 1])
+        {
+            appDatalogQueue.dataRd = &appDatalogQueue.data[0];
+        }
+        else
+        {
+            appDatalogQueue.dataRd++;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
+
 #if SYS_FS_AUTOMOUNT_ENABLE
+
+static bool APP_DATALOG_TaskDelay(uint32_t ms, SYS_TIME_HANDLE* handle)
+{
+    // Check if there is the timer has been created and running
+    if (*handle == SYS_TIME_HANDLE_INVALID)
+    {
+        // Create timer
+        if (SYS_TIME_DelayMS(ms, handle) != SYS_TIME_SUCCESS)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        // Check timer
+        if (SYS_TIME_DelayIsComplete(*handle) == true)
+        {
+            *handle = SYS_TIME_HANDLE_INVALID;
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 static void APP_DATALOG_SysFSEventHandler(SYS_FS_EVENT event, void* eventData, uintptr_t context)
 {
     switch(event)
@@ -296,21 +355,15 @@ void APP_DATALOG_Initialize ( void )
     /* Initialize the app state to wait for media attach. */
 #if SYS_FS_AUTOMOUNT_ENABLE
     app_datalogData.state = APP_DATALOG_STATE_MOUNT_WAIT;
+    app_datalogData.timer = SYS_TIME_HANDLE_INVALID;
 
     SYS_FS_EventHandlerSet(APP_DATALOG_SysFSEventHandler,(uintptr_t)NULL);
 #else
     app_datalogData.state = APP_DATALOG_STATE_MOUNT_DISK;
 #endif
     
-    // Create a queue capable of containing 10 queue data elements.
-    appDatalogQueueID = xQueueCreate(10, sizeof(APP_DATALOG_QUEUE_DATA));
-
-    if (appDatalogQueueID == NULL)
-    {
-        // Queue was not created and must not be used.
-        app_datalogData.state = APP_DATALOG_STATE_ERROR;
-        return;
-    }
+    /* Init DataLog Queue */
+    _APP_DATALOG_InitDatalogQueue();
 }
 
 /******************************************************************************
@@ -343,8 +396,9 @@ void APP_DATALOG_Tasks(void)
                 app_datalogData.state = APP_DATALOG_STATE_CHECK_DIRECTORIES;
             }
 
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY / portTICK_PERIOD_MS);
+            app_datalogData.nextState = app_datalogData.state;
+            app_datalogData.state = APP_DATALOG_STATE_DELAY;
+            app_datalogData.delayMs = DATALOG_TASK_DELAY_MS_UNTIL_FILE_SYSTEM_READY;
 
             break;
         }
@@ -419,58 +473,52 @@ void APP_DATALOG_Tasks(void)
             // Ready to accept accesses
             app_datalogData.state = APP_DATALOG_STATE_READY;
 
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-
             break;
         }
 
         case APP_DATALOG_STATE_READY:
         {
             // Wait messages in queue
-            if (xQueueReceive(appDatalogQueueID, &app_datalogData.newQueueData, portMAX_DELAY))
+            if (_APP_DATALOG_ReceiveDatalogData(&app_datalogData.newData.data))
             {
                 // Get file name
-                if ((app_datalogData.newQueueData.date.year == APP_DATALOG_INVALID_YEAR) ||
-                    (app_datalogData.newQueueData.date.month == APP_DATALOG_INVALID_MONTH))
+                if ((app_datalogData.newData.data.date.year == APP_DATALOG_INVALID_YEAR) ||
+                    (app_datalogData.newData.data.date.month == APP_DATALOG_INVALID_MONTH))
                 {
-                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, NULL, app_datalogData.fileName);
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newData.data.userId, NULL, app_datalogData.newData.fileName);
                 }
                 else
                 {
-                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, &app_datalogData.newQueueData.date, app_datalogData.fileName);
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newData.data.userId, &app_datalogData.newData.data.date, app_datalogData.newData.fileName);
                 }
 
                 // Check Read/Write operation
-                if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
+                if (app_datalogData.newData.data.operation == APP_DATALOG_READ)
                 {
                     // Go to Read state
                     app_datalogData.state = APP_DATALOG_STATE_READ_FROM_FILE;
                 }
-                else if ((app_datalogData.newQueueData.operation == APP_DATALOG_APPEND) ||
-                         (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE))
+                else if ((app_datalogData.newData.data.operation == APP_DATALOG_APPEND) ||
+                         (app_datalogData.newData.data.operation == APP_DATALOG_WRITE))
                 {
                     // Go to Write state
                     app_datalogData.state = APP_DATALOG_STATE_WRITE_TO_FILE;
                 }
             }
 
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-
             break;
         }
 
         case APP_DATALOG_STATE_READ_FROM_FILE:
         {
-            if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
+            if (app_datalogData.newData.data.operation == APP_DATALOG_READ)
             {
                 // Read operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_READ));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Read Data.
-                    if (SYS_FS_FileRead(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileRead(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Read success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -492,22 +540,19 @@ void APP_DATALOG_Tasks(void)
                 }
             }
 
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-
             break;
         }
 
         case APP_DATALOG_STATE_WRITE_TO_FILE:
         {
-            if (app_datalogData.newQueueData.operation == APP_DATALOG_APPEND)
+            if (app_datalogData.newData.data.operation == APP_DATALOG_APPEND)
             {
                 // Append operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_APPEND));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_APPEND));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Append Data.
-                    if (SYS_FS_FileWrite(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileWrite(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Write success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -528,14 +573,14 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
-            else if (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE)
+            else if (app_datalogData.newData.data.operation == APP_DATALOG_WRITE)
             {
                 // Write operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_WRITE));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_WRITE));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Write Data.
-                    if (SYS_FS_FileWrite(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileWrite(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Write success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -556,9 +601,6 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
-
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }
@@ -566,7 +608,7 @@ void APP_DATALOG_Tasks(void)
         case APP_DATALOG_STATE_CLOSE_FILE:
         {
             // Close current file
-            if (SYS_FS_FileClose(app_datalogData.fileHandle) == SYS_FS_RES_SUCCESS)
+            if (SYS_FS_FileClose(app_datalogData.newData.fileHandle) == SYS_FS_RES_SUCCESS)
             {
                 // Go to report state
                 app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
@@ -577,24 +619,18 @@ void APP_DATALOG_Tasks(void)
                 app_datalogData.state = APP_DATALOG_STATE_ERROR;
             }
 
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
-
             break;
         }
 
         case APP_DATALOG_STATE_REPORT_RESULT:
         {
             // Invoke callback with result from operation
-            if (app_datalogData.newQueueData.endCallback != NULL)
+            if (app_datalogData.newData.data.endCallback != NULL)
             {
-                app_datalogData.newQueueData.endCallback(app_datalogData.result);
+                app_datalogData.newData.data.endCallback(app_datalogData.result);
             }
             // Go back to Ready state
             app_datalogData.state = APP_DATALOG_STATE_READY;
-
-            // Yield to other tasks
-            vTaskDelay(DATALOG_TASK_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
 
             break;
         }
@@ -605,6 +641,19 @@ void APP_DATALOG_Tasks(void)
 
             break;
         }
+        
+#if SYS_FS_AUTOMOUNT_ENABLE
+        case APP_DATALOG_STATE_DELAY:
+        {
+            // Wait delay time
+            if (APP_DATALOG_TaskDelay(app_datalogData.delayMs, &app_datalogData.timer))
+            {
+                // Set next app state
+                app_datalogData.state = app_datalogData.nextState;
+            }
+            break;
+        }   
+#endif
 
         // The default state should never be executed.
         default:
@@ -613,6 +662,30 @@ void APP_DATALOG_Tasks(void)
             break;
         }
     }
+}
+
+bool APP_DATALOG_SendEventsData(APP_DATALOG_QUEUE_DATA *datalogData)
+{
+    if (appDatalogQueue.dataSize < APP_DATALOG_QUEUE_DATA_SIZE)
+    {
+        /* Copy Energy data to the data queue */
+        memcpy(appDatalogQueue.dataWr, datalogData, sizeof(APP_DATALOG_QUEUE_DATA));
+        
+        /* Update Queue as a circular buffer */
+        appDatalogQueue.dataSize++;
+        if (appDatalogQueue.dataWr == &appDatalogQueue.data[APP_DATALOG_QUEUE_DATA_SIZE - 1])
+        {
+            appDatalogQueue.dataWr = &appDatalogQueue.data[0];
+        }
+        else
+        {
+            appDatalogQueue.dataWr++;
+        }
+        
+        return true;
+    }
+
+    return false;
 }
 
 

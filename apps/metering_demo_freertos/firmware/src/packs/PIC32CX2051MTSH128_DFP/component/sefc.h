@@ -1,7 +1,7 @@
 /*
  * Component description for SEFC
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,13 +20,35 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:43:01Z */
+/* file generated from device description version 2023-01-19T13:46:21Z */
 #ifndef _PIC32CXMTSH_SEFC_COMPONENT_H_
 #define _PIC32CXMTSH_SEFC_COMPONENT_H_
 
 /* ************************************************************************** */
 /*   SOFTWARE API DEFINITION FOR SEFC                                         */
 /* ************************************************************************** */
+
+/* -------- SEFC_EEFC_FMR : (SEFC Offset: 0x00) (R/W 32) SEFC Flash Mode Register -------- */
+#define SEFC_EEFC_FMR_FRDY_Pos                _UINT32_(0)                                          /* (SEFC_EEFC_FMR) Flash Ready Interrupt Enable Position */
+#define SEFC_EEFC_FMR_FRDY_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_FRDY_Pos)            /* (SEFC_EEFC_FMR) Flash Ready Interrupt Enable Mask */
+#define SEFC_EEFC_FMR_FRDY(value)             (SEFC_EEFC_FMR_FRDY_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_FRDY_Pos)) /* Assigment of value for FRDY in the SEFC_EEFC_FMR register */
+#define SEFC_EEFC_FMR_FWS_Pos                 _UINT32_(8)                                          /* (SEFC_EEFC_FMR) Flash Wait State Position */
+#define SEFC_EEFC_FMR_FWS_Msk                 (_UINT32_(0xF) << SEFC_EEFC_FMR_FWS_Pos)             /* (SEFC_EEFC_FMR) Flash Wait State Mask */
+#define SEFC_EEFC_FMR_FWS(value)              (SEFC_EEFC_FMR_FWS_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_FWS_Pos)) /* Assigment of value for FWS in the SEFC_EEFC_FMR register */
+#define SEFC_EEFC_FMR_SCOD_Pos                _UINT32_(16)                                         /* (SEFC_EEFC_FMR) Sequential Code Optimization Disable Position */
+#define SEFC_EEFC_FMR_SCOD_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_SCOD_Pos)            /* (SEFC_EEFC_FMR) Sequential Code Optimization Disable Mask */
+#define SEFC_EEFC_FMR_SCOD(value)             (SEFC_EEFC_FMR_SCOD_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_SCOD_Pos)) /* Assigment of value for SCOD in the SEFC_EEFC_FMR register */
+#define SEFC_EEFC_FMR_CLOE_Pos                _UINT32_(26)                                         /* (SEFC_EEFC_FMR) Code Loop Optimization Enable Position */
+#define SEFC_EEFC_FMR_CLOE_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_CLOE_Pos)            /* (SEFC_EEFC_FMR) Code Loop Optimization Enable Mask */
+#define SEFC_EEFC_FMR_CLOE(value)             (SEFC_EEFC_FMR_CLOE_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_CLOE_Pos)) /* Assigment of value for CLOE in the SEFC_EEFC_FMR register */
+#define SEFC_EEFC_FMR_ALWAYS1_Pos             _UINT32_(27)                                         /* (SEFC_EEFC_FMR) Always Written to One Position */
+#define SEFC_EEFC_FMR_ALWAYS1_Msk             (_UINT32_(0x1) << SEFC_EEFC_FMR_ALWAYS1_Pos)         /* (SEFC_EEFC_FMR) Always Written to One Mask */
+#define SEFC_EEFC_FMR_ALWAYS1(value)          (SEFC_EEFC_FMR_ALWAYS1_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_ALWAYS1_Pos)) /* Assigment of value for ALWAYS1 in the SEFC_EEFC_FMR register */
+#define SEFC_EEFC_FMR_Msk                     _UINT32_(0x0C010F01)                                 /* (SEFC_EEFC_FMR) Register Mask  */
+
+#define SEFC_EEFC_FMR_ALWAYS_Pos              _UINT32_(27)                                         /* (SEFC_EEFC_FMR Position) Always Written to One */
+#define SEFC_EEFC_FMR_ALWAYS_Msk              (_UINT32_(0x1) << SEFC_EEFC_FMR_ALWAYS_Pos)          /* (SEFC_EEFC_FMR Mask) ALWAYS */
+#define SEFC_EEFC_FMR_ALWAYS(value)           (SEFC_EEFC_FMR_ALWAYS_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_ALWAYS_Pos)) 
 
 /* -------- SEFC_EEFC_FCR : (SEFC Offset: 0x04) ( /W 32) SEFC Flash Command Register -------- */
 #define SEFC_EEFC_FCR_FCMD_Pos                _UINT32_(0)                                          /* (SEFC_EEFC_FCR) Flash Command Position */
@@ -85,35 +107,6 @@
 #define SEFC_EEFC_FCR_Msk                     _UINT32_(0xFFFFFFFF)                                 /* (SEFC_EEFC_FCR) Register Mask  */
 
 
-/* -------- SEFC_EEFC_FMR : (SEFC Offset: 0x00) (R/W 32) SEFC Flash Mode Register -------- */
-#define SEFC_EEFC_FMR_FRDY_Pos                _UINT32_(0)                                          /* (SEFC_EEFC_FMR) Flash Ready Interrupt Enable Position */
-#define SEFC_EEFC_FMR_FRDY_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_FRDY_Pos)            /* (SEFC_EEFC_FMR) Flash Ready Interrupt Enable Mask */
-#define SEFC_EEFC_FMR_FRDY(value)             (SEFC_EEFC_FMR_FRDY_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_FRDY_Pos)) /* Assigment of value for FRDY in the SEFC_EEFC_FMR register */
-#define SEFC_EEFC_FMR_FWS_Pos                 _UINT32_(8)                                          /* (SEFC_EEFC_FMR) Flash Wait State Position */
-#define SEFC_EEFC_FMR_FWS_Msk                 (_UINT32_(0xF) << SEFC_EEFC_FMR_FWS_Pos)             /* (SEFC_EEFC_FMR) Flash Wait State Mask */
-#define SEFC_EEFC_FMR_FWS(value)              (SEFC_EEFC_FMR_FWS_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_FWS_Pos)) /* Assigment of value for FWS in the SEFC_EEFC_FMR register */
-#define SEFC_EEFC_FMR_SCOD_Pos                _UINT32_(16)                                         /* (SEFC_EEFC_FMR) Sequential Code Optimization Disable Position */
-#define SEFC_EEFC_FMR_SCOD_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_SCOD_Pos)            /* (SEFC_EEFC_FMR) Sequential Code Optimization Disable Mask */
-#define SEFC_EEFC_FMR_SCOD(value)             (SEFC_EEFC_FMR_SCOD_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_SCOD_Pos)) /* Assigment of value for SCOD in the SEFC_EEFC_FMR register */
-#define SEFC_EEFC_FMR_CLOE_Pos                _UINT32_(26)                                         /* (SEFC_EEFC_FMR) Code Loop Optimization Enable Position */
-#define SEFC_EEFC_FMR_CLOE_Msk                (_UINT32_(0x1) << SEFC_EEFC_FMR_CLOE_Pos)            /* (SEFC_EEFC_FMR) Code Loop Optimization Enable Mask */
-#define SEFC_EEFC_FMR_CLOE(value)             (SEFC_EEFC_FMR_CLOE_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_CLOE_Pos)) /* Assigment of value for CLOE in the SEFC_EEFC_FMR register */
-#define SEFC_EEFC_FMR_ALWAYS1_Pos             _UINT32_(27)                                         /* (SEFC_EEFC_FMR) Always Written to One Position */
-#define SEFC_EEFC_FMR_ALWAYS1_Msk             (_UINT32_(0x1) << SEFC_EEFC_FMR_ALWAYS1_Pos)         /* (SEFC_EEFC_FMR) Always Written to One Mask */
-#define SEFC_EEFC_FMR_ALWAYS1(value)          (SEFC_EEFC_FMR_ALWAYS1_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_ALWAYS1_Pos)) /* Assigment of value for ALWAYS1 in the SEFC_EEFC_FMR register */
-#define SEFC_EEFC_FMR_Msk                     _UINT32_(0x0C010F01)                                 /* (SEFC_EEFC_FMR) Register Mask  */
-
-#define SEFC_EEFC_FMR_ALWAYS_Pos              _UINT32_(27)                                         /* (SEFC_EEFC_FMR Position) Always Written to One */
-#define SEFC_EEFC_FMR_ALWAYS_Msk              (_UINT32_(0x1) << SEFC_EEFC_FMR_ALWAYS_Pos)          /* (SEFC_EEFC_FMR Mask) ALWAYS */
-#define SEFC_EEFC_FMR_ALWAYS(value)           (SEFC_EEFC_FMR_ALWAYS_Msk & (_UINT32_(value) << SEFC_EEFC_FMR_ALWAYS_Pos)) 
-
-/* -------- SEFC_EEFC_FRR : (SEFC Offset: 0x0C) ( R/ 32) SEFC Flash Result Register -------- */
-#define SEFC_EEFC_FRR_FVALUE_Pos              _UINT32_(0)                                          /* (SEFC_EEFC_FRR) Flash Result Value Position */
-#define SEFC_EEFC_FRR_FVALUE_Msk              (_UINT32_(0xFFFFFFFF) << SEFC_EEFC_FRR_FVALUE_Pos)   /* (SEFC_EEFC_FRR) Flash Result Value Mask */
-#define SEFC_EEFC_FRR_FVALUE(value)           (SEFC_EEFC_FRR_FVALUE_Msk & (_UINT32_(value) << SEFC_EEFC_FRR_FVALUE_Pos)) /* Assigment of value for FVALUE in the SEFC_EEFC_FRR register */
-#define SEFC_EEFC_FRR_Msk                     _UINT32_(0xFFFFFFFF)                                 /* (SEFC_EEFC_FRR) Register Mask  */
-
-
 /* -------- SEFC_EEFC_FSR : (SEFC Offset: 0x08) ( R/ 32) SEFC Flash Status Register -------- */
 #define SEFC_EEFC_FSR_FRDY_Pos                _UINT32_(0)                                          /* (SEFC_EEFC_FSR) Flash Ready Status (cleared when Flash is busy) Position */
 #define SEFC_EEFC_FSR_FRDY_Msk                (_UINT32_(0x1) << SEFC_EEFC_FSR_FRDY_Pos)            /* (SEFC_EEFC_FSR) Flash Ready Status (cleared when Flash is busy) Mask */
@@ -160,36 +153,12 @@
 #define SEFC_EEFC_FSR_Msk                     _UINT32_(0x00FF003F)                                 /* (SEFC_EEFC_FSR) Register Mask  */
 
 
-/* -------- SEFC_EEFC_KBLR : (SEFC Offset: 0x14) (R/W 32) SEFC Key Bus Lock Register -------- */
-#define SEFC_EEFC_KBLR_KBTLUSB0_Pos           _UINT32_(0)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 0 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB0_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB0_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 0 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB0(value)        (SEFC_EEFC_KBLR_KBTLUSB0_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB0_Pos)) /* Assigment of value for KBTLUSB0 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB1_Pos           _UINT32_(1)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 1 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB1_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB1_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 1 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB1(value)        (SEFC_EEFC_KBLR_KBTLUSB1_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB1_Pos)) /* Assigment of value for KBTLUSB1 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB2_Pos           _UINT32_(2)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 2 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB2_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB2_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 2 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB2(value)        (SEFC_EEFC_KBLR_KBTLUSB2_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB2_Pos)) /* Assigment of value for KBTLUSB2 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB3_Pos           _UINT32_(3)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 3 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB3_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB3_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 3 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB3(value)        (SEFC_EEFC_KBLR_KBTLUSB3_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB3_Pos)) /* Assigment of value for KBTLUSB3 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB4_Pos           _UINT32_(4)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 4 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB4_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB4_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 4 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB4(value)        (SEFC_EEFC_KBLR_KBTLUSB4_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB4_Pos)) /* Assigment of value for KBTLUSB4 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB5_Pos           _UINT32_(5)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 5 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB5_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB5_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 5 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB5(value)        (SEFC_EEFC_KBLR_KBTLUSB5_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB5_Pos)) /* Assigment of value for KBTLUSB5 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB6_Pos           _UINT32_(6)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 6 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB6_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB6_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 6 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB6(value)        (SEFC_EEFC_KBLR_KBTLUSB6_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB6_Pos)) /* Assigment of value for KBTLUSB6 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_KBTLUSB7_Pos           _UINT32_(7)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 7 Position */
-#define SEFC_EEFC_KBLR_KBTLUSB7_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB7_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 7 Mask */
-#define SEFC_EEFC_KBLR_KBTLUSB7(value)        (SEFC_EEFC_KBLR_KBTLUSB7_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB7_Pos)) /* Assigment of value for KBTLUSB7 in the SEFC_EEFC_KBLR register */
-#define SEFC_EEFC_KBLR_Msk                    _UINT32_(0x000000FF)                                 /* (SEFC_EEFC_KBLR) Register Mask  */
+/* -------- SEFC_EEFC_FRR : (SEFC Offset: 0x0C) ( R/ 32) SEFC Flash Result Register -------- */
+#define SEFC_EEFC_FRR_FVALUE_Pos              _UINT32_(0)                                          /* (SEFC_EEFC_FRR) Flash Result Value Position */
+#define SEFC_EEFC_FRR_FVALUE_Msk              (_UINT32_(0xFFFFFFFF) << SEFC_EEFC_FRR_FVALUE_Pos)   /* (SEFC_EEFC_FRR) Flash Result Value Mask */
+#define SEFC_EEFC_FRR_FVALUE(value)           (SEFC_EEFC_FRR_FVALUE_Msk & (_UINT32_(value) << SEFC_EEFC_FRR_FVALUE_Pos)) /* Assigment of value for FVALUE in the SEFC_EEFC_FRR register */
+#define SEFC_EEFC_FRR_Msk                     _UINT32_(0xFFFFFFFF)                                 /* (SEFC_EEFC_FRR) Register Mask  */
 
-#define SEFC_EEFC_KBLR_KBTLUSB_Pos            _UINT32_(0)                                          /* (SEFC_EEFC_KBLR Position) Key Bus Transfer Lock from User Signature Block 7 */
-#define SEFC_EEFC_KBLR_KBTLUSB_Msk            (_UINT32_(0xFF) << SEFC_EEFC_KBLR_KBTLUSB_Pos)       /* (SEFC_EEFC_KBLR Mask) KBTLUSB */
-#define SEFC_EEFC_KBLR_KBTLUSB(value)         (SEFC_EEFC_KBLR_KBTLUSB_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB_Pos)) 
 
 /* -------- SEFC_EEFC_USR : (SEFC Offset: 0x10) (R/W 32) SEFC User Signature Rights Register -------- */
 #define SEFC_EEFC_USR_RDENUSB0_Pos            _UINT32_(0)                                          /* (SEFC_EEFC_USR) Read Enable for User Signature Block 0 Position */
@@ -303,6 +272,37 @@
 #define SEFC_EEFC_USR_LOCKUSRB_Msk            (_UINT32_(0xFF) << SEFC_EEFC_USR_LOCKUSRB_Pos)       /* (SEFC_EEFC_USR Mask) LOCKUSRB */
 #define SEFC_EEFC_USR_LOCKUSRB(value)         (SEFC_EEFC_USR_LOCKUSRB_Msk & (_UINT32_(value) << SEFC_EEFC_USR_LOCKUSRB_Pos)) 
 
+/* -------- SEFC_EEFC_KBLR : (SEFC Offset: 0x14) (R/W 32) SEFC Key Bus Lock Register -------- */
+#define SEFC_EEFC_KBLR_KBTLUSB0_Pos           _UINT32_(0)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 0 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB0_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB0_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 0 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB0(value)        (SEFC_EEFC_KBLR_KBTLUSB0_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB0_Pos)) /* Assigment of value for KBTLUSB0 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB1_Pos           _UINT32_(1)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 1 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB1_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB1_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 1 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB1(value)        (SEFC_EEFC_KBLR_KBTLUSB1_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB1_Pos)) /* Assigment of value for KBTLUSB1 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB2_Pos           _UINT32_(2)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 2 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB2_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB2_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 2 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB2(value)        (SEFC_EEFC_KBLR_KBTLUSB2_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB2_Pos)) /* Assigment of value for KBTLUSB2 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB3_Pos           _UINT32_(3)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 3 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB3_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB3_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 3 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB3(value)        (SEFC_EEFC_KBLR_KBTLUSB3_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB3_Pos)) /* Assigment of value for KBTLUSB3 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB4_Pos           _UINT32_(4)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 4 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB4_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB4_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 4 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB4(value)        (SEFC_EEFC_KBLR_KBTLUSB4_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB4_Pos)) /* Assigment of value for KBTLUSB4 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB5_Pos           _UINT32_(5)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 5 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB5_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB5_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 5 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB5(value)        (SEFC_EEFC_KBLR_KBTLUSB5_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB5_Pos)) /* Assigment of value for KBTLUSB5 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB6_Pos           _UINT32_(6)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 6 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB6_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB6_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 6 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB6(value)        (SEFC_EEFC_KBLR_KBTLUSB6_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB6_Pos)) /* Assigment of value for KBTLUSB6 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_KBTLUSB7_Pos           _UINT32_(7)                                          /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 7 Position */
+#define SEFC_EEFC_KBLR_KBTLUSB7_Msk           (_UINT32_(0x1) << SEFC_EEFC_KBLR_KBTLUSB7_Pos)       /* (SEFC_EEFC_KBLR) Key Bus Transfer Lock from User Signature Block 7 Mask */
+#define SEFC_EEFC_KBLR_KBTLUSB7(value)        (SEFC_EEFC_KBLR_KBTLUSB7_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB7_Pos)) /* Assigment of value for KBTLUSB7 in the SEFC_EEFC_KBLR register */
+#define SEFC_EEFC_KBLR_Msk                    _UINT32_(0x000000FF)                                 /* (SEFC_EEFC_KBLR) Register Mask  */
+
+#define SEFC_EEFC_KBLR_KBTLUSB_Pos            _UINT32_(0)                                          /* (SEFC_EEFC_KBLR Position) Key Bus Transfer Lock from User Signature Block 7 */
+#define SEFC_EEFC_KBLR_KBTLUSB_Msk            (_UINT32_(0xFF) << SEFC_EEFC_KBLR_KBTLUSB_Pos)       /* (SEFC_EEFC_KBLR Mask) KBTLUSB */
+#define SEFC_EEFC_KBLR_KBTLUSB(value)         (SEFC_EEFC_KBLR_KBTLUSB_Msk & (_UINT32_(value) << SEFC_EEFC_KBLR_KBTLUSB_Pos)) 
+
 /* -------- SEFC_EEFC_WPMR : (SEFC Offset: 0xE4) (R/W 32) Write Protection Mode Register -------- */
 #define SEFC_EEFC_WPMR_WPEN_Pos               _UINT32_(0)                                          /* (SEFC_EEFC_WPMR) Write Protection Enable Position */
 #define SEFC_EEFC_WPMR_WPEN_Msk               (_UINT32_(0x1) << SEFC_EEFC_WPMR_WPEN_Pos)           /* (SEFC_EEFC_WPMR) Write Protection Enable Mask */
@@ -331,12 +331,12 @@
 
 
 /** \brief SEFC register offsets definitions */
-#define SEFC_EEFC_FCR_REG_OFST         _UINT32_(0x04)      /* (SEFC_EEFC_FCR) SEFC Flash Command Register Offset */
 #define SEFC_EEFC_FMR_REG_OFST         _UINT32_(0x00)      /* (SEFC_EEFC_FMR) SEFC Flash Mode Register Offset */
-#define SEFC_EEFC_FRR_REG_OFST         _UINT32_(0x0C)      /* (SEFC_EEFC_FRR) SEFC Flash Result Register Offset */
+#define SEFC_EEFC_FCR_REG_OFST         _UINT32_(0x04)      /* (SEFC_EEFC_FCR) SEFC Flash Command Register Offset */
 #define SEFC_EEFC_FSR_REG_OFST         _UINT32_(0x08)      /* (SEFC_EEFC_FSR) SEFC Flash Status Register Offset */
-#define SEFC_EEFC_KBLR_REG_OFST        _UINT32_(0x14)      /* (SEFC_EEFC_KBLR) SEFC Key Bus Lock Register Offset */
+#define SEFC_EEFC_FRR_REG_OFST         _UINT32_(0x0C)      /* (SEFC_EEFC_FRR) SEFC Flash Result Register Offset */
 #define SEFC_EEFC_USR_REG_OFST         _UINT32_(0x10)      /* (SEFC_EEFC_USR) SEFC User Signature Rights Register Offset */
+#define SEFC_EEFC_KBLR_REG_OFST        _UINT32_(0x14)      /* (SEFC_EEFC_KBLR) SEFC Key Bus Lock Register Offset */
 #define SEFC_EEFC_WPMR_REG_OFST        _UINT32_(0xE4)      /* (SEFC_EEFC_WPMR) Write Protection Mode Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))

@@ -55,6 +55,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "configuration.h"
+#include "system/time/sys_time.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -86,6 +87,7 @@ typedef enum
     /* Application's state machine's initial state. */
     APP_DISPLAY_STATE_INIT=0,
     APP_DISPLAY_STATE_SERVICE_TASKS,
+    APP_DISPLAY_STATE_DELAY_LOW_POWER,
 
 } APP_DISPLAY_STATES;
 
@@ -163,10 +165,10 @@ typedef struct
     APP_DISPLAY_STATES state;
 
     /* Flag to indicate if the scroll up button has been pressed */
-    bool scrup_pressed;
+    volatile bool scrup_pressed;
     
     /* Flag to indicate if the scroll down button has been pressed */
-    bool scrdown_pressed;
+    volatile bool scrdown_pressed;
     
     /* Application information */
     uint8_t app_info[8];
@@ -200,6 +202,12 @@ typedef struct
     
     /* Flag to indicate if DWDT0 should be reloaded */
     bool reloadDWDT0;
+    
+    /* Timer to handle delays */
+    SYS_TIME_HANDLE timer;
+    
+    /* Flag to handle the display task */
+    volatile bool timerFlag;
 
 } APP_DISPLAY_DATA;
 

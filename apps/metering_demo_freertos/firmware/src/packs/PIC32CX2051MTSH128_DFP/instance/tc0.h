@@ -1,7 +1,7 @@
 /*
  * Instance header file for PIC32CX5112MTSH128S1
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:43:02Z */
+/* file generated from device description version 2023-01-19T13:46:22Z */
 #ifndef _PIC32CXMTSH_TC0_INSTANCE_
 #define _PIC32CXMTSH_TC0_INSTANCE_
 
@@ -36,11 +36,11 @@
 #define TC0_INSTANCE_ID_CHANNEL1                 (32)       
 #define TC0_INSTANCE_ID_CHANNEL2                 (33)       
 #define TC0_NUM_INTERRUPT_LINES                  (3)        
-#define TC0_TCCLKS_                              (0)        /* MCK0DIV */
+#define TC0_TCCLKS_                              (0)        /* MCK0 */
 #define TC0_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
-#define TC0_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0DIV/8 */
-#define TC0_TCCLKS_TIMER_CLOCK3                  (3)        /* MCK0DIV/32 */
-#define TC0_TCCLKS_TIMER_CLOCK4                  (4)        /* MCK0DIV/128 */
+#define TC0_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0/8 */
+#define TC0_TCCLKS_TIMER_CLOCK3                  (3)        /* MCK0/32 */
+#define TC0_TCCLKS_TIMER_CLOCK4                  (4)        /* MCK0/128 */
 #define TC0_TCCLKS_TIMER_CLOCK5                  (5)        /* MD_SLCK */
 #define TC0_TCCLKS_XC0                           (6)        /* XC0 */
 #define TC0_TCCLKS_XC1                           (7)        /* XC1 */

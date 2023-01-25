@@ -428,27 +428,27 @@ void APP_DATALOG_Tasks(void)
         case APP_DATALOG_STATE_READY:
         {
             // Wait messages in queue
-            if (xQueueReceive(appDatalogQueueID, &app_datalogData.newQueueData, portMAX_DELAY))
+            if (xQueueReceive(appDatalogQueueID, &app_datalogData.newData.data, portMAX_DELAY))
             {
                 // Get file name
-                if ((app_datalogData.newQueueData.date.year == APP_DATALOG_INVALID_YEAR) ||
-                    (app_datalogData.newQueueData.date.month == APP_DATALOG_INVALID_MONTH))
+                if ((app_datalogData.newData.data.date.year == APP_DATALOG_INVALID_YEAR) ||
+                    (app_datalogData.newData.data.date.month == APP_DATALOG_INVALID_MONTH))
                 {
-                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, NULL, app_datalogData.fileName);
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newData.data.userId, NULL, app_datalogData.newData.fileName);
                 }
                 else
                 {
-                    APP_DATALOG_GetFileNameByDate(app_datalogData.newQueueData.userId, &app_datalogData.newQueueData.date, app_datalogData.fileName);
+                    APP_DATALOG_GetFileNameByDate(app_datalogData.newData.data.userId, &app_datalogData.newData.data.date, app_datalogData.newData.fileName);
                 }
 
                 // Check Read/Write operation
-                if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
+                if (app_datalogData.newData.data.operation == APP_DATALOG_READ)
                 {
                     // Go to Read state
                     app_datalogData.state = APP_DATALOG_STATE_READ_FROM_FILE;
                 }
-                else if ((app_datalogData.newQueueData.operation == APP_DATALOG_APPEND) ||
-                         (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE))
+                else if ((app_datalogData.newData.data.operation == APP_DATALOG_APPEND) ||
+                         (app_datalogData.newData.data.operation == APP_DATALOG_WRITE))
                 {
                     // Go to Write state
                     app_datalogData.state = APP_DATALOG_STATE_WRITE_TO_FILE;
@@ -463,14 +463,14 @@ void APP_DATALOG_Tasks(void)
 
         case APP_DATALOG_STATE_READ_FROM_FILE:
         {
-            if (app_datalogData.newQueueData.operation == APP_DATALOG_READ)
+            if (app_datalogData.newData.data.operation == APP_DATALOG_READ)
             {
                 // Read operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_READ));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_READ));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Read Data.
-                    if (SYS_FS_FileRead(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileRead(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Read success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -500,14 +500,14 @@ void APP_DATALOG_Tasks(void)
 
         case APP_DATALOG_STATE_WRITE_TO_FILE:
         {
-            if (app_datalogData.newQueueData.operation == APP_DATALOG_APPEND)
+            if (app_datalogData.newData.data.operation == APP_DATALOG_APPEND)
             {
                 // Append operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_APPEND));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_APPEND));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Append Data.
-                    if (SYS_FS_FileWrite(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileWrite(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Write success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -528,14 +528,14 @@ void APP_DATALOG_Tasks(void)
                     app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
                 }
             }
-            else if (app_datalogData.newQueueData.operation == APP_DATALOG_WRITE)
+            else if (app_datalogData.newData.data.operation == APP_DATALOG_WRITE)
             {
                 // Write operation
-                app_datalogData.fileHandle = SYS_FS_FileOpen(app_datalogData.fileName, (SYS_FS_FILE_OPEN_WRITE));
-                if(app_datalogData.fileHandle != SYS_FS_HANDLE_INVALID)
+                app_datalogData.newData.fileHandle = SYS_FS_FileOpen(app_datalogData.newData.fileName, (SYS_FS_FILE_OPEN_WRITE));
+                if(app_datalogData.newData.fileHandle != SYS_FS_HANDLE_INVALID)
                 {
                     // File open succeeded. Write Data.
-                    if (SYS_FS_FileWrite(app_datalogData.fileHandle, app_datalogData.newQueueData.pData, app_datalogData.newQueueData.dataLen) != -1)
+                    if (SYS_FS_FileWrite(app_datalogData.newData.fileHandle, app_datalogData.newData.data.pData, app_datalogData.newData.data.dataLen) != -1)
                     {
                         // Write success
                         app_datalogData.result = APP_DATALOG_RESULT_SUCCESS;
@@ -566,7 +566,7 @@ void APP_DATALOG_Tasks(void)
         case APP_DATALOG_STATE_CLOSE_FILE:
         {
             // Close current file
-            if (SYS_FS_FileClose(app_datalogData.fileHandle) == SYS_FS_RES_SUCCESS)
+            if (SYS_FS_FileClose(app_datalogData.newData.fileHandle) == SYS_FS_RES_SUCCESS)
             {
                 // Go to report state
                 app_datalogData.state = APP_DATALOG_STATE_REPORT_RESULT;
@@ -586,9 +586,9 @@ void APP_DATALOG_Tasks(void)
         case APP_DATALOG_STATE_REPORT_RESULT:
         {
             // Invoke callback with result from operation
-            if (app_datalogData.newQueueData.endCallback != NULL)
+            if (app_datalogData.newData.data.endCallback != NULL)
             {
-                app_datalogData.newQueueData.endCallback(app_datalogData.result);
+                app_datalogData.newData.data.endCallback(app_datalogData.result);
             }
             // Go back to Ready state
             app_datalogData.state = APP_DATALOG_STATE_READY;

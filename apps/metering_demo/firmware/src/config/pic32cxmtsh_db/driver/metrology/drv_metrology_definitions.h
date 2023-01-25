@@ -418,6 +418,9 @@ typedef struct
     /* State of the metrology driver  */
     volatile DRV_METROLOGY_STATE                  state;
 
+    /* Flag to indicate that a new integration period has been completed */
+    volatile bool                                 integrationFlag;
+
     /* Size (in Bytes) of the PLC binary file */
     uint32_t                                      binSize;
 

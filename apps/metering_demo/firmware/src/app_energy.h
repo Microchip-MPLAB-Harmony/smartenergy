@@ -75,6 +75,15 @@ typedef struct {
   uint32_t Pt;
 } APP_ENERGY_QUEUE_DATA;
 
+#define APP_ENERGY_QUEUE_DATA_SIZE     5
+
+typedef struct {
+  APP_ENERGY_QUEUE_DATA data[APP_ENERGY_QUEUE_DATA_SIZE];
+  APP_ENERGY_QUEUE_DATA * dataRd;
+  APP_ENERGY_QUEUE_DATA * dataWr;
+  uint8_t dataSize;
+} APP_ENERGY_QUEUE;
+
 typedef enum {
   TARIFF_1 = 1,
   TARIFF_2,
@@ -137,13 +146,18 @@ typedef enum
     /* Application's state machine's initial state. */
     APP_ENERGY_STATE_WAITING_DATALOG = 0,
     APP_ENERGY_STATE_INIT_RTC,
+    APP_ENERGY_STATE_SET_RTC,
     APP_ENERGY_STATE_INIT_TOU,
+    APP_ENERGY_STATE_SET_TOU,
     APP_ENERGY_STATE_INIT_DEMAND,
     APP_ENERGY_STATE_INIT_ENERGY,
     APP_ENERGY_STATE_INIT_EVENTS,
     APP_ENERGY_STATE_RUNNING,
     APP_ENERGY_STATE_GET_MAX_DEMAND,
+    APP_ENERGY_STATE_RESPONSE_MAX_DEMAND,
     APP_ENERGY_STATE_GET_MONTH_ENERGY,
+    APP_ENERGY_STATE_RESPONSE_MONTH_ENERGY,
+    APP_ENERGY_STATE_WAIT_DATA,
     APP_ENERGY_STATE_ERROR
 
 } APP_ENERGY_STATES;
@@ -202,6 +216,10 @@ typedef struct
     struct tm time;
     
     uint8_t minRtcBackup;
+    
+    bool generateEnergyReponse;
+    
+    bool generateDemandReponse;
 
 } APP_ENERGY_DATA;
 
@@ -298,6 +316,8 @@ void APP_ENERGY_SetMaxDemandCallback(APP_ENERGY_MAXDEMAND_CALLBACK callback,
 bool APP_ENERGY_GetMonthMaxDemand(struct tm * time);
 void APP_ENERGY_GetCurrentMaxDemand(APP_ENERGY_MAX_DEMAND * pMaxDemand);
 void APP_ENERGY_ClearMaxDemand(bool clearPersistentData);
+
+bool APP_ENERGY_SendEnergyData(APP_ENERGY_QUEUE_DATA *energyData);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

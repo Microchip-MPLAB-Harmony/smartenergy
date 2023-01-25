@@ -1,7 +1,7 @@
 /*
  * Component description for PWM
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,34 +20,13 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:43:02Z */
+/* file generated from device description version 2023-01-19T13:46:22Z */
 #ifndef _PIC32CXMTSH_PWM_COMPONENT_H_
 #define _PIC32CXMTSH_PWM_COMPONENT_H_
 
 /* ************************************************************************** */
 /*   SOFTWARE API DEFINITION FOR PWM                                          */
 /* ************************************************************************** */
-
-/* -------- PWM_CCNT : (PWM Offset: 0x14) ( R/ 32) PWM Channel Counter Register -------- */
-#define PWM_CCNT_CNT_Pos                      _UINT32_(0)                                          /* (PWM_CCNT) Channel Counter Register Position */
-#define PWM_CCNT_CNT_Msk                      (_UINT32_(0xFFFFFF) << PWM_CCNT_CNT_Pos)             /* (PWM_CCNT) Channel Counter Register Mask */
-#define PWM_CCNT_CNT(value)                   (PWM_CCNT_CNT_Msk & (_UINT32_(value) << PWM_CCNT_CNT_Pos)) /* Assigment of value for CNT in the PWM_CCNT register */
-#define PWM_CCNT_Msk                          _UINT32_(0x00FFFFFF)                                 /* (PWM_CCNT) Register Mask  */
-
-
-/* -------- PWM_CDTY : (PWM Offset: 0x04) (R/W 32) PWM Channel Duty Cycle Register -------- */
-#define PWM_CDTY_CDTY_Pos                     _UINT32_(0)                                          /* (PWM_CDTY) Channel Duty-Cycle Position */
-#define PWM_CDTY_CDTY_Msk                     (_UINT32_(0xFFFFFF) << PWM_CDTY_CDTY_Pos)            /* (PWM_CDTY) Channel Duty-Cycle Mask */
-#define PWM_CDTY_CDTY(value)                  (PWM_CDTY_CDTY_Msk & (_UINT32_(value) << PWM_CDTY_CDTY_Pos)) /* Assigment of value for CDTY in the PWM_CDTY register */
-#define PWM_CDTY_Msk                          _UINT32_(0x00FFFFFF)                                 /* (PWM_CDTY) Register Mask  */
-
-
-/* -------- PWM_CDTYUPD : (PWM Offset: 0x08) ( /W 32) PWM Channel Duty Cycle Update Register -------- */
-#define PWM_CDTYUPD_CDTYUPD_Pos               _UINT32_(0)                                          /* (PWM_CDTYUPD) Channel Duty-Cycle Update Position */
-#define PWM_CDTYUPD_CDTYUPD_Msk               (_UINT32_(0xFFFFFF) << PWM_CDTYUPD_CDTYUPD_Pos)      /* (PWM_CDTYUPD) Channel Duty-Cycle Update Mask */
-#define PWM_CDTYUPD_CDTYUPD(value)            (PWM_CDTYUPD_CDTYUPD_Msk & (_UINT32_(value) << PWM_CDTYUPD_CDTYUPD_Pos)) /* Assigment of value for CDTYUPD in the PWM_CDTYUPD register */
-#define PWM_CDTYUPD_Msk                       _UINT32_(0x00FFFFFF)                                 /* (PWM_CDTYUPD) Register Mask  */
-
 
 /* -------- PWM_CMR : (PWM Offset: 0x00) (R/W 32) PWM Channel Mode Register -------- */
 #define PWM_CMR_CPRE_Pos                      _UINT32_(0)                                          /* (PWM_CMR) Channel Prescaler Position */
@@ -128,6 +107,20 @@
 #define PWM_CMR_Msk                           _UINT32_(0x000F3F0F)                                 /* (PWM_CMR) Register Mask  */
 
 
+/* -------- PWM_CDTY : (PWM Offset: 0x04) (R/W 32) PWM Channel Duty Cycle Register -------- */
+#define PWM_CDTY_CDTY_Pos                     _UINT32_(0)                                          /* (PWM_CDTY) Channel Duty-Cycle Position */
+#define PWM_CDTY_CDTY_Msk                     (_UINT32_(0xFFFFFF) << PWM_CDTY_CDTY_Pos)            /* (PWM_CDTY) Channel Duty-Cycle Mask */
+#define PWM_CDTY_CDTY(value)                  (PWM_CDTY_CDTY_Msk & (_UINT32_(value) << PWM_CDTY_CDTY_Pos)) /* Assigment of value for CDTY in the PWM_CDTY register */
+#define PWM_CDTY_Msk                          _UINT32_(0x00FFFFFF)                                 /* (PWM_CDTY) Register Mask  */
+
+
+/* -------- PWM_CDTYUPD : (PWM Offset: 0x08) ( /W 32) PWM Channel Duty Cycle Update Register -------- */
+#define PWM_CDTYUPD_CDTYUPD_Pos               _UINT32_(0)                                          /* (PWM_CDTYUPD) Channel Duty-Cycle Update Position */
+#define PWM_CDTYUPD_CDTYUPD_Msk               (_UINT32_(0xFFFFFF) << PWM_CDTYUPD_CDTYUPD_Pos)      /* (PWM_CDTYUPD) Channel Duty-Cycle Update Mask */
+#define PWM_CDTYUPD_CDTYUPD(value)            (PWM_CDTYUPD_CDTYUPD_Msk & (_UINT32_(value) << PWM_CDTYUPD_CDTYUPD_Pos)) /* Assigment of value for CDTYUPD in the PWM_CDTYUPD register */
+#define PWM_CDTYUPD_Msk                       _UINT32_(0x00FFFFFF)                                 /* (PWM_CDTYUPD) Register Mask  */
+
+
 /* -------- PWM_CPRD : (PWM Offset: 0x0C) (R/W 32) PWM Channel Period Register -------- */
 #define PWM_CPRD_CPRD_Pos                     _UINT32_(0)                                          /* (PWM_CPRD) Channel Period Position */
 #define PWM_CPRD_CPRD_Msk                     (_UINT32_(0xFFFFFF) << PWM_CPRD_CPRD_Pos)            /* (PWM_CPRD) Channel Period Mask */
@@ -140,6 +133,13 @@
 #define PWM_CPRDUPD_CPRDUPD_Msk               (_UINT32_(0xFFFFFF) << PWM_CPRDUPD_CPRDUPD_Pos)      /* (PWM_CPRDUPD) Channel Period Update Mask */
 #define PWM_CPRDUPD_CPRDUPD(value)            (PWM_CPRDUPD_CPRDUPD_Msk & (_UINT32_(value) << PWM_CPRDUPD_CPRDUPD_Pos)) /* Assigment of value for CPRDUPD in the PWM_CPRDUPD register */
 #define PWM_CPRDUPD_Msk                       _UINT32_(0x00FFFFFF)                                 /* (PWM_CPRDUPD) Register Mask  */
+
+
+/* -------- PWM_CCNT : (PWM Offset: 0x14) ( R/ 32) PWM Channel Counter Register -------- */
+#define PWM_CCNT_CNT_Pos                      _UINT32_(0)                                          /* (PWM_CCNT) Channel Counter Register Position */
+#define PWM_CCNT_CNT_Msk                      (_UINT32_(0xFFFFFF) << PWM_CCNT_CNT_Pos)             /* (PWM_CCNT) Channel Counter Register Mask */
+#define PWM_CCNT_CNT(value)                   (PWM_CCNT_CNT_Msk & (_UINT32_(value) << PWM_CCNT_CNT_Pos)) /* Assigment of value for CNT in the PWM_CCNT register */
+#define PWM_CCNT_Msk                          _UINT32_(0x00FFFFFF)                                 /* (PWM_CCNT) Register Mask  */
 
 
 /* -------- PWM_DT : (PWM Offset: 0x18) (R/W 32) PWM Channel Dead Time Register -------- */
@@ -160,6 +160,30 @@
 #define PWM_DTUPD_DTLUPD_Msk                  (_UINT32_(0xFFFF) << PWM_DTUPD_DTLUPD_Pos)           /* (PWM_DTUPD) Dead-Time Value Update for PWMLx Output Mask */
 #define PWM_DTUPD_DTLUPD(value)               (PWM_DTUPD_DTLUPD_Msk & (_UINT32_(value) << PWM_DTUPD_DTLUPD_Pos)) /* Assigment of value for DTLUPD in the PWM_DTUPD register */
 #define PWM_DTUPD_Msk                         _UINT32_(0xFFFFFFFF)                                 /* (PWM_DTUPD) Register Mask  */
+
+
+/* -------- PWM_CMPV : (PWM Offset: 0x00) (R/W 32) PWM Comparison 0 Value Register -------- */
+#define PWM_CMPV_CV_Pos                       _UINT32_(0)                                          /* (PWM_CMPV) Comparison x Value Position */
+#define PWM_CMPV_CV_Msk                       (_UINT32_(0xFFFFFF) << PWM_CMPV_CV_Pos)              /* (PWM_CMPV) Comparison x Value Mask */
+#define PWM_CMPV_CV(value)                    (PWM_CMPV_CV_Msk & (_UINT32_(value) << PWM_CMPV_CV_Pos)) /* Assigment of value for CV in the PWM_CMPV register */
+#define PWM_CMPV_CVM_Pos                      _UINT32_(24)                                         /* (PWM_CMPV) Comparison x Value Mode Position */
+#define PWM_CMPV_CVM_Msk                      (_UINT32_(0x1) << PWM_CMPV_CVM_Pos)                  /* (PWM_CMPV) Comparison x Value Mode Mask */
+#define PWM_CMPV_CVM(value)                   (PWM_CMPV_CVM_Msk & (_UINT32_(value) << PWM_CMPV_CVM_Pos)) /* Assigment of value for CVM in the PWM_CMPV register */
+#define   PWM_CMPV_CVM_COMPARE_AT_INCREMENT_Val _UINT32_(0x0)                                        /* (PWM_CMPV) Compare when counter is incrementing  */
+#define   PWM_CMPV_CVM_COMPARE_AT_DECREMENT_Val _UINT32_(0x1)                                        /* (PWM_CMPV) Compare when counter is decrementing  */
+#define PWM_CMPV_CVM_COMPARE_AT_INCREMENT     (PWM_CMPV_CVM_COMPARE_AT_INCREMENT_Val << PWM_CMPV_CVM_Pos) /* (PWM_CMPV) Compare when counter is incrementing Position  */
+#define PWM_CMPV_CVM_COMPARE_AT_DECREMENT     (PWM_CMPV_CVM_COMPARE_AT_DECREMENT_Val << PWM_CMPV_CVM_Pos) /* (PWM_CMPV) Compare when counter is decrementing Position  */
+#define PWM_CMPV_Msk                          _UINT32_(0x01FFFFFF)                                 /* (PWM_CMPV) Register Mask  */
+
+
+/* -------- PWM_CMPVUPD : (PWM Offset: 0x04) ( /W 32) PWM Comparison 0 Value Update Register -------- */
+#define PWM_CMPVUPD_CVUPD_Pos                 _UINT32_(0)                                          /* (PWM_CMPVUPD) Comparison x Value Update Position */
+#define PWM_CMPVUPD_CVUPD_Msk                 (_UINT32_(0xFFFFFF) << PWM_CMPVUPD_CVUPD_Pos)        /* (PWM_CMPVUPD) Comparison x Value Update Mask */
+#define PWM_CMPVUPD_CVUPD(value)              (PWM_CMPVUPD_CVUPD_Msk & (_UINT32_(value) << PWM_CMPVUPD_CVUPD_Pos)) /* Assigment of value for CVUPD in the PWM_CMPVUPD register */
+#define PWM_CMPVUPD_CVMUPD_Pos                _UINT32_(24)                                         /* (PWM_CMPVUPD) Comparison x Value Mode Update Position */
+#define PWM_CMPVUPD_CVMUPD_Msk                (_UINT32_(0x1) << PWM_CMPVUPD_CVMUPD_Pos)            /* (PWM_CMPVUPD) Comparison x Value Mode Update Mask */
+#define PWM_CMPVUPD_CVMUPD(value)             (PWM_CMPVUPD_CVMUPD_Msk & (_UINT32_(value) << PWM_CMPVUPD_CVMUPD_Pos)) /* Assigment of value for CVMUPD in the PWM_CMPVUPD register */
+#define PWM_CMPVUPD_Msk                       _UINT32_(0x01FFFFFF)                                 /* (PWM_CMPVUPD) Register Mask  */
 
 
 /* -------- PWM_CMPM : (PWM Offset: 0x08) (R/W 32) PWM Comparison 0 Mode Register -------- */
@@ -198,30 +222,6 @@
 #define PWM_CMPMUPD_CUPRUPD_Msk               (_UINT32_(0xF) << PWM_CMPMUPD_CUPRUPD_Pos)           /* (PWM_CMPMUPD) Comparison x Update Period Update Mask */
 #define PWM_CMPMUPD_CUPRUPD(value)            (PWM_CMPMUPD_CUPRUPD_Msk & (_UINT32_(value) << PWM_CMPMUPD_CUPRUPD_Pos)) /* Assigment of value for CUPRUPD in the PWM_CMPMUPD register */
 #define PWM_CMPMUPD_Msk                       _UINT32_(0x000F0FF1)                                 /* (PWM_CMPMUPD) Register Mask  */
-
-
-/* -------- PWM_CMPV : (PWM Offset: 0x00) (R/W 32) PWM Comparison 0 Value Register -------- */
-#define PWM_CMPV_CV_Pos                       _UINT32_(0)                                          /* (PWM_CMPV) Comparison x Value Position */
-#define PWM_CMPV_CV_Msk                       (_UINT32_(0xFFFFFF) << PWM_CMPV_CV_Pos)              /* (PWM_CMPV) Comparison x Value Mask */
-#define PWM_CMPV_CV(value)                    (PWM_CMPV_CV_Msk & (_UINT32_(value) << PWM_CMPV_CV_Pos)) /* Assigment of value for CV in the PWM_CMPV register */
-#define PWM_CMPV_CVM_Pos                      _UINT32_(24)                                         /* (PWM_CMPV) Comparison x Value Mode Position */
-#define PWM_CMPV_CVM_Msk                      (_UINT32_(0x1) << PWM_CMPV_CVM_Pos)                  /* (PWM_CMPV) Comparison x Value Mode Mask */
-#define PWM_CMPV_CVM(value)                   (PWM_CMPV_CVM_Msk & (_UINT32_(value) << PWM_CMPV_CVM_Pos)) /* Assigment of value for CVM in the PWM_CMPV register */
-#define   PWM_CMPV_CVM_COMPARE_AT_INCREMENT_Val _UINT32_(0x0)                                        /* (PWM_CMPV) Compare when counter is incrementing  */
-#define   PWM_CMPV_CVM_COMPARE_AT_DECREMENT_Val _UINT32_(0x1)                                        /* (PWM_CMPV) Compare when counter is decrementing  */
-#define PWM_CMPV_CVM_COMPARE_AT_INCREMENT     (PWM_CMPV_CVM_COMPARE_AT_INCREMENT_Val << PWM_CMPV_CVM_Pos) /* (PWM_CMPV) Compare when counter is incrementing Position  */
-#define PWM_CMPV_CVM_COMPARE_AT_DECREMENT     (PWM_CMPV_CVM_COMPARE_AT_DECREMENT_Val << PWM_CMPV_CVM_Pos) /* (PWM_CMPV) Compare when counter is decrementing Position  */
-#define PWM_CMPV_Msk                          _UINT32_(0x01FFFFFF)                                 /* (PWM_CMPV) Register Mask  */
-
-
-/* -------- PWM_CMPVUPD : (PWM Offset: 0x04) ( /W 32) PWM Comparison 0 Value Update Register -------- */
-#define PWM_CMPVUPD_CVUPD_Pos                 _UINT32_(0)                                          /* (PWM_CMPVUPD) Comparison x Value Update Position */
-#define PWM_CMPVUPD_CVUPD_Msk                 (_UINT32_(0xFFFFFF) << PWM_CMPVUPD_CVUPD_Pos)        /* (PWM_CMPVUPD) Comparison x Value Update Mask */
-#define PWM_CMPVUPD_CVUPD(value)              (PWM_CMPVUPD_CVUPD_Msk & (_UINT32_(value) << PWM_CMPVUPD_CVUPD_Pos)) /* Assigment of value for CVUPD in the PWM_CMPVUPD register */
-#define PWM_CMPVUPD_CVMUPD_Pos                _UINT32_(24)                                         /* (PWM_CMPVUPD) Comparison x Value Mode Update Position */
-#define PWM_CMPVUPD_CVMUPD_Msk                (_UINT32_(0x1) << PWM_CMPVUPD_CVMUPD_Pos)            /* (PWM_CMPVUPD) Comparison x Value Mode Update Mask */
-#define PWM_CMPVUPD_CVMUPD(value)             (PWM_CMPVUPD_CVMUPD_Msk & (_UINT32_(value) << PWM_CMPVUPD_CVMUPD_Pos)) /* Assigment of value for CVMUPD in the PWM_CMPVUPD register */
-#define PWM_CMPVUPD_Msk                       _UINT32_(0x01FFFFFF)                                 /* (PWM_CMPVUPD) Register Mask  */
 
 
 /* -------- PWM_CLK : (PWM Offset: 0x00) (R/W 32) PWM Clock Register -------- */
@@ -292,44 +292,21 @@
 #define PWM_CLK_Msk                           _UINT32_(0x0FFF0FFF)                                 /* (PWM_CLK) Register Mask  */
 
 
-/* -------- PWM_CMUPD0 : (PWM Offset: 0x400) ( /W 32) PWM Channel Mode Update Register (ch_num = 0) -------- */
-#define PWM_CMUPD0_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD0) Channel Polarity Update Position */
-#define PWM_CMUPD0_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD0_CPOLUP_Pos)             /* (PWM_CMUPD0) Channel Polarity Update Mask */
-#define PWM_CMUPD0_CPOLUP(value)              (PWM_CMUPD0_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD0_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD0 register */
-#define PWM_CMUPD0_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD0) Channel Polarity Inversion Update Position */
-#define PWM_CMUPD0_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD0_CPOLINVUP_Pos)          /* (PWM_CMUPD0) Channel Polarity Inversion Update Mask */
-#define PWM_CMUPD0_CPOLINVUP(value)           (PWM_CMUPD0_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD0_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD0 register */
-#define PWM_CMUPD0_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD0) Register Mask  */
+/* -------- PWM_ENA : (PWM Offset: 0x04) ( /W 32) PWM Enable Register -------- */
+#define PWM_ENA_CHID0_Pos                     _UINT32_(0)                                          /* (PWM_ENA) Channel ID Position */
+#define PWM_ENA_CHID0_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID0_Pos)                 /* (PWM_ENA) Channel ID Mask */
+#define PWM_ENA_CHID0(value)                  (PWM_ENA_CHID0_Msk & (_UINT32_(value) << PWM_ENA_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_ENA register */
+#define PWM_ENA_CHID1_Pos                     _UINT32_(1)                                          /* (PWM_ENA) Channel ID Position */
+#define PWM_ENA_CHID1_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID1_Pos)                 /* (PWM_ENA) Channel ID Mask */
+#define PWM_ENA_CHID1(value)                  (PWM_ENA_CHID1_Msk & (_UINT32_(value) << PWM_ENA_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_ENA register */
+#define PWM_ENA_CHID2_Pos                     _UINT32_(2)                                          /* (PWM_ENA) Channel ID Position */
+#define PWM_ENA_CHID2_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID2_Pos)                 /* (PWM_ENA) Channel ID Mask */
+#define PWM_ENA_CHID2(value)                  (PWM_ENA_CHID2_Msk & (_UINT32_(value) << PWM_ENA_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_ENA register */
+#define PWM_ENA_Msk                           _UINT32_(0x00000007)                                 /* (PWM_ENA) Register Mask  */
 
-
-/* -------- PWM_CMUPD1 : (PWM Offset: 0x420) ( /W 32) PWM Channel Mode Update Register (ch_num = 1) -------- */
-#define PWM_CMUPD1_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD1) Channel Polarity Update Position */
-#define PWM_CMUPD1_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD1_CPOLUP_Pos)             /* (PWM_CMUPD1) Channel Polarity Update Mask */
-#define PWM_CMUPD1_CPOLUP(value)              (PWM_CMUPD1_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD1_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD1 register */
-#define PWM_CMUPD1_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD1) Channel Polarity Inversion Update Position */
-#define PWM_CMUPD1_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD1_CPOLINVUP_Pos)          /* (PWM_CMUPD1) Channel Polarity Inversion Update Mask */
-#define PWM_CMUPD1_CPOLINVUP(value)           (PWM_CMUPD1_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD1_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD1 register */
-#define PWM_CMUPD1_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD1) Register Mask  */
-
-
-/* -------- PWM_CMUPD2 : (PWM Offset: 0x440) ( /W 32) PWM Channel Mode Update Register (ch_num = 2) -------- */
-#define PWM_CMUPD2_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD2) Channel Polarity Update Position */
-#define PWM_CMUPD2_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD2_CPOLUP_Pos)             /* (PWM_CMUPD2) Channel Polarity Update Mask */
-#define PWM_CMUPD2_CPOLUP(value)              (PWM_CMUPD2_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD2_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD2 register */
-#define PWM_CMUPD2_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD2) Channel Polarity Inversion Update Position */
-#define PWM_CMUPD2_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD2_CPOLINVUP_Pos)          /* (PWM_CMUPD2) Channel Polarity Inversion Update Mask */
-#define PWM_CMUPD2_CPOLINVUP(value)           (PWM_CMUPD2_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD2_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD2 register */
-#define PWM_CMUPD2_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD2) Register Mask  */
-
-
-/* -------- PWM_DEBUG : (PWM Offset: 0xAC) (R/W 32) Debug Register -------- */
-#define PWM_DEBUG_OUTMODE_Pos                 _UINT32_(0)                                          /* (PWM_DEBUG) PWM Output Mode when System is in Debug Mode Position */
-#define PWM_DEBUG_OUTMODE_Msk                 (_UINT32_(0x1) << PWM_DEBUG_OUTMODE_Pos)             /* (PWM_DEBUG) PWM Output Mode when System is in Debug Mode Mask */
-#define PWM_DEBUG_OUTMODE(value)              (PWM_DEBUG_OUTMODE_Msk & (_UINT32_(value) << PWM_DEBUG_OUTMODE_Pos)) /* Assigment of value for OUTMODE in the PWM_DEBUG register */
-#define   PWM_DEBUG_OUTMODE_NO_EFFECT_Val     _UINT32_(0x0)                                        /* (PWM_DEBUG) Keeps the PWM outputs running when the processor reports a debug operating mode.  */
-#define PWM_DEBUG_OUTMODE_NO_EFFECT           (PWM_DEBUG_OUTMODE_NO_EFFECT_Val << PWM_DEBUG_OUTMODE_Pos) /* (PWM_DEBUG) Keeps the PWM outputs running when the processor reports a debug operating mode. Position  */
-#define PWM_DEBUG_Msk                         _UINT32_(0x00000001)                                 /* (PWM_DEBUG) Register Mask  */
-
+#define PWM_ENA_CHID_Pos                      _UINT32_(0)                                          /* (PWM_ENA Position) Channel ID */
+#define PWM_ENA_CHID_Msk                      (_UINT32_(0x7) << PWM_ENA_CHID_Pos)                  /* (PWM_ENA Mask) CHID */
+#define PWM_ENA_CHID(value)                   (PWM_ENA_CHID_Msk & (_UINT32_(value) << PWM_ENA_CHID_Pos)) 
 
 /* -------- PWM_DIS : (PWM Offset: 0x08) ( /W 32) PWM Disable Register -------- */
 #define PWM_DIS_CHID0_Pos                     _UINT32_(0)                                          /* (PWM_DIS) Channel ID Position */
@@ -347,219 +324,49 @@
 #define PWM_DIS_CHID_Msk                      (_UINT32_(0x7) << PWM_DIS_CHID_Pos)                  /* (PWM_DIS Mask) CHID */
 #define PWM_DIS_CHID(value)                   (PWM_DIS_CHID_Msk & (_UINT32_(value) << PWM_DIS_CHID_Pos)) 
 
-/* -------- PWM_ELMR : (PWM Offset: 0x7C) (R/W 32) PWM Event Line 0 Mode Register -------- */
-#define PWM_ELMR_CSEL0_Pos                    _UINT32_(0)                                          /* (PWM_ELMR) Comparison 0 Selection Position */
-#define PWM_ELMR_CSEL0_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL0_Pos)                /* (PWM_ELMR) Comparison 0 Selection Mask */
-#define PWM_ELMR_CSEL0(value)                 (PWM_ELMR_CSEL0_Msk & (_UINT32_(value) << PWM_ELMR_CSEL0_Pos)) /* Assigment of value for CSEL0 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL1_Pos                    _UINT32_(1)                                          /* (PWM_ELMR) Comparison 1 Selection Position */
-#define PWM_ELMR_CSEL1_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL1_Pos)                /* (PWM_ELMR) Comparison 1 Selection Mask */
-#define PWM_ELMR_CSEL1(value)                 (PWM_ELMR_CSEL1_Msk & (_UINT32_(value) << PWM_ELMR_CSEL1_Pos)) /* Assigment of value for CSEL1 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL2_Pos                    _UINT32_(2)                                          /* (PWM_ELMR) Comparison 2 Selection Position */
-#define PWM_ELMR_CSEL2_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL2_Pos)                /* (PWM_ELMR) Comparison 2 Selection Mask */
-#define PWM_ELMR_CSEL2(value)                 (PWM_ELMR_CSEL2_Msk & (_UINT32_(value) << PWM_ELMR_CSEL2_Pos)) /* Assigment of value for CSEL2 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL3_Pos                    _UINT32_(3)                                          /* (PWM_ELMR) Comparison 3 Selection Position */
-#define PWM_ELMR_CSEL3_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL3_Pos)                /* (PWM_ELMR) Comparison 3 Selection Mask */
-#define PWM_ELMR_CSEL3(value)                 (PWM_ELMR_CSEL3_Msk & (_UINT32_(value) << PWM_ELMR_CSEL3_Pos)) /* Assigment of value for CSEL3 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL4_Pos                    _UINT32_(4)                                          /* (PWM_ELMR) Comparison 4 Selection Position */
-#define PWM_ELMR_CSEL4_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL4_Pos)                /* (PWM_ELMR) Comparison 4 Selection Mask */
-#define PWM_ELMR_CSEL4(value)                 (PWM_ELMR_CSEL4_Msk & (_UINT32_(value) << PWM_ELMR_CSEL4_Pos)) /* Assigment of value for CSEL4 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL5_Pos                    _UINT32_(5)                                          /* (PWM_ELMR) Comparison 5 Selection Position */
-#define PWM_ELMR_CSEL5_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL5_Pos)                /* (PWM_ELMR) Comparison 5 Selection Mask */
-#define PWM_ELMR_CSEL5(value)                 (PWM_ELMR_CSEL5_Msk & (_UINT32_(value) << PWM_ELMR_CSEL5_Pos)) /* Assigment of value for CSEL5 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL6_Pos                    _UINT32_(6)                                          /* (PWM_ELMR) Comparison 6 Selection Position */
-#define PWM_ELMR_CSEL6_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL6_Pos)                /* (PWM_ELMR) Comparison 6 Selection Mask */
-#define PWM_ELMR_CSEL6(value)                 (PWM_ELMR_CSEL6_Msk & (_UINT32_(value) << PWM_ELMR_CSEL6_Pos)) /* Assigment of value for CSEL6 in the PWM_ELMR register */
-#define PWM_ELMR_CSEL7_Pos                    _UINT32_(7)                                          /* (PWM_ELMR) Comparison 7 Selection Position */
-#define PWM_ELMR_CSEL7_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL7_Pos)                /* (PWM_ELMR) Comparison 7 Selection Mask */
-#define PWM_ELMR_CSEL7(value)                 (PWM_ELMR_CSEL7_Msk & (_UINT32_(value) << PWM_ELMR_CSEL7_Pos)) /* Assigment of value for CSEL7 in the PWM_ELMR register */
-#define PWM_ELMR_Msk                          _UINT32_(0x000000FF)                                 /* (PWM_ELMR) Register Mask  */
+/* -------- PWM_SR : (PWM Offset: 0x0C) ( R/ 32) PWM Status Register -------- */
+#define PWM_SR_CHID0_Pos                      _UINT32_(0)                                          /* (PWM_SR) Channel ID Position */
+#define PWM_SR_CHID0_Msk                      (_UINT32_(0x1) << PWM_SR_CHID0_Pos)                  /* (PWM_SR) Channel ID Mask */
+#define PWM_SR_CHID0(value)                   (PWM_SR_CHID0_Msk & (_UINT32_(value) << PWM_SR_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_SR register */
+#define PWM_SR_CHID1_Pos                      _UINT32_(1)                                          /* (PWM_SR) Channel ID Position */
+#define PWM_SR_CHID1_Msk                      (_UINT32_(0x1) << PWM_SR_CHID1_Pos)                  /* (PWM_SR) Channel ID Mask */
+#define PWM_SR_CHID1(value)                   (PWM_SR_CHID1_Msk & (_UINT32_(value) << PWM_SR_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_SR register */
+#define PWM_SR_CHID2_Pos                      _UINT32_(2)                                          /* (PWM_SR) Channel ID Position */
+#define PWM_SR_CHID2_Msk                      (_UINT32_(0x1) << PWM_SR_CHID2_Pos)                  /* (PWM_SR) Channel ID Mask */
+#define PWM_SR_CHID2(value)                   (PWM_SR_CHID2_Msk & (_UINT32_(value) << PWM_SR_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_SR register */
+#define PWM_SR_Msk                            _UINT32_(0x00000007)                                 /* (PWM_SR) Register Mask  */
 
-#define PWM_ELMR_CSEL_Pos                     _UINT32_(0)                                          /* (PWM_ELMR Position) Comparison 7 Selection */
-#define PWM_ELMR_CSEL_Msk                     (_UINT32_(0xFF) << PWM_ELMR_CSEL_Pos)                /* (PWM_ELMR Mask) CSEL */
-#define PWM_ELMR_CSEL(value)                  (PWM_ELMR_CSEL_Msk & (_UINT32_(value) << PWM_ELMR_CSEL_Pos)) 
+#define PWM_SR_CHID_Pos                       _UINT32_(0)                                          /* (PWM_SR Position) Channel ID */
+#define PWM_SR_CHID_Msk                       (_UINT32_(0x7) << PWM_SR_CHID_Pos)                   /* (PWM_SR Mask) CHID */
+#define PWM_SR_CHID(value)                    (PWM_SR_CHID_Msk & (_UINT32_(value) << PWM_SR_CHID_Pos)) 
 
-/* -------- PWM_ENA : (PWM Offset: 0x04) ( /W 32) PWM Enable Register -------- */
-#define PWM_ENA_CHID0_Pos                     _UINT32_(0)                                          /* (PWM_ENA) Channel ID Position */
-#define PWM_ENA_CHID0_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID0_Pos)                 /* (PWM_ENA) Channel ID Mask */
-#define PWM_ENA_CHID0(value)                  (PWM_ENA_CHID0_Msk & (_UINT32_(value) << PWM_ENA_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_ENA register */
-#define PWM_ENA_CHID1_Pos                     _UINT32_(1)                                          /* (PWM_ENA) Channel ID Position */
-#define PWM_ENA_CHID1_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID1_Pos)                 /* (PWM_ENA) Channel ID Mask */
-#define PWM_ENA_CHID1(value)                  (PWM_ENA_CHID1_Msk & (_UINT32_(value) << PWM_ENA_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_ENA register */
-#define PWM_ENA_CHID2_Pos                     _UINT32_(2)                                          /* (PWM_ENA) Channel ID Position */
-#define PWM_ENA_CHID2_Msk                     (_UINT32_(0x1) << PWM_ENA_CHID2_Pos)                 /* (PWM_ENA) Channel ID Mask */
-#define PWM_ENA_CHID2(value)                  (PWM_ENA_CHID2_Msk & (_UINT32_(value) << PWM_ENA_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_ENA register */
-#define PWM_ENA_Msk                           _UINT32_(0x00000007)                                 /* (PWM_ENA) Register Mask  */
+/* -------- PWM_IER1 : (PWM Offset: 0x10) ( /W 32) PWM Interrupt Enable Register 1 -------- */
+#define PWM_IER1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_IER1) Counter Event on Channel 0 Interrupt Enable Position */
+#define PWM_IER1_CHID0_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID0_Pos)                /* (PWM_IER1) Counter Event on Channel 0 Interrupt Enable Mask */
+#define PWM_IER1_CHID0(value)                 (PWM_IER1_CHID0_Msk & (_UINT32_(value) << PWM_IER1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_IER1 register */
+#define PWM_IER1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_IER1) Counter Event on Channel 1 Interrupt Enable Position */
+#define PWM_IER1_CHID1_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID1_Pos)                /* (PWM_IER1) Counter Event on Channel 1 Interrupt Enable Mask */
+#define PWM_IER1_CHID1(value)                 (PWM_IER1_CHID1_Msk & (_UINT32_(value) << PWM_IER1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_IER1 register */
+#define PWM_IER1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_IER1) Counter Event on Channel 2 Interrupt Enable Position */
+#define PWM_IER1_CHID2_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID2_Pos)                /* (PWM_IER1) Counter Event on Channel 2 Interrupt Enable Mask */
+#define PWM_IER1_CHID2(value)                 (PWM_IER1_CHID2_Msk & (_UINT32_(value) << PWM_IER1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_IER1 register */
+#define PWM_IER1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 0 Interrupt Enable Position */
+#define PWM_IER1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID0_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 0 Interrupt Enable Mask */
+#define PWM_IER1_FCHID0(value)                (PWM_IER1_FCHID0_Msk & (_UINT32_(value) << PWM_IER1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_IER1 register */
+#define PWM_IER1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 1 Interrupt Enable Position */
+#define PWM_IER1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID1_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 1 Interrupt Enable Mask */
+#define PWM_IER1_FCHID1(value)                (PWM_IER1_FCHID1_Msk & (_UINT32_(value) << PWM_IER1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_IER1 register */
+#define PWM_IER1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 2 Interrupt Enable Position */
+#define PWM_IER1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID2_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 2 Interrupt Enable Mask */
+#define PWM_IER1_FCHID2(value)                (PWM_IER1_FCHID2_Msk & (_UINT32_(value) << PWM_IER1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_IER1 register */
+#define PWM_IER1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_IER1) Register Mask  */
 
-#define PWM_ENA_CHID_Pos                      _UINT32_(0)                                          /* (PWM_ENA Position) Channel ID */
-#define PWM_ENA_CHID_Msk                      (_UINT32_(0x7) << PWM_ENA_CHID_Pos)                  /* (PWM_ENA Mask) CHID */
-#define PWM_ENA_CHID(value)                   (PWM_ENA_CHID_Msk & (_UINT32_(value) << PWM_ENA_CHID_Pos)) 
-
-/* -------- PWM_ETRG1 : (PWM Offset: 0x42C) (R/W 32) PWM External Trigger Register 1 -------- */
-#define PWM_ETRG1_MAXCNT_Pos                  _UINT32_(0)                                          /* (PWM_ETRG1) Maximum Counter value Position */
-#define PWM_ETRG1_MAXCNT_Msk                  (_UINT32_(0xFFFFFF) << PWM_ETRG1_MAXCNT_Pos)         /* (PWM_ETRG1) Maximum Counter value Mask */
-#define PWM_ETRG1_MAXCNT(value)               (PWM_ETRG1_MAXCNT_Msk & (_UINT32_(value) << PWM_ETRG1_MAXCNT_Pos)) /* Assigment of value for MAXCNT in the PWM_ETRG1 register */
-#define PWM_ETRG1_TRGMODE_Pos                 _UINT32_(24)                                         /* (PWM_ETRG1) External Trigger Mode Position */
-#define PWM_ETRG1_TRGMODE_Msk                 (_UINT32_(0x3) << PWM_ETRG1_TRGMODE_Pos)             /* (PWM_ETRG1) External Trigger Mode Mask */
-#define PWM_ETRG1_TRGMODE(value)              (PWM_ETRG1_TRGMODE_Msk & (_UINT32_(value) << PWM_ETRG1_TRGMODE_Pos)) /* Assigment of value for TRGMODE in the PWM_ETRG1 register */
-#define   PWM_ETRG1_TRGMODE_OFF_Val           _UINT32_(0x0)                                        /* (PWM_ETRG1) External trigger is not enabled.  */
-#define   PWM_ETRG1_TRGMODE_MODE1_Val         _UINT32_(0x1)                                        /* (PWM_ETRG1) External PWM Reset Mode  */
-#define   PWM_ETRG1_TRGMODE_MODE2_Val         _UINT32_(0x2)                                        /* (PWM_ETRG1) External PWM Start Mode  */
-#define   PWM_ETRG1_TRGMODE_MODE3_Val         _UINT32_(0x3)                                        /* (PWM_ETRG1) Cycle-by-cycle Duty Mode  */
-#define PWM_ETRG1_TRGMODE_OFF                 (PWM_ETRG1_TRGMODE_OFF_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External trigger is not enabled. Position  */
-#define PWM_ETRG1_TRGMODE_MODE1               (PWM_ETRG1_TRGMODE_MODE1_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External PWM Reset Mode Position  */
-#define PWM_ETRG1_TRGMODE_MODE2               (PWM_ETRG1_TRGMODE_MODE2_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External PWM Start Mode Position  */
-#define PWM_ETRG1_TRGMODE_MODE3               (PWM_ETRG1_TRGMODE_MODE3_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) Cycle-by-cycle Duty Mode Position  */
-#define PWM_ETRG1_TRGEDGE_Pos                 _UINT32_(28)                                         /* (PWM_ETRG1) Edge Selection Position */
-#define PWM_ETRG1_TRGEDGE_Msk                 (_UINT32_(0x1) << PWM_ETRG1_TRGEDGE_Pos)             /* (PWM_ETRG1) Edge Selection Mask */
-#define PWM_ETRG1_TRGEDGE(value)              (PWM_ETRG1_TRGEDGE_Msk & (_UINT32_(value) << PWM_ETRG1_TRGEDGE_Pos)) /* Assigment of value for TRGEDGE in the PWM_ETRG1 register */
-#define   PWM_ETRG1_TRGEDGE_FALLING_ZERO_Val  _UINT32_(0x0)                                        /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0  */
-#define   PWM_ETRG1_TRGEDGE_RISING_ONE_Val    _UINT32_(0x1)                                        /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1  */
-#define PWM_ETRG1_TRGEDGE_FALLING_ZERO        (PWM_ETRG1_TRGEDGE_FALLING_ZERO_Val << PWM_ETRG1_TRGEDGE_Pos) /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0 Position  */
-#define PWM_ETRG1_TRGEDGE_RISING_ONE          (PWM_ETRG1_TRGEDGE_RISING_ONE_Val << PWM_ETRG1_TRGEDGE_Pos) /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1 Position  */
-#define PWM_ETRG1_TRGFILT_Pos                 _UINT32_(29)                                         /* (PWM_ETRG1) Filtered input Position */
-#define PWM_ETRG1_TRGFILT_Msk                 (_UINT32_(0x1) << PWM_ETRG1_TRGFILT_Pos)             /* (PWM_ETRG1) Filtered input Mask */
-#define PWM_ETRG1_TRGFILT(value)              (PWM_ETRG1_TRGFILT_Msk & (_UINT32_(value) << PWM_ETRG1_TRGFILT_Pos)) /* Assigment of value for TRGFILT in the PWM_ETRG1 register */
-#define PWM_ETRG1_TRGSRC_Pos                  _UINT32_(30)                                         /* (PWM_ETRG1) Trigger Source Position */
-#define PWM_ETRG1_TRGSRC_Msk                  (_UINT32_(0x1) << PWM_ETRG1_TRGSRC_Pos)              /* (PWM_ETRG1) Trigger Source Mask */
-#define PWM_ETRG1_TRGSRC(value)               (PWM_ETRG1_TRGSRC_Msk & (_UINT32_(value) << PWM_ETRG1_TRGSRC_Pos)) /* Assigment of value for TRGSRC in the PWM_ETRG1 register */
-#define PWM_ETRG1_RFEN_Pos                    _UINT32_(31)                                         /* (PWM_ETRG1) Recoverable Fault Enable Position */
-#define PWM_ETRG1_RFEN_Msk                    (_UINT32_(0x1) << PWM_ETRG1_RFEN_Pos)                /* (PWM_ETRG1) Recoverable Fault Enable Mask */
-#define PWM_ETRG1_RFEN(value)                 (PWM_ETRG1_RFEN_Msk & (_UINT32_(value) << PWM_ETRG1_RFEN_Pos)) /* Assigment of value for RFEN in the PWM_ETRG1 register */
-#define PWM_ETRG1_Msk                         _UINT32_(0xF3FFFFFF)                                 /* (PWM_ETRG1) Register Mask  */
-
-
-/* -------- PWM_ETRG2 : (PWM Offset: 0x44C) (R/W 32) PWM External Trigger Register 2 -------- */
-#define PWM_ETRG2_MAXCNT_Pos                  _UINT32_(0)                                          /* (PWM_ETRG2) Maximum Counter value Position */
-#define PWM_ETRG2_MAXCNT_Msk                  (_UINT32_(0xFFFFFF) << PWM_ETRG2_MAXCNT_Pos)         /* (PWM_ETRG2) Maximum Counter value Mask */
-#define PWM_ETRG2_MAXCNT(value)               (PWM_ETRG2_MAXCNT_Msk & (_UINT32_(value) << PWM_ETRG2_MAXCNT_Pos)) /* Assigment of value for MAXCNT in the PWM_ETRG2 register */
-#define PWM_ETRG2_TRGMODE_Pos                 _UINT32_(24)                                         /* (PWM_ETRG2) External Trigger Mode Position */
-#define PWM_ETRG2_TRGMODE_Msk                 (_UINT32_(0x3) << PWM_ETRG2_TRGMODE_Pos)             /* (PWM_ETRG2) External Trigger Mode Mask */
-#define PWM_ETRG2_TRGMODE(value)              (PWM_ETRG2_TRGMODE_Msk & (_UINT32_(value) << PWM_ETRG2_TRGMODE_Pos)) /* Assigment of value for TRGMODE in the PWM_ETRG2 register */
-#define   PWM_ETRG2_TRGMODE_OFF_Val           _UINT32_(0x0)                                        /* (PWM_ETRG2) External trigger is not enabled.  */
-#define   PWM_ETRG2_TRGMODE_MODE1_Val         _UINT32_(0x1)                                        /* (PWM_ETRG2) External PWM Reset Mode  */
-#define   PWM_ETRG2_TRGMODE_MODE2_Val         _UINT32_(0x2)                                        /* (PWM_ETRG2) External PWM Start Mode  */
-#define   PWM_ETRG2_TRGMODE_MODE3_Val         _UINT32_(0x3)                                        /* (PWM_ETRG2) Cycle-by-cycle Duty Mode  */
-#define PWM_ETRG2_TRGMODE_OFF                 (PWM_ETRG2_TRGMODE_OFF_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External trigger is not enabled. Position  */
-#define PWM_ETRG2_TRGMODE_MODE1               (PWM_ETRG2_TRGMODE_MODE1_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External PWM Reset Mode Position  */
-#define PWM_ETRG2_TRGMODE_MODE2               (PWM_ETRG2_TRGMODE_MODE2_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External PWM Start Mode Position  */
-#define PWM_ETRG2_TRGMODE_MODE3               (PWM_ETRG2_TRGMODE_MODE3_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) Cycle-by-cycle Duty Mode Position  */
-#define PWM_ETRG2_TRGEDGE_Pos                 _UINT32_(28)                                         /* (PWM_ETRG2) Edge Selection Position */
-#define PWM_ETRG2_TRGEDGE_Msk                 (_UINT32_(0x1) << PWM_ETRG2_TRGEDGE_Pos)             /* (PWM_ETRG2) Edge Selection Mask */
-#define PWM_ETRG2_TRGEDGE(value)              (PWM_ETRG2_TRGEDGE_Msk & (_UINT32_(value) << PWM_ETRG2_TRGEDGE_Pos)) /* Assigment of value for TRGEDGE in the PWM_ETRG2 register */
-#define   PWM_ETRG2_TRGEDGE_FALLING_ZERO_Val  _UINT32_(0x0)                                        /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0  */
-#define   PWM_ETRG2_TRGEDGE_RISING_ONE_Val    _UINT32_(0x1)                                        /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1  */
-#define PWM_ETRG2_TRGEDGE_FALLING_ZERO        (PWM_ETRG2_TRGEDGE_FALLING_ZERO_Val << PWM_ETRG2_TRGEDGE_Pos) /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0 Position  */
-#define PWM_ETRG2_TRGEDGE_RISING_ONE          (PWM_ETRG2_TRGEDGE_RISING_ONE_Val << PWM_ETRG2_TRGEDGE_Pos) /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1 Position  */
-#define PWM_ETRG2_TRGFILT_Pos                 _UINT32_(29)                                         /* (PWM_ETRG2) Filtered input Position */
-#define PWM_ETRG2_TRGFILT_Msk                 (_UINT32_(0x1) << PWM_ETRG2_TRGFILT_Pos)             /* (PWM_ETRG2) Filtered input Mask */
-#define PWM_ETRG2_TRGFILT(value)              (PWM_ETRG2_TRGFILT_Msk & (_UINT32_(value) << PWM_ETRG2_TRGFILT_Pos)) /* Assigment of value for TRGFILT in the PWM_ETRG2 register */
-#define PWM_ETRG2_TRGSRC_Pos                  _UINT32_(30)                                         /* (PWM_ETRG2) Trigger Source Position */
-#define PWM_ETRG2_TRGSRC_Msk                  (_UINT32_(0x1) << PWM_ETRG2_TRGSRC_Pos)              /* (PWM_ETRG2) Trigger Source Mask */
-#define PWM_ETRG2_TRGSRC(value)               (PWM_ETRG2_TRGSRC_Msk & (_UINT32_(value) << PWM_ETRG2_TRGSRC_Pos)) /* Assigment of value for TRGSRC in the PWM_ETRG2 register */
-#define PWM_ETRG2_RFEN_Pos                    _UINT32_(31)                                         /* (PWM_ETRG2) Recoverable Fault Enable Position */
-#define PWM_ETRG2_RFEN_Msk                    (_UINT32_(0x1) << PWM_ETRG2_RFEN_Pos)                /* (PWM_ETRG2) Recoverable Fault Enable Mask */
-#define PWM_ETRG2_RFEN(value)                 (PWM_ETRG2_RFEN_Msk & (_UINT32_(value) << PWM_ETRG2_RFEN_Pos)) /* Assigment of value for RFEN in the PWM_ETRG2 register */
-#define PWM_ETRG2_Msk                         _UINT32_(0xF3FFFFFF)                                 /* (PWM_ETRG2) Register Mask  */
-
-
-/* -------- PWM_FCR : (PWM Offset: 0x64) ( /W 32) PWM Fault Clear Register -------- */
-#define PWM_FCR_FCLR_Pos                      _UINT32_(0)                                          /* (PWM_FCR) Fault Clear Position */
-#define PWM_FCR_FCLR_Msk                      (_UINT32_(0xFF) << PWM_FCR_FCLR_Pos)                 /* (PWM_FCR) Fault Clear Mask */
-#define PWM_FCR_FCLR(value)                   (PWM_FCR_FCLR_Msk & (_UINT32_(value) << PWM_FCR_FCLR_Pos)) /* Assigment of value for FCLR in the PWM_FCR register */
-#define PWM_FCR_Msk                           _UINT32_(0x000000FF)                                 /* (PWM_FCR) Register Mask  */
-
-
-/* -------- PWM_FMR : (PWM Offset: 0x5C) (R/W 32) PWM Fault Mode Register -------- */
-#define PWM_FMR_FPOL_Pos                      _UINT32_(0)                                          /* (PWM_FMR) Fault Polarity Position */
-#define PWM_FMR_FPOL_Msk                      (_UINT32_(0xFF) << PWM_FMR_FPOL_Pos)                 /* (PWM_FMR) Fault Polarity Mask */
-#define PWM_FMR_FPOL(value)                   (PWM_FMR_FPOL_Msk & (_UINT32_(value) << PWM_FMR_FPOL_Pos)) /* Assigment of value for FPOL in the PWM_FMR register */
-#define PWM_FMR_FMOD_Pos                      _UINT32_(8)                                          /* (PWM_FMR) Fault Activation Mode Position */
-#define PWM_FMR_FMOD_Msk                      (_UINT32_(0xFF) << PWM_FMR_FMOD_Pos)                 /* (PWM_FMR) Fault Activation Mode Mask */
-#define PWM_FMR_FMOD(value)                   (PWM_FMR_FMOD_Msk & (_UINT32_(value) << PWM_FMR_FMOD_Pos)) /* Assigment of value for FMOD in the PWM_FMR register */
-#define PWM_FMR_FFIL_Pos                      _UINT32_(16)                                         /* (PWM_FMR) Fault Filtering Position */
-#define PWM_FMR_FFIL_Msk                      (_UINT32_(0xFF) << PWM_FMR_FFIL_Pos)                 /* (PWM_FMR) Fault Filtering Mask */
-#define PWM_FMR_FFIL(value)                   (PWM_FMR_FFIL_Msk & (_UINT32_(value) << PWM_FMR_FFIL_Pos)) /* Assigment of value for FFIL in the PWM_FMR register */
-#define PWM_FMR_Msk                           _UINT32_(0x00FFFFFF)                                 /* (PWM_FMR) Register Mask  */
-
-
-/* -------- PWM_FPE : (PWM Offset: 0x6C) (R/W 32) PWM Fault Protection Enable Register -------- */
-#define PWM_FPE_FPE0_Pos                      _UINT32_(0)                                          /* (PWM_FPE) Fault Protection Enable for channel 0 Position */
-#define PWM_FPE_FPE0_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE0_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 0 Mask */
-#define PWM_FPE_FPE0(value)                   (PWM_FPE_FPE0_Msk & (_UINT32_(value) << PWM_FPE_FPE0_Pos)) /* Assigment of value for FPE0 in the PWM_FPE register */
-#define PWM_FPE_FPE1_Pos                      _UINT32_(8)                                          /* (PWM_FPE) Fault Protection Enable for channel 1 Position */
-#define PWM_FPE_FPE1_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE1_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 1 Mask */
-#define PWM_FPE_FPE1(value)                   (PWM_FPE_FPE1_Msk & (_UINT32_(value) << PWM_FPE_FPE1_Pos)) /* Assigment of value for FPE1 in the PWM_FPE register */
-#define PWM_FPE_FPE2_Pos                      _UINT32_(16)                                         /* (PWM_FPE) Fault Protection Enable for channel 2 Position */
-#define PWM_FPE_FPE2_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE2_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 2 Mask */
-#define PWM_FPE_FPE2(value)                   (PWM_FPE_FPE2_Msk & (_UINT32_(value) << PWM_FPE_FPE2_Pos)) /* Assigment of value for FPE2 in the PWM_FPE register */
-#define PWM_FPE_Msk                           _UINT32_(0x00FFFFFF)                                 /* (PWM_FPE) Register Mask  */
-
-
-/* -------- PWM_FPV1 : (PWM Offset: 0x68) (R/W 32) PWM Fault Protection Value Register 1 -------- */
-#define PWM_FPV1_FPVH0_Pos                    _UINT32_(0)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 0 Position */
-#define PWM_FPV1_FPVH0_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH0_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 0 Mask */
-#define PWM_FPV1_FPVH0(value)                 (PWM_FPV1_FPVH0_Msk & (_UINT32_(value) << PWM_FPV1_FPVH0_Pos)) /* Assigment of value for FPVH0 in the PWM_FPV1 register */
-#define PWM_FPV1_FPVH1_Pos                    _UINT32_(1)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 1 Position */
-#define PWM_FPV1_FPVH1_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH1_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 1 Mask */
-#define PWM_FPV1_FPVH1(value)                 (PWM_FPV1_FPVH1_Msk & (_UINT32_(value) << PWM_FPV1_FPVH1_Pos)) /* Assigment of value for FPVH1 in the PWM_FPV1 register */
-#define PWM_FPV1_FPVH2_Pos                    _UINT32_(2)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 2 Position */
-#define PWM_FPV1_FPVH2_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH2_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 2 Mask */
-#define PWM_FPV1_FPVH2(value)                 (PWM_FPV1_FPVH2_Msk & (_UINT32_(value) << PWM_FPV1_FPVH2_Pos)) /* Assigment of value for FPVH2 in the PWM_FPV1 register */
-#define PWM_FPV1_FPVL0_Pos                    _UINT32_(16)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 0 Position */
-#define PWM_FPV1_FPVL0_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL0_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 0 Mask */
-#define PWM_FPV1_FPVL0(value)                 (PWM_FPV1_FPVL0_Msk & (_UINT32_(value) << PWM_FPV1_FPVL0_Pos)) /* Assigment of value for FPVL0 in the PWM_FPV1 register */
-#define PWM_FPV1_FPVL1_Pos                    _UINT32_(17)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 1 Position */
-#define PWM_FPV1_FPVL1_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL1_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 1 Mask */
-#define PWM_FPV1_FPVL1(value)                 (PWM_FPV1_FPVL1_Msk & (_UINT32_(value) << PWM_FPV1_FPVL1_Pos)) /* Assigment of value for FPVL1 in the PWM_FPV1 register */
-#define PWM_FPV1_FPVL2_Pos                    _UINT32_(18)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 2 Position */
-#define PWM_FPV1_FPVL2_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL2_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 2 Mask */
-#define PWM_FPV1_FPVL2(value)                 (PWM_FPV1_FPVL2_Msk & (_UINT32_(value) << PWM_FPV1_FPVL2_Pos)) /* Assigment of value for FPVL2 in the PWM_FPV1 register */
-#define PWM_FPV1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_FPV1) Register Mask  */
-
-#define PWM_FPV1_FPVH_Pos                     _UINT32_(0)                                          /* (PWM_FPV1 Position) Fault Protection Value for PWMH output on channel x */
-#define PWM_FPV1_FPVH_Msk                     (_UINT32_(0x7) << PWM_FPV1_FPVH_Pos)                 /* (PWM_FPV1 Mask) FPVH */
-#define PWM_FPV1_FPVH(value)                  (PWM_FPV1_FPVH_Msk & (_UINT32_(value) << PWM_FPV1_FPVH_Pos)) 
-#define PWM_FPV1_FPVL_Pos                     _UINT32_(16)                                         /* (PWM_FPV1 Position) Fault Protection Value for PWML output on channel 2 */
-#define PWM_FPV1_FPVL_Msk                     (_UINT32_(0x7) << PWM_FPV1_FPVL_Pos)                 /* (PWM_FPV1 Mask) FPVL */
-#define PWM_FPV1_FPVL(value)                  (PWM_FPV1_FPVL_Msk & (_UINT32_(value) << PWM_FPV1_FPVL_Pos)) 
-
-/* -------- PWM_FPV2 : (PWM Offset: 0xC0) (R/W 32) PWM Fault Protection Value 2 Register -------- */
-#define PWM_FPV2_FPZH0_Pos                    _UINT32_(0)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 0 Position */
-#define PWM_FPV2_FPZH0_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH0_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 0 Mask */
-#define PWM_FPV2_FPZH0(value)                 (PWM_FPV2_FPZH0_Msk & (_UINT32_(value) << PWM_FPV2_FPZH0_Pos)) /* Assigment of value for FPZH0 in the PWM_FPV2 register */
-#define PWM_FPV2_FPZH1_Pos                    _UINT32_(1)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 1 Position */
-#define PWM_FPV2_FPZH1_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH1_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 1 Mask */
-#define PWM_FPV2_FPZH1(value)                 (PWM_FPV2_FPZH1_Msk & (_UINT32_(value) << PWM_FPV2_FPZH1_Pos)) /* Assigment of value for FPZH1 in the PWM_FPV2 register */
-#define PWM_FPV2_FPZH2_Pos                    _UINT32_(2)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 2 Position */
-#define PWM_FPV2_FPZH2_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH2_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 2 Mask */
-#define PWM_FPV2_FPZH2(value)                 (PWM_FPV2_FPZH2_Msk & (_UINT32_(value) << PWM_FPV2_FPZH2_Pos)) /* Assigment of value for FPZH2 in the PWM_FPV2 register */
-#define PWM_FPV2_FPZL0_Pos                    _UINT32_(16)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 0 Position */
-#define PWM_FPV2_FPZL0_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL0_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 0 Mask */
-#define PWM_FPV2_FPZL0(value)                 (PWM_FPV2_FPZL0_Msk & (_UINT32_(value) << PWM_FPV2_FPZL0_Pos)) /* Assigment of value for FPZL0 in the PWM_FPV2 register */
-#define PWM_FPV2_FPZL1_Pos                    _UINT32_(17)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 1 Position */
-#define PWM_FPV2_FPZL1_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL1_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 1 Mask */
-#define PWM_FPV2_FPZL1(value)                 (PWM_FPV2_FPZL1_Msk & (_UINT32_(value) << PWM_FPV2_FPZL1_Pos)) /* Assigment of value for FPZL1 in the PWM_FPV2 register */
-#define PWM_FPV2_FPZL2_Pos                    _UINT32_(18)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 2 Position */
-#define PWM_FPV2_FPZL2_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL2_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 2 Mask */
-#define PWM_FPV2_FPZL2(value)                 (PWM_FPV2_FPZL2_Msk & (_UINT32_(value) << PWM_FPV2_FPZL2_Pos)) /* Assigment of value for FPZL2 in the PWM_FPV2 register */
-#define PWM_FPV2_Msk                          _UINT32_(0x00070007)                                 /* (PWM_FPV2) Register Mask  */
-
-#define PWM_FPV2_FPZH_Pos                     _UINT32_(0)                                          /* (PWM_FPV2 Position) Fault Protection to Hi-Z for PWMH output on channel x */
-#define PWM_FPV2_FPZH_Msk                     (_UINT32_(0x7) << PWM_FPV2_FPZH_Pos)                 /* (PWM_FPV2 Mask) FPZH */
-#define PWM_FPV2_FPZH(value)                  (PWM_FPV2_FPZH_Msk & (_UINT32_(value) << PWM_FPV2_FPZH_Pos)) 
-#define PWM_FPV2_FPZL_Pos                     _UINT32_(16)                                         /* (PWM_FPV2 Position) Fault Protection to Hi-Z for PWML output on channel 2 */
-#define PWM_FPV2_FPZL_Msk                     (_UINT32_(0x7) << PWM_FPV2_FPZL_Pos)                 /* (PWM_FPV2 Mask) FPZL */
-#define PWM_FPV2_FPZL(value)                  (PWM_FPV2_FPZL_Msk & (_UINT32_(value) << PWM_FPV2_FPZL_Pos)) 
-
-/* -------- PWM_FSR : (PWM Offset: 0x60) ( R/ 32) PWM Fault Status Register -------- */
-#define PWM_FSR_FIV_Pos                       _UINT32_(0)                                          /* (PWM_FSR) Fault Input Value Position */
-#define PWM_FSR_FIV_Msk                       (_UINT32_(0xFF) << PWM_FSR_FIV_Pos)                  /* (PWM_FSR) Fault Input Value Mask */
-#define PWM_FSR_FIV(value)                    (PWM_FSR_FIV_Msk & (_UINT32_(value) << PWM_FSR_FIV_Pos)) /* Assigment of value for FIV in the PWM_FSR register */
-#define PWM_FSR_FS_Pos                        _UINT32_(8)                                          /* (PWM_FSR) Fault Status Position */
-#define PWM_FSR_FS_Msk                        (_UINT32_(0xFF) << PWM_FSR_FS_Pos)                   /* (PWM_FSR) Fault Status Mask */
-#define PWM_FSR_FS(value)                     (PWM_FSR_FS_Msk & (_UINT32_(value) << PWM_FSR_FS_Pos)) /* Assigment of value for FS in the PWM_FSR register */
-#define PWM_FSR_Msk                           _UINT32_(0x0000FFFF)                                 /* (PWM_FSR) Register Mask  */
-
+#define PWM_IER1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_IER1 Position) Counter Event on Channel x Interrupt Enable */
+#define PWM_IER1_CHID_Msk                     (_UINT32_(0x7) << PWM_IER1_CHID_Pos)                 /* (PWM_IER1 Mask) CHID */
+#define PWM_IER1_CHID(value)                  (PWM_IER1_CHID_Msk & (_UINT32_(value) << PWM_IER1_CHID_Pos)) 
+#define PWM_IER1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_IER1 Position) Fault Protection Trigger on Channel 2 Interrupt Enable */
+#define PWM_IER1_FCHID_Msk                    (_UINT32_(0x7) << PWM_IER1_FCHID_Pos)                /* (PWM_IER1 Mask) FCHID */
+#define PWM_IER1_FCHID(value)                 (PWM_IER1_FCHID_Msk & (_UINT32_(value) << PWM_IER1_FCHID_Pos)) 
 
 /* -------- PWM_IDR1 : (PWM Offset: 0x14) ( /W 32) PWM Interrupt Disable Register 1 -------- */
 #define PWM_IDR1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_IDR1) Counter Event on Channel 0 Interrupt Disable Position */
@@ -589,103 +396,116 @@
 #define PWM_IDR1_FCHID_Msk                    (_UINT32_(0x7) << PWM_IDR1_FCHID_Pos)                /* (PWM_IDR1 Mask) FCHID */
 #define PWM_IDR1_FCHID(value)                 (PWM_IDR1_FCHID_Msk & (_UINT32_(value) << PWM_IDR1_FCHID_Pos)) 
 
-/* -------- PWM_IDR2 : (PWM Offset: 0x38) ( /W 32) PWM Interrupt Disable Register 2 -------- */
-#define PWM_IDR2_WRDY_Pos                     _UINT32_(0)                                          /* (PWM_IDR2) Write Ready for Synchronous Channels Update Interrupt Disable Position */
-#define PWM_IDR2_WRDY_Msk                     (_UINT32_(0x1) << PWM_IDR2_WRDY_Pos)                 /* (PWM_IDR2) Write Ready for Synchronous Channels Update Interrupt Disable Mask */
-#define PWM_IDR2_WRDY(value)                  (PWM_IDR2_WRDY_Msk & (_UINT32_(value) << PWM_IDR2_WRDY_Pos)) /* Assigment of value for WRDY in the PWM_IDR2 register */
-#define PWM_IDR2_ENDTX_Pos                    _UINT32_(1)                                          /* (PWM_IDR2) PDC End of TX Buffer Interrupt Disable Position */
-#define PWM_IDR2_ENDTX_Msk                    (_UINT32_(0x1) << PWM_IDR2_ENDTX_Pos)                /* (PWM_IDR2) PDC End of TX Buffer Interrupt Disable Mask */
-#define PWM_IDR2_ENDTX(value)                 (PWM_IDR2_ENDTX_Msk & (_UINT32_(value) << PWM_IDR2_ENDTX_Pos)) /* Assigment of value for ENDTX in the PWM_IDR2 register */
-#define PWM_IDR2_TXBUFE_Pos                   _UINT32_(2)                                          /* (PWM_IDR2) PDC TX Buffer Empty Interrupt Disable Position */
-#define PWM_IDR2_TXBUFE_Msk                   (_UINT32_(0x1) << PWM_IDR2_TXBUFE_Pos)               /* (PWM_IDR2) PDC TX Buffer Empty Interrupt Disable Mask */
-#define PWM_IDR2_TXBUFE(value)                (PWM_IDR2_TXBUFE_Msk & (_UINT32_(value) << PWM_IDR2_TXBUFE_Pos)) /* Assigment of value for TXBUFE in the PWM_IDR2 register */
-#define PWM_IDR2_UNRE_Pos                     _UINT32_(3)                                          /* (PWM_IDR2) Synchronous Channels Update Underrun Error Interrupt Disable Position */
-#define PWM_IDR2_UNRE_Msk                     (_UINT32_(0x1) << PWM_IDR2_UNRE_Pos)                 /* (PWM_IDR2) Synchronous Channels Update Underrun Error Interrupt Disable Mask */
-#define PWM_IDR2_UNRE(value)                  (PWM_IDR2_UNRE_Msk & (_UINT32_(value) << PWM_IDR2_UNRE_Pos)) /* Assigment of value for UNRE in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM0_Pos                    _UINT32_(8)                                          /* (PWM_IDR2) Comparison 0 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM0_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM0_Pos)                /* (PWM_IDR2) Comparison 0 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM0(value)                 (PWM_IDR2_CMPM0_Msk & (_UINT32_(value) << PWM_IDR2_CMPM0_Pos)) /* Assigment of value for CMPM0 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM1_Pos                    _UINT32_(9)                                          /* (PWM_IDR2) Comparison 1 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM1_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM1_Pos)                /* (PWM_IDR2) Comparison 1 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM1(value)                 (PWM_IDR2_CMPM1_Msk & (_UINT32_(value) << PWM_IDR2_CMPM1_Pos)) /* Assigment of value for CMPM1 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM2_Pos                    _UINT32_(10)                                         /* (PWM_IDR2) Comparison 2 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM2_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM2_Pos)                /* (PWM_IDR2) Comparison 2 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM2(value)                 (PWM_IDR2_CMPM2_Msk & (_UINT32_(value) << PWM_IDR2_CMPM2_Pos)) /* Assigment of value for CMPM2 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM3_Pos                    _UINT32_(11)                                         /* (PWM_IDR2) Comparison 3 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM3_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM3_Pos)                /* (PWM_IDR2) Comparison 3 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM3(value)                 (PWM_IDR2_CMPM3_Msk & (_UINT32_(value) << PWM_IDR2_CMPM3_Pos)) /* Assigment of value for CMPM3 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM4_Pos                    _UINT32_(12)                                         /* (PWM_IDR2) Comparison 4 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM4_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM4_Pos)                /* (PWM_IDR2) Comparison 4 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM4(value)                 (PWM_IDR2_CMPM4_Msk & (_UINT32_(value) << PWM_IDR2_CMPM4_Pos)) /* Assigment of value for CMPM4 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM5_Pos                    _UINT32_(13)                                         /* (PWM_IDR2) Comparison 5 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM5_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM5_Pos)                /* (PWM_IDR2) Comparison 5 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM5(value)                 (PWM_IDR2_CMPM5_Msk & (_UINT32_(value) << PWM_IDR2_CMPM5_Pos)) /* Assigment of value for CMPM5 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM6_Pos                    _UINT32_(14)                                         /* (PWM_IDR2) Comparison 6 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM6_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM6_Pos)                /* (PWM_IDR2) Comparison 6 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM6(value)                 (PWM_IDR2_CMPM6_Msk & (_UINT32_(value) << PWM_IDR2_CMPM6_Pos)) /* Assigment of value for CMPM6 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPM7_Pos                    _UINT32_(15)                                         /* (PWM_IDR2) Comparison 7 Match Interrupt Disable Position */
-#define PWM_IDR2_CMPM7_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM7_Pos)                /* (PWM_IDR2) Comparison 7 Match Interrupt Disable Mask */
-#define PWM_IDR2_CMPM7(value)                 (PWM_IDR2_CMPM7_Msk & (_UINT32_(value) << PWM_IDR2_CMPM7_Pos)) /* Assigment of value for CMPM7 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU0_Pos                    _UINT32_(16)                                         /* (PWM_IDR2) Comparison 0 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU0_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU0_Pos)                /* (PWM_IDR2) Comparison 0 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU0(value)                 (PWM_IDR2_CMPU0_Msk & (_UINT32_(value) << PWM_IDR2_CMPU0_Pos)) /* Assigment of value for CMPU0 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU1_Pos                    _UINT32_(17)                                         /* (PWM_IDR2) Comparison 1 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU1_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU1_Pos)                /* (PWM_IDR2) Comparison 1 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU1(value)                 (PWM_IDR2_CMPU1_Msk & (_UINT32_(value) << PWM_IDR2_CMPU1_Pos)) /* Assigment of value for CMPU1 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU2_Pos                    _UINT32_(18)                                         /* (PWM_IDR2) Comparison 2 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU2_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU2_Pos)                /* (PWM_IDR2) Comparison 2 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU2(value)                 (PWM_IDR2_CMPU2_Msk & (_UINT32_(value) << PWM_IDR2_CMPU2_Pos)) /* Assigment of value for CMPU2 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU3_Pos                    _UINT32_(19)                                         /* (PWM_IDR2) Comparison 3 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU3_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU3_Pos)                /* (PWM_IDR2) Comparison 3 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU3(value)                 (PWM_IDR2_CMPU3_Msk & (_UINT32_(value) << PWM_IDR2_CMPU3_Pos)) /* Assigment of value for CMPU3 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU4_Pos                    _UINT32_(20)                                         /* (PWM_IDR2) Comparison 4 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU4_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU4_Pos)                /* (PWM_IDR2) Comparison 4 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU4(value)                 (PWM_IDR2_CMPU4_Msk & (_UINT32_(value) << PWM_IDR2_CMPU4_Pos)) /* Assigment of value for CMPU4 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU5_Pos                    _UINT32_(21)                                         /* (PWM_IDR2) Comparison 5 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU5_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU5_Pos)                /* (PWM_IDR2) Comparison 5 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU5(value)                 (PWM_IDR2_CMPU5_Msk & (_UINT32_(value) << PWM_IDR2_CMPU5_Pos)) /* Assigment of value for CMPU5 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU6_Pos                    _UINT32_(22)                                         /* (PWM_IDR2) Comparison 6 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU6_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU6_Pos)                /* (PWM_IDR2) Comparison 6 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU6(value)                 (PWM_IDR2_CMPU6_Msk & (_UINT32_(value) << PWM_IDR2_CMPU6_Pos)) /* Assigment of value for CMPU6 in the PWM_IDR2 register */
-#define PWM_IDR2_CMPU7_Pos                    _UINT32_(23)                                         /* (PWM_IDR2) Comparison 7 Update Interrupt Disable Position */
-#define PWM_IDR2_CMPU7_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU7_Pos)                /* (PWM_IDR2) Comparison 7 Update Interrupt Disable Mask */
-#define PWM_IDR2_CMPU7(value)                 (PWM_IDR2_CMPU7_Msk & (_UINT32_(value) << PWM_IDR2_CMPU7_Pos)) /* Assigment of value for CMPU7 in the PWM_IDR2 register */
-#define PWM_IDR2_Msk                          _UINT32_(0x00FFFF0F)                                 /* (PWM_IDR2) Register Mask  */
+/* -------- PWM_IMR1 : (PWM Offset: 0x18) ( R/ 32) PWM Interrupt Mask Register 1 -------- */
+#define PWM_IMR1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_IMR1) Counter Event on Channel 0 Interrupt Mask Position */
+#define PWM_IMR1_CHID0_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID0_Pos)                /* (PWM_IMR1) Counter Event on Channel 0 Interrupt Mask Mask */
+#define PWM_IMR1_CHID0(value)                 (PWM_IMR1_CHID0_Msk & (_UINT32_(value) << PWM_IMR1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_IMR1 register */
+#define PWM_IMR1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_IMR1) Counter Event on Channel 1 Interrupt Mask Position */
+#define PWM_IMR1_CHID1_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID1_Pos)                /* (PWM_IMR1) Counter Event on Channel 1 Interrupt Mask Mask */
+#define PWM_IMR1_CHID1(value)                 (PWM_IMR1_CHID1_Msk & (_UINT32_(value) << PWM_IMR1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_IMR1 register */
+#define PWM_IMR1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_IMR1) Counter Event on Channel 2 Interrupt Mask Position */
+#define PWM_IMR1_CHID2_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID2_Pos)                /* (PWM_IMR1) Counter Event on Channel 2 Interrupt Mask Mask */
+#define PWM_IMR1_CHID2(value)                 (PWM_IMR1_CHID2_Msk & (_UINT32_(value) << PWM_IMR1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_IMR1 register */
+#define PWM_IMR1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 0 Interrupt Mask Position */
+#define PWM_IMR1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID0_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 0 Interrupt Mask Mask */
+#define PWM_IMR1_FCHID0(value)                (PWM_IMR1_FCHID0_Msk & (_UINT32_(value) << PWM_IMR1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_IMR1 register */
+#define PWM_IMR1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 1 Interrupt Mask Position */
+#define PWM_IMR1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID1_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 1 Interrupt Mask Mask */
+#define PWM_IMR1_FCHID1(value)                (PWM_IMR1_FCHID1_Msk & (_UINT32_(value) << PWM_IMR1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_IMR1 register */
+#define PWM_IMR1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 2 Interrupt Mask Position */
+#define PWM_IMR1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID2_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 2 Interrupt Mask Mask */
+#define PWM_IMR1_FCHID2(value)                (PWM_IMR1_FCHID2_Msk & (_UINT32_(value) << PWM_IMR1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_IMR1 register */
+#define PWM_IMR1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_IMR1) Register Mask  */
 
-#define PWM_IDR2_CMPM_Pos                     _UINT32_(8)                                          /* (PWM_IDR2 Position) Comparison x Match Interrupt Disable */
-#define PWM_IDR2_CMPM_Msk                     (_UINT32_(0xFF) << PWM_IDR2_CMPM_Pos)                /* (PWM_IDR2 Mask) CMPM */
-#define PWM_IDR2_CMPM(value)                  (PWM_IDR2_CMPM_Msk & (_UINT32_(value) << PWM_IDR2_CMPM_Pos)) 
-#define PWM_IDR2_CMPU_Pos                     _UINT32_(16)                                         /* (PWM_IDR2 Position) Comparison 7 Update Interrupt Disable */
-#define PWM_IDR2_CMPU_Msk                     (_UINT32_(0xFF) << PWM_IDR2_CMPU_Pos)                /* (PWM_IDR2 Mask) CMPU */
-#define PWM_IDR2_CMPU(value)                  (PWM_IDR2_CMPU_Msk & (_UINT32_(value) << PWM_IDR2_CMPU_Pos)) 
+#define PWM_IMR1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_IMR1 Position) Counter Event on Channel x Interrupt Mask */
+#define PWM_IMR1_CHID_Msk                     (_UINT32_(0x7) << PWM_IMR1_CHID_Pos)                 /* (PWM_IMR1 Mask) CHID */
+#define PWM_IMR1_CHID(value)                  (PWM_IMR1_CHID_Msk & (_UINT32_(value) << PWM_IMR1_CHID_Pos)) 
+#define PWM_IMR1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_IMR1 Position) Fault Protection Trigger on Channel 2 Interrupt Mask */
+#define PWM_IMR1_FCHID_Msk                    (_UINT32_(0x7) << PWM_IMR1_FCHID_Pos)                /* (PWM_IMR1 Mask) FCHID */
+#define PWM_IMR1_FCHID(value)                 (PWM_IMR1_FCHID_Msk & (_UINT32_(value) << PWM_IMR1_FCHID_Pos)) 
 
-/* -------- PWM_IER1 : (PWM Offset: 0x10) ( /W 32) PWM Interrupt Enable Register 1 -------- */
-#define PWM_IER1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_IER1) Counter Event on Channel 0 Interrupt Enable Position */
-#define PWM_IER1_CHID0_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID0_Pos)                /* (PWM_IER1) Counter Event on Channel 0 Interrupt Enable Mask */
-#define PWM_IER1_CHID0(value)                 (PWM_IER1_CHID0_Msk & (_UINT32_(value) << PWM_IER1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_IER1 register */
-#define PWM_IER1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_IER1) Counter Event on Channel 1 Interrupt Enable Position */
-#define PWM_IER1_CHID1_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID1_Pos)                /* (PWM_IER1) Counter Event on Channel 1 Interrupt Enable Mask */
-#define PWM_IER1_CHID1(value)                 (PWM_IER1_CHID1_Msk & (_UINT32_(value) << PWM_IER1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_IER1 register */
-#define PWM_IER1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_IER1) Counter Event on Channel 2 Interrupt Enable Position */
-#define PWM_IER1_CHID2_Msk                    (_UINT32_(0x1) << PWM_IER1_CHID2_Pos)                /* (PWM_IER1) Counter Event on Channel 2 Interrupt Enable Mask */
-#define PWM_IER1_CHID2(value)                 (PWM_IER1_CHID2_Msk & (_UINT32_(value) << PWM_IER1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_IER1 register */
-#define PWM_IER1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 0 Interrupt Enable Position */
-#define PWM_IER1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID0_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 0 Interrupt Enable Mask */
-#define PWM_IER1_FCHID0(value)                (PWM_IER1_FCHID0_Msk & (_UINT32_(value) << PWM_IER1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_IER1 register */
-#define PWM_IER1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 1 Interrupt Enable Position */
-#define PWM_IER1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID1_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 1 Interrupt Enable Mask */
-#define PWM_IER1_FCHID1(value)                (PWM_IER1_FCHID1_Msk & (_UINT32_(value) << PWM_IER1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_IER1 register */
-#define PWM_IER1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_IER1) Fault Protection Trigger on Channel 2 Interrupt Enable Position */
-#define PWM_IER1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_IER1_FCHID2_Pos)               /* (PWM_IER1) Fault Protection Trigger on Channel 2 Interrupt Enable Mask */
-#define PWM_IER1_FCHID2(value)                (PWM_IER1_FCHID2_Msk & (_UINT32_(value) << PWM_IER1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_IER1 register */
-#define PWM_IER1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_IER1) Register Mask  */
+/* -------- PWM_ISR1 : (PWM Offset: 0x1C) ( R/ 32) PWM Interrupt Status Register 1 -------- */
+#define PWM_ISR1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_ISR1) Counter Event on Channel 0 Position */
+#define PWM_ISR1_CHID0_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID0_Pos)                /* (PWM_ISR1) Counter Event on Channel 0 Mask */
+#define PWM_ISR1_CHID0(value)                 (PWM_ISR1_CHID0_Msk & (_UINT32_(value) << PWM_ISR1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_ISR1 register */
+#define PWM_ISR1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_ISR1) Counter Event on Channel 1 Position */
+#define PWM_ISR1_CHID1_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID1_Pos)                /* (PWM_ISR1) Counter Event on Channel 1 Mask */
+#define PWM_ISR1_CHID1(value)                 (PWM_ISR1_CHID1_Msk & (_UINT32_(value) << PWM_ISR1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_ISR1 register */
+#define PWM_ISR1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_ISR1) Counter Event on Channel 2 Position */
+#define PWM_ISR1_CHID2_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID2_Pos)                /* (PWM_ISR1) Counter Event on Channel 2 Mask */
+#define PWM_ISR1_CHID2(value)                 (PWM_ISR1_CHID2_Msk & (_UINT32_(value) << PWM_ISR1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_ISR1 register */
+#define PWM_ISR1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 0 Position */
+#define PWM_ISR1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID0_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 0 Mask */
+#define PWM_ISR1_FCHID0(value)                (PWM_ISR1_FCHID0_Msk & (_UINT32_(value) << PWM_ISR1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_ISR1 register */
+#define PWM_ISR1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 1 Position */
+#define PWM_ISR1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID1_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 1 Mask */
+#define PWM_ISR1_FCHID1(value)                (PWM_ISR1_FCHID1_Msk & (_UINT32_(value) << PWM_ISR1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_ISR1 register */
+#define PWM_ISR1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 2 Position */
+#define PWM_ISR1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID2_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 2 Mask */
+#define PWM_ISR1_FCHID2(value)                (PWM_ISR1_FCHID2_Msk & (_UINT32_(value) << PWM_ISR1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_ISR1 register */
+#define PWM_ISR1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_ISR1) Register Mask  */
 
-#define PWM_IER1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_IER1 Position) Counter Event on Channel x Interrupt Enable */
-#define PWM_IER1_CHID_Msk                     (_UINT32_(0x7) << PWM_IER1_CHID_Pos)                 /* (PWM_IER1 Mask) CHID */
-#define PWM_IER1_CHID(value)                  (PWM_IER1_CHID_Msk & (_UINT32_(value) << PWM_IER1_CHID_Pos)) 
-#define PWM_IER1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_IER1 Position) Fault Protection Trigger on Channel 2 Interrupt Enable */
-#define PWM_IER1_FCHID_Msk                    (_UINT32_(0x7) << PWM_IER1_FCHID_Pos)                /* (PWM_IER1 Mask) FCHID */
-#define PWM_IER1_FCHID(value)                 (PWM_IER1_FCHID_Msk & (_UINT32_(value) << PWM_IER1_FCHID_Pos)) 
+#define PWM_ISR1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_ISR1 Position) Counter Event on Channel x */
+#define PWM_ISR1_CHID_Msk                     (_UINT32_(0x7) << PWM_ISR1_CHID_Pos)                 /* (PWM_ISR1 Mask) CHID */
+#define PWM_ISR1_CHID(value)                  (PWM_ISR1_CHID_Msk & (_UINT32_(value) << PWM_ISR1_CHID_Pos)) 
+#define PWM_ISR1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_ISR1 Position) Fault Protection Trigger on Channel 2 */
+#define PWM_ISR1_FCHID_Msk                    (_UINT32_(0x7) << PWM_ISR1_FCHID_Pos)                /* (PWM_ISR1 Mask) FCHID */
+#define PWM_ISR1_FCHID(value)                 (PWM_ISR1_FCHID_Msk & (_UINT32_(value) << PWM_ISR1_FCHID_Pos)) 
+
+/* -------- PWM_SCM : (PWM Offset: 0x20) (R/W 32) PWM Sync Channels Mode Register -------- */
+#define PWM_SCM_SYNC0_Pos                     _UINT32_(0)                                          /* (PWM_SCM) Synchronous Channel 0 Position */
+#define PWM_SCM_SYNC0_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC0_Pos)                 /* (PWM_SCM) Synchronous Channel 0 Mask */
+#define PWM_SCM_SYNC0(value)                  (PWM_SCM_SYNC0_Msk & (_UINT32_(value) << PWM_SCM_SYNC0_Pos)) /* Assigment of value for SYNC0 in the PWM_SCM register */
+#define PWM_SCM_SYNC1_Pos                     _UINT32_(1)                                          /* (PWM_SCM) Synchronous Channel 1 Position */
+#define PWM_SCM_SYNC1_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC1_Pos)                 /* (PWM_SCM) Synchronous Channel 1 Mask */
+#define PWM_SCM_SYNC1(value)                  (PWM_SCM_SYNC1_Msk & (_UINT32_(value) << PWM_SCM_SYNC1_Pos)) /* Assigment of value for SYNC1 in the PWM_SCM register */
+#define PWM_SCM_SYNC2_Pos                     _UINT32_(2)                                          /* (PWM_SCM) Synchronous Channel 2 Position */
+#define PWM_SCM_SYNC2_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC2_Pos)                 /* (PWM_SCM) Synchronous Channel 2 Mask */
+#define PWM_SCM_SYNC2(value)                  (PWM_SCM_SYNC2_Msk & (_UINT32_(value) << PWM_SCM_SYNC2_Pos)) /* Assigment of value for SYNC2 in the PWM_SCM register */
+#define PWM_SCM_UPDM_Pos                      _UINT32_(16)                                         /* (PWM_SCM) Synchronous Channels Update Mode Position */
+#define PWM_SCM_UPDM_Msk                      (_UINT32_(0x3) << PWM_SCM_UPDM_Pos)                  /* (PWM_SCM) Synchronous Channels Update Mode Mask */
+#define PWM_SCM_UPDM(value)                   (PWM_SCM_UPDM_Msk & (_UINT32_(value) << PWM_SCM_UPDM_Pos)) /* Assigment of value for UPDM in the PWM_SCM register */
+#define   PWM_SCM_UPDM_MODE0_Val              _UINT32_(0x0)                                        /* (PWM_SCM) Manual write of double buffer registers and manual update of synchronous channels  */
+#define   PWM_SCM_UPDM_MODE1_Val              _UINT32_(0x1)                                        /* (PWM_SCM) Manual write of double buffer registers and automatic update of synchronous channels  */
+#define   PWM_SCM_UPDM_MODE2_Val              _UINT32_(0x2)                                        /* (PWM_SCM) Automatic write of duty-cycle update registers by the Peripheral DMA Controller and automatic update of synchronous channels  */
+#define PWM_SCM_UPDM_MODE0                    (PWM_SCM_UPDM_MODE0_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Manual write of double buffer registers and manual update of synchronous channels Position  */
+#define PWM_SCM_UPDM_MODE1                    (PWM_SCM_UPDM_MODE1_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Manual write of double buffer registers and automatic update of synchronous channels Position  */
+#define PWM_SCM_UPDM_MODE2                    (PWM_SCM_UPDM_MODE2_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Automatic write of duty-cycle update registers by the Peripheral DMA Controller and automatic update of synchronous channels Position  */
+#define PWM_SCM_PTRM_Pos                      _UINT32_(20)                                         /* (PWM_SCM) Peripheral DMA Controller Transfer Request Mode Position */
+#define PWM_SCM_PTRM_Msk                      (_UINT32_(0x1) << PWM_SCM_PTRM_Pos)                  /* (PWM_SCM) Peripheral DMA Controller Transfer Request Mode Mask */
+#define PWM_SCM_PTRM(value)                   (PWM_SCM_PTRM_Msk & (_UINT32_(value) << PWM_SCM_PTRM_Pos)) /* Assigment of value for PTRM in the PWM_SCM register */
+#define PWM_SCM_PTRCS_Pos                     _UINT32_(21)                                         /* (PWM_SCM) Peripheral DMA Controller Transfer Request Comparison Selection Position */
+#define PWM_SCM_PTRCS_Msk                     (_UINT32_(0x7) << PWM_SCM_PTRCS_Pos)                 /* (PWM_SCM) Peripheral DMA Controller Transfer Request Comparison Selection Mask */
+#define PWM_SCM_PTRCS(value)                  (PWM_SCM_PTRCS_Msk & (_UINT32_(value) << PWM_SCM_PTRCS_Pos)) /* Assigment of value for PTRCS in the PWM_SCM register */
+#define PWM_SCM_Msk                           _UINT32_(0x00F30007)                                 /* (PWM_SCM) Register Mask  */
+
+#define PWM_SCM_SYNC_Pos                      _UINT32_(0)                                          /* (PWM_SCM Position) Synchronous Channel x */
+#define PWM_SCM_SYNC_Msk                      (_UINT32_(0x7) << PWM_SCM_SYNC_Pos)                  /* (PWM_SCM Mask) SYNC */
+#define PWM_SCM_SYNC(value)                   (PWM_SCM_SYNC_Msk & (_UINT32_(value) << PWM_SCM_SYNC_Pos)) 
+
+/* -------- PWM_SCUC : (PWM Offset: 0x28) (R/W 32) PWM Sync Channels Update Control Register -------- */
+#define PWM_SCUC_UPDULOCK_Pos                 _UINT32_(0)                                          /* (PWM_SCUC) Synchronous Channels Update Unlock Position */
+#define PWM_SCUC_UPDULOCK_Msk                 (_UINT32_(0x1) << PWM_SCUC_UPDULOCK_Pos)             /* (PWM_SCUC) Synchronous Channels Update Unlock Mask */
+#define PWM_SCUC_UPDULOCK(value)              (PWM_SCUC_UPDULOCK_Msk & (_UINT32_(value) << PWM_SCUC_UPDULOCK_Pos)) /* Assigment of value for UPDULOCK in the PWM_SCUC register */
+#define PWM_SCUC_Msk                          _UINT32_(0x00000001)                                 /* (PWM_SCUC) Register Mask  */
+
+
+/* -------- PWM_SCUP : (PWM Offset: 0x2C) (R/W 32) PWM Sync Channels Update Period Register -------- */
+#define PWM_SCUP_UPR_Pos                      _UINT32_(0)                                          /* (PWM_SCUP) Update Period Position */
+#define PWM_SCUP_UPR_Msk                      (_UINT32_(0xF) << PWM_SCUP_UPR_Pos)                  /* (PWM_SCUP) Update Period Mask */
+#define PWM_SCUP_UPR(value)                   (PWM_SCUP_UPR_Msk & (_UINT32_(value) << PWM_SCUP_UPR_Pos)) /* Assigment of value for UPR in the PWM_SCUP register */
+#define PWM_SCUP_UPRCNT_Pos                   _UINT32_(4)                                          /* (PWM_SCUP) Update Period Counter Position */
+#define PWM_SCUP_UPRCNT_Msk                   (_UINT32_(0xF) << PWM_SCUP_UPRCNT_Pos)               /* (PWM_SCUP) Update Period Counter Mask */
+#define PWM_SCUP_UPRCNT(value)                (PWM_SCUP_UPRCNT_Msk & (_UINT32_(value) << PWM_SCUP_UPRCNT_Pos)) /* Assigment of value for UPRCNT in the PWM_SCUP register */
+#define PWM_SCUP_Msk                          _UINT32_(0x000000FF)                                 /* (PWM_SCUP) Register Mask  */
+
+
+/* -------- PWM_SCUPUPD : (PWM Offset: 0x30) ( /W 32) PWM Sync Channels Update Period Update Register -------- */
+#define PWM_SCUPUPD_UPRUPD_Pos                _UINT32_(0)                                          /* (PWM_SCUPUPD) Update Period Update Position */
+#define PWM_SCUPUPD_UPRUPD_Msk                (_UINT32_(0xF) << PWM_SCUPUPD_UPRUPD_Pos)            /* (PWM_SCUPUPD) Update Period Update Mask */
+#define PWM_SCUPUPD_UPRUPD(value)             (PWM_SCUPUPD_UPRUPD_Msk & (_UINT32_(value) << PWM_SCUPUPD_UPRUPD_Pos)) /* Assigment of value for UPRUPD in the PWM_SCUPUPD register */
+#define PWM_SCUPUPD_Msk                       _UINT32_(0x0000000F)                                 /* (PWM_SCUPUPD) Register Mask  */
+
 
 /* -------- PWM_IER2 : (PWM Offset: 0x34) ( /W 32) PWM Interrupt Enable Register 2 -------- */
 #define PWM_IER2_WRDY_Pos                     _UINT32_(0)                                          /* (PWM_IER2) Write Ready for Synchronous Channels Update Interrupt Enable Position */
@@ -757,33 +577,75 @@
 #define PWM_IER2_CMPU_Msk                     (_UINT32_(0xFF) << PWM_IER2_CMPU_Pos)                /* (PWM_IER2 Mask) CMPU */
 #define PWM_IER2_CMPU(value)                  (PWM_IER2_CMPU_Msk & (_UINT32_(value) << PWM_IER2_CMPU_Pos)) 
 
-/* -------- PWM_IMR1 : (PWM Offset: 0x18) ( R/ 32) PWM Interrupt Mask Register 1 -------- */
-#define PWM_IMR1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_IMR1) Counter Event on Channel 0 Interrupt Mask Position */
-#define PWM_IMR1_CHID0_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID0_Pos)                /* (PWM_IMR1) Counter Event on Channel 0 Interrupt Mask Mask */
-#define PWM_IMR1_CHID0(value)                 (PWM_IMR1_CHID0_Msk & (_UINT32_(value) << PWM_IMR1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_IMR1 register */
-#define PWM_IMR1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_IMR1) Counter Event on Channel 1 Interrupt Mask Position */
-#define PWM_IMR1_CHID1_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID1_Pos)                /* (PWM_IMR1) Counter Event on Channel 1 Interrupt Mask Mask */
-#define PWM_IMR1_CHID1(value)                 (PWM_IMR1_CHID1_Msk & (_UINT32_(value) << PWM_IMR1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_IMR1 register */
-#define PWM_IMR1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_IMR1) Counter Event on Channel 2 Interrupt Mask Position */
-#define PWM_IMR1_CHID2_Msk                    (_UINT32_(0x1) << PWM_IMR1_CHID2_Pos)                /* (PWM_IMR1) Counter Event on Channel 2 Interrupt Mask Mask */
-#define PWM_IMR1_CHID2(value)                 (PWM_IMR1_CHID2_Msk & (_UINT32_(value) << PWM_IMR1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_IMR1 register */
-#define PWM_IMR1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 0 Interrupt Mask Position */
-#define PWM_IMR1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID0_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 0 Interrupt Mask Mask */
-#define PWM_IMR1_FCHID0(value)                (PWM_IMR1_FCHID0_Msk & (_UINT32_(value) << PWM_IMR1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_IMR1 register */
-#define PWM_IMR1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 1 Interrupt Mask Position */
-#define PWM_IMR1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID1_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 1 Interrupt Mask Mask */
-#define PWM_IMR1_FCHID1(value)                (PWM_IMR1_FCHID1_Msk & (_UINT32_(value) << PWM_IMR1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_IMR1 register */
-#define PWM_IMR1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_IMR1) Fault Protection Trigger on Channel 2 Interrupt Mask Position */
-#define PWM_IMR1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_IMR1_FCHID2_Pos)               /* (PWM_IMR1) Fault Protection Trigger on Channel 2 Interrupt Mask Mask */
-#define PWM_IMR1_FCHID2(value)                (PWM_IMR1_FCHID2_Msk & (_UINT32_(value) << PWM_IMR1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_IMR1 register */
-#define PWM_IMR1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_IMR1) Register Mask  */
+/* -------- PWM_IDR2 : (PWM Offset: 0x38) ( /W 32) PWM Interrupt Disable Register 2 -------- */
+#define PWM_IDR2_WRDY_Pos                     _UINT32_(0)                                          /* (PWM_IDR2) Write Ready for Synchronous Channels Update Interrupt Disable Position */
+#define PWM_IDR2_WRDY_Msk                     (_UINT32_(0x1) << PWM_IDR2_WRDY_Pos)                 /* (PWM_IDR2) Write Ready for Synchronous Channels Update Interrupt Disable Mask */
+#define PWM_IDR2_WRDY(value)                  (PWM_IDR2_WRDY_Msk & (_UINT32_(value) << PWM_IDR2_WRDY_Pos)) /* Assigment of value for WRDY in the PWM_IDR2 register */
+#define PWM_IDR2_ENDTX_Pos                    _UINT32_(1)                                          /* (PWM_IDR2) PDC End of TX Buffer Interrupt Disable Position */
+#define PWM_IDR2_ENDTX_Msk                    (_UINT32_(0x1) << PWM_IDR2_ENDTX_Pos)                /* (PWM_IDR2) PDC End of TX Buffer Interrupt Disable Mask */
+#define PWM_IDR2_ENDTX(value)                 (PWM_IDR2_ENDTX_Msk & (_UINT32_(value) << PWM_IDR2_ENDTX_Pos)) /* Assigment of value for ENDTX in the PWM_IDR2 register */
+#define PWM_IDR2_TXBUFE_Pos                   _UINT32_(2)                                          /* (PWM_IDR2) PDC TX Buffer Empty Interrupt Disable Position */
+#define PWM_IDR2_TXBUFE_Msk                   (_UINT32_(0x1) << PWM_IDR2_TXBUFE_Pos)               /* (PWM_IDR2) PDC TX Buffer Empty Interrupt Disable Mask */
+#define PWM_IDR2_TXBUFE(value)                (PWM_IDR2_TXBUFE_Msk & (_UINT32_(value) << PWM_IDR2_TXBUFE_Pos)) /* Assigment of value for TXBUFE in the PWM_IDR2 register */
+#define PWM_IDR2_UNRE_Pos                     _UINT32_(3)                                          /* (PWM_IDR2) Synchronous Channels Update Underrun Error Interrupt Disable Position */
+#define PWM_IDR2_UNRE_Msk                     (_UINT32_(0x1) << PWM_IDR2_UNRE_Pos)                 /* (PWM_IDR2) Synchronous Channels Update Underrun Error Interrupt Disable Mask */
+#define PWM_IDR2_UNRE(value)                  (PWM_IDR2_UNRE_Msk & (_UINT32_(value) << PWM_IDR2_UNRE_Pos)) /* Assigment of value for UNRE in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM0_Pos                    _UINT32_(8)                                          /* (PWM_IDR2) Comparison 0 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM0_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM0_Pos)                /* (PWM_IDR2) Comparison 0 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM0(value)                 (PWM_IDR2_CMPM0_Msk & (_UINT32_(value) << PWM_IDR2_CMPM0_Pos)) /* Assigment of value for CMPM0 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM1_Pos                    _UINT32_(9)                                          /* (PWM_IDR2) Comparison 1 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM1_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM1_Pos)                /* (PWM_IDR2) Comparison 1 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM1(value)                 (PWM_IDR2_CMPM1_Msk & (_UINT32_(value) << PWM_IDR2_CMPM1_Pos)) /* Assigment of value for CMPM1 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM2_Pos                    _UINT32_(10)                                         /* (PWM_IDR2) Comparison 2 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM2_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM2_Pos)                /* (PWM_IDR2) Comparison 2 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM2(value)                 (PWM_IDR2_CMPM2_Msk & (_UINT32_(value) << PWM_IDR2_CMPM2_Pos)) /* Assigment of value for CMPM2 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM3_Pos                    _UINT32_(11)                                         /* (PWM_IDR2) Comparison 3 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM3_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM3_Pos)                /* (PWM_IDR2) Comparison 3 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM3(value)                 (PWM_IDR2_CMPM3_Msk & (_UINT32_(value) << PWM_IDR2_CMPM3_Pos)) /* Assigment of value for CMPM3 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM4_Pos                    _UINT32_(12)                                         /* (PWM_IDR2) Comparison 4 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM4_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM4_Pos)                /* (PWM_IDR2) Comparison 4 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM4(value)                 (PWM_IDR2_CMPM4_Msk & (_UINT32_(value) << PWM_IDR2_CMPM4_Pos)) /* Assigment of value for CMPM4 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM5_Pos                    _UINT32_(13)                                         /* (PWM_IDR2) Comparison 5 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM5_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM5_Pos)                /* (PWM_IDR2) Comparison 5 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM5(value)                 (PWM_IDR2_CMPM5_Msk & (_UINT32_(value) << PWM_IDR2_CMPM5_Pos)) /* Assigment of value for CMPM5 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM6_Pos                    _UINT32_(14)                                         /* (PWM_IDR2) Comparison 6 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM6_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM6_Pos)                /* (PWM_IDR2) Comparison 6 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM6(value)                 (PWM_IDR2_CMPM6_Msk & (_UINT32_(value) << PWM_IDR2_CMPM6_Pos)) /* Assigment of value for CMPM6 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPM7_Pos                    _UINT32_(15)                                         /* (PWM_IDR2) Comparison 7 Match Interrupt Disable Position */
+#define PWM_IDR2_CMPM7_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPM7_Pos)                /* (PWM_IDR2) Comparison 7 Match Interrupt Disable Mask */
+#define PWM_IDR2_CMPM7(value)                 (PWM_IDR2_CMPM7_Msk & (_UINT32_(value) << PWM_IDR2_CMPM7_Pos)) /* Assigment of value for CMPM7 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU0_Pos                    _UINT32_(16)                                         /* (PWM_IDR2) Comparison 0 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU0_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU0_Pos)                /* (PWM_IDR2) Comparison 0 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU0(value)                 (PWM_IDR2_CMPU0_Msk & (_UINT32_(value) << PWM_IDR2_CMPU0_Pos)) /* Assigment of value for CMPU0 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU1_Pos                    _UINT32_(17)                                         /* (PWM_IDR2) Comparison 1 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU1_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU1_Pos)                /* (PWM_IDR2) Comparison 1 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU1(value)                 (PWM_IDR2_CMPU1_Msk & (_UINT32_(value) << PWM_IDR2_CMPU1_Pos)) /* Assigment of value for CMPU1 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU2_Pos                    _UINT32_(18)                                         /* (PWM_IDR2) Comparison 2 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU2_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU2_Pos)                /* (PWM_IDR2) Comparison 2 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU2(value)                 (PWM_IDR2_CMPU2_Msk & (_UINT32_(value) << PWM_IDR2_CMPU2_Pos)) /* Assigment of value for CMPU2 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU3_Pos                    _UINT32_(19)                                         /* (PWM_IDR2) Comparison 3 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU3_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU3_Pos)                /* (PWM_IDR2) Comparison 3 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU3(value)                 (PWM_IDR2_CMPU3_Msk & (_UINT32_(value) << PWM_IDR2_CMPU3_Pos)) /* Assigment of value for CMPU3 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU4_Pos                    _UINT32_(20)                                         /* (PWM_IDR2) Comparison 4 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU4_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU4_Pos)                /* (PWM_IDR2) Comparison 4 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU4(value)                 (PWM_IDR2_CMPU4_Msk & (_UINT32_(value) << PWM_IDR2_CMPU4_Pos)) /* Assigment of value for CMPU4 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU5_Pos                    _UINT32_(21)                                         /* (PWM_IDR2) Comparison 5 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU5_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU5_Pos)                /* (PWM_IDR2) Comparison 5 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU5(value)                 (PWM_IDR2_CMPU5_Msk & (_UINT32_(value) << PWM_IDR2_CMPU5_Pos)) /* Assigment of value for CMPU5 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU6_Pos                    _UINT32_(22)                                         /* (PWM_IDR2) Comparison 6 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU6_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU6_Pos)                /* (PWM_IDR2) Comparison 6 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU6(value)                 (PWM_IDR2_CMPU6_Msk & (_UINT32_(value) << PWM_IDR2_CMPU6_Pos)) /* Assigment of value for CMPU6 in the PWM_IDR2 register */
+#define PWM_IDR2_CMPU7_Pos                    _UINT32_(23)                                         /* (PWM_IDR2) Comparison 7 Update Interrupt Disable Position */
+#define PWM_IDR2_CMPU7_Msk                    (_UINT32_(0x1) << PWM_IDR2_CMPU7_Pos)                /* (PWM_IDR2) Comparison 7 Update Interrupt Disable Mask */
+#define PWM_IDR2_CMPU7(value)                 (PWM_IDR2_CMPU7_Msk & (_UINT32_(value) << PWM_IDR2_CMPU7_Pos)) /* Assigment of value for CMPU7 in the PWM_IDR2 register */
+#define PWM_IDR2_Msk                          _UINT32_(0x00FFFF0F)                                 /* (PWM_IDR2) Register Mask  */
 
-#define PWM_IMR1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_IMR1 Position) Counter Event on Channel x Interrupt Mask */
-#define PWM_IMR1_CHID_Msk                     (_UINT32_(0x7) << PWM_IMR1_CHID_Pos)                 /* (PWM_IMR1 Mask) CHID */
-#define PWM_IMR1_CHID(value)                  (PWM_IMR1_CHID_Msk & (_UINT32_(value) << PWM_IMR1_CHID_Pos)) 
-#define PWM_IMR1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_IMR1 Position) Fault Protection Trigger on Channel 2 Interrupt Mask */
-#define PWM_IMR1_FCHID_Msk                    (_UINT32_(0x7) << PWM_IMR1_FCHID_Pos)                /* (PWM_IMR1 Mask) FCHID */
-#define PWM_IMR1_FCHID(value)                 (PWM_IMR1_FCHID_Msk & (_UINT32_(value) << PWM_IMR1_FCHID_Pos)) 
+#define PWM_IDR2_CMPM_Pos                     _UINT32_(8)                                          /* (PWM_IDR2 Position) Comparison x Match Interrupt Disable */
+#define PWM_IDR2_CMPM_Msk                     (_UINT32_(0xFF) << PWM_IDR2_CMPM_Pos)                /* (PWM_IDR2 Mask) CMPM */
+#define PWM_IDR2_CMPM(value)                  (PWM_IDR2_CMPM_Msk & (_UINT32_(value) << PWM_IDR2_CMPM_Pos)) 
+#define PWM_IDR2_CMPU_Pos                     _UINT32_(16)                                         /* (PWM_IDR2 Position) Comparison 7 Update Interrupt Disable */
+#define PWM_IDR2_CMPU_Msk                     (_UINT32_(0xFF) << PWM_IDR2_CMPU_Pos)                /* (PWM_IDR2 Mask) CMPU */
+#define PWM_IDR2_CMPU(value)                  (PWM_IDR2_CMPU_Msk & (_UINT32_(value) << PWM_IDR2_CMPU_Pos)) 
 
 /* -------- PWM_IMR2 : (PWM Offset: 0x3C) ( R/ 32) PWM Interrupt Mask Register 2 -------- */
 #define PWM_IMR2_WRDY_Pos                     _UINT32_(0)                                          /* (PWM_IMR2) Write Ready for Synchronous Channels Update Interrupt Mask Position */
@@ -855,34 +717,6 @@
 #define PWM_IMR2_CMPU_Msk                     (_UINT32_(0xFF) << PWM_IMR2_CMPU_Pos)                /* (PWM_IMR2 Mask) CMPU */
 #define PWM_IMR2_CMPU(value)                  (PWM_IMR2_CMPU_Msk & (_UINT32_(value) << PWM_IMR2_CMPU_Pos)) 
 
-/* -------- PWM_ISR1 : (PWM Offset: 0x1C) ( R/ 32) PWM Interrupt Status Register 1 -------- */
-#define PWM_ISR1_CHID0_Pos                    _UINT32_(0)                                          /* (PWM_ISR1) Counter Event on Channel 0 Position */
-#define PWM_ISR1_CHID0_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID0_Pos)                /* (PWM_ISR1) Counter Event on Channel 0 Mask */
-#define PWM_ISR1_CHID0(value)                 (PWM_ISR1_CHID0_Msk & (_UINT32_(value) << PWM_ISR1_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_ISR1 register */
-#define PWM_ISR1_CHID1_Pos                    _UINT32_(1)                                          /* (PWM_ISR1) Counter Event on Channel 1 Position */
-#define PWM_ISR1_CHID1_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID1_Pos)                /* (PWM_ISR1) Counter Event on Channel 1 Mask */
-#define PWM_ISR1_CHID1(value)                 (PWM_ISR1_CHID1_Msk & (_UINT32_(value) << PWM_ISR1_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_ISR1 register */
-#define PWM_ISR1_CHID2_Pos                    _UINT32_(2)                                          /* (PWM_ISR1) Counter Event on Channel 2 Position */
-#define PWM_ISR1_CHID2_Msk                    (_UINT32_(0x1) << PWM_ISR1_CHID2_Pos)                /* (PWM_ISR1) Counter Event on Channel 2 Mask */
-#define PWM_ISR1_CHID2(value)                 (PWM_ISR1_CHID2_Msk & (_UINT32_(value) << PWM_ISR1_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_ISR1 register */
-#define PWM_ISR1_FCHID0_Pos                   _UINT32_(16)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 0 Position */
-#define PWM_ISR1_FCHID0_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID0_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 0 Mask */
-#define PWM_ISR1_FCHID0(value)                (PWM_ISR1_FCHID0_Msk & (_UINT32_(value) << PWM_ISR1_FCHID0_Pos)) /* Assigment of value for FCHID0 in the PWM_ISR1 register */
-#define PWM_ISR1_FCHID1_Pos                   _UINT32_(17)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 1 Position */
-#define PWM_ISR1_FCHID1_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID1_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 1 Mask */
-#define PWM_ISR1_FCHID1(value)                (PWM_ISR1_FCHID1_Msk & (_UINT32_(value) << PWM_ISR1_FCHID1_Pos)) /* Assigment of value for FCHID1 in the PWM_ISR1 register */
-#define PWM_ISR1_FCHID2_Pos                   _UINT32_(18)                                         /* (PWM_ISR1) Fault Protection Trigger on Channel 2 Position */
-#define PWM_ISR1_FCHID2_Msk                   (_UINT32_(0x1) << PWM_ISR1_FCHID2_Pos)               /* (PWM_ISR1) Fault Protection Trigger on Channel 2 Mask */
-#define PWM_ISR1_FCHID2(value)                (PWM_ISR1_FCHID2_Msk & (_UINT32_(value) << PWM_ISR1_FCHID2_Pos)) /* Assigment of value for FCHID2 in the PWM_ISR1 register */
-#define PWM_ISR1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_ISR1) Register Mask  */
-
-#define PWM_ISR1_CHID_Pos                     _UINT32_(0)                                          /* (PWM_ISR1 Position) Counter Event on Channel x */
-#define PWM_ISR1_CHID_Msk                     (_UINT32_(0x7) << PWM_ISR1_CHID_Pos)                 /* (PWM_ISR1 Mask) CHID */
-#define PWM_ISR1_CHID(value)                  (PWM_ISR1_CHID_Msk & (_UINT32_(value) << PWM_ISR1_CHID_Pos)) 
-#define PWM_ISR1_FCHID_Pos                    _UINT32_(16)                                         /* (PWM_ISR1 Position) Fault Protection Trigger on Channel 2 */
-#define PWM_ISR1_FCHID_Msk                    (_UINT32_(0x7) << PWM_ISR1_FCHID_Pos)                /* (PWM_ISR1 Mask) FCHID */
-#define PWM_ISR1_FCHID(value)                 (PWM_ISR1_FCHID_Msk & (_UINT32_(value) << PWM_ISR1_FCHID_Pos)) 
-
 /* -------- PWM_ISR2 : (PWM Offset: 0x40) ( R/ 32) PWM Interrupt Status Register 2 -------- */
 #define PWM_ISR2_WRDY_Pos                     _UINT32_(0)                                          /* (PWM_ISR2) Write Ready for Synchronous Channels Update Position */
 #define PWM_ISR2_WRDY_Msk                     (_UINT32_(0x1) << PWM_ISR2_WRDY_Pos)                 /* (PWM_ISR2) Write Ready for Synchronous Channels Update Mask */
@@ -953,44 +787,6 @@
 #define PWM_ISR2_CMPU_Msk                     (_UINT32_(0xFF) << PWM_ISR2_CMPU_Pos)                /* (PWM_ISR2 Mask) CMPU */
 #define PWM_ISR2_CMPU(value)                  (PWM_ISR2_CMPU_Msk & (_UINT32_(value) << PWM_ISR2_CMPU_Pos)) 
 
-/* -------- PWM_LEBR1 : (PWM Offset: 0x430) (R/W 32) PWM Leading-Edge Blanking Register 1 -------- */
-#define PWM_LEBR1_LEBDELAY_Pos                _UINT32_(0)                                          /* (PWM_LEBR1) Leading-Edge Blanking Delay for TRGINx Position */
-#define PWM_LEBR1_LEBDELAY_Msk                (_UINT32_(0x7F) << PWM_LEBR1_LEBDELAY_Pos)           /* (PWM_LEBR1) Leading-Edge Blanking Delay for TRGINx Mask */
-#define PWM_LEBR1_LEBDELAY(value)             (PWM_LEBR1_LEBDELAY_Msk & (_UINT32_(value) << PWM_LEBR1_LEBDELAY_Pos)) /* Assigment of value for LEBDELAY in the PWM_LEBR1 register */
-#define PWM_LEBR1_PWMLFEN_Pos                 _UINT32_(16)                                         /* (PWM_LEBR1) PWML Falling Edge Enable Position */
-#define PWM_LEBR1_PWMLFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMLFEN_Pos)             /* (PWM_LEBR1) PWML Falling Edge Enable Mask */
-#define PWM_LEBR1_PWMLFEN(value)              (PWM_LEBR1_PWMLFEN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMLFEN_Pos)) /* Assigment of value for PWMLFEN in the PWM_LEBR1 register */
-#define PWM_LEBR1_PWMLREN_Pos                 _UINT32_(17)                                         /* (PWM_LEBR1) PWML Rising Edge Enable Position */
-#define PWM_LEBR1_PWMLREN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMLREN_Pos)             /* (PWM_LEBR1) PWML Rising Edge Enable Mask */
-#define PWM_LEBR1_PWMLREN(value)              (PWM_LEBR1_PWMLREN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMLREN_Pos)) /* Assigment of value for PWMLREN in the PWM_LEBR1 register */
-#define PWM_LEBR1_PWMHFEN_Pos                 _UINT32_(18)                                         /* (PWM_LEBR1) PWMH Falling Edge Enable Position */
-#define PWM_LEBR1_PWMHFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMHFEN_Pos)             /* (PWM_LEBR1) PWMH Falling Edge Enable Mask */
-#define PWM_LEBR1_PWMHFEN(value)              (PWM_LEBR1_PWMHFEN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMHFEN_Pos)) /* Assigment of value for PWMHFEN in the PWM_LEBR1 register */
-#define PWM_LEBR1_PWMHREN_Pos                 _UINT32_(19)                                         /* (PWM_LEBR1) PWMH Rising Edge Enable Position */
-#define PWM_LEBR1_PWMHREN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMHREN_Pos)             /* (PWM_LEBR1) PWMH Rising Edge Enable Mask */
-#define PWM_LEBR1_PWMHREN(value)              (PWM_LEBR1_PWMHREN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMHREN_Pos)) /* Assigment of value for PWMHREN in the PWM_LEBR1 register */
-#define PWM_LEBR1_Msk                         _UINT32_(0x000F007F)                                 /* (PWM_LEBR1) Register Mask  */
-
-
-/* -------- PWM_LEBR2 : (PWM Offset: 0x450) (R/W 32) PWM Leading-Edge Blanking Register 2 -------- */
-#define PWM_LEBR2_LEBDELAY_Pos                _UINT32_(0)                                          /* (PWM_LEBR2) Leading-Edge Blanking Delay for TRGINx Position */
-#define PWM_LEBR2_LEBDELAY_Msk                (_UINT32_(0x7F) << PWM_LEBR2_LEBDELAY_Pos)           /* (PWM_LEBR2) Leading-Edge Blanking Delay for TRGINx Mask */
-#define PWM_LEBR2_LEBDELAY(value)             (PWM_LEBR2_LEBDELAY_Msk & (_UINT32_(value) << PWM_LEBR2_LEBDELAY_Pos)) /* Assigment of value for LEBDELAY in the PWM_LEBR2 register */
-#define PWM_LEBR2_PWMLFEN_Pos                 _UINT32_(16)                                         /* (PWM_LEBR2) PWML Falling Edge Enable Position */
-#define PWM_LEBR2_PWMLFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMLFEN_Pos)             /* (PWM_LEBR2) PWML Falling Edge Enable Mask */
-#define PWM_LEBR2_PWMLFEN(value)              (PWM_LEBR2_PWMLFEN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMLFEN_Pos)) /* Assigment of value for PWMLFEN in the PWM_LEBR2 register */
-#define PWM_LEBR2_PWMLREN_Pos                 _UINT32_(17)                                         /* (PWM_LEBR2) PWML Rising Edge Enable Position */
-#define PWM_LEBR2_PWMLREN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMLREN_Pos)             /* (PWM_LEBR2) PWML Rising Edge Enable Mask */
-#define PWM_LEBR2_PWMLREN(value)              (PWM_LEBR2_PWMLREN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMLREN_Pos)) /* Assigment of value for PWMLREN in the PWM_LEBR2 register */
-#define PWM_LEBR2_PWMHFEN_Pos                 _UINT32_(18)                                         /* (PWM_LEBR2) PWMH Falling Edge Enable Position */
-#define PWM_LEBR2_PWMHFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMHFEN_Pos)             /* (PWM_LEBR2) PWMH Falling Edge Enable Mask */
-#define PWM_LEBR2_PWMHFEN(value)              (PWM_LEBR2_PWMHFEN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMHFEN_Pos)) /* Assigment of value for PWMHFEN in the PWM_LEBR2 register */
-#define PWM_LEBR2_PWMHREN_Pos                 _UINT32_(19)                                         /* (PWM_LEBR2) PWMH Rising Edge Enable Position */
-#define PWM_LEBR2_PWMHREN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMHREN_Pos)             /* (PWM_LEBR2) PWMH Rising Edge Enable Mask */
-#define PWM_LEBR2_PWMHREN(value)              (PWM_LEBR2_PWMHREN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMHREN_Pos)) /* Assigment of value for PWMHREN in the PWM_LEBR2 register */
-#define PWM_LEBR2_Msk                         _UINT32_(0x000F007F)                                 /* (PWM_LEBR2) Register Mask  */
-
-
 /* -------- PWM_OOV : (PWM Offset: 0x44) (R/W 32) PWM Output Override Value Register -------- */
 #define PWM_OOV_OOVH0_Pos                     _UINT32_(0)                                          /* (PWM_OOV) Output Override Value for PWMH output of the channel 0 Position */
 #define PWM_OOV_OOVH0_Msk                     (_UINT32_(0x1) << PWM_OOV_OOVH0_Pos)                 /* (PWM_OOV) Output Override Value for PWMH output of the channel 0 Mask */
@@ -1047,62 +843,6 @@
 #define PWM_OS_OSL_Msk                        (_UINT32_(0x7) << PWM_OS_OSL_Pos)                    /* (PWM_OS Mask) OSL */
 #define PWM_OS_OSL(value)                     (PWM_OS_OSL_Msk & (_UINT32_(value) << PWM_OS_OSL_Pos)) 
 
-/* -------- PWM_OSC : (PWM Offset: 0x50) ( /W 32) PWM Output Selection Clear Register -------- */
-#define PWM_OSC_OSCH0_Pos                     _UINT32_(0)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 0 Position */
-#define PWM_OSC_OSCH0_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH0_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 0 Mask */
-#define PWM_OSC_OSCH0(value)                  (PWM_OSC_OSCH0_Msk & (_UINT32_(value) << PWM_OSC_OSCH0_Pos)) /* Assigment of value for OSCH0 in the PWM_OSC register */
-#define PWM_OSC_OSCH1_Pos                     _UINT32_(1)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 1 Position */
-#define PWM_OSC_OSCH1_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH1_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 1 Mask */
-#define PWM_OSC_OSCH1(value)                  (PWM_OSC_OSCH1_Msk & (_UINT32_(value) << PWM_OSC_OSCH1_Pos)) /* Assigment of value for OSCH1 in the PWM_OSC register */
-#define PWM_OSC_OSCH2_Pos                     _UINT32_(2)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 2 Position */
-#define PWM_OSC_OSCH2_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH2_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 2 Mask */
-#define PWM_OSC_OSCH2(value)                  (PWM_OSC_OSCH2_Msk & (_UINT32_(value) << PWM_OSC_OSCH2_Pos)) /* Assigment of value for OSCH2 in the PWM_OSC register */
-#define PWM_OSC_OSCL0_Pos                     _UINT32_(16)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 0 Position */
-#define PWM_OSC_OSCL0_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL0_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 0 Mask */
-#define PWM_OSC_OSCL0(value)                  (PWM_OSC_OSCL0_Msk & (_UINT32_(value) << PWM_OSC_OSCL0_Pos)) /* Assigment of value for OSCL0 in the PWM_OSC register */
-#define PWM_OSC_OSCL1_Pos                     _UINT32_(17)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 1 Position */
-#define PWM_OSC_OSCL1_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL1_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 1 Mask */
-#define PWM_OSC_OSCL1(value)                  (PWM_OSC_OSCL1_Msk & (_UINT32_(value) << PWM_OSC_OSCL1_Pos)) /* Assigment of value for OSCL1 in the PWM_OSC register */
-#define PWM_OSC_OSCL2_Pos                     _UINT32_(18)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 2 Position */
-#define PWM_OSC_OSCL2_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL2_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 2 Mask */
-#define PWM_OSC_OSCL2(value)                  (PWM_OSC_OSCL2_Msk & (_UINT32_(value) << PWM_OSC_OSCL2_Pos)) /* Assigment of value for OSCL2 in the PWM_OSC register */
-#define PWM_OSC_Msk                           _UINT32_(0x00070007)                                 /* (PWM_OSC) Register Mask  */
-
-#define PWM_OSC_OSCH_Pos                      _UINT32_(0)                                          /* (PWM_OSC Position) Output Selection Clear for PWMH output of the channel x */
-#define PWM_OSC_OSCH_Msk                      (_UINT32_(0x7) << PWM_OSC_OSCH_Pos)                  /* (PWM_OSC Mask) OSCH */
-#define PWM_OSC_OSCH(value)                   (PWM_OSC_OSCH_Msk & (_UINT32_(value) << PWM_OSC_OSCH_Pos)) 
-#define PWM_OSC_OSCL_Pos                      _UINT32_(16)                                         /* (PWM_OSC Position) Output Selection Clear for PWML output of the channel 2 */
-#define PWM_OSC_OSCL_Msk                      (_UINT32_(0x7) << PWM_OSC_OSCL_Pos)                  /* (PWM_OSC Mask) OSCL */
-#define PWM_OSC_OSCL(value)                   (PWM_OSC_OSCL_Msk & (_UINT32_(value) << PWM_OSC_OSCL_Pos)) 
-
-/* -------- PWM_OSCUPD : (PWM Offset: 0x58) ( /W 32) PWM Output Selection Clear Update Register -------- */
-#define PWM_OSCUPD_OSCUPH0_Pos                _UINT32_(0)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 0 Position */
-#define PWM_OSCUPD_OSCUPH0_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH0_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 0 Mask */
-#define PWM_OSCUPD_OSCUPH0(value)             (PWM_OSCUPD_OSCUPH0_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH0_Pos)) /* Assigment of value for OSCUPH0 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_OSCUPH1_Pos                _UINT32_(1)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 1 Position */
-#define PWM_OSCUPD_OSCUPH1_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH1_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 1 Mask */
-#define PWM_OSCUPD_OSCUPH1(value)             (PWM_OSCUPD_OSCUPH1_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH1_Pos)) /* Assigment of value for OSCUPH1 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_OSCUPH2_Pos                _UINT32_(2)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 2 Position */
-#define PWM_OSCUPD_OSCUPH2_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH2_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 2 Mask */
-#define PWM_OSCUPD_OSCUPH2(value)             (PWM_OSCUPD_OSCUPH2_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH2_Pos)) /* Assigment of value for OSCUPH2 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_OSCUPL0_Pos                _UINT32_(16)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 0 Position */
-#define PWM_OSCUPD_OSCUPL0_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL0_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 0 Mask */
-#define PWM_OSCUPD_OSCUPL0(value)             (PWM_OSCUPD_OSCUPL0_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL0_Pos)) /* Assigment of value for OSCUPL0 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_OSCUPL1_Pos                _UINT32_(17)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 1 Position */
-#define PWM_OSCUPD_OSCUPL1_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL1_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 1 Mask */
-#define PWM_OSCUPD_OSCUPL1(value)             (PWM_OSCUPD_OSCUPL1_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL1_Pos)) /* Assigment of value for OSCUPL1 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_OSCUPL2_Pos                _UINT32_(18)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 2 Position */
-#define PWM_OSCUPD_OSCUPL2_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL2_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 2 Mask */
-#define PWM_OSCUPD_OSCUPL2(value)             (PWM_OSCUPD_OSCUPL2_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL2_Pos)) /* Assigment of value for OSCUPL2 in the PWM_OSCUPD register */
-#define PWM_OSCUPD_Msk                        _UINT32_(0x00070007)                                 /* (PWM_OSCUPD) Register Mask  */
-
-#define PWM_OSCUPD_OSCUPH_Pos                 _UINT32_(0)                                          /* (PWM_OSCUPD Position) Output Selection Clear for PWMH output of the channel x */
-#define PWM_OSCUPD_OSCUPH_Msk                 (_UINT32_(0x7) << PWM_OSCUPD_OSCUPH_Pos)             /* (PWM_OSCUPD Mask) OSCUPH */
-#define PWM_OSCUPD_OSCUPH(value)              (PWM_OSCUPD_OSCUPH_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH_Pos)) 
-#define PWM_OSCUPD_OSCUPL_Pos                 _UINT32_(16)                                         /* (PWM_OSCUPD Position) Output Selection Clear for PWML output of the channel 2 */
-#define PWM_OSCUPD_OSCUPL_Msk                 (_UINT32_(0x7) << PWM_OSCUPD_OSCUPL_Pos)             /* (PWM_OSCUPD Mask) OSCUPL */
-#define PWM_OSCUPD_OSCUPL(value)              (PWM_OSCUPD_OSCUPL_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL_Pos)) 
-
 /* -------- PWM_OSS : (PWM Offset: 0x4C) ( /W 32) PWM Output Selection Set Register -------- */
 #define PWM_OSS_OSSH0_Pos                     _UINT32_(0)                                          /* (PWM_OSS) Output Selection Set for PWMH output of the channel 0 Position */
 #define PWM_OSS_OSSH0_Msk                     (_UINT32_(0x1) << PWM_OSS_OSSH0_Pos)                 /* (PWM_OSS) Output Selection Set for PWMH output of the channel 0 Mask */
@@ -1130,6 +870,34 @@
 #define PWM_OSS_OSSL_Pos                      _UINT32_(16)                                         /* (PWM_OSS Position) Output Selection Set for PWML output of the channel 2 */
 #define PWM_OSS_OSSL_Msk                      (_UINT32_(0x7) << PWM_OSS_OSSL_Pos)                  /* (PWM_OSS Mask) OSSL */
 #define PWM_OSS_OSSL(value)                   (PWM_OSS_OSSL_Msk & (_UINT32_(value) << PWM_OSS_OSSL_Pos)) 
+
+/* -------- PWM_OSC : (PWM Offset: 0x50) ( /W 32) PWM Output Selection Clear Register -------- */
+#define PWM_OSC_OSCH0_Pos                     _UINT32_(0)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 0 Position */
+#define PWM_OSC_OSCH0_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH0_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 0 Mask */
+#define PWM_OSC_OSCH0(value)                  (PWM_OSC_OSCH0_Msk & (_UINT32_(value) << PWM_OSC_OSCH0_Pos)) /* Assigment of value for OSCH0 in the PWM_OSC register */
+#define PWM_OSC_OSCH1_Pos                     _UINT32_(1)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 1 Position */
+#define PWM_OSC_OSCH1_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH1_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 1 Mask */
+#define PWM_OSC_OSCH1(value)                  (PWM_OSC_OSCH1_Msk & (_UINT32_(value) << PWM_OSC_OSCH1_Pos)) /* Assigment of value for OSCH1 in the PWM_OSC register */
+#define PWM_OSC_OSCH2_Pos                     _UINT32_(2)                                          /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 2 Position */
+#define PWM_OSC_OSCH2_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCH2_Pos)                 /* (PWM_OSC) Output Selection Clear for PWMH output of the channel 2 Mask */
+#define PWM_OSC_OSCH2(value)                  (PWM_OSC_OSCH2_Msk & (_UINT32_(value) << PWM_OSC_OSCH2_Pos)) /* Assigment of value for OSCH2 in the PWM_OSC register */
+#define PWM_OSC_OSCL0_Pos                     _UINT32_(16)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 0 Position */
+#define PWM_OSC_OSCL0_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL0_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 0 Mask */
+#define PWM_OSC_OSCL0(value)                  (PWM_OSC_OSCL0_Msk & (_UINT32_(value) << PWM_OSC_OSCL0_Pos)) /* Assigment of value for OSCL0 in the PWM_OSC register */
+#define PWM_OSC_OSCL1_Pos                     _UINT32_(17)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 1 Position */
+#define PWM_OSC_OSCL1_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL1_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 1 Mask */
+#define PWM_OSC_OSCL1(value)                  (PWM_OSC_OSCL1_Msk & (_UINT32_(value) << PWM_OSC_OSCL1_Pos)) /* Assigment of value for OSCL1 in the PWM_OSC register */
+#define PWM_OSC_OSCL2_Pos                     _UINT32_(18)                                         /* (PWM_OSC) Output Selection Clear for PWML output of the channel 2 Position */
+#define PWM_OSC_OSCL2_Msk                     (_UINT32_(0x1) << PWM_OSC_OSCL2_Pos)                 /* (PWM_OSC) Output Selection Clear for PWML output of the channel 2 Mask */
+#define PWM_OSC_OSCL2(value)                  (PWM_OSC_OSCL2_Msk & (_UINT32_(value) << PWM_OSC_OSCL2_Pos)) /* Assigment of value for OSCL2 in the PWM_OSC register */
+#define PWM_OSC_Msk                           _UINT32_(0x00070007)                                 /* (PWM_OSC) Register Mask  */
+
+#define PWM_OSC_OSCH_Pos                      _UINT32_(0)                                          /* (PWM_OSC Position) Output Selection Clear for PWMH output of the channel x */
+#define PWM_OSC_OSCH_Msk                      (_UINT32_(0x7) << PWM_OSC_OSCH_Pos)                  /* (PWM_OSC Mask) OSCH */
+#define PWM_OSC_OSCH(value)                   (PWM_OSC_OSCH_Msk & (_UINT32_(value) << PWM_OSC_OSCH_Pos)) 
+#define PWM_OSC_OSCL_Pos                      _UINT32_(16)                                         /* (PWM_OSC Position) Output Selection Clear for PWML output of the channel 2 */
+#define PWM_OSC_OSCL_Msk                      (_UINT32_(0x7) << PWM_OSC_OSCL_Pos)                  /* (PWM_OSC Mask) OSCL */
+#define PWM_OSC_OSCL(value)                   (PWM_OSC_OSCL_Msk & (_UINT32_(value) << PWM_OSC_OSCL_Pos)) 
 
 /* -------- PWM_OSSUPD : (PWM Offset: 0x54) ( /W 32) PWM Output Selection Set Update Register -------- */
 #define PWM_OSSUPD_OSSUPH0_Pos                _UINT32_(0)                                          /* (PWM_OSSUPD) Output Selection Set for PWMH output of the channel 0 Position */
@@ -1159,160 +927,135 @@
 #define PWM_OSSUPD_OSSUPL_Msk                 (_UINT32_(0x7) << PWM_OSSUPD_OSSUPL_Pos)             /* (PWM_OSSUPD Mask) OSSUPL */
 #define PWM_OSSUPD_OSSUPL(value)              (PWM_OSSUPD_OSSUPL_Msk & (_UINT32_(value) << PWM_OSSUPD_OSSUPL_Pos)) 
 
-/* -------- PWM_PTCR : (PWM Offset: 0x120) ( /W 32) Transfer Control Register -------- */
-#define PWM_PTCR_RXTEN_Pos                    _UINT32_(0)                                          /* (PWM_PTCR) Receiver Transfer Enable Position */
-#define PWM_PTCR_RXTEN_Msk                    (_UINT32_(0x1) << PWM_PTCR_RXTEN_Pos)                /* (PWM_PTCR) Receiver Transfer Enable Mask */
-#define PWM_PTCR_RXTEN(value)                 (PWM_PTCR_RXTEN_Msk & (_UINT32_(value) << PWM_PTCR_RXTEN_Pos)) /* Assigment of value for RXTEN in the PWM_PTCR register */
-#define PWM_PTCR_RXTDIS_Pos                   _UINT32_(1)                                          /* (PWM_PTCR) Receiver Transfer Disable Position */
-#define PWM_PTCR_RXTDIS_Msk                   (_UINT32_(0x1) << PWM_PTCR_RXTDIS_Pos)               /* (PWM_PTCR) Receiver Transfer Disable Mask */
-#define PWM_PTCR_RXTDIS(value)                (PWM_PTCR_RXTDIS_Msk & (_UINT32_(value) << PWM_PTCR_RXTDIS_Pos)) /* Assigment of value for RXTDIS in the PWM_PTCR register */
-#define PWM_PTCR_TXTEN_Pos                    _UINT32_(8)                                          /* (PWM_PTCR) Transmitter Transfer Enable Position */
-#define PWM_PTCR_TXTEN_Msk                    (_UINT32_(0x1) << PWM_PTCR_TXTEN_Pos)                /* (PWM_PTCR) Transmitter Transfer Enable Mask */
-#define PWM_PTCR_TXTEN(value)                 (PWM_PTCR_TXTEN_Msk & (_UINT32_(value) << PWM_PTCR_TXTEN_Pos)) /* Assigment of value for TXTEN in the PWM_PTCR register */
-#define PWM_PTCR_TXTDIS_Pos                   _UINT32_(9)                                          /* (PWM_PTCR) Transmitter Transfer Disable Position */
-#define PWM_PTCR_TXTDIS_Msk                   (_UINT32_(0x1) << PWM_PTCR_TXTDIS_Pos)               /* (PWM_PTCR) Transmitter Transfer Disable Mask */
-#define PWM_PTCR_TXTDIS(value)                (PWM_PTCR_TXTDIS_Msk & (_UINT32_(value) << PWM_PTCR_TXTDIS_Pos)) /* Assigment of value for TXTDIS in the PWM_PTCR register */
-#define PWM_PTCR_RXCBEN_Pos                   _UINT32_(16)                                         /* (PWM_PTCR) Receiver Circular Buffer Enable Position */
-#define PWM_PTCR_RXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTCR_RXCBEN_Pos)               /* (PWM_PTCR) Receiver Circular Buffer Enable Mask */
-#define PWM_PTCR_RXCBEN(value)                (PWM_PTCR_RXCBEN_Msk & (_UINT32_(value) << PWM_PTCR_RXCBEN_Pos)) /* Assigment of value for RXCBEN in the PWM_PTCR register */
-#define PWM_PTCR_RXCBDIS_Pos                  _UINT32_(17)                                         /* (PWM_PTCR) Receiver Circular Buffer Disable Position */
-#define PWM_PTCR_RXCBDIS_Msk                  (_UINT32_(0x1) << PWM_PTCR_RXCBDIS_Pos)              /* (PWM_PTCR) Receiver Circular Buffer Disable Mask */
-#define PWM_PTCR_RXCBDIS(value)               (PWM_PTCR_RXCBDIS_Msk & (_UINT32_(value) << PWM_PTCR_RXCBDIS_Pos)) /* Assigment of value for RXCBDIS in the PWM_PTCR register */
-#define PWM_PTCR_TXCBEN_Pos                   _UINT32_(18)                                         /* (PWM_PTCR) Transmitter Circular Buffer Enable Position */
-#define PWM_PTCR_TXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTCR_TXCBEN_Pos)               /* (PWM_PTCR) Transmitter Circular Buffer Enable Mask */
-#define PWM_PTCR_TXCBEN(value)                (PWM_PTCR_TXCBEN_Msk & (_UINT32_(value) << PWM_PTCR_TXCBEN_Pos)) /* Assigment of value for TXCBEN in the PWM_PTCR register */
-#define PWM_PTCR_TXCBDIS_Pos                  _UINT32_(19)                                         /* (PWM_PTCR) Transmitter Circular Buffer Disable Position */
-#define PWM_PTCR_TXCBDIS_Msk                  (_UINT32_(0x1) << PWM_PTCR_TXCBDIS_Pos)              /* (PWM_PTCR) Transmitter Circular Buffer Disable Mask */
-#define PWM_PTCR_TXCBDIS(value)               (PWM_PTCR_TXCBDIS_Msk & (_UINT32_(value) << PWM_PTCR_TXCBDIS_Pos)) /* Assigment of value for TXCBDIS in the PWM_PTCR register */
-#define PWM_PTCR_ERRCLR_Pos                   _UINT32_(24)                                         /* (PWM_PTCR) Transfer Bus Error Clear Position */
-#define PWM_PTCR_ERRCLR_Msk                   (_UINT32_(0x1) << PWM_PTCR_ERRCLR_Pos)               /* (PWM_PTCR) Transfer Bus Error Clear Mask */
-#define PWM_PTCR_ERRCLR(value)                (PWM_PTCR_ERRCLR_Msk & (_UINT32_(value) << PWM_PTCR_ERRCLR_Pos)) /* Assigment of value for ERRCLR in the PWM_PTCR register */
-#define PWM_PTCR_Msk                          _UINT32_(0x010F0303)                                 /* (PWM_PTCR) Register Mask  */
+/* -------- PWM_OSCUPD : (PWM Offset: 0x58) ( /W 32) PWM Output Selection Clear Update Register -------- */
+#define PWM_OSCUPD_OSCUPH0_Pos                _UINT32_(0)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 0 Position */
+#define PWM_OSCUPD_OSCUPH0_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH0_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 0 Mask */
+#define PWM_OSCUPD_OSCUPH0(value)             (PWM_OSCUPD_OSCUPH0_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH0_Pos)) /* Assigment of value for OSCUPH0 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_OSCUPH1_Pos                _UINT32_(1)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 1 Position */
+#define PWM_OSCUPD_OSCUPH1_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH1_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 1 Mask */
+#define PWM_OSCUPD_OSCUPH1(value)             (PWM_OSCUPD_OSCUPH1_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH1_Pos)) /* Assigment of value for OSCUPH1 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_OSCUPH2_Pos                _UINT32_(2)                                          /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 2 Position */
+#define PWM_OSCUPD_OSCUPH2_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPH2_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWMH output of the channel 2 Mask */
+#define PWM_OSCUPD_OSCUPH2(value)             (PWM_OSCUPD_OSCUPH2_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH2_Pos)) /* Assigment of value for OSCUPH2 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_OSCUPL0_Pos                _UINT32_(16)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 0 Position */
+#define PWM_OSCUPD_OSCUPL0_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL0_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 0 Mask */
+#define PWM_OSCUPD_OSCUPL0(value)             (PWM_OSCUPD_OSCUPL0_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL0_Pos)) /* Assigment of value for OSCUPL0 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_OSCUPL1_Pos                _UINT32_(17)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 1 Position */
+#define PWM_OSCUPD_OSCUPL1_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL1_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 1 Mask */
+#define PWM_OSCUPD_OSCUPL1(value)             (PWM_OSCUPD_OSCUPL1_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL1_Pos)) /* Assigment of value for OSCUPL1 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_OSCUPL2_Pos                _UINT32_(18)                                         /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 2 Position */
+#define PWM_OSCUPD_OSCUPL2_Msk                (_UINT32_(0x1) << PWM_OSCUPD_OSCUPL2_Pos)            /* (PWM_OSCUPD) Output Selection Clear for PWML output of the channel 2 Mask */
+#define PWM_OSCUPD_OSCUPL2(value)             (PWM_OSCUPD_OSCUPL2_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL2_Pos)) /* Assigment of value for OSCUPL2 in the PWM_OSCUPD register */
+#define PWM_OSCUPD_Msk                        _UINT32_(0x00070007)                                 /* (PWM_OSCUPD) Register Mask  */
+
+#define PWM_OSCUPD_OSCUPH_Pos                 _UINT32_(0)                                          /* (PWM_OSCUPD Position) Output Selection Clear for PWMH output of the channel x */
+#define PWM_OSCUPD_OSCUPH_Msk                 (_UINT32_(0x7) << PWM_OSCUPD_OSCUPH_Pos)             /* (PWM_OSCUPD Mask) OSCUPH */
+#define PWM_OSCUPD_OSCUPH(value)              (PWM_OSCUPD_OSCUPH_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPH_Pos)) 
+#define PWM_OSCUPD_OSCUPL_Pos                 _UINT32_(16)                                         /* (PWM_OSCUPD Position) Output Selection Clear for PWML output of the channel 2 */
+#define PWM_OSCUPD_OSCUPL_Msk                 (_UINT32_(0x7) << PWM_OSCUPD_OSCUPL_Pos)             /* (PWM_OSCUPD Mask) OSCUPL */
+#define PWM_OSCUPD_OSCUPL(value)              (PWM_OSCUPD_OSCUPL_Msk & (_UINT32_(value) << PWM_OSCUPD_OSCUPL_Pos)) 
+
+/* -------- PWM_FMR : (PWM Offset: 0x5C) (R/W 32) PWM Fault Mode Register -------- */
+#define PWM_FMR_FPOL_Pos                      _UINT32_(0)                                          /* (PWM_FMR) Fault Polarity Position */
+#define PWM_FMR_FPOL_Msk                      (_UINT32_(0xFF) << PWM_FMR_FPOL_Pos)                 /* (PWM_FMR) Fault Polarity Mask */
+#define PWM_FMR_FPOL(value)                   (PWM_FMR_FPOL_Msk & (_UINT32_(value) << PWM_FMR_FPOL_Pos)) /* Assigment of value for FPOL in the PWM_FMR register */
+#define PWM_FMR_FMOD_Pos                      _UINT32_(8)                                          /* (PWM_FMR) Fault Activation Mode Position */
+#define PWM_FMR_FMOD_Msk                      (_UINT32_(0xFF) << PWM_FMR_FMOD_Pos)                 /* (PWM_FMR) Fault Activation Mode Mask */
+#define PWM_FMR_FMOD(value)                   (PWM_FMR_FMOD_Msk & (_UINT32_(value) << PWM_FMR_FMOD_Pos)) /* Assigment of value for FMOD in the PWM_FMR register */
+#define PWM_FMR_FFIL_Pos                      _UINT32_(16)                                         /* (PWM_FMR) Fault Filtering Position */
+#define PWM_FMR_FFIL_Msk                      (_UINT32_(0xFF) << PWM_FMR_FFIL_Pos)                 /* (PWM_FMR) Fault Filtering Mask */
+#define PWM_FMR_FFIL(value)                   (PWM_FMR_FFIL_Msk & (_UINT32_(value) << PWM_FMR_FFIL_Pos)) /* Assigment of value for FFIL in the PWM_FMR register */
+#define PWM_FMR_Msk                           _UINT32_(0x00FFFFFF)                                 /* (PWM_FMR) Register Mask  */
 
 
-/* -------- PWM_PTSR : (PWM Offset: 0x124) ( R/ 32) Transfer Status Register -------- */
-#define PWM_PTSR_RXTEN_Pos                    _UINT32_(0)                                          /* (PWM_PTSR) Receiver Transfer Enable Position */
-#define PWM_PTSR_RXTEN_Msk                    (_UINT32_(0x1) << PWM_PTSR_RXTEN_Pos)                /* (PWM_PTSR) Receiver Transfer Enable Mask */
-#define PWM_PTSR_RXTEN(value)                 (PWM_PTSR_RXTEN_Msk & (_UINT32_(value) << PWM_PTSR_RXTEN_Pos)) /* Assigment of value for RXTEN in the PWM_PTSR register */
-#define PWM_PTSR_TXTEN_Pos                    _UINT32_(8)                                          /* (PWM_PTSR) Transmitter Transfer Enable Position */
-#define PWM_PTSR_TXTEN_Msk                    (_UINT32_(0x1) << PWM_PTSR_TXTEN_Pos)                /* (PWM_PTSR) Transmitter Transfer Enable Mask */
-#define PWM_PTSR_TXTEN(value)                 (PWM_PTSR_TXTEN_Msk & (_UINT32_(value) << PWM_PTSR_TXTEN_Pos)) /* Assigment of value for TXTEN in the PWM_PTSR register */
-#define PWM_PTSR_RXCBEN_Pos                   _UINT32_(16)                                         /* (PWM_PTSR) Receiver Circular Buffer Enable Position */
-#define PWM_PTSR_RXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTSR_RXCBEN_Pos)               /* (PWM_PTSR) Receiver Circular Buffer Enable Mask */
-#define PWM_PTSR_RXCBEN(value)                (PWM_PTSR_RXCBEN_Msk & (_UINT32_(value) << PWM_PTSR_RXCBEN_Pos)) /* Assigment of value for RXCBEN in the PWM_PTSR register */
-#define PWM_PTSR_TXCBEN_Pos                   _UINT32_(18)                                         /* (PWM_PTSR) Transmitter Circular Buffer Enable Position */
-#define PWM_PTSR_TXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTSR_TXCBEN_Pos)               /* (PWM_PTSR) Transmitter Circular Buffer Enable Mask */
-#define PWM_PTSR_TXCBEN(value)                (PWM_PTSR_TXCBEN_Msk & (_UINT32_(value) << PWM_PTSR_TXCBEN_Pos)) /* Assigment of value for TXCBEN in the PWM_PTSR register */
-#define PWM_PTSR_ERR_Pos                      _UINT32_(24)                                         /* (PWM_PTSR) Transfer Bus Error Position */
-#define PWM_PTSR_ERR_Msk                      (_UINT32_(0x1) << PWM_PTSR_ERR_Pos)                  /* (PWM_PTSR) Transfer Bus Error Mask */
-#define PWM_PTSR_ERR(value)                   (PWM_PTSR_ERR_Msk & (_UINT32_(value) << PWM_PTSR_ERR_Pos)) /* Assigment of value for ERR in the PWM_PTSR register */
-#define PWM_PTSR_Msk                          _UINT32_(0x01050101)                                 /* (PWM_PTSR) Register Mask  */
+/* -------- PWM_FSR : (PWM Offset: 0x60) ( R/ 32) PWM Fault Status Register -------- */
+#define PWM_FSR_FIV_Pos                       _UINT32_(0)                                          /* (PWM_FSR) Fault Input Value Position */
+#define PWM_FSR_FIV_Msk                       (_UINT32_(0xFF) << PWM_FSR_FIV_Pos)                  /* (PWM_FSR) Fault Input Value Mask */
+#define PWM_FSR_FIV(value)                    (PWM_FSR_FIV_Msk & (_UINT32_(value) << PWM_FSR_FIV_Pos)) /* Assigment of value for FIV in the PWM_FSR register */
+#define PWM_FSR_FS_Pos                        _UINT32_(8)                                          /* (PWM_FSR) Fault Status Position */
+#define PWM_FSR_FS_Msk                        (_UINT32_(0xFF) << PWM_FSR_FS_Pos)                   /* (PWM_FSR) Fault Status Mask */
+#define PWM_FSR_FS(value)                     (PWM_FSR_FS_Msk & (_UINT32_(value) << PWM_FSR_FS_Pos)) /* Assigment of value for FS in the PWM_FSR register */
+#define PWM_FSR_Msk                           _UINT32_(0x0000FFFF)                                 /* (PWM_FSR) Register Mask  */
 
 
-/* -------- PWM_PWPMR : (PWM Offset: 0x128) (R/W 32) Write Protection Mode Register -------- */
-#define PWM_PWPMR_WPPTREN_Pos                 _UINT32_(0)                                          /* (PWM_PWPMR) Write Protection Pointer Registers Enable Position */
-#define PWM_PWPMR_WPPTREN_Msk                 (_UINT32_(0x1) << PWM_PWPMR_WPPTREN_Pos)             /* (PWM_PWPMR) Write Protection Pointer Registers Enable Mask */
-#define PWM_PWPMR_WPPTREN(value)              (PWM_PWPMR_WPPTREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPPTREN_Pos)) /* Assigment of value for WPPTREN in the PWM_PWPMR register */
-#define PWM_PWPMR_WPCTREN_Pos                 _UINT32_(1)                                          /* (PWM_PWPMR) Write Protection Counter Registers Enable Position */
-#define PWM_PWPMR_WPCTREN_Msk                 (_UINT32_(0x1) << PWM_PWPMR_WPCTREN_Pos)             /* (PWM_PWPMR) Write Protection Counter Registers Enable Mask */
-#define PWM_PWPMR_WPCTREN(value)              (PWM_PWPMR_WPCTREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPCTREN_Pos)) /* Assigment of value for WPCTREN in the PWM_PWPMR register */
-#define PWM_PWPMR_WPCREN_Pos                  _UINT32_(2)                                          /* (PWM_PWPMR) Write Protection Control Register Enable Position */
-#define PWM_PWPMR_WPCREN_Msk                  (_UINT32_(0x1) << PWM_PWPMR_WPCREN_Pos)              /* (PWM_PWPMR) Write Protection Control Register Enable Mask */
-#define PWM_PWPMR_WPCREN(value)               (PWM_PWPMR_WPCREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPCREN_Pos)) /* Assigment of value for WPCREN in the PWM_PWPMR register */
-#define PWM_PWPMR_WPKEY_Pos                   _UINT32_(8)                                          /* (PWM_PWPMR) Write Protection Key Position */
-#define PWM_PWPMR_WPKEY_Msk                   (_UINT32_(0xFFFFFF) << PWM_PWPMR_WPKEY_Pos)          /* (PWM_PWPMR) Write Protection Key Mask */
-#define PWM_PWPMR_WPKEY(value)                (PWM_PWPMR_WPKEY_Msk & (_UINT32_(value) << PWM_PWPMR_WPKEY_Pos)) /* Assigment of value for WPKEY in the PWM_PWPMR register */
-#define   PWM_PWPMR_WPKEY_PASSWD_Val          _UINT32_(0x504443)                                   /* (PWM_PWPMR) Writing any other value in this field aborts the write operation. Always reads as 0.  */
-#define PWM_PWPMR_WPKEY_PASSWD                (PWM_PWPMR_WPKEY_PASSWD_Val << PWM_PWPMR_WPKEY_Pos)  /* (PWM_PWPMR) Writing any other value in this field aborts the write operation. Always reads as 0. Position  */
-#define PWM_PWPMR_Msk                         _UINT32_(0xFFFFFF07)                                 /* (PWM_PWPMR) Register Mask  */
+/* -------- PWM_FCR : (PWM Offset: 0x64) ( /W 32) PWM Fault Clear Register -------- */
+#define PWM_FCR_FCLR_Pos                      _UINT32_(0)                                          /* (PWM_FCR) Fault Clear Position */
+#define PWM_FCR_FCLR_Msk                      (_UINT32_(0xFF) << PWM_FCR_FCLR_Pos)                 /* (PWM_FCR) Fault Clear Mask */
+#define PWM_FCR_FCLR(value)                   (PWM_FCR_FCLR_Msk & (_UINT32_(value) << PWM_FCR_FCLR_Pos)) /* Assigment of value for FCLR in the PWM_FCR register */
+#define PWM_FCR_Msk                           _UINT32_(0x000000FF)                                 /* (PWM_FCR) Register Mask  */
 
 
-/* -------- PWM_SCM : (PWM Offset: 0x20) (R/W 32) PWM Sync Channels Mode Register -------- */
-#define PWM_SCM_SYNC0_Pos                     _UINT32_(0)                                          /* (PWM_SCM) Synchronous Channel 0 Position */
-#define PWM_SCM_SYNC0_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC0_Pos)                 /* (PWM_SCM) Synchronous Channel 0 Mask */
-#define PWM_SCM_SYNC0(value)                  (PWM_SCM_SYNC0_Msk & (_UINT32_(value) << PWM_SCM_SYNC0_Pos)) /* Assigment of value for SYNC0 in the PWM_SCM register */
-#define PWM_SCM_SYNC1_Pos                     _UINT32_(1)                                          /* (PWM_SCM) Synchronous Channel 1 Position */
-#define PWM_SCM_SYNC1_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC1_Pos)                 /* (PWM_SCM) Synchronous Channel 1 Mask */
-#define PWM_SCM_SYNC1(value)                  (PWM_SCM_SYNC1_Msk & (_UINT32_(value) << PWM_SCM_SYNC1_Pos)) /* Assigment of value for SYNC1 in the PWM_SCM register */
-#define PWM_SCM_SYNC2_Pos                     _UINT32_(2)                                          /* (PWM_SCM) Synchronous Channel 2 Position */
-#define PWM_SCM_SYNC2_Msk                     (_UINT32_(0x1) << PWM_SCM_SYNC2_Pos)                 /* (PWM_SCM) Synchronous Channel 2 Mask */
-#define PWM_SCM_SYNC2(value)                  (PWM_SCM_SYNC2_Msk & (_UINT32_(value) << PWM_SCM_SYNC2_Pos)) /* Assigment of value for SYNC2 in the PWM_SCM register */
-#define PWM_SCM_UPDM_Pos                      _UINT32_(16)                                         /* (PWM_SCM) Synchronous Channels Update Mode Position */
-#define PWM_SCM_UPDM_Msk                      (_UINT32_(0x3) << PWM_SCM_UPDM_Pos)                  /* (PWM_SCM) Synchronous Channels Update Mode Mask */
-#define PWM_SCM_UPDM(value)                   (PWM_SCM_UPDM_Msk & (_UINT32_(value) << PWM_SCM_UPDM_Pos)) /* Assigment of value for UPDM in the PWM_SCM register */
-#define   PWM_SCM_UPDM_MODE0_Val              _UINT32_(0x0)                                        /* (PWM_SCM) Manual write of double buffer registers and manual update of synchronous channels  */
-#define   PWM_SCM_UPDM_MODE1_Val              _UINT32_(0x1)                                        /* (PWM_SCM) Manual write of double buffer registers and automatic update of synchronous channels  */
-#define   PWM_SCM_UPDM_MODE2_Val              _UINT32_(0x2)                                        /* (PWM_SCM) Automatic write of duty-cycle update registers by the Peripheral DMA Controller and automatic update of synchronous channels  */
-#define PWM_SCM_UPDM_MODE0                    (PWM_SCM_UPDM_MODE0_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Manual write of double buffer registers and manual update of synchronous channels Position  */
-#define PWM_SCM_UPDM_MODE1                    (PWM_SCM_UPDM_MODE1_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Manual write of double buffer registers and automatic update of synchronous channels Position  */
-#define PWM_SCM_UPDM_MODE2                    (PWM_SCM_UPDM_MODE2_Val << PWM_SCM_UPDM_Pos)         /* (PWM_SCM) Automatic write of duty-cycle update registers by the Peripheral DMA Controller and automatic update of synchronous channels Position  */
-#define PWM_SCM_PTRM_Pos                      _UINT32_(20)                                         /* (PWM_SCM) Peripheral DMA Controller Transfer Request Mode Position */
-#define PWM_SCM_PTRM_Msk                      (_UINT32_(0x1) << PWM_SCM_PTRM_Pos)                  /* (PWM_SCM) Peripheral DMA Controller Transfer Request Mode Mask */
-#define PWM_SCM_PTRM(value)                   (PWM_SCM_PTRM_Msk & (_UINT32_(value) << PWM_SCM_PTRM_Pos)) /* Assigment of value for PTRM in the PWM_SCM register */
-#define PWM_SCM_PTRCS_Pos                     _UINT32_(21)                                         /* (PWM_SCM) Peripheral DMA Controller Transfer Request Comparison Selection Position */
-#define PWM_SCM_PTRCS_Msk                     (_UINT32_(0x7) << PWM_SCM_PTRCS_Pos)                 /* (PWM_SCM) Peripheral DMA Controller Transfer Request Comparison Selection Mask */
-#define PWM_SCM_PTRCS(value)                  (PWM_SCM_PTRCS_Msk & (_UINT32_(value) << PWM_SCM_PTRCS_Pos)) /* Assigment of value for PTRCS in the PWM_SCM register */
-#define PWM_SCM_Msk                           _UINT32_(0x00F30007)                                 /* (PWM_SCM) Register Mask  */
+/* -------- PWM_FPV1 : (PWM Offset: 0x68) (R/W 32) PWM Fault Protection Value Register 1 -------- */
+#define PWM_FPV1_FPVH0_Pos                    _UINT32_(0)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 0 Position */
+#define PWM_FPV1_FPVH0_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH0_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 0 Mask */
+#define PWM_FPV1_FPVH0(value)                 (PWM_FPV1_FPVH0_Msk & (_UINT32_(value) << PWM_FPV1_FPVH0_Pos)) /* Assigment of value for FPVH0 in the PWM_FPV1 register */
+#define PWM_FPV1_FPVH1_Pos                    _UINT32_(1)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 1 Position */
+#define PWM_FPV1_FPVH1_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH1_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 1 Mask */
+#define PWM_FPV1_FPVH1(value)                 (PWM_FPV1_FPVH1_Msk & (_UINT32_(value) << PWM_FPV1_FPVH1_Pos)) /* Assigment of value for FPVH1 in the PWM_FPV1 register */
+#define PWM_FPV1_FPVH2_Pos                    _UINT32_(2)                                          /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 2 Position */
+#define PWM_FPV1_FPVH2_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVH2_Pos)                /* (PWM_FPV1) Fault Protection Value for PWMH output on channel 2 Mask */
+#define PWM_FPV1_FPVH2(value)                 (PWM_FPV1_FPVH2_Msk & (_UINT32_(value) << PWM_FPV1_FPVH2_Pos)) /* Assigment of value for FPVH2 in the PWM_FPV1 register */
+#define PWM_FPV1_FPVL0_Pos                    _UINT32_(16)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 0 Position */
+#define PWM_FPV1_FPVL0_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL0_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 0 Mask */
+#define PWM_FPV1_FPVL0(value)                 (PWM_FPV1_FPVL0_Msk & (_UINT32_(value) << PWM_FPV1_FPVL0_Pos)) /* Assigment of value for FPVL0 in the PWM_FPV1 register */
+#define PWM_FPV1_FPVL1_Pos                    _UINT32_(17)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 1 Position */
+#define PWM_FPV1_FPVL1_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL1_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 1 Mask */
+#define PWM_FPV1_FPVL1(value)                 (PWM_FPV1_FPVL1_Msk & (_UINT32_(value) << PWM_FPV1_FPVL1_Pos)) /* Assigment of value for FPVL1 in the PWM_FPV1 register */
+#define PWM_FPV1_FPVL2_Pos                    _UINT32_(18)                                         /* (PWM_FPV1) Fault Protection Value for PWML output on channel 2 Position */
+#define PWM_FPV1_FPVL2_Msk                    (_UINT32_(0x1) << PWM_FPV1_FPVL2_Pos)                /* (PWM_FPV1) Fault Protection Value for PWML output on channel 2 Mask */
+#define PWM_FPV1_FPVL2(value)                 (PWM_FPV1_FPVL2_Msk & (_UINT32_(value) << PWM_FPV1_FPVL2_Pos)) /* Assigment of value for FPVL2 in the PWM_FPV1 register */
+#define PWM_FPV1_Msk                          _UINT32_(0x00070007)                                 /* (PWM_FPV1) Register Mask  */
 
-#define PWM_SCM_SYNC_Pos                      _UINT32_(0)                                          /* (PWM_SCM Position) Synchronous Channel x */
-#define PWM_SCM_SYNC_Msk                      (_UINT32_(0x7) << PWM_SCM_SYNC_Pos)                  /* (PWM_SCM Mask) SYNC */
-#define PWM_SCM_SYNC(value)                   (PWM_SCM_SYNC_Msk & (_UINT32_(value) << PWM_SCM_SYNC_Pos)) 
+#define PWM_FPV1_FPVH_Pos                     _UINT32_(0)                                          /* (PWM_FPV1 Position) Fault Protection Value for PWMH output on channel x */
+#define PWM_FPV1_FPVH_Msk                     (_UINT32_(0x7) << PWM_FPV1_FPVH_Pos)                 /* (PWM_FPV1 Mask) FPVH */
+#define PWM_FPV1_FPVH(value)                  (PWM_FPV1_FPVH_Msk & (_UINT32_(value) << PWM_FPV1_FPVH_Pos)) 
+#define PWM_FPV1_FPVL_Pos                     _UINT32_(16)                                         /* (PWM_FPV1 Position) Fault Protection Value for PWML output on channel 2 */
+#define PWM_FPV1_FPVL_Msk                     (_UINT32_(0x7) << PWM_FPV1_FPVL_Pos)                 /* (PWM_FPV1 Mask) FPVL */
+#define PWM_FPV1_FPVL(value)                  (PWM_FPV1_FPVL_Msk & (_UINT32_(value) << PWM_FPV1_FPVL_Pos)) 
 
-/* -------- PWM_SCUC : (PWM Offset: 0x28) (R/W 32) PWM Sync Channels Update Control Register -------- */
-#define PWM_SCUC_UPDULOCK_Pos                 _UINT32_(0)                                          /* (PWM_SCUC) Synchronous Channels Update Unlock Position */
-#define PWM_SCUC_UPDULOCK_Msk                 (_UINT32_(0x1) << PWM_SCUC_UPDULOCK_Pos)             /* (PWM_SCUC) Synchronous Channels Update Unlock Mask */
-#define PWM_SCUC_UPDULOCK(value)              (PWM_SCUC_UPDULOCK_Msk & (_UINT32_(value) << PWM_SCUC_UPDULOCK_Pos)) /* Assigment of value for UPDULOCK in the PWM_SCUC register */
-#define PWM_SCUC_Msk                          _UINT32_(0x00000001)                                 /* (PWM_SCUC) Register Mask  */
-
-
-/* -------- PWM_SCUP : (PWM Offset: 0x2C) (R/W 32) PWM Sync Channels Update Period Register -------- */
-#define PWM_SCUP_UPR_Pos                      _UINT32_(0)                                          /* (PWM_SCUP) Update Period Position */
-#define PWM_SCUP_UPR_Msk                      (_UINT32_(0xF) << PWM_SCUP_UPR_Pos)                  /* (PWM_SCUP) Update Period Mask */
-#define PWM_SCUP_UPR(value)                   (PWM_SCUP_UPR_Msk & (_UINT32_(value) << PWM_SCUP_UPR_Pos)) /* Assigment of value for UPR in the PWM_SCUP register */
-#define PWM_SCUP_UPRCNT_Pos                   _UINT32_(4)                                          /* (PWM_SCUP) Update Period Counter Position */
-#define PWM_SCUP_UPRCNT_Msk                   (_UINT32_(0xF) << PWM_SCUP_UPRCNT_Pos)               /* (PWM_SCUP) Update Period Counter Mask */
-#define PWM_SCUP_UPRCNT(value)                (PWM_SCUP_UPRCNT_Msk & (_UINT32_(value) << PWM_SCUP_UPRCNT_Pos)) /* Assigment of value for UPRCNT in the PWM_SCUP register */
-#define PWM_SCUP_Msk                          _UINT32_(0x000000FF)                                 /* (PWM_SCUP) Register Mask  */
+/* -------- PWM_FPE : (PWM Offset: 0x6C) (R/W 32) PWM Fault Protection Enable Register -------- */
+#define PWM_FPE_FPE0_Pos                      _UINT32_(0)                                          /* (PWM_FPE) Fault Protection Enable for channel 0 Position */
+#define PWM_FPE_FPE0_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE0_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 0 Mask */
+#define PWM_FPE_FPE0(value)                   (PWM_FPE_FPE0_Msk & (_UINT32_(value) << PWM_FPE_FPE0_Pos)) /* Assigment of value for FPE0 in the PWM_FPE register */
+#define PWM_FPE_FPE1_Pos                      _UINT32_(8)                                          /* (PWM_FPE) Fault Protection Enable for channel 1 Position */
+#define PWM_FPE_FPE1_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE1_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 1 Mask */
+#define PWM_FPE_FPE1(value)                   (PWM_FPE_FPE1_Msk & (_UINT32_(value) << PWM_FPE_FPE1_Pos)) /* Assigment of value for FPE1 in the PWM_FPE register */
+#define PWM_FPE_FPE2_Pos                      _UINT32_(16)                                         /* (PWM_FPE) Fault Protection Enable for channel 2 Position */
+#define PWM_FPE_FPE2_Msk                      (_UINT32_(0xFF) << PWM_FPE_FPE2_Pos)                 /* (PWM_FPE) Fault Protection Enable for channel 2 Mask */
+#define PWM_FPE_FPE2(value)                   (PWM_FPE_FPE2_Msk & (_UINT32_(value) << PWM_FPE_FPE2_Pos)) /* Assigment of value for FPE2 in the PWM_FPE register */
+#define PWM_FPE_Msk                           _UINT32_(0x00FFFFFF)                                 /* (PWM_FPE) Register Mask  */
 
 
-/* -------- PWM_SCUPUPD : (PWM Offset: 0x30) ( /W 32) PWM Sync Channels Update Period Update Register -------- */
-#define PWM_SCUPUPD_UPRUPD_Pos                _UINT32_(0)                                          /* (PWM_SCUPUPD) Update Period Update Position */
-#define PWM_SCUPUPD_UPRUPD_Msk                (_UINT32_(0xF) << PWM_SCUPUPD_UPRUPD_Pos)            /* (PWM_SCUPUPD) Update Period Update Mask */
-#define PWM_SCUPUPD_UPRUPD(value)             (PWM_SCUPUPD_UPRUPD_Msk & (_UINT32_(value) << PWM_SCUPUPD_UPRUPD_Pos)) /* Assigment of value for UPRUPD in the PWM_SCUPUPD register */
-#define PWM_SCUPUPD_Msk                       _UINT32_(0x0000000F)                                 /* (PWM_SCUPUPD) Register Mask  */
+/* -------- PWM_ELMR : (PWM Offset: 0x7C) (R/W 32) PWM Event Line 0 Mode Register -------- */
+#define PWM_ELMR_CSEL0_Pos                    _UINT32_(0)                                          /* (PWM_ELMR) Comparison 0 Selection Position */
+#define PWM_ELMR_CSEL0_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL0_Pos)                /* (PWM_ELMR) Comparison 0 Selection Mask */
+#define PWM_ELMR_CSEL0(value)                 (PWM_ELMR_CSEL0_Msk & (_UINT32_(value) << PWM_ELMR_CSEL0_Pos)) /* Assigment of value for CSEL0 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL1_Pos                    _UINT32_(1)                                          /* (PWM_ELMR) Comparison 1 Selection Position */
+#define PWM_ELMR_CSEL1_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL1_Pos)                /* (PWM_ELMR) Comparison 1 Selection Mask */
+#define PWM_ELMR_CSEL1(value)                 (PWM_ELMR_CSEL1_Msk & (_UINT32_(value) << PWM_ELMR_CSEL1_Pos)) /* Assigment of value for CSEL1 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL2_Pos                    _UINT32_(2)                                          /* (PWM_ELMR) Comparison 2 Selection Position */
+#define PWM_ELMR_CSEL2_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL2_Pos)                /* (PWM_ELMR) Comparison 2 Selection Mask */
+#define PWM_ELMR_CSEL2(value)                 (PWM_ELMR_CSEL2_Msk & (_UINT32_(value) << PWM_ELMR_CSEL2_Pos)) /* Assigment of value for CSEL2 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL3_Pos                    _UINT32_(3)                                          /* (PWM_ELMR) Comparison 3 Selection Position */
+#define PWM_ELMR_CSEL3_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL3_Pos)                /* (PWM_ELMR) Comparison 3 Selection Mask */
+#define PWM_ELMR_CSEL3(value)                 (PWM_ELMR_CSEL3_Msk & (_UINT32_(value) << PWM_ELMR_CSEL3_Pos)) /* Assigment of value for CSEL3 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL4_Pos                    _UINT32_(4)                                          /* (PWM_ELMR) Comparison 4 Selection Position */
+#define PWM_ELMR_CSEL4_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL4_Pos)                /* (PWM_ELMR) Comparison 4 Selection Mask */
+#define PWM_ELMR_CSEL4(value)                 (PWM_ELMR_CSEL4_Msk & (_UINT32_(value) << PWM_ELMR_CSEL4_Pos)) /* Assigment of value for CSEL4 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL5_Pos                    _UINT32_(5)                                          /* (PWM_ELMR) Comparison 5 Selection Position */
+#define PWM_ELMR_CSEL5_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL5_Pos)                /* (PWM_ELMR) Comparison 5 Selection Mask */
+#define PWM_ELMR_CSEL5(value)                 (PWM_ELMR_CSEL5_Msk & (_UINT32_(value) << PWM_ELMR_CSEL5_Pos)) /* Assigment of value for CSEL5 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL6_Pos                    _UINT32_(6)                                          /* (PWM_ELMR) Comparison 6 Selection Position */
+#define PWM_ELMR_CSEL6_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL6_Pos)                /* (PWM_ELMR) Comparison 6 Selection Mask */
+#define PWM_ELMR_CSEL6(value)                 (PWM_ELMR_CSEL6_Msk & (_UINT32_(value) << PWM_ELMR_CSEL6_Pos)) /* Assigment of value for CSEL6 in the PWM_ELMR register */
+#define PWM_ELMR_CSEL7_Pos                    _UINT32_(7)                                          /* (PWM_ELMR) Comparison 7 Selection Position */
+#define PWM_ELMR_CSEL7_Msk                    (_UINT32_(0x1) << PWM_ELMR_CSEL7_Pos)                /* (PWM_ELMR) Comparison 7 Selection Mask */
+#define PWM_ELMR_CSEL7(value)                 (PWM_ELMR_CSEL7_Msk & (_UINT32_(value) << PWM_ELMR_CSEL7_Pos)) /* Assigment of value for CSEL7 in the PWM_ELMR register */
+#define PWM_ELMR_Msk                          _UINT32_(0x000000FF)                                 /* (PWM_ELMR) Register Mask  */
 
-
-/* -------- PWM_SMMR : (PWM Offset: 0xB0) (R/W 32) PWM Stepper Motor Mode Register -------- */
-#define PWM_SMMR_GCEN0_Pos                    _UINT32_(0)                                          /* (PWM_SMMR) Gray Count Enable Position */
-#define PWM_SMMR_GCEN0_Msk                    (_UINT32_(0x1) << PWM_SMMR_GCEN0_Pos)                /* (PWM_SMMR) Gray Count Enable Mask */
-#define PWM_SMMR_GCEN0(value)                 (PWM_SMMR_GCEN0_Msk & (_UINT32_(value) << PWM_SMMR_GCEN0_Pos)) /* Assigment of value for GCEN0 in the PWM_SMMR register */
-#define PWM_SMMR_DOWN0_Pos                    _UINT32_(16)                                         /* (PWM_SMMR) Down Count Position */
-#define PWM_SMMR_DOWN0_Msk                    (_UINT32_(0x1) << PWM_SMMR_DOWN0_Pos)                /* (PWM_SMMR) Down Count Mask */
-#define PWM_SMMR_DOWN0(value)                 (PWM_SMMR_DOWN0_Msk & (_UINT32_(value) << PWM_SMMR_DOWN0_Pos)) /* Assigment of value for DOWN0 in the PWM_SMMR register */
-#define PWM_SMMR_Msk                          _UINT32_(0x00010001)                                 /* (PWM_SMMR) Register Mask  */
-
-#define PWM_SMMR_GCEN_Pos                     _UINT32_(0)                                          /* (PWM_SMMR Position) Gray Count Enable */
-#define PWM_SMMR_GCEN_Msk                     (_UINT32_(0x1) << PWM_SMMR_GCEN_Pos)                 /* (PWM_SMMR Mask) GCEN */
-#define PWM_SMMR_GCEN(value)                  (PWM_SMMR_GCEN_Msk & (_UINT32_(value) << PWM_SMMR_GCEN_Pos)) 
-#define PWM_SMMR_DOWN_Pos                     _UINT32_(16)                                         /* (PWM_SMMR Position) Down Count */
-#define PWM_SMMR_DOWN_Msk                     (_UINT32_(0x1) << PWM_SMMR_DOWN_Pos)                 /* (PWM_SMMR Mask) DOWN */
-#define PWM_SMMR_DOWN(value)                  (PWM_SMMR_DOWN_Msk & (_UINT32_(value) << PWM_SMMR_DOWN_Pos)) 
-
-/* -------- PWM_SR : (PWM Offset: 0x0C) ( R/ 32) PWM Status Register -------- */
-#define PWM_SR_CHID0_Pos                      _UINT32_(0)                                          /* (PWM_SR) Channel ID Position */
-#define PWM_SR_CHID0_Msk                      (_UINT32_(0x1) << PWM_SR_CHID0_Pos)                  /* (PWM_SR) Channel ID Mask */
-#define PWM_SR_CHID0(value)                   (PWM_SR_CHID0_Msk & (_UINT32_(value) << PWM_SR_CHID0_Pos)) /* Assigment of value for CHID0 in the PWM_SR register */
-#define PWM_SR_CHID1_Pos                      _UINT32_(1)                                          /* (PWM_SR) Channel ID Position */
-#define PWM_SR_CHID1_Msk                      (_UINT32_(0x1) << PWM_SR_CHID1_Pos)                  /* (PWM_SR) Channel ID Mask */
-#define PWM_SR_CHID1(value)                   (PWM_SR_CHID1_Msk & (_UINT32_(value) << PWM_SR_CHID1_Pos)) /* Assigment of value for CHID1 in the PWM_SR register */
-#define PWM_SR_CHID2_Pos                      _UINT32_(2)                                          /* (PWM_SR) Channel ID Position */
-#define PWM_SR_CHID2_Msk                      (_UINT32_(0x1) << PWM_SR_CHID2_Pos)                  /* (PWM_SR) Channel ID Mask */
-#define PWM_SR_CHID2(value)                   (PWM_SR_CHID2_Msk & (_UINT32_(value) << PWM_SR_CHID2_Pos)) /* Assigment of value for CHID2 in the PWM_SR register */
-#define PWM_SR_Msk                            _UINT32_(0x00000007)                                 /* (PWM_SR) Register Mask  */
-
-#define PWM_SR_CHID_Pos                       _UINT32_(0)                                          /* (PWM_SR Position) Channel ID */
-#define PWM_SR_CHID_Msk                       (_UINT32_(0x7) << PWM_SR_CHID_Pos)                   /* (PWM_SR Mask) CHID */
-#define PWM_SR_CHID(value)                    (PWM_SR_CHID_Msk & (_UINT32_(value) << PWM_SR_CHID_Pos)) 
+#define PWM_ELMR_CSEL_Pos                     _UINT32_(0)                                          /* (PWM_ELMR Position) Comparison 7 Selection */
+#define PWM_ELMR_CSEL_Msk                     (_UINT32_(0xFF) << PWM_ELMR_CSEL_Pos)                /* (PWM_ELMR Mask) CSEL */
+#define PWM_ELMR_CSEL(value)                  (PWM_ELMR_CSEL_Msk & (_UINT32_(value) << PWM_ELMR_CSEL_Pos)) 
 
 /* -------- PWM_SSPR : (PWM Offset: 0xA0) (R/W 32) PWM Spread Spectrum Register -------- */
 #define PWM_SSPR_SPRD_Pos                     _UINT32_(0)                                          /* (PWM_SSPR) Spread Spectrum Limit Value Position */
@@ -1331,33 +1074,58 @@
 #define PWM_SSPUP_Msk                         _UINT32_(0x00FFFFFF)                                 /* (PWM_SSPUP) Register Mask  */
 
 
-/* -------- PWM_TCR : (PWM Offset: 0x10C) (R/W 32) Transmit Counter Register -------- */
-#define PWM_TCR_TXCTR_Pos                     _UINT32_(0)                                          /* (PWM_TCR) Transmit Counter Register Position */
-#define PWM_TCR_TXCTR_Msk                     (_UINT32_(0xFFFF) << PWM_TCR_TXCTR_Pos)              /* (PWM_TCR) Transmit Counter Register Mask */
-#define PWM_TCR_TXCTR(value)                  (PWM_TCR_TXCTR_Msk & (_UINT32_(value) << PWM_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the PWM_TCR register */
-#define PWM_TCR_Msk                           _UINT32_(0x0000FFFF)                                 /* (PWM_TCR) Register Mask  */
+/* -------- PWM_DEBUG : (PWM Offset: 0xAC) (R/W 32) Debug Register -------- */
+#define PWM_DEBUG_OUTMODE_Pos                 _UINT32_(0)                                          /* (PWM_DEBUG) PWM Output Mode when System is in Debug Mode Position */
+#define PWM_DEBUG_OUTMODE_Msk                 (_UINT32_(0x1) << PWM_DEBUG_OUTMODE_Pos)             /* (PWM_DEBUG) PWM Output Mode when System is in Debug Mode Mask */
+#define PWM_DEBUG_OUTMODE(value)              (PWM_DEBUG_OUTMODE_Msk & (_UINT32_(value) << PWM_DEBUG_OUTMODE_Pos)) /* Assigment of value for OUTMODE in the PWM_DEBUG register */
+#define   PWM_DEBUG_OUTMODE_NO_EFFECT_Val     _UINT32_(0x0)                                        /* (PWM_DEBUG) Keeps the PWM outputs running when the processor reports a debug operating mode.  */
+#define PWM_DEBUG_OUTMODE_NO_EFFECT           (PWM_DEBUG_OUTMODE_NO_EFFECT_Val << PWM_DEBUG_OUTMODE_Pos) /* (PWM_DEBUG) Keeps the PWM outputs running when the processor reports a debug operating mode. Position  */
+#define PWM_DEBUG_Msk                         _UINT32_(0x00000001)                                 /* (PWM_DEBUG) Register Mask  */
 
 
-/* -------- PWM_TNCR : (PWM Offset: 0x11C) (R/W 32) Transmit Next Counter Register -------- */
-#define PWM_TNCR_TXNCTR_Pos                   _UINT32_(0)                                          /* (PWM_TNCR) Transmit Counter Next Position */
-#define PWM_TNCR_TXNCTR_Msk                   (_UINT32_(0xFFFF) << PWM_TNCR_TXNCTR_Pos)            /* (PWM_TNCR) Transmit Counter Next Mask */
-#define PWM_TNCR_TXNCTR(value)                (PWM_TNCR_TXNCTR_Msk & (_UINT32_(value) << PWM_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the PWM_TNCR register */
-#define PWM_TNCR_Msk                          _UINT32_(0x0000FFFF)                                 /* (PWM_TNCR) Register Mask  */
+/* -------- PWM_SMMR : (PWM Offset: 0xB0) (R/W 32) PWM Stepper Motor Mode Register -------- */
+#define PWM_SMMR_GCEN0_Pos                    _UINT32_(0)                                          /* (PWM_SMMR) Gray Count Enable Position */
+#define PWM_SMMR_GCEN0_Msk                    (_UINT32_(0x1) << PWM_SMMR_GCEN0_Pos)                /* (PWM_SMMR) Gray Count Enable Mask */
+#define PWM_SMMR_GCEN0(value)                 (PWM_SMMR_GCEN0_Msk & (_UINT32_(value) << PWM_SMMR_GCEN0_Pos)) /* Assigment of value for GCEN0 in the PWM_SMMR register */
+#define PWM_SMMR_DOWN0_Pos                    _UINT32_(16)                                         /* (PWM_SMMR) Down Count Position */
+#define PWM_SMMR_DOWN0_Msk                    (_UINT32_(0x1) << PWM_SMMR_DOWN0_Pos)                /* (PWM_SMMR) Down Count Mask */
+#define PWM_SMMR_DOWN0(value)                 (PWM_SMMR_DOWN0_Msk & (_UINT32_(value) << PWM_SMMR_DOWN0_Pos)) /* Assigment of value for DOWN0 in the PWM_SMMR register */
+#define PWM_SMMR_Msk                          _UINT32_(0x00010001)                                 /* (PWM_SMMR) Register Mask  */
 
+#define PWM_SMMR_GCEN_Pos                     _UINT32_(0)                                          /* (PWM_SMMR Position) Gray Count Enable */
+#define PWM_SMMR_GCEN_Msk                     (_UINT32_(0x1) << PWM_SMMR_GCEN_Pos)                 /* (PWM_SMMR Mask) GCEN */
+#define PWM_SMMR_GCEN(value)                  (PWM_SMMR_GCEN_Msk & (_UINT32_(value) << PWM_SMMR_GCEN_Pos)) 
+#define PWM_SMMR_DOWN_Pos                     _UINT32_(16)                                         /* (PWM_SMMR Position) Down Count */
+#define PWM_SMMR_DOWN_Msk                     (_UINT32_(0x1) << PWM_SMMR_DOWN_Pos)                 /* (PWM_SMMR Mask) DOWN */
+#define PWM_SMMR_DOWN(value)                  (PWM_SMMR_DOWN_Msk & (_UINT32_(value) << PWM_SMMR_DOWN_Pos)) 
 
-/* -------- PWM_TNPR : (PWM Offset: 0x118) (R/W 32) Transmit Next Pointer Register -------- */
-#define PWM_TNPR_TXNPTR_Pos                   _UINT32_(0)                                          /* (PWM_TNPR) Transmit Next Pointer Position */
-#define PWM_TNPR_TXNPTR_Msk                   (_UINT32_(0xFFFFFFFF) << PWM_TNPR_TXNPTR_Pos)        /* (PWM_TNPR) Transmit Next Pointer Mask */
-#define PWM_TNPR_TXNPTR(value)                (PWM_TNPR_TXNPTR_Msk & (_UINT32_(value) << PWM_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the PWM_TNPR register */
-#define PWM_TNPR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (PWM_TNPR) Register Mask  */
+/* -------- PWM_FPV2 : (PWM Offset: 0xC0) (R/W 32) PWM Fault Protection Value 2 Register -------- */
+#define PWM_FPV2_FPZH0_Pos                    _UINT32_(0)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 0 Position */
+#define PWM_FPV2_FPZH0_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH0_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 0 Mask */
+#define PWM_FPV2_FPZH0(value)                 (PWM_FPV2_FPZH0_Msk & (_UINT32_(value) << PWM_FPV2_FPZH0_Pos)) /* Assigment of value for FPZH0 in the PWM_FPV2 register */
+#define PWM_FPV2_FPZH1_Pos                    _UINT32_(1)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 1 Position */
+#define PWM_FPV2_FPZH1_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH1_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 1 Mask */
+#define PWM_FPV2_FPZH1(value)                 (PWM_FPV2_FPZH1_Msk & (_UINT32_(value) << PWM_FPV2_FPZH1_Pos)) /* Assigment of value for FPZH1 in the PWM_FPV2 register */
+#define PWM_FPV2_FPZH2_Pos                    _UINT32_(2)                                          /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 2 Position */
+#define PWM_FPV2_FPZH2_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZH2_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWMH output on channel 2 Mask */
+#define PWM_FPV2_FPZH2(value)                 (PWM_FPV2_FPZH2_Msk & (_UINT32_(value) << PWM_FPV2_FPZH2_Pos)) /* Assigment of value for FPZH2 in the PWM_FPV2 register */
+#define PWM_FPV2_FPZL0_Pos                    _UINT32_(16)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 0 Position */
+#define PWM_FPV2_FPZL0_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL0_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 0 Mask */
+#define PWM_FPV2_FPZL0(value)                 (PWM_FPV2_FPZL0_Msk & (_UINT32_(value) << PWM_FPV2_FPZL0_Pos)) /* Assigment of value for FPZL0 in the PWM_FPV2 register */
+#define PWM_FPV2_FPZL1_Pos                    _UINT32_(17)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 1 Position */
+#define PWM_FPV2_FPZL1_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL1_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 1 Mask */
+#define PWM_FPV2_FPZL1(value)                 (PWM_FPV2_FPZL1_Msk & (_UINT32_(value) << PWM_FPV2_FPZL1_Pos)) /* Assigment of value for FPZL1 in the PWM_FPV2 register */
+#define PWM_FPV2_FPZL2_Pos                    _UINT32_(18)                                         /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 2 Position */
+#define PWM_FPV2_FPZL2_Msk                    (_UINT32_(0x1) << PWM_FPV2_FPZL2_Pos)                /* (PWM_FPV2) Fault Protection to Hi-Z for PWML output on channel 2 Mask */
+#define PWM_FPV2_FPZL2(value)                 (PWM_FPV2_FPZL2_Msk & (_UINT32_(value) << PWM_FPV2_FPZL2_Pos)) /* Assigment of value for FPZL2 in the PWM_FPV2 register */
+#define PWM_FPV2_Msk                          _UINT32_(0x00070007)                                 /* (PWM_FPV2) Register Mask  */
 
-
-/* -------- PWM_TPR : (PWM Offset: 0x108) (R/W 32) Transmit Pointer Register -------- */
-#define PWM_TPR_TXPTR_Pos                     _UINT32_(0)                                          /* (PWM_TPR) Transmit Counter Register Position */
-#define PWM_TPR_TXPTR_Msk                     (_UINT32_(0xFFFFFFFF) << PWM_TPR_TXPTR_Pos)          /* (PWM_TPR) Transmit Counter Register Mask */
-#define PWM_TPR_TXPTR(value)                  (PWM_TPR_TXPTR_Msk & (_UINT32_(value) << PWM_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the PWM_TPR register */
-#define PWM_TPR_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (PWM_TPR) Register Mask  */
-
+#define PWM_FPV2_FPZH_Pos                     _UINT32_(0)                                          /* (PWM_FPV2 Position) Fault Protection to Hi-Z for PWMH output on channel x */
+#define PWM_FPV2_FPZH_Msk                     (_UINT32_(0x7) << PWM_FPV2_FPZH_Pos)                 /* (PWM_FPV2 Mask) FPZH */
+#define PWM_FPV2_FPZH(value)                  (PWM_FPV2_FPZH_Msk & (_UINT32_(value) << PWM_FPV2_FPZH_Pos)) 
+#define PWM_FPV2_FPZL_Pos                     _UINT32_(16)                                         /* (PWM_FPV2 Position) Fault Protection to Hi-Z for PWML output on channel 2 */
+#define PWM_FPV2_FPZL_Msk                     (_UINT32_(0x7) << PWM_FPV2_FPZL_Pos)                 /* (PWM_FPV2 Mask) FPZL */
+#define PWM_FPV2_FPZL(value)                  (PWM_FPV2_FPZL_Msk & (_UINT32_(value) << PWM_FPV2_FPZL_Pos)) 
 
 /* -------- PWM_WPCR : (PWM Offset: 0xE4) ( /W 32) PWM Write Protection Control Register -------- */
 #define PWM_WPCR_WPCMD_Pos                    _UINT32_(0)                                          /* (PWM_WPCR) Write Protection Command Position */
@@ -1450,69 +1218,301 @@
 #define PWM_WPSR_WPHWS_Msk                    (_UINT32_(0x3F) << PWM_WPSR_WPHWS_Pos)               /* (PWM_WPSR Mask) WPHWS */
 #define PWM_WPSR_WPHWS(value)                 (PWM_WPSR_WPHWS_Msk & (_UINT32_(value) << PWM_WPSR_WPHWS_Pos)) 
 
+/* -------- PWM_TPR : (PWM Offset: 0x108) (R/W 32) Transmit Pointer Register -------- */
+#define PWM_TPR_TXPTR_Pos                     _UINT32_(0)                                          /* (PWM_TPR) Transmit Counter Register Position */
+#define PWM_TPR_TXPTR_Msk                     (_UINT32_(0xFFFFFFFF) << PWM_TPR_TXPTR_Pos)          /* (PWM_TPR) Transmit Counter Register Mask */
+#define PWM_TPR_TXPTR(value)                  (PWM_TPR_TXPTR_Msk & (_UINT32_(value) << PWM_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the PWM_TPR register */
+#define PWM_TPR_Msk                           _UINT32_(0xFFFFFFFF)                                 /* (PWM_TPR) Register Mask  */
+
+
+/* -------- PWM_TCR : (PWM Offset: 0x10C) (R/W 32) Transmit Counter Register -------- */
+#define PWM_TCR_TXCTR_Pos                     _UINT32_(0)                                          /* (PWM_TCR) Transmit Counter Register Position */
+#define PWM_TCR_TXCTR_Msk                     (_UINT32_(0xFFFF) << PWM_TCR_TXCTR_Pos)              /* (PWM_TCR) Transmit Counter Register Mask */
+#define PWM_TCR_TXCTR(value)                  (PWM_TCR_TXCTR_Msk & (_UINT32_(value) << PWM_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the PWM_TCR register */
+#define PWM_TCR_Msk                           _UINT32_(0x0000FFFF)                                 /* (PWM_TCR) Register Mask  */
+
+
+/* -------- PWM_TNPR : (PWM Offset: 0x118) (R/W 32) Transmit Next Pointer Register -------- */
+#define PWM_TNPR_TXNPTR_Pos                   _UINT32_(0)                                          /* (PWM_TNPR) Transmit Next Pointer Position */
+#define PWM_TNPR_TXNPTR_Msk                   (_UINT32_(0xFFFFFFFF) << PWM_TNPR_TXNPTR_Pos)        /* (PWM_TNPR) Transmit Next Pointer Mask */
+#define PWM_TNPR_TXNPTR(value)                (PWM_TNPR_TXNPTR_Msk & (_UINT32_(value) << PWM_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the PWM_TNPR register */
+#define PWM_TNPR_Msk                          _UINT32_(0xFFFFFFFF)                                 /* (PWM_TNPR) Register Mask  */
+
+
+/* -------- PWM_TNCR : (PWM Offset: 0x11C) (R/W 32) Transmit Next Counter Register -------- */
+#define PWM_TNCR_TXNCTR_Pos                   _UINT32_(0)                                          /* (PWM_TNCR) Transmit Counter Next Position */
+#define PWM_TNCR_TXNCTR_Msk                   (_UINT32_(0xFFFF) << PWM_TNCR_TXNCTR_Pos)            /* (PWM_TNCR) Transmit Counter Next Mask */
+#define PWM_TNCR_TXNCTR(value)                (PWM_TNCR_TXNCTR_Msk & (_UINT32_(value) << PWM_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the PWM_TNCR register */
+#define PWM_TNCR_Msk                          _UINT32_(0x0000FFFF)                                 /* (PWM_TNCR) Register Mask  */
+
+
+/* -------- PWM_PTCR : (PWM Offset: 0x120) ( /W 32) Transfer Control Register -------- */
+#define PWM_PTCR_RXTEN_Pos                    _UINT32_(0)                                          /* (PWM_PTCR) Receiver Transfer Enable Position */
+#define PWM_PTCR_RXTEN_Msk                    (_UINT32_(0x1) << PWM_PTCR_RXTEN_Pos)                /* (PWM_PTCR) Receiver Transfer Enable Mask */
+#define PWM_PTCR_RXTEN(value)                 (PWM_PTCR_RXTEN_Msk & (_UINT32_(value) << PWM_PTCR_RXTEN_Pos)) /* Assigment of value for RXTEN in the PWM_PTCR register */
+#define PWM_PTCR_RXTDIS_Pos                   _UINT32_(1)                                          /* (PWM_PTCR) Receiver Transfer Disable Position */
+#define PWM_PTCR_RXTDIS_Msk                   (_UINT32_(0x1) << PWM_PTCR_RXTDIS_Pos)               /* (PWM_PTCR) Receiver Transfer Disable Mask */
+#define PWM_PTCR_RXTDIS(value)                (PWM_PTCR_RXTDIS_Msk & (_UINT32_(value) << PWM_PTCR_RXTDIS_Pos)) /* Assigment of value for RXTDIS in the PWM_PTCR register */
+#define PWM_PTCR_TXTEN_Pos                    _UINT32_(8)                                          /* (PWM_PTCR) Transmitter Transfer Enable Position */
+#define PWM_PTCR_TXTEN_Msk                    (_UINT32_(0x1) << PWM_PTCR_TXTEN_Pos)                /* (PWM_PTCR) Transmitter Transfer Enable Mask */
+#define PWM_PTCR_TXTEN(value)                 (PWM_PTCR_TXTEN_Msk & (_UINT32_(value) << PWM_PTCR_TXTEN_Pos)) /* Assigment of value for TXTEN in the PWM_PTCR register */
+#define PWM_PTCR_TXTDIS_Pos                   _UINT32_(9)                                          /* (PWM_PTCR) Transmitter Transfer Disable Position */
+#define PWM_PTCR_TXTDIS_Msk                   (_UINT32_(0x1) << PWM_PTCR_TXTDIS_Pos)               /* (PWM_PTCR) Transmitter Transfer Disable Mask */
+#define PWM_PTCR_TXTDIS(value)                (PWM_PTCR_TXTDIS_Msk & (_UINT32_(value) << PWM_PTCR_TXTDIS_Pos)) /* Assigment of value for TXTDIS in the PWM_PTCR register */
+#define PWM_PTCR_RXCBEN_Pos                   _UINT32_(16)                                         /* (PWM_PTCR) Receiver Circular Buffer Enable Position */
+#define PWM_PTCR_RXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTCR_RXCBEN_Pos)               /* (PWM_PTCR) Receiver Circular Buffer Enable Mask */
+#define PWM_PTCR_RXCBEN(value)                (PWM_PTCR_RXCBEN_Msk & (_UINT32_(value) << PWM_PTCR_RXCBEN_Pos)) /* Assigment of value for RXCBEN in the PWM_PTCR register */
+#define PWM_PTCR_RXCBDIS_Pos                  _UINT32_(17)                                         /* (PWM_PTCR) Receiver Circular Buffer Disable Position */
+#define PWM_PTCR_RXCBDIS_Msk                  (_UINT32_(0x1) << PWM_PTCR_RXCBDIS_Pos)              /* (PWM_PTCR) Receiver Circular Buffer Disable Mask */
+#define PWM_PTCR_RXCBDIS(value)               (PWM_PTCR_RXCBDIS_Msk & (_UINT32_(value) << PWM_PTCR_RXCBDIS_Pos)) /* Assigment of value for RXCBDIS in the PWM_PTCR register */
+#define PWM_PTCR_TXCBEN_Pos                   _UINT32_(18)                                         /* (PWM_PTCR) Transmitter Circular Buffer Enable Position */
+#define PWM_PTCR_TXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTCR_TXCBEN_Pos)               /* (PWM_PTCR) Transmitter Circular Buffer Enable Mask */
+#define PWM_PTCR_TXCBEN(value)                (PWM_PTCR_TXCBEN_Msk & (_UINT32_(value) << PWM_PTCR_TXCBEN_Pos)) /* Assigment of value for TXCBEN in the PWM_PTCR register */
+#define PWM_PTCR_TXCBDIS_Pos                  _UINT32_(19)                                         /* (PWM_PTCR) Transmitter Circular Buffer Disable Position */
+#define PWM_PTCR_TXCBDIS_Msk                  (_UINT32_(0x1) << PWM_PTCR_TXCBDIS_Pos)              /* (PWM_PTCR) Transmitter Circular Buffer Disable Mask */
+#define PWM_PTCR_TXCBDIS(value)               (PWM_PTCR_TXCBDIS_Msk & (_UINT32_(value) << PWM_PTCR_TXCBDIS_Pos)) /* Assigment of value for TXCBDIS in the PWM_PTCR register */
+#define PWM_PTCR_ERRCLR_Pos                   _UINT32_(24)                                         /* (PWM_PTCR) Transfer Bus Error Clear Position */
+#define PWM_PTCR_ERRCLR_Msk                   (_UINT32_(0x1) << PWM_PTCR_ERRCLR_Pos)               /* (PWM_PTCR) Transfer Bus Error Clear Mask */
+#define PWM_PTCR_ERRCLR(value)                (PWM_PTCR_ERRCLR_Msk & (_UINT32_(value) << PWM_PTCR_ERRCLR_Pos)) /* Assigment of value for ERRCLR in the PWM_PTCR register */
+#define PWM_PTCR_Msk                          _UINT32_(0x010F0303)                                 /* (PWM_PTCR) Register Mask  */
+
+
+/* -------- PWM_PTSR : (PWM Offset: 0x124) ( R/ 32) Transfer Status Register -------- */
+#define PWM_PTSR_RXTEN_Pos                    _UINT32_(0)                                          /* (PWM_PTSR) Receiver Transfer Enable Position */
+#define PWM_PTSR_RXTEN_Msk                    (_UINT32_(0x1) << PWM_PTSR_RXTEN_Pos)                /* (PWM_PTSR) Receiver Transfer Enable Mask */
+#define PWM_PTSR_RXTEN(value)                 (PWM_PTSR_RXTEN_Msk & (_UINT32_(value) << PWM_PTSR_RXTEN_Pos)) /* Assigment of value for RXTEN in the PWM_PTSR register */
+#define PWM_PTSR_TXTEN_Pos                    _UINT32_(8)                                          /* (PWM_PTSR) Transmitter Transfer Enable Position */
+#define PWM_PTSR_TXTEN_Msk                    (_UINT32_(0x1) << PWM_PTSR_TXTEN_Pos)                /* (PWM_PTSR) Transmitter Transfer Enable Mask */
+#define PWM_PTSR_TXTEN(value)                 (PWM_PTSR_TXTEN_Msk & (_UINT32_(value) << PWM_PTSR_TXTEN_Pos)) /* Assigment of value for TXTEN in the PWM_PTSR register */
+#define PWM_PTSR_RXCBEN_Pos                   _UINT32_(16)                                         /* (PWM_PTSR) Receiver Circular Buffer Enable Position */
+#define PWM_PTSR_RXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTSR_RXCBEN_Pos)               /* (PWM_PTSR) Receiver Circular Buffer Enable Mask */
+#define PWM_PTSR_RXCBEN(value)                (PWM_PTSR_RXCBEN_Msk & (_UINT32_(value) << PWM_PTSR_RXCBEN_Pos)) /* Assigment of value for RXCBEN in the PWM_PTSR register */
+#define PWM_PTSR_TXCBEN_Pos                   _UINT32_(18)                                         /* (PWM_PTSR) Transmitter Circular Buffer Enable Position */
+#define PWM_PTSR_TXCBEN_Msk                   (_UINT32_(0x1) << PWM_PTSR_TXCBEN_Pos)               /* (PWM_PTSR) Transmitter Circular Buffer Enable Mask */
+#define PWM_PTSR_TXCBEN(value)                (PWM_PTSR_TXCBEN_Msk & (_UINT32_(value) << PWM_PTSR_TXCBEN_Pos)) /* Assigment of value for TXCBEN in the PWM_PTSR register */
+#define PWM_PTSR_ERR_Pos                      _UINT32_(24)                                         /* (PWM_PTSR) Transfer Bus Error Position */
+#define PWM_PTSR_ERR_Msk                      (_UINT32_(0x1) << PWM_PTSR_ERR_Pos)                  /* (PWM_PTSR) Transfer Bus Error Mask */
+#define PWM_PTSR_ERR(value)                   (PWM_PTSR_ERR_Msk & (_UINT32_(value) << PWM_PTSR_ERR_Pos)) /* Assigment of value for ERR in the PWM_PTSR register */
+#define PWM_PTSR_Msk                          _UINT32_(0x01050101)                                 /* (PWM_PTSR) Register Mask  */
+
+
+/* -------- PWM_PWPMR : (PWM Offset: 0x128) (R/W 32) Write Protection Mode Register -------- */
+#define PWM_PWPMR_WPPTREN_Pos                 _UINT32_(0)                                          /* (PWM_PWPMR) Write Protection Pointer Registers Enable Position */
+#define PWM_PWPMR_WPPTREN_Msk                 (_UINT32_(0x1) << PWM_PWPMR_WPPTREN_Pos)             /* (PWM_PWPMR) Write Protection Pointer Registers Enable Mask */
+#define PWM_PWPMR_WPPTREN(value)              (PWM_PWPMR_WPPTREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPPTREN_Pos)) /* Assigment of value for WPPTREN in the PWM_PWPMR register */
+#define PWM_PWPMR_WPCTREN_Pos                 _UINT32_(1)                                          /* (PWM_PWPMR) Write Protection Counter Registers Enable Position */
+#define PWM_PWPMR_WPCTREN_Msk                 (_UINT32_(0x1) << PWM_PWPMR_WPCTREN_Pos)             /* (PWM_PWPMR) Write Protection Counter Registers Enable Mask */
+#define PWM_PWPMR_WPCTREN(value)              (PWM_PWPMR_WPCTREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPCTREN_Pos)) /* Assigment of value for WPCTREN in the PWM_PWPMR register */
+#define PWM_PWPMR_WPCREN_Pos                  _UINT32_(2)                                          /* (PWM_PWPMR) Write Protection Control Register Enable Position */
+#define PWM_PWPMR_WPCREN_Msk                  (_UINT32_(0x1) << PWM_PWPMR_WPCREN_Pos)              /* (PWM_PWPMR) Write Protection Control Register Enable Mask */
+#define PWM_PWPMR_WPCREN(value)               (PWM_PWPMR_WPCREN_Msk & (_UINT32_(value) << PWM_PWPMR_WPCREN_Pos)) /* Assigment of value for WPCREN in the PWM_PWPMR register */
+#define PWM_PWPMR_WPKEY_Pos                   _UINT32_(8)                                          /* (PWM_PWPMR) Write Protection Key Position */
+#define PWM_PWPMR_WPKEY_Msk                   (_UINT32_(0xFFFFFF) << PWM_PWPMR_WPKEY_Pos)          /* (PWM_PWPMR) Write Protection Key Mask */
+#define PWM_PWPMR_WPKEY(value)                (PWM_PWPMR_WPKEY_Msk & (_UINT32_(value) << PWM_PWPMR_WPKEY_Pos)) /* Assigment of value for WPKEY in the PWM_PWPMR register */
+#define   PWM_PWPMR_WPKEY_PASSWD_Val          _UINT32_(0x504443)                                   /* (PWM_PWPMR) Writing any other value in this field aborts the write operation. Always reads as 0.  */
+#define PWM_PWPMR_WPKEY_PASSWD                (PWM_PWPMR_WPKEY_PASSWD_Val << PWM_PWPMR_WPKEY_Pos)  /* (PWM_PWPMR) Writing any other value in this field aborts the write operation. Always reads as 0. Position  */
+#define PWM_PWPMR_Msk                         _UINT32_(0xFFFFFF07)                                 /* (PWM_PWPMR) Register Mask  */
+
+
+/* -------- PWM_CMUPD0 : (PWM Offset: 0x400) ( /W 32) PWM Channel Mode Update Register (ch_num = 0) -------- */
+#define PWM_CMUPD0_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD0) Channel Polarity Update Position */
+#define PWM_CMUPD0_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD0_CPOLUP_Pos)             /* (PWM_CMUPD0) Channel Polarity Update Mask */
+#define PWM_CMUPD0_CPOLUP(value)              (PWM_CMUPD0_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD0_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD0 register */
+#define PWM_CMUPD0_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD0) Channel Polarity Inversion Update Position */
+#define PWM_CMUPD0_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD0_CPOLINVUP_Pos)          /* (PWM_CMUPD0) Channel Polarity Inversion Update Mask */
+#define PWM_CMUPD0_CPOLINVUP(value)           (PWM_CMUPD0_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD0_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD0 register */
+#define PWM_CMUPD0_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD0) Register Mask  */
+
+
+/* -------- PWM_CMUPD1 : (PWM Offset: 0x420) ( /W 32) PWM Channel Mode Update Register (ch_num = 1) -------- */
+#define PWM_CMUPD1_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD1) Channel Polarity Update Position */
+#define PWM_CMUPD1_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD1_CPOLUP_Pos)             /* (PWM_CMUPD1) Channel Polarity Update Mask */
+#define PWM_CMUPD1_CPOLUP(value)              (PWM_CMUPD1_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD1_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD1 register */
+#define PWM_CMUPD1_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD1) Channel Polarity Inversion Update Position */
+#define PWM_CMUPD1_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD1_CPOLINVUP_Pos)          /* (PWM_CMUPD1) Channel Polarity Inversion Update Mask */
+#define PWM_CMUPD1_CPOLINVUP(value)           (PWM_CMUPD1_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD1_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD1 register */
+#define PWM_CMUPD1_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD1) Register Mask  */
+
+
+/* -------- PWM_ETRG1 : (PWM Offset: 0x42C) (R/W 32) PWM External Trigger Register 1 -------- */
+#define PWM_ETRG1_MAXCNT_Pos                  _UINT32_(0)                                          /* (PWM_ETRG1) Maximum Counter value Position */
+#define PWM_ETRG1_MAXCNT_Msk                  (_UINT32_(0xFFFFFF) << PWM_ETRG1_MAXCNT_Pos)         /* (PWM_ETRG1) Maximum Counter value Mask */
+#define PWM_ETRG1_MAXCNT(value)               (PWM_ETRG1_MAXCNT_Msk & (_UINT32_(value) << PWM_ETRG1_MAXCNT_Pos)) /* Assigment of value for MAXCNT in the PWM_ETRG1 register */
+#define PWM_ETRG1_TRGMODE_Pos                 _UINT32_(24)                                         /* (PWM_ETRG1) External Trigger Mode Position */
+#define PWM_ETRG1_TRGMODE_Msk                 (_UINT32_(0x3) << PWM_ETRG1_TRGMODE_Pos)             /* (PWM_ETRG1) External Trigger Mode Mask */
+#define PWM_ETRG1_TRGMODE(value)              (PWM_ETRG1_TRGMODE_Msk & (_UINT32_(value) << PWM_ETRG1_TRGMODE_Pos)) /* Assigment of value for TRGMODE in the PWM_ETRG1 register */
+#define   PWM_ETRG1_TRGMODE_OFF_Val           _UINT32_(0x0)                                        /* (PWM_ETRG1) External trigger is not enabled.  */
+#define   PWM_ETRG1_TRGMODE_MODE1_Val         _UINT32_(0x1)                                        /* (PWM_ETRG1) External PWM Reset Mode  */
+#define   PWM_ETRG1_TRGMODE_MODE2_Val         _UINT32_(0x2)                                        /* (PWM_ETRG1) External PWM Start Mode  */
+#define   PWM_ETRG1_TRGMODE_MODE3_Val         _UINT32_(0x3)                                        /* (PWM_ETRG1) Cycle-by-cycle Duty Mode  */
+#define PWM_ETRG1_TRGMODE_OFF                 (PWM_ETRG1_TRGMODE_OFF_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External trigger is not enabled. Position  */
+#define PWM_ETRG1_TRGMODE_MODE1               (PWM_ETRG1_TRGMODE_MODE1_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External PWM Reset Mode Position  */
+#define PWM_ETRG1_TRGMODE_MODE2               (PWM_ETRG1_TRGMODE_MODE2_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) External PWM Start Mode Position  */
+#define PWM_ETRG1_TRGMODE_MODE3               (PWM_ETRG1_TRGMODE_MODE3_Val << PWM_ETRG1_TRGMODE_Pos) /* (PWM_ETRG1) Cycle-by-cycle Duty Mode Position  */
+#define PWM_ETRG1_TRGEDGE_Pos                 _UINT32_(28)                                         /* (PWM_ETRG1) Edge Selection Position */
+#define PWM_ETRG1_TRGEDGE_Msk                 (_UINT32_(0x1) << PWM_ETRG1_TRGEDGE_Pos)             /* (PWM_ETRG1) Edge Selection Mask */
+#define PWM_ETRG1_TRGEDGE(value)              (PWM_ETRG1_TRGEDGE_Msk & (_UINT32_(value) << PWM_ETRG1_TRGEDGE_Pos)) /* Assigment of value for TRGEDGE in the PWM_ETRG1 register */
+#define   PWM_ETRG1_TRGEDGE_FALLING_ZERO_Val  _UINT32_(0x0)                                        /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0  */
+#define   PWM_ETRG1_TRGEDGE_RISING_ONE_Val    _UINT32_(0x1)                                        /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1  */
+#define PWM_ETRG1_TRGEDGE_FALLING_ZERO        (PWM_ETRG1_TRGEDGE_FALLING_ZERO_Val << PWM_ETRG1_TRGEDGE_Pos) /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0 Position  */
+#define PWM_ETRG1_TRGEDGE_RISING_ONE          (PWM_ETRG1_TRGEDGE_RISING_ONE_Val << PWM_ETRG1_TRGEDGE_Pos) /* (PWM_ETRG1) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1 Position  */
+#define PWM_ETRG1_TRGFILT_Pos                 _UINT32_(29)                                         /* (PWM_ETRG1) Filtered input Position */
+#define PWM_ETRG1_TRGFILT_Msk                 (_UINT32_(0x1) << PWM_ETRG1_TRGFILT_Pos)             /* (PWM_ETRG1) Filtered input Mask */
+#define PWM_ETRG1_TRGFILT(value)              (PWM_ETRG1_TRGFILT_Msk & (_UINT32_(value) << PWM_ETRG1_TRGFILT_Pos)) /* Assigment of value for TRGFILT in the PWM_ETRG1 register */
+#define PWM_ETRG1_TRGSRC_Pos                  _UINT32_(30)                                         /* (PWM_ETRG1) Trigger Source Position */
+#define PWM_ETRG1_TRGSRC_Msk                  (_UINT32_(0x1) << PWM_ETRG1_TRGSRC_Pos)              /* (PWM_ETRG1) Trigger Source Mask */
+#define PWM_ETRG1_TRGSRC(value)               (PWM_ETRG1_TRGSRC_Msk & (_UINT32_(value) << PWM_ETRG1_TRGSRC_Pos)) /* Assigment of value for TRGSRC in the PWM_ETRG1 register */
+#define PWM_ETRG1_RFEN_Pos                    _UINT32_(31)                                         /* (PWM_ETRG1) Recoverable Fault Enable Position */
+#define PWM_ETRG1_RFEN_Msk                    (_UINT32_(0x1) << PWM_ETRG1_RFEN_Pos)                /* (PWM_ETRG1) Recoverable Fault Enable Mask */
+#define PWM_ETRG1_RFEN(value)                 (PWM_ETRG1_RFEN_Msk & (_UINT32_(value) << PWM_ETRG1_RFEN_Pos)) /* Assigment of value for RFEN in the PWM_ETRG1 register */
+#define PWM_ETRG1_Msk                         _UINT32_(0xF3FFFFFF)                                 /* (PWM_ETRG1) Register Mask  */
+
+
+/* -------- PWM_LEBR1 : (PWM Offset: 0x430) (R/W 32) PWM Leading-Edge Blanking Register 1 -------- */
+#define PWM_LEBR1_LEBDELAY_Pos                _UINT32_(0)                                          /* (PWM_LEBR1) Leading-Edge Blanking Delay for TRGINx Position */
+#define PWM_LEBR1_LEBDELAY_Msk                (_UINT32_(0x7F) << PWM_LEBR1_LEBDELAY_Pos)           /* (PWM_LEBR1) Leading-Edge Blanking Delay for TRGINx Mask */
+#define PWM_LEBR1_LEBDELAY(value)             (PWM_LEBR1_LEBDELAY_Msk & (_UINT32_(value) << PWM_LEBR1_LEBDELAY_Pos)) /* Assigment of value for LEBDELAY in the PWM_LEBR1 register */
+#define PWM_LEBR1_PWMLFEN_Pos                 _UINT32_(16)                                         /* (PWM_LEBR1) PWML Falling Edge Enable Position */
+#define PWM_LEBR1_PWMLFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMLFEN_Pos)             /* (PWM_LEBR1) PWML Falling Edge Enable Mask */
+#define PWM_LEBR1_PWMLFEN(value)              (PWM_LEBR1_PWMLFEN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMLFEN_Pos)) /* Assigment of value for PWMLFEN in the PWM_LEBR1 register */
+#define PWM_LEBR1_PWMLREN_Pos                 _UINT32_(17)                                         /* (PWM_LEBR1) PWML Rising Edge Enable Position */
+#define PWM_LEBR1_PWMLREN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMLREN_Pos)             /* (PWM_LEBR1) PWML Rising Edge Enable Mask */
+#define PWM_LEBR1_PWMLREN(value)              (PWM_LEBR1_PWMLREN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMLREN_Pos)) /* Assigment of value for PWMLREN in the PWM_LEBR1 register */
+#define PWM_LEBR1_PWMHFEN_Pos                 _UINT32_(18)                                         /* (PWM_LEBR1) PWMH Falling Edge Enable Position */
+#define PWM_LEBR1_PWMHFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMHFEN_Pos)             /* (PWM_LEBR1) PWMH Falling Edge Enable Mask */
+#define PWM_LEBR1_PWMHFEN(value)              (PWM_LEBR1_PWMHFEN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMHFEN_Pos)) /* Assigment of value for PWMHFEN in the PWM_LEBR1 register */
+#define PWM_LEBR1_PWMHREN_Pos                 _UINT32_(19)                                         /* (PWM_LEBR1) PWMH Rising Edge Enable Position */
+#define PWM_LEBR1_PWMHREN_Msk                 (_UINT32_(0x1) << PWM_LEBR1_PWMHREN_Pos)             /* (PWM_LEBR1) PWMH Rising Edge Enable Mask */
+#define PWM_LEBR1_PWMHREN(value)              (PWM_LEBR1_PWMHREN_Msk & (_UINT32_(value) << PWM_LEBR1_PWMHREN_Pos)) /* Assigment of value for PWMHREN in the PWM_LEBR1 register */
+#define PWM_LEBR1_Msk                         _UINT32_(0x000F007F)                                 /* (PWM_LEBR1) Register Mask  */
+
+
+/* -------- PWM_CMUPD2 : (PWM Offset: 0x440) ( /W 32) PWM Channel Mode Update Register (ch_num = 2) -------- */
+#define PWM_CMUPD2_CPOLUP_Pos                 _UINT32_(9)                                          /* (PWM_CMUPD2) Channel Polarity Update Position */
+#define PWM_CMUPD2_CPOLUP_Msk                 (_UINT32_(0x1) << PWM_CMUPD2_CPOLUP_Pos)             /* (PWM_CMUPD2) Channel Polarity Update Mask */
+#define PWM_CMUPD2_CPOLUP(value)              (PWM_CMUPD2_CPOLUP_Msk & (_UINT32_(value) << PWM_CMUPD2_CPOLUP_Pos)) /* Assigment of value for CPOLUP in the PWM_CMUPD2 register */
+#define PWM_CMUPD2_CPOLINVUP_Pos              _UINT32_(13)                                         /* (PWM_CMUPD2) Channel Polarity Inversion Update Position */
+#define PWM_CMUPD2_CPOLINVUP_Msk              (_UINT32_(0x1) << PWM_CMUPD2_CPOLINVUP_Pos)          /* (PWM_CMUPD2) Channel Polarity Inversion Update Mask */
+#define PWM_CMUPD2_CPOLINVUP(value)           (PWM_CMUPD2_CPOLINVUP_Msk & (_UINT32_(value) << PWM_CMUPD2_CPOLINVUP_Pos)) /* Assigment of value for CPOLINVUP in the PWM_CMUPD2 register */
+#define PWM_CMUPD2_Msk                        _UINT32_(0x00002200)                                 /* (PWM_CMUPD2) Register Mask  */
+
+
+/* -------- PWM_ETRG2 : (PWM Offset: 0x44C) (R/W 32) PWM External Trigger Register 2 -------- */
+#define PWM_ETRG2_MAXCNT_Pos                  _UINT32_(0)                                          /* (PWM_ETRG2) Maximum Counter value Position */
+#define PWM_ETRG2_MAXCNT_Msk                  (_UINT32_(0xFFFFFF) << PWM_ETRG2_MAXCNT_Pos)         /* (PWM_ETRG2) Maximum Counter value Mask */
+#define PWM_ETRG2_MAXCNT(value)               (PWM_ETRG2_MAXCNT_Msk & (_UINT32_(value) << PWM_ETRG2_MAXCNT_Pos)) /* Assigment of value for MAXCNT in the PWM_ETRG2 register */
+#define PWM_ETRG2_TRGMODE_Pos                 _UINT32_(24)                                         /* (PWM_ETRG2) External Trigger Mode Position */
+#define PWM_ETRG2_TRGMODE_Msk                 (_UINT32_(0x3) << PWM_ETRG2_TRGMODE_Pos)             /* (PWM_ETRG2) External Trigger Mode Mask */
+#define PWM_ETRG2_TRGMODE(value)              (PWM_ETRG2_TRGMODE_Msk & (_UINT32_(value) << PWM_ETRG2_TRGMODE_Pos)) /* Assigment of value for TRGMODE in the PWM_ETRG2 register */
+#define   PWM_ETRG2_TRGMODE_OFF_Val           _UINT32_(0x0)                                        /* (PWM_ETRG2) External trigger is not enabled.  */
+#define   PWM_ETRG2_TRGMODE_MODE1_Val         _UINT32_(0x1)                                        /* (PWM_ETRG2) External PWM Reset Mode  */
+#define   PWM_ETRG2_TRGMODE_MODE2_Val         _UINT32_(0x2)                                        /* (PWM_ETRG2) External PWM Start Mode  */
+#define   PWM_ETRG2_TRGMODE_MODE3_Val         _UINT32_(0x3)                                        /* (PWM_ETRG2) Cycle-by-cycle Duty Mode  */
+#define PWM_ETRG2_TRGMODE_OFF                 (PWM_ETRG2_TRGMODE_OFF_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External trigger is not enabled. Position  */
+#define PWM_ETRG2_TRGMODE_MODE1               (PWM_ETRG2_TRGMODE_MODE1_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External PWM Reset Mode Position  */
+#define PWM_ETRG2_TRGMODE_MODE2               (PWM_ETRG2_TRGMODE_MODE2_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) External PWM Start Mode Position  */
+#define PWM_ETRG2_TRGMODE_MODE3               (PWM_ETRG2_TRGMODE_MODE3_Val << PWM_ETRG2_TRGMODE_Pos) /* (PWM_ETRG2) Cycle-by-cycle Duty Mode Position  */
+#define PWM_ETRG2_TRGEDGE_Pos                 _UINT32_(28)                                         /* (PWM_ETRG2) Edge Selection Position */
+#define PWM_ETRG2_TRGEDGE_Msk                 (_UINT32_(0x1) << PWM_ETRG2_TRGEDGE_Pos)             /* (PWM_ETRG2) Edge Selection Mask */
+#define PWM_ETRG2_TRGEDGE(value)              (PWM_ETRG2_TRGEDGE_Msk & (_UINT32_(value) << PWM_ETRG2_TRGEDGE_Pos)) /* Assigment of value for TRGEDGE in the PWM_ETRG2 register */
+#define   PWM_ETRG2_TRGEDGE_FALLING_ZERO_Val  _UINT32_(0x0)                                        /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0  */
+#define   PWM_ETRG2_TRGEDGE_RISING_ONE_Val    _UINT32_(0x1)                                        /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1  */
+#define PWM_ETRG2_TRGEDGE_FALLING_ZERO        (PWM_ETRG2_TRGEDGE_FALLING_ZERO_Val << PWM_ETRG2_TRGEDGE_Pos) /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on falling edge. TRGMODE = 2, 3: TRGINx active level is 0 Position  */
+#define PWM_ETRG2_TRGEDGE_RISING_ONE          (PWM_ETRG2_TRGEDGE_RISING_ONE_Val << PWM_ETRG2_TRGEDGE_Pos) /* (PWM_ETRG2) TRGMODE = 1: TRGINx event detection on rising edge. TRGMODE = 2, 3: TRGINx active level is 1 Position  */
+#define PWM_ETRG2_TRGFILT_Pos                 _UINT32_(29)                                         /* (PWM_ETRG2) Filtered input Position */
+#define PWM_ETRG2_TRGFILT_Msk                 (_UINT32_(0x1) << PWM_ETRG2_TRGFILT_Pos)             /* (PWM_ETRG2) Filtered input Mask */
+#define PWM_ETRG2_TRGFILT(value)              (PWM_ETRG2_TRGFILT_Msk & (_UINT32_(value) << PWM_ETRG2_TRGFILT_Pos)) /* Assigment of value for TRGFILT in the PWM_ETRG2 register */
+#define PWM_ETRG2_TRGSRC_Pos                  _UINT32_(30)                                         /* (PWM_ETRG2) Trigger Source Position */
+#define PWM_ETRG2_TRGSRC_Msk                  (_UINT32_(0x1) << PWM_ETRG2_TRGSRC_Pos)              /* (PWM_ETRG2) Trigger Source Mask */
+#define PWM_ETRG2_TRGSRC(value)               (PWM_ETRG2_TRGSRC_Msk & (_UINT32_(value) << PWM_ETRG2_TRGSRC_Pos)) /* Assigment of value for TRGSRC in the PWM_ETRG2 register */
+#define PWM_ETRG2_RFEN_Pos                    _UINT32_(31)                                         /* (PWM_ETRG2) Recoverable Fault Enable Position */
+#define PWM_ETRG2_RFEN_Msk                    (_UINT32_(0x1) << PWM_ETRG2_RFEN_Pos)                /* (PWM_ETRG2) Recoverable Fault Enable Mask */
+#define PWM_ETRG2_RFEN(value)                 (PWM_ETRG2_RFEN_Msk & (_UINT32_(value) << PWM_ETRG2_RFEN_Pos)) /* Assigment of value for RFEN in the PWM_ETRG2 register */
+#define PWM_ETRG2_Msk                         _UINT32_(0xF3FFFFFF)                                 /* (PWM_ETRG2) Register Mask  */
+
+
+/* -------- PWM_LEBR2 : (PWM Offset: 0x450) (R/W 32) PWM Leading-Edge Blanking Register 2 -------- */
+#define PWM_LEBR2_LEBDELAY_Pos                _UINT32_(0)                                          /* (PWM_LEBR2) Leading-Edge Blanking Delay for TRGINx Position */
+#define PWM_LEBR2_LEBDELAY_Msk                (_UINT32_(0x7F) << PWM_LEBR2_LEBDELAY_Pos)           /* (PWM_LEBR2) Leading-Edge Blanking Delay for TRGINx Mask */
+#define PWM_LEBR2_LEBDELAY(value)             (PWM_LEBR2_LEBDELAY_Msk & (_UINT32_(value) << PWM_LEBR2_LEBDELAY_Pos)) /* Assigment of value for LEBDELAY in the PWM_LEBR2 register */
+#define PWM_LEBR2_PWMLFEN_Pos                 _UINT32_(16)                                         /* (PWM_LEBR2) PWML Falling Edge Enable Position */
+#define PWM_LEBR2_PWMLFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMLFEN_Pos)             /* (PWM_LEBR2) PWML Falling Edge Enable Mask */
+#define PWM_LEBR2_PWMLFEN(value)              (PWM_LEBR2_PWMLFEN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMLFEN_Pos)) /* Assigment of value for PWMLFEN in the PWM_LEBR2 register */
+#define PWM_LEBR2_PWMLREN_Pos                 _UINT32_(17)                                         /* (PWM_LEBR2) PWML Rising Edge Enable Position */
+#define PWM_LEBR2_PWMLREN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMLREN_Pos)             /* (PWM_LEBR2) PWML Rising Edge Enable Mask */
+#define PWM_LEBR2_PWMLREN(value)              (PWM_LEBR2_PWMLREN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMLREN_Pos)) /* Assigment of value for PWMLREN in the PWM_LEBR2 register */
+#define PWM_LEBR2_PWMHFEN_Pos                 _UINT32_(18)                                         /* (PWM_LEBR2) PWMH Falling Edge Enable Position */
+#define PWM_LEBR2_PWMHFEN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMHFEN_Pos)             /* (PWM_LEBR2) PWMH Falling Edge Enable Mask */
+#define PWM_LEBR2_PWMHFEN(value)              (PWM_LEBR2_PWMHFEN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMHFEN_Pos)) /* Assigment of value for PWMHFEN in the PWM_LEBR2 register */
+#define PWM_LEBR2_PWMHREN_Pos                 _UINT32_(19)                                         /* (PWM_LEBR2) PWMH Rising Edge Enable Position */
+#define PWM_LEBR2_PWMHREN_Msk                 (_UINT32_(0x1) << PWM_LEBR2_PWMHREN_Pos)             /* (PWM_LEBR2) PWMH Rising Edge Enable Mask */
+#define PWM_LEBR2_PWMHREN(value)              (PWM_LEBR2_PWMHREN_Msk & (_UINT32_(value) << PWM_LEBR2_PWMHREN_Pos)) /* Assigment of value for PWMHREN in the PWM_LEBR2 register */
+#define PWM_LEBR2_Msk                         _UINT32_(0x000F007F)                                 /* (PWM_LEBR2) Register Mask  */
+
+
 /** \brief PWM register offsets definitions */
-#define PWM_CCNT_REG_OFST              _UINT32_(0x14)      /* (PWM_CCNT) PWM Channel Counter Register Offset */
+#define PWM_CMR_REG_OFST               _UINT32_(0x00)      /* (PWM_CMR) PWM Channel Mode Register Offset */
 #define PWM_CDTY_REG_OFST              _UINT32_(0x04)      /* (PWM_CDTY) PWM Channel Duty Cycle Register Offset */
 #define PWM_CDTYUPD_REG_OFST           _UINT32_(0x08)      /* (PWM_CDTYUPD) PWM Channel Duty Cycle Update Register Offset */
-#define PWM_CMR_REG_OFST               _UINT32_(0x00)      /* (PWM_CMR) PWM Channel Mode Register Offset */
 #define PWM_CPRD_REG_OFST              _UINT32_(0x0C)      /* (PWM_CPRD) PWM Channel Period Register Offset */
 #define PWM_CPRDUPD_REG_OFST           _UINT32_(0x10)      /* (PWM_CPRDUPD) PWM Channel Period Update Register Offset */
+#define PWM_CCNT_REG_OFST              _UINT32_(0x14)      /* (PWM_CCNT) PWM Channel Counter Register Offset */
 #define PWM_DT_REG_OFST                _UINT32_(0x18)      /* (PWM_DT) PWM Channel Dead Time Register Offset */
 #define PWM_DTUPD_REG_OFST             _UINT32_(0x1C)      /* (PWM_DTUPD) PWM Channel Dead Time Update Register Offset */
-#define PWM_CMPM_REG_OFST              _UINT32_(0x08)      /* (PWM_CMPM) PWM Comparison 0 Mode Register Offset */
-#define PWM_CMPMUPD_REG_OFST           _UINT32_(0x0C)      /* (PWM_CMPMUPD) PWM Comparison 0 Mode Update Register Offset */
 #define PWM_CMPV_REG_OFST              _UINT32_(0x00)      /* (PWM_CMPV) PWM Comparison 0 Value Register Offset */
 #define PWM_CMPVUPD_REG_OFST           _UINT32_(0x04)      /* (PWM_CMPVUPD) PWM Comparison 0 Value Update Register Offset */
+#define PWM_CMPM_REG_OFST              _UINT32_(0x08)      /* (PWM_CMPM) PWM Comparison 0 Mode Register Offset */
+#define PWM_CMPMUPD_REG_OFST           _UINT32_(0x0C)      /* (PWM_CMPMUPD) PWM Comparison 0 Mode Update Register Offset */
 #define PWM_CLK_REG_OFST               _UINT32_(0x00)      /* (PWM_CLK) PWM Clock Register Offset */
-#define PWM_CMUPD0_REG_OFST            _UINT32_(0x400)     /* (PWM_CMUPD0) PWM Channel Mode Update Register (ch_num = 0) Offset */
-#define PWM_CMUPD1_REG_OFST            _UINT32_(0x420)     /* (PWM_CMUPD1) PWM Channel Mode Update Register (ch_num = 1) Offset */
-#define PWM_CMUPD2_REG_OFST            _UINT32_(0x440)     /* (PWM_CMUPD2) PWM Channel Mode Update Register (ch_num = 2) Offset */
-#define PWM_DEBUG_REG_OFST             _UINT32_(0xAC)      /* (PWM_DEBUG) Debug Register Offset */
-#define PWM_DIS_REG_OFST               _UINT32_(0x08)      /* (PWM_DIS) PWM Disable Register Offset */
-#define PWM_ELMR_REG_OFST              _UINT32_(0x7C)      /* (PWM_ELMR) PWM Event Line 0 Mode Register Offset */
-#define PWM_ELMR0_REG_OFST             _UINT32_(0x7C)      /* (PWM_ELMR0) PWM Event Line 0 Mode Register Offset */
 #define PWM_ENA_REG_OFST               _UINT32_(0x04)      /* (PWM_ENA) PWM Enable Register Offset */
-#define PWM_ETRG1_REG_OFST             _UINT32_(0x42C)     /* (PWM_ETRG1) PWM External Trigger Register 1 Offset */
-#define PWM_ETRG2_REG_OFST             _UINT32_(0x44C)     /* (PWM_ETRG2) PWM External Trigger Register 2 Offset */
-#define PWM_FCR_REG_OFST               _UINT32_(0x64)      /* (PWM_FCR) PWM Fault Clear Register Offset */
-#define PWM_FMR_REG_OFST               _UINT32_(0x5C)      /* (PWM_FMR) PWM Fault Mode Register Offset */
-#define PWM_FPE_REG_OFST               _UINT32_(0x6C)      /* (PWM_FPE) PWM Fault Protection Enable Register Offset */
-#define PWM_FPV1_REG_OFST              _UINT32_(0x68)      /* (PWM_FPV1) PWM Fault Protection Value Register 1 Offset */
-#define PWM_FPV2_REG_OFST              _UINT32_(0xC0)      /* (PWM_FPV2) PWM Fault Protection Value 2 Register Offset */
-#define PWM_FSR_REG_OFST               _UINT32_(0x60)      /* (PWM_FSR) PWM Fault Status Register Offset */
-#define PWM_IDR1_REG_OFST              _UINT32_(0x14)      /* (PWM_IDR1) PWM Interrupt Disable Register 1 Offset */
-#define PWM_IDR2_REG_OFST              _UINT32_(0x38)      /* (PWM_IDR2) PWM Interrupt Disable Register 2 Offset */
+#define PWM_DIS_REG_OFST               _UINT32_(0x08)      /* (PWM_DIS) PWM Disable Register Offset */
+#define PWM_SR_REG_OFST                _UINT32_(0x0C)      /* (PWM_SR) PWM Status Register Offset */
 #define PWM_IER1_REG_OFST              _UINT32_(0x10)      /* (PWM_IER1) PWM Interrupt Enable Register 1 Offset */
-#define PWM_IER2_REG_OFST              _UINT32_(0x34)      /* (PWM_IER2) PWM Interrupt Enable Register 2 Offset */
+#define PWM_IDR1_REG_OFST              _UINT32_(0x14)      /* (PWM_IDR1) PWM Interrupt Disable Register 1 Offset */
 #define PWM_IMR1_REG_OFST              _UINT32_(0x18)      /* (PWM_IMR1) PWM Interrupt Mask Register 1 Offset */
-#define PWM_IMR2_REG_OFST              _UINT32_(0x3C)      /* (PWM_IMR2) PWM Interrupt Mask Register 2 Offset */
 #define PWM_ISR1_REG_OFST              _UINT32_(0x1C)      /* (PWM_ISR1) PWM Interrupt Status Register 1 Offset */
-#define PWM_ISR2_REG_OFST              _UINT32_(0x40)      /* (PWM_ISR2) PWM Interrupt Status Register 2 Offset */
-#define PWM_LEBR1_REG_OFST             _UINT32_(0x430)     /* (PWM_LEBR1) PWM Leading-Edge Blanking Register 1 Offset */
-#define PWM_LEBR2_REG_OFST             _UINT32_(0x450)     /* (PWM_LEBR2) PWM Leading-Edge Blanking Register 2 Offset */
-#define PWM_OOV_REG_OFST               _UINT32_(0x44)      /* (PWM_OOV) PWM Output Override Value Register Offset */
-#define PWM_OS_REG_OFST                _UINT32_(0x48)      /* (PWM_OS) PWM Output Selection Register Offset */
-#define PWM_OSC_REG_OFST               _UINT32_(0x50)      /* (PWM_OSC) PWM Output Selection Clear Register Offset */
-#define PWM_OSCUPD_REG_OFST            _UINT32_(0x58)      /* (PWM_OSCUPD) PWM Output Selection Clear Update Register Offset */
-#define PWM_OSS_REG_OFST               _UINT32_(0x4C)      /* (PWM_OSS) PWM Output Selection Set Register Offset */
-#define PWM_OSSUPD_REG_OFST            _UINT32_(0x54)      /* (PWM_OSSUPD) PWM Output Selection Set Update Register Offset */
-#define PWM_PTCR_REG_OFST              _UINT32_(0x120)     /* (PWM_PTCR) Transfer Control Register Offset */
-#define PWM_PTSR_REG_OFST              _UINT32_(0x124)     /* (PWM_PTSR) Transfer Status Register Offset */
-#define PWM_PWPMR_REG_OFST             _UINT32_(0x128)     /* (PWM_PWPMR) Write Protection Mode Register Offset */
 #define PWM_SCM_REG_OFST               _UINT32_(0x20)      /* (PWM_SCM) PWM Sync Channels Mode Register Offset */
 #define PWM_SCUC_REG_OFST              _UINT32_(0x28)      /* (PWM_SCUC) PWM Sync Channels Update Control Register Offset */
 #define PWM_SCUP_REG_OFST              _UINT32_(0x2C)      /* (PWM_SCUP) PWM Sync Channels Update Period Register Offset */
 #define PWM_SCUPUPD_REG_OFST           _UINT32_(0x30)      /* (PWM_SCUPUPD) PWM Sync Channels Update Period Update Register Offset */
-#define PWM_SMMR_REG_OFST              _UINT32_(0xB0)      /* (PWM_SMMR) PWM Stepper Motor Mode Register Offset */
-#define PWM_SR_REG_OFST                _UINT32_(0x0C)      /* (PWM_SR) PWM Status Register Offset */
+#define PWM_IER2_REG_OFST              _UINT32_(0x34)      /* (PWM_IER2) PWM Interrupt Enable Register 2 Offset */
+#define PWM_IDR2_REG_OFST              _UINT32_(0x38)      /* (PWM_IDR2) PWM Interrupt Disable Register 2 Offset */
+#define PWM_IMR2_REG_OFST              _UINT32_(0x3C)      /* (PWM_IMR2) PWM Interrupt Mask Register 2 Offset */
+#define PWM_ISR2_REG_OFST              _UINT32_(0x40)      /* (PWM_ISR2) PWM Interrupt Status Register 2 Offset */
+#define PWM_OOV_REG_OFST               _UINT32_(0x44)      /* (PWM_OOV) PWM Output Override Value Register Offset */
+#define PWM_OS_REG_OFST                _UINT32_(0x48)      /* (PWM_OS) PWM Output Selection Register Offset */
+#define PWM_OSS_REG_OFST               _UINT32_(0x4C)      /* (PWM_OSS) PWM Output Selection Set Register Offset */
+#define PWM_OSC_REG_OFST               _UINT32_(0x50)      /* (PWM_OSC) PWM Output Selection Clear Register Offset */
+#define PWM_OSSUPD_REG_OFST            _UINT32_(0x54)      /* (PWM_OSSUPD) PWM Output Selection Set Update Register Offset */
+#define PWM_OSCUPD_REG_OFST            _UINT32_(0x58)      /* (PWM_OSCUPD) PWM Output Selection Clear Update Register Offset */
+#define PWM_FMR_REG_OFST               _UINT32_(0x5C)      /* (PWM_FMR) PWM Fault Mode Register Offset */
+#define PWM_FSR_REG_OFST               _UINT32_(0x60)      /* (PWM_FSR) PWM Fault Status Register Offset */
+#define PWM_FCR_REG_OFST               _UINT32_(0x64)      /* (PWM_FCR) PWM Fault Clear Register Offset */
+#define PWM_FPV1_REG_OFST              _UINT32_(0x68)      /* (PWM_FPV1) PWM Fault Protection Value Register 1 Offset */
+#define PWM_FPE_REG_OFST               _UINT32_(0x6C)      /* (PWM_FPE) PWM Fault Protection Enable Register Offset */
+#define PWM_ELMR_REG_OFST              _UINT32_(0x7C)      /* (PWM_ELMR) PWM Event Line 0 Mode Register Offset */
+#define PWM_ELMR0_REG_OFST             _UINT32_(0x7C)      /* (PWM_ELMR0) PWM Event Line 0 Mode Register Offset */
 #define PWM_SSPR_REG_OFST              _UINT32_(0xA0)      /* (PWM_SSPR) PWM Spread Spectrum Register Offset */
 #define PWM_SSPUP_REG_OFST             _UINT32_(0xA4)      /* (PWM_SSPUP) PWM Spread Spectrum Update Register Offset */
-#define PWM_TCR_REG_OFST               _UINT32_(0x10C)     /* (PWM_TCR) Transmit Counter Register Offset */
-#define PWM_TNCR_REG_OFST              _UINT32_(0x11C)     /* (PWM_TNCR) Transmit Next Counter Register Offset */
-#define PWM_TNPR_REG_OFST              _UINT32_(0x118)     /* (PWM_TNPR) Transmit Next Pointer Register Offset */
-#define PWM_TPR_REG_OFST               _UINT32_(0x108)     /* (PWM_TPR) Transmit Pointer Register Offset */
+#define PWM_DEBUG_REG_OFST             _UINT32_(0xAC)      /* (PWM_DEBUG) Debug Register Offset */
+#define PWM_SMMR_REG_OFST              _UINT32_(0xB0)      /* (PWM_SMMR) PWM Stepper Motor Mode Register Offset */
+#define PWM_FPV2_REG_OFST              _UINT32_(0xC0)      /* (PWM_FPV2) PWM Fault Protection Value 2 Register Offset */
 #define PWM_WPCR_REG_OFST              _UINT32_(0xE4)      /* (PWM_WPCR) PWM Write Protection Control Register Offset */
 #define PWM_WPSR_REG_OFST              _UINT32_(0xE8)      /* (PWM_WPSR) PWM Write Protection Status Register Offset */
+#define PWM_TPR_REG_OFST               _UINT32_(0x108)     /* (PWM_TPR) Transmit Pointer Register Offset */
+#define PWM_TCR_REG_OFST               _UINT32_(0x10C)     /* (PWM_TCR) Transmit Counter Register Offset */
+#define PWM_TNPR_REG_OFST              _UINT32_(0x118)     /* (PWM_TNPR) Transmit Next Pointer Register Offset */
+#define PWM_TNCR_REG_OFST              _UINT32_(0x11C)     /* (PWM_TNCR) Transmit Next Counter Register Offset */
+#define PWM_PTCR_REG_OFST              _UINT32_(0x120)     /* (PWM_PTCR) Transfer Control Register Offset */
+#define PWM_PTSR_REG_OFST              _UINT32_(0x124)     /* (PWM_PTSR) Transfer Status Register Offset */
+#define PWM_PWPMR_REG_OFST             _UINT32_(0x128)     /* (PWM_PWPMR) Write Protection Mode Register Offset */
+#define PWM_CMUPD0_REG_OFST            _UINT32_(0x400)     /* (PWM_CMUPD0) PWM Channel Mode Update Register (ch_num = 0) Offset */
+#define PWM_CMUPD1_REG_OFST            _UINT32_(0x420)     /* (PWM_CMUPD1) PWM Channel Mode Update Register (ch_num = 1) Offset */
+#define PWM_ETRG1_REG_OFST             _UINT32_(0x42C)     /* (PWM_ETRG1) PWM External Trigger Register 1 Offset */
+#define PWM_LEBR1_REG_OFST             _UINT32_(0x430)     /* (PWM_LEBR1) PWM Leading-Edge Blanking Register 1 Offset */
+#define PWM_CMUPD2_REG_OFST            _UINT32_(0x440)     /* (PWM_CMUPD2) PWM Channel Mode Update Register (ch_num = 2) Offset */
+#define PWM_ETRG2_REG_OFST             _UINT32_(0x44C)     /* (PWM_ETRG2) PWM External Trigger Register 2 Offset */
+#define PWM_LEBR2_REG_OFST             _UINT32_(0x450)     /* (PWM_LEBR2) PWM Leading-Edge Blanking Register 2 Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief PWM_CH_NUM register API structure */

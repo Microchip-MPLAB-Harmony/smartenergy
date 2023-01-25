@@ -293,6 +293,7 @@ typedef enum
     APP_METROLOGY_STATE_START,
     APP_METROLOGY_STATE_RUNNING,
     APP_METROLOGY_STATE_CHECK_CALIBRATION,
+    APP_METROLOGY_STATE_WAIT_DATA,
     APP_METROLOGY_STATE_ERROR
 
 } APP_METROLOGY_STATE;
@@ -334,6 +335,12 @@ typedef struct
     bool setConfiguration;
     
     bool dataIsRdy;
+    
+    bool calibrationFlag;
+    
+    volatile bool integrationFlag;
+    
+    bool dataFlag;
 
 } APP_METROLOGY_DATA;
 

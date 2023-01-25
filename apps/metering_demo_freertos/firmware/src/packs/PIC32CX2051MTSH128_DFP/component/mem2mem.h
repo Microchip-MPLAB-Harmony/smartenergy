@@ -1,7 +1,7 @@
 /*
  * Component description for MEM2MEM
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:43:02Z */
+/* file generated from device description version 2023-01-19T13:46:22Z */
 #ifndef _PIC32CXMTSH_MEM2MEM_COMPONENT_H_
 #define _PIC32CXMTSH_MEM2MEM_COMPONENT_H_
 
@@ -28,14 +28,24 @@
 /*   SOFTWARE API DEFINITION FOR MEM2MEM                                      */
 /* ************************************************************************** */
 
-/* -------- MEM2MEM_IDR : (MEM2MEM Offset: 0x0C) ( /W 32) Interrupt Disable Register -------- */
-#define MEM2MEM_IDR_RXEND_Pos                 _UINT32_(0)                                          /* (MEM2MEM_IDR) End of Transfer Interrupt Disable Position */
-#define MEM2MEM_IDR_RXEND_Msk                 (_UINT32_(0x1) << MEM2MEM_IDR_RXEND_Pos)             /* (MEM2MEM_IDR) End of Transfer Interrupt Disable Mask */
-#define MEM2MEM_IDR_RXEND(value)              (MEM2MEM_IDR_RXEND_Msk & (_UINT32_(value) << MEM2MEM_IDR_RXEND_Pos)) /* Assigment of value for RXEND in the MEM2MEM_IDR register */
-#define MEM2MEM_IDR_RXBUFF_Pos                _UINT32_(1)                                          /* (MEM2MEM_IDR) Buffer Full Interrupt Disable Position */
-#define MEM2MEM_IDR_RXBUFF_Msk                (_UINT32_(0x1) << MEM2MEM_IDR_RXBUFF_Pos)            /* (MEM2MEM_IDR) Buffer Full Interrupt Disable Mask */
-#define MEM2MEM_IDR_RXBUFF(value)             (MEM2MEM_IDR_RXBUFF_Msk & (_UINT32_(value) << MEM2MEM_IDR_RXBUFF_Pos)) /* Assigment of value for RXBUFF in the MEM2MEM_IDR register */
-#define MEM2MEM_IDR_Msk                       _UINT32_(0x00000003)                                 /* (MEM2MEM_IDR) Register Mask  */
+/* -------- MEM2MEM_THR : (MEM2MEM Offset: 0x00) (R/W 32) Transfer Holding Register -------- */
+#define MEM2MEM_THR_THDATA_Pos                _UINT32_(0)                                          /* (MEM2MEM_THR) Transfer Holding Data Position */
+#define MEM2MEM_THR_THDATA_Msk                (_UINT32_(0xFFFFFFFF) << MEM2MEM_THR_THDATA_Pos)     /* (MEM2MEM_THR) Transfer Holding Data Mask */
+#define MEM2MEM_THR_THDATA(value)             (MEM2MEM_THR_THDATA_Msk & (_UINT32_(value) << MEM2MEM_THR_THDATA_Pos)) /* Assigment of value for THDATA in the MEM2MEM_THR register */
+#define MEM2MEM_THR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_THR) Register Mask  */
+
+
+/* -------- MEM2MEM_MR : (MEM2MEM Offset: 0x04) (R/W 32) Mode Register -------- */
+#define MEM2MEM_MR_TSIZE_Pos                  _UINT32_(0)                                          /* (MEM2MEM_MR) Transfer Size Position */
+#define MEM2MEM_MR_TSIZE_Msk                  (_UINT32_(0x3) << MEM2MEM_MR_TSIZE_Pos)              /* (MEM2MEM_MR) Transfer Size Mask */
+#define MEM2MEM_MR_TSIZE(value)               (MEM2MEM_MR_TSIZE_Msk & (_UINT32_(value) << MEM2MEM_MR_TSIZE_Pos)) /* Assigment of value for TSIZE in the MEM2MEM_MR register */
+#define   MEM2MEM_MR_TSIZE_T_8BIT_Val         _UINT32_(0x0)                                        /* (MEM2MEM_MR) The buffer size is defined in bytes.  */
+#define   MEM2MEM_MR_TSIZE_T_16BIT_Val        _UINT32_(0x1)                                        /* (MEM2MEM_MR) The buffer size is defined in half-words (16-bit).  */
+#define   MEM2MEM_MR_TSIZE_T_32BIT_Val        _UINT32_(0x2)                                        /* (MEM2MEM_MR) The buffer size is defined in words (32-bit). Default value.  */
+#define MEM2MEM_MR_TSIZE_T_8BIT               (MEM2MEM_MR_TSIZE_T_8BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in bytes. Position  */
+#define MEM2MEM_MR_TSIZE_T_16BIT              (MEM2MEM_MR_TSIZE_T_16BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in half-words (16-bit). Position  */
+#define MEM2MEM_MR_TSIZE_T_32BIT              (MEM2MEM_MR_TSIZE_T_32BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in words (32-bit). Default value. Position  */
+#define MEM2MEM_MR_Msk                        _UINT32_(0x00000003)                                 /* (MEM2MEM_MR) Register Mask  */
 
 
 /* -------- MEM2MEM_IER : (MEM2MEM Offset: 0x08) ( /W 32) Interrupt Enable Register -------- */
@@ -46,6 +56,16 @@
 #define MEM2MEM_IER_RXBUFF_Msk                (_UINT32_(0x1) << MEM2MEM_IER_RXBUFF_Pos)            /* (MEM2MEM_IER) Buffer Full Interrupt Enable Mask */
 #define MEM2MEM_IER_RXBUFF(value)             (MEM2MEM_IER_RXBUFF_Msk & (_UINT32_(value) << MEM2MEM_IER_RXBUFF_Pos)) /* Assigment of value for RXBUFF in the MEM2MEM_IER register */
 #define MEM2MEM_IER_Msk                       _UINT32_(0x00000003)                                 /* (MEM2MEM_IER) Register Mask  */
+
+
+/* -------- MEM2MEM_IDR : (MEM2MEM Offset: 0x0C) ( /W 32) Interrupt Disable Register -------- */
+#define MEM2MEM_IDR_RXEND_Pos                 _UINT32_(0)                                          /* (MEM2MEM_IDR) End of Transfer Interrupt Disable Position */
+#define MEM2MEM_IDR_RXEND_Msk                 (_UINT32_(0x1) << MEM2MEM_IDR_RXEND_Pos)             /* (MEM2MEM_IDR) End of Transfer Interrupt Disable Mask */
+#define MEM2MEM_IDR_RXEND(value)              (MEM2MEM_IDR_RXEND_Msk & (_UINT32_(value) << MEM2MEM_IDR_RXEND_Pos)) /* Assigment of value for RXEND in the MEM2MEM_IDR register */
+#define MEM2MEM_IDR_RXBUFF_Pos                _UINT32_(1)                                          /* (MEM2MEM_IDR) Buffer Full Interrupt Disable Position */
+#define MEM2MEM_IDR_RXBUFF_Msk                (_UINT32_(0x1) << MEM2MEM_IDR_RXBUFF_Pos)            /* (MEM2MEM_IDR) Buffer Full Interrupt Disable Mask */
+#define MEM2MEM_IDR_RXBUFF(value)             (MEM2MEM_IDR_RXBUFF_Msk & (_UINT32_(value) << MEM2MEM_IDR_RXBUFF_Pos)) /* Assigment of value for RXBUFF in the MEM2MEM_IDR register */
+#define MEM2MEM_IDR_Msk                       _UINT32_(0x00000003)                                 /* (MEM2MEM_IDR) Register Mask  */
 
 
 /* -------- MEM2MEM_IMR : (MEM2MEM Offset: 0x10) ( R/ 32) Interrupt Mask Register -------- */
@@ -68,17 +88,75 @@
 #define MEM2MEM_ISR_Msk                       _UINT32_(0x00000003)                                 /* (MEM2MEM_ISR) Register Mask  */
 
 
-/* -------- MEM2MEM_MR : (MEM2MEM Offset: 0x04) (R/W 32) Mode Register -------- */
-#define MEM2MEM_MR_TSIZE_Pos                  _UINT32_(0)                                          /* (MEM2MEM_MR) Transfer Size Position */
-#define MEM2MEM_MR_TSIZE_Msk                  (_UINT32_(0x3) << MEM2MEM_MR_TSIZE_Pos)              /* (MEM2MEM_MR) Transfer Size Mask */
-#define MEM2MEM_MR_TSIZE(value)               (MEM2MEM_MR_TSIZE_Msk & (_UINT32_(value) << MEM2MEM_MR_TSIZE_Pos)) /* Assigment of value for TSIZE in the MEM2MEM_MR register */
-#define   MEM2MEM_MR_TSIZE_T_8BIT_Val         _UINT32_(0x0)                                        /* (MEM2MEM_MR) The buffer size is defined in bytes.  */
-#define   MEM2MEM_MR_TSIZE_T_16BIT_Val        _UINT32_(0x1)                                        /* (MEM2MEM_MR) The buffer size is defined in half-words (16-bit).  */
-#define   MEM2MEM_MR_TSIZE_T_32BIT_Val        _UINT32_(0x2)                                        /* (MEM2MEM_MR) The buffer size is defined in words (32-bit). Default value.  */
-#define MEM2MEM_MR_TSIZE_T_8BIT               (MEM2MEM_MR_TSIZE_T_8BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in bytes. Position  */
-#define MEM2MEM_MR_TSIZE_T_16BIT              (MEM2MEM_MR_TSIZE_T_16BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in half-words (16-bit). Position  */
-#define MEM2MEM_MR_TSIZE_T_32BIT              (MEM2MEM_MR_TSIZE_T_32BIT_Val << MEM2MEM_MR_TSIZE_Pos) /* (MEM2MEM_MR) The buffer size is defined in words (32-bit). Default value. Position  */
-#define MEM2MEM_MR_Msk                        _UINT32_(0x00000003)                                 /* (MEM2MEM_MR) Register Mask  */
+/* -------- MEM2MEM_WPMR : (MEM2MEM Offset: 0x18) (R/W 32) Write Protection Mode Register -------- */
+#define MEM2MEM_WPMR_WPEN_Pos                 _UINT32_(0)                                          /* (MEM2MEM_WPMR) Write Protection Configuration Enable Position */
+#define MEM2MEM_WPMR_WPEN_Msk                 (_UINT32_(0x1) << MEM2MEM_WPMR_WPEN_Pos)             /* (MEM2MEM_WPMR) Write Protection Configuration Enable Mask */
+#define MEM2MEM_WPMR_WPEN(value)              (MEM2MEM_WPMR_WPEN_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPEN_Pos)) /* Assigment of value for WPEN in the MEM2MEM_WPMR register */
+#define MEM2MEM_WPMR_WPITEN_Pos               _UINT32_(1)                                          /* (MEM2MEM_WPMR) Write Protection Interruption Enable Position */
+#define MEM2MEM_WPMR_WPITEN_Msk               (_UINT32_(0x1) << MEM2MEM_WPMR_WPITEN_Pos)           /* (MEM2MEM_WPMR) Write Protection Interruption Enable Mask */
+#define MEM2MEM_WPMR_WPITEN(value)            (MEM2MEM_WPMR_WPITEN_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPITEN_Pos)) /* Assigment of value for WPITEN in the MEM2MEM_WPMR register */
+#define MEM2MEM_WPMR_WPKEY_Pos                _UINT32_(8)                                          /* (MEM2MEM_WPMR) Write Protection Key Position */
+#define MEM2MEM_WPMR_WPKEY_Msk                (_UINT32_(0xFFFFFF) << MEM2MEM_WPMR_WPKEY_Pos)       /* (MEM2MEM_WPMR) Write Protection Key Mask */
+#define MEM2MEM_WPMR_WPKEY(value)             (MEM2MEM_WPMR_WPKEY_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPKEY_Pos)) /* Assigment of value for WPKEY in the MEM2MEM_WPMR register */
+#define   MEM2MEM_WPMR_WPKEY_PASSWD_Val       _UINT32_(0x4D454D)                                   /* (MEM2MEM_WPMR) Writing any other value in this field aborts the write operation of the WPEN, WPITEN bits. Always reads as 0.  */
+#define MEM2MEM_WPMR_WPKEY_PASSWD             (MEM2MEM_WPMR_WPKEY_PASSWD_Val << MEM2MEM_WPMR_WPKEY_Pos) /* (MEM2MEM_WPMR) Writing any other value in this field aborts the write operation of the WPEN, WPITEN bits. Always reads as 0. Position  */
+#define MEM2MEM_WPMR_Msk                      _UINT32_(0xFFFFFF03)                                 /* (MEM2MEM_WPMR) Register Mask  */
+
+
+/* -------- MEM2MEM_RPR : (MEM2MEM Offset: 0x100) (R/W 32) Receive Pointer Register -------- */
+#define MEM2MEM_RPR_RXPTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_RPR) Receive Pointer Register Position */
+#define MEM2MEM_RPR_RXPTR_Msk                 (_UINT32_(0xFFFFFFFF) << MEM2MEM_RPR_RXPTR_Pos)      /* (MEM2MEM_RPR) Receive Pointer Register Mask */
+#define MEM2MEM_RPR_RXPTR(value)              (MEM2MEM_RPR_RXPTR_Msk & (_UINT32_(value) << MEM2MEM_RPR_RXPTR_Pos)) /* Assigment of value for RXPTR in the MEM2MEM_RPR register */
+#define MEM2MEM_RPR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_RPR) Register Mask  */
+
+
+/* -------- MEM2MEM_RCR : (MEM2MEM Offset: 0x104) (R/W 32) Receive Counter Register -------- */
+#define MEM2MEM_RCR_RXCTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_RCR) Receive Counter Register Position */
+#define MEM2MEM_RCR_RXCTR_Msk                 (_UINT32_(0xFFFF) << MEM2MEM_RCR_RXCTR_Pos)          /* (MEM2MEM_RCR) Receive Counter Register Mask */
+#define MEM2MEM_RCR_RXCTR(value)              (MEM2MEM_RCR_RXCTR_Msk & (_UINT32_(value) << MEM2MEM_RCR_RXCTR_Pos)) /* Assigment of value for RXCTR in the MEM2MEM_RCR register */
+#define MEM2MEM_RCR_Msk                       _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_RCR) Register Mask  */
+
+
+/* -------- MEM2MEM_TPR : (MEM2MEM Offset: 0x108) (R/W 32) Transmit Pointer Register -------- */
+#define MEM2MEM_TPR_TXPTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_TPR) Transmit Counter Register Position */
+#define MEM2MEM_TPR_TXPTR_Msk                 (_UINT32_(0xFFFFFFFF) << MEM2MEM_TPR_TXPTR_Pos)      /* (MEM2MEM_TPR) Transmit Counter Register Mask */
+#define MEM2MEM_TPR_TXPTR(value)              (MEM2MEM_TPR_TXPTR_Msk & (_UINT32_(value) << MEM2MEM_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the MEM2MEM_TPR register */
+#define MEM2MEM_TPR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_TPR) Register Mask  */
+
+
+/* -------- MEM2MEM_TCR : (MEM2MEM Offset: 0x10C) (R/W 32) Transmit Counter Register -------- */
+#define MEM2MEM_TCR_TXCTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_TCR) Transmit Counter Register Position */
+#define MEM2MEM_TCR_TXCTR_Msk                 (_UINT32_(0xFFFF) << MEM2MEM_TCR_TXCTR_Pos)          /* (MEM2MEM_TCR) Transmit Counter Register Mask */
+#define MEM2MEM_TCR_TXCTR(value)              (MEM2MEM_TCR_TXCTR_Msk & (_UINT32_(value) << MEM2MEM_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the MEM2MEM_TCR register */
+#define MEM2MEM_TCR_Msk                       _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_TCR) Register Mask  */
+
+
+/* -------- MEM2MEM_RNPR : (MEM2MEM Offset: 0x110) (R/W 32) Receive Next Pointer Register -------- */
+#define MEM2MEM_RNPR_RXNPTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_RNPR) Receive Next Pointer Position */
+#define MEM2MEM_RNPR_RXNPTR_Msk               (_UINT32_(0xFFFFFFFF) << MEM2MEM_RNPR_RXNPTR_Pos)    /* (MEM2MEM_RNPR) Receive Next Pointer Mask */
+#define MEM2MEM_RNPR_RXNPTR(value)            (MEM2MEM_RNPR_RXNPTR_Msk & (_UINT32_(value) << MEM2MEM_RNPR_RXNPTR_Pos)) /* Assigment of value for RXNPTR in the MEM2MEM_RNPR register */
+#define MEM2MEM_RNPR_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_RNPR) Register Mask  */
+
+
+/* -------- MEM2MEM_RNCR : (MEM2MEM Offset: 0x114) (R/W 32) Receive Next Counter Register -------- */
+#define MEM2MEM_RNCR_RXNCTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_RNCR) Receive Next Counter Position */
+#define MEM2MEM_RNCR_RXNCTR_Msk               (_UINT32_(0xFFFF) << MEM2MEM_RNCR_RXNCTR_Pos)        /* (MEM2MEM_RNCR) Receive Next Counter Mask */
+#define MEM2MEM_RNCR_RXNCTR(value)            (MEM2MEM_RNCR_RXNCTR_Msk & (_UINT32_(value) << MEM2MEM_RNCR_RXNCTR_Pos)) /* Assigment of value for RXNCTR in the MEM2MEM_RNCR register */
+#define MEM2MEM_RNCR_Msk                      _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_RNCR) Register Mask  */
+
+
+/* -------- MEM2MEM_TNPR : (MEM2MEM Offset: 0x118) (R/W 32) Transmit Next Pointer Register -------- */
+#define MEM2MEM_TNPR_TXNPTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_TNPR) Transmit Next Pointer Position */
+#define MEM2MEM_TNPR_TXNPTR_Msk               (_UINT32_(0xFFFFFFFF) << MEM2MEM_TNPR_TXNPTR_Pos)    /* (MEM2MEM_TNPR) Transmit Next Pointer Mask */
+#define MEM2MEM_TNPR_TXNPTR(value)            (MEM2MEM_TNPR_TXNPTR_Msk & (_UINT32_(value) << MEM2MEM_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the MEM2MEM_TNPR register */
+#define MEM2MEM_TNPR_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_TNPR) Register Mask  */
+
+
+/* -------- MEM2MEM_TNCR : (MEM2MEM Offset: 0x11C) (R/W 32) Transmit Next Counter Register -------- */
+#define MEM2MEM_TNCR_TXNCTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_TNCR) Transmit Counter Next Position */
+#define MEM2MEM_TNCR_TXNCTR_Msk               (_UINT32_(0xFFFF) << MEM2MEM_TNCR_TXNCTR_Pos)        /* (MEM2MEM_TNCR) Transmit Counter Next Mask */
+#define MEM2MEM_TNCR_TXNCTR(value)            (MEM2MEM_TNCR_TXNCTR_Msk & (_UINT32_(value) << MEM2MEM_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the MEM2MEM_TNCR register */
+#define MEM2MEM_TNCR_Msk                      _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_TNCR) Register Mask  */
 
 
 /* -------- MEM2MEM_PTCR : (MEM2MEM Offset: 0x120) ( /W 32) Transfer Control Register -------- */
@@ -149,103 +227,25 @@
 #define MEM2MEM_PWPMR_Msk                     _UINT32_(0xFFFFFF07)                                 /* (MEM2MEM_PWPMR) Register Mask  */
 
 
-/* -------- MEM2MEM_RCR : (MEM2MEM Offset: 0x104) (R/W 32) Receive Counter Register -------- */
-#define MEM2MEM_RCR_RXCTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_RCR) Receive Counter Register Position */
-#define MEM2MEM_RCR_RXCTR_Msk                 (_UINT32_(0xFFFF) << MEM2MEM_RCR_RXCTR_Pos)          /* (MEM2MEM_RCR) Receive Counter Register Mask */
-#define MEM2MEM_RCR_RXCTR(value)              (MEM2MEM_RCR_RXCTR_Msk & (_UINT32_(value) << MEM2MEM_RCR_RXCTR_Pos)) /* Assigment of value for RXCTR in the MEM2MEM_RCR register */
-#define MEM2MEM_RCR_Msk                       _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_RCR) Register Mask  */
-
-
-/* -------- MEM2MEM_RNCR : (MEM2MEM Offset: 0x114) (R/W 32) Receive Next Counter Register -------- */
-#define MEM2MEM_RNCR_RXNCTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_RNCR) Receive Next Counter Position */
-#define MEM2MEM_RNCR_RXNCTR_Msk               (_UINT32_(0xFFFF) << MEM2MEM_RNCR_RXNCTR_Pos)        /* (MEM2MEM_RNCR) Receive Next Counter Mask */
-#define MEM2MEM_RNCR_RXNCTR(value)            (MEM2MEM_RNCR_RXNCTR_Msk & (_UINT32_(value) << MEM2MEM_RNCR_RXNCTR_Pos)) /* Assigment of value for RXNCTR in the MEM2MEM_RNCR register */
-#define MEM2MEM_RNCR_Msk                      _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_RNCR) Register Mask  */
-
-
-/* -------- MEM2MEM_RNPR : (MEM2MEM Offset: 0x110) (R/W 32) Receive Next Pointer Register -------- */
-#define MEM2MEM_RNPR_RXNPTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_RNPR) Receive Next Pointer Position */
-#define MEM2MEM_RNPR_RXNPTR_Msk               (_UINT32_(0xFFFFFFFF) << MEM2MEM_RNPR_RXNPTR_Pos)    /* (MEM2MEM_RNPR) Receive Next Pointer Mask */
-#define MEM2MEM_RNPR_RXNPTR(value)            (MEM2MEM_RNPR_RXNPTR_Msk & (_UINT32_(value) << MEM2MEM_RNPR_RXNPTR_Pos)) /* Assigment of value for RXNPTR in the MEM2MEM_RNPR register */
-#define MEM2MEM_RNPR_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_RNPR) Register Mask  */
-
-
-/* -------- MEM2MEM_RPR : (MEM2MEM Offset: 0x100) (R/W 32) Receive Pointer Register -------- */
-#define MEM2MEM_RPR_RXPTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_RPR) Receive Pointer Register Position */
-#define MEM2MEM_RPR_RXPTR_Msk                 (_UINT32_(0xFFFFFFFF) << MEM2MEM_RPR_RXPTR_Pos)      /* (MEM2MEM_RPR) Receive Pointer Register Mask */
-#define MEM2MEM_RPR_RXPTR(value)              (MEM2MEM_RPR_RXPTR_Msk & (_UINT32_(value) << MEM2MEM_RPR_RXPTR_Pos)) /* Assigment of value for RXPTR in the MEM2MEM_RPR register */
-#define MEM2MEM_RPR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_RPR) Register Mask  */
-
-
-/* -------- MEM2MEM_TCR : (MEM2MEM Offset: 0x10C) (R/W 32) Transmit Counter Register -------- */
-#define MEM2MEM_TCR_TXCTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_TCR) Transmit Counter Register Position */
-#define MEM2MEM_TCR_TXCTR_Msk                 (_UINT32_(0xFFFF) << MEM2MEM_TCR_TXCTR_Pos)          /* (MEM2MEM_TCR) Transmit Counter Register Mask */
-#define MEM2MEM_TCR_TXCTR(value)              (MEM2MEM_TCR_TXCTR_Msk & (_UINT32_(value) << MEM2MEM_TCR_TXCTR_Pos)) /* Assigment of value for TXCTR in the MEM2MEM_TCR register */
-#define MEM2MEM_TCR_Msk                       _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_TCR) Register Mask  */
-
-
-/* -------- MEM2MEM_THR : (MEM2MEM Offset: 0x00) (R/W 32) Transfer Holding Register -------- */
-#define MEM2MEM_THR_THDATA_Pos                _UINT32_(0)                                          /* (MEM2MEM_THR) Transfer Holding Data Position */
-#define MEM2MEM_THR_THDATA_Msk                (_UINT32_(0xFFFFFFFF) << MEM2MEM_THR_THDATA_Pos)     /* (MEM2MEM_THR) Transfer Holding Data Mask */
-#define MEM2MEM_THR_THDATA(value)             (MEM2MEM_THR_THDATA_Msk & (_UINT32_(value) << MEM2MEM_THR_THDATA_Pos)) /* Assigment of value for THDATA in the MEM2MEM_THR register */
-#define MEM2MEM_THR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_THR) Register Mask  */
-
-
-/* -------- MEM2MEM_TNCR : (MEM2MEM Offset: 0x11C) (R/W 32) Transmit Next Counter Register -------- */
-#define MEM2MEM_TNCR_TXNCTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_TNCR) Transmit Counter Next Position */
-#define MEM2MEM_TNCR_TXNCTR_Msk               (_UINT32_(0xFFFF) << MEM2MEM_TNCR_TXNCTR_Pos)        /* (MEM2MEM_TNCR) Transmit Counter Next Mask */
-#define MEM2MEM_TNCR_TXNCTR(value)            (MEM2MEM_TNCR_TXNCTR_Msk & (_UINT32_(value) << MEM2MEM_TNCR_TXNCTR_Pos)) /* Assigment of value for TXNCTR in the MEM2MEM_TNCR register */
-#define MEM2MEM_TNCR_Msk                      _UINT32_(0x0000FFFF)                                 /* (MEM2MEM_TNCR) Register Mask  */
-
-
-/* -------- MEM2MEM_TNPR : (MEM2MEM Offset: 0x118) (R/W 32) Transmit Next Pointer Register -------- */
-#define MEM2MEM_TNPR_TXNPTR_Pos               _UINT32_(0)                                          /* (MEM2MEM_TNPR) Transmit Next Pointer Position */
-#define MEM2MEM_TNPR_TXNPTR_Msk               (_UINT32_(0xFFFFFFFF) << MEM2MEM_TNPR_TXNPTR_Pos)    /* (MEM2MEM_TNPR) Transmit Next Pointer Mask */
-#define MEM2MEM_TNPR_TXNPTR(value)            (MEM2MEM_TNPR_TXNPTR_Msk & (_UINT32_(value) << MEM2MEM_TNPR_TXNPTR_Pos)) /* Assigment of value for TXNPTR in the MEM2MEM_TNPR register */
-#define MEM2MEM_TNPR_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_TNPR) Register Mask  */
-
-
-/* -------- MEM2MEM_TPR : (MEM2MEM Offset: 0x108) (R/W 32) Transmit Pointer Register -------- */
-#define MEM2MEM_TPR_TXPTR_Pos                 _UINT32_(0)                                          /* (MEM2MEM_TPR) Transmit Counter Register Position */
-#define MEM2MEM_TPR_TXPTR_Msk                 (_UINT32_(0xFFFFFFFF) << MEM2MEM_TPR_TXPTR_Pos)      /* (MEM2MEM_TPR) Transmit Counter Register Mask */
-#define MEM2MEM_TPR_TXPTR(value)              (MEM2MEM_TPR_TXPTR_Msk & (_UINT32_(value) << MEM2MEM_TPR_TXPTR_Pos)) /* Assigment of value for TXPTR in the MEM2MEM_TPR register */
-#define MEM2MEM_TPR_Msk                       _UINT32_(0xFFFFFFFF)                                 /* (MEM2MEM_TPR) Register Mask  */
-
-
-/* -------- MEM2MEM_WPMR : (MEM2MEM Offset: 0x18) (R/W 32) Write Protection Mode Register -------- */
-#define MEM2MEM_WPMR_WPEN_Pos                 _UINT32_(0)                                          /* (MEM2MEM_WPMR) Write Protection Configuration Enable Position */
-#define MEM2MEM_WPMR_WPEN_Msk                 (_UINT32_(0x1) << MEM2MEM_WPMR_WPEN_Pos)             /* (MEM2MEM_WPMR) Write Protection Configuration Enable Mask */
-#define MEM2MEM_WPMR_WPEN(value)              (MEM2MEM_WPMR_WPEN_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPEN_Pos)) /* Assigment of value for WPEN in the MEM2MEM_WPMR register */
-#define MEM2MEM_WPMR_WPITEN_Pos               _UINT32_(1)                                          /* (MEM2MEM_WPMR) Write Protection Interruption Enable Position */
-#define MEM2MEM_WPMR_WPITEN_Msk               (_UINT32_(0x1) << MEM2MEM_WPMR_WPITEN_Pos)           /* (MEM2MEM_WPMR) Write Protection Interruption Enable Mask */
-#define MEM2MEM_WPMR_WPITEN(value)            (MEM2MEM_WPMR_WPITEN_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPITEN_Pos)) /* Assigment of value for WPITEN in the MEM2MEM_WPMR register */
-#define MEM2MEM_WPMR_WPKEY_Pos                _UINT32_(8)                                          /* (MEM2MEM_WPMR) Write Protection Key Position */
-#define MEM2MEM_WPMR_WPKEY_Msk                (_UINT32_(0xFFFFFF) << MEM2MEM_WPMR_WPKEY_Pos)       /* (MEM2MEM_WPMR) Write Protection Key Mask */
-#define MEM2MEM_WPMR_WPKEY(value)             (MEM2MEM_WPMR_WPKEY_Msk & (_UINT32_(value) << MEM2MEM_WPMR_WPKEY_Pos)) /* Assigment of value for WPKEY in the MEM2MEM_WPMR register */
-#define   MEM2MEM_WPMR_WPKEY_PASSWD_Val       _UINT32_(0x4D454D)                                   /* (MEM2MEM_WPMR) Writing any other value in this field aborts the write operation of the WPEN, WPITEN bits. Always reads as 0.  */
-#define MEM2MEM_WPMR_WPKEY_PASSWD             (MEM2MEM_WPMR_WPKEY_PASSWD_Val << MEM2MEM_WPMR_WPKEY_Pos) /* (MEM2MEM_WPMR) Writing any other value in this field aborts the write operation of the WPEN, WPITEN bits. Always reads as 0. Position  */
-#define MEM2MEM_WPMR_Msk                      _UINT32_(0xFFFFFF03)                                 /* (MEM2MEM_WPMR) Register Mask  */
-
-
 /** \brief MEM2MEM register offsets definitions */
-#define MEM2MEM_IDR_REG_OFST           _UINT32_(0x0C)      /* (MEM2MEM_IDR) Interrupt Disable Register Offset */
+#define MEM2MEM_THR_REG_OFST           _UINT32_(0x00)      /* (MEM2MEM_THR) Transfer Holding Register Offset */
+#define MEM2MEM_MR_REG_OFST            _UINT32_(0x04)      /* (MEM2MEM_MR) Mode Register Offset */
 #define MEM2MEM_IER_REG_OFST           _UINT32_(0x08)      /* (MEM2MEM_IER) Interrupt Enable Register Offset */
+#define MEM2MEM_IDR_REG_OFST           _UINT32_(0x0C)      /* (MEM2MEM_IDR) Interrupt Disable Register Offset */
 #define MEM2MEM_IMR_REG_OFST           _UINT32_(0x10)      /* (MEM2MEM_IMR) Interrupt Mask Register Offset */
 #define MEM2MEM_ISR_REG_OFST           _UINT32_(0x14)      /* (MEM2MEM_ISR) Interrupt Status Register Offset */
-#define MEM2MEM_MR_REG_OFST            _UINT32_(0x04)      /* (MEM2MEM_MR) Mode Register Offset */
+#define MEM2MEM_WPMR_REG_OFST          _UINT32_(0x18)      /* (MEM2MEM_WPMR) Write Protection Mode Register Offset */
+#define MEM2MEM_RPR_REG_OFST           _UINT32_(0x100)     /* (MEM2MEM_RPR) Receive Pointer Register Offset */
+#define MEM2MEM_RCR_REG_OFST           _UINT32_(0x104)     /* (MEM2MEM_RCR) Receive Counter Register Offset */
+#define MEM2MEM_TPR_REG_OFST           _UINT32_(0x108)     /* (MEM2MEM_TPR) Transmit Pointer Register Offset */
+#define MEM2MEM_TCR_REG_OFST           _UINT32_(0x10C)     /* (MEM2MEM_TCR) Transmit Counter Register Offset */
+#define MEM2MEM_RNPR_REG_OFST          _UINT32_(0x110)     /* (MEM2MEM_RNPR) Receive Next Pointer Register Offset */
+#define MEM2MEM_RNCR_REG_OFST          _UINT32_(0x114)     /* (MEM2MEM_RNCR) Receive Next Counter Register Offset */
+#define MEM2MEM_TNPR_REG_OFST          _UINT32_(0x118)     /* (MEM2MEM_TNPR) Transmit Next Pointer Register Offset */
+#define MEM2MEM_TNCR_REG_OFST          _UINT32_(0x11C)     /* (MEM2MEM_TNCR) Transmit Next Counter Register Offset */
 #define MEM2MEM_PTCR_REG_OFST          _UINT32_(0x120)     /* (MEM2MEM_PTCR) Transfer Control Register Offset */
 #define MEM2MEM_PTSR_REG_OFST          _UINT32_(0x124)     /* (MEM2MEM_PTSR) Transfer Status Register Offset */
 #define MEM2MEM_PWPMR_REG_OFST         _UINT32_(0x128)     /* (MEM2MEM_PWPMR) Write Protection Mode Register Offset */
-#define MEM2MEM_RCR_REG_OFST           _UINT32_(0x104)     /* (MEM2MEM_RCR) Receive Counter Register Offset */
-#define MEM2MEM_RNCR_REG_OFST          _UINT32_(0x114)     /* (MEM2MEM_RNCR) Receive Next Counter Register Offset */
-#define MEM2MEM_RNPR_REG_OFST          _UINT32_(0x110)     /* (MEM2MEM_RNPR) Receive Next Pointer Register Offset */
-#define MEM2MEM_RPR_REG_OFST           _UINT32_(0x100)     /* (MEM2MEM_RPR) Receive Pointer Register Offset */
-#define MEM2MEM_TCR_REG_OFST           _UINT32_(0x10C)     /* (MEM2MEM_TCR) Transmit Counter Register Offset */
-#define MEM2MEM_THR_REG_OFST           _UINT32_(0x00)      /* (MEM2MEM_THR) Transfer Holding Register Offset */
-#define MEM2MEM_TNCR_REG_OFST          _UINT32_(0x11C)     /* (MEM2MEM_TNCR) Transmit Next Counter Register Offset */
-#define MEM2MEM_TNPR_REG_OFST          _UINT32_(0x118)     /* (MEM2MEM_TNPR) Transmit Next Pointer Register Offset */
-#define MEM2MEM_TPR_REG_OFST           _UINT32_(0x108)     /* (MEM2MEM_TPR) Transmit Pointer Register Offset */
-#define MEM2MEM_WPMR_REG_OFST          _UINT32_(0x18)      /* (MEM2MEM_WPMR) Write Protection Mode Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief MEM2MEM register API structure */

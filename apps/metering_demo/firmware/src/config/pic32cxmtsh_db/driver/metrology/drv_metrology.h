@@ -157,7 +157,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetVa
 // *****************************************************************************
 /* Function:
     SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (
-        SYS_MODULE_INIT * init
+        SYS_MODULE_INIT * init,
     );
 
   Summary:
@@ -372,7 +372,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
             if (app_metrologyData.state == APP_METROLOGY_STATE_RUNNING)
             {
                 // Signal Metrology thread to update measurements for an integration period 
-                OSAL_SEM_PostISR(&appMetrologySemID);
+                app_metrologyData.integrationFlag = true;
             }
         }
 
@@ -387,94 +387,8 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
 */
 DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister(DRV_METROLOGY_CALLBACK callback);
 
-// *****************************************************************************
-/* Function:
-    DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister (
-        DRV_METROLOGY_CALIBRATION_CALLBACK callback 
-    );
-
-  Summary:
-    Registers a function with the metrology driver to be called back when the calibration process has completed.
-
-  Description:
-    This function allows a client to register a handling function with the driver to call back when a calibration process has completed.
-    This function must be always called after DRV_METROLOGY_Initialize routine is called, since the initialization routine sets a NULL pointer to indicate no callback.
-
-  Precondition:
-    DRV_METROLOGY_Initialize routine must have been called before.
-
-  Parameters:
-    callback - Pointer to the function to be called.
-
-  Returns:
-    If successful, returns DRV_METROLOGY_SUCCESS. Otherwise, it returns DRV_METROLOGY_ERROR. 
-
-  Example:
-    <code>
-        static void _APP_METROLOGY_CalibrationCallback(bool result)
-        {
-            if (app_metrologyData.pCalibrationCallback)
-            {
-                app_metrologyData.pCalibrationCallback(result);
-            }
-
-            // Signal Metrology to exit calibration status 
-            OSAL_SEM_Post(&appMetrologyCalibrationSemID);
-        }
-
-        (...)
-
-        // Set Callback for calibration process 
-        DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
-    </code>
-
-  Remarks:
-    None. 
-*/
 DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CALIBRATION_CALLBACK callback);
 
-// *****************************************************************************
-/* Function:
-    DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister (
-        DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback 
-    );
-
-  Summary:
-    Registers a function with the metrology driver to be called back when the harmonic analysis has completed.
-
-  Description:
-    This function allows a client to register a handling function with the driver to call back when the harmonic analysis has completed.
-    This function must be always called after DRV_METROLOGY_Initialize routine is called, since the initialization routine sets a NULL pointer to indicate no callback.
-
-  Precondition:
-    DRV_METROLOGY_Initialize routine must have been called before.
-
-  Parameters:
-    callback - Pointer to the function to be called.
-
-  Returns:
-    If successful, returns DRV_METROLOGY_SUCCESS. Otherwise, it returns DRV_METROLOGY_ERROR. 
-
-  Example:
-    <code>
-        static void _APP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
-        {
-            if (app_metrologyData.pHarmonicAnalysisCallback)
-            {
-                app_metrologyData.harmonicAnalysisPending = false;
-                app_metrologyData.pHarmonicAnalysisCallback(harmonicNum);
-            }
-        }
-
-        (...)
-
-        // Set Callback for harmonic analysis process
-        DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
-    </code>
-
-  Remarks:
-    None. 
-*/
 DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback);
 
 // *****************************************************************************
@@ -587,7 +501,7 @@ DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
     the system can call the tasks routine for any module.
 
   Parameters:
-    object - DRV METROLOGY object handle, returned from DRV_METROLOGY_Initialize
+    object - Handle to the module instance
 
   Returns:
     None. 
@@ -599,8 +513,7 @@ DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
     </code>
 
   Remarks:
-    This function is normally not called directly by an application. 
-    It is called by the system's Tasks routine (SYS_Tasks) or by the appropriate raw ISR.
+    None. 
 */
 void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
 
@@ -1070,7 +983,7 @@ void DRV_METROLOGY_GetEventsData(DRV_METROLOGY_AFE_EVENTS * events);
     None.
 
   Returns:
-    Pointer to the calibration references to be used in the next calibration process. 
+    Pointer to the internal calibration data. 
 
   Example:
     <code>
@@ -1102,7 +1015,7 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences(void);
 
 // *****************************************************************************
 /* Function:
-    void APP_METROLOGY_StartCalibration(void);
+    void APP_METROLOGY_StartCalibration(APP_METROLOGY_CALIBRATION * calibration);
 
   Summary:
     Starts internal calibration process. 
@@ -1118,14 +1031,21 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences(void);
     None.
 
   Parameters:
-    None.
+    calibration - Pointer to calibration data to be used by the metrology library.
 
   Returns:
     None. 
 
   Example:
     <code>
-        APP_METROLOGY_StartCalibration();
+        APP_METROLOGY_CALIBRATION newCal;
+  
+        // Calibrate phase A, applying 220.00V, 5.000A, angle=60.00
+        newCal.aimVA = 220.00;
+        newCal.aimIA = 5.000;
+        newCal.angleA = 60.00;
+
+        APP_METROLOGY_StartCalibration(&newCal);
     </code>
 
   Remarks:

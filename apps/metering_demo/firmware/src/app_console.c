@@ -94,12 +94,6 @@ APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_consoleStorageData;
 /* Constant conaining default value for storage data */
 const APP_CONSOLE_STORAGE_DATA CACHE_ALIGN app_defaultConsoleStorageData = {{'1', '2', '3', '4', '\0', '\0', '\0'}};
 
-/* Semaphore to stay idle until a new command is received */
-OSAL_SEM_HANDLE_TYPE appConsoleSemID;
-
-/* Semaphore to wait until data is read from storage */
-OSAL_SEM_HANDLE_TYPE appConsoleStorageSemID;
-
 /* Local storage objects */
 static APP_ENERGY_ACCUMULATORS energyData;
 static APP_ENERGY_MAX_DEMAND maxDemandLocalObject;
@@ -109,15 +103,13 @@ static DRV_METROLOGY_HARMONICS_RMS harmonicAnalysisRMSData;
 APP_DATALOG_QUEUE_DATA datalogQueueElement;
 
 /* Reference to datalog queue */
-extern QueueHandle_t appDatalogQueueID;
+extern APP_DATALOG_QUEUE appDatalogQueue;
 
 /* Local array to hold password for Commands */
 #define APP_CONSOLE_MET_PWD_SIZE             6
 static char metPwd[APP_CONSOLE_MET_PWD_SIZE] = APP_CONSOLE_DEFAULT_PWD;
 
 static char sign[2] = {' ', '-'};
-
-
 
 // *****************************************************************************
 // *****************************************************************************
@@ -193,6 +185,37 @@ static const SYS_CMD_DESCRIPTOR appCmdTbl[]=
     {"HELP",_commandHELP, ": Help on commands"}
 };
 
+
+
+/*******************************************************************************
+  Function:
+    Timer in milliseconds for creating and waiting the delay.
+ */
+
+static bool APP_CONSOLE_TaskDelay(uint32_t ms, SYS_TIME_HANDLE* handle)
+{
+    // Check if there is the timer has been created and running
+    if (*handle == SYS_TIME_HANDLE_INVALID)
+    {
+        // Create timer
+        if (SYS_TIME_DelayMS(ms, handle) != SYS_TIME_SUCCESS)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        // Check timer
+        if (SYS_TIME_DelayIsComplete(*handle) == true)
+        {
+            *handle = SYS_TIME_HANDLE_INVALID;
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -261,14 +284,12 @@ static void _consoleReadStorage(APP_DATALOG_RESULT result)
     // Check result and go to corresponding state
     if (result == APP_DATALOG_RESULT_SUCCESS)
     {
-        app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+        app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
     }
     else
     {
         app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE_ERROR;
     }
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleStorageSemID);
 }
 
 static void _monthlyEnergyCallback(struct tm * time, bool dataValid)
@@ -280,8 +301,6 @@ static void _monthlyEnergyCallback(struct tm * time, bool dataValid)
     
     app_consoleData.timeRequest = *time;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY;
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleSemID);
 }
 
 static void _maxDemandCallback(struct tm * time, bool dataValid)
@@ -293,27 +312,19 @@ static void _maxDemandCallback(struct tm * time, bool dataValid)
     
     app_consoleData.timeRequest = *time;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_MAX_DEMAND;
-
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleSemID);
 }
 
 static void _harmonicAnalysisCallback(uint8_t harmonicNum)
 {
     app_consoleData.harmonicNumRequest = harmonicNum;
+    app_consoleData.harmonicNumPrint = 0;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS;
-
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleSemID);
 }
 
 static void _calibrationCallback(bool result)
 {
     app_consoleData.calibrationResult = result;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_CALIBRATION_RESULT;
-
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleSemID);
 }
 
 // *****************************************************************************
@@ -350,8 +361,6 @@ static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_PRINT_HELP;
         app_consoleData.cmdNumToShowHelp = app_consoleData.numCommands;
         app_consoleData.pCmdDescToShowHelp = (SYS_CMD_DESCRIPTOR *)appCmdTbl;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
     }
     
     /* Show console communication icon */
@@ -417,8 +426,6 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     
     app_consoleData.rawDataFlag = true;
     app_consoleData.state = APP_CONSOLE_STATE_PRINT_WAVEFORM_DATA;
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appConsoleSemID);
     
     /* Show console communication icon */
     APP_DISPLAY_SetCommIcon();
@@ -792,8 +799,6 @@ static void _commandDAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Read all metrology accumulator registers
         app_consoleData.accumRegToRead = 0;
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_ACCUM_REGS;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -807,8 +812,6 @@ static void _commandDAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Read register value
             app_consoleData.accumRegToRead = idx;
             app_consoleData.state = APP_CONSOLE_STATE_READ_ACCUM_REG;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -831,8 +834,6 @@ static void _commandDCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     if (argc == 1)
     {
         app_consoleData.state = APP_CONSOLE_STATE_LOW_POWER_MODE;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -900,8 +901,6 @@ static void _commandDCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             app_consoleData.regsToModify[i].value = 0xFFFFFFFF;
             // Go to corresponding state
             app_consoleData.state = APP_CONSOLE_STATE_WRITE_CONTROL_REG;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -923,8 +922,6 @@ static void _commandDCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Read all metrology control registers
         app_consoleData.ctrlRegToRead = 0;
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_CONTROL_REGS;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
     }
     else if (argc == 2)
     {
@@ -935,8 +932,6 @@ static void _commandDCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Read register value
             app_consoleData.ctrlRegToRead = idx;
             app_consoleData.state = APP_CONSOLE_STATE_READ_CONTROL_REG;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -1022,8 +1017,6 @@ static void _commandDSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Read all metrology status registers
         app_consoleData.statusRegToRead = 0;
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_STATUS_REGS;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -1037,8 +1030,6 @@ static void _commandDSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Read register value
             app_consoleData.statusRegToRead = idx;
             app_consoleData.state = APP_CONSOLE_STATE_READ_STATUS_REG;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -1190,9 +1181,6 @@ static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             
             app_consoleData.state = APP_CONSOLE_STATE_PRINT_EVENT;
             
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
-            
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();            
         }
@@ -1218,8 +1206,6 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         // Read all metrology harmonics registers
         app_consoleData.harRegToRead = 0;
         app_consoleData.state = APP_CONSOLE_STATE_READ_ALL_HARMONICS_REGS;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
     }
     else if (argc == 2) 
     {
@@ -1230,8 +1216,6 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             // Read register value
             app_consoleData.harRegToRead = idx;
             app_consoleData.state = APP_CONSOLE_STATE_READ_HARMONICS_REG;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -1283,8 +1267,6 @@ static void _commandIDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         // Read Meter ID
         app_consoleData.state = APP_CONSOLE_STATE_READ_METER_ID;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);  
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -1314,7 +1296,8 @@ static void _commandIDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+//            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+            APP_DATALOG_SendEventsData(&datalogQueueElement);
             SYS_CMD_MESSAGE("Set Meter ID is Ok\r\n");
         
             /* Show console communication icon */
@@ -1451,9 +1434,6 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 
         if (wakeup)
         {
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
-            
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
         }
@@ -1471,8 +1451,6 @@ static void _commandRTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         // Read RTC
         app_consoleData.state = APP_CONSOLE_STATE_READ_RTC;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -1549,7 +1527,8 @@ static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                 datalogQueueElement.dataLen = sizeof(struct tm);
                 datalogQueueElement.pData = (uint8_t*)&app_consoleData.sysTime;
                 // Put it in queue
-                xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+//                xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+                APP_DATALOG_SendEventsData(&datalogQueueElement);
             
                 // Clear No-persistent energy/demand data
                 APP_ENERGY_ClearEnergy(false);
@@ -1582,8 +1561,6 @@ static void _commandTOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         // Go to state to read TOU
         app_consoleData.state = APP_CONSOLE_STATE_READ_TOU;
-        // Post semaphore to wakeup task
-        OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
         APP_DISPLAY_SetCommIcon();
@@ -1693,8 +1670,6 @@ static void _commandRST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Reset Command is Ok !\r\n");
             // Go to state to reset system
             app_consoleData.state = APP_CONSOLE_STATE_SW_RESET;
-            // Post semaphore to wakeup task
-            OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
             APP_DISPLAY_SetCommIcon();
@@ -1764,6 +1739,9 @@ void APP_CONSOLE_Initialize ( void )
     /* Place the App state machine in its initial state. */
     app_consoleData.state = APP_CONSOLE_STATE_INIT;
     app_consoleData.numCommands = sizeof(appCmdTbl)/sizeof(SYS_CMD_DESCRIPTOR);
+    
+    /* Init timer */
+    app_consoleData.timer = SYS_TIME_HANDLE_INVALID;
 
     if (!SYS_CMD_ADDGRP(appCmdTbl, app_consoleData.numCommands, "App Console", ": Metering console commands"))
     {
@@ -1796,6 +1774,19 @@ void APP_CONSOLE_Tasks ( void )
     switch ( app_consoleData.state )
     {
         /* Application's initial state. */
+        case APP_CONSOLE_STATE_IDLE:
+        case APP_CONSOLE_STATE_WAIT_DATA:
+        {
+            break;
+        }
+        
+        case APP_CONSOLE_STATE_PROMPT:
+        {
+            SYS_CMD_MESSAGE(">");
+            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            break;
+        }
+        
         case APP_CONSOLE_STATE_INIT:
         {
             if (SYS_CMD_READY_TO_READ())
@@ -1808,12 +1799,9 @@ void APP_CONSOLE_Tasks ( void )
                 APP_METROLOGY_SetHarmonicAnalysisCallback(_harmonicAnalysisCallback, &harmonicAnalysisRMSData);
                 APP_METROLOGY_SetCalibrationCallback(_calibrationCallback);
 
-                if ((OSAL_SEM_Create(&appConsoleSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE) &&
-                    (OSAL_SEM_Create(&appConsoleStorageSemID, OSAL_SEM_TYPE_BINARY, 1, 0) == OSAL_RESULT_TRUE)) 
-                {
-                    app_consoleData.currentWaitForDatalogReady = 0;
-                    app_consoleData.state = APP_CONSOLE_STATE_WAIT_STORAGE_READY;
-                }
+                app_consoleData.currentWaitForDatalogReady = 0;
+                app_consoleData.state = APP_CONSOLE_STATE_WAIT_STORAGE_READY;
+                
                 // Set default console storage data just in case it cannot be read later
                 app_consoleStorageData = app_defaultConsoleStorageData;
             }
@@ -1826,8 +1814,6 @@ void APP_CONSOLE_Tasks ( void )
             {
                app_consoleData.state = APP_CONSOLE_STATE_READ_STORAGE;
             }
-            
-            vTaskDelay(100 / portTICK_PERIOD_MS);
             break;
         }
 
@@ -1842,9 +1828,10 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+            APP_DATALOG_SendEventsData(&datalogQueueElement);
+            
             // Wait for data to be read (semaphore is released in callback)
-            OSAL_SEM_Pend(&appConsoleStorageSemID, OSAL_WAIT_FOREVER);
+            app_consoleData.state = APP_CONSOLE_STATE_WAIT_DATA;
             // Data read, depending on read result, state has changed to READ_OK or READ_ERROR
             break;
         }
@@ -1860,9 +1847,9 @@ void APP_CONSOLE_Tasks ( void )
             datalogQueueElement.dataLen = sizeof(app_consoleStorageData);
             datalogQueueElement.pData = (uint8_t*)&app_consoleStorageData;
             // Put it in queue
-            xQueueSend(appDatalogQueueID, &datalogQueueElement, (TickType_t)0);
+            APP_DATALOG_SendEventsData(&datalogQueueElement);
             // Go to Idle state
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -1870,14 +1857,7 @@ void APP_CONSOLE_Tasks ( void )
         {
             SYS_CMD_MESSAGE("Datalog Service not ready!\r\nApplication will run without storage capabilities\r\n");
             // Go to Idle state
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
-            break;
-        }
-
-        case APP_CONSOLE_STATE_IDLE:
-        {
-            SYS_CMD_MESSAGE(">");
-            OSAL_SEM_Pend(&appConsoleSemID, OSAL_WAIT_FOREVER);
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -1897,7 +1877,7 @@ void APP_CONSOLE_Tasks ( void )
                 SYS_CMD_PRINT("Could not read register %02d\r\n", app_consoleData.ctrlRegToRead);
             }
             // Go back to Idle
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -1936,13 +1916,15 @@ void APP_CONSOLE_Tasks ( void )
                 else 
                 {
                     // All registers have been written
-                    app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                    app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
                     break;
                 }
                 
                 if ((idx % 10) == 0) 
                 {
-                    vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+                    app_consoleData.nextState = app_consoleData.state;
+                    app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+                    app_consoleData.delayMs = CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES;
                 }
             }
             break;
@@ -2028,11 +2010,15 @@ void APP_CONSOLE_Tasks ( void )
                     app_consoleData.ctrlRegToRead += 1;
                 }
             }
-            else {
+            else 
+            {
                 // All registers have been read
-                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             }
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
+            
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
             break;
         }
 
@@ -2052,7 +2038,7 @@ void APP_CONSOLE_Tasks ( void )
                 SYS_CMD_PRINT("Could not read register %02d\r\n", app_consoleData.accumRegToRead);
             }
             // Go back to Idle
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2138,9 +2124,12 @@ void APP_CONSOLE_Tasks ( void )
             else 
             {
                 // All registers have been read
-                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             }
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
+            
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
             break;
         }
 
@@ -2160,7 +2149,7 @@ void APP_CONSOLE_Tasks ( void )
                 SYS_CMD_PRINT("Could not read register %02d\r\n", app_consoleData.statusRegToRead);
             }
             // Go back to Idle
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2246,9 +2235,12 @@ void APP_CONSOLE_Tasks ( void )
             else 
             {
                 // All registers have been read
-                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             }
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
+            
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
             break;
         }
 
@@ -2268,7 +2260,7 @@ void APP_CONSOLE_Tasks ( void )
                 SYS_CMD_PRINT("Could not read register %02d\r\n", app_consoleData.harRegToRead);
             }
             // Go back to Idle
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2355,9 +2347,12 @@ void APP_CONSOLE_Tasks ( void )
             else 
             {
                 // All registers have been read
-                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             }
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT / portTICK_PERIOD_MS);
+            
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
             break;
         }
 
@@ -2370,7 +2365,7 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_MESSAGE("Meter ID is:\r\n");
             SYS_CMD_PRINT("%s\r\n", app_consoleStorageData.meterID);
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2386,7 +2381,7 @@ void APP_CONSOLE_Tasks ( void )
                     app_consoleData.sysTime.tm_year + 1900 - 2000, app_consoleData.sysTime.tm_mon + 1, app_consoleData.sysTime.tm_mday,
                     app_consoleData.sysTime.tm_wday + 1, app_consoleData.sysTime.tm_hour, app_consoleData.sysTime.tm_min, app_consoleData.sysTime.tm_sec);
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2412,35 +2407,43 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_MESSAGE("\r\n");
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
         case APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS:
         {
-            // Remove Prompt symbol
-            _removePrompt();
-            
-            // Show received data on console
-            SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\r\n");
+            if (app_consoleData.harmonicNumPrint == 0)
+            {
+                // Remove Prompt symbol
+                _removePrompt();
 
-            SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
-            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisRMSData.Irms_A_m, 
-                    harmonicAnalysisRMSData.Irms_B_m, harmonicAnalysisRMSData.Irms_C_m);
-            
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
-            
-            SYS_CMD_MESSAGE("Irms_Har_N(A)      Vrms_Har_A(V)      Vrms_Har_B(V)\r\n");
-            SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisRMSData.Irms_N_m, 
-                    harmonicAnalysisRMSData.Vrms_A_m, harmonicAnalysisRMSData.Vrms_B_m);
-            
-            vTaskDelay(CONSOLE_TASK_DELAY_MS_UNTIL_DATALOG_READY / portTICK_PERIOD_MS);
-            
-            SYS_CMD_MESSAGE("Vrms_Har_C(V)\r\n");
-            SYS_CMD_PRINT("%-19.3f\r\n", harmonicAnalysisRMSData.Vrms_C_m);
+                // Show received data on console
+                SYS_CMD_MESSAGE("The calculated harmonic Irms/Vrms:\r\n");
 
-            // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                SYS_CMD_MESSAGE("Irms_Har_A(A)      Irms_Har_B(A)      Irms_Har_C(A)\r\n");
+                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisRMSData.Irms_A_m, 
+                        harmonicAnalysisRMSData.Irms_B_m, harmonicAnalysisRMSData.Irms_C_m);
+            }
+            else if (app_consoleData.harmonicNumPrint == 1)
+            {
+                SYS_CMD_MESSAGE("Irms_Har_N(A)      Vrms_Har_A(V)      Vrms_Har_B(V)\r\n");
+                SYS_CMD_PRINT("%-19.3f%-19.3f%-19.3f\r\n", harmonicAnalysisRMSData.Irms_N_m, 
+                        harmonicAnalysisRMSData.Vrms_A_m, harmonicAnalysisRMSData.Vrms_B_m);
+            }
+            else if (app_consoleData.harmonicNumPrint == 2)
+            {
+                SYS_CMD_MESSAGE("Vrms_Har_C(V)\r\n");
+                SYS_CMD_PRINT("%-19.3f\r\n", harmonicAnalysisRMSData.Vrms_C_m);
+
+                // Go back to IDLE
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            }
+                
+            app_consoleData.harmonicNumPrint++;
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
             break;
         }
 
@@ -2465,16 +2468,30 @@ void APP_CONSOLE_Tasks ( void )
                 (float)total/10000000, (float)energyData.tariff[0]/10000000, (float)energyData.tariff[1]/10000000, 
                     (float)energyData.tariff[2]/10000000, (float)energyData.tariff[3]/10000000);
             
+            /* Introduce a delay to wait console visualization */
+            app_consoleData.nextState = APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY_NEXT;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
+            
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY_NEXT:
+        {
             // Check pending monthly requests 
             app_consoleData.requestCounter--;
             if (app_consoleData.requestCounter > 0)
             {
+                int8_t idx;
+            
+                idx = _getMonthIndexFromSysTime(&app_consoleData.timeRequest);
+                
                 _getSysTimeFromMonthIndex(&app_consoleData.timeRequest, idx + 1);
                 APP_ENERGY_GetMonthEnergy(&app_consoleData.timeRequest);
             }
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2551,7 +2568,7 @@ void APP_CONSOLE_Tasks ( void )
             }
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2577,17 +2594,31 @@ void APP_CONSOLE_Tasks ( void )
                     (float)(pDataTariff + 2)->value/1000, (pDataTariff + 2)->month + 1, (pDataTariff + 2)->day, (pDataTariff + 2)->hour, (pDataTariff + 2)->minute,
                     (float)(pDataTariff + 3)->value/1000, (pDataTariff + 3)->month + 1, (pDataTariff + 3)->day, (pDataTariff + 3)->hour, (pDataTariff + 3)->minute);
             
+            /* Introduce a delay to wait console visualization */
+            app_consoleData.nextState = APP_CONSOLE_STATE_PRINT_MAX_DEMAND_NEXT;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DELAY_MS_BETWEEN_REGS_PRINT;
+            
+            break;
+        }
+
+        case APP_CONSOLE_STATE_PRINT_MAX_DEMAND_NEXT:
+        {
             // Check pending monthly requests 
             app_consoleData.requestCounter--;
             if (app_consoleData.requestCounter > 0)
             {
-                vTaskDelay(10 / portTICK_PERIOD_MS);
+                int8_t idx;
+                
+                idx = _getMonthIndexFromSysTime(&app_consoleData.timeRequest);
+                
                 _getSysTimeFromMonthIndex(&app_consoleData.timeRequest, idx + 1);
                 APP_ENERGY_GetMonthMaxDemand(&app_consoleData.timeRequest);
             }
             
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
+            
             break;
         }
 
@@ -2605,7 +2636,7 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_PRINT("Present voltage is :\r\nUa=%.3fV Ub=%.3fV Uc=%.3fV\r\n",(float)va/10000, (float)vb/10000, (float)vc/10000);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2629,7 +2660,7 @@ void APP_CONSOLE_Tasks ( void )
                     (float)inm/10000, (float)inmi/10000);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2651,7 +2682,7 @@ void APP_CONSOLE_Tasks ( void )
                     (float)pb/10, sign[signc], (float)pc/10);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2673,7 +2704,7 @@ void APP_CONSOLE_Tasks ( void )
                     (float)qb/10, sign[signc], (float)qc/10);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2693,7 +2724,7 @@ void APP_CONSOLE_Tasks ( void )
                    (float)st/10, (float)sa/10, (float)sb/10, (float)sc/10);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2709,7 +2740,7 @@ void APP_CONSOLE_Tasks ( void )
             SYS_CMD_PRINT("Present frequency is : \r\nFreq=%.2fHz\r\n", (float)freq/100);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2731,7 +2762,7 @@ void APP_CONSOLE_Tasks ( void )
                     sign[signc], (float)ac/100000, sign[signn], (float)an/100000);
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2757,11 +2788,14 @@ void APP_CONSOLE_Tasks ( void )
                 else 
                 {
                     // All registers have been read
-                    app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                    app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
                     break;
                 }
             }
-            vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+            
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES;
             break;
         }
 
@@ -2781,7 +2815,7 @@ void APP_CONSOLE_Tasks ( void )
             }
 
             // Go back to IDLE
-            app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+            app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
             break;
         }
 
@@ -2810,11 +2844,13 @@ void APP_CONSOLE_Tasks ( void )
             else
             {
                 // All commands have been represented
-                app_consoleData.state = APP_CONSOLE_STATE_IDLE;
+                app_consoleData.state = APP_CONSOLE_STATE_PROMPT;
                 break;                
             }
         
-            vTaskDelay(CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES / portTICK_PERIOD_MS);
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = CONSOLE_TASK_DEFAULT_DELAY_MS_BETWEEN_STATES;
             break;
         }
         
@@ -2828,19 +2864,48 @@ void APP_CONSOLE_Tasks ( void )
             // Update display info
             APP_DISPLAY_ShowLowPowerMode();
             
-            // Wait time to show message through the Console 
-            vTaskDelay(100 / portTICK_PERIOD_MS);
-
-            // Go to Low Power mode
-            APP_METROLOGY_SetLowPowerMode();
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = 100;
             break;
         }
 
         case APP_CONSOLE_STATE_SW_RESET:
         {
             /* Wait time to show message through the Console */
-            vTaskDelay(100 / portTICK_PERIOD_MS);
-            RSTC_Reset(RSTC_PROCESSOR_RESET);
+            app_consoleData.nextState = app_consoleData.state;
+            app_consoleData.state = APP_CONSOLE_STATE_DELAY;
+            app_consoleData.delayMs = 100;
+            break;
+        }
+
+        case APP_CONSOLE_STATE_DELAY:
+        {
+            // Wait delay time
+            if (APP_CONSOLE_TaskDelay(app_consoleData.delayMs, &app_consoleData.timer))
+            {
+                // Check low power state
+                if (app_consoleData.nextState == APP_CONSOLE_STATE_LOW_POWER_MODE)
+                {
+                    // Go to Low Power mode
+                    APP_METROLOGY_SetLowPowerMode();
+                    
+                    // Execution should not come here during normal operation
+                }
+                else if (app_consoleData.nextState == APP_CONSOLE_STATE_SW_RESET)
+                {
+                    // Perform Reset
+                    RSTC_Reset(RSTC_PROCESSOR_RESET);
+                    
+                    // Execution should not come here during normal operation
+                }
+                else
+                {
+                    // Set next app state
+                    app_consoleData.state = app_consoleData.nextState;
+                }
+            }
+            break;
         }
 
         /* The default state should never be executed. */

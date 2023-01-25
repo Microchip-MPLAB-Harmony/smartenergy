@@ -92,6 +92,7 @@ typedef enum
 {
     /* Application's state machine's initial state. */
     APP_CONSOLE_STATE_INIT=0,
+    APP_CONSOLE_STATE_PROMPT,
     APP_CONSOLE_STATE_IDLE,
     APP_CONSOLE_STATE_WAIT_STORAGE_READY,
     APP_CONSOLE_STATE_READ_STORAGE,
@@ -111,8 +112,10 @@ typedef enum
     APP_CONSOLE_STATE_READ_RTC,
     APP_CONSOLE_STATE_PRINT_HARMONIC_ANALYSIS,
     APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY,
+    APP_CONSOLE_STATE_PRINT_MONTHLY_ENERGY_NEXT,
     APP_CONSOLE_STATE_PRINT_EVENT,
     APP_CONSOLE_STATE_PRINT_MAX_DEMAND,
+    APP_CONSOLE_STATE_PRINT_MAX_DEMAND_NEXT,
     APP_CONSOLE_STATE_PRINT_VOLTAGE,
     APP_CONSOLE_STATE_PRINT_CURRENT,
     APP_CONSOLE_STATE_PRINT_ACTIVE_POWER,
@@ -125,6 +128,8 @@ typedef enum
     APP_CONSOLE_STATE_PRINT_HELP,
     APP_CONSOLE_STATE_LOW_POWER_MODE,
     APP_CONSOLE_STATE_SW_RESET,
+    APP_CONSOLE_STATE_DELAY,
+    APP_CONSOLE_STATE_WAIT_DATA,
 } APP_CONSOLE_STATES;
 
 
@@ -152,6 +157,7 @@ typedef struct
 typedef struct
 {
     APP_CONSOLE_STATES state;
+    APP_CONSOLE_STATES nextState;
     uint8_t ctrlRegToRead;
     uint8_t accumRegToRead;
     uint8_t statusRegToRead;
@@ -166,11 +172,14 @@ typedef struct
     uint8_t eventLastTimeRequest;
     uint32_t currentWaitForDatalogReady;
     uint8_t harmonicNumRequest;
+    uint8_t harmonicNumPrint;
     bool calibrationResult;
     int8_t numCommands;
     int8_t cmdNumToShowHelp;
     SYS_CMD_DESCRIPTOR *pCmdDescToShowHelp;
     uint8_t requestCounter;
+    SYS_TIME_HANDLE timer;
+    uint32_t delayMs;
 } APP_CONSOLE_DATA;
 
 // *****************************************************************************

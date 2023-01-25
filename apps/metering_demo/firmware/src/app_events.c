@@ -59,14 +59,10 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* Define a semaphore to signal the Metrology Tasks to process new integration
- * data */
-OSAL_SEM_DECLARE(appEventsSemID);
-
 /* Define a queue to signal the Events Task to handle metrology events */
-QueueHandle_t appEventsQueueID = NULL;
+APP_EVENTS_QUEUE appEventsQueue;
 
-extern QueueHandle_t appDatalogQueueID;
+extern APP_DATALOG_QUEUE appDatalogQueue;
 APP_DATALOG_QUEUE_DATA appEventsDatalogQueueData;
 
 // *****************************************************************************
@@ -88,18 +84,43 @@ APP_EVENTS_DATA app_eventsData;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Application Callback Functions
-// *****************************************************************************
-// *****************************************************************************
-
-/* TODO:  Add any necessary callback functions.
-*/
-
-// *****************************************************************************
-// *****************************************************************************
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
+
+static void _APP_EVENTS_InitEventsQueue(void)
+{
+    /* Clear DataLog Queue data */
+    memset(&appEventsQueue, 0, sizeof(appEventsQueue));
+    
+    /* Init Queue pointers */
+    appEventsQueue.dataRd = &appEventsQueue.data[0];
+    appEventsQueue.dataWr = appEventsQueue.dataRd;
+}
+
+static bool _APP_EVENTS_ReceiveEventsData(APP_EVENTS_QUEUE_DATA *eventsData)
+{
+    if (appEventsQueue.dataSize)
+    {
+        /* Copy data to the data pointer */
+        memcpy(eventsData, appEventsQueue.dataRd, sizeof(APP_EVENTS_QUEUE_DATA));
+        
+        /* Update Queue as a circular buffer */
+        appEventsQueue.dataSize--;
+        if (appEventsQueue.dataRd == &appEventsQueue.data[APP_EVENTS_QUEUE_DATA_SIZE - 1])
+        {
+            appEventsQueue.dataRd = &appEventsQueue.data[0];
+        }
+        else
+        {
+            appEventsQueue.dataRd++;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
 
 void _APP_EVENTS_GetDataLogCallback(APP_DATALOG_RESULT result)
 {
@@ -108,8 +129,8 @@ void _APP_EVENTS_GetDataLogCallback(APP_DATALOG_RESULT result)
         app_eventsData.dataIsRdy = true;
     }
 
-    // Post semaphore to wakeup task
-    OSAL_SEM_Post(&appEventsSemID);
+    // Set Data response flag
+    app_eventsData.dataResponseFlag = true;
 }
 
 static void _APP_EVENTS_LoadEvenstDataFromMemory(void)
@@ -122,7 +143,7 @@ static void _APP_EVENTS_LoadEvenstDataFromMemory(void)
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appEventsDatalogQueueData, (TickType_t) 0);
+    APP_DATALOG_SendEventsData(&appEventsDatalogQueueData);
 }
 
 static void _APP_EVENTS_StoreEventsDataInMemory(void)
@@ -135,7 +156,7 @@ static void _APP_EVENTS_StoreEventsDataInMemory(void)
     appEventsDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appEventsDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
 
-    xQueueSend(appDatalogQueueID, &appEventsDatalogQueueData, (TickType_t) 0);
+    APP_DATALOG_SendEventsData(&appEventsDatalogQueueData);
 }
 
 static bool _APP_EVENTS_RegisterEvent(APP_EVENTS_EVENT_ID type, bool enabled, struct tm * timeEvent)
@@ -315,22 +336,11 @@ void APP_EVENTS_Initialize ( void )
     /* Initialize Events data */
     memset(&app_eventsData.events, 0, sizeof(APP_EVENTS_EVENTS));
 
-    /* Create the Switches Semaphore. */
-    if (OSAL_SEM_Create(&appEventsSemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
-    {
-        /* Handle error condition. Not sufficient memory to create semaphore */
-        app_eventsData.state = APP_EVENTS_STATE_ERROR;
-    }
+    /* Initialize data response Flag */
+    app_eventsData.dataResponseFlag = false;
     
-    // Create a queue capable of containing 5 queue data elements.
-    appEventsQueueID = xQueueCreate(5, sizeof(APP_EVENTS_QUEUE_DATA));
-
-    if (appEventsQueueID == NULL)
-    {
-        // Queue was not created and must not be used.
-        app_eventsData.state = APP_EVENTS_STATE_ERROR;
-        return;
-    }
+    /* Init Queue data */
+    _APP_EVENTS_InitEventsQueue();
 }
 
 
@@ -354,7 +364,6 @@ void APP_EVENTS_Tasks ( void )
                 app_eventsData.state = APP_EVENTS_STATE_INIT;
             }
 
-            vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
 
@@ -368,30 +377,42 @@ void APP_EVENTS_Tasks ( void )
             {
                 /* EVENTS data exists */
                 _APP_EVENTS_LoadEvenstDataFromMemory();
-                /* Wait for the semaphore to load data from memory */
-                OSAL_SEM_Pend(&appEventsSemID, OSAL_WAIT_FOREVER);
+                
+                app_eventsData.state = APP_EVENTS_STATE_WAIT_DATA;
             }
             else
             {
                 /* There is no valid data in memory. Create Events Data in memory. */
                 _APP_EVENTS_StoreEventsDataInMemory();
+                
+                app_eventsData.state = APP_EVENTS_STATE_RUNNING;
             }
 
-            app_eventsData.state = APP_EVENTS_STATE_RUNNING;
+            break;
+        }
 
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+        case APP_EVENTS_STATE_WAIT_DATA:
+        {
+            if (app_eventsData.dataResponseFlag)
+            {
+                app_eventsData.dataResponseFlag = false;
+                app_eventsData.state = APP_EVENTS_STATE_RUNNING;
+            }
+
             break;
         }
         
         case APP_EVENTS_STATE_RUNNING:
         {
-            if (xQueueReceive(appEventsQueueID, &app_eventsData.newEvent, portMAX_DELAY) == pdPASS)
+            if (_APP_EVENTS_ReceiveEventsData(&app_eventsData.newEvent))
             {
                 if (_APP_EVENTS_UpdateEvents(&app_eventsData.newEvent))
                 {
                     _APP_EVENTS_StoreEventsDataInMemory();
                 }
             }
+
+            break;
         }
 
         /* The default state should never be executed. */
@@ -462,6 +483,29 @@ void APP_EVENTS_GetLastEventFlags(APP_EVENTS_FLAGS *eventFlags)
     }
 }
 
+bool APP_EVENTS_SendEventsData(APP_EVENTS_QUEUE_DATA *eventsData)
+{
+    if (appEventsQueue.dataSize < APP_EVENTS_QUEUE_DATA_SIZE)
+    {
+        /* Copy Energy data to the data queue */
+        memcpy(appEventsQueue.dataWr, eventsData, sizeof(APP_EVENTS_QUEUE_DATA));
+        
+        /* Update Queue as a circular buffer */
+        appEventsQueue.dataSize++;
+        if (appEventsQueue.dataWr == &appEventsQueue.data[APP_EVENTS_QUEUE_DATA_SIZE - 1])
+        {
+            appEventsQueue.dataWr = &appEventsQueue.data[0];
+        }
+        else
+        {
+            appEventsQueue.dataWr++;
+        }
+        
+        return true;
+    }
+
+    return false;
+}
 
 /*******************************************************************************
  End of File

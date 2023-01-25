@@ -124,7 +124,18 @@ typedef struct
 
 } APP_EVENTS_QUEUE_DATA;
 
-typedef struct {
+#define APP_EVENTS_QUEUE_DATA_SIZE     5
+
+typedef struct 
+{
+  APP_EVENTS_QUEUE_DATA data[APP_EVENTS_QUEUE_DATA_SIZE];
+  APP_EVENTS_QUEUE_DATA * dataRd;
+  APP_EVENTS_QUEUE_DATA * dataWr;
+  uint8_t dataSize;
+} APP_EVENTS_QUEUE;
+
+typedef struct 
+{
     uint32_t paDir : 1;
     uint32_t pbDir : 1;
     uint32_t pcDir : 1;
@@ -156,6 +167,7 @@ typedef enum
 {
     APP_EVENTS_STATE_WAITING_DATALOG = 0,
     APP_EVENTS_STATE_INIT,
+    APP_EVENTS_STATE_WAIT_DATA,
     APP_EVENTS_STATE_RUNNING,
     APP_EVENTS_STATE_ERROR
 
@@ -186,6 +198,8 @@ typedef struct
     APP_EVENTS_FLAGS flags;
     
     bool dataIsRdy;
+    
+    bool dataResponseFlag;
 
 } APP_EVENTS_DATA;
 
@@ -274,6 +288,8 @@ void APP_EVENTS_ClearEvents(void);
 bool APP_EVENTS_GetNumEvents(APP_EVENTS_EVENT_ID eventId, uint8_t * counter);
 bool APP_EVENTS_GetEventInfo(APP_EVENTS_EVENT_ID eventId, uint8_t offset, APP_EVENTS_EVENT_INFO *eventInfo);
 void APP_EVENTS_GetLastEventFlags(APP_EVENTS_FLAGS *eventFlags);
+
+bool APP_EVENTS_SendEventsData(APP_EVENTS_QUEUE_DATA *eventsData);
 
 //DOM-IGNORE-BEGIN
 #ifdef __cplusplus

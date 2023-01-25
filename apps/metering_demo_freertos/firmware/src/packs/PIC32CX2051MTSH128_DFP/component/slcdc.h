@@ -1,7 +1,7 @@
 /*
  * Component description for SLCDC
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2022-11-09T10:43:02Z */
+/* file generated from device description version 2023-01-19T13:46:22Z */
 #ifndef _PIC32CXMTSH_SLCDC_COMPONENT_H_
 #define _PIC32CXMTSH_SLCDC_COMPONENT_H_
 
@@ -50,170 +50,6 @@
 #define   SLCDC_CR_FRZKEY_PASSWD_Val          _UINT32_(0x4E)                                       /* (SLCDC_CR) Writing any other value in this field aborts the write operation of the FRZDF bit or FRZMAP bit. Always reads as 0.  */
 #define SLCDC_CR_FRZKEY_PASSWD                (SLCDC_CR_FRZKEY_PASSWD_Val << SLCDC_CR_FRZKEY_Pos)  /* (SLCDC_CR) Writing any other value in this field aborts the write operation of the FRZDF bit or FRZMAP bit. Always reads as 0. Position  */
 #define SLCDC_CR_Msk                          _UINT32_(0x0000FFCB)                                 /* (SLCDC_CR) Register Mask  */
-
-
-/* -------- SLCDC_DR : (SLCDC Offset: 0x0C) (R/W 32) Display Register -------- */
-#define SLCDC_DR_DISPMODE_Pos                 _UINT32_(0)                                          /* (SLCDC_DR) Display Mode Register Position */
-#define SLCDC_DR_DISPMODE_Msk                 (_UINT32_(0x7) << SLCDC_DR_DISPMODE_Pos)             /* (SLCDC_DR) Display Mode Register Mask */
-#define SLCDC_DR_DISPMODE(value)              (SLCDC_DR_DISPMODE_Msk & (_UINT32_(value) << SLCDC_DR_DISPMODE_Pos)) /* Assigment of value for DISPMODE in the SLCDC_DR register */
-#define   SLCDC_DR_DISPMODE_NORMAL_Val        _UINT32_(0x0)                                        /* (SLCDC_DR) Normal Mode-Latched data are displayed.  */
-#define   SLCDC_DR_DISPMODE_FORCE_OFF_Val     _UINT32_(0x1)                                        /* (SLCDC_DR) Force Off Mode-All pixels are invisible. (The SLCDC memory is unchanged.)  */
-#define   SLCDC_DR_DISPMODE_FORCE_ON_Val      _UINT32_(0x2)                                        /* (SLCDC_DR) Force On Mode-All pixels are visible. (The SLCDC memory is unchanged.)  */
-#define   SLCDC_DR_DISPMODE_BLINKING_Val      _UINT32_(0x3)                                        /* (SLCDC_DR) Blinking Mode-All pixels are alternately turned off to the predefined state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.)  */
-#define   SLCDC_DR_DISPMODE_INVERTED_Val      _UINT32_(0x4)                                        /* (SLCDC_DR) Inverted Mode-All pixels are set in the inverted state as defined in SLCDC memory. (The SLCDC memory is unchanged.)  */
-#define   SLCDC_DR_DISPMODE_INVERTED_BLINK_Val _UINT32_(0x5)                                        /* (SLCDC_DR) Inverted Blinking Mode-All pixels are alternately turned off to the predefined opposite state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.)  */
-#define   SLCDC_DR_DISPMODE_USER_BUFFER_LOAD_Val _UINT32_(0x6)                                        /* (SLCDC_DR) User Buffer Only Load Mode-Blocks the automatic transfer from User Buffer to Display Buffer.  */
-#define   SLCDC_DR_DISPMODE_BUFFERS_SWAP_Val  _UINT32_(0x7)                                        /* (SLCDC_DR) Buffer Swap Mode-All pixels are alternatively assigned to the state defined in the User Buffer, then to the state defined in the Display Buffer at LCDBLKFREQ frequency.  */
-#define SLCDC_DR_DISPMODE_NORMAL              (SLCDC_DR_DISPMODE_NORMAL_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Normal Mode-Latched data are displayed. Position  */
-#define SLCDC_DR_DISPMODE_FORCE_OFF           (SLCDC_DR_DISPMODE_FORCE_OFF_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Force Off Mode-All pixels are invisible. (The SLCDC memory is unchanged.) Position  */
-#define SLCDC_DR_DISPMODE_FORCE_ON            (SLCDC_DR_DISPMODE_FORCE_ON_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Force On Mode-All pixels are visible. (The SLCDC memory is unchanged.) Position  */
-#define SLCDC_DR_DISPMODE_BLINKING            (SLCDC_DR_DISPMODE_BLINKING_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Blinking Mode-All pixels are alternately turned off to the predefined state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.) Position  */
-#define SLCDC_DR_DISPMODE_INVERTED            (SLCDC_DR_DISPMODE_INVERTED_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Inverted Mode-All pixels are set in the inverted state as defined in SLCDC memory. (The SLCDC memory is unchanged.) Position  */
-#define SLCDC_DR_DISPMODE_INVERTED_BLINK      (SLCDC_DR_DISPMODE_INVERTED_BLINK_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Inverted Blinking Mode-All pixels are alternately turned off to the predefined opposite state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.) Position  */
-#define SLCDC_DR_DISPMODE_USER_BUFFER_LOAD    (SLCDC_DR_DISPMODE_USER_BUFFER_LOAD_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) User Buffer Only Load Mode-Blocks the automatic transfer from User Buffer to Display Buffer. Position  */
-#define SLCDC_DR_DISPMODE_BUFFERS_SWAP        (SLCDC_DR_DISPMODE_BUFFERS_SWAP_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Buffer Swap Mode-All pixels are alternatively assigned to the state defined in the User Buffer, then to the state defined in the Display Buffer at LCDBLKFREQ frequency. Position  */
-#define SLCDC_DR_LCDBLKFREQ_Pos               _UINT32_(8)                                          /* (SLCDC_DR) LCD Blinking Frequency Selection Position */
-#define SLCDC_DR_LCDBLKFREQ_Msk               (_UINT32_(0xFF) << SLCDC_DR_LCDBLKFREQ_Pos)          /* (SLCDC_DR) LCD Blinking Frequency Selection Mask */
-#define SLCDC_DR_LCDBLKFREQ(value)            (SLCDC_DR_LCDBLKFREQ_Msk & (_UINT32_(value) << SLCDC_DR_LCDBLKFREQ_Pos)) /* Assigment of value for LCDBLKFREQ in the SLCDC_DR register */
-#define SLCDC_DR_Msk                          _UINT32_(0x0000FF07)                                 /* (SLCDC_DR) Register Mask  */
-
-
-/* -------- SLCDC_FRR : (SLCDC Offset: 0x08) (R/W 32) Frame Rate Register -------- */
-#define SLCDC_FRR_PRESC_Pos                   _UINT32_(0)                                          /* (SLCDC_FRR) Clock Prescaler Position */
-#define SLCDC_FRR_PRESC_Msk                   (_UINT32_(0x7) << SLCDC_FRR_PRESC_Pos)               /* (SLCDC_FRR) Clock Prescaler Mask */
-#define SLCDC_FRR_PRESC(value)                (SLCDC_FRR_PRESC_Msk & (_UINT32_(value) << SLCDC_FRR_PRESC_Pos)) /* Assigment of value for PRESC in the SLCDC_FRR register */
-#define   SLCDC_FRR_PRESC_SLCK_DIV8_Val       _UINT32_(0x0)                                        /* (SLCDC_FRR) Slow clock is divided by 8  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV16_Val      _UINT32_(0x1)                                        /* (SLCDC_FRR) Slow clock is divided by 16  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV32_Val      _UINT32_(0x2)                                        /* (SLCDC_FRR) Slow clock is divided by 32  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV64_Val      _UINT32_(0x3)                                        /* (SLCDC_FRR) Slow clock is divided by 64  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV128_Val     _UINT32_(0x4)                                        /* (SLCDC_FRR) Slow clock is divided by 128  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV256_Val     _UINT32_(0x5)                                        /* (SLCDC_FRR) Slow clock is divided by 256  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV512_Val     _UINT32_(0x6)                                        /* (SLCDC_FRR) Slow clock is divided by 512  */
-#define   SLCDC_FRR_PRESC_SLCK_DIV1024_Val    _UINT32_(0x7)                                        /* (SLCDC_FRR) Slow clock is divided by 1024  */
-#define SLCDC_FRR_PRESC_SLCK_DIV8             (SLCDC_FRR_PRESC_SLCK_DIV8_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 8 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV16            (SLCDC_FRR_PRESC_SLCK_DIV16_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 16 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV32            (SLCDC_FRR_PRESC_SLCK_DIV32_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 32 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV64            (SLCDC_FRR_PRESC_SLCK_DIV64_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 64 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV128           (SLCDC_FRR_PRESC_SLCK_DIV128_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 128 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV256           (SLCDC_FRR_PRESC_SLCK_DIV256_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 256 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV512           (SLCDC_FRR_PRESC_SLCK_DIV512_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 512 Position  */
-#define SLCDC_FRR_PRESC_SLCK_DIV1024          (SLCDC_FRR_PRESC_SLCK_DIV1024_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 1024 Position  */
-#define SLCDC_FRR_DIV_Pos                     _UINT32_(8)                                          /* (SLCDC_FRR) Clock Division Position */
-#define SLCDC_FRR_DIV_Msk                     (_UINT32_(0x7) << SLCDC_FRR_DIV_Pos)                 /* (SLCDC_FRR) Clock Division Mask */
-#define SLCDC_FRR_DIV(value)                  (SLCDC_FRR_DIV_Msk & (_UINT32_(value) << SLCDC_FRR_DIV_Pos)) /* Assigment of value for DIV in the SLCDC_FRR register */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV1_Val    _UINT32_(0x0)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 1  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV2_Val    _UINT32_(0x1)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 2  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV3_Val    _UINT32_(0x2)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 3  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV4_Val    _UINT32_(0x3)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 4  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV5_Val    _UINT32_(0x4)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 5  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV6_Val    _UINT32_(0x5)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 6  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV7_Val    _UINT32_(0x6)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 7  */
-#define   SLCDC_FRR_DIV_PRESC_CLK_DIV8_Val    _UINT32_(0x7)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 8  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV1          (SLCDC_FRR_DIV_PRESC_CLK_DIV1_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 1 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV2          (SLCDC_FRR_DIV_PRESC_CLK_DIV2_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 2 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV3          (SLCDC_FRR_DIV_PRESC_CLK_DIV3_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 3 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV4          (SLCDC_FRR_DIV_PRESC_CLK_DIV4_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 4 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV5          (SLCDC_FRR_DIV_PRESC_CLK_DIV5_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 5 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV6          (SLCDC_FRR_DIV_PRESC_CLK_DIV6_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 6 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV7          (SLCDC_FRR_DIV_PRESC_CLK_DIV7_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 7 Position  */
-#define SLCDC_FRR_DIV_PRESC_CLK_DIV8          (SLCDC_FRR_DIV_PRESC_CLK_DIV8_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 8 Position  */
-#define SLCDC_FRR_Msk                         _UINT32_(0x00000707)                                 /* (SLCDC_FRR) Register Mask  */
-
-
-/* -------- SLCDC_IDR : (SLCDC Offset: 0x24) ( /W 32) Interrupt Disable Register -------- */
-#define SLCDC_IDR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IDR) End of Frame Interrupt Disable Position */
-#define SLCDC_IDR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IDR_ENDFRAME_Pos)            /* (SLCDC_IDR) End of Frame Interrupt Disable Mask */
-#define SLCDC_IDR_ENDFRAME(value)             (SLCDC_IDR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IDR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IDR register */
-#define SLCDC_IDR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IDR) Disable Completion Interrupt Disable Position */
-#define SLCDC_IDR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IDR_DIS_Pos)                 /* (SLCDC_IDR) Disable Completion Interrupt Disable Mask */
-#define SLCDC_IDR_DIS(value)                  (SLCDC_IDR_DIS_Msk & (_UINT32_(value) << SLCDC_IDR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IDR register */
-#define SLCDC_IDR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IDR) Register Mask  */
-
-
-/* -------- SLCDC_IER : (SLCDC Offset: 0x20) ( /W 32) Interrupt Enable Register -------- */
-#define SLCDC_IER_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IER) End of Frame Interrupt Enable Position */
-#define SLCDC_IER_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IER_ENDFRAME_Pos)            /* (SLCDC_IER) End of Frame Interrupt Enable Mask */
-#define SLCDC_IER_ENDFRAME(value)             (SLCDC_IER_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IER_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IER register */
-#define SLCDC_IER_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IER) Disable Completion Interrupt Enable Position */
-#define SLCDC_IER_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IER_DIS_Pos)                 /* (SLCDC_IER) Disable Completion Interrupt Enable Mask */
-#define SLCDC_IER_DIS(value)                  (SLCDC_IER_DIS_Msk & (_UINT32_(value) << SLCDC_IER_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IER register */
-#define SLCDC_IER_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IER) Register Mask  */
-
-
-/* -------- SLCDC_IMR : (SLCDC Offset: 0x28) ( R/ 32) Interrupt Mask Register -------- */
-#define SLCDC_IMR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IMR) End of Frame Interrupt Mask Position */
-#define SLCDC_IMR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IMR_ENDFRAME_Pos)            /* (SLCDC_IMR) End of Frame Interrupt Mask Mask */
-#define SLCDC_IMR_ENDFRAME(value)             (SLCDC_IMR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IMR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IMR register */
-#define SLCDC_IMR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IMR) Disable Completion Interrupt Mask Position */
-#define SLCDC_IMR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IMR_DIS_Pos)                 /* (SLCDC_IMR) Disable Completion Interrupt Mask Mask */
-#define SLCDC_IMR_DIS(value)                  (SLCDC_IMR_DIS_Msk & (_UINT32_(value) << SLCDC_IMR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IMR register */
-#define SLCDC_IMR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IMR) Register Mask  */
-
-
-/* -------- SLCDC_ISR : (SLCDC Offset: 0x2C) ( R/ 32) Interrupt Status Register -------- */
-#define SLCDC_ISR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_ISR) End of Frame Interrupt Status Position */
-#define SLCDC_ISR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_ISR_ENDFRAME_Pos)            /* (SLCDC_ISR) End of Frame Interrupt Status Mask */
-#define SLCDC_ISR_ENDFRAME(value)             (SLCDC_ISR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_ISR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_ISR register */
-#define SLCDC_ISR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_ISR) Disable Completion Interrupt Status Position */
-#define SLCDC_ISR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_ISR_DIS_Pos)                 /* (SLCDC_ISR) Disable Completion Interrupt Status Mask */
-#define SLCDC_ISR_DIS(value)                  (SLCDC_ISR_DIS_Msk & (_UINT32_(value) << SLCDC_ISR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_ISR register */
-#define SLCDC_ISR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_ISR) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR0 : (SLCDC Offset: 0x200) (R/W 32) LSB Memory Register (com = 0) -------- */
-#define SLCDC_LMEMR0_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR0) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR0_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR0_LPIXEL_Pos)    /* (SLCDC_LMEMR0) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR0_LPIXEL(value)            (SLCDC_LMEMR0_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR0_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR0 register */
-#define SLCDC_LMEMR0_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR0) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR1 : (SLCDC Offset: 0x208) (R/W 32) LSB Memory Register (com = 1) -------- */
-#define SLCDC_LMEMR1_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR1) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR1_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR1_LPIXEL_Pos)    /* (SLCDC_LMEMR1) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR1_LPIXEL(value)            (SLCDC_LMEMR1_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR1_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR1 register */
-#define SLCDC_LMEMR1_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR1) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR2 : (SLCDC Offset: 0x210) (R/W 32) LSB Memory Register (com = 2) -------- */
-#define SLCDC_LMEMR2_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR2) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR2_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR2_LPIXEL_Pos)    /* (SLCDC_LMEMR2) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR2_LPIXEL(value)            (SLCDC_LMEMR2_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR2_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR2 register */
-#define SLCDC_LMEMR2_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR2) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR3 : (SLCDC Offset: 0x218) (R/W 32) LSB Memory Register (com = 3) -------- */
-#define SLCDC_LMEMR3_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR3) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR3_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR3_LPIXEL_Pos)    /* (SLCDC_LMEMR3) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR3_LPIXEL(value)            (SLCDC_LMEMR3_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR3_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR3 register */
-#define SLCDC_LMEMR3_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR3) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR4 : (SLCDC Offset: 0x220) (R/W 32) LSB Memory Register (com = 4) -------- */
-#define SLCDC_LMEMR4_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR4) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR4_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR4_LPIXEL_Pos)    /* (SLCDC_LMEMR4) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR4_LPIXEL(value)            (SLCDC_LMEMR4_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR4_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR4 register */
-#define SLCDC_LMEMR4_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR4) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR5 : (SLCDC Offset: 0x228) (R/W 32) LSB Memory Register (com = 5) -------- */
-#define SLCDC_LMEMR5_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR5) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR5_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR5_LPIXEL_Pos)    /* (SLCDC_LMEMR5) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR5_LPIXEL(value)            (SLCDC_LMEMR5_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR5_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR5 register */
-#define SLCDC_LMEMR5_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR5) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR6 : (SLCDC Offset: 0x230) (R/W 32) LSB Memory Register (com = 6) -------- */
-#define SLCDC_LMEMR6_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR6) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR6_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR6_LPIXEL_Pos)    /* (SLCDC_LMEMR6) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR6_LPIXEL(value)            (SLCDC_LMEMR6_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR6_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR6 register */
-#define SLCDC_LMEMR6_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR6) Register Mask  */
-
-
-/* -------- SLCDC_LMEMR7 : (SLCDC Offset: 0x238) (R/W 32) LSB Memory Register (com = 7) -------- */
-#define SLCDC_LMEMR7_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR7) LSB Pixels Pattern Associated to COMx Terminal Position */
-#define SLCDC_LMEMR7_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR7_LPIXEL_Pos)    /* (SLCDC_LMEMR7) LSB Pixels Pattern Associated to COMx Terminal Mask */
-#define SLCDC_LMEMR7_LPIXEL(value)            (SLCDC_LMEMR7_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR7_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR7 register */
-#define SLCDC_LMEMR7_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR7) Register Mask  */
 
 
 /* -------- SLCDC_MR : (SLCDC Offset: 0x04) (R/W 32) Mode Register -------- */
@@ -277,6 +113,127 @@
 #define SLCDC_MR_LPMODE_Msk                   (_UINT32_(0x1) << SLCDC_MR_LPMODE_Pos)               /* (SLCDC_MR) Low-Power Mode Mask */
 #define SLCDC_MR_LPMODE(value)                (SLCDC_MR_LPMODE_Msk & (_UINT32_(value) << SLCDC_MR_LPMODE_Pos)) /* Assigment of value for LPMODE in the SLCDC_MR register */
 #define SLCDC_MR_Msk                          _UINT32_(0x013F3F07)                                 /* (SLCDC_MR) Register Mask  */
+
+
+/* -------- SLCDC_FRR : (SLCDC Offset: 0x08) (R/W 32) Frame Rate Register -------- */
+#define SLCDC_FRR_PRESC_Pos                   _UINT32_(0)                                          /* (SLCDC_FRR) Clock Prescaler Position */
+#define SLCDC_FRR_PRESC_Msk                   (_UINT32_(0x7) << SLCDC_FRR_PRESC_Pos)               /* (SLCDC_FRR) Clock Prescaler Mask */
+#define SLCDC_FRR_PRESC(value)                (SLCDC_FRR_PRESC_Msk & (_UINT32_(value) << SLCDC_FRR_PRESC_Pos)) /* Assigment of value for PRESC in the SLCDC_FRR register */
+#define   SLCDC_FRR_PRESC_SLCK_DIV8_Val       _UINT32_(0x0)                                        /* (SLCDC_FRR) Slow clock is divided by 8  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV16_Val      _UINT32_(0x1)                                        /* (SLCDC_FRR) Slow clock is divided by 16  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV32_Val      _UINT32_(0x2)                                        /* (SLCDC_FRR) Slow clock is divided by 32  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV64_Val      _UINT32_(0x3)                                        /* (SLCDC_FRR) Slow clock is divided by 64  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV128_Val     _UINT32_(0x4)                                        /* (SLCDC_FRR) Slow clock is divided by 128  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV256_Val     _UINT32_(0x5)                                        /* (SLCDC_FRR) Slow clock is divided by 256  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV512_Val     _UINT32_(0x6)                                        /* (SLCDC_FRR) Slow clock is divided by 512  */
+#define   SLCDC_FRR_PRESC_SLCK_DIV1024_Val    _UINT32_(0x7)                                        /* (SLCDC_FRR) Slow clock is divided by 1024  */
+#define SLCDC_FRR_PRESC_SLCK_DIV8             (SLCDC_FRR_PRESC_SLCK_DIV8_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 8 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV16            (SLCDC_FRR_PRESC_SLCK_DIV16_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 16 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV32            (SLCDC_FRR_PRESC_SLCK_DIV32_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 32 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV64            (SLCDC_FRR_PRESC_SLCK_DIV64_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 64 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV128           (SLCDC_FRR_PRESC_SLCK_DIV128_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 128 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV256           (SLCDC_FRR_PRESC_SLCK_DIV256_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 256 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV512           (SLCDC_FRR_PRESC_SLCK_DIV512_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 512 Position  */
+#define SLCDC_FRR_PRESC_SLCK_DIV1024          (SLCDC_FRR_PRESC_SLCK_DIV1024_Val << SLCDC_FRR_PRESC_Pos) /* (SLCDC_FRR) Slow clock is divided by 1024 Position  */
+#define SLCDC_FRR_DIV_Pos                     _UINT32_(8)                                          /* (SLCDC_FRR) Clock Division Position */
+#define SLCDC_FRR_DIV_Msk                     (_UINT32_(0x7) << SLCDC_FRR_DIV_Pos)                 /* (SLCDC_FRR) Clock Division Mask */
+#define SLCDC_FRR_DIV(value)                  (SLCDC_FRR_DIV_Msk & (_UINT32_(value) << SLCDC_FRR_DIV_Pos)) /* Assigment of value for DIV in the SLCDC_FRR register */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV1_Val    _UINT32_(0x0)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 1  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV2_Val    _UINT32_(0x1)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 2  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV3_Val    _UINT32_(0x2)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 3  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV4_Val    _UINT32_(0x3)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 4  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV5_Val    _UINT32_(0x4)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 5  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV6_Val    _UINT32_(0x5)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 6  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV7_Val    _UINT32_(0x6)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 7  */
+#define   SLCDC_FRR_DIV_PRESC_CLK_DIV8_Val    _UINT32_(0x7)                                        /* (SLCDC_FRR) Clock output from prescaler is divided by 8  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV1          (SLCDC_FRR_DIV_PRESC_CLK_DIV1_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 1 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV2          (SLCDC_FRR_DIV_PRESC_CLK_DIV2_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 2 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV3          (SLCDC_FRR_DIV_PRESC_CLK_DIV3_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 3 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV4          (SLCDC_FRR_DIV_PRESC_CLK_DIV4_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 4 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV5          (SLCDC_FRR_DIV_PRESC_CLK_DIV5_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 5 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV6          (SLCDC_FRR_DIV_PRESC_CLK_DIV6_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 6 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV7          (SLCDC_FRR_DIV_PRESC_CLK_DIV7_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 7 Position  */
+#define SLCDC_FRR_DIV_PRESC_CLK_DIV8          (SLCDC_FRR_DIV_PRESC_CLK_DIV8_Val << SLCDC_FRR_DIV_Pos) /* (SLCDC_FRR) Clock output from prescaler is divided by 8 Position  */
+#define SLCDC_FRR_Msk                         _UINT32_(0x00000707)                                 /* (SLCDC_FRR) Register Mask  */
+
+
+/* -------- SLCDC_DR : (SLCDC Offset: 0x0C) (R/W 32) Display Register -------- */
+#define SLCDC_DR_DISPMODE_Pos                 _UINT32_(0)                                          /* (SLCDC_DR) Display Mode Register Position */
+#define SLCDC_DR_DISPMODE_Msk                 (_UINT32_(0x7) << SLCDC_DR_DISPMODE_Pos)             /* (SLCDC_DR) Display Mode Register Mask */
+#define SLCDC_DR_DISPMODE(value)              (SLCDC_DR_DISPMODE_Msk & (_UINT32_(value) << SLCDC_DR_DISPMODE_Pos)) /* Assigment of value for DISPMODE in the SLCDC_DR register */
+#define   SLCDC_DR_DISPMODE_NORMAL_Val        _UINT32_(0x0)                                        /* (SLCDC_DR) Normal Mode-Latched data are displayed.  */
+#define   SLCDC_DR_DISPMODE_FORCE_OFF_Val     _UINT32_(0x1)                                        /* (SLCDC_DR) Force Off Mode-All pixels are invisible. (The SLCDC memory is unchanged.)  */
+#define   SLCDC_DR_DISPMODE_FORCE_ON_Val      _UINT32_(0x2)                                        /* (SLCDC_DR) Force On Mode-All pixels are visible. (The SLCDC memory is unchanged.)  */
+#define   SLCDC_DR_DISPMODE_BLINKING_Val      _UINT32_(0x3)                                        /* (SLCDC_DR) Blinking Mode-All pixels are alternately turned off to the predefined state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.)  */
+#define   SLCDC_DR_DISPMODE_INVERTED_Val      _UINT32_(0x4)                                        /* (SLCDC_DR) Inverted Mode-All pixels are set in the inverted state as defined in SLCDC memory. (The SLCDC memory is unchanged.)  */
+#define   SLCDC_DR_DISPMODE_INVERTED_BLINK_Val _UINT32_(0x5)                                        /* (SLCDC_DR) Inverted Blinking Mode-All pixels are alternately turned off to the predefined opposite state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.)  */
+#define   SLCDC_DR_DISPMODE_USER_BUFFER_LOAD_Val _UINT32_(0x6)                                        /* (SLCDC_DR) User Buffer Only Load Mode-Blocks the automatic transfer from User Buffer to Display Buffer.  */
+#define   SLCDC_DR_DISPMODE_BUFFERS_SWAP_Val  _UINT32_(0x7)                                        /* (SLCDC_DR) Buffer Swap Mode-All pixels are alternatively assigned to the state defined in the User Buffer, then to the state defined in the Display Buffer at LCDBLKFREQ frequency.  */
+#define SLCDC_DR_DISPMODE_NORMAL              (SLCDC_DR_DISPMODE_NORMAL_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Normal Mode-Latched data are displayed. Position  */
+#define SLCDC_DR_DISPMODE_FORCE_OFF           (SLCDC_DR_DISPMODE_FORCE_OFF_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Force Off Mode-All pixels are invisible. (The SLCDC memory is unchanged.) Position  */
+#define SLCDC_DR_DISPMODE_FORCE_ON            (SLCDC_DR_DISPMODE_FORCE_ON_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Force On Mode-All pixels are visible. (The SLCDC memory is unchanged.) Position  */
+#define SLCDC_DR_DISPMODE_BLINKING            (SLCDC_DR_DISPMODE_BLINKING_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Blinking Mode-All pixels are alternately turned off to the predefined state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.) Position  */
+#define SLCDC_DR_DISPMODE_INVERTED            (SLCDC_DR_DISPMODE_INVERTED_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Inverted Mode-All pixels are set in the inverted state as defined in SLCDC memory. (The SLCDC memory is unchanged.) Position  */
+#define SLCDC_DR_DISPMODE_INVERTED_BLINK      (SLCDC_DR_DISPMODE_INVERTED_BLINK_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Inverted Blinking Mode-All pixels are alternately turned off to the predefined opposite state in SLCDC memory at LCDBLKFREQ frequency. (The SLCDC memory is unchanged.) Position  */
+#define SLCDC_DR_DISPMODE_USER_BUFFER_LOAD    (SLCDC_DR_DISPMODE_USER_BUFFER_LOAD_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) User Buffer Only Load Mode-Blocks the automatic transfer from User Buffer to Display Buffer. Position  */
+#define SLCDC_DR_DISPMODE_BUFFERS_SWAP        (SLCDC_DR_DISPMODE_BUFFERS_SWAP_Val << SLCDC_DR_DISPMODE_Pos) /* (SLCDC_DR) Buffer Swap Mode-All pixels are alternatively assigned to the state defined in the User Buffer, then to the state defined in the Display Buffer at LCDBLKFREQ frequency. Position  */
+#define SLCDC_DR_LCDBLKFREQ_Pos               _UINT32_(8)                                          /* (SLCDC_DR) LCD Blinking Frequency Selection Position */
+#define SLCDC_DR_LCDBLKFREQ_Msk               (_UINT32_(0xFF) << SLCDC_DR_LCDBLKFREQ_Pos)          /* (SLCDC_DR) LCD Blinking Frequency Selection Mask */
+#define SLCDC_DR_LCDBLKFREQ(value)            (SLCDC_DR_LCDBLKFREQ_Msk & (_UINT32_(value) << SLCDC_DR_LCDBLKFREQ_Pos)) /* Assigment of value for LCDBLKFREQ in the SLCDC_DR register */
+#define SLCDC_DR_Msk                          _UINT32_(0x0000FF07)                                 /* (SLCDC_DR) Register Mask  */
+
+
+/* -------- SLCDC_SR : (SLCDC Offset: 0x10) ( R/ 32) Status Register -------- */
+#define SLCDC_SR_ENA_Pos                      _UINT32_(0)                                          /* (SLCDC_SR) Enable Status (Automatically Set/Reset) Position */
+#define SLCDC_SR_ENA_Msk                      (_UINT32_(0x1) << SLCDC_SR_ENA_Pos)                  /* (SLCDC_SR) Enable Status (Automatically Set/Reset) Mask */
+#define SLCDC_SR_ENA(value)                   (SLCDC_SR_ENA_Msk & (_UINT32_(value) << SLCDC_SR_ENA_Pos)) /* Assigment of value for ENA in the SLCDC_SR register */
+#define SLCDC_SR_DFFRZS_Pos                   _UINT32_(6)                                          /* (SLCDC_SR) Display Panel Features Configuration Freeze Status Position */
+#define SLCDC_SR_DFFRZS_Msk                   (_UINT32_(0x1) << SLCDC_SR_DFFRZS_Pos)               /* (SLCDC_SR) Display Panel Features Configuration Freeze Status Mask */
+#define SLCDC_SR_DFFRZS(value)                (SLCDC_SR_DFFRZS_Msk & (_UINT32_(value) << SLCDC_SR_DFFRZS_Pos)) /* Assigment of value for DFFRZS in the SLCDC_SR register */
+#define SLCDC_SR_MAPFRZS_Pos                  _UINT32_(7)                                          /* (SLCDC_SR) Remapping Configuration Freeze Status Position */
+#define SLCDC_SR_MAPFRZS_Msk                  (_UINT32_(0x1) << SLCDC_SR_MAPFRZS_Pos)              /* (SLCDC_SR) Remapping Configuration Freeze Status Mask */
+#define SLCDC_SR_MAPFRZS(value)               (SLCDC_SR_MAPFRZS_Msk & (_UINT32_(value) << SLCDC_SR_MAPFRZS_Pos)) /* Assigment of value for MAPFRZS in the SLCDC_SR register */
+#define SLCDC_SR_Msk                          _UINT32_(0x000000C1)                                 /* (SLCDC_SR) Register Mask  */
+
+
+/* -------- SLCDC_IER : (SLCDC Offset: 0x20) ( /W 32) Interrupt Enable Register -------- */
+#define SLCDC_IER_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IER) End of Frame Interrupt Enable Position */
+#define SLCDC_IER_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IER_ENDFRAME_Pos)            /* (SLCDC_IER) End of Frame Interrupt Enable Mask */
+#define SLCDC_IER_ENDFRAME(value)             (SLCDC_IER_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IER_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IER register */
+#define SLCDC_IER_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IER) Disable Completion Interrupt Enable Position */
+#define SLCDC_IER_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IER_DIS_Pos)                 /* (SLCDC_IER) Disable Completion Interrupt Enable Mask */
+#define SLCDC_IER_DIS(value)                  (SLCDC_IER_DIS_Msk & (_UINT32_(value) << SLCDC_IER_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IER register */
+#define SLCDC_IER_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IER) Register Mask  */
+
+
+/* -------- SLCDC_IDR : (SLCDC Offset: 0x24) ( /W 32) Interrupt Disable Register -------- */
+#define SLCDC_IDR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IDR) End of Frame Interrupt Disable Position */
+#define SLCDC_IDR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IDR_ENDFRAME_Pos)            /* (SLCDC_IDR) End of Frame Interrupt Disable Mask */
+#define SLCDC_IDR_ENDFRAME(value)             (SLCDC_IDR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IDR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IDR register */
+#define SLCDC_IDR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IDR) Disable Completion Interrupt Disable Position */
+#define SLCDC_IDR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IDR_DIS_Pos)                 /* (SLCDC_IDR) Disable Completion Interrupt Disable Mask */
+#define SLCDC_IDR_DIS(value)                  (SLCDC_IDR_DIS_Msk & (_UINT32_(value) << SLCDC_IDR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IDR register */
+#define SLCDC_IDR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IDR) Register Mask  */
+
+
+/* -------- SLCDC_IMR : (SLCDC Offset: 0x28) ( R/ 32) Interrupt Mask Register -------- */
+#define SLCDC_IMR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_IMR) End of Frame Interrupt Mask Position */
+#define SLCDC_IMR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_IMR_ENDFRAME_Pos)            /* (SLCDC_IMR) End of Frame Interrupt Mask Mask */
+#define SLCDC_IMR_ENDFRAME(value)             (SLCDC_IMR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_IMR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_IMR register */
+#define SLCDC_IMR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_IMR) Disable Completion Interrupt Mask Position */
+#define SLCDC_IMR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_IMR_DIS_Pos)                 /* (SLCDC_IMR) Disable Completion Interrupt Mask Mask */
+#define SLCDC_IMR_DIS(value)                  (SLCDC_IMR_DIS_Msk & (_UINT32_(value) << SLCDC_IMR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_IMR register */
+#define SLCDC_IMR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_IMR) Register Mask  */
+
+
+/* -------- SLCDC_ISR : (SLCDC Offset: 0x2C) ( R/ 32) Interrupt Status Register -------- */
+#define SLCDC_ISR_ENDFRAME_Pos                _UINT32_(0)                                          /* (SLCDC_ISR) End of Frame Interrupt Status Position */
+#define SLCDC_ISR_ENDFRAME_Msk                (_UINT32_(0x1) << SLCDC_ISR_ENDFRAME_Pos)            /* (SLCDC_ISR) End of Frame Interrupt Status Mask */
+#define SLCDC_ISR_ENDFRAME(value)             (SLCDC_ISR_ENDFRAME_Msk & (_UINT32_(value) << SLCDC_ISR_ENDFRAME_Pos)) /* Assigment of value for ENDFRAME in the SLCDC_ISR register */
+#define SLCDC_ISR_DIS_Pos                     _UINT32_(2)                                          /* (SLCDC_ISR) Disable Completion Interrupt Status Position */
+#define SLCDC_ISR_DIS_Msk                     (_UINT32_(0x1) << SLCDC_ISR_DIS_Pos)                 /* (SLCDC_ISR) Disable Completion Interrupt Status Mask */
+#define SLCDC_ISR_DIS(value)                  (SLCDC_ISR_DIS_Msk & (_UINT32_(value) << SLCDC_ISR_DIS_Pos)) /* Assigment of value for DIS in the SLCDC_ISR register */
+#define SLCDC_ISR_Msk                         _UINT32_(0x00000005)                                 /* (SLCDC_ISR) Register Mask  */
 
 
 /* -------- SLCDC_SMR0 : (SLCDC Offset: 0x30) (R/W 32) Segment Map Register 0 -------- */
@@ -382,19 +339,6 @@
 #define SLCDC_SMR0_LCD_Msk                    (_UINT32_(0xFFFFFFFF) << SLCDC_SMR0_LCD_Pos)         /* (SLCDC_SMR0 Mask) LCD */
 #define SLCDC_SMR0_LCD(value)                 (SLCDC_SMR0_LCD_Msk & (_UINT32_(value) << SLCDC_SMR0_LCD_Pos)) 
 
-/* -------- SLCDC_SR : (SLCDC Offset: 0x10) ( R/ 32) Status Register -------- */
-#define SLCDC_SR_ENA_Pos                      _UINT32_(0)                                          /* (SLCDC_SR) Enable Status (Automatically Set/Reset) Position */
-#define SLCDC_SR_ENA_Msk                      (_UINT32_(0x1) << SLCDC_SR_ENA_Pos)                  /* (SLCDC_SR) Enable Status (Automatically Set/Reset) Mask */
-#define SLCDC_SR_ENA(value)                   (SLCDC_SR_ENA_Msk & (_UINT32_(value) << SLCDC_SR_ENA_Pos)) /* Assigment of value for ENA in the SLCDC_SR register */
-#define SLCDC_SR_DFFRZS_Pos                   _UINT32_(6)                                          /* (SLCDC_SR) Display Panel Features Configuration Freeze Status Position */
-#define SLCDC_SR_DFFRZS_Msk                   (_UINT32_(0x1) << SLCDC_SR_DFFRZS_Pos)               /* (SLCDC_SR) Display Panel Features Configuration Freeze Status Mask */
-#define SLCDC_SR_DFFRZS(value)                (SLCDC_SR_DFFRZS_Msk & (_UINT32_(value) << SLCDC_SR_DFFRZS_Pos)) /* Assigment of value for DFFRZS in the SLCDC_SR register */
-#define SLCDC_SR_MAPFRZS_Pos                  _UINT32_(7)                                          /* (SLCDC_SR) Remapping Configuration Freeze Status Position */
-#define SLCDC_SR_MAPFRZS_Msk                  (_UINT32_(0x1) << SLCDC_SR_MAPFRZS_Pos)              /* (SLCDC_SR) Remapping Configuration Freeze Status Mask */
-#define SLCDC_SR_MAPFRZS(value)               (SLCDC_SR_MAPFRZS_Msk & (_UINT32_(value) << SLCDC_SR_MAPFRZS_Pos)) /* Assigment of value for MAPFRZS in the SLCDC_SR register */
-#define SLCDC_SR_Msk                          _UINT32_(0x000000C1)                                 /* (SLCDC_SR) Register Mask  */
-
-
 /* -------- SLCDC_WPMR : (SLCDC Offset: 0xE4) (R/W 32) Write Protection Mode Register -------- */
 #define SLCDC_WPMR_WPEN_Pos                   _UINT32_(0)                                          /* (SLCDC_WPMR) Write Protection Enable Position */
 #define SLCDC_WPMR_WPEN_Msk                   (_UINT32_(0x1) << SLCDC_WPMR_WPEN_Pos)               /* (SLCDC_WPMR) Write Protection Enable Mask */
@@ -413,14 +357,74 @@
 #define SLCDC_WPMR_Msk                        _UINT32_(0xFFFFFF07)                                 /* (SLCDC_WPMR) Register Mask  */
 
 
+/* -------- SLCDC_LMEMR0 : (SLCDC Offset: 0x200) (R/W 32) LSB Memory Register (com = 0) -------- */
+#define SLCDC_LMEMR0_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR0) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR0_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR0_LPIXEL_Pos)    /* (SLCDC_LMEMR0) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR0_LPIXEL(value)            (SLCDC_LMEMR0_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR0_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR0 register */
+#define SLCDC_LMEMR0_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR0) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR1 : (SLCDC Offset: 0x208) (R/W 32) LSB Memory Register (com = 1) -------- */
+#define SLCDC_LMEMR1_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR1) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR1_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR1_LPIXEL_Pos)    /* (SLCDC_LMEMR1) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR1_LPIXEL(value)            (SLCDC_LMEMR1_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR1_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR1 register */
+#define SLCDC_LMEMR1_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR1) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR2 : (SLCDC Offset: 0x210) (R/W 32) LSB Memory Register (com = 2) -------- */
+#define SLCDC_LMEMR2_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR2) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR2_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR2_LPIXEL_Pos)    /* (SLCDC_LMEMR2) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR2_LPIXEL(value)            (SLCDC_LMEMR2_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR2_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR2 register */
+#define SLCDC_LMEMR2_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR2) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR3 : (SLCDC Offset: 0x218) (R/W 32) LSB Memory Register (com = 3) -------- */
+#define SLCDC_LMEMR3_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR3) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR3_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR3_LPIXEL_Pos)    /* (SLCDC_LMEMR3) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR3_LPIXEL(value)            (SLCDC_LMEMR3_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR3_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR3 register */
+#define SLCDC_LMEMR3_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR3) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR4 : (SLCDC Offset: 0x220) (R/W 32) LSB Memory Register (com = 4) -------- */
+#define SLCDC_LMEMR4_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR4) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR4_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR4_LPIXEL_Pos)    /* (SLCDC_LMEMR4) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR4_LPIXEL(value)            (SLCDC_LMEMR4_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR4_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR4 register */
+#define SLCDC_LMEMR4_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR4) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR5 : (SLCDC Offset: 0x228) (R/W 32) LSB Memory Register (com = 5) -------- */
+#define SLCDC_LMEMR5_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR5) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR5_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR5_LPIXEL_Pos)    /* (SLCDC_LMEMR5) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR5_LPIXEL(value)            (SLCDC_LMEMR5_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR5_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR5 register */
+#define SLCDC_LMEMR5_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR5) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR6 : (SLCDC Offset: 0x230) (R/W 32) LSB Memory Register (com = 6) -------- */
+#define SLCDC_LMEMR6_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR6) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR6_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR6_LPIXEL_Pos)    /* (SLCDC_LMEMR6) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR6_LPIXEL(value)            (SLCDC_LMEMR6_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR6_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR6 register */
+#define SLCDC_LMEMR6_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR6) Register Mask  */
+
+
+/* -------- SLCDC_LMEMR7 : (SLCDC Offset: 0x238) (R/W 32) LSB Memory Register (com = 7) -------- */
+#define SLCDC_LMEMR7_LPIXEL_Pos               _UINT32_(0)                                          /* (SLCDC_LMEMR7) LSB Pixels Pattern Associated to COMx Terminal Position */
+#define SLCDC_LMEMR7_LPIXEL_Msk               (_UINT32_(0xFFFFFFFF) << SLCDC_LMEMR7_LPIXEL_Pos)    /* (SLCDC_LMEMR7) LSB Pixels Pattern Associated to COMx Terminal Mask */
+#define SLCDC_LMEMR7_LPIXEL(value)            (SLCDC_LMEMR7_LPIXEL_Msk & (_UINT32_(value) << SLCDC_LMEMR7_LPIXEL_Pos)) /* Assigment of value for LPIXEL in the SLCDC_LMEMR7 register */
+#define SLCDC_LMEMR7_Msk                      _UINT32_(0xFFFFFFFF)                                 /* (SLCDC_LMEMR7) Register Mask  */
+
+
 /** \brief SLCDC register offsets definitions */
 #define SLCDC_CR_REG_OFST              _UINT32_(0x00)      /* (SLCDC_CR) Control Register Offset */
-#define SLCDC_DR_REG_OFST              _UINT32_(0x0C)      /* (SLCDC_DR) Display Register Offset */
+#define SLCDC_MR_REG_OFST              _UINT32_(0x04)      /* (SLCDC_MR) Mode Register Offset */
 #define SLCDC_FRR_REG_OFST             _UINT32_(0x08)      /* (SLCDC_FRR) Frame Rate Register Offset */
-#define SLCDC_IDR_REG_OFST             _UINT32_(0x24)      /* (SLCDC_IDR) Interrupt Disable Register Offset */
+#define SLCDC_DR_REG_OFST              _UINT32_(0x0C)      /* (SLCDC_DR) Display Register Offset */
+#define SLCDC_SR_REG_OFST              _UINT32_(0x10)      /* (SLCDC_SR) Status Register Offset */
 #define SLCDC_IER_REG_OFST             _UINT32_(0x20)      /* (SLCDC_IER) Interrupt Enable Register Offset */
+#define SLCDC_IDR_REG_OFST             _UINT32_(0x24)      /* (SLCDC_IDR) Interrupt Disable Register Offset */
 #define SLCDC_IMR_REG_OFST             _UINT32_(0x28)      /* (SLCDC_IMR) Interrupt Mask Register Offset */
 #define SLCDC_ISR_REG_OFST             _UINT32_(0x2C)      /* (SLCDC_ISR) Interrupt Status Register Offset */
+#define SLCDC_SMR0_REG_OFST            _UINT32_(0x30)      /* (SLCDC_SMR0) Segment Map Register 0 Offset */
+#define SLCDC_WPMR_REG_OFST            _UINT32_(0xE4)      /* (SLCDC_WPMR) Write Protection Mode Register Offset */
 #define SLCDC_LMEMR0_REG_OFST          _UINT32_(0x200)     /* (SLCDC_LMEMR0) LSB Memory Register (com = 0) Offset */
 #define SLCDC_LMEMR1_REG_OFST          _UINT32_(0x208)     /* (SLCDC_LMEMR1) LSB Memory Register (com = 1) Offset */
 #define SLCDC_LMEMR2_REG_OFST          _UINT32_(0x210)     /* (SLCDC_LMEMR2) LSB Memory Register (com = 2) Offset */
@@ -429,10 +433,6 @@
 #define SLCDC_LMEMR5_REG_OFST          _UINT32_(0x228)     /* (SLCDC_LMEMR5) LSB Memory Register (com = 5) Offset */
 #define SLCDC_LMEMR6_REG_OFST          _UINT32_(0x230)     /* (SLCDC_LMEMR6) LSB Memory Register (com = 6) Offset */
 #define SLCDC_LMEMR7_REG_OFST          _UINT32_(0x238)     /* (SLCDC_LMEMR7) LSB Memory Register (com = 7) Offset */
-#define SLCDC_MR_REG_OFST              _UINT32_(0x04)      /* (SLCDC_MR) Mode Register Offset */
-#define SLCDC_SMR0_REG_OFST            _UINT32_(0x30)      /* (SLCDC_SMR0) Segment Map Register 0 Offset */
-#define SLCDC_SR_REG_OFST              _UINT32_(0x10)      /* (SLCDC_SR) Status Register Offset */
-#define SLCDC_WPMR_REG_OFST            _UINT32_(0xE4)      /* (SLCDC_WPMR) Write Protection Mode Register Offset */
 
 #if !(defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief SLCDC register API structure */

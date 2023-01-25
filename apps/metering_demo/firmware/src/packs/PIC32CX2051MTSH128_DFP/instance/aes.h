@@ -1,7 +1,7 @@
 /*
  * Instance header file for PIC32CX5112MTSH128
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,14 +20,14 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2023-01-19T13:46:21Z */
 #ifndef _PIC32CXMTSH_AES_INSTANCE_
 #define _PIC32CXMTSH_AES_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for AES peripheral ========== */
-#define AES_INSTANCE_ID                          (49)       
 #define AES_CLOCK_ID                             (49)       
+#define AES_INSTANCE_ID                          (49)       
 #define AES_INSTANCE_ID_AESSEC                   (50)       
 
 #endif /* _PIC32CXMTSH_AES_INSTANCE_ */
