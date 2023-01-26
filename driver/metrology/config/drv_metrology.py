@@ -200,12 +200,19 @@ def updateTaskDelayVisiblity(symbol, event):
 
 def showRTOSMenu(symbol, event):
     show_rtos_menu = False
-    component = symbol.getComponent()
 
     if (Database.getSymbolValue("HarmonyCore", "SELECT_RTOS") != "BareMetal"):
         show_rtos_menu = True
 
     symbol.setVisible(show_rtos_menu)
+
+def enableRTOS(symbol, event):
+    enable_rtos = False
+
+    if (Database.getSymbolValue("HarmonyCore", "SELECT_RTOS") != "BareMetal"):
+        enable_rtos = True
+
+    symbol.setValue(enable_rtos)
 
 def genRtosTask(symbol, event):
     gen_rtos_task = False
@@ -791,24 +798,17 @@ def instantiateComponent(metComponentCommon):
 
     #####################################################################################################################################
     # RTOS CONFIG
-    
-    enable_rtos_settings = False
-
-    rtos = Database.getSymbolValue("HarmonyCore", "SELECT_RTOS")
-    if ((rtos != "BareMetal") and (rtos != None)):
-        enable_rtos_settings = True
-
     metrologyRTOSSupport = metComponentCommon.createBooleanSymbol("DRV_MET_RTOS_ENABLE", None)
     metrologyRTOSSupport.setLabel("RTOS support")
-    metrologyRTOSSupport.setDefaultValue(enable_rtos_settings)
+    metrologyRTOSSupport.setDefaultValue(0)
     metrologyRTOSSupport.setVisible(False)
+    metrologyRTOSSupport.setDependencies(enableRTOS, ["HarmonyCore.SELECT_RTOS"])
 
-    # RTOS Settings
     metrologyRTOSMenu = metComponentCommon.createMenuSymbol("DRV_MET_RTOS_MENU", None)
     metrologyRTOSMenu.setLabel("RTOS settings")
     metrologyRTOSMenu.setHelp(srv_met_helpkeyword)
     metrologyRTOSMenu.setDescription("RTOS settings")
-    metrologyRTOSMenu.setVisible(enable_rtos_settings)
+    metrologyRTOSMenu.setVisible(False)
     metrologyRTOSMenu.setDependencies(showRTOSMenu, ["HarmonyCore.SELECT_RTOS"])
 
     metrologyRTOSStackSize = metComponentCommon.createIntegerSymbol("DRV_MET_RTOS_STACK_SIZE", metrologyRTOSMenu)
@@ -977,6 +977,6 @@ def instantiateComponent(metComponentCommon):
     drvMetSystemRtosTasksFile.setOutputName("core.LIST_SYSTEM_RTOS_TASKS_C_DEFINITIONS")
     drvMetSystemRtosTasksFile.setSourcePath("driver/metrology/templates/system/system_rtos_tasks.c.ftl")
     drvMetSystemRtosTasksFile.setMarkup(True)
-    drvMetSystemRtosTasksFile.setEnabled(enable_rtos_settings)
+    drvMetSystemRtosTasksFile.setEnabled(False)
     drvMetSystemRtosTasksFile.setDependencies(genRtosTask, ["HarmonyCore.SELECT_RTOS"])
 
