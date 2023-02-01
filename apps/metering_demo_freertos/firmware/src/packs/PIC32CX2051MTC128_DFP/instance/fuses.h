@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T09:46:49Z */
+/* file generated from device description version 2023-01-20T11:00:56Z */
 #ifndef _PIC32CXMTC_FUSES_INSTANCE_
 #define _PIC32CXMTC_FUSES_INSTANCE_
 

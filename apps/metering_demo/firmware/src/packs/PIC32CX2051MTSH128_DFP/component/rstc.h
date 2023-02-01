@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T13:46:22Z */
+/* file generated from device description version 2023-01-20T11:01:06Z */
 #ifndef _PIC32CXMTSH_RSTC_COMPONENT_H_
 #define _PIC32CXMTSH_RSTC_COMPONENT_H_
 

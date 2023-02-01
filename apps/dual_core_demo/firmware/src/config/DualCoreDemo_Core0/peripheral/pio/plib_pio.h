@@ -204,6 +204,17 @@ typedef uint32_t PIO_PORT;
 #define    PIO_PIN_PD17   (113U)
 #define    PIO_PIN_PD18   (114U)
 #define    PIO_PIN_PD19   (115U)
+#define    PIO_PIN_PD20   (116U)
+#define    PIO_PIN_PD21   (117U)
+#define    PIO_PIN_PD22   (118U)
+#define    PIO_PIN_PD23   (119U)
+#define    PIO_PIN_PD24   (120U)
+#define    PIO_PIN_PD25   (121U)
+#define    PIO_PIN_PD26   (122U)
+#define    PIO_PIN_PD27   (123U)
+#define    PIO_PIN_PD28   (124U)
+#define    PIO_PIN_PD29   (125U)
+#define    PIO_PIN_PD30   (126U)
 
 /* This element should not be used in any of the PIO APIs.
    It will be used by other modules or application to denote that none of the PIO Pin is used */

@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T13:46:22Z */
+/* file generated from device description version 2023-01-20T11:01:06Z */
 #ifndef _PIC32CXMTSH_TC3_INSTANCE_
 #define _PIC32CXMTSH_TC3_INSTANCE_
 
@@ -36,7 +36,7 @@
 #define TC3_INSTANCE_ID_CHANNEL1                 (80)       
 #define TC3_INSTANCE_ID_CHANNEL2                 (81)       
 #define TC3_NUM_INTERRUPT_LINES                  (3)        
-#define TC3_TCCLKS_                              (0)        /* MCK0 */
+#define TC3_TCCLKS_                              (0)        /* MCK0DIV */
 #define TC3_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
 #define TC3_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0/8 */
 #define TC3_TCCLKS_TIMER_CLOCK3                  (3)        /* MCK0/32 */

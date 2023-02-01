@@ -4,7 +4,7 @@
 
 
 project: metering_demo
-creation_date: 2023-01-25T10:33:46.977+01:00[Europe/Berlin]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2023-02-01T13:21:04.457+01:00[Europe/Berlin]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mhc_mode: Standalone            # [IDE|Standalone|Headless]
 mhc_version: v3.8.5
@@ -14,9 +14,9 @@ compiler: xc32
 
 modules:
     - {name: "core", version: "unknown"}
-    - {name: "csp", version: "unknown"}
+    - {name: "csp", version: "v3.15.0"}
     - {name: "harmony_gfx", version: "v3.12.0"}
-    - {name: "dev_packs", version: "unknown"}
-    - {name: "bsp", version: "unknown"}
+    - {name: "dev_packs", version: "v3.15.0"}
+    - {name: "bsp", version: "v3.15.0"}
     - {name: "smartenergy", version: "unknown"}
 

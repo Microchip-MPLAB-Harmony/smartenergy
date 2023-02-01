@@ -71,8 +71,8 @@ void RSTC_Initialize (void)
 void RSTC_Reset (RSTC_RESET_TYPE type)
 {
     /* Issue reset command              */
-    RSTC_REGS->RSTC_CR = (RSTC_CR_KEY_PASSWD | type);
-    while (RSTC_REGS->RSTC_SR & (uint32_t) RSTC_SR_SRCMP_Msk)
+    RSTC_REGS->RSTC_CR = (RSTC_CR_KEY_PASSWD | (uint32_t)type);
+    while ((RSTC_REGS->RSTC_SR & (uint32_t) RSTC_SR_SRCMP_Msk) != 0U)
     {
         /*Wait for processing reset command */
     }

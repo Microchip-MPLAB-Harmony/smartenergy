@@ -25,9 +25,9 @@
 #include "plib_clk.h"
 #include "peripheral/rstc/plib_rstc.h"
 
-#define PLLA_RECOMMENDED_ACR    0x0F000038U
-#define PLLB_RECOMMENDED_ACR    0x28000058U
-#define PLLC_RECOMMENDED_ACR    0x28000058U
+#define PLLA_RECOMMENDED_ACR    0x0F020038U
+#define PLLB_RECOMMENDED_ACR    0x28020038U
+#define PLLC_RECOMMENDED_ACR    0x28020038U
 
 #define PLLA_UPDT_STUPTIM_VAL   0x02U
 #define PLLB_UPDT_STUPTIM_VAL   0x00U
@@ -170,6 +170,11 @@ static void CPUClockInitialize(void)
         /* Wait for status MCKRDY */
     }
 
+    /* Set coprocessor clock dummy prescaler */
+    reg = (PMC_REGS->PMC_CPU_CKR & ~(PMC_CPU_CKR_CPPRES_Msk | PMC_CPU_CKR_RATIO_MCK1DIV_Msk));
+    reg |= (PMC_CPU_CKR_CPPRES_CLK_2 | PMC_CPU_CKR_RATIO_MCK1DIV_Msk);
+    PMC_REGS->PMC_CPU_CKR = reg;
+
     /* Program PMC_CPU_CKR.CPCSS and Wait for PMC_SR.CPMCKRDY to be set    */
     reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPCSS_Msk);
     PMC_REGS->PMC_CPU_CKR = (reg | PMC_CPU_CKR_CPCSS_PLLBCK);
@@ -205,6 +210,29 @@ static void ApplyFlashPatch(void)
 
 
 /*********************************************************************************
+                        Check Peripheral clock status
+*********************************************************************************/
+static bool PeripheralClockStatus(uint32_t periph_id)
+{
+    bool retval = false;
+    uint32_t status = 0U;
+    const uint32_t csr_offset[] = { PMC_CSR0_REG_OFST,
+                                    PMC_CSR1_REG_OFST,
+                                    PMC_CSR2_REG_OFST,
+                                    PMC_CSR3_REG_OFST
+                                    };
+    uint32_t index = periph_id / 32U;
+    if (index < (sizeof(csr_offset)/sizeof(csr_offset[0])))
+    {
+        status = (*(volatile uint32_t* const)((PMC_BASE_ADDRESS +
+                                                        csr_offset[index])));
+        retval = ((status & (1 << (periph_id % 32U))) != 0U);
+    }
+    return retval;
+}
+
+
+/*********************************************************************************
                         Initialize Peripheral clocks
 *********************************************************************************/
 static void PeripheralClockInitialize(void)
@@ -214,7 +242,7 @@ static void PeripheralClockInitialize(void)
         uint8_t clken;
         uint8_t gclken;
         uint8_t css;
-        uint8_t div;
+        uint8_t divs;
     } periphList[] =
     {
         { ID_FLEXCOM0, 1U, 0U, 0U, 0U},
@@ -227,8 +255,6 @@ static void PeripheralClockInitialize(void)
 
         { ID_PIOD, 1U, 0U, 0U, 0U},
 
-        { ID_IPC1, 1U, 0U, 0U, 0U},
-
         { ID_SRAM1, 1U, 0U, 0U, 0U},
 
         { ID_PERIPH_MAX + 1, 0, 0, 0, 0}//end of list marker
@@ -236,14 +262,18 @@ static void PeripheralClockInitialize(void)
     uint32_t count = sizeof(periphList)/sizeof(periphList[0]);
     uint32_t i = 0U;
 
-    while((i < count) && (periphList[i].id != (ID_PERIPH_MAX + 1U)))
+    while((i < count) && (periphList[i].id != ((uint32_t)ID_PERIPH_MAX + 1U)))
     {
         PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk |\
                             PMC_PCR_GCLKEN(periphList[i].gclken) |\
                             PMC_PCR_EN(periphList[i].clken) |\
-                            PMC_PCR_GCLKDIV(periphList[i].div) |\
+                            PMC_PCR_GCLKDIV(periphList[i].divs) |\
                             PMC_PCR_GCLKCSS(periphList[i].css) |\
                             PMC_PCR_PID(periphList[i].id);
+        while(PeripheralClockStatus(periphList[i].id) == false)
+        {
+            /* Wait for clock to be initialized */
+        }
         i++;
     }
 }
@@ -259,10 +289,10 @@ void CLK_Initialize( void )
         SlowClockInitialize();
 
         /* Initialize PLLA */
-        PLLInitialize(PLLA, &plla_cfg);
+        PLLInitialize((uint32_t)PLLA, &plla_cfg);
 
         /* Initialize PLLB */
-        PLLInitialize(PLLB, &pllb_cfg);
+        PLLInitialize((uint32_t)PLLB, &pllb_cfg);
 
         /* Apply flash patch */
         ApplyFlashPatch();

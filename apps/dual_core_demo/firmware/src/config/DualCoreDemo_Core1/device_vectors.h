@@ -161,9 +161,9 @@ typedef struct H3DeviceVectorsTag
   pfn_handler_t pfnEMAFE_SLINK_Handler;             /* 76 Energy Metering Analog Front End Serial Link Interrupt (EMAFE_SLINK) */
   pfn_handler_t pfnEMAFE_DATA_Handler;              /* 77 Energy Metering Analog Front End Data Ready Interrupt (EMAFE_DATA) */
   pfn_handler_t pfnMEM2MEM1_Handler;                /* 78 Metrology Core Memory to Memory Transfer Controller 1 (MEM2MEM1) */
-  pfn_handler_t pfnTC3_CHANNEL0_Handler;            /* 79 Timer Counter 3, Channel 0 */
-  pfn_handler_t pfnTC3_CHANNEL1_Handler;            /* 80 Timer Counter 3, Channel 1 */
-  pfn_handler_t pfnTC3_CHANNEL2_Handler;            /* 81 Timer Counter 3, Channel 2 */
+  pfn_handler_t pfnTC3_CH0_Handler;                 /* 79 Timer Counter 3, Channel 0 */
+  pfn_handler_t pfnTC3_CH1_Handler;                 /* 80 Timer Counter 3, Channel 1 */
+  pfn_handler_t pfnTC3_CH2_Handler;                 /* 81 Timer Counter 3, Channel 2 */
   pfn_handler_t pfnTC3_C0SEC_Handler;               /* 82 Timer Counter 3, Channel 0, Secure IRQ */
   pfn_handler_t pfnTC3_C1SEC_Handler;               /* 83 Timer Counter 3, Channel 1, Secure IRQ */
   pfn_handler_t pfnTC3_C2SEC_Handler;               /* 84 Timer Counter 3, Channel 2, Secure IRQ */

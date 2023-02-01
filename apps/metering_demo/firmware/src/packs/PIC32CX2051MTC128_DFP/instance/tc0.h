@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T09:46:50Z */
+/* file generated from device description version 2023-01-20T11:00:56Z */
 #ifndef _PIC32CXMTC_TC0_INSTANCE_
 #define _PIC32CXMTC_TC0_INSTANCE_
 
@@ -36,7 +36,7 @@
 #define TC0_INSTANCE_ID_CHANNEL1                 (32)       
 #define TC0_INSTANCE_ID_CHANNEL2                 (33)       
 #define TC0_NUM_INTERRUPT_LINES                  (3)        
-#define TC0_TCCLKS_                              (0)        /* MCK0 */
+#define TC0_TCCLKS_                              (0)        /* MCK0DIV */
 #define TC0_TCCLKS_TIMER_CLOCK1                  (1)        /* GCLK */
 #define TC0_TCCLKS_TIMER_CLOCK2                  (2)        /* MCK0/8 */
 #define TC0_TCCLKS_TIMER_CLOCK3                  (3)        /* MCK0/32 */

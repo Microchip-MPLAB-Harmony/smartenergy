@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T13:46:20Z */
+/* file generated from device description version 2023-01-20T11:01:04Z */
 #ifndef _PIC32CX2051MTSH128_GPIO_H_
 #define _PIC32CX2051MTSH128_GPIO_H_
 

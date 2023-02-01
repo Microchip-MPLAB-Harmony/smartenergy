@@ -20,7 +20,7 @@
  *
  */
 
-/* File generated from device description version 2023-01-19T09:46:48Z */
+/* File generated from device description version 2023-01-20T11:00:54Z */
 #ifndef _PIC32CX2051MTC128_H_
 #define _PIC32CX2051MTC128_H_
 

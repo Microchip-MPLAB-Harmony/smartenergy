@@ -93,7 +93,7 @@ void TC2_CH0_TimerStop (void)
 
 uint32_t TC2_CH0_TimerFrequencyGet( void )
 {
-    return (uint32_t)(781250UL);
+    return (uint32_t)(1562500UL);
 }
 
 /* Configure timer period */

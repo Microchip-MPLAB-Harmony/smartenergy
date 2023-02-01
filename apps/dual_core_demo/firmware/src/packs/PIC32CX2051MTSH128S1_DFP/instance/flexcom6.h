@@ -1,7 +1,7 @@
 /*
  * Instance header file for PIC32CX5112MTSH128S1
  *
- * Copyright (c) 2022 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2023 Microchip Technology Inc. and its subsidiaries.
  *
  * Subject to your compliance with these terms, you may use Microchip software and any derivatives
  * exclusively with Microchip products. It is your responsibility to comply with third party license
@@ -20,16 +20,16 @@
  *
  */
 
-/* file generated from device description version 2022-10-10T14:22:37Z */
+/* file generated from device description version 2023-01-20T11:01:06Z */
 #ifndef _PIC32CXMTSH_FLEXCOM6_INSTANCE_
 #define _PIC32CXMTSH_FLEXCOM6_INSTANCE_
 
 
 /* ========== Instance Parameter definitions for FLEXCOM6 peripheral ========== */
-#define FLEXCOM6_INSTANCE_ID                     (15)       
 #define FLEXCOM6_CLOCK_ID                        (15)       
-#define FLEXCOM6_USART_FIFO_SIZE                 (8)        
+#define FLEXCOM6_INSTANCE_ID                     (15)       
 #define FLEXCOM6_SPI_FIFO_SIZE                   (8)        
 #define FLEXCOM6_TWI_FIFO_SIZE                   (8)        
+#define FLEXCOM6_USART_FIFO_SIZE                 (8)        
 
 #endif /* _PIC32CXMTSH_FLEXCOM6_INSTANCE_ */

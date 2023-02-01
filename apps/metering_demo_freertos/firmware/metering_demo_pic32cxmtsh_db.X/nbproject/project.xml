@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>metering_demo_pic32cxmtsh_db</name>
+            <name>metering_demo_pic32cxmtsh_db_freertos</name>
             <creation-uuid>ebadeaf3-f5ca-499b-987b-0765faecc3ef</creation-uuid>
             <make-project-type>0</make-project-type>
             <sourceEncoding>ISO-8859-1</sourceEncoding>

@@ -167,7 +167,7 @@ extern "C" {
 /* Metrology Default Config: ATSENSE CTRL 20 23 */
 #define DRV_METROLOGY_CONF_ATS2023            0x1010103
 /* Metrology Default Config: ATSENSE CTRL 24 27 */
-#define DRV_METROLOGY_CONF_ATS2427            0x7000001
+#define DRV_METROLOGY_CONF_ATS2427            0x7010101
 /* Metrology Default Config: SWELL */
 #define DRV_METROLOGY_CONF_SWELL              0x5eab918
 /* Metrology Default Config: SAG */

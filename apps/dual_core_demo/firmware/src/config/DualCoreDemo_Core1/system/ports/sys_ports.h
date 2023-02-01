@@ -249,6 +249,17 @@ typedef enum
     SYS_PORT_PIN_PD17 = 113,
     SYS_PORT_PIN_PD18 = 114,
     SYS_PORT_PIN_PD19 = 115,
+    SYS_PORT_PIN_PD20 = 116,
+    SYS_PORT_PIN_PD21 = 117,
+    SYS_PORT_PIN_PD22 = 118,
+    SYS_PORT_PIN_PD23 = 119,
+    SYS_PORT_PIN_PD24 = 120,
+    SYS_PORT_PIN_PD25 = 121,
+    SYS_PORT_PIN_PD26 = 122,
+    SYS_PORT_PIN_PD27 = 123,
+    SYS_PORT_PIN_PD28 = 124,
+    SYS_PORT_PIN_PD29 = 125,
+    SYS_PORT_PIN_PD30 = 126,
     /* This element should not be used in any of the PORTS APIs.
        It will be used by other modules or application to denote that none of the PORT Pin is used */
     SYS_PORT_PIN_NONE = -1

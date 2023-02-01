@@ -24,23 +24,31 @@
 #include "device.h"
 #include "plib_clk.h"
 /*********************************************************************************
-                        Initialize Peripheral clocks
+                        Check Peripheral clock status
 *********************************************************************************/
-static uint32_t PeripheralClockStatus(uint32_t periphId)
+static bool PeripheralClockStatus(uint32_t periph_id)
 {
-    if (periphId < 32) {
-		return ((PMC_REGS->PMC_CSR0 & PMC_CSR0_Msk) & (1 << periphId));
-	} else if (periphId < 64) {
-		return ((PMC_REGS->PMC_CSR1 & PMC_CSR1_Msk) & (1 << (periphId - 32)));
-	} else if (periphId < 96) {
-		return ((PMC_REGS->PMC_CSR2 & PMC_CSR2_Msk) & (1 << (periphId - 64)));
-	} else if (periphId <= ID_PERIPH_MAX) {
-		return ((PMC_REGS->PMC_CSR3 & PMC_CSR3_Msk) & (1 << (periphId - 96)));
-	} else {
-		return 0;
-	}
+    bool retval = false;
+    uint32_t status = 0U;
+    const uint32_t csr_offset[] = { PMC_CSR0_REG_OFST,
+                                    PMC_CSR1_REG_OFST,
+                                    PMC_CSR2_REG_OFST,
+                                    PMC_CSR3_REG_OFST
+                                    };
+    uint32_t index = periph_id / 32U;
+    if (index < (sizeof(csr_offset)/sizeof(csr_offset[0])))
+    {
+        status = (*(volatile uint32_t* const)((PMC_BASE_ADDRESS +
+                                                        csr_offset[index])));
+        retval = ((status & (1 << (periph_id % 32U))) != 0U);
+    }
+    return retval;
 }
 
+
+/*********************************************************************************
+                        Initialize Peripheral clocks
+*********************************************************************************/
 static void PeripheralClockInitialize(void)
 {
     struct {
@@ -48,7 +56,7 @@ static void PeripheralClockInitialize(void)
         uint8_t clken;
         uint8_t gclken;
         uint8_t css;
-        uint8_t div;
+        uint8_t divs;
     } periphList[] =
     {
         { ID_TC2_CHANNEL0, 1U, 0U, 0U, 0U},
@@ -62,17 +70,18 @@ static void PeripheralClockInitialize(void)
     uint32_t count = sizeof(periphList)/sizeof(periphList[0]);
     uint32_t i = 0U;
 
-    while((i < count) && (periphList[i].id != (ID_PERIPH_MAX + 1U)))
+    while((i < count) && (periphList[i].id != ((uint32_t)ID_PERIPH_MAX + 1U)))
     {
         PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk |\
                             PMC_PCR_GCLKEN(periphList[i].gclken) |\
                             PMC_PCR_EN(periphList[i].clken) |\
-                            PMC_PCR_GCLKDIV(periphList[i].div) |\
+                            PMC_PCR_GCLKDIV(periphList[i].divs) |\
                             PMC_PCR_GCLKCSS(periphList[i].css) |\
                             PMC_PCR_PID(periphList[i].id);
-        
-        while(PeripheralClockStatus(periphList[i].id) == 0);
-            
+        while(PeripheralClockStatus(periphList[i].id) == false)
+        {
+            /* Wait for clock to be initialized */
+        }
         i++;
     }
 }

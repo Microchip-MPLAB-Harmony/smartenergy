@@ -261,9 +261,11 @@ def instantiateComponent(metComponentCommon):
     if ("MTC" in str(Variables.get("__PROCESSOR"))):
         enablePhase3 = 1
         featCtrl0Value = 0x00000700
+        at2427Value = 0x07010101
     else:
         enablePhase3 = 0
         featCtrl0Value = 0x00000300
+        at2427Value = 0x07000001
     
     drvMetRegBaseAddress = metComponentCommon.createHexSymbol("DRV_MET_BASE_ADDRESS", None)
     drvMetRegBaseAddress.setLabel("Register Base Address")
@@ -722,7 +724,7 @@ def instantiateComponent(metComponentCommon):
     drvMetRegATS2427 = metComponentCommon.createHexSymbol("DRV_MET_CTRL_ATS2427", None)
     drvMetRegATS2427.setLabel("ATS2427")
     drvMetRegATS2427.setVisible(False)
-    drvMetRegATS2427.setDefaultValue(0x07000001)
+    drvMetRegATS2427.setDefaultValue(at2427Value)
     drvMetRegATS2427.setReadOnly(True)
     drvMetRegATS2427.setDependencies(updateConfigATS2427, ["DRV_MET_CONF_GAIN", "DRV_MET_CONF_V2", "DRV_MET_CONF_I3", "DRV_MET_CONF_V3"])
 

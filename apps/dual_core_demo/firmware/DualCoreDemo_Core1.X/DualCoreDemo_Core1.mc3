@@ -202,7 +202,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;355&quot; canvasWidth=&quot;797&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;HarmonyCore&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
@@ -216,7 +217,6 @@
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;tc2&quot; x=&quot;52&quot; y=&quot;129&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;355&quot; canvasWidth=&quot;797&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -2050,7 +2050,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\trng.h</file>
-         <hash>78c9cd6dc4198b9ed56ad02b61eb2ccd363e694e9f7e906ee49aba29023c1c87</hash>
+         <hash>ac57fce258a730ac8b0679e6d7c52c49bddb135a9d1f22668671901a84b9fea6</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_gcc.h</file>
@@ -2062,15 +2062,15 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\tc\plib_tc2.c</file>
-         <hash>7ab9598679fbfa1f3b510013a21c39564cb966c0415e3534ad610b27b0edc766</hash>
+         <hash>08be5750ccb2671fab468df9c8a38d5c5672b3945642f0595a8e111f74149ec9</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\sfr.h</file>
-         <hash>dfe8e021daedef5476e098cd4fdab80e5aaaba1033b8551babbad663a91114f6</hash>
+         <hash>d0afc0f395ad477d8215c16e6a35a8e704861ceee87e3be7b54281cc5719da31</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\uart.h</file>
-         <hash>927aeaf96e8a536e8d60b392c905c7f5b8ae1b8b08695bfc5e3b2c3cf7eb9571</hash>
+         <hash>eb1fc577dda2e5ab9c11eb3ff8195c88477355a8b3d13c0a2aad54103cef0546</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\system.h</file>
@@ -2078,15 +2078,15 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\emafe.h</file>
-         <hash>fb72e4b8ba284dc4de45a1a96517b33ee25048211a3d6a273b2d2f2d743c1287</hash>
+         <hash>a051d412f9eb4adcc8a1f617e3ad4265cee45db7c87bd67e9493ac256d88cdc2</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\fuses.h</file>
-         <hash>52c01442920dace007233a98bbf498b950178bb45e37bfa2d313b7d2fedf5800</hash>
+         <hash>6bf658fcbe285d4ec4187442136158d57ca92d54f1676143c90988e77520e314</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\cpkcc.h</file>
-         <hash>e9d39f8c9fa3aef89c8dedaa1ce7dee666f687474f3e31a4c19deb038addafdd</hash>
+         <hash>6deeadbdfb75e11cc4b8f07a2fd6b96d6eb59fc3ebad29fa14986d9930d7b9bd</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device.h</file>
@@ -2098,11 +2098,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\cpkcc.h</file>
-         <hash>aea10db8198f5657050a748ec9f3a99c5bc9957a94f4c864d940cac0fb993da5</hash>
+         <hash>ecce887b088c9c43242605105742e6b977faef1836da8aeaa1503a3a0364aeb3</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\acc.h</file>
-         <hash>6e1a75b847283d7f0ace381b32ad57a0f9727b8396e82a461b3ce154b4a6d8b1</hash>
+         <hash>8b8126dd55ac86b42c09e97e607405e5c4630669818f4271c22e7565887ce822</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\exceptions.c</file>
@@ -2110,39 +2110,39 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\initialization.c</file>
-         <hash>b3161fe5494f10eda513b0c6e02f283a3b2a824d7fe52c1868902d9a42b26b5f</hash>
+         <hash>548efb83034c2a91aceec5bf042812f2da40deca7f4eb08882788cca209fc71a</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.c</file>
-         <hash>5013248a531308cd18100fed68188dcd8110c3a01de876f433496e8b35632510</hash>
+         <hash>73edb24d7ce30a8632d00e81286d23a7b2e671ffab8ea77d8f143371ba8f5957</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\chipid.h</file>
-         <hash>e26c1da8c71f89295cbed5cd6f53bf73c12ad37ac9282f4256554ac04255120d</hash>
+         <hash>76bccc5005cb2ddb8cf937d936873cc884c59a65f5bd8eddc36a6a7f57430157</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\qspi.h</file>
-         <hash>77be69da94030f8b370c89ed2d565609b9fec4fcaebd0110a56c4358c92a367f</hash>
+         <hash>38b4658908648609ea3078502851c354dbefdfe1a68fc0bb860719836c062838</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.h</file>
-         <hash>3cc6800ff05d15c41518ee4087d7ee94a9e66d9896050b5262567781036e1871</hash>
+         <hash>9177df6b8646844c6be93f20ba1e4e23e972c9c38c6c2334c0fc331e4e7e38cb</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\icm.h</file>
-         <hash>c8e871f67d2cf9517ef355123483b9c63490be508eb1c28d6ec8b29213a153a2</hash>
+         <hash>f5f55a170e839bc2be09c8d19faebb91016120dbf97477ab2eb4f6a37c4b6f50</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\pwm.h</file>
-         <hash>430737afbb4f780f04bb9725eced5e8de1d88cae409ac225927a3cb8cb23cc31</hash>
+         <hash>8fef5abdaa5fa5af3365aaa3f07d48b5ea9d769266dec9dd86f1bff94c96df44</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\rtc.h</file>
-         <hash>ed360e303ad6e9b92b7fac7813a83efd0cedbd3d4fb97b3a09683d1b30cd8b63</hash>
+         <hash>748650ef25d222c2ce096cc5585cac421f756b449c99b12801efae6161d0ff96</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\ipc.h</file>
-         <hash>1d2f9a07ed3dec727a1030bacd5d02704274daa7bc5330f55e2c65d573cada9c</hash>
+         <hash>27efcd5714db4f2f6c0af59695175f368cb61479a5dffcb40729ba4494485f9b</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\time\sys_time_definitions.h</file>
@@ -2150,7 +2150,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\adc.h</file>
-         <hash>2a2bcaab14fb1dac2827601e54370d52ff62b086116b62418fbef9dde59a4e67</hash>
+         <hash>a37346bfd5770d8a8971f288d88721b86c597de5882541168fd16160ead49316</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc_common.h</file>
@@ -2158,11 +2158,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\cmcc.h</file>
-         <hash>d23f64b1a575e7216259856def80592064f4b30acbca7713cc8cd65325cc8e78</hash>
+         <hash>7269dc366f9fbdd7a873d7705297f51742da761a690d4d5f98781eccddaf522c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\chipid.h</file>
-         <hash>8523c9ca725c4ccaf3e8832b919216b29ff4148fd9f5a9c2fc2a305e56eaa5f3</hash>
+         <hash>a93f5e09e56016e2bd0a4152a3e2c77cd008e243578bb3e77a1adc35ca1993cb</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\time\src\sys_time.c</file>
@@ -2178,11 +2178,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom1.h</file>
-         <hash>ced245875ea77fa24558de44ecbcda79f32f777c692a678b4aa503907121f3ac</hash>
+         <hash>1a87cc1dc1c0545a25883c6142d97ab35cd401c8558bb8d6804c398cec14f247</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\matrix3.h</file>
-         <hash>5f27c86fc7543b7b860aae6d9fd8c71e980655602afc395cf81986b71f0d9f91</hash>
+         <hash>ac244f0e5d89f05ff2d347e6ee7dc9a523e513eaf34d13bdf63c40cc5b0b191c</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\nvic\plib_nvic.h</file>
@@ -2190,51 +2190,51 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\cmcc1.h</file>
-         <hash>8b2fa27dc2440d32482e7eec759193dd04750e5e313dd4f18e2a5c5c670d35f7</hash>
+         <hash>3590c6ee4395c3a88feb3a246522c3f241668dc805452bdf1b87a830836820c1</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\emafe.h</file>
-         <hash>50409e77c42579cc2bfc1c809c74b6e969c52a7fc93694d25d9f62cf13e1660a</hash>
+         <hash>07ef42e277d06cac293639dc6ad20e4b08e569b27f01dd231827a7a33f23034e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\tc1.h</file>
-         <hash>206189fa208d34b48c696e26ce64f3208069dcaee4b0f4ddd338b7e127f659b3</hash>
+         <hash>bcb87b634e0dd95b3becc7ca0887eab6a30cb2776159ede5b517904f8a8ba508</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\ports\sys_ports.h</file>
-         <hash>39bd2e43ff276e27710db212b74b2f96ca4643ea658c11b1d50b7918e0deac01</hash>
+         <hash>73a53c684f6d8f825e50d6fd36ede7bc1caf621fe7a258d2974501f5164766b0</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\fuses.h</file>
-         <hash>1409fec5a274004070e2ce4e2838da2ba2c56de3543a9a1a6aeb0cee4f92c555</hash>
+         <hash>d3827e165bcb9b4cfcc159f72c63b93f81f6c605045ab6f519afbb6dea2ba678</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\gpbr.h</file>
-         <hash>940a52744c9d6d3d0dc3b53792606bb27f86071d43716ebb92b594620d345910</hash>
+         <hash>f4bc603f1dd55a7b2be8757c150188a4c637bde428b2e96a741ae453b93e98a7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom5.h</file>
-         <hash>4c1ce85425055ede7af7076e7c508a0712eeea7d4e930bbb39ab9eb15c2ee0f6</hash>
+         <hash>1be58af952bb46fb2b806441621d7bf5493ce14e3834c51f4436f4a1a350baaa</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\sha.h</file>
-         <hash>94591822a8c105e917fdd3d5c233b974030d7ea6ce9e958fd8fb1fcee5a95c12</hash>
+         <hash>0f4009e8ea27d549630fd31598d3f3a213efc1b69eff3857b203b18e22bca20c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\syscwp.h</file>
-         <hash>41d3ebd739afa8fafa68283ed6d5ddee8617bc16250ab9ee82c2af6540e18fbb</hash>
+         <hash>76c4859d1f41f172d960e0c889cd9614a5cb8e1a1c031b0d01e74717ee497268</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\tc.h</file>
-         <hash>ea9ecf77d4a78dda22519a02db109d44a7e47a7592d8f034d6a58b451ba8bc43</hash>
+         <hash>e18232c5e45ea9d0598d710e284a336e9d4ace78dee1d0b293fb5c35edf9818a</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\slcdc.h</file>
-         <hash>7b29a184d1182823f0a6d85bcc8d451c0100d7e5a3c1550313e15d5bfa4b8e09</hash>
+         <hash>7b77072e08b10a77c822321871e2c3ed4363edc8e4e84b3d13b7b65f3be64211</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\rstc.h</file>
-         <hash>c37411ed54e4f997c0bb1921f087a23eb976ed3aa15e26885fa8e1c84ff94f03</hash>
+         <hash>87e8eb4a95b71e71421f80664084f7076b327e5e521cf445582bec5033d990ee</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\mpu_armv7.h</file>
@@ -2242,15 +2242,15 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom_usart_local.h</file>
-         <hash>ee1b0e9b5167a747d4c6cf8fa8c67027d7b50e44c3757b092670adac497b0741</hash>
+         <hash>ab93fd45b0e4b8313a701921da099d2bdf35839d7479149fda62987c9773e075</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\mem2mem.h</file>
-         <hash>1758985e31d1f83368cdfd5d46b77ebea39340b2ad688f7d26949ad1c8be6bee</hash>
+         <hash>c101d572a57710ee7ce5ba0b69721221fc8d8103a9d709a1c14b7b5b5d3fd012</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\sefc.h</file>
-         <hash>703061b20d867bc15055387322d8fa34204a3fe1c786b75a4e7b92bfcab2253f</hash>
+         <hash>604eaef053b57b0a7f31cf5f28205f9e30bc4f24d10e37cf1d01432ac1e9be49</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armcc.h</file>
@@ -2258,15 +2258,15 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\sfrbu.h</file>
-         <hash>d4c91faae07a6ac224632e41a920b385c5ae5688725878c3d17f6d7d80c3c073</hash>
+         <hash>ff10afbe3aa46fa496c5e63f882b935835eb53795ba22dfeaa61539933274ecc</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\pin_configurations.csv</file>
-         <hash>0e76315bfcae7c76bb10ac00b7831c7b20ffb4e68682fd17733652b8f5e35ca1</hash>
+         <hash>b15cfba0ff73a9b0867e4a201af45668886189a6f05292b0b1f64819f90115cc</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\rstc.h</file>
-         <hash>3bd1922ce38e7a564503cacb4febf571105f7a2a1de239ac798b3b75a2ba5b62</hash>
+         <hash>97dc0fcd88435ae776650c4c72dbbe9001dd9adc75ea5c99bafc36af731457fd</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\system_common.h</file>
@@ -2286,7 +2286,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\supc.h</file>
-         <hash>8a041b3fc538811edc07b641f09b35e926a30bdd37b1b4e1f2d05521f297bed0</hash>
+         <hash>cc220665125d7b5bf4ae7ee0537602f4f5a2a0874710e6c206fd574566e1431c</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\driver\driver_common.h</file>
@@ -2294,7 +2294,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\supc.h</file>
-         <hash>c2218183ecb62717fd3f4e9003a79d501d04cc589c5c1429ba838208369a6a25</hash>
+         <hash>43c27e2fbd4964e80a654401503dd05324063e72cebdd8514b3ac41acca7d88c</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_compiler.h</file>
@@ -2302,7 +2302,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\pmc.h</file>
-         <hash>705e0f4c024a9d233f03309b0278ba0938c283e4d4bbe9beec978c84a534cc6d</hash>
+         <hash>00ecbae5613306085b275b27b38f1f04d515fdd0a556288e164565fec0fabdfd</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\tasks.c</file>
@@ -2318,19 +2318,19 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\cmcc0.h</file>
-         <hash>62eb1f029ba8a8fe568a3e6904d7f9c0096e19cb1ab8b716225a5e7af5c55f8e</hash>
+         <hash>d966d771954250a6070f83b323c85c84cd3711b7b9cf492902d9da0e0943a507</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\pmc.h</file>
-         <hash>259410844f1a67ffaa33b0e70f353eeb4b603932391455b049cb813103bf2a62</hash>
+         <hash>3830f7cc0780326af86951a42e5e59664dfdc9cf445421b7064e5fbfcc3a3a9e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom2.h</file>
-         <hash>28d862a5c9dd102da0a4d7a5c82662d44017593f2dfa8164be4de0f6fd846a70</hash>
+         <hash>52d75c1ea70d171df55b1019aad4e39b99386d0dccc781f4f39ad54f90da50c6</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\matrix0.h</file>
-         <hash>9cbc6c14549405262da1e07067e02ce387b549e51d027c6f8cd51f417fd4f565</hash>
+         <hash>5bd567e226154bd2f93e4836b4d35ebcb888c5aa87fd51213075cbd0e4fb25f0</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device_cache.h</file>
@@ -2342,7 +2342,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\tc0.h</file>
-         <hash>7c446227bf5660c40e4893d978eded3fd8d8aa1d004de972098bd7251ae1be6e</hash>
+         <hash>1d909e5483159ce2349215d7a10571207ea5fd902e4c8b4b8c3cca22c8e1ae32</hash>
       </entry>
       <entry>
          <file>..\src\main.c</file>
@@ -2350,7 +2350,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom6.h</file>
-         <hash>fd14869f8292f8d32bf84b2e036eb7838d5c356689ec237b62cf6591607b2f2a</hash>
+         <hash>65ef019bb8f9864672dae8698ff29281fa0785e0d3be0c1ba01f3ad72e048125</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\tc\plib_tc_common.h</file>
@@ -2366,35 +2366,35 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device_vectors.h</file>
-         <hash>50eb5244c03e8d501e08d13ce9857bd529e21174750ebaae7e0724b3ef2bcd91</hash>
+         <hash>57356e04e0a14287ad15c045bf3c8a7c5d0c5797e5d9058b6ab81fb35947df6b</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\mcspi.h</file>
-         <hash>19dda7cec4e4a76ae8cbe4e3480753b6eee9b3a4da2c02b5a701753a07457b13</hash>
+         <hash>f154204610999aff93d84f8a68c061bacfda56971d106e0818bd4b4c92f9fa04</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\acc.h</file>
-         <hash>27f23fadab463c1c73d3a3b4371d2351fe6a6c2ac0ffbe548ef2b2b54e5d43a9</hash>
+         <hash>7f6d7aabcf13d2875eb188ce1dba14092afaa6ad49c2a36a352526186a03ad7c</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\PIC32CX2051MTSH128S1.ld</file>
-         <hash>904c95e8d77dbb99f9a6e057dd07ad7659263929f50d1de42098598f910c3a44</hash>
+         <hash>0e4f34690652a4f7f8f2bfbed40f8beb2717fa0a534345ea1dd76df1b0f63e2a</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\trng.h</file>
-         <hash>a095c478914d59d377cba2c2b2c8e460cddd050507219f317f000fd466cc2b99</hash>
+         <hash>4c8a383a7de871dbc284d7ee297c53022dc2051ff7f16f4a2a2fafffe471abfd</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\definitions.h</file>
-         <hash>4a30665d388ed9fa2c0ac0bb77aba34fb9518eebcb419add129fc7133ffe3eee</hash>
+         <hash>ee7f1f7c004a30dd62f875915b97f501a7e5948c7f91e50f609a3195ad0878be</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\mcspi.h</file>
-         <hash>9f50535e9b4a7e0cb1264019d76a916ecc9f3d31dfe8a83ebe13156ab6aaaa95</hash>
+         <hash>ee61e4b827dae4ce6a4a91aebba6541b7e68e82e565f4c7bb1dc25a4c6f120a5</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\pic32cx2051mtsh128s1.h</file>
-         <hash>b8ace0b2f88ff7fb6f180fa85cf60aa1c1edd050df591318b195ebbb750b7dd8</hash>
+         <hash>081688ecb7b7bab3eb42f17fe4bdc2d4a1cd2c6b47cca612c9b5a7d148b91fa9</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.h</file>
@@ -2402,7 +2402,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>981d8d9c98f4cfe5d5329daf070291ddfc8668bc36be2706716708994f7211b5</hash>
+         <hash>9eda1822b2a597bc44e819143d657d6cd6bb5d7b834472a234d243e227ac0f9e</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.c</file>
@@ -2410,11 +2410,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\pdc.h</file>
-         <hash>1d23fa662c3e387bb2ebd87da1f95a184e94fd743bd906af47ac75154c16981c</hash>
+         <hash>3001b2ef404003a9e802536a6a3e983003c586df3e2a48fb8e097969f0bd7724</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\uart.h</file>
-         <hash>173118b4d792b03a7e65ad10a826ca23c6edb8eccce7658852ba6af7fa243fdc</hash>
+         <hash>77ce7b5d77957dfe9ab8107b10ee34acb8f190b056b9f2250feda39b86d5ea8e</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.h</file>
@@ -2426,11 +2426,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\qspi.h</file>
-         <hash>055d3d245c25807d4ee785acc09467824f4ed6a9fd63f9d93d99197cc6d8ee05</hash>
+         <hash>35aa7e90a5980de59ced5c69943d51939aaea3fd654f6f8b4f40be1d2fdb6d11</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\sfr.h</file>
-         <hash>2cee9ba41b1e23259b90fc6d1364a81676a763db8369e2e7ba6963a0f8e58a2d</hash>
+         <hash>e91c40578f82ae673cac83f2032996e76cd4b4b24f1b593f56420e6203d366c8</hash>
       </entry>
       <entry>
          <file>..\src\appcore1.h</file>
@@ -2446,43 +2446,43 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\matrix.h</file>
-         <hash>fd2e04edbf66e25991f30e380778ef4226062c3754b55a5e2cf725dbecfca59d</hash>
+         <hash>9ff8953d99ffee527d08c6bd6a0be9cf0f589e544dc223f418188ad876671726</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\stdio\xc32_monitor.c</file>
-         <hash>68615b9b6ee60c099bd47a416fe3cfc15e9253ff395f8ece21261711d295592d</hash>
+         <hash>3b81577217c4f44d59c15260cab2ae46ea414cafc441b23d86117767c62872cf</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\flexcom.h</file>
-         <hash>270ba41aeb36a57496fe54ee4d8c9d7721568f820227f7ac05ee4f53953fd633</hash>
+         <hash>d68b37b84efc33539ed7b311461b77595f219f6d383e5baeaceea3a0b00ae7f9</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\pio1.h</file>
-         <hash>fe31bbe6fccdd3293b62e3a26edf78be5c73035f9c75378b8f443721c985dbe1</hash>
+         <hash>10d5bc852cfa22ebffe5c820417b6b1b9dad7d10b2c3ed938ce0381be9bb12fe</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\pwm.h</file>
-         <hash>d66cf82d01b5627e92560ba03a372f5936188add2fa1f9db4861108edb394f33</hash>
+         <hash>66aa7e725a61abb8f6136996ee9ec5a9907cb693894727ea4587ac1a2d9d9239</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\sefc1.h</file>
-         <hash>036d8406b0c8bebc6c0cec202310aba4b19a4a86506f66911b6021128c980de0</hash>
+         <hash>ee488c3c013fff2c0e4a28037dc3d127d28b25adbf411e88b3167b767fe1140b</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\rtc.h</file>
-         <hash>99a0b2e6ad7fa2d2178013acb2826110e48bb6605972f94185a074b06da1372a</hash>
+         <hash>e8c10d6dda362bddb5c4d06d25f4962de79aa252938fd6f0df173ad213171a1c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\mem2mem1.h</file>
-         <hash>a2d329f16d69780ad418897a01534d2f4705ab447b7d4b559fec924dab375ee9</hash>
+         <hash>4f266a3ebdca315d41f7dc1b30560fdbd2a79d9c9d521047f522515805450a4e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\icm.h</file>
-         <hash>440bfc42eb6c6246af36564c04732489db698594a66db7fd28a62b3ff9b0fd72</hash>
+         <hash>e026b7a3551978e41db1e47895ac3cc32580a14b775afc2ce09d22a51cefdce7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\sha.h</file>
-         <hash>a1a29e769e5e09d2f25c60bfe4d03a4398309f37dfe5857b5d925730005055dd</hash>
+         <hash>b584709d1adef5a40462dc190a6c16c5e379c6cb76b37ff56f6fa67cdd91fe3b</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\configuration.h</file>
@@ -2490,15 +2490,15 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\tc3.h</file>
-         <hash>451a25af32404762b952a63fb541f5272641e0110e12f44593cba1009a7a79dc</hash>
+         <hash>9f0ef96558646513cf17ddc4794c0a429eaee6992f490ebe8cb65812449ec062</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\matrix1.h</file>
-         <hash>413a7ef9684ef2b54bbce168e3f5f244af9a508f821f6cb1135e547a5b2e1487</hash>
+         <hash>efb57bab516d894c3a683b4ff048d41dba3d0fe9a21aaa11e3650c30937ed416</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom3.h</file>
-         <hash>fd79aa5928a3c82151e151a9449a5cf7da1c30ec053eac4bf12ae338950a39e7</hash>
+         <hash>3bdeb0ee4cbf5348253763709221fa84aff5563055fd916242f0760d56d73631</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\int\sys_int_mapping.h</file>
@@ -2506,11 +2506,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\adc.h</file>
-         <hash>a6bc685e33e4d9d41c7fed981bd23189589023f1b73b2e9bff46f2b65db974a5</hash>
+         <hash>a61b190334eb69cda0ec5f2ce74fc8d6d14831e1caca5959f6d4491d3d504a44</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\toolchain_specifics.h</file>
-         <hash>0322d8a252c0047ffd9e533cc76c470158ed1f3ac5193e63b507fe5eb6e1855f</hash>
+         <hash>c93f9d68b1623668727be21b4449250a7e4a5d7040776d6f6d604a7528ffc9eb</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
@@ -2518,39 +2518,39 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom7.h</file>
-         <hash>3b42ba9e61ab9876a3b8918b90855a5df1f96c654fb537a9953ad979a5c7c1b1</hash>
+         <hash>314af25dd179d516e49673d9ff6cffe464855ab0b9721419537fbdb4a9fecfa7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\gpbr.h</file>
-         <hash>a6495e83017fcb9b0630d282fb5105a9aecb6b577227907feeacf9e8d5492d48</hash>
+         <hash>efe1c413944a2de3a0110753693df7e239c0807d2a80a7a6ec17522292dbc63e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\slcdc.h</file>
-         <hash>c4a44e16c56eeb8737d67e6989552f5228ca7c95f7c882c27bb9b8a44cdd7d5f</hash>
+         <hash>807779ca98a5484266ad38d9e6c8bd3e1f360dbf533005c88a0619cb4c953c90</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\ipc1.h</file>
-         <hash>52aa0020eee4553fa18144fe7fcc81a6b179d6a63bba90614b688ea27a97a812</hash>
+         <hash>2f9dc64179748966c4a554f43e0c002499ae3cbe48856b695678f68c2f65ad2d</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\pio\pic32cx2051mtsh128s1.h</file>
-         <hash>5a21c597ab004a22900be7e90b41c844e28963320c6d1a11edec5c042fa11b6b</hash>
+         <hash>9933b8557304d48f552a51cc8fc9273c0a9c1952be632805acfc29323f43eba1</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\pio\plib_pio.h</file>
-         <hash>c2479a85639bff26e6847662071175c095268869c34d6973b452b8ec74bed737</hash>
+         <hash>e9a6d4daac8780f324279f822711f6bff1da9096616a3a50fad5afa4b7b4a203</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\interrupts.c</file>
-         <hash>ac9dcede5e5502ba46fa71d18e6f867724956f207b966ddb87fdb87c72b8da3a</hash>
+         <hash>97bf4bd2f3d18b6376a16f70621cb4b818c5f89a2c47ec37770590720689d774</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\dwdt.h</file>
-         <hash>4245d18d0b4f3ed492b9e321803e64e38a1f2de3688e426fd3c2cd1803f2ed2e</hash>
+         <hash>473b6d35a935a36ba740bc07e7074505e62b7209351c4ec146007b15587608ba</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\aes.h</file>
-         <hash>2c455f6ce963b47999043f1e555422de3b31f82e62e0631b52f2888c0be32ffb</hash>
+         <hash>e704c1e6f188fd6f8dc3709b38cbf30be9c5a578e0c35693d0f4705e75acee4a</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\pio\plib_pio.c</file>
@@ -2566,7 +2566,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\sfrbu.h</file>
-         <hash>829769d93839e1d3e97a25c30d55b23f175020ab5a9558f8cecef4ec51392770</hash>
+         <hash>0fc1663b41efeba71324ae4d928017b05c39d88fa7eade44704d003d069a2aef</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc1.h</file>
@@ -2574,7 +2574,7 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\aesb.h</file>
-         <hash>5edb5a3b2a23a2768027ed0525a71b8f0f7cd254f2fa28efb4ca1015c8526074</hash>
+         <hash>ca5213a388344298aa09d03ad3207101bf76304b2dbe0e2cb5a099aabb8f1a76</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc1.c</file>
@@ -2586,27 +2586,27 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\aes.h</file>
-         <hash>2b2e6b9cc2564571d67d7b8ec9fb286643604b988cd14984e3035e3bf743a4b6</hash>
+         <hash>30ecfa9c29d9b8c7f0c4c7f6fdc8773f2134ad7ce743c67a5ce27d2c66b28e34</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\pio0.h</file>
-         <hash>0179689e4fe61dc859da87f201218e8be4ca620211b738b73f88998ba03a25d5</hash>
+         <hash>c24b09a6ec17597da4711ff232b16269bdd5fc930e4f1d16084d7ad976bdf597</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\osc.h</file>
-         <hash>355c7c018a76bc0ac7263646a9e28ee30991f48dffc800ff0bc9bb9b05be42ad</hash>
+         <hash>46778360d40c9d6c0fe0f4f135f0c2c58805ed9e75a2044ccf9dbd4b09c86249</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\aesb.h</file>
-         <hash>20308edd592030875315f368e4e62427751272639c7abea6bb1aafb1f2de13d0</hash>
+         <hash>13d8b11e2ee8b7f632f2bdbe93b2bb50fcfe205032561b0ebfc1e9924773f939</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\sefc0.h</file>
-         <hash>24ff31b19ade4c59b22d400673a1c6d2af44c69d3243b9a2e3fccc204188d11b</hash>
+         <hash>a605c296665a6a4515a7b4105cd85bda75877a60a8cd5052d62ddad3227f3743</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\mem2mem0.h</file>
-         <hash>b2a4caaa954121a09dcbf9de227ad981ffa93891172a0a31da496593c36b038d</hash>
+         <hash>49cd03180c10ca40ba39ac185c5816d5b2b6d686fc5caa9c66019c8fa47fd37e</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\ports\sys_ports_mapping.h</file>
@@ -2614,27 +2614,27 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\dwdt.h</file>
-         <hash>03d8ae5787a86de0fd5d7cb13a138640fea903d82078ff7f9ccd3ce6137cab29</hash>
+         <hash>851e24720c1641211360b5bce61f14858b8a286baccbfdf1fc6de9489fe446b5</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\rtt.h</file>
-         <hash>c11bcbfbb9ed4b02d4b7a1e01ac7dd6ee3f32552f7b007951bc671c8a8728b27</hash>
+         <hash>13dcfe712a6c73de0b2908173bf52e3e4b1ef90944f112e3dd4ac94b4eca77cf</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\tc2.h</file>
-         <hash>d32594251ad145b9bbf0f4663a3bf3300d9a15e973bad8cbc9e7fedaf5b95f6a</hash>
+         <hash>60736973d7f9aab68a0e07923dd60e05fdb0350dab7c0ef39554ea78222debce</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\rtt.h</file>
-         <hash>461d2727c489d5a783ba89eb01495b3ce2026fc2c6d9b8ac7083a9ffa552d0f2</hash>
+         <hash>d3e216a58cfd12f0b742e22e4caaf537248dab19d6936d895f789c57a2ecb36e</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom4.h</file>
-         <hash>587dfaffa9177eb1eae12742c73430888ad6e5f91029f8e1d20707feff62f57c</hash>
+         <hash>0e40ebfa7419a496ee1c90a6acb7b0feb5c2ca1f4e8935fec440abffcfa6890b</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\matrix2.h</file>
-         <hash>4cb62e50054d6a881d623e43f3e4545b8392c85b80c6c0ff9b9040e2aa4df628</hash>
+         <hash>2a2d779728e2a757f168adccb9d93355fef22e20dde68e4ee234a2441710a4b5</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\libc_syscalls.c</file>
@@ -2642,11 +2642,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\syscwp.h</file>
-         <hash>d36eae8d1a1295ccecf98040eccf04a3cb9a3c902a3a793f373d3f066e8accd4</hash>
+         <hash>367bc4bf4a0a2533466cd5f1b1e37b7f1dff81af75035d18f277b1269e23cc9f</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\flexcom0.h</file>
-         <hash>f37ec3e4c509ca32ced575df20646c6c66d2b2a5327852e91e54a60ae725b21f</hash>
+         <hash>04e511535226f3338ded5c5913d193663ee3ccb730ad4c475844413e041c4241</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\osal\osal_definitions.h</file>
@@ -2654,11 +2654,11 @@
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\instance\ipc0.h</file>
-         <hash>13cb99d0d213e64fa19ef83b23cfbbfbabad3f701f2031538bfd4f4b8ac3ed03</hash>
+         <hash>bc6926eac1995dc3823bb8834bb7da6bfdb6050e41cc584fbd1b87abf7a8b90f</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128S1_DFP\component\pio.h</file>
-         <hash>e10bc1443a9b3df102dba0c6b9e9be3d001ff3e2571ac0c272a15299980a201a</hash>
+         <hash>bf5f00bb35122489714d76bcad3f892467e7cd2736b7f20fd775bc23981258a5</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

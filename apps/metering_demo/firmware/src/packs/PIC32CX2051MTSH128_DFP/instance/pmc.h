@@ -20,7 +20,7 @@
  *
  */
 
-/* file generated from device description version 2023-01-19T13:46:22Z */
+/* file generated from device description version 2023-01-20T11:01:06Z */
 #ifndef _PIC32CXMTSH_PMC_INSTANCE_
 #define _PIC32CXMTSH_PMC_INSTANCE_
 
