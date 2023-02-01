@@ -7,28 +7,32 @@
 
 ### New Features
 
-- **New part support** - This release introduces initial support for PIC32CX-MTSH/MTC Core 0 devices providing functionality for metrology applications.
+- **New part support** - This release introduces initial support for PIC32CX-MTSH/MTC Core 0 devices providing functionality for metrology and dual core applications.
 
 - **Applications**
   - New Demo metering application has been introduced in this release as an example of the most common functionalities included in an electricity meter. It allows the user to evaluate the features and to test the high accuracy that can be achieved with the Microchip Smart Metering solutions.
+  - Smart Energy Demo Dual Core Applications: a pair of examples showing how to run and communicate 2 separate applications independently on both cores of the PIC32CXMTSH dual core device.
 
 - **New Features and Enhancements**
   - Updated and improved output format on HTML documentation.
-  
+
+### Bug fixes
+
+  - None
+
 ### Known Issues
 
-The current known issues are as follows:
-- The following product families specifically requires the below mentioned DFP versions to be [installed](https://microchipdeveloper.com/mplabx:projects-packs) with MPLABX v6.05. It is always recommended to use the latest version of DFPs for all products provided by Microchip.
-  - **PIC32CX-MT family of smart energy microcontrollers (MCUs)**: PIC32CX-MT DFP 1.0.6 or higher
-- Core 1 applications and Dual debug on PIC32CX-MT devices is not supported.
-- The generation of the project via MCC could generate compilation errors due to dependencies with future versions of some H3 repositories. Demo metering application will be updated accordingly when the affected H3 repositories are updated.
+- The generation of the project via MCC could generate compilation errors due to dependencies with future versions of H3 Core repository. Demo metering application will be updated accordingly when the affected H3 repositories are updated.
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in MISTRAL Dual Core 0 Demo application. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value.
 
 ### Development Tools
 
 - [MPLAB® X IDE v6.05](https://www.microchip.com/mplab/mplab-x-ide)
-- [MPLAB® XC32 C/C++ Compiler v4.20](https://www.microchip.com/mplab/compilers)
+- [MPLAB® XC32 C/C++ Compiler v4.21](https://www.microchip.com/mplab/compilers)
 - MPLAB® X IDE plug-ins:
-  - MPLAB® Code Configurator 5.2.1 or higher
+  - MPLAB® Code Configurator 5.2.2 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.1.115 or higher
 
 ### Notes
 
