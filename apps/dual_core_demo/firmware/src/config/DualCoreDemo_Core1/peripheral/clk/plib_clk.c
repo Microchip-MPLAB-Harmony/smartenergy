@@ -59,7 +59,7 @@ static void PeripheralClockInitialize(void)
         uint8_t divs;
     } periphList[] =
     {
-        { ID_TC2_CHANNEL0, 1U, 0U, 0U, 0U},
+        { ID_TC3_CHANNEL0, 1U, 0U, 0U, 0U},
 
         { ID_PIOD, 1U, 0U, 0U, 0U},
 

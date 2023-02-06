@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name
-    plib_tc2.c
+    plib_tc3.c
 
   Summary
     TC peripheral library source file.
@@ -52,7 +52,7 @@
 /*  This section lists the other files that are included in this file.
 */
 #include "device.h"
-#include "plib_tc2.h"
+#include "plib_tc3.h"
 
  
  
@@ -61,80 +61,80 @@
 
 
 /* Callback object for channel 0 */
-TC_TIMER_CALLBACK_OBJECT TC2_CH0_CallbackObj;
+TC_TIMER_CALLBACK_OBJECT TC3_CH0_CallbackObj;
 
 /* Initialize channel in timer mode */
-void TC2_CH0_TimerInitialize (void)
+void TC3_CH0_TimerInitialize (void)
 {
     /* clock selection and waveform selection */
-    TC2_REGS->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVEFORM_WAVSEL_UP_RC | \
+    TC3_REGS->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVEFORM_WAVSEL_UP_RC | \
                                                         TC_CMR_WAVE_Msk ;
 
     /* write period */
-    TC2_REGS->TC_CHANNEL[0].TC_RC = 0U;
+    TC3_REGS->TC_CHANNEL[0].TC_RC = 0U;
 
 
     /* enable interrupt */
-    TC2_REGS->TC_CHANNEL[0].TC_IER = TC_IER_CPAS_Msk;
-    TC2_CH0_CallbackObj.callback_fn = NULL;
+    TC3_REGS->TC_CHANNEL[0].TC_IER = TC_IER_CPAS_Msk;
+    TC3_CH0_CallbackObj.callback_fn = NULL;
 }
 
 /* Start the timer */
-void TC2_CH0_TimerStart (void)
+void TC3_CH0_TimerStart (void)
 {
-    TC2_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKEN_Msk | TC_CCR_SWTRG_Msk);
+    TC3_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKEN_Msk | TC_CCR_SWTRG_Msk);
 }
 
 /* Stop the timer */
-void TC2_CH0_TimerStop (void)
+void TC3_CH0_TimerStop (void)
 {
-    TC2_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKDIS_Msk);
+    TC3_REGS->TC_CHANNEL[0].TC_CCR = (TC_CCR_CLKDIS_Msk);
 }
 
-uint32_t TC2_CH0_TimerFrequencyGet( void )
+uint32_t TC3_CH0_TimerFrequencyGet( void )
 {
     return (uint32_t)(1562500UL);
 }
 
 /* Configure timer period */
-void TC2_CH0_TimerPeriodSet (uint32_t period)
+void TC3_CH0_TimerPeriodSet (uint32_t period)
 {
-    TC2_REGS->TC_CHANNEL[0].TC_RC = period;
+    TC3_REGS->TC_CHANNEL[0].TC_RC = period;
 }
 
 /* Configure timer compare */
-void TC2_CH0_TimerCompareSet (uint32_t compare)
+void TC3_CH0_TimerCompareSet (uint32_t compare)
 {
-    TC2_REGS->TC_CHANNEL[0].TC_RA = compare;
+    TC3_REGS->TC_CHANNEL[0].TC_RA = compare;
 }
 
 /* Read timer period */
-uint32_t TC2_CH0_TimerPeriodGet (void)
+uint32_t TC3_CH0_TimerPeriodGet (void)
 {
-    return TC2_REGS->TC_CHANNEL[0].TC_RC;
+    return TC3_REGS->TC_CHANNEL[0].TC_RC;
 }
 
 /* Read timer counter value */
-uint32_t TC2_CH0_TimerCounterGet (void)
+uint32_t TC3_CH0_TimerCounterGet (void)
 {
-    return TC2_REGS->TC_CHANNEL[0].TC_CV;
+    return TC3_REGS->TC_CHANNEL[0].TC_CV;
 }
 
 /* Register callback for period interrupt */
-void TC2_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context)
+void TC3_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context)
 {
-    TC2_CH0_CallbackObj.callback_fn = callback;
-    TC2_CH0_CallbackObj.context = context;
+    TC3_CH0_CallbackObj.callback_fn = callback;
+    TC3_CH0_CallbackObj.context = context;
 }
 
 /* Interrupt handler for Channel 0 */
-void TC2_CH0_InterruptHandler(void)
+void TC3_CH0_InterruptHandler(void)
 {
-    TC_TIMER_STATUS timer_status = (TC_TIMER_STATUS)(TC2_REGS->TC_CHANNEL[0].TC_SR & TC_TIMER_STATUS_MSK);
+    TC_TIMER_STATUS timer_status = (TC_TIMER_STATUS)(TC3_REGS->TC_CHANNEL[0].TC_SR & TC_TIMER_STATUS_MSK);
     /* Call registered callback function */
-    if ((TC_TIMER_NONE != timer_status) && TC2_CH0_CallbackObj.callback_fn != NULL)
+    if ((TC_TIMER_NONE != timer_status) && TC3_CH0_CallbackObj.callback_fn != NULL)
     {
-        TC2_CH0_CallbackObj.callback_fn(timer_status, TC2_CH0_CallbackObj.context);
+        TC3_CH0_CallbackObj.callback_fn(timer_status, TC3_CH0_CallbackObj.context);
     }
 }
 

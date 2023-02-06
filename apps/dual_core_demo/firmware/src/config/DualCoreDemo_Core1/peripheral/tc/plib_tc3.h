@@ -5,7 +5,7 @@
     Microchip Technology Inc.
 
   File Name
-    plib_tc2.h
+    plib_tc3.h
 
   Summary
     TC peripheral library interface.
@@ -42,8 +42,8 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef PLIB_TC2_H    // Guards against multiple inclusion
-#define PLIB_TC2_H
+#ifndef PLIB_TC3_H    // Guards against multiple inclusion
+#define PLIB_TC3_H
 
 
 // *****************************************************************************
@@ -94,23 +94,23 @@ extern "C" {
 
 
 
-void TC2_CH0_TimerInitialize (void);
+void TC3_CH0_TimerInitialize (void);
 
-void TC2_CH0_TimerStart (void);
+void TC3_CH0_TimerStart (void);
 
-void TC2_CH0_TimerStop (void);
+void TC3_CH0_TimerStop (void);
 
-void TC2_CH0_TimerPeriodSet (uint32_t period);
+void TC3_CH0_TimerPeriodSet (uint32_t period);
 
-void TC2_CH0_TimerCompareSet (uint32_t compare);
+void TC3_CH0_TimerCompareSet (uint32_t compare);
 
-uint32_t TC2_CH0_TimerFrequencyGet (void);
+uint32_t TC3_CH0_TimerFrequencyGet (void);
 
-uint32_t TC2_CH0_TimerPeriodGet (void);
+uint32_t TC3_CH0_TimerPeriodGet (void);
 
-uint32_t TC2_CH0_TimerCounterGet (void);
+uint32_t TC3_CH0_TimerCounterGet (void);
 
-void TC2_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context);
+void TC3_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context);
 
 
 
@@ -123,6 +123,6 @@ void TC2_CH0_TimerCallbackRegister(TC_TIMER_CALLBACK callback, uintptr_t context
 }
 #endif
 
-#endif //PLIB_TC2_H
+#endif //PLIB_TC3_H
 
 /* End of File */

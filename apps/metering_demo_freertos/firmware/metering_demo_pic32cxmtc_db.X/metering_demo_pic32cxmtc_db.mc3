@@ -3,19 +3,19 @@
       <package packageName="CMSIS-FreeRTOS" version="10.3.1" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
-      <package packageName="bsp" version="unknown" contentType="HARMONY">
+      <package packageName="bsp" version="3.15.0" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
-      <package packageName="core" version="unknown" contentType="HARMONY">
+      <package packageName="core" version="3.12.0-E1" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
-      <package packageName="csp" version="unknown" contentType="HARMONY">
+      <package packageName="csp" version="3.15.0" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
-      <package packageName="dev_packs" version="unknown" contentType="HARMONY">
+      <package packageName="dev_packs" version="3.15.0" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
-      <package packageName="harmony_gfx" version="3.12.0" contentType="HARMONY">
+      <package packageName="harmony_gfx" version="3.12.2" contentType="HARMONY">
          <modules class="java.util.ArrayList"/>
       </package>
       <package packageName="smartenergy" version="unknown" contentType="HARMONY">
@@ -4879,6 +4879,28 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="flexcom0" name="USE_USART_RECEIVE_DMA"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;flexcom0&gt;
+  &lt;flexcom0 dnOrder=&quot;0&quot; id=&quot;USE_USART_RECEIVE_DMA&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;flexcom0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/flexcom0&gt;
+&lt;/flexcom0&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="flexcom0" name="USE_USART_TRANSMIT_DMA"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;flexcom0&gt;
+  &lt;flexcom0 dnOrder=&quot;0&quot; id=&quot;USE_USART_TRANSMIT_DMA&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;flexcom0&quot; value=&quot;false&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/flexcom0&gt;
+&lt;/flexcom0&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="gfx_disp_slcd1-PIC32CXMT" name="!@#harmonyAttachmentState"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;gfx_disp_slcd1-PIC32CXMT&gt;
   &lt;gfx_disp_slcd1-PIC32CXMT dnOrder=&quot;0&quot;&gt;
@@ -5767,12 +5789,12 @@
          <hash>0d16405e621a2c4b003b5f0324b9713cd4865364133df6f742f482a6b2dbc773</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>c89438e3033fa90553f8fab197b286e96b86fcd108f0ef5e56d59c88623af4e9</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stream_buffer.h</file>
          <hash>0607fcca1927ba782a29a3814481d69db3569e6e53a68ebf2c01f5598a3af2b8</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
+         <hash>c89438e3033fa90553f8fab197b286e96b86fcd108f0ef5e56d59c88623af4e9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\pin_configurations.csv</file>
@@ -5848,7 +5870,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\src\sys_time.c</file>
-         <hash>1146b57f815d373883ae1a6b3bc27eb038ec6943aedac2c3340f660bfd7fa4a6</hash>
+         <hash>b722ac0c5d955d289bd906609ab6f302342166c5ba66f87b30cac17ac6bfdcd9</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\component\pio.h</file>
@@ -6028,7 +6050,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\sys_time_definitions.h</file>
-         <hash>8b6254cec91c435e0c24220e27a5f8dc646d0200ee974223f13851338a5b2ad9</hash>
+         <hash>904195d4340ba6b97cf19c25b9695d2a9f37ed67cf6abdf8ee1ee839506e2801</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\driver_common.h</file>
@@ -6252,7 +6274,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\command\sys_command.h</file>
-         <hash>1c36d07fd3d877b8d94161b81b4661e48dde95377be3003565abdc0d8ef07c5f</hash>
+         <hash>58bee6c1ac6d407518ed693ff296070bbc762e317396b858966d37f99ca4f1b7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\component\flexcom.h</file>
@@ -6447,12 +6469,12 @@
          <hash>869640702d811c4c63abb52206715c891a93fd03be954df5ad40d378355af3d6</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>aa49e3dda6bf4dc29c445d57bc23298e46b2583d0ffe55b6bfeb0816d55e4504</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\queue.h</file>
          <hash>39d58a203f1b67fdb1099293914a2af9722d223586cfc5ff06e230e047919dea</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_regs.h</file>
+         <hash>aa49e3dda6bf4dc29c445d57bc23298e46b2583d0ffe55b6bfeb0816d55e4504</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\peripheral\cmcc\plib_cmcc.c</file>
@@ -6464,7 +6486,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>fe68aa516e51f3645190be77e659a88b1e5db246148d40e1c95557193f579a8c</hash>
+         <hash>3e9a0cf32af2fb0a46e285d35670d0b7c8dff0975ab643b7770ecdf01f41be43</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>
@@ -6668,7 +6690,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\src\sys_time_local.h</file>
-         <hash>f2fcf9aac8d81072e70e05cdf0f366bca245a428229d4ed7cc5635c1a9c03fcb</hash>
+         <hash>d3ef06b59d9a89efe9e8eb54fcf3b75120d56156cc21f6847ca4f9e902eb7c9d</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device.h</file>
@@ -6676,7 +6698,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\time\sys_time.h</file>
-         <hash>6357468f7670698b16bfb6439d9919ed38eba99d4f03277a8b43ac34586fa1b3</hash>
+         <hash>f21b100d8f0b8b79af9217315098d51df855d9015f05a7e25ad77414cd19b2c3</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\fs\src\sys_fs_local.h</file>
@@ -6700,7 +6722,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\system\command\src\sys_command.c</file>
-         <hash>75a66261ea15413cc4b79ff838de934c7a82115bdf45b6a361b3bfe214a7af03</hash>
+         <hash>f6ffa260b5a6f1e0134c8845c405d0e21dcdc5fd02e95dcc7a4a5fccf1cb23ae</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\instance\cpkcc.h</file>

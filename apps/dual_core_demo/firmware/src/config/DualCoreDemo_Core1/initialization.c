@@ -87,19 +87,19 @@ SYSTEM_OBJECTS sysObj;
 // <editor-fold defaultstate="collapsed" desc="SYS_TIME Initialization Data">
 
 const SYS_TIME_PLIB_INTERFACE sysTimePlibAPI = {
-    .timerCallbackSet = (SYS_TIME_PLIB_CALLBACK_REGISTER)TC2_CH0_TimerCallbackRegister,
-    .timerStart = (SYS_TIME_PLIB_START)TC2_CH0_TimerStart,
-    .timerStop = (SYS_TIME_PLIB_STOP)TC2_CH0_TimerStop ,
-    .timerFrequencyGet = (SYS_TIME_PLIB_FREQUENCY_GET)TC2_CH0_TimerFrequencyGet,
-    .timerPeriodSet = (SYS_TIME_PLIB_PERIOD_SET)TC2_CH0_TimerPeriodSet,
-    .timerCompareSet = (SYS_TIME_PLIB_COMPARE_SET)TC2_CH0_TimerCompareSet,
-    .timerCounterGet = (SYS_TIME_PLIB_COUNTER_GET)TC2_CH0_TimerCounterGet,
+    .timerCallbackSet = (SYS_TIME_PLIB_CALLBACK_REGISTER)TC3_CH0_TimerCallbackRegister,
+    .timerStart = (SYS_TIME_PLIB_START)TC3_CH0_TimerStart,
+    .timerStop = (SYS_TIME_PLIB_STOP)TC3_CH0_TimerStop ,
+    .timerFrequencyGet = (SYS_TIME_PLIB_FREQUENCY_GET)TC3_CH0_TimerFrequencyGet,
+    .timerPeriodSet = (SYS_TIME_PLIB_PERIOD_SET)TC3_CH0_TimerPeriodSet,
+    .timerCompareSet = (SYS_TIME_PLIB_COMPARE_SET)TC3_CH0_TimerCompareSet,
+    .timerCounterGet = (SYS_TIME_PLIB_COUNTER_GET)TC3_CH0_TimerCounterGet,
 };
 
 const SYS_TIME_INIT sysTimeInitData =
 {
     .timePlib = &sysTimePlibAPI,
-    .hwTimerIntNum = TC2_CH0_IRQn,
+    .hwTimerIntNum = TC3_CH0_IRQn,
 };
 
 // </editor-fold>
@@ -139,10 +139,10 @@ void SYS_Initialize ( void* data )
 
 
 
-    TC2_CH0_TimerInitialize(); 
+    TC3_CH0_TimerInitialize(); 
      
     
-//    FLEXCOM0_USART_Initialize();
+//    FLEXCOM0_USART_Initialize();  // Keep commented !!!
 
     IPC1_Initialize();
 
