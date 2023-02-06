@@ -22,8 +22,7 @@
 
 ### Known Issues
 
-- The generation of the project via MCC could generate compilation errors due to dependencies with future versions of H3 Core repository. Demo metering application will be updated accordingly when the affected H3 repositories are updated.
-- "Image Copy Mode" setting value of the Secondary Project is not persisting in MISTRAL Dual Core 0 Demo application. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value.
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in MISTRAL Dual Core 0 Demo application. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
 
 ### Development Tools
 
