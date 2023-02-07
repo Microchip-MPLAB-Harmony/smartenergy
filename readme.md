@@ -1,7 +1,7 @@
 ![Microchip logo](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_logo.png)
 ![Harmony logo small](https://raw.githubusercontent.com/wiki/Microchip-MPLAB-Harmony/Microchip-MPLAB-Harmony.github.io/images/microchip_mplab_harmony_logo_small.png)
 
-# MPLAB® Harmony 3 Power Line Communications Support Package
+# MPLAB® Harmony 3 Smart Energy Support Package
 
 MPLAB Harmony 3 is an extension of the MPLAB® ecosystem for creating
 embedded firmware solutions for Microchip 32-bit SAM and PIC microcontroller
@@ -12,7 +12,7 @@ and microprocessor devices.  Refer to the following links for more information.
  - [Microchip MPLAB Harmony]( https://www.microchip.com/mplab/mplab-harmony )
  - [Microchip MPLAB Harmony Pages]( https://microchip-mplab-harmony.github.io/ )
 
-This repository contains the MPLAB® Harmony 3 Power Line Communication (PLC) package. 
+This repository contains the MPLAB® Harmony 3 Smart Energy package, which includes solutions for Power Line Communications (PLC), Metering/Metrology and Dual Core applications.
 Refer to the following link for more information about PLC.
  - [Microchip Smart Energy]( https://www.microchip.com/design-centers/smart-energy-products/power-line-communications )
  
@@ -30,7 +30,7 @@ Refer to the following links for release notes, training materials, and interfac
 | Folder     | Description                                                           |
 |------------|-----------------------------------------------------------------------|
 | apps       | Metering demo and Dual Core demo applications                         |
-| driver     | Drivers for PLC and RF devices                                        |
+| driver     | Drivers for PLC, RF devices and Metrology                             |
 | service    | Common PLC services for communication stacks (G3, PRIME)              |
 | docs       | Smart Energy help documentation                                       |
 
