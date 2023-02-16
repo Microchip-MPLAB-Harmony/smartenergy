@@ -32,6 +32,7 @@ Refer to the following links for release notes, training materials, and interfac
 | apps       | Metering demo and Dual Core demo applications                         |
 | driver     | Drivers for PLC, RF devices and Metrology                             |
 | service    | Common PLC services for communication stacks (G3, PRIME)              |
+| stack      | Common services for communication staks (G3, PRIME)                   |
 | docs       | Smart Energy help documentation                                       |
 
 ____
