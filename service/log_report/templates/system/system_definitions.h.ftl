@@ -1,0 +1,1 @@
+#include "service/log_report/srv_log_report.h"
