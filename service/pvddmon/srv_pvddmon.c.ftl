@@ -71,8 +71,16 @@ static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
 // *****************************************************************************
 static SRV_PVDDMON_CALLBACK ${PVDD_MON_ADC_INSTANCE}_CompareCallback = NULL;
 
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
+{
+    /* Avoid warning */
+    (void)eocStatus;
+    
+<#else>
 static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
 {
+</#if>
     if (status & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk)
     {
         if (${PVDD_MON_ADC_INSTANCE}_CompareCallback)
@@ -99,7 +107,11 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
 
     /* Set Free Run reset */
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+    ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_TRGR |= ${PVDD_MON_MASK_PREFIX}_TRGR_TRGMOD_CONTINUOUS;
+<#else>
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
+</#if>
 
     /* Set Comparison Mode */
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
@@ -192,4 +204,24 @@ void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t cont
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
     ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback;
+}
+
+bool SRV_PVDDMON_CheckWindow(void)
+{
+    uint32_t adcValue;
+    
+    adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${SRV_PVDDMON_ADC_CHANNEL});
+    while(adcValue == 0)
+    {
+        adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${SRV_PVDDMON_ADC_CHANNEL});
+    }
+    
+    if ((adcValue <= SRV_PVDDMON_HIGH_TRESHOLD) && (adcValue >= SRV_PVDDMON_LOW_TRESHOLD))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
