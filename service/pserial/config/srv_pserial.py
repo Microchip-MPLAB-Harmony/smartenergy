@@ -37,7 +37,7 @@ def handleMessage(messageID, args):
 
     result_dict = {}
 
-    print ("[CHRIS_dbg]: SRV_PSERIAL handleMessage:" + messageID)
+    # print ("[CHRIS_dbg]: SRV_PSERIAL handleMessage:" + messageID)
 
     if (messageID == "SRV_PSERIAL_G3_CENA"):
         if isKeyPresent(pSerialPLCProfile, "G3_CEN_A") == True:
