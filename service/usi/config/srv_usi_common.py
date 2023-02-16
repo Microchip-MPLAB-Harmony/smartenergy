@@ -65,7 +65,17 @@ def enableFiles(symbol, event):
     # if(event["value"]):
         # print("Enable Src/Hdr files")
     # else:
-        # print("Disable Src/Hdr files")   
+        # print("Disable Src/Hdr files")
+
+def errorLogReportHandler(symbol, event):
+    eventValue = event["value"]
+    component = event["source"]
+
+    # Enable/Disable Log Report dependency
+    component.setDependencyEnabled("srv_usi_logreport_dependency", eventValue)
+
+    if eventValue == True:
+        Database.activateComponents(["srvLogReport"])
 
 def instantiateComponent(usiComponentCommon):
 
@@ -79,6 +89,9 @@ def instantiateComponent(usiComponentCommon):
     # Enable "Generate Harmony System Service Common Files" option in MHC
     Database.sendMessage("HarmonyCore", "ENABLE_SYS_COMMON", {"isEnabled":True})
 
+    # Disable Log Report dependency by default
+    usiComponentCommon.setDependencyEnabled("srv_usi_logreport_dependency", False)
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -91,6 +104,13 @@ def instantiateComponent(usiComponentCommon):
     usiSymMsgPoolSize.setDefaultValue(5)
     usiSymMsgPoolSize.setHelp(srv_usi_helpkeyword)
 
+    usiErrorLogReport = usiComponentCommon.createBooleanSymbol("SRV_USI_ERROR_LOG_REPORT", None)
+    usiErrorLogReport.setLabel("Enable Error Log Report")
+    usiErrorLogReport.setReadOnly(False)
+    usiErrorLogReport.setDefaultValue(False)
+    usiErrorLogReport.setVisible(True)
+    usiErrorLogReport.setHelp(srv_usi_helpkeyword)
+
     global usiSymUsartAPI
     usiSymUsartAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_USART_API", None)
     usiSymUsartAPI.setLabel("UART API")
@@ -98,6 +118,7 @@ def instantiateComponent(usiComponentCommon):
     usiSymUsartAPI.setDefaultValue(False)
     usiSymUsartAPI.setVisible(True)
     usiSymUsartAPI.setHelp(srv_usi_helpkeyword)
+    usiSymUsartAPI.setDependencies(errorLogReportHandler, ["SRV_USI_ERROR_LOG_REPORT"])
 
     global usiSymCdcAPI
     usiSymCdcAPI = usiComponentCommon.createBooleanSymbol("SRV_USI_CDC_API", None)
@@ -126,11 +147,12 @@ def instantiateComponent(usiComponentCommon):
     ##### USI Files  ####################################################
 
     usiSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_SOURCE", None)
-    usiSourceFile.setSourcePath("service/usi/src/srv_usi.c")
+    usiSourceFile.setSourcePath("service/usi/src/srv_usi.c.ftl")
     usiSourceFile.setOutputName("srv_usi.c")
     usiSourceFile.setDestPath("service/usi")
     usiSourceFile.setProjectPath("config/" + configName + "/service/usi/")
     usiSourceFile.setType("SOURCE")
+    usiSourceFile.setMarkup(True)
     
     usiHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_HEADER", None)
     usiHeaderFile.setSourcePath("service/usi/srv_usi.h")

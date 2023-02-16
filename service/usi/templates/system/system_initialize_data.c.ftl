@@ -36,7 +36,13 @@ const SRV_USI_USART_INTERFACE srvUsi${INDEX?string}InitData${SRV_USI_DEVICE?stri
     .read = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Read,
     .write = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Write,
     .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_WriteIsBusy,
+<#if SRV_USI_DEVICE?lower_case[0..*6] == "sercom">    
+    .intSource = ${SRV_USI_DEVICE}_IRQn,
+<#elseif SRV_USI_DEVICE?lower_case[0..*7] == "flexcom"> 
+    .intSource = ${SRV_USI_DEVICE}_IRQn,
+<#else>
     .intSource = ${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_IRQn,
+</#if>
 };
 
 const USI_USART_INIT_DATA srvUsi${INDEX?string}InitData = {
