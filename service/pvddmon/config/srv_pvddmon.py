@@ -230,7 +230,7 @@ def instantiateComponent(pPVDDMonComponent):
 
     # PLC PVDD Monitor Files
     pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
-    pPVDDMonHeaderFile.setSourcePath("service/pvddmon/srv_pvddmon.h.ftl")
+    pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.h.ftl")
     pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
     pPVDDMonHeaderFile.setDestPath("service/pvddmon")
     pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
@@ -238,7 +238,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonHeaderFile.setMarkup(True)
 
     pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
-    pPVDDMonSourceFile.setSourcePath("service/pvddmon/srv_pvddmon.c.ftl")
+    pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.c.ftl")
     pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
     pPVDDMonSourceFile.setDestPath("service/pvddmon")
     pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")

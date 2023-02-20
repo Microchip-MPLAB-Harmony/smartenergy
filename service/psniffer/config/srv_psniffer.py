@@ -122,7 +122,7 @@ def instantiateComponent(pSnifferComponentCommon):
     pSnifferSourceFilePrime.setEnabled(False)
 
     pSnifferHeaderFile = pSnifferComponentCommon.createFileSymbol("SRV_PSNF_HEADER", None)
-    pSnifferHeaderFile.setSourcePath("service/psniffer/srv_psniffer.h.ftl")
+    pSnifferHeaderFile.setSourcePath("service/psniffer/templates/srv_psniffer.h.ftl")
     pSnifferHeaderFile.setOutputName("srv_psniffer.h")
     pSnifferHeaderFile.setDestPath("service/psniffer")
     pSnifferHeaderFile.setProjectPath("config/" + configName + "/service/psniffer/")

@@ -1787,7 +1787,7 @@ def instantiateComponent(pCoupComponentCommon):
     #### Phy Coupling Files ######################################################
     global pCoupG3SourceFile
     pCoupG3SourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_G3_SOURCE", None)
-    pCoupG3SourceFile.setSourcePath("service/pcoup/srv_pcoup_g3.c.ftl")
+    pCoupG3SourceFile.setSourcePath("service/pcoup/templates/srv_pcoup_g3.c.ftl")
     pCoupG3SourceFile.setOutputName("srv_pcoup.c")
     pCoupG3SourceFile.setDestPath("service/pcoup")
     pCoupG3SourceFile.setProjectPath("config/" + configName + "/service/pcoup/")
@@ -1798,7 +1798,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupG3HeaderFile
     pCoupG3HeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_G3_HEADER", None)
-    pCoupG3HeaderFile.setSourcePath("service/pcoup/srv_pcoup_g3.h.ftl")
+    pCoupG3HeaderFile.setSourcePath("service/pcoup/templates/srv_pcoup_g3.h.ftl")
     pCoupG3HeaderFile.setOutputName("srv_pcoup.h")
     pCoupG3HeaderFile.setDestPath("service/pcoup")
     pCoupG3HeaderFile.setProjectPath("config/" + configName + "/service/pcoup/")
@@ -1809,7 +1809,7 @@ def instantiateComponent(pCoupComponentCommon):
     
     global pCoupPRIMESourceFile
     pCoupPRIMESourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_PRIME_SOURCE", None)
-    pCoupPRIMESourceFile.setSourcePath("service/pcoup/srv_pcoup_prime.c.ftl")
+    pCoupPRIMESourceFile.setSourcePath("service/pcoup/templates/srv_pcoup_prime.c.ftl")
     pCoupPRIMESourceFile.setOutputName("srv_pcoup.c")
     pCoupPRIMESourceFile.setDestPath("service/pcoup")
     pCoupPRIMESourceFile.setProjectPath("config/" + configName + "/service/pcoup/")
@@ -1820,7 +1820,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupPRIMEHeaderFile
     pCoupPRIMEHeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_PRIME_HEADER", None)
-    pCoupPRIMEHeaderFile.setSourcePath("service/pcoup/srv_pcoup_prime.h.ftl")
+    pCoupPRIMEHeaderFile.setSourcePath("service/pcoup/templates/srv_pcoup_prime.h.ftl")
     pCoupPRIMEHeaderFile.setOutputName("srv_pcoup.h")
     pCoupPRIMEHeaderFile.setDestPath("service/pcoup")
     pCoupPRIMEHeaderFile.setProjectPath("config/" + configName + "/service/pcoup/")

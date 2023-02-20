@@ -124,7 +124,7 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialSourceFilePrime.setEnabled(False)
 
     pSerialHeaderFile = pSerialComponentCommon.createFileSymbol("SRV_PSER_HEADER", None)
-    pSerialHeaderFile.setSourcePath("service/pserial/srv_pserial.h.ftl")
+    pSerialHeaderFile.setSourcePath("service/pserial/templates/srv_pserial.h.ftl")
     pSerialHeaderFile.setOutputName("srv_pserial.h")
     pSerialHeaderFile.setDestPath("service/pserial")
     pSerialHeaderFile.setProjectPath("config/" + configName + "/service/pserial/")

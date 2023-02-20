@@ -37,7 +37,7 @@ def instantiateComponent(rSerialComponentCommon):
 
     # Phy Serial Files
     rSerialSourceFile = rSerialComponentCommon.createFileSymbol("SRV_RSER_SOURCE", None)
-    rSerialSourceFile.setSourcePath("service/rserial/srv_rserial.c.ftl")
+    rSerialSourceFile.setSourcePath("service/rserial/templates/srv_rserial.c.ftl")
     rSerialSourceFile.setOutputName("srv_rserial.c")
     rSerialSourceFile.setDestPath("service/rserial")
     rSerialSourceFile.setProjectPath("config/" + configName + "/service/rserial/")

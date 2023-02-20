@@ -29,7 +29,7 @@ def loadModule():
     processor = Variables.get("__PROCESSOR")
     
     ## PLC PHY Driver (G3, PRIME)
-    drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC_PHY", "/SmartEnergy/Drivers/", "driver/plcPhy/config/drv_plc_phy.py")
+    drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC PHY", "/SmartEnergy/Drivers/", "driver/plcPhy/config/drv_plc_phy.py")
     drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY", False) 
     drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
     drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
@@ -37,7 +37,7 @@ def loadModule():
     drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
     
     ## G3 MAC RT Driver
-    drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3_MAC_RT", "/SmartEnergy/Drivers/", "driver/g3MacRt/config/drv_g3_macrt.py")
+    drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3 MAC RT", "/SmartEnergy/Drivers/", "driver/g3MacRt/config/drv_g3_macrt.py")
     drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT", False) 
     drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
     drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
@@ -46,12 +46,12 @@ def loadModule():
     
     ## Metrology Driver
     if (("MTSH" in processor) or ("MTC" in processor)):
-        drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Metrology/", "driver/metrology/config/drv_metrology.py")
+        drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
         drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)   
         drvMetrologyComponent.setDisplayType("Metrology")
 
     ## RF215 Driver
-    drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/RF/Drivers/", "driver/rf215/config/drv_rf215.py")
+    drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
     drvRf215Component.addCapability("libdrvRf215", "DRV_RF_PHY", False)
     drvRf215Component.addDependency("drv_rf215_SPI_dependency", "SPI", False, True)
     drvRf215Component.addDependency("drv_rf215_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
@@ -61,10 +61,10 @@ def loadModule():
     ## PCOUP Service (PHY PLC Coupling Settings)
     srvPhyCouplingComponent = Module.CreateComponent("srv_pcoup", "PLC PHY Coupling", "/SmartEnergy/Services/", "service/pcoup/config/srv_pcoup.py")
     srvPhyCouplingComponent.addCapability("libsrvPCoup", "PCOUP", "PCOUP", True)
-    srvPhyCouplingComponent.setDisplayType("PLC Service")
+    srvPhyCouplingComponent.setDisplayType("PLC Coupling")
 
     ## USI Service (Universal Synchronous Interface)
-    srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/SmartEnergy/Common Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
+    srvUSIComponent = Module.CreateGeneratorComponent("srv_usi", "USI", "/SmartEnergy/Services/", "service/usi/config/srv_usi_common.py", "service/usi/config/srv_usi.py")
     srvUSIComponent.addCapability("libsrvUSI", "USI_PLC", True)
     srvUSIComponent.addDependency("srv_usi_USART_dependency", "UART", False, False)
     srvUSIComponent.addDependency("srv_usi_CDC_dependency", "USB_DEVICE_CDC", False, False)
@@ -72,48 +72,48 @@ def loadModule():
     srvUSIComponent.addDependency("srv_usi_HarmonyCore_dependency", "Core Service", "Core Service", True, True)
     srvUSIComponent.addDependency("srv_usi_CRC_dependency", "PCRC", "PCRC", True, True)
     srvUSIComponent.addDependency("srv_usi_logreport_dependency", "Log Report", True, True)
-    srvUSIComponent.setDisplayType("Smart Energy Service")
+    srvUSIComponent.setDisplayType("USI Service")
 
     ## srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/SmartEnergy/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
     ## srvUSITCPAuxComponent.addCapability("libsrvUSITCPAux", "USI_TCP_AUX")
     ## srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
     ## srvUSITCPAuxComponent.setDisplayType("PLC Service")
 
-    ## PCRC Service (Smart Energy CRC service)
-    srvPCRCComponent = Module.CreateComponent("srv_pcrc", "Smart Energy CRC", "/SmartEnergy/Common Services/", "service/pcrc/config/srv_pcrc.py")
+    ## PCRC Service (CRC service)
+    srvPCRCComponent = Module.CreateComponent("srv_pcrc", "CRC", "/SmartEnergy/Services/", "service/pcrc/config/srv_pcrc.py")
     srvPCRCComponent.addCapability("libsrvPCRC", "PCRC", "PCRC", True)
-    srvPCRCComponent.setDisplayType("Smart Energy Service")
+    srvPCRCComponent.setDisplayType("CRC Service")
 
     ## PSERIAL Service (PHY Layer serialization service)
     srvPSERIALComponent = Module.CreateComponent("srv_pserial", "PLC PHY Serial", "/SmartEnergy/Services/", "service/pserial/config/srv_pserial.py")
     srvPSERIALComponent.addCapability("libsrvPSerial", "PSER", "PSER", True)
-    srvPSERIALComponent.setDisplayType("PLC Service")
+    srvPSERIALComponent.setDisplayType("Phy Serial Service")
 
     ## PSNIFFER Service (PHY Sniffer serialization service)
     srvPSNIFFERComponent = Module.CreateComponent("srv_psniffer", "PLC PHY Sniffer", "/SmartEnergy/Services/", "service/psniffer/config/srv_psniffer.py")
     srvPSNIFFERComponent.addCapability("libsrvPSniffer", "PSNF", "PSNF", True)
-    srvPSNIFFERComponent.setDisplayType("PLC Service")
+    srvPSNIFFERComponent.setDisplayType("Phy Sniffer Service")
 
     ## PLC PVDD Monitor Service (True Random Generator Service)
-    srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD MONITOR", "/SmartEnergy/Services/", "service/pvddmon/config/srv_pvddmon.py")
+    srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD Monitor", "/SmartEnergy/Services/", "service/pvddmon/config/srv_pvddmon.py")
     srvPVDDMonitorComponent.addDependency("srv_pvddmon_ADC_dependency", "ADC", False, False)
     srvPVDDMonitorComponent.setDisplayType("PLC PVDD Monitor Service")
 
     ## RSERIAL Service (RF Layer serialization service)
-    srvRSERIALComponent = Module.CreateComponent("srv_rserial", "RF PHY Serial", "/SmartEnergy/RF/Services/", "service/rserial/config/srv_rserial.py")
+    srvRSERIALComponent = Module.CreateComponent("srv_rserial", "RF PHY Serial", "/SmartEnergy/Services/", "service/rserial/config/srv_rserial.py")
     srvRSERIALComponent.addCapability("libsrvRSerial", "RSER", "RSER", True)
-    srvRSERIALComponent.setDisplayType("RF Service")
+    srvRSERIALComponent.setDisplayType("RF Serial Service")
 
     ## RSNIFFER Service (RF PHY Sniffer sniffer service)
-    srvRSNIFFERComponent = Module.CreateComponent("srv_rsniffer", "RF PHY Sniffer", "/SmartEnergy/RF/Services/", "service/rsniffer/config/srv_rsniffer.py")
+    srvRSNIFFERComponent = Module.CreateComponent("srv_rsniffer", "RF PHY Sniffer", "/SmartEnergy/Services/", "service/rsniffer/config/srv_rsniffer.py")
     srvRSNIFFERComponent.addCapability("libsrvRSniffer", "RSNF", "RSNF", True)
-    srvRSNIFFERComponent.setDisplayType("RF Service")
+    srvRSNIFFERComponent.setDisplayType("RF Sniffer Service")
 
     ## SPI splitter Service
-    srvSPISplitterComponent = Module.CreateComponent("srv_spisplit", "SPI SPLITTER", "/SmartEnergy/Common Services/", "service/spisplit/config/srv_spisplit.py")
+    srvSPISplitterComponent = Module.CreateComponent("srv_spisplit", "SPI Splitter", "/SmartEnergy/Services/", "service/spisplit/config/srv_spisplit.py")
     srvSPISplitterComponent.addDependency("srv_spiplit_SPI_dependency", "SPI", False, True)
     srvSPISplitterComponent.addMultiCapability("srv_spiplit_SPI_capability", "SPI", "SPI")
-    srvSPISplitterComponent.setDisplayType("Smart Energy Service")
+    srvSPISplitterComponent.setDisplayType("SPI SPlitter")
 
     ## Log Report Service  
     srvLogReportComponent = Module.CreateComponent("srvLogReport", "Log Report", "/SmartEnergy/Services", "service/log_report/config/srv_log_report.py")
@@ -121,13 +121,25 @@ def loadModule():
     srvLogReportComponent.addDependency("srv_logreport_sys_debug_dependency", "SYS_DEBUG", True, True)
     srvLogReportComponent.setDisplayType("Log Report Service")
 
-    ## G3/PRIME Stack Service : Queue   
-    srvQueueComponent = Module.CreateComponent("srvQueue", "QUEUE", "/SmartEnergy/Stack/Services", "stack/service/queue/config/srv_queue.py")
+    ## Queue Service
+    srvQueueComponent = Module.CreateComponent("srvQueue", "Queue", "/SmartEnergy/Services", "service/queue/config/srv_queue.py")
     srvQueueComponent.addCapability("libsrvQueue", "Queue", True)	
     srvQueueComponent.addDependency("srv_queue_logreport_dependency", "Log Report", True, True)
     srvQueueComponent.setDisplayType("Queue Service")
     
-    ## G3/PRIME Stack Service : Random   
-    srvRandomComponent = Module.CreateComponent("srvRandom", "RANDOM", "/SmartEnergy/Stack/Services", "stack/service/random/config/srv_random.py")
+    ## Random Service
+    srvRandomComponent = Module.CreateComponent("srvRandom", "Random", "/SmartEnergy/Services", "service/random/config/srv_random.py")
     srvRandomComponent.addCapability("libsrvRandom", "Random", True)	
     srvRandomComponent.setDisplayType("Random Service")
+    
+    ## Security
+    srvSecurityComponent = Module.CreateComponent("srvSecurity", "Security", "/SmartEnergy/Services", "service/security/config/srv_security.py")
+    srvSecurityComponent.addCapability("libsrvSecurity", "Security", True)  
+    srvSecurityComponent.addDependency("security_crypto_dependency", "LIB_CRYPTO", True, True)
+    srvSecurityComponent.setDisplayType("Security Service")
+    
+    ## Time Management
+    srvTimeMgmtComponent = Module.CreateComponent("srvTimeManagement", "Time Management", "/SmartEnergy/Services", "service/time_management/config/srv_time_management.py")
+    srvTimeMgmtComponent.addCapability("libsrvTimeMgmt", "Time Management", True)  
+    srvTimeMgmtComponent.addDependency("timemgmt_sys_time_dependency", "SYS_TIME", True, True)
+    srvTimeMgmtComponent.setDisplayType("Time Management Service")
