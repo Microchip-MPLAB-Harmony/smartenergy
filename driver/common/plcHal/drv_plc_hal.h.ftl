@@ -305,6 +305,8 @@ typedef bool (* DRV_PLC_HAL_SET_TXENABLE)(bool);
 </#if>
 typedef void (* DRV_PLC_HAL_ENABLE_EXT_INT)(bool);
 
+typedef bool (* DRV_PLC_HAL_GET_PIN_LEVEL)(SYS_PORT_PIN pin);
+
 typedef void (* DRV_PLC_HAL_DELAY)(uint64_t);
 
 typedef void (* DRV_PLC_HAL_SEND_BOOT_CMD)(uint16_t, uint32_t, uint32_t, void*, void*);
@@ -356,6 +358,9 @@ typedef struct
 </#if>
     /* PLC HAL Enable/Disable external interrupt */
     DRV_PLC_HAL_ENABLE_EXT_INT               enableExtInt;
+
+    /* PLC HAL Get Pin level */
+    DRV_PLC_HAL_GET_PIN_LEVEL                getPinLevel;
 
     /* PLC HAL delay function */
     DRV_PLC_HAL_DELAY                        delay;
@@ -427,6 +432,7 @@ void DRV_PLC_HAL_Setup(bool set16Bits);
 void DRV_PLC_HAL_SetTxEnable(bool enable);
 </#if>
 void DRV_PLC_HAL_EnableInterrupts(bool enable);
+bool DRV_PLC_HAL_GetPinLevel(SYS_PORT_PIN pin);
 void DRV_PLC_HAL_Delay(uint64_t delayUs);
 void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t address, uint32_t dataLength, uint8_t *pDataWr, uint8_t *pDataRd);
 void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo);

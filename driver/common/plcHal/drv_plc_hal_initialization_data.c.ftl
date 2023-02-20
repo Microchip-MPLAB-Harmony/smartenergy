@@ -163,6 +163,9 @@ DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 </#if>
     /* PLC HAL Enable/Disable external interrupt */
     .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)DRV_PLC_HAL_EnableInterrupts,
+    
+    /* PLC HAL Enable/Disable external interrupt */
+    .getPinLevel = (DRV_PLC_HAL_GET_PIN_LEVEL)DRV_PLC_HAL_GetPinLevel,
 
     /* PLC HAL delay function */
     .delay = (DRV_PLC_HAL_DELAY)DRV_PLC_HAL_Delay,
