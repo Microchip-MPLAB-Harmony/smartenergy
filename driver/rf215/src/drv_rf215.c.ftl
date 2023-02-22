@@ -98,9 +98,9 @@ const RF215_REG_VALUES_OBJ rf215RegValues = {
 static const DRV_RF215_FW_VERSION rf215FwVersion = {
     .major = 2,
     .minor = 0,
-    .revision = 0,
-    .day = 18,
-    .month = 1,
+    .revision = 1,
+    .day = 22,
+    .month = 2,
     .year = 23
 };
 

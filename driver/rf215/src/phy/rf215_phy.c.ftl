@@ -1764,8 +1764,10 @@ static bool _RF215_PHY_BandOpModeToPhyCfg (
     DRV_RF215_PHY_CFG_OBJ* phyConfig
 )
 {
-    switch (bandOpMode) {
+    switch (bandOpMode)
+    {
 <#if DRV_RF215_FSK_EN == true>
+<#if DRV_RF215_TRX09_EN == true>
         case SUN_FSK_BAND_863_OPM1:
             *phyConfig = SUN_FSK_BAND_863_870_OPM1;
             break;
@@ -1874,6 +1876,88 @@ static bool _RF215_PHY_BandOpModeToPhyCfg (
             *phyConfig = SUN_FSK_BAND_915_928_OPM5;
             break;
 
+        case SUN_FSK_BAND_919_OPM1:
+            *phyConfig = SUN_FSK_BAND_919_923_OPM1;
+            break;
+
+        case SUN_FSK_BAND_919_OPM2:
+            *phyConfig = SUN_FSK_BAND_919_923_OPM2;
+            break;
+
+        case SUN_FSK_BAND_919_OPM3:
+            *phyConfig = SUN_FSK_BAND_919_923_OPM3;
+            break;
+
+        case SUN_FSK_BAND_919_OPM4:
+            *phyConfig = SUN_FSK_BAND_919_923_OPM4;
+            break;
+
+        case SUN_FSK_BAND_919_OPM5:
+            *phyConfig = SUN_FSK_BAND_919_923_OPM5;
+            break;
+
+        case SUN_FSK_BAND_920_OPM1:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM1;
+            break;
+
+        case SUN_FSK_BAND_920_OPM2:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM2;
+            break;
+
+        case SUN_FSK_BAND_920_OPM3:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM3;
+            break;
+
+        case SUN_FSK_BAND_920_OPM4:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM4;
+            break;
+
+        case SUN_FSK_BAND_920_OPM5:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM5;
+            break;
+
+        case SUN_FSK_BAND_920_OPM6:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM6;
+            break;
+
+        case SUN_FSK_BAND_920_OPM7:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM7;
+            break;
+
+        case SUN_FSK_BAND_920_OPM8:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM8;
+            break;
+
+        case SUN_FSK_BAND_920_OPM9:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM9;
+            break;
+
+        case SUN_FSK_BAND_920_OPM12:
+            *phyConfig = SUN_FSK_BAND_920_928_OPM12;
+            break;
+
+        case SUN_FSK_BAND_920B_INDONESIA_OPM1:
+            *phyConfig = SUN_FSK_BAND_920_923_OPM1;
+            break;
+
+        case SUN_FSK_BAND_920B_INDONESIA_OPM2:
+            *phyConfig = SUN_FSK_BAND_920_923_OPM2;
+            break;
+
+        case SUN_FSK_BAND_920B_INDONESIA_OPM3:
+            *phyConfig = SUN_FSK_BAND_920_923_OPM3;
+            break;
+
+        case SUN_FSK_BAND_920B_INDONESIA_OPM4:
+            *phyConfig = SUN_FSK_BAND_920_923_OPM4;
+            break;
+
+        case SUN_FSK_BAND_920B_INDONESIA_OPM5:
+            *phyConfig = SUN_FSK_BAND_920_923_OPM5;
+            break;
+
+</#if>
+<#if DRV_RF215_TRX24_EN == true>
         case SUN_FSK_BAND_2450_OPM1:
             *phyConfig = SUN_FSK_BAND_2400_2483_OPM1;
             break;
@@ -1887,7 +1971,9 @@ static bool _RF215_PHY_BandOpModeToPhyCfg (
             break;
 
 </#if>
+</#if>
 <#if DRV_RF215_OFDM_EN == true>
+<#if DRV_RF215_TRX09_EN == true>
         case SUN_OFDM_BAND_863_OPT4:
             *phyConfig = SUN_OFDM_BAND_863_870_OPT4;
             break;
@@ -1964,6 +2050,56 @@ static bool _RF215_PHY_BandOpModeToPhyCfg (
             *phyConfig = SUN_OFDM_BAND_915_928_OPT1;
             break;
 
+        case SUN_OFDM_BAND_919_OPT4:
+            *phyConfig = SUN_OFDM_BAND_919_923_OPT4;
+            break;
+
+        case SUN_OFDM_BAND_919_OPT3:
+            *phyConfig = SUN_OFDM_BAND_919_923_OPT3;
+            break;
+
+        case SUN_OFDM_BAND_919_OPT2:
+            *phyConfig = SUN_OFDM_BAND_919_923_OPT2;
+            break;
+
+        case SUN_OFDM_BAND_919_OPT1:
+            *phyConfig = SUN_OFDM_BAND_919_923_OPT1;
+            break;
+
+        case SUN_OFDM_BAND_920_OPT4:
+            *phyConfig = SUN_OFDM_BAND_920_928_OPT4;
+            break;
+
+        case SUN_OFDM_BAND_920_OPT3:
+            *phyConfig = SUN_OFDM_BAND_920_928_OPT3;
+            break;
+
+        case SUN_OFDM_BAND_920_OPT2:
+            *phyConfig = SUN_OFDM_BAND_920_928_OPT2;
+            break;
+
+        case SUN_OFDM_BAND_920_OPT1:
+            *phyConfig = SUN_OFDM_BAND_920_928_OPT1;
+            break;
+
+        case SUN_OFDM_BAND_920B_INDONESIA_OPT4:
+            *phyConfig = SUN_OFDM_BAND_920_923_OPT4;
+            break;
+
+        case SUN_OFDM_BAND_920B_INDONESIA_OPT3:
+            *phyConfig = SUN_OFDM_BAND_920_923_OPT3;
+            break;
+
+        case SUN_OFDM_BAND_920B_INDONESIA_OPT2:
+            *phyConfig = SUN_OFDM_BAND_920_923_OPT2;
+            break;
+
+        case SUN_OFDM_BAND_920B_INDONESIA_OPT1:
+            *phyConfig = SUN_OFDM_BAND_920_923_OPT1;
+            break;
+
+</#if>
+<#if DRV_RF215_TRX24_EN == true>
         case SUN_OFDM_BAND_2450_OPT4:
             *phyConfig = SUN_OFDM_BAND_2400_2483_OPT4;
             break;
@@ -1980,6 +2116,7 @@ static bool _RF215_PHY_BandOpModeToPhyCfg (
             *phyConfig = SUN_OFDM_BAND_2400_2483_OPT1;
             break;
 
+</#if>
 </#if>
         default:
             return false;

@@ -63,6 +63,21 @@ rf09Band915cOpModes = {"value": "915C",
                     "fskModes": 5, "fskMinChannel": [65, 65, 65, 32, 32], "fskMaxChannel": [128, 128, 128, 63, 63],
                     "ofdmOptions": 4, "ofdmMinChannel": [65, 32, 16, 11], "ofdmMaxChannel": [128, 63, 30, 19]}
 
+rf09Band919OpModes = {"value": "919",
+                    "description": "919-923 MHz band. Malaysia",
+                    "fskModes": 5, "fskMinChannel": [85, 85, 85, 42, 42], "fskMaxChannel": [103, 103, 103, 51, 51],
+                    "ofdmOptions": 4, "ofdmMinChannel": [85, 42, 21, 14], "ofdmMaxChannel": [103, 51, 24, 16]}
+
+rf09Band920OpModes = {"value": "920",
+                    "description": "920-928 MHz band. Japan",
+                    "fskModes": 12, "fskMinChannel": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fskMaxChannel": [36, 17, 11, 11, 17, 17, 17, 11, 6, 6, 6, 6],
+                    "ofdmOptions": 4, "ofdmMinChannel": [0, 0, 0, 0], "ofdmMaxChannel": [38, 18, 8, 4]}
+
+rf09Band920bIndonesiaOpModes = {"value": "920B_INDONESIA",
+                    "description": "920-923 MHz band. Indonesia",
+                    "fskModes": 5, "fskMinChannel": [90, 90, 90, 45, 45], "fskMaxChannel": [103, 103, 103, 51, 51],
+                    "ofdmOptions": 4, "ofdmMinChannel": [90, 45, 22, 15], "ofdmMaxChannel": [103, 51, 24, 16]}
+
 rf09BandsOpModes = {
     "863": rf09Band863OpModes,
     "866": rf09Band866OpModes,
@@ -71,6 +86,9 @@ rf09BandsOpModes = {
     "915-a": rf09Band915aOpModes,
     "915-b": rf09Band915bOpModes,
     "915-c": rf09Band915cOpModes,
+    "919": rf09Band919OpModes,
+    "920": rf09Band920OpModes,
+    "920-b (Indonesia)": rf09Band920bIndonesiaOpModes,
 }
 
 rf24Band2450OpModes = {"value": "2450",
@@ -245,12 +263,18 @@ def updateOpModeRange(symbol, phyBand, phyType, rfTrx):
     dictBand = rfBandsOpModes[rfTrx][phyBand]
     if phyType == "FSK":
         symbol.setLabel("Default FSK Operating Mode   ")
-        symbol.setDescription("Select the default FSK Operating Mode for RF215 Sub-GHz Transceiver (RF09)")
+        if rfTrx == "RF09":
+            symbol.setDescription("Select the default FSK Operating Mode for RF215 Sub-GHz Transceiver (RF09)")
+        else:
+            symbol.setDescription("Select the default FSK Operating Mode for RF215 2.4 GHz Transceiver (RF24)")
         symbol.setMin(1)
         symbol.setMax(dictBand["fskModes"])
     elif phyType == "OFDM":
         symbol.setLabel("Default OFDM Bandwidth Option")
-        symbol.setDescription("Select the default OFDM Bandwidth Option for RF215 Sub-GHz Transceiver (RF09)")
+        if rfTrx == "RF09":
+            symbol.setDescription("Select the default OFDM Bandwidth Option for RF215 Sub-GHz Transceiver (RF09)")
+        else:
+            symbol.setDescription("Select the default OFDM Bandwidth Option for RF215 2.4 GHz Transceiver (RF24)")
         symbol.setMax(4)
         symbol.setMin(5 - dictBand["ofdmOptions"])
 
