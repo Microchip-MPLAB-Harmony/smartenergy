@@ -593,7 +593,10 @@ void SRV_USI_Send_Message( const SRV_USI_HANDLE handle,
 </#if>
         return;
     }
-    
+
+    /* Waiting for USART is free */
+    while (dObj->devDesc->writeIsBusy(dObj->devIndex) == true);
+
     /* Build USI message */
     writeLength = _SRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, length);
     

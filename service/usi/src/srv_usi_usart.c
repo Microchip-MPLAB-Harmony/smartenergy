@@ -70,6 +70,7 @@ const SRV_USI_DEV_DESC srvUSIUSARTDevDesc =
     .open                       = USI_USART_Open,
     .setReadCallback            = USI_USART_RegisterCallback,
     .write                      = USI_USART_Write,
+    .writeIsBusy                = USI_USART_WriteIsBusy,
     .task                       = USI_USART_Tasks,
     .close                      = USI_USART_Close,
     .status                     = USI_USART_Status,
@@ -398,14 +399,34 @@ size_t USI_USART_Write(uint32_t index, void* pData, size_t length)
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return 0;
-    }
-
-    /* Waiting for USART is free */
-    while (dObj->plib->writeIsBusy());
+    }    
 
     dObj->plib->write(pData, length);
     
     return length;
+}
+
+bool USI_USART_WriteIsBusy(uint32_t index)
+{
+    USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
+
+    /* Check handler */
+    if (dObj == NULL)
+    {
+        return true;
+    }
+
+    if (index >= SRV_USI_USART_CONNECTIONS)
+    {
+        return true;
+    }
+
+    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
+    {
+        return true;
+    }
+
+    return dObj->plib->writeIsBusy();
 }
 
 void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc,
