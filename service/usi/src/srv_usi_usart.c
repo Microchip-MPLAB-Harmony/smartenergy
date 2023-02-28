@@ -337,12 +337,7 @@ DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData)
     {
         return DRV_HANDLE_INVALID;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return DRV_HANDLE_INVALID;
-    }
-    
+
     dObj->plib = (SRV_USI_USART_INTERFACE*)dObjInit->plib;
     dObj->pRdBuffer = dObjInit->pRdBuffer;
     dObj->rdBufferSize = dObjInit->rdBufferSize;
@@ -365,11 +360,6 @@ DRV_HANDLE USI_USART_Open(uint32_t index)
     {
         return DRV_HANDLE_INVALID;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return DRV_HANDLE_INVALID;
-    }
 
     dObj->usiStatus = SRV_USI_STATUS_CONFIGURED;
 
@@ -385,12 +375,7 @@ size_t USI_USART_Write(uint32_t index, void* pData, size_t length)
     {
         return 0;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return 0;
-    }
-    
+
     if (length == 0)
     {
         return 0;
@@ -413,17 +398,12 @@ bool USI_USART_WriteIsBusy(uint32_t index)
     /* Check handler */
     if (dObj == NULL)
     {
-        return true;
-    }
-
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return true;
+        return false;
     }
 
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
-        return true;
+        return false;
     }
 
     return dObj->plib->writeIsBusy();
@@ -439,12 +419,7 @@ void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc,
     {
         return;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;
@@ -472,12 +447,7 @@ void USI_USART_Close(uint32_t index)
     {
         return;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 }
 
@@ -487,11 +457,6 @@ SRV_USI_STATUS USI_USART_Status(uint32_t index)
     
     /* Check handler */    
     if (dObj == NULL)
-    {
-        return SRV_USI_STATUS_ERROR;
-    }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
     {
         return SRV_USI_STATUS_ERROR;
     }
@@ -511,12 +476,7 @@ void USI_USART_Tasks (uint32_t index)
     {
         return;
     }
-    
-    if (index >= SRV_USI_USART_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;

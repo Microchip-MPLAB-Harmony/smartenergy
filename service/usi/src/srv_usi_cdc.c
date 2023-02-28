@@ -369,12 +369,7 @@ DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData)
     {
         return DRV_HANDLE_INVALID;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return DRV_HANDLE_INVALID;
-    }
-    
+
     dObj->cdcInstanceIndex = dObjInit->cdcInstanceIndex;
     dObj->cdcReadBuffer = dObjInit->cdcReadBuffer;
     dObj->usiReadBuffer = dObjInit->usiReadBuffer;
@@ -405,11 +400,6 @@ DRV_HANDLE USI_CDC_Open(uint32_t index)
     {
         return DRV_HANDLE_INVALID;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return DRV_HANDLE_INVALID;
-    }
 
     /* Open the USB device layer */
     dObj->devHandle = USB_DEVICE_Open(dObj->cdcInstanceIndex, DRV_IO_INTENT_READWRITE);
@@ -436,12 +426,7 @@ size_t USI_CDC_Write(uint32_t index, void* pData, size_t length)
     {
         return 0;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return 0;
-    }
-    
+
     if (length == 0)
     {
         return 0;
@@ -466,24 +451,6 @@ size_t USI_CDC_Write(uint32_t index, void* pData, size_t length)
 
 bool USI_CDC_WriteIsBusy(uint32_t index)
 {
-    USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
-
-    /* Check handler */
-    if (dObj == NULL)
-    {
-        return true;
-    }
-
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return true;
-    }
-
-    if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
-    {
-        return true;
-    }
-
     /* USB CDC is always free for writing */
     return false;
 }
@@ -498,12 +465,7 @@ void USI_CDC_RegisterCallback(uint32_t index, USI_CDC_CALLBACK cbFunc,
     {
         return;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     /* Set callback function */
     dObj->cbFunc = cbFunc;
     
@@ -520,12 +482,7 @@ void USI_CDC_Close(uint32_t index)
     {
         return;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 }
 
@@ -535,11 +492,6 @@ SRV_USI_STATUS USI_CDC_Status(uint32_t index)
     
     /* Check handler */    
     if (dObj == NULL)
-    {
-        return SRV_USI_STATUS_ERROR;
-    }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
     {
         return SRV_USI_STATUS_ERROR;
     }
@@ -556,12 +508,7 @@ void USI_CDC_Tasks (uint32_t index)
     {
         return;
     }
-    
-    if (index >= SRV_USI_CDC_CONNECTIONS)
-    {
-        return;
-    }
-    
+
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;
