@@ -228,14 +228,14 @@ static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
         crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
         
         /* Extract data length */
-        dataLength = USI_LEN_PROTOCOL(*pData, *(pData + 1));
-                
+        dataLength = USI_LEN_PROTOCOL(pData[USI_LEN_HI_OFFSET], pData[USI_LEN_LO_OFFSET]);
+
         /* Add extended length */
         if ((protocol == SRV_USI_PROT_ID_ADP_G3) ||
             (protocol == SRV_USI_PROT_ID_COORD_G3) ||
             (protocol == SRV_USI_PROT_ID_PRIME_API))
         {
-            dataLength += *(pData + 2) & USI_XLEN_MSK;
+            dataLength += ((size_t) pData[USI_XLEN_OFFSET] & USI_XLEN_MSK) << USI_XLEN_SHIFT_L;
         }
 
         /* Check invalid length : remove Header and CRC bytes */
@@ -329,6 +329,7 @@ static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     uint8_t* pNewData;
     uint8_t* pEndData;
     uint8_t valueTmp[4];
+    uint8_t command;
     uint32_t valueTmp32;
     PCRC_CRC_TYPE crcType;
     
@@ -345,7 +346,7 @@ static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL(protocol);
     
     /* Get CRC from USI header: 2 bytes */
-    valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, PCRC_CRC16, 0);
+    valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, crcType, 0);
     /* Escape USI header */
     pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
     if (pNewData == 0)
@@ -357,7 +358,16 @@ static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
 </#if>
         return 0;
     }
-    
+
+    if ((protocol == SRV_USI_PROT_ID_ADP_G3) ||
+        (protocol == SRV_USI_PROT_ID_COORD_G3) ||
+        (protocol == SRV_USI_PROT_ID_PRIME_API))
+    {
+        /* Adjust extended length */
+        command = pData[0];
+        pData[0] = USI_LEN_EX_PROTOCOL(length) + USI_CMD_PROTOCOL(command);
+    }
+
     /* Get CRC from USI data. */
     valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType, valueTmp32);
     /* Escape USI data */
