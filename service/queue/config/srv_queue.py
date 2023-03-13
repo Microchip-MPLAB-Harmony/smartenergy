@@ -32,15 +32,15 @@ def instantiateComponent(srvQueueComponent):
     
     # Queue Files
     pQueueSource = srvQueueComponent.createFileSymbol("SRV_QUEUE_SOURCE", None)
-    pQueueSource.setSourcePath("stack/service/queue/srv_queue.c")
+    pQueueSource.setSourcePath("service/queue/srv_queue.c")
     pQueueSource.setOutputName("srv_queue.c")
-    pQueueSource.setDestPath("stack/service/queue")
-    pQueueSource.setProjectPath("config/" + configName + "/stack/service/queue/")
+    pQueueSource.setDestPath("service/queue")
+    pQueueSource.setProjectPath("config/" + configName + "/service/queue/")
     pQueueSource.setType("SOURCE")
     
     pQueueHeader = srvQueueComponent.createFileSymbol("SRV_QUEUE_HEADER", None)
-    pQueueHeader.setSourcePath("stack/service/queue/srv_queue.h")
+    pQueueHeader.setSourcePath("service/queue/srv_queue.h")
     pQueueHeader.setOutputName("srv_queue.h")
-    pQueueHeader.setDestPath("stack/service/queue")
-    pQueueHeader.setProjectPath("config/" + configName + "/stack/service/queue/")
+    pQueueHeader.setDestPath("service/queue")
+    pQueueHeader.setProjectPath("config/" + configName + "/service/queue/")
     pQueueHeader.setType("HEADER")

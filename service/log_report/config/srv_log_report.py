@@ -38,7 +38,7 @@ def instantiateComponent(srvLogReportComponent):
    
     # Log Report Files
     pLogReportSource = srvLogReportComponent.createFileSymbol("SRV_LOG_REPORT_SOURCE", None)
-    pLogReportSource.setSourcePath("service/templates/log_report/srv_log_report.c.ftl")
+    pLogReportSource.setSourcePath("service/log_report/templates/srv_log_report.c.ftl")
     pLogReportSource.setOutputName("srv_log_report.c")
     pLogReportSource.setDestPath("service/log_report")
     pLogReportSource.setProjectPath("config/" + configName + "/service/log_report/")

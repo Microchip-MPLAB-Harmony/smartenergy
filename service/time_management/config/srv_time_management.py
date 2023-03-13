@@ -34,14 +34,14 @@ def instantiateComponent(srvTimeMgmtComponent):
     pTimeMgmtSource = srvTimeMgmtComponent.createFileSymbol("SRV_TIME_MANAGEMENT_SOURCE", None)
     pTimeMgmtSource.setSourcePath("service/time_management/srv_time_management.c")
     pTimeMgmtSource.setOutputName("srv_time_management.c")
-    pTimeMgmtSource.setDestPath("stack/service/time_management")
-    pTimeMgmtSource.setProjectPath("config/" + configName + "/stack/service/time_management/")
+    pTimeMgmtSource.setDestPath("service/time_management")
+    pTimeMgmtSource.setProjectPath("config/" + configName + "/service/time_management/")
     pTimeMgmtSource.setType("SOURCE")
     
     pTimeMgmtHeader = srvTimeMgmtComponent.createFileSymbol("SRV_TIME_MANAGEMENT_HEADER", None)
     pTimeMgmtHeader.setSourcePath("service/time_management/srv_time_management.h")
     pTimeMgmtHeader.setOutputName("srv_time_management.h")
-    pTimeMgmtHeader.setDestPath("stack/service/time_management")
-    pTimeMgmtHeader.setProjectPath("config/" + configName + "/stack/service/time_management/")
+    pTimeMgmtHeader.setDestPath("service/time_management")
+    pTimeMgmtHeader.setProjectPath("config/" + configName + "/service/time_management/")
     pTimeMgmtHeader.setType("HEADER")
   
