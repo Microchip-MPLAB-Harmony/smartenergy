@@ -612,6 +612,7 @@ void DRV_RF215_ReadyStatusCallbackRegister (
     /* Register ready status callback */
     drvRf215Obj.readyStatusCallback = callback;
     drvRf215Obj.readyStatusContext = context;
+    drvRf215Obj.readyStatusNotified = false;
 }
 
 DRV_HANDLE DRV_RF215_Open (
