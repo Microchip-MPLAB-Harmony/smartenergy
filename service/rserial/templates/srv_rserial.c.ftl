@@ -364,6 +364,7 @@ ${PHY_TYPE_INDENT}pDataDst->modScheme = (DRV_RF215_PHY_MOD_SCHEME) (modScheme + 
                 if ((txIdHandle->inUse == true) && (txIdHandle->txId == srvRserialLastTxId))
                 {
                     txHandle = txIdHandle->txHandle;
+                    txIdHandle->inUse = false;
                 }
             }
 

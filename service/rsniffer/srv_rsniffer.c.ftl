@@ -565,7 +565,7 @@ uint8_t* SRV_RSNIFFER_SerialCfmMessage (
     pMsgDest[25] = (uint8_t) (timeEnd >> 8);
     pMsgDest[26] = (uint8_t) (timeEnd);
 
-    psduLen = (uint16_t) (pMsgDest[23] << 8) + pMsgDest[24];
+    psduLen = (uint16_t) (pMsgDest[30] << 8) + pMsgDest[31];
 </#if>
     *pMsgLen = (size_t) psduLen + RSNIFFER_MSG_HEADER_SIZE;
     return pMsgDest;
