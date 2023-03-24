@@ -227,6 +227,7 @@ static void _DRV_RF215_ReadIRQS(uintptr_t context, void* pData<#if DRV_RF215_TXR
         if (((rf09IRQS & rf24IRQS) != RF215_RFn_IRQ_WAKEUP) || ((bbc0IRQS | bbc1IRQS) != 0))
 </#if>
         {
+            RF215_HAL_Deinitialize();
             dObj->irqsErr = true;
             return;
         }
