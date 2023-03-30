@@ -814,13 +814,6 @@ void RF215_HAL_LeaveCritical()
     _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
 }
 
-<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-void RF215_HAL_DisableTimeInt()
-{
-    SYS_INT_SourceDisable(rf215HalObj.sysTimeIntSource);
-}
-
-</#if>
 void RF215_HAL_SpiRead (
     uint16_t addr,
     void* pData,

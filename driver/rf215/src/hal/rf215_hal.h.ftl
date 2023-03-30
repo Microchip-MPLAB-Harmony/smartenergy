@@ -277,10 +277,6 @@ void RF215_HAL_EnterCritical();
 
 void RF215_HAL_LeaveCritical();
 
-<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-void RF215_HAL_DisableTimeInt();
-
-</#if>
 void RF215_HAL_SpiRead (
     uint16_t addr,
     void* pData,
