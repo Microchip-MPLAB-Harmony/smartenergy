@@ -1087,11 +1087,6 @@ typedef void ( *DRV_RF215_PLIB_SPI_SET_CALLBACK ) (FLEXCOM_SPI_CALLBACK callback
 
 typedef struct
 {
-<#if DRV_RF215_SPI_NUM_CSR != 0>
-    /* SPI chip select register address used for SPI configuration */
-    uint32_t*                       spiCSRegAddress;
-
-</#if>
 <#if core.DMA_ENABLE?has_content>
     /* SPI transmit register address used for DMA operation */
     const void*                     spiTransmitAddress;

@@ -570,15 +570,6 @@ static void _RF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
 </#if>
 void RF215_HAL_Initialize(const DRV_RF215_INIT * const init)
 {
-<#if DRV_RF215_SPI_NUM_CSR != 0>
-    /* Configure SPI Chip Select behavior: Clear CSAAT/CSNAAT bits */
-<#if SPI_PLIB?starts_with("FLEXCOM")>
-    *(init->spiCSRegAddress) &= ~(FLEX_SPI_CSR_CSAAT_Msk | FLEX_SPI_CSR_CSNAAT_Msk);
-<#else>
-    *(init->spiCSRegAddress) &= ~(SPI_CSR_CSAAT_Msk | SPI_CSR_CSNAAT_Msk);
-</#if>
-
-</#if>
     /* Store interrupt sources */
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     rf215HalObj.sysTimeIntSource = init->sysTimeIntSource;

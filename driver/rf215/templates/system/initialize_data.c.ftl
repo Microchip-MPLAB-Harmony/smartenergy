@@ -9,15 +9,6 @@
 </#if>
 /* RF215 Driver Initialization Data */
 const DRV_RF215_INIT drvRf215InitData = {
-<#if DRV_RF215_SPI_NUM_CSR != 0>
-    /* SPI chip select register address used for SPI configuration */
-<#if SPI_PLIB?starts_with("FLEXCOM")>
-    .spiCSRegAddress = (uint32_t *)&(${SPI_PLIB}_REGS->FLEX_SPI_CSR[DRV_RF215_CSR_INDEX]),
-<#else>
-    .spiCSRegAddress = (uint32_t *)&(${SPI_PLIB}_REGS->SPI_CSR[DRV_RF215_CSR_INDEX]),
-</#if>
-
-</#if>
 <#if core.DMA_ENABLE?has_content>
     /* SPI Transmit Register */
     .spiTransmitAddress = (const void *)${.vars["${SPI_PLIB?lower_case}"].TRANSMIT_DATA_REGISTER},
