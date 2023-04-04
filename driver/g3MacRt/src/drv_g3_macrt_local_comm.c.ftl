@@ -466,7 +466,10 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
 			/* Length error */
 			return MAC_RT_STATUS_INVALID_PARAMETER;
 		}
-        
+
+        /* Reset event flag */
+        gG3MacRtObj->evRegRspLength = 0;
+
         /* Build command */
         pDst = gG3RegResponse;
 
@@ -497,6 +500,9 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
 
 			dummyValue = gG3MacRtObj->evRegRspLength;
 		}
+
+        /* Reset event flag */
+        gG3MacRtObj->evRegRspLength = 0;
 
         return MAC_RT_STATUS_SUCCESS;
     }
