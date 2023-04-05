@@ -397,12 +397,6 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         uint16_t waitCounter;
         uint16_t dummyValue;
         
-        /* Check Length */
-		if (pibObj->length > MAC_RT_PIB_MAX_VALUE_LENGTH) {
-			/* Length error */
-			return MAC_RT_STATUS_INVALID_PARAMETER;
-		}
-        
         /* Reset Event flag */
         gG3MacRtObj->evRegRspLength = 0;
         
@@ -684,7 +678,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         if (evObj.evRegRsp)
         {          
             if ((evObj.regRspLength == 0) || 
-                (evObj.regRspLength > DRV_G3_MACRT_REG_PKT_SIZE))
+                ((evObj.regRspLength + 8) > DRV_G3_MACRT_REG_PKT_SIZE))
             {
                 evObj.regRspLength = 1;
             }
