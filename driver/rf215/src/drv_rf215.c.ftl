@@ -1009,6 +1009,9 @@ DRV_RF215_PIB_RESULT DRV_RF215_SetPib (
             return RF215_PIB_RESULT_READ_ONLY;
 
         case RF215_PIB_DEVICE_RESET:
+            /* Critical region to avoid conflicts in PHY object data */
+            RF215_HAL_EnterCritical();
+
             RF215_HAL_Reset();
 <#if DRV_RF215_TRX09_EN == true && DRV_RF215_TRX24_EN>
             RF215_PHY_Reset(RF215_TRX_RF09_IDX);
@@ -1016,6 +1019,9 @@ DRV_RF215_PIB_RESULT DRV_RF215_SetPib (
 <#else>
             RF215_PHY_Reset(clientObj->trxIndex);
 </#if>
+
+            /* Leave critical region */
+            RF215_HAL_LeaveCritical();
             break;
 
         default:
