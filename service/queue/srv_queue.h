@@ -163,12 +163,6 @@ typedef struct
     /* Pointer to the tail of the queue */
     SRV_QUEUE_ELEMENT *tail;                           
     
-    /* Pointer to the initial element of the queue */
-    SRV_QUEUE_ELEMENT *iniQueue;
-    
-    /* Pointer to the last element of the queue */
-    SRV_QUEUE_ELEMENT *lastElement;
-    
     /* Queue capacity */
     uint16_t capacity;                               
     

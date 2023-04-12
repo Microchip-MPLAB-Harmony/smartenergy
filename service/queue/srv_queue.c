@@ -65,16 +65,6 @@ static bool _SRV_QUEUE_Check_Queue_Consistent(SRV_QUEUE *queue)
     bool checkPointers;
     bool isConsistent = true;
 
-    /* No data to check consistency */
-    if ((queue->iniQueue != NULL) && (queue->lastElement != NULL)) 
-    {
-        checkPointers = true;
-    } 
-    else 
-    {
-        checkPointers = false;
-    }
-
     /* Check for size 0 */
     if (queue->size == 0) 
     {
@@ -123,15 +113,6 @@ static bool _SRV_QUEUE_Check_Queue_Consistent(SRV_QUEUE *queue)
     } 
     else 
     {
-        if (checkPointers && ((element->next < queue->iniQueue) || 
-            (element->next > queue->lastElement))) 
-        {
-            SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_BAD_NEXT_ELEMENT, 
-                "Queue not consistent: Bad next element\r\n");
-            isConsistent = false;
-            break;
-        }
-
         if (element->next->prev != element) 
         {
             SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_WRONG_CHAIN, 
@@ -139,15 +120,6 @@ static bool _SRV_QUEUE_Check_Queue_Consistent(SRV_QUEUE *queue)
             isConsistent = false;
             break;
         }
-    }
-
-    if (checkPointers && ((element < queue->iniQueue) || 
-        (element > queue->lastElement))) 
-    {
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_BAD_ELEMENT,    
-            "Queue not consistent: Bad element in the queue\r\n"); 
-        isConsistent = false;
-        break;
     }
 
         element = element->next;
@@ -165,12 +137,6 @@ static void _SRV_QUEUE_Insert_Last_Element(SRV_QUEUE *queue,
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_FULL_INSERT_END, 
             "Error in _SRV_QUEUE_Insert_Last_Element: QUEUE_FULL\r\n");
         return;
-    }
-
-    if ((element < queue->iniQueue) || (element > queue->lastElement)) 
-    {
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_BAD_ELEMENT, 
-            "Bad last element: %lu \r\n", (uint32_t)element); 
     }
 
     if (queue->tail->next != NULL) 
@@ -196,12 +162,6 @@ static void _SRV_QUEUE_Insert_First_Element(SRV_QUEUE *queue,
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_FULL_INSERT_FIRST, 
             "Error in _SRV_QUEUE_Insert_First_Element: QUEUE_FULL\r\n");
         return;
-    }
-
-    if ((element < queue->iniQueue) || (element > queue->lastElement)) 
-    {
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_BAD_ELEMENT, 
-            "Bad first element: %lu \r\n", (uint32_t)element); 
     }
 
     element->next = NULL;
@@ -289,8 +249,6 @@ void SRV_QUEUE_Init(SRV_QUEUE *queue, uint16_t capacity, SRV_QUEUE_TYPE type)
     queue->capacity = capacity;
     queue->type = type;
 
-    queue->iniQueue = NULL;
-    queue->lastElement = NULL;
 }
 
 void SRV_QUEUE_Append(SRV_QUEUE *queue, SRV_QUEUE_ELEMENT *element)
@@ -313,14 +271,6 @@ void SRV_QUEUE_Append(SRV_QUEUE *queue, SRV_QUEUE_ELEMENT *element)
         /* Do nothing - element is already in queue */
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_WARNING, QUEUE_APPEND_AGAIN_ONE_ELEMENT, 
             "Trying to append an element already in a queue with size 1");
-        return;
-    }
-
-    if (((queue->iniQueue != NULL) && (queue->lastElement != NULL)) && 
-        ((element < queue->iniQueue) || (element > queue->lastElement))) 
-    {
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, QUEUE_APPEND_BAD_ELEMENT, 
-            "Trying to append a bad element\r\n");
         return;
     }
 
