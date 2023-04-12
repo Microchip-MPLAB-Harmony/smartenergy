@@ -766,9 +766,6 @@ bool RF215_HAL_SpiLock()
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
     _RF215_HAL_ExtIntDisable();
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
-    hObj->plcExtIntStatus = SYS_INT_SourceDisable(rf215HalObj.plcExtIntSource);
-</#if>
 
     if (hObj->spiQueueFirst == NULL)
     {
@@ -791,27 +788,40 @@ void RF215_HAL_SpiUnlock()
 {
     /* Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
-    SYS_INT_SourceRestore(hObj->plcExtIntSource, hObj->plcExtIntStatus);
-</#if>
     _RF215_HAL_ExtIntEnable();
     _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
 }
 
 void RF215_HAL_EnterCritical()
 {
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+    bool intStatus = SYS_INT_Disable();
+
+</#if>
     /* Critical region: Disable interrupts to avoid conflicts
      * External interrupt not disabled because it just makes one SPI transfer
      * and there is no other static variable update */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+
+    SYS_INT_Restore(intStatus);
+</#if>
 }
 
 void RF215_HAL_LeaveCritical()
 {
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+    bool intStatus = SYS_INT_Disable();
+
+</#if>
     /* Leave critical region: Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+
+    SYS_INT_Restore(intStatus);
+</#if>
 }
 
 void RF215_HAL_SpiRead (
