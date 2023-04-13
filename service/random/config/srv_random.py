@@ -32,11 +32,12 @@ def instantiateComponent(srvRandomComponent):
     
     # Random Files
     pRandomSource = srvRandomComponent.createFileSymbol("SRV_RANDOM_SOURCE", None)
-    pRandomSource.setSourcePath("service/random/srv_random.c")
+    pRandomSource.setSourcePath("service/random/srv_random.c.ftl")
     pRandomSource.setOutputName("srv_random.c")
     pRandomSource.setDestPath("service/random")
     pRandomSource.setProjectPath("config/" + configName + "/service/random/")
     pRandomSource.setType("SOURCE")
+    pRandomSource.setMarkup(True)
     
     pRandomHeader = srvRandomComponent.createFileSymbol("SRV_RANDOM_HEADER", None)
     pRandomHeader.setSourcePath("service/random/srv_random.h")

@@ -49,6 +49,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "definitions.h"
+<#if (trng)??>
+<#elseif (lib_crypto)??>
+#include "crypto/crypto.h"
+<#else>
+#include <rand.h>
+</#if>
 #include "srv_random.h"
 
 // *****************************************************************************
@@ -57,9 +63,48 @@
 // *****************************************************************************
 // *****************************************************************************
 
+uint8_t SRV_RANDOM_Get8bits(void)
+{
+  uint8_t retValue;
+
+<#if (trng)??>
+  retValue = (uint8_t)TRNG_ReadData();
+<#elseif (lib_crypto)??>
+  CRYPT_RNG_CTX rngCtx;
+
+  CRYPT_RNG_Initialize(&rngCtx);
+  CRYPT_RNG_Get(&rngCtx, (unsigned char*)&retValue);
+  CRYPT_RNG_Deinitialize(&rngCtx);
+<#else>
+  uint32_t seed; // use uninitialized value
+
+  srand(seed);
+  retValue = (uint8_t)rand();
+</#if>
+
+  return retValue;
+}
+
 uint16_t SRV_RANDOM_Get16bits(void)
 {
-  return ((uint16_t)TRNG_ReadData());
+  uint16_t retValue;
+
+<#if (trng)??>
+  retValue = (uint16_t)TRNG_ReadData();
+<#elseif (lib_crypto)??>
+  CRYPT_RNG_CTX rngCtx;
+
+  CRYPT_RNG_Initialize(&rngCtx);
+  CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)&retValue, 2);
+  CRYPT_RNG_Deinitialize(&rngCtx);
+<#else>
+  uint32_t seed; // use uninitialized value
+
+  srand(seed);
+  retValue = (uint16_t)rand();
+</#if>
+
+  return retValue;
 }
 
 uint16_t  SRV_RANDOM_Get16bitsInRange(uint16_t min, uint16_t max)
@@ -77,7 +122,24 @@ uint16_t  SRV_RANDOM_Get16bitsInRange(uint16_t min, uint16_t max)
 
 uint32_t SRV_RANDOM_Get32bits(void)
 {
-  return (TRNG_ReadData());
+  uint32_t retValue;
+
+<#if (trng)??>
+  retValue = TRNG_ReadData();
+<#elseif (lib_crypto)??>
+  CRYPT_RNG_CTX rngCtx;
+
+  CRYPT_RNG_Initialize(&rngCtx);
+  CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)&retValue, 4);
+  CRYPT_RNG_Deinitialize(&rngCtx);
+<#else>
+  uint32_t seed; // use uninitialized value
+
+  srand(seed);
+  retValue = rand();
+</#if>
+
+  return retValue;
 }
 
 uint32_t SRV_RANDOM_Get32bitsInRange(uint32_t min, uint32_t max)
@@ -95,14 +157,40 @@ uint32_t SRV_RANDOM_Get32bitsInRange(uint32_t min, uint32_t max)
 
 void SRV_RANDOM_Get128bits(uint8_t *rndValue)
 {
-  uint16_t rndNum = 0;
-  uint8_t n = 0;
+<#if (trng)??>
+  uint32_t randNum;
+  uint8_t n;
 
-  for (; n < 16; n += 2) 
+  for (n = 0; n < 4; n ++)
   {
-    rndNum = SRV_RANDOM_Get16bitsInRange(0x0000, 0xFFFF);
+    randNum = TRNG_ReadData();
 
-    rndValue[n] = (uint8_t)((rndNum >> 8) & 0x00FF);
-    rndValue[n + 1] = (uint8_t)(rndNum & 0x00FF);
+    *rndValue++ = (uint8_t)(randNum >> 24);
+    *rndValue++ = (uint8_t)(randNum >> 16);
+    *rndValue++ = (uint8_t)(randNum >> 8);
+    *rndValue++ = (uint8_t)(randNum);
   }
+<#elseif (lib_crypto)??>
+  CRYPT_RNG_CTX rngCtx;
+
+  CRYPT_RNG_Initialize(&rngCtx);
+  CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)rndValue, 16);
+  CRYPT_RNG_Deinitialize(&rngCtx);
+<#else>
+  uint32_t seed; // use uninitialized value
+  uint32_t randNum;
+  uint8_t n;
+
+  srand(seed);
+
+  for (n = 0; n < 4; n ++)
+  {
+    randNum = rand();
+
+    *rndValue++ = (uint8_t)(randNum >> 24);
+    *rndValue++ = (uint8_t)(randNum >> 16);
+    *rndValue++ = (uint8_t)(randNum >> 8);
+    *rndValue++ = (uint8_t)(randNum);
+  }
+</#if>
 }
