@@ -129,7 +129,9 @@ def loadModule():
     
     ## Random Service
     srvRandomComponent = Module.CreateComponent("srvRandom", "Random", "/SmartEnergy/Services", "service/random/config/srv_random.py")
-    srvRandomComponent.addCapability("libsrvRandom", "Random", True)	
+    srvRandomComponent.addCapability("libsrvRandom", "Random", True)
+    srvRandomComponent.addDependency("srv_random_trng_dependency", "TRNG", True, False)
+    srvRandomComponent.addDependency("srv_random_crypto_dependency", "LIB_CRYPTO", True, False)
     srvRandomComponent.setDisplayType("Random Service")
     
     ## Security
