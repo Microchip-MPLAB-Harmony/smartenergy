@@ -196,28 +196,28 @@ def configureSpiPlib(localComponent):
         # Set NPCSx enabled
         spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(True)
             spiSymbol.setReadOnly(True)
 
         # Set 8 bits
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BITS")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set polarity to 0
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set phase to 1
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_NCPHA")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             if plibUsed.startswith("flexcom"):
                 spiSymbol.setValue(1)
             else:
@@ -227,14 +227,14 @@ def configureSpiPlib(localComponent):
         # Set CSSAT to 0
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set CSNAAT to 0
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
@@ -242,40 +242,40 @@ def configureSpiPlib(localComponent):
         spiFrequency = getSpiFrequency(peripheralClock, 0xFF)
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BAUD_RATE")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["frequency"])
 
         # Set DLYBS
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBS")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["DLYBS"])
 
         # Set DLYBCT
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBCT")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["DLYBCT"])
 
     elif plibUsed.startswith("usart"):
         # Set 8 bits
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BITS_PER_TRANSFER")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set polarity to 0
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_POLARITY")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set phase to 1
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_PHASE")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(1)
             spiSymbol.setReadOnly(True)
 
@@ -284,28 +284,28 @@ def configureSpiPlib(localComponent):
         spiFrequency = getSpiFrequency(peripheralClock, 0)
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BAUD_RATE")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["frequency"])
 
     elif plibUsed.startswith("sercom"):
         # Set 8 bits
         spiSymbol = remoteComponent.getSymbolByID("SPI_CHARSIZE_BITS")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set polarity to 0
         spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_POLARITY")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
         # Set phase to 0
         spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_PHASE")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
@@ -314,7 +314,7 @@ def configureSpiPlib(localComponent):
         spiFrequency = getSpiFrequency(peripheralClock, 0)
         spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["frequency"])
 
 def deconfigureSpiPlib(localComponent):
@@ -341,7 +341,7 @@ def deconfigureSpiPlib(localComponent):
         # Disable read-only
         spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
         if spiSymbol != None:
-            spiSymbol.clearValue()
+            spiSymbol.clearValues()
             spiSymbol.setValue(False)
             spiSymbol.setReadOnly(False)
 
@@ -445,7 +445,7 @@ def numTxBuffersHandler(symbol, event):
             symbol.setReadOnly(True)
         else:
             symbol.setReadOnly(False)
-            symbol.clearValue()
+            symbol.clearValues()
     else:
         numTrx = 0
         if eventValue == True:
@@ -480,7 +480,7 @@ def ccaContentionWindowHandler(symbol, event):
         else:
             symbol.setVisible(True)
             symbol.setReadOnly(False)
-            symbol.clearValue()
+            symbol.clearValues()
 
 def rf09EnHandler(symbol, event):
     eventID = event["id"]
@@ -503,7 +503,7 @@ def rf24EnHandler(symbol, event):
         if eventValue == "RF215":
             # RF09 and RF24 available in RF215
             symbol.setReadOnly(False)
-            symbol.clearValue()
+            symbol.clearValues()
             symbol.setVisible(True)
         elif eventValue == "RF215M":
             # RF24 not available in RF215M
@@ -1262,7 +1262,7 @@ def onAttachmentConnected(source, target):
 
         if (remoteComponentID == "srv_spisplit"):
             # Connected to SPI Splitter
-            plibUsedSpiSplit.clearValue()
+            plibUsedSpiSplit.clearValues()
             plibUsedSpiSplit.setVisible(True)
         else:
             # Show/hide NPCS depending on SPI PLIB connected
@@ -1339,7 +1339,7 @@ def onAttachmentDisconnected(source, target):
         deconfigureSpiPlib(localComponent)
 
         # Clear PLIB used
-        localComponent.getSymbolByID("DRV_RF215_PLIB").clearValue()
+        localComponent.getSymbolByID("DRV_RF215_PLIB").clearValues()
         spiDependencyComment.setVisible(True)
         plibUsedSpiSplit.setVisible(False)
         plibConfigComment.setVisible(False)
@@ -1404,21 +1404,21 @@ def handleMessage(messageID, args):
                 # Enable PDC DMA on PLIB
                 plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
                 if plibUseSpiDma != None:
-                    plibUseSpiDma.clearValue()
+                    plibUseSpiDma.clearValues()
                     plibUseSpiDma.setValue(True)
 
             if remoteComponentID.startswith("flexcom"):
                 # Disable FIFO
                 plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
                 if plibFIFO != None:
-                    plibFIFO.clearValue()
+                    plibFIFO.clearValues()
                     plibFIFO.setValue(False)
 
             elif remoteComponentID.startswith("sercom"):
                 # Enable receiver
                 plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
                 if plibReceiver != None:
-                    plibReceiver.clearValue()
+                    plibReceiver.clearValues()
                     plibReceiver.setValue(True)
 
             # Set symbols read-only
@@ -1480,7 +1480,7 @@ def handleMessage(messageID, args):
 
     elif (messageID == "SPI_SPLITTER_DISCONNECTED"):
         deconfigureSpiPlib(plibUsedSpiSplit.getComponent())
-        plibUsedSpiSplit.clearValue()
+        plibUsedSpiSplit.clearValues()
         spiDependencyComment.setVisible(True)
         plibConfigComment.setVisible(False)
         if spiNumNPCS > 0:
