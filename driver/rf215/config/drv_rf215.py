@@ -22,6 +22,8 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+import math
+
 ################################################################################
 #### Business Logic ####
 ################################################################################
@@ -112,6 +114,295 @@ def sort_alphanumeric(l):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
     return sorted(l, key = alphanum_key)
+
+def getSpiFrequency(peripheralClock, maxDLYBCT):
+    result_dict = {}
+
+    # Compute minimum number of peripheral clock cycles between LSB last byte to MSB next byte
+    cyclesBtwBytesMin = math.ceil(peripheralClock * 125 / 1e9)
+    # Compute minimum number of peripheral clock cycles between LSB last byte to LSB next byte
+    cyclesByteDurationMin = math.ceil(peripheralClock * 875 / 1e9)
+    # Compute needed number of peripheral clock cycles between between CS falling edge to SCLK rising edge. This is directly DLYBS
+    result_dict["DLYBS"] = int(math.ceil(peripheralClock * 50 / 1e9))
+    # Compute minimum clock divider (maximum SPI CLK frequency)
+    freqDivMin = math.ceil(peripheralClock / 25000000)
+
+    if freqDivMin >= cyclesBtwBytesMin:
+        # One SPCK cycle at maximum frequency is enough. No additional delay between bytes is needed
+        maxDLYBCT = 0
+    elif maxDLYBCT > 0:
+        # With maximum frequency, additional delay between bytes is needed. Compute that maximum DLYBCT needed. Delay is computed as 32*DLYCBT/FperiphClk
+        maxDLYBCT =  math.ceil((cyclesBtwBytesMin - freqDivMin) / 32)
+
+    # Find the best combination of divider/DLYBCT
+    cyclesBest = 0xFFFF
+    for dlybct in range(0, int(maxDLYBCT) + 1):
+        # Number of peripheral clock cycles for this DLYBCT
+        cyclesDLYBCT = dlybct * 32
+
+        # Minimum divider allowed for this DLYBCT (1)
+        if cyclesBtwBytesMin > (freqDivMin + cyclesDLYBCT):
+            freqDiv1 = cyclesBtwBytesMin - cyclesDLYBCT
+        else:
+            freqDiv1 = freqDivMin
+
+        # Minimum divider allowed for this DLYBCT (1)
+        if cyclesByteDurationMin > ((freqDivMin * 8) + cyclesDLYBCT):
+            freqDiv2 = math.ceil((cyclesByteDurationMin - cyclesDLYBCT) / 8)
+        else:
+            freqDiv2 = freqDivMin
+
+        # Minimum divider allowed for this DLYBCT (worts case)
+        freqDiv = max(freqDiv1, freqDiv2)
+
+        if (freqDiv < 4) and (dlybct == 0):
+            # CPU/DMA need >=32 cycles between bytes (DIV>=4 or DLYBCT>=1)
+            freqDiv = 4
+
+        # Total number of peripheral clock cycles for one byte. 8 SPCK cycles + DLYBCT cycles
+        totalCycles = freqDiv * 8 + cyclesDLYBCT
+
+        if totalCycles < cyclesBest:
+            # This combination is the best one up to now
+            result_dict["DLYBCT"] = dlybct
+            result_dict["frequency"] = int(round(peripheralClock / freqDiv))
+
+    return result_dict
+
+def configureSpiPlib(localComponent):
+    global currentNPCS
+    global spiNumNPCS
+
+    plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB").getValue().lower()
+
+    if plibUsed == '':
+        return
+
+    if plibUsed == "srv_spisplit":
+        plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB_SPISPLIT").getValue().lower()
+    
+    remoteComponent = Database.getComponentByID(plibUsed)
+    if remoteComponent == None:
+        return
+
+    if (spiNumNPCS > 0) and (plibUsed.startswith("flexcom") or plibUsed.startswith("spi")):
+        if plibUsed.startswith("flexcom"):
+            prefix = "FLEXCOM_SPI_"
+            peripheralClock = remoteComponent.getSymbolByID("FLEXCOM_SPI_PERIPHERAL_CLOCK").getValue()
+        else:
+            prefix = "SPI_"
+            peripheralClock = remoteComponent.getSymbolByID("SPI_MASTER_CLOCK").getValue()
+
+        # Set NPCSx enabled
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(True)
+            spiSymbol.setReadOnly(True)
+
+        # Set 8 bits
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BITS")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set polarity to 0
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set phase to 1
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_NCPHA")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            if plibUsed.startswith("flexcom"):
+                spiSymbol.setValue(1)
+            else:
+                spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set CSSAT to 0
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set CSNAAT to 0
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set baudrate
+        spiFrequency = getSpiFrequency(peripheralClock, 0xFF)
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(spiFrequency["frequency"])
+
+        # Set DLYBS
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBS")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(spiFrequency["DLYBS"])
+
+        # Set DLYBCT
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBCT")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(spiFrequency["DLYBCT"])
+
+    elif plibUsed.startswith("usart"):
+        # Set 8 bits
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BITS_PER_TRANSFER")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set polarity to 0
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_POLARITY")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set phase to 1
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_PHASE")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(1)
+            spiSymbol.setReadOnly(True)
+
+        # Set baudrate
+        peripheralClock = remoteComponent.getSymbolByID("USART_CLOCK_FREQ").getValue()
+        spiFrequency = getSpiFrequency(peripheralClock, 0)
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(spiFrequency["frequency"])
+
+    elif plibUsed.startswith("sercom"):
+        # Set 8 bits
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CHARSIZE_BITS")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set polarity to 0
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_POLARITY")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set phase to 0
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_PHASE")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set baudrate
+        peripheralClock = Database.getSymbolValue("core", plibUsed.upper() + "_CORE_CLOCK_FREQUENCY")
+        spiFrequency = getSpiFrequency(peripheralClock, 0)
+        spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(spiFrequency["frequency"])
+
+def deconfigureSpiPlib(localComponent):
+    global currentNPCS
+
+    plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB").getValue().lower()
+
+    if plibUsed == '':
+        return
+
+    if plibUsed == "srv_spisplit":
+        plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB_SPISPLIT").getValue().lower()
+
+    remoteComponent = Database.getComponentByID(plibUsed)
+    if remoteComponent == None:
+        return
+
+    if (spiNumNPCS > 0) and (plibUsed.startswith("flexcom") or plibUsed.startswith("spi")):
+        if plibUsed.startswith("flexcom"):
+            prefix = "FLEXCOM_SPI_"
+        else:
+            prefix = "SPI_"
+
+        # Disable read-only
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValue()
+            spiSymbol.setValue(False)
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BITS")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_NCPHA")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+    elif plibUsed.startswith("usart"):
+        # Disable read-only
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BITS_PER_TRANSFER")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_POLARITY")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_PHASE")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+    elif plibUsed.startswith("sercom"):
+        # Disable read-only
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CHARSIZE_BITS")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        # Set polarity to 0
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_POLARITY")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        # Set phase to 0
+        spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_PHASE")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+def npcsChanged(symbol, event):
+    global currentNPCS
+
+    localComponent = event["source"]
+
+    deconfigureSpiPlib(localComponent)
+    currentNPCS = event["value"]
+    configureSpiPlib(localComponent)
 
 def showSymbol(symbol, event):
     # Show/hide configuration symbol depending on parent enabled/disabled
@@ -584,6 +875,7 @@ def instantiateComponent(rf215Component):
 
     # If 0, the SPI peripheral doesn't support multiple NPCS/CSR
     global spiNpcsUsed
+    global currentNPCS
     if spiNumNPCS > 0:
         spiNpcsUsed = rf215Component.createKeyValueSetSymbol("DRV_RF215_SPI_NPCS", None)
         spiNpcsUsed.setLabel("SPI NPCS Used")
@@ -594,12 +886,15 @@ def instantiateComponent(rf215Component):
         spiNpcsUsed.setVisible(False)
         spiNpcsUsed.setHelp(rf215_helpkeyword)
 
+        currentNPCS = 0
+
         for npcs in range(0, spiNumNPCS):
             spiNpcsUsed.addKey("NPCS" + str(npcs), str(npcs), "SPI NPCS" + str(npcs) + " used by RF215 Driver")
 
     global spiNumCSR
     spiNumCSR = rf215Component.createIntegerSymbol("DRV_RF215_SPI_NUM_CSR", None)
     spiNumCSR.setVisible(False)
+    spiNumCSR.setDependencies(npcsChanged, ["DRV_RF215_SPI_NPCS"])
 
     global plibConfigComment
     plibConfigComment = rf215Component.createCommentSymbol("DRV_RF215_PLIB_CONFIG_COMMENT", None)
@@ -983,6 +1278,9 @@ def onAttachmentConnected(source, target):
                 if spiNumNPCS > 0:
                     spiNpcsUsed.setVisible(False)
 
+            # Configure SPI PLIB
+            configureSpiPlib(localComponent)
+
             if isDMAPresent:
                 # Request DMA channels for Transmit
                 dmaChannelID = "DMA_CH_FOR_" + remoteComponentID.upper() + "_Transmit"
@@ -1010,13 +1308,25 @@ def onAttachmentConnected(source, target):
                 else:
                     dmaRxChannel.setValue(dmaChannel)
 
-            else:
-                # Enable PDC DMA on PLIB
+            # Set symbols read-only
+            Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True})
+
+            remoteComponent = Database.getComponentByID(remoteComponentID)
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
                 plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
                 if plibUseSpiDma != None:
-                    plibUseSpiDma.clearValue()
-                    plibUseSpiDma.setValue(True)
                     plibUseSpiDma.setReadOnly(True)
+
+            Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+            if remoteComponentID.startswith("flexcom"):
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibFIFO != None:
+                    plibFIFO.setReadOnly(True)
+            elif remoteComponentID.startswith("sercom"):
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(True)
 
 def onAttachmentDisconnected(source, target):
     localComponent = source["component"]
@@ -1025,6 +1335,9 @@ def onAttachmentDisconnected(source, target):
     remoteComponentID = remoteComponent.getID()
 
     if localConnectID == "drv_rf215_SPI_dependency":
+        # Disable read-only in PLIB
+        deconfigureSpiPlib(localComponent)
+
         # Clear PLIB used
         localComponent.getSymbolByID("DRV_RF215_PLIB").clearValue()
         spiDependencyComment.setVisible(True)
@@ -1054,12 +1367,24 @@ def onAttachmentDisconnected(source, target):
                 dmaChannelID = "DMA_CH_FOR_" + remoteComponentID.upper() + "_Receive"
                 dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteComponentID.upper() + "_Receive"
                 Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
-            
-            else:
-                # Disable PDC DMA on PLIB
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                # Disable read-only in PDC DMA
                 plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
                 if plibUseSpiDma != None:
                     plibUseSpiDma.setReadOnly(False)
+
+            if remoteComponentID.startswith("flexcom"):
+                # Disable read-only in FIFO
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibUseSpiDma != None:
+                    plibFIFO.setReadOnly(False)
+
+            elif remoteComponentID.startswith("sercom"):
+                # Disable read-only in Enable receiver
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(False)
 
 def handleMessage(messageID, args):
     result_dict = {}
@@ -1068,10 +1393,50 @@ def handleMessage(messageID, args):
         remoteComponentID = args.get("localComponentID")
         if remoteComponentID != None:
             # Set SPI in master mode
-            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True, "isEnabled":True})
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isEnabled":True})
             # DMA Mode: Disable interrupt mode in PLIB
             # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
-            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True, "isEnabled":not isDMAPresent})
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
+            
+            remoteComponent = Database.getComponentByID(remoteComponentID)
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                # Enable PDC DMA on PLIB
+                plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.clearValue()
+                    plibUseSpiDma.setValue(True)
+
+            if remoteComponentID.startswith("flexcom"):
+                # Disable FIFO
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibFIFO != None:
+                    plibFIFO.clearValue()
+                    plibFIFO.setValue(False)
+
+            elif remoteComponentID.startswith("sercom"):
+                # Enable receiver
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.clearValue()
+                    plibReceiver.setValue(True)
+
+            # Set symbols read-only
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True})
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.setReadOnly(True)
+
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+            if remoteComponentID.startswith("flexcom"):
+                if plibFIFO != None:
+                    plibFIFO.setReadOnly(True)
+            elif remoteComponentID.startswith("sercom"):
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(True)
+
     elif (messageID == "SPI_SPLITTER_CONNECTED"):
         spiPlib = args.get("plibUsed")
         plibUsedSpiSplit.setValue(spiPlib)
@@ -1088,6 +1453,9 @@ def handleMessage(messageID, args):
             plibConfigComment.setLabel("***The PLIB used must be properly configured***")
             if spiNumNPCS > 0:
                 spiNpcsUsed.setVisible(False)
+
+        # Configure SPI PLIB
+        configureSpiPlib(plibConfigComment.getComponent())
 
         if isDMAPresent:
             # Get DMA channel for Transmit
@@ -1109,7 +1477,9 @@ def handleMessage(messageID, args):
                 dmaRxChannel.setValue(-1)
             else:
                 dmaRxChannel.setValue(dmaChannel)
+
     elif (messageID == "SPI_SPLITTER_DISCONNECTED"):
+        deconfigureSpiPlib(plibUsedSpiSplit.getComponent())
         plibUsedSpiSplit.clearValue()
         spiDependencyComment.setVisible(True)
         plibConfigComment.setVisible(False)
