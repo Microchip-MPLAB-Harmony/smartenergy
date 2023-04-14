@@ -226,11 +226,6 @@ void DRV_PLC_HAL_Setup(bool set16Bits)
     SYS_DMA_AddressingModeSetup(sPlcPlib->dmaChannelRx, SYS_DMA_SOURCE_ADDRESSING_MODE_FIXED, SYS_DMA_DESTINATION_ADDRESSING_MODE_INCREMENTED);
 
 </#if>
-<#if SPI_PLIB?lower_case[0..*6] != "sercom">
-    /* CS rises if there is no more data to transfer */
-    *(sPlcPlib->spiCSR) &= ~(${SPI_PREFFIX}_CSR_CSAAT_Msk | ${SPI_PREFFIX}_CSR_CSNAAT_Msk);
-
-</#if>
 }
 </#if>
 

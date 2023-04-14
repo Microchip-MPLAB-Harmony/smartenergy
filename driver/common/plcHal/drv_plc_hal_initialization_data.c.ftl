@@ -84,9 +84,6 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
     /* SPI Chip select pin */
     .spiCSPin = DRV_PLC_SPI_CS_PIN,
-<#else>
-    /* SPI CSR register address. */
-    .spiCSR  = (void *)&(${SPI_PLIB?upper_case}_REGS->${SPI_PREFFIX}_CSR[DRV_PLC_CSR_INDEX]),
 </#if>
     
     /* SPI clock frequency */

@@ -236,10 +236,6 @@ typedef struct
     /* SPI Chip select pin */
     SYS_PORT_PIN                           spiCSPin;
     
-<#else>
-    /* SPI CSR register address. */
-    uint32_t                               *spiCSR;
-
 </#if>
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;
