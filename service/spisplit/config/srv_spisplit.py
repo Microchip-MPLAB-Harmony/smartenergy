@@ -126,13 +126,25 @@ def onAttachmentConnected(source, target):
             else:
                 dmaRxChannel.setValue(dmaChannel)
 
-        else:
-            # Enable PDC DMA on PLIB
+        # Set symbols read-only
+        Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True})
+
+        remoteComponent = Database.getComponentByID(remoteComponentID)
+        if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
             plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
             if plibUseSpiDma != None:
-                plibUseSpiDma.clearValue()
-                plibUseSpiDma.setValue(True)
                 plibUseSpiDma.setReadOnly(True)
+
+        Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+        if remoteComponentID.startswith("flexcom"):
+            plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+            if plibFIFO != None:
+                plibFIFO.setReadOnly(True)
+        elif remoteComponentID.startswith("sercom"):
+            plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+            if plibReceiver != None:
+                plibReceiver.setReadOnly(True)
 
         # Notify clients
         for clientID in clientList:
@@ -164,7 +176,7 @@ def onAttachmentDisconnected(source, target):
         Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":False})
 
         # Clear PLIB used
-        localComponent.getSymbolByID("SRV_SPISPLIT_PLIB").clearValue()
+        localComponent.getSymbolByID("SRV_SPISPLIT_PLIB").clearValues()
         localComponent.getSymbolByID("SRV_SPISPLIT_SPI_DEPENDENCY_COMMENT").setVisible(True)
 
         if isDMAPresent:
@@ -183,15 +195,28 @@ def onAttachmentDisconnected(source, target):
             dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteComponentID.upper() + "_Receive"
             Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
 
+        if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                # Disable read-only in PDC DMA
+                plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.setReadOnly(False)
+
+        if remoteComponentID.startswith("flexcom"):
+            # Disable read-only in FIFO
+            plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+            if plibUseSpiDma != None:
+                plibFIFO.setReadOnly(False)
+
+        elif remoteComponentID.startswith("sercom"):
+            # Disable read-only in Enable receiver
+            plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+            if plibReceiver != None:
+                plibReceiver.setReadOnly(False)
+
         # Notify clients
         for clientID in clientList:
             result_dict = Database.sendMessage(clientID, "SPI_SPLITTER_DISCONNECTED", {})
-        
-        else:
-            # Disable PDC DMA on PLIB
-            plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
-            if plibUseSpiDma != None:
-                plibUseSpiDma.setReadOnly(False)
+
     elif localConnectID == "srv_spiplit_SPI_capability":
         # Remove from client list
         clientList.remove(remoteComponentID)
@@ -203,9 +228,48 @@ def handleMessage(messageID, args):
         remoteComponentID = args.get("localComponentID")
         if remoteComponentID != None:
             # Set SPI in master mode
-            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True, "isEnabled":True})
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isEnabled":True})
             # DMA Mode: Disable interrupt mode in PLIB
             # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
-            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True, "isEnabled":not isDMAPresent})
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
+
+            remoteComponent = Database.getComponentByID(remoteComponentID)
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                # Enable PDC DMA on PLIB
+                plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.clearValues()
+                    plibUseSpiDma.setValue(True)
+
+            if remoteComponentID.startswith("flexcom"):
+                # Disable FIFO
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibFIFO != None:
+                    plibFIFO.clearValues()
+                    plibFIFO.setValue(False)
+
+            elif remoteComponentID.startswith("sercom"):
+                # Enable receiver
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.clearValues()
+                    plibReceiver.setValue(True)
+
+            # Set symbols read-only
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True})
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.setReadOnly(True)
+
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+            if remoteComponentID.startswith("flexcom"):
+                if plibFIFO != None:
+                    plibFIFO.setReadOnly(True)
+            elif remoteComponentID.startswith("sercom"):
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(True)
 
     return result_dict
