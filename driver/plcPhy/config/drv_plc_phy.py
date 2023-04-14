@@ -54,6 +54,106 @@ PLC_PROFILE_G3_ARIB_CEN_B = 9
 plcCoupPRIMECH = []
 plcCoupPRIME2CH = []
 
+def configureSpiPlib(localComponent):
+    global currentNPCS
+    global spiNumNPCS
+
+    plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB").getValue().lower()
+
+    if plibUsed == '':
+        return
+
+    if plibUsed == "srv_spisplit":
+        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB_SPISPLIT").getValue().lower()
+    
+    remoteComponent = Database.getComponentByID(plibUsed)
+    if remoteComponent == None:
+        return
+
+    if (spiNumNPCS > 0) and (plibUsed.startswith("flexcom") or plibUsed.startswith("spi")):
+        if plibUsed.startswith("flexcom"):
+            prefix = "FLEXCOM_SPI_"
+        else:
+            prefix = "SPI_"
+
+        # Set NPCSx enabled
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(True)
+            spiSymbol.setReadOnly(True)
+
+        # Set CSSAT to 0
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set CSNAAT to 0
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(0)
+            spiSymbol.setReadOnly(True)
+
+        # Set DLYBS
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBS")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(0)
+
+        # Set DLYBCT
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBCT")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(0)
+
+def deconfigureSpiPlib(localComponent):
+    global currentNPCS
+
+    plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB").getValue().lower()
+
+    if plibUsed == '':
+        return
+
+    if plibUsed == "srv_spisplit":
+        plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB_SPISPLIT").getValue().lower()
+
+    remoteComponent = Database.getComponentByID(plibUsed)
+    if remoteComponent == None:
+        return
+
+    if (spiNumNPCS > 0) and (plibUsed.startswith("flexcom") or plibUsed.startswith("spi")):
+        if plibUsed.startswith("flexcom"):
+            prefix = "FLEXCOM_SPI_"
+        else:
+            prefix = "SPI_"
+
+        # Disable read-only
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(False)
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
+        if spiSymbol != None:
+            spiSymbol.setReadOnly(False)
+
+def npcsChanged(symbol, event):
+    global currentNPCS
+
+    localComponent = event["source"]
+
+    deconfigureSpiPlib(localComponent)
+    currentNPCS = event["value"]
+    configureSpiPlib(localComponent)
+
 def handleMessage(messageID, args):
 
     result_dict = {}
@@ -81,6 +181,9 @@ def handleMessage(messageID, args):
             if spiNumNPCS > 0:
                 spiNpcsUsed.setVisible(False)
 
+        # Configure SPI PLIB
+        configureSpiPlib(plibConfigComment.getComponent())
+
         if (isDMAPresent == True):
             # Get DMA channel for Transmit
             plcTXDMAChannel.setVisible(True)
@@ -103,7 +206,8 @@ def handleMessage(messageID, args):
                 plcRXDMAChannel.setValue(dmaChannel)
 
     elif (messageID == "SPI_SPLITTER_DISCONNECTED"):
-        plibUsedSpiSplit.clearValue()
+        deconfigureSpiPlib(plibUsedSpiSplit.getComponent())
+        plibUsedSpiSplit.clearValues()
         if spiNumNPCS > 0:
             spiNpcsUsed.setVisible(False)
 
@@ -541,6 +645,7 @@ def instantiateComponent(plcComponent):
 
     # If 0, the SPI peripheral doesn't support multiple NPCS/CSR
     global spiNpcsUsed
+    global currentNPCS
     if spiNumNPCS > 0:
         spiNpcsUsed = plcComponent.createKeyValueSetSymbol("DRV_PLC_SPI_NPCS", None)
         spiNpcsUsed.setLabel("SPI NPCS Used")
@@ -551,12 +656,15 @@ def instantiateComponent(plcComponent):
         spiNpcsUsed.setVisible(False)
         spiNpcsUsed.setHelp(plc_phy_helpkeyword)
 
+        currentNPCS = 0
+
         for npcs in range(0, spiNumNPCS):
             spiNpcsUsed.addKey("NPCS" + str(npcs), str(npcs), "SPI NPCS" + str(npcs) + " used by RF215 Driver")
 
     global spiNumCSR
     spiNumCSR = plcComponent.createIntegerSymbol("DRV_PLC_SPI_NUM_CSR", None)
     spiNumCSR.setVisible(False)
+    spiNumCSR.setDependencies(npcsChanged, ["DRV_PLC_SPI_NPCS"])
 
     global plibConfigComment
     plibConfigComment = plcComponent.createCommentSymbol("DRV_PLC_PLIB_CONFIG_COMMENT", None)
@@ -1130,12 +1238,12 @@ def onAttachmentConnected(source, target):
     connectID = source["id"]
     if connectID == "drv_plc_phy_SPI_dependency" :
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
-        plibUsed.clearValue()
+        plibUsed.clearValues()
         plibUsed.setValue(remoteID.upper())
 
         if (remoteID == "srv_spisplit"):
             # Connected to SPI Splitter
-            plibUsedSpiSplit.clearValue()
+            plibUsedSpiSplit.clearValues()
             plibUsedSpiSplit.setVisible(True)
 
         else:
@@ -1152,13 +1260,8 @@ def onAttachmentConnected(source, target):
                 if spiNumNPCS > 0:
                     spiNpcsUsed.setVisible(False)
 
-            # Set SPI baudrate
-            if "FLEXCOM" in remoteID.upper():
-                plibBaudrate = remoteComponent.getSymbolByID("FLEXCOM_SPI_BAUD_RATE")
-            else:
-                plibBaudrate = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
-            plibBaudrate.clearValue()
-            plibBaudrate.setValue(8000000)
+            # Configure SPI PLIB
+            configureSpiPlib(localComponent)
 
             if (isDMAPresent == True):
                 plcDependencyDMAComment.setVisible(False)
@@ -1189,18 +1292,26 @@ def onAttachmentConnected(source, target):
                 else:
                     plcRXDMAChannel.setValue(dmaChannel)
 
-            else:
-                if "FLEXCOM" in remoteID.upper():
-                    remoteSym = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
-                    remoteSym.clearValue()
+            if not isDMAPresent and ("FLEXCOM" in remoteID.upper() or "SPI" in remoteID.upper()):
+                remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if remoteSym != None:
+                    remoteSym.clearValues()
                     remoteSym.setValue(True)
-                    remoteSym.setReadOnly(False)
-                        
-                    remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
-                    if remoteSym != None:
-                        remoteSym.clearValue()
-                        remoteSym.setValue(True)
-                        remoteSym.setReadOnly(True)
+                    remoteSym.setReadOnly(True)
+            
+            if "FLEXCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if remoteSym != None:
+                    remoteSym.clearValues()
+                    remoteSym.setValue(False)
+                    remoteSym.setReadOnly(True)
+
+            elif "SERCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if remoteSym != None:
+                    remoteSym.clearValues()
+                    remoteSym.setValue(True)
+                    remoteSym.setReadOnly(True)
 
   
 def onAttachmentDisconnected(source, target):
@@ -1212,7 +1323,10 @@ def onAttachmentDisconnected(source, target):
     connectID = source["id"]
 
     if connectID == "drv_plc_phy_SPI_dependency":
-        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValue()
+        # Disable read-only in PLIB
+        deconfigureSpiPlib(localComponent)
+
+        localComponent.getSymbolByID("DRV_PLC_PLIB").clearValues()
         plibUsedSpiSplit.setVisible(False)
         plibConfigComment.setVisible(False)
         if spiNumNPCS > 0:
@@ -1240,14 +1354,20 @@ def onAttachmentDisconnected(source, target):
                 dmaChannelID = "DMA_CH_FOR_" + remoteID.upper() + "_Receive"
                 dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteID.upper() + "_Receive"
                 Database.sendMessage("core", "DMA_CHANNEL_DISABLE", {"dma_channel":dmaRequestID})
-            else:
-                if "FLEXCOM" in remoteID.upper():
-                    remoteSym = remoteComponent.getSymbolByID("SPI_INTERRUPT_MODE")
+
+            if not isDMAPresent and ("FLEXCOM" in remoteID.upper() or "SPI" in remoteID.upper()):
+                remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if remoteSym != None:
                     remoteSym.setReadOnly(False)
-                        
-                    remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
-                    if remoteSym != None:
-                        remoteSym.setReadOnly(False)
+            
+            if "FLEXCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if remoteSym != None:
+                    remoteSym.setReadOnly(False)
+            elif "SERCOM" in remoteID.upper():
+                remoteSym = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if remoteSym != None:
+                    remoteSym.setReadOnly(False)
 
 def destroyComponent(plcComponent):
     Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":False})
