@@ -44,6 +44,7 @@
 #ifndef _SRV_LOG_REPORT_H
 #define _SRV_LOG_REPORT_H
 
+<#if (ENABLE_TRACES == true)>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -53,6 +54,7 @@
 #include <stdint.h>
 #include "system/debug/sys_debug.h"
 
+</#if>
 #ifdef __cplusplus // Provide C++ Compatibility
  extern "C" {
 #endif
@@ -78,6 +80,7 @@
     SYS_DEBUG.
 */
 
+<#if (ENABLE_TRACES == true)>
 typedef enum
 {
     /* Errors that have the potential to cause a system crash. */
@@ -96,6 +99,28 @@ typedef enum
     SRV_LOG_REPORT_DEBUG = SYS_ERROR_DEBUG
 
 } SRV_LOG_REPORT_LEVEL;
+
+<#else>
+typedef enum
+{
+    /* Errors that have the potential to cause a system crash. */
+    SRV_LOG_REPORT_FATAL = 0,
+    
+    /* Errors that have the potential to cause incorrect behavior. */
+    SRV_LOG_REPORT_ERROR = 1,
+
+    /* Warnings about potentially unexpected behavior or side effects. */
+    SRV_LOG_REPORT_WARNING = 2,
+
+    /* Information helpful to understanding potential errors and warnings. */
+    SRV_LOG_REPORT_INFO = 3,
+
+    /* Verbose information helpful during debugging and testing. */
+    SRV_LOG_REPORT_DEBUG = 4
+
+} SRV_LOG_REPORT_LEVEL;
+
+</#if>
 
 // *****************************************************************************
 /* Error/warning code enumeration
@@ -141,6 +166,13 @@ typedef enum
     USI_ERROR_ESCAPE               =   9005
 
 } SRV_LOG_REPORT_CODE;
+
+<#if (ENABLE_TRACES == true)>
+// *****************************************************************************
+// *****************************************************************************
+// Section: API Functions
+// *****************************************************************************
+// *****************************************************************************
 
 //******************************************************************************
 /* Function:
@@ -253,6 +285,12 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
                            const uint8_t *buffer, uint32_t bufferLength, 
                            const char *info, ...);
 
+<#else>
+#define SRV_LOG_REPORT_Message_With_Code(logLevel, code, info, ...)
+#define SRV_LOG_REPORT_Message(logLevel, info, ...)
+#define SRV_LOG_REPORT_Buffer(logLevel, buffer, bufferLength, info, ...)
+
+</#if>
 #ifdef __cplusplus // Provide C++ Compatibility
  }
 #endif
