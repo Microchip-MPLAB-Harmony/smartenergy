@@ -62,7 +62,6 @@ static bool _SRV_QUEUE_Check_Queue_Consistent(SRV_QUEUE *queue)
 {
     SRV_QUEUE_ELEMENT *element;
     uint16_t index, numElements;
-    bool checkPointers;
     bool isConsistent = true;
 
     /* Check for size 0 */
