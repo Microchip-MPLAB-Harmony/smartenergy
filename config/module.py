@@ -139,9 +139,3 @@ def loadModule():
     srvSecurityComponent.addCapability("libsrvSecurity", "Security", True)  
     srvSecurityComponent.addDependency("security_crypto_dependency", "LIB_CRYPTO", True, True)
     srvSecurityComponent.setDisplayType("Security Service")
-    
-    ## Time Management
-    srvTimeMgmtComponent = Module.CreateComponent("srvTimeManagement", "Time Management", "/SmartEnergy/Services", "service/time_management/config/srv_time_management.py")
-    srvTimeMgmtComponent.addCapability("libsrvTimeMgmt", "Time Management", True)  
-    srvTimeMgmtComponent.addDependency("timemgmt_sys_time_dependency", "SYS_TIME", True, True)
-    srvTimeMgmtComponent.setDisplayType("Time Management Service")
