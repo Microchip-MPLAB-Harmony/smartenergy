@@ -269,10 +269,12 @@ void RF215_HAL_Tasks();
 
 void RF215_HAL_Reset();
 
+<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
 bool RF215_HAL_SpiLock();
 
 void RF215_HAL_SpiUnlock();
 
+</#if>
 void RF215_HAL_EnterCritical();
 
 void RF215_HAL_LeaveCritical();

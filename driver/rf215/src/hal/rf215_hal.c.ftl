@@ -751,11 +751,12 @@ void RF215_HAL_Reset()
     _RF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
 }
 
+<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
 bool RF215_HAL_SpiLock()
 {
     /* Disable interrupts to avoid new SPI transfers */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-    hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
+    hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if>);
     _RF215_HAL_ExtIntDisable();
 
     if (hObj->spiQueueFirst == NULL)
@@ -780,12 +781,13 @@ void RF215_HAL_SpiUnlock()
     /* Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     _RF215_HAL_ExtIntEnable();
-    _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
+    _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if>);
 }
 
+</#if>
 void RF215_HAL_EnterCritical()
 {
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
     bool intStatus = SYS_INT_Disable();
 
 </#if>
@@ -794,7 +796,7 @@ void RF215_HAL_EnterCritical()
      * and there is no other static variable update */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
 
     SYS_INT_Restore(intStatus);
 </#if>
@@ -802,14 +804,14 @@ void RF215_HAL_EnterCritical()
 
 void RF215_HAL_LeaveCritical()
 {
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
     bool intStatus = SYS_INT_Disable();
 
 </#if>
     /* Leave critical region: Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
     _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
-<#if (DRV_RF215_TXRX_TIME_SUPPORT == false) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
+<#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
 
     SYS_INT_Restore(intStatus);
 </#if>
