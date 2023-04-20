@@ -97,6 +97,13 @@ def configureSpiPlib(localComponent):
             spiSymbol.setValue(0)
             spiSymbol.setReadOnly(True)
 
+        # Set baudrate
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(8000000)
+            spiSymbol.setReadOnly(True)
+
         # Set DLYBS
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_DLYBS")
         if spiSymbol != None:
@@ -108,6 +115,22 @@ def configureSpiPlib(localComponent):
         if spiSymbol != None:
             spiSymbol.clearValues()
             spiSymbol.setValue(0)
+
+    elif plibUsed.startswith("usart"):
+        # Set baudrate
+        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(8000000)
+            spiSymbol.setReadOnly(True)
+
+    elif plibUsed.startswith("sercom"):
+        # Set baudrate
+        spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(8000000)
+            spiSymbol.setReadOnly(True)
 
 def deconfigureSpiPlib(localComponent):
     global currentNPCS
