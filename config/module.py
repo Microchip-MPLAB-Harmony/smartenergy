@@ -118,7 +118,7 @@ def loadModule():
     ## Log Report Service  
     srvLogReportComponent = Module.CreateComponent("srvLogReport", "Log Report", "/SmartEnergy/Services", "service/log_report/config/srv_log_report.py")
     srvLogReportComponent.addCapability("libsrvLogReport", "Log Report", True)
-    srvLogReportComponent.addDependency("srv_logreport_sys_debug_dependency", "SYS_DEBUG", True, True)
+    srvLogReportComponent.addDependency("srv_logreport_sys_debug_dependency", "SYS_DEBUG", True, False)
     srvLogReportComponent.setDisplayType("Log Report Service")
 
     ## Queue Service
