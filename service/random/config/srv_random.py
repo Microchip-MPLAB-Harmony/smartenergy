@@ -25,6 +25,9 @@ def instantiateComponent(srvRandomComponent):
     
     Log.writeInfoMessage("Loading Random service")
 
+    # Activate TRNG if exists
+    Database.activateComponents(["trng"])
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
