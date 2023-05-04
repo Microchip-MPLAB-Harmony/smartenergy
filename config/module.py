@@ -51,12 +51,13 @@ def loadModule():
         drvMetrologyComponent.setDisplayType("Metrology")
 
     ## RF215 Driver
-    drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
-    drvRf215Component.addCapability("libdrvRf215", "DRV_RF_PHY", True)
-    drvRf215Component.addDependency("drv_rf215_SPI_dependency", "SPI", False, True)
-    drvRf215Component.addDependency("drv_rf215_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-    drvRf215Component.addDependency("drv_rf215_SysTime", "SYS_TIME", "SYS_TIME", True, True)
-    drvRf215Component.setDisplayType("RF PHY Driver")
+    if "WBZ45" not in processor:
+        drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
+        drvRf215Component.addCapability("libdrvRf215", "DRV_RF_PHY", True)
+        drvRf215Component.addDependency("drv_rf215_SPI_dependency", "SPI", False, True)
+        drvRf215Component.addDependency("drv_rf215_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+        drvRf215Component.addDependency("drv_rf215_SysTime", "SYS_TIME", "SYS_TIME", True, True)
+        drvRf215Component.setDisplayType("RF PHY Driver")
 
     ## PCOUP Service (PHY PLC Coupling Settings)
     srvPhyCouplingComponent = Module.CreateComponent("srv_pcoup", "PLC PHY Coupling", "/SmartEnergy/Services/", "service/pcoup/config/srv_pcoup.py")
