@@ -50,6 +50,9 @@
 #include "system/time/sys_time.h"
 #include "driver/driver.h"
 #include "driver/rf215/drv_rf215.h"
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+#include "osal/osal.h"
+</#if>
 #include "configuration.h"
 
 // DOM-IGNORE-BEGIN
@@ -75,9 +78,6 @@
 
 typedef struct
 {
-    /* The status of the driver */
-    SYS_STATUS                      sysStatus;
-
     /* Ready status callback */
     DRV_RF215_READY_STATUS_CALLBACK readyStatusCallback;
     uintptr_t                       readyStatusContext;
@@ -85,8 +85,16 @@ typedef struct
     /* Time handle for timeout */
     SYS_TIME_HANDLE                 timeoutHandle;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Semaphore identifier. Used to suspend and resume task */
+    OSAL_SEM_DECLARE(semaphoreID);
+
+</#if>
     /* Token counter for handle generation */
     uint16_t                        tokenCount;
+
+    /* The status of the driver */
+    SYS_STATUS                      sysStatus;
 
     /* RF215 IRQ status registers (external interrupt flags) */
     uint8_t                         RF09_IRQS;
@@ -296,6 +304,10 @@ void DRV_RF215_AbortTxByRx(uint8_t trxIdx);
 </#if>
 <#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
 void DRV_RF215_AbortTxByPhyConfig(uint8_t trxIdx);
+
+</#if>
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+void DRV_RF215_ResumeTask(void);
 
 </#if>
 // *****************************************************************************

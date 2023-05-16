@@ -404,6 +404,21 @@ def npcsChanged(symbol, event):
     currentNPCS = event["value"]
     configureSpiPlib(localComponent)
 
+def showRTOSMenu(symbol, event):
+    symbol.setVisible(event["value"] != "BareMetal")
+
+def genRtosTask(symbol, event):
+    symbol.setEnabled(event["value"] != "BareMetal")
+
+def commandRtosMicriumOSIIIAppTaskVisibility(symbol, event):
+    symbol.setVisible(event["value"] == "MicriumOSIII")
+
+def commandRtosMicriumOSIIITaskOptVisibility(symbol, event):
+    symbol.setVisible(event["value"])
+
+def getActiveRtos():
+    return Database.getSymbolValue("HarmonyCore", "SELECT_RTOS")
+
 def showSymbol(symbol, event):
     # Show/hide configuration symbol depending on parent enabled/disabled
     symbol.setVisible(event["value"])
@@ -807,6 +822,81 @@ def instantiateComponent(rf215Component):
     txTimeError.setMax(20000)
     txTimeError.setDependencies(showSymbol, ["DRV_RF215_TXRX_TIME_SUPPORT"])
     txTimeError.setHelp(rf215_helpkeyword)
+
+    # RTOS CONFIG
+    rf215RTOSMenu = rf215Component.createMenuSymbol("DRV_RF215_RTOS_MENU", None)
+    rf215RTOSMenu.setLabel("RTOS settings")
+    rf215RTOSMenu.setDescription("RTOS settings")
+    rf215RTOSMenu.setVisible(getActiveRtos() != "BareMetal")
+    rf215RTOSMenu.setDependencies(showRTOSMenu, ["HarmonyCore.SELECT_RTOS"])
+    rf215RTOSMenu.setHelp(rf215_helpkeyword)
+
+    rf215RTOSStackSize = rf215Component.createIntegerSymbol("DRV_RF215_RTOS_STACK_SIZE", rf215RTOSMenu)
+    rf215RTOSStackSize.setLabel("Stack Size (in bytes)")
+    rf215RTOSStackSize.setDefaultValue(1024)
+    rf215RTOSStackSize.setMin(1024)
+    rf215RTOSStackSize.setMax(16*1024)
+    rf215RTOSStackSize.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskPriority = rf215Component.createIntegerSymbol("DRV_RF215_RTOS_TASK_PRIORITY", rf215RTOSMenu)
+    rf215RTOSTaskPriority.setLabel("Task Priority")
+    rf215RTOSTaskPriority.setDefaultValue(1)
+    rf215RTOSTaskPriority.setMin(0)
+    rf215RTOSTaskPriority.setHelp(rf215_helpkeyword)
+
+    rf215RTOSMsgQSize = rf215Component.createIntegerSymbol("DRV_RF215_RTOS_TASK_MSG_QTY", rf215RTOSMenu)
+    rf215RTOSMsgQSize.setLabel("Maximum Message Queue Size")
+    rf215RTOSMsgQSize.setDescription("A µC/OS-III task contains an optional internal message queue (if OS_CFG_TASK_Q_EN is set to DEF_ENABLED in os_cfg.h). This argument specifies the maximum number of messages that the task can receive through this message queue. The user may specify that the task is unable to receive messages by setting this argument to 0")
+    rf215RTOSMsgQSize.setDefaultValue(0)
+    rf215RTOSMsgQSize.setMin(0)
+    rf215RTOSMsgQSize.setVisible(getActiveRtos() == "MicriumOSIII")
+    rf215RTOSMsgQSize.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    rf215RTOSMsgQSize.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskTimeQuanta = rf215Component.createIntegerSymbol("DRV_RF215_RTOS_TASK_TIME_QUANTA", rf215RTOSMenu)
+    rf215RTOSTaskTimeQuanta.setLabel("Task Time Quanta")
+    rf215RTOSTaskTimeQuanta.setDescription("The amount of time (in clock ticks) for the time quanta when Round Robin is enabled. If you specify 0, then the default time quanta will be used which is the tick rate divided by 10.")
+    rf215RTOSTaskTimeQuanta.setDefaultValue(0)
+    rf215RTOSTaskTimeQuanta.setMin(0)
+    rf215RTOSTaskTimeQuanta.setVisible(getActiveRtos() == "MicriumOSIII")
+    rf215RTOSTaskTimeQuanta.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    rf215RTOSTaskTimeQuanta.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskSpecificOpt = rf215Component.createBooleanSymbol("DRV_RF215_RTOS_TASK_OPT_NONE", rf215RTOSMenu)
+    rf215RTOSTaskSpecificOpt.setLabel("Task Specific Options")
+    rf215RTOSTaskSpecificOpt.setDescription("Contains task-specific options. Each option consists of one bit. The option is selected when the bit is set. The current version of µC/OS-III supports the following options:")
+    rf215RTOSTaskSpecificOpt.setDefaultValue(True)
+    rf215RTOSTaskSpecificOpt.setVisible(getActiveRtos() == "MicriumOSIII")
+    rf215RTOSTaskSpecificOpt.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    rf215RTOSTaskSpecificOpt.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskStkChk = rf215Component.createBooleanSymbol("DRV_RF215_RTOS_TASK_OPT_STK_CHK", rf215RTOSTaskSpecificOpt)
+    rf215RTOSTaskStkChk.setLabel("Stack checking is allowed for the task")
+    rf215RTOSTaskStkChk.setDescription("Specifies whether stack checking is allowed for the task")
+    rf215RTOSTaskStkChk.setDefaultValue(True)
+    rf215RTOSTaskStkChk.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_RF215_RTOS_TASK_OPT_NONE"])
+    rf215RTOSTaskStkChk.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskStkClr = rf215Component.createBooleanSymbol("DRV_RF215_RTOS_TASK_OPT_STK_CLR", rf215RTOSTaskSpecificOpt)
+    rf215RTOSTaskStkClr.setLabel("Stack needs to be cleared")
+    rf215RTOSTaskStkClr.setDescription("Specifies whether the stack needs to be cleared")
+    rf215RTOSTaskStkClr.setDefaultValue(True)
+    rf215RTOSTaskStkClr.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_RF215_RTOS_TASK_OPT_NONE"])
+    rf215RTOSTaskStkClr.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskSaveFp = rf215Component.createBooleanSymbol("DRV_RF215_RTOS_TASK_OPT_SAVE_FP", rf215RTOSTaskSpecificOpt)
+    rf215RTOSTaskSaveFp.setLabel("Floating-point registers needs to be saved")
+    rf215RTOSTaskSaveFp.setDescription("Specifies whether floating-point registers are saved. This option is only valid if the processor has floating-point hardware and the processor-specific code saves the floating-point registers")
+    rf215RTOSTaskSaveFp.setDefaultValue(False)
+    rf215RTOSTaskSaveFp.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_RF215_RTOS_TASK_OPT_NONE"])
+    rf215RTOSTaskSaveFp.setHelp(rf215_helpkeyword)
+
+    rf215RTOSTaskNoTls = rf215Component.createBooleanSymbol("DRV_RF215_RTOS_TASK_OPT_NO_TLS", rf215RTOSTaskSpecificOpt)
+    rf215RTOSTaskNoTls.setLabel("TLS (Thread Local Storage) support needed for the task")
+    rf215RTOSTaskNoTls.setDescription("If the caller doesn’t want or need TLS (Thread Local Storage) support for the task being created. If you do not include this option, TLS will be supported by default. TLS support was added in V3.03.00")
+    rf215RTOSTaskNoTls.setDefaultValue(False)
+    rf215RTOSTaskNoTls.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_RF215_RTOS_TASK_OPT_NONE"])
+    rf215RTOSTaskNoTls.setHelp(rf215_helpkeyword)
 
     plibUsed = rf215Component.createStringSymbol("DRV_RF215_PLIB", None)
     plibUsed.setLabel("PLIB Used")
@@ -1225,6 +1315,14 @@ def instantiateComponent(rf215Component):
     rf215SystemTasksFile.setOutputName("core.LIST_SYSTEM_TASKS_C_CALL_DRIVER_TASKS")
     rf215SystemTasksFile.setSourcePath("driver/rf215/templates/system/system_tasks.c.ftl")
     rf215SystemTasksFile.setMarkup(True)
+
+    rf215SystemRtosTasksFile = rf215Component.createFileSymbol("DRV_RF215_SYS_RTOS_TASK", None)
+    rf215SystemRtosTasksFile.setType("STRING")
+    rf215SystemRtosTasksFile.setOutputName("core.LIST_SYSTEM_RTOS_TASKS_C_DEFINITIONS")
+    rf215SystemRtosTasksFile.setSourcePath("driver/rf215/templates/system/system_rtos_tasks.c.ftl")
+    rf215SystemRtosTasksFile.setMarkup(True)
+    rf215SystemRtosTasksFile.setEnabled(getActiveRtos() != "BareMetal")
+    rf215SystemRtosTasksFile.setDependencies(genRtosTask, ["HarmonyCore.SELECT_RTOS"])
 
 def destroyComponent(rf215Component):
     Database.sendMessage("HarmonyCore", "ENABLE_DRV_COMMON", {"isEnabled":False})

@@ -159,6 +159,11 @@ static void _DRV_RF215_Timeout(uintptr_t context)
 {
     DRV_RF215_OBJ* dObj = (DRV_RF215_OBJ *)context;
     dObj->timeoutErr = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Post semaphore to resume task */
+    OSAL_SEM_PostISR(&dObj->semaphoreID);
+
+</#if>
 }
 
 static void _DRV_RF215_ReadPNVN(uintptr_t context, void* pData<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, uint64_t time</#if>)
@@ -166,8 +171,14 @@ static void _DRV_RF215_ReadPNVN(uintptr_t context, void* pData<#if DRV_RF215_TXR
     DRV_RF215_OBJ* dObj = (DRV_RF215_OBJ *) context;
     uint8_t* pPN = pData;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Post semaphore to resume task */
+    OSAL_SEM_PostISR(&dObj->semaphoreID);
+
+</#if>
     if ((pPN[0] != RF215_RF_PN_AT86RF215) || (pPN[1] != RF215_RF_VN_V3))
     {
+        /* Wrong part number read */
         dObj->partNumErr = true;
         return;
     }
@@ -229,6 +240,11 @@ static void _DRV_RF215_ReadIRQS(uintptr_t context, void* pData<#if DRV_RF215_TXR
         {
             RF215_HAL_Deinitialize();
             dObj->irqsErr = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&dObj->semaphoreID);
+</#if>
             return;
         }
     }
@@ -236,6 +252,11 @@ static void _DRV_RF215_ReadIRQS(uintptr_t context, void* pData<#if DRV_RF215_TXR
     {
         /* 2 MSB bits of RFn_IRQS should be always 0 */
         dObj->irqsErr = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+        /* Post semaphore to resume task */
+        OSAL_SEM_PostISR(&dObj->semaphoreID);
+</#if>
         return;
     }
 <#if DRV_RF215_TRX24_EN == false>
@@ -249,6 +270,11 @@ static void _DRV_RF215_ReadIRQS(uintptr_t context, void* pData<#if DRV_RF215_TXR
         {
             dObj->irqsErr = true;
             dObj->irqsEmptyCount = 0;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&dObj->semaphoreID);
+</#if>
             return;
         }
     }
@@ -378,6 +404,14 @@ void DRV_RF215_NotifyChannelSwitch(uint8_t trxIdx, DRV_RF215_TX_RESULT result)
 }
 
 </#if>
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+void DRV_RF215_ResumeTask(void)
+{
+    /* Post semaphore to resume task */
+    OSAL_SEM_PostISR(&drvRf215Obj.semaphoreID);
+}
+
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: RF215 Driver Common Interface Implementation
@@ -392,6 +426,9 @@ SYS_MODULE_OBJ DRV_RF215_Initialize (
     const DRV_RF215_INIT* rfPhyInit = (DRV_RF215_INIT *)init;
     DRV_RF215_PHY_BAND_OPM bandOpMode;
     uint16_t channelNum;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    OSAL_RESULT semResult;
+</#if>
 
     /* Validate the instance index */
     if (index != DRV_RF215_INDEX_0)
@@ -432,12 +469,26 @@ SYS_MODULE_OBJ DRV_RF215_Initialize (
 
     /* Reset RF device in the first task */
     drvRf215Obj.rfChipResetPending = true;
-
-    /* Initialize the driver object */
     drvRf215Obj.timeoutHandle = SYS_TIME_HANDLE_INVALID;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Create semaphore. It is used to suspend and resume task. Initialized in
+     * posted status */
+    semResult = OSAL_SEM_Create(&drvRf215Obj.semaphoreID, OSAL_SEM_TYPE_BINARY, 1, 1);
+    if ((semResult == OSAL_RESULT_TRUE) && (drvRf215Obj.semaphoreID != NULL))
+    {
+        /* Set busy status. Initialization will continue from interrupt */
+        drvRf215Obj.sysStatus = SYS_STATUS_BUSY;
+    }
+    else
+    {
+        /* Error: Not enough memory to create semaphore */
+        drvRf215Obj.sysStatus = SYS_STATUS_ERROR;
+    }
+<#else>
     /* Set busy status. Initialization will continue from interrupt */
     drvRf215Obj.sysStatus = SYS_STATUS_BUSY;
+</#if>
 
     /* Zero initialization */
     drvRf215Obj.readyStatusCallback = NULL;
@@ -487,6 +538,14 @@ void DRV_RF215_Tasks( SYS_MODULE_OBJ object )
         return;
     }
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Suspend task until semaphore is posted */
+    if (dObj->semaphoreID != NULL)
+    {
+        OSAL_SEM_Pend(&dObj->semaphoreID, OSAL_WAIT_FOREVER);
+    }
+
+</#if>
     switch (dObj->sysStatus)
     {
         case SYS_STATUS_BUSY:
@@ -614,6 +673,14 @@ void DRV_RF215_ReadyStatusCallbackRegister (
     drvRf215Obj.readyStatusCallback = callback;
     drvRf215Obj.readyStatusContext = context;
     drvRf215Obj.readyStatusNotified = false;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+    /* Post semaphore to resume task */
+    if (drvRf215Obj.semaphoreID != NULL)
+    {
+        OSAL_SEM_Post(&drvRf215Obj.semaphoreID);
+    }
+</#if>
 }
 
 DRV_HANDLE DRV_RF215_Open (

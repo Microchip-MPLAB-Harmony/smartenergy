@@ -335,6 +335,9 @@ static void _RF215_HAL_SpiTransfer (
         else
         {
             rf215HalObj.spiTransferFromTasks = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+            DRV_RF215_ResumeTask();
+</#if>
         }
 <#else>
         _RF215_HAL_SpiTransferStart(mode, regAddr, pData, size);
@@ -400,6 +403,9 @@ static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
         else
         {
             rf215HalObj.spiTransferFromTasks = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+            DRV_RF215_ResumeTask();
+</#if>
         }
 <#else>
         _RF215_HAL_SpiTransferStart(next->mode, next->regAddr, next->pData, next->size);

@@ -1708,6 +1708,9 @@ static void _RF215_PHY_SetFlag(uintptr_t context, void* pData<#if DRV_RF215_TXRX
 {
     bool* flag = (bool *) context;
     *flag = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    DRV_RF215_ResumeTask();
+</#if>
 }
 
 static bool _RF215_PHY_CheckPhyCfg(DRV_RF215_PHY_CFG_OBJ* phyConfig)
@@ -5188,6 +5191,9 @@ void RF215_PHY_SetTxCfm (
     txBufObj->cfmObj.txResult = result;
     txBufObj->cfmPending = true;
     _RF215_TX_UpdStats(pObj, result);
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    DRV_RF215_ResumeTask();
+</#if>
 
     /* Clear TX flag if buffer corresponds to ongoing transmission */
     if (pObj->txBufObj == txBufObj)
