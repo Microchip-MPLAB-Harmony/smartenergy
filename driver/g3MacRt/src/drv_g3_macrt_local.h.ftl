@@ -52,6 +52,9 @@
 #include "driver/plc/g3MacRt/drv_g3_macrt_definitions.h"
 #include "driver/plc/g3MacRt/drv_g3_macrt_comm.h"
 #include "driver/plc/common/drv_plc_boot.h"
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+#include "osal/osal.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -183,6 +186,11 @@ typedef struct
     /* Pointer to PHY Sniffer Data Buffer */
     uint8_t                                   *pPhyDataSniffer;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Semaphore identifier. Used to suspend and resume task */
+    OSAL_SEM_DECLARE(semaphoreID);
+
+</#if>
 } DRV_G3_MACRT_OBJ;
 
 

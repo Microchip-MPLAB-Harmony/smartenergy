@@ -132,6 +132,11 @@ static void _DRV_G3_MACRT_COMM_SpiWriteCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pDat
         if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
         {
             gG3MacRtObj->evResetTxCfm = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         gG3MacRtObj->state = DRV_G3_MACRT_STATE_ERROR_COMM;
@@ -166,6 +171,11 @@ static void _DRV_G3_MACRT_COMM_SpiReadCmd(DRV_G3_MACRT_MEM_ID id, uint8_t *pData
         if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
         {
             gG3MacRtObj->evResetTxCfm = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         gG3MacRtObj->state = DRV_G3_MACRT_STATE_ERROR_COMM;
@@ -197,6 +207,11 @@ static void _DRV_G3_MACRT_COMM_GetEventsInfo(DRV_G3_MACRT_EVENTS_OBJ *eventsObj)
         if (gG3MacRtObj->state == DRV_G3_MACRT_STATE_WAITING_TX_CFM)
         {
             gG3MacRtObj->evResetTxCfm = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         gG3MacRtObj->state = DRV_G3_MACRT_STATE_ERROR_COMM;
@@ -578,6 +593,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
                     DRV_G3_MACRT_TX_CFM_SIZE);
             /* update event flag */
             gG3MacRtObj->evTxCfm = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         /* Check RX paramenters indication event */
@@ -587,6 +607,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
                     DRV_G3_MACRT_RX_PAR_SIZE);
             /* update event flag */
             gG3MacRtObj->evRxParams = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         /* Check received new data event */
@@ -601,6 +626,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
                     evObj.rcvDataLength);
             /* update event flag */
             gG3MacRtObj->evDataIndLength = evObj.rcvDataLength;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         /* Check MAC Sniffer event */
@@ -631,6 +661,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             if (evObj.phySnifLength > 1)
             {
                 gG3MacRtObj->evMacSnifLength = evObj.macSnifLength;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
             }
         }
         
@@ -641,6 +676,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
                     DRV_G3_MACRT_COMM_STATUS_SIZE);
             /* update event flag */
             gG3MacRtObj->evCommStatus = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
         }
         
         /* Check PHY Sniffer event */
@@ -671,6 +711,11 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             if (evObj.phySnifLength > 1)
             {
                 gG3MacRtObj->evPhySnifLength = evObj.phySnifLength;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                OSAL_SEM_PostISR(&gG3MacRtObj->semaphoreID);
+</#if>
             }
         }
         

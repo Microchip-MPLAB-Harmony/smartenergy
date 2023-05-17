@@ -56,9 +56,22 @@
 #define DRV_PLC_SPI_CHIP_SELECT               SPI_CHIP_SELECT_NPCS${DRV_PLC_SPI_NPCS}
 </#if>
 </#if>
+#define DRV_PLC_SPI_CLK                       8000000
 
-#define DRV_PLC_SPI_CLK                      8000000
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    <#lt>/* PLC MAC RT Driver RTOS Configuration Options */
+    <#if HarmonyCore.SELECT_RTOS == "FreeRTOS">
+        <#lt>#define DRV_PLC_RTOS_STACK_SIZE               ${DRV_PLC_RTOS_STACK_SIZE / 4}
+    <#else>
+        <#lt>#define DRV_PLC_RTOS_STACK_SIZE               ${DRV_PLC_RTOS_STACK_SIZE}
+    </#if>
+    <#lt>#define DRV_PLC_RTOS_TASK_PRIORITY            ${DRV_PLC_RTOS_TASK_PRIORITY}
+    <#if HarmonyCore.SELECT_RTOS == "MicriumOSIII">
+        <#lt>#define DRV_PLC_RTOS_TASK_MSG_QTY             ${DRV_PLC_RTOS_TASK_MSG_QTY}u
+        <#lt>#define DRV_PLC_RTOS_TASK_TIME_QUANTA         ${DRV_PLC_RTOS_TASK_TIME_QUANTA}u
+    </#if>
 
+</#if>
 /* PLC MAC RT Driver Identification */
 #define DRV_G3_MACRT_INDEX                   0
 #define DRV_G3_MACRT_INSTANCES_NUMBER        1

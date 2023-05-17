@@ -58,7 +58,7 @@
 // *****************************************************************************
 
 /* This is the driver instance object array. */
-DRV_G3_MACRT_OBJ gDrvG3MacRtObj;
+DRV_G3_MACRT_OBJ gDrvG3MacRtObj<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal"> = {.semaphoreID = NULL}</#if>;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -113,6 +113,19 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     /* Update status */
     gDrvG3MacRtObj.state                = DRV_G3_MACRT_STATE_INITIALIZED;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    if (gDrvG3MacRtObj.semaphoreID == NULL)
+    {
+        /* Create semaphore. It is used to suspend and resume task */
+        OSAL_RESULT semResult = OSAL_SEM_Create(&gDrvG3MacRtObj.semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
+        if ((semResult != OSAL_RESULT_TRUE) || (gDrvG3MacRtObj.semaphoreID == NULL))
+        {
+            /* Error: Not enough memory to create semaphore */
+            gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_ERROR;
+        }
+    }
+
+</#if>
     /* Return the object structure */
     return ( (SYS_MODULE_OBJ)index );
 
@@ -169,6 +182,14 @@ DRV_HANDLE DRV_G3_MACRT_Open(
     
     gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_BUSY;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Post semaphore to resume task */
+    if (gDrvG3MacRtObj.semaphoreID != NULL)
+    {
+        OSAL_SEM_Post(&gDrvG3MacRtObj.semaphoreID);
+    }
+
+</#if>
     return ((DRV_HANDLE)0);
 }
 
@@ -284,7 +305,24 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ hSysObj )
     {
         return;
     }
-    
+
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Suspend task until semaphore is posted or timeout expires */
+    if (gDrvG3MacRtObj.semaphoreID != NULL)
+    {
+        uint16_t waitMS = 1;
+
+        /* If PLC device is running, wait forever. Otherwise, wait for 1 ms  */
+        if ((gDrvG3MacRtObj.state == DRV_G3_MACRT_STATE_READY) ||
+            (gDrvG3MacRtObj.state == DRV_G3_MACRT_STATE_WAITING_TX_CFM))
+        {
+            waitMS = OSAL_WAIT_FOREVER;
+        }
+
+        OSAL_SEM_Pend(&gDrvG3MacRtObj.semaphoreID, waitMS);
+    }
+
+</#if>
     if ((gDrvG3MacRtObj.state == DRV_G3_MACRT_STATE_READY) ||
         (gDrvG3MacRtObj.state == DRV_G3_MACRT_STATE_WAITING_TX_CFM))
     {
@@ -368,6 +406,14 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable )
                 /* Restart from Sleep mode */
                 gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_BUSY;
                 DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_SLEEP);
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                if (gDrvG3MacRtObj.semaphoreID != NULL)
+                {
+                    OSAL_SEM_Post(&gDrvG3MacRtObj.semaphoreID);
+                }
+</#if>
             }
         }
     }
