@@ -54,6 +54,7 @@
 #include "stddef.h"
 #include "configuration.h"
 #include "driver/driver_common.h"
+#include "system/int/sys_int.h"
 #include "srv_usi_local.h"
 #include "srv_usi_usart.h"
 #include "srv_usi_definitions.h"
