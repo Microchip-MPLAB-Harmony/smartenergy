@@ -51,6 +51,9 @@
 #include "driver/plc/phy/drv_plc_phy.h"
 #include "driver/plc/phy/drv_plc_phy_definitions.h"
 #include "driver/plc/phy/drv_plc_phy_comm.h"
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+#include "osal/osal.h"
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -190,6 +193,11 @@ typedef struct
     /* Application context for Bootloader Dara Callback */
     uintptr_t                       contextBoot;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Semaphore identifier. Used to suspend and resume task */
+    OSAL_SEM_DECLARE(semaphoreID);
+
+</#if>
     /* Event detection flag: confirmation of the previous transmission */
 <#if (DRV_PLC_PROFILE == "G3")>
     volatile bool                   evTxCfm[1];

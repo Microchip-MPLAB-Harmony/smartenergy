@@ -277,6 +277,11 @@ static bool _DRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
         if (gPlcPhyObj->state[0] == DRV_PLC_PHY_STATE_WAITING_TX_CFM)
         {
             gPlcPhyObj->evResetTxCfm = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gPlcPhyObj->semaphoreID);
+</#if>
         }
 
         return true;
@@ -818,9 +823,13 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             gPlcPhyObj->evTxCfm[0] = true;
             /* Update PLC state: idle */
             gPlcPhyObj->state[0] = DRV_PLC_PHY_STATE_IDLE;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gPlcPhyObj->semaphoreID);
+</#if>
         }
         
-        /* Check received new parameters event (First event in RX) */
+        /* Check received new data event (First event in RX) */
         if (evObj.evRxDat)
         {        
             _DRV_PLC_PHY_COMM_SpiReadCmd(RX_DAT_ID, sDataRxDat, evObj.rcvDataLength);
@@ -828,12 +837,16 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             gPlcPhyObj->evRxDat = true;
         }
         
-        /* Check received new data event (Second event in RX) */
+        /* Check received new parameters event (Second event in RX) */
         if (evObj.evRxPar)
         {
             _DRV_PLC_PHY_COMM_SpiReadCmd(RX_PAR_ID, sDataRxPar, PLC_RX_PAR_SIZE - 4);
             /* update event flag */
             gPlcPhyObj->evRxPar = true;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+            /* Post semaphore to resume task */
+            OSAL_SEM_PostISR(&gPlcPhyObj->semaphoreID);
+</#if>
         }
         
         /* Check register info event */

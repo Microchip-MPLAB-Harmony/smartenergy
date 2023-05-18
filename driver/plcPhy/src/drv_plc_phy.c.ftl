@@ -57,7 +57,7 @@
 // *****************************************************************************
 
 /* This is the driver instance object array. */
-DRV_PLC_PHY_OBJ gDrvPlcPhyObj;
+DRV_PLC_PHY_OBJ gDrvPlcPhyObj<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal"> = {.semaphoreID = NULL}</#if>;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -113,6 +113,19 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
     /* Update status */
     gDrvPlcPhyObj.status                = SYS_STATUS_BUSY;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    if (gDrvPlcPhyObj.semaphoreID == NULL)
+    {
+        /* Create semaphore. It is used to suspend and resume task */
+        OSAL_RESULT semResult = OSAL_SEM_Create(&gDrvPlcPhyObj.semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
+        if ((semResult != OSAL_RESULT_TRUE) || (gDrvPlcPhyObj.semaphoreID == NULL))
+        {
+            /* Error: Not enough memory to create semaphore */
+            gDrvPlcPhyObj.status = SYS_STATUS_ERROR;
+        }
+    }
+
+</#if>
     /* Return the object structure */
     return ( (SYS_MODULE_OBJ)index );
 
@@ -166,6 +179,14 @@ DRV_HANDLE DRV_PLC_PHY_Open(
     
     gDrvPlcPhyObj.nClients++;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Post semaphore to resume task */
+    if (gDrvPlcPhyObj.semaphoreID != NULL)
+    {
+        OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
+    }
+
+</#if>
     return ((DRV_HANDLE)0);
 }
 
@@ -219,7 +240,23 @@ void DRV_PLC_PHY_ExceptionCallbackRegister(
 }
 
 void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
-{   
+{
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Suspend task until semaphore is posted or timeout expires */
+    if (gDrvPlcPhyObj.semaphoreID != NULL)
+    {
+        uint16_t waitMS = 1;
+
+        /* If PLC device is running, wait forever. Otherwise, wait for 1 ms  */
+        if (gDrvPlcPhyObj.status == SYS_STATUS_READY)
+        {
+            waitMS = OSAL_WAIT_FOREVER;
+        }
+
+        OSAL_SEM_Pend(&gDrvPlcPhyObj.semaphoreID, waitMS);
+    }
+
+</#if>
     if (gDrvPlcPhyObj.status == SYS_STATUS_READY)
     {
         /* Run PLC communication task */
@@ -304,6 +341,14 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
                 /* Restart from Sleep mode */
                 gDrvPlcPhyObj.status = SYS_STATUS_BUSY;
                 DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_SLEEP);
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                if (gDrvPlcPhyObj.semaphoreID != NULL)
+                {
+                    OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
+                }
+</#if>
             }
         }
     }

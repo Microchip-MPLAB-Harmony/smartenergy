@@ -654,6 +654,21 @@ def enablePL460Capabilities(symbol, event):
     else:
         symbol.setVisible(False)
 
+def showRTOSMenu(symbol, event):
+    symbol.setVisible(event["value"] != "BareMetal")
+
+def genRtosTask(symbol, event):
+    symbol.setEnabled(event["value"] != "BareMetal")
+
+def commandRtosMicriumOSIIIAppTaskVisibility(symbol, event):
+    symbol.setVisible(event["value"] == "MicriumOSIII")
+
+def commandRtosMicriumOSIIITaskOptVisibility(symbol, event):
+    symbol.setVisible(event["value"])
+
+def getActiveRtos():
+    return Database.getSymbolValue("HarmonyCore", "SELECT_RTOS")
+
 def identifyPeripherals(component):
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     peripherals = periphNode.getChildren()
@@ -730,6 +745,81 @@ def instantiateComponent(plcComponent):
     plcDriverMode.setLabel("PLC Driver Mode")
     plcDriverMode.setDefaultValue("PL460")
     plcDriverMode.setHelp(plc_phy_helpkeyword)
+
+    # RTOS CONFIG
+    plcRTOSMenu = plcComponent.createMenuSymbol("DRV_PLC_RTOS_MENU", None)
+    plcRTOSMenu.setLabel("RTOS settings")
+    plcRTOSMenu.setDescription("RTOS settings")
+    plcRTOSMenu.setVisible(getActiveRtos() != "BareMetal")
+    plcRTOSMenu.setDependencies(showRTOSMenu, ["HarmonyCore.SELECT_RTOS"])
+    plcRTOSMenu.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSStackSize = plcComponent.createIntegerSymbol("DRV_PLC_RTOS_STACK_SIZE", plcRTOSMenu)
+    plcRTOSStackSize.setLabel("Stack Size (in bytes)")
+    plcRTOSStackSize.setDefaultValue(1024)
+    plcRTOSStackSize.setMin(1024)
+    plcRTOSStackSize.setMax(16*1024)
+    plcRTOSStackSize.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskPriority = plcComponent.createIntegerSymbol("DRV_PLC_RTOS_TASK_PRIORITY", plcRTOSMenu)
+    plcRTOSTaskPriority.setLabel("Task Priority")
+    plcRTOSTaskPriority.setDefaultValue(1)
+    plcRTOSTaskPriority.setMin(0)
+    plcRTOSTaskPriority.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSMsgQSize = plcComponent.createIntegerSymbol("DRV_PLC_RTOS_TASK_MSG_QTY", plcRTOSMenu)
+    plcRTOSMsgQSize.setLabel("Maximum Message Queue Size")
+    plcRTOSMsgQSize.setDescription("A µC/OS-III task contains an optional internal message queue (if OS_CFG_TASK_Q_EN is set to DEF_ENABLED in os_cfg.h). This argument specifies the maximum number of messages that the task can receive through this message queue. The user may specify that the task is unable to receive messages by setting this argument to 0")
+    plcRTOSMsgQSize.setDefaultValue(0)
+    plcRTOSMsgQSize.setMin(0)
+    plcRTOSMsgQSize.setVisible(getActiveRtos() == "MicriumOSIII")
+    plcRTOSMsgQSize.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    plcRTOSMsgQSize.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskTimeQuanta = plcComponent.createIntegerSymbol("DRV_PLC_RTOS_TASK_TIME_QUANTA", plcRTOSMenu)
+    plcRTOSTaskTimeQuanta.setLabel("Task Time Quanta")
+    plcRTOSTaskTimeQuanta.setDescription("The amount of time (in clock ticks) for the time quanta when Round Robin is enabled. If you specify 0, then the default time quanta will be used which is the tick rate divided by 10.")
+    plcRTOSTaskTimeQuanta.setDefaultValue(0)
+    plcRTOSTaskTimeQuanta.setMin(0)
+    plcRTOSTaskTimeQuanta.setVisible(getActiveRtos() == "MicriumOSIII")
+    plcRTOSTaskTimeQuanta.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    plcRTOSTaskTimeQuanta.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskSpecificOpt = plcComponent.createBooleanSymbol("DRV_PLC_RTOS_TASK_OPT_NONE", plcRTOSMenu)
+    plcRTOSTaskSpecificOpt.setLabel("Task Specific Options")
+    plcRTOSTaskSpecificOpt.setDescription("Contains task-specific options. Each option consists of one bit. The option is selected when the bit is set. The current version of µC/OS-III supports the following options:")
+    plcRTOSTaskSpecificOpt.setDefaultValue(True)
+    plcRTOSTaskSpecificOpt.setVisible(getActiveRtos() == "MicriumOSIII")
+    plcRTOSTaskSpecificOpt.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    plcRTOSTaskSpecificOpt.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskStkChk = plcComponent.createBooleanSymbol("DRV_PLC_RTOS_TASK_OPT_STK_CHK", plcRTOSTaskSpecificOpt)
+    plcRTOSTaskStkChk.setLabel("Stack checking is allowed for the task")
+    plcRTOSTaskStkChk.setDescription("Specifies whether stack checking is allowed for the task")
+    plcRTOSTaskStkChk.setDefaultValue(True)
+    plcRTOSTaskStkChk.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_PLC_RTOS_TASK_OPT_NONE"])
+    plcRTOSTaskStkChk.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskStkClr = plcComponent.createBooleanSymbol("DRV_PLC_RTOS_TASK_OPT_STK_CLR", plcRTOSTaskSpecificOpt)
+    plcRTOSTaskStkClr.setLabel("Stack needs to be cleared")
+    plcRTOSTaskStkClr.setDescription("Specifies whether the stack needs to be cleared")
+    plcRTOSTaskStkClr.setDefaultValue(True)
+    plcRTOSTaskStkClr.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_PLC_RTOS_TASK_OPT_NONE"])
+    plcRTOSTaskStkClr.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskSaveFp = plcComponent.createBooleanSymbol("DRV_PLC_RTOS_TASK_OPT_SAVE_FP", plcRTOSTaskSpecificOpt)
+    plcRTOSTaskSaveFp.setLabel("Floating-point registers needs to be saved")
+    plcRTOSTaskSaveFp.setDescription("Specifies whether floating-point registers are saved. This option is only valid if the processor has floating-point hardware and the processor-specific code saves the floating-point registers")
+    plcRTOSTaskSaveFp.setDefaultValue(False)
+    plcRTOSTaskSaveFp.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_PLC_RTOS_TASK_OPT_NONE"])
+    plcRTOSTaskSaveFp.setHelp(plc_phy_helpkeyword)
+
+    plcRTOSTaskNoTls = plcComponent.createBooleanSymbol("DRV_PLC_RTOS_TASK_OPT_NO_TLS", plcRTOSTaskSpecificOpt)
+    plcRTOSTaskNoTls.setLabel("TLS (Thread Local Storage) support needed for the task")
+    plcRTOSTaskNoTls.setDescription("If the caller doesn’t want or need TLS (Thread Local Storage) support for the task being created. If you do not include this option, TLS will be supported by default. TLS support was added in V3.03.00")
+    plcRTOSTaskNoTls.setDefaultValue(False)
+    plcRTOSTaskNoTls.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_PLC_RTOS_TASK_OPT_NONE"])
+    plcRTOSTaskNoTls.setHelp(plc_phy_helpkeyword)
 
     plcPLIB = plcComponent.createStringSymbol("DRV_PLC_PLIB", None)
     plcPLIB.setLabel("PLIB Used")
@@ -1335,6 +1425,14 @@ def instantiateComponent(plcComponent):
     plcSystemTasksFile.setOutputName("core.LIST_SYSTEM_TASKS_C_CALL_DRIVER_TASKS")
     plcSystemTasksFile.setSourcePath("driver/plcPhy/templates/system/system_tasks.c.ftl")
     plcSystemTasksFile.setMarkup(True)
+
+    plcSystemRtosTasksFile = plcComponent.createFileSymbol("DRV_PLC_SYS_RTOS_TASK", None)
+    plcSystemRtosTasksFile.setType("STRING")
+    plcSystemRtosTasksFile.setOutputName("core.LIST_SYSTEM_RTOS_TASKS_C_DEFINITIONS")
+    plcSystemRtosTasksFile.setSourcePath("driver/plcPhy/templates/system/system_rtos_tasks.c.ftl")
+    plcSystemRtosTasksFile.setMarkup(True)
+    plcSystemRtosTasksFile.setEnabled(getActiveRtos() != "BareMetal")
+    plcSystemRtosTasksFile.setDependencies(genRtosTask, ["HarmonyCore.SELECT_RTOS"])
 
     updateBinFiles()
 
