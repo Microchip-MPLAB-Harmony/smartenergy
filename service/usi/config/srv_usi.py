@@ -34,6 +34,21 @@ def selectDeviceSet(symbol, event):
     else:
         symbol.setValue("")
 
+def showRTOSMenu(symbol, event):
+    symbol.setVisible(event["value"] != "BareMetal")
+
+def genRtosTask(symbol, event):
+    symbol.setEnabled(event["value"] != "BareMetal")
+
+def commandRtosMicriumOSIIIAppTaskVisibility(symbol, event):
+    symbol.setVisible(event["value"] == "MicriumOSIII")
+
+def commandRtosMicriumOSIIITaskOptVisibility(symbol, event):
+    symbol.setVisible(event["value"])
+
+def getActiveRtos():
+    return Database.getSymbolValue("HarmonyCore", "SELECT_RTOS")
+
 ################################################################################
 #### Component ####
 ################################################################################
@@ -89,6 +104,81 @@ def instantiateComponent(usiComponent, index):
     usiSymReadBufferSize.setMax(32*1024)
     usiSymReadBufferSize.setHelp(srv_usi_helpkeyword)
 
+    # RTOS CONFIG
+    usiRTOSMenu = usiComponent.createMenuSymbol("SRV_USI_RTOS_MENU", None)
+    usiRTOSMenu.setLabel("RTOS settings")
+    usiRTOSMenu.setDescription("RTOS settings")
+    usiRTOSMenu.setVisible(getActiveRtos() != "BareMetal")
+    usiRTOSMenu.setDependencies(showRTOSMenu, ["HarmonyCore.SELECT_RTOS"])
+    usiRTOSMenu.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSStackSize = usiComponent.createIntegerSymbol("SRV_USI_RTOS_STACK_SIZE", usiRTOSMenu)
+    usiRTOSStackSize.setLabel("Stack Size (in bytes)")
+    usiRTOSStackSize.setDefaultValue(1024)
+    usiRTOSStackSize.setMin(1024)
+    usiRTOSStackSize.setMax(16*1024)
+    usiRTOSStackSize.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskPriority = usiComponent.createIntegerSymbol("SRV_USI_RTOS_TASK_PRIORITY", usiRTOSMenu)
+    usiRTOSTaskPriority.setLabel("Task Priority")
+    usiRTOSTaskPriority.setDefaultValue(1)
+    usiRTOSTaskPriority.setMin(0)
+    usiRTOSTaskPriority.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSMsgQSize = usiComponent.createIntegerSymbol("SRV_USI_RTOS_TASK_MSG_QTY", usiRTOSMenu)
+    usiRTOSMsgQSize.setLabel("Maximum Message Queue Size")
+    usiRTOSMsgQSize.setDescription("A µC/OS-III task contains an optional internal message queue (if OS_CFG_TASK_Q_EN is set to DEF_ENABLED in os_cfg.h). This argument specifies the maximum number of messages that the task can receive through this message queue. The user may specify that the task is unable to receive messages by setting this argument to 0")
+    usiRTOSMsgQSize.setDefaultValue(0)
+    usiRTOSMsgQSize.setMin(0)
+    usiRTOSMsgQSize.setVisible(getActiveRtos() == "MicriumOSIII")
+    usiRTOSMsgQSize.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    usiRTOSMsgQSize.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskTimeQuanta = usiComponent.createIntegerSymbol("SRV_USI_RTOS_TASK_TIME_QUANTA", usiRTOSMenu)
+    usiRTOSTaskTimeQuanta.setLabel("Task Time Quanta")
+    usiRTOSTaskTimeQuanta.setDescription("The amount of time (in clock ticks) for the time quanta when Round Robin is enabled. If you specify 0, then the default time quanta will be used which is the tick rate divided by 10.")
+    usiRTOSTaskTimeQuanta.setDefaultValue(0)
+    usiRTOSTaskTimeQuanta.setMin(0)
+    usiRTOSTaskTimeQuanta.setVisible(getActiveRtos() == "MicriumOSIII")
+    usiRTOSTaskTimeQuanta.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    usiRTOSTaskTimeQuanta.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskSpecificOpt = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_OPT_NONE", usiRTOSMenu)
+    usiRTOSTaskSpecificOpt.setLabel("Task Specific Options")
+    usiRTOSTaskSpecificOpt.setDescription("Contains task-specific options. Each option consists of one bit. The option is selected when the bit is set. The current version of µC/OS-III supports the following options:")
+    usiRTOSTaskSpecificOpt.setDefaultValue(True)
+    usiRTOSTaskSpecificOpt.setVisible(getActiveRtos() == "MicriumOSIII")
+    usiRTOSTaskSpecificOpt.setDependencies(commandRtosMicriumOSIIIAppTaskVisibility, ["HarmonyCore.SELECT_RTOS"])
+    usiRTOSTaskSpecificOpt.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskStkChk = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_OPT_STK_CHK", usiRTOSTaskSpecificOpt)
+    usiRTOSTaskStkChk.setLabel("Stack checking is allowed for the task")
+    usiRTOSTaskStkChk.setDescription("Specifies whether stack checking is allowed for the task")
+    usiRTOSTaskStkChk.setDefaultValue(True)
+    usiRTOSTaskStkChk.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["SRV_USI_RTOS_TASK_OPT_NONE"])
+    usiRTOSTaskStkChk.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskStkClr = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_OPT_STK_CLR", usiRTOSTaskSpecificOpt)
+    usiRTOSTaskStkClr.setLabel("Stack needs to be cleared")
+    usiRTOSTaskStkClr.setDescription("Specifies whether the stack needs to be cleared")
+    usiRTOSTaskStkClr.setDefaultValue(True)
+    usiRTOSTaskStkClr.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["SRV_USI_RTOS_TASK_OPT_NONE"])
+    usiRTOSTaskStkClr.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskSaveFp = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_OPT_SAVE_FP", usiRTOSTaskSpecificOpt)
+    usiRTOSTaskSaveFp.setLabel("Floating-point registers needs to be saved")
+    usiRTOSTaskSaveFp.setDescription("Specifies whether floating-point registers are saved. This option is only valid if the processor has floating-point hardware and the processor-specific code saves the floating-point registers")
+    usiRTOSTaskSaveFp.setDefaultValue(False)
+    usiRTOSTaskSaveFp.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["SRV_USI_RTOS_TASK_OPT_NONE"])
+    usiRTOSTaskSaveFp.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSTaskNoTls = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_OPT_NO_TLS", usiRTOSTaskSpecificOpt)
+    usiRTOSTaskNoTls.setLabel("TLS (Thread Local Storage) support needed for the task")
+    usiRTOSTaskNoTls.setDescription("If the caller doesn’t want or need TLS (Thread Local Storage) support for the task being created. If you do not include this option, TLS will be supported by default. TLS support was added in V3.03.00")
+    usiRTOSTaskNoTls.setDefaultValue(False)
+    usiRTOSTaskNoTls.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["SRV_USI_RTOS_TASK_OPT_NONE"])
+    usiRTOSTaskNoTls.setHelp(srv_usi_helpkeyword)
+
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -123,6 +213,14 @@ def instantiateComponent(usiComponent, index):
     usiSystemTasksFile.setOutputName("core.LIST_SYSTEM_TASKS_C_CALL_LIB_TASKS")
     usiSystemTasksFile.setSourcePath("service/usi/templates/system/system_tasks.c.ftl")
     usiSystemTasksFile.setMarkup(True)
+
+    plcSystemRtosTasksFile = usiComponent.createFileSymbol("SRV_USI_SYS_RTOS_TASK", None)
+    plcSystemRtosTasksFile.setType("STRING")
+    plcSystemRtosTasksFile.setOutputName("core.LIST_SYSTEM_RTOS_TASKS_C_DEFINITIONS")
+    plcSystemRtosTasksFile.setSourcePath("service/usi/templates/system/system_rtos_tasks.c.ftl")
+    plcSystemRtosTasksFile.setMarkup(True)
+    plcSystemRtosTasksFile.setEnabled(getActiveRtos() != "BareMetal")
+    plcSystemRtosTasksFile.setDependencies(genRtosTask, ["HarmonyCore.SELECT_RTOS"])
 
 ################################################################################
 #### Business Logic ####

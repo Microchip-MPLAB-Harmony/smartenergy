@@ -202,11 +202,13 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
 {
     USI_USART_OBJ* dObj;
     USI_USART_MSG* pMsg;
-    bool next;
+    bool store;
+    uint8_t charStore;
     
     dObj = (USI_USART_OBJ*)context;
     pMsg = dObj->pRcvMsg;
-    next = false;
+    store = false;
+    charStore = 0;
     
     switch(dObj->devStatus)
     {
@@ -241,7 +243,17 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
                 /* New Message, start reception */
                 dObj->devStatus = USI_USART_RCV;
                 /* Start Counter to discard uncompleted Message */
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+                usiUsartCounterDiscardMsg = 0x100;
+
+                /* Post semaphore to resume task */
+                if (dObj->semaphoreID != NULL)
+                {
+                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                }
+<#else>
                 usiUsartCounterDiscardMsg = 0x10000;
+</#if>
             }            
             break;
             
@@ -264,6 +276,14 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
 				
                 /* Stop Counter to discard uncompleted Message */
                 usiUsartCounterDiscardMsg = 0;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                if (dObj->semaphoreID != NULL)
+                {
+                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                }
+</#if>
             }              
             else if (dObj->rcvChar == USI_ESC_KEY_7D)
             {
@@ -273,7 +293,8 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
             else
             {
                 /* Store character */
-                next = true;
+                store = true;
+                charStore = dObj->rcvChar;
             }
       
             break;
@@ -282,13 +303,15 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
             if (dObj->rcvChar == USI_ESC_KEY_5E)
             {
                 /* Store character after escape it */
-                *pMsg->pDataRd++ = USI_ESC_KEY_7E;
+                store = true;
+                charStore = USI_ESC_KEY_7E;
                 dObj->devStatus = USI_USART_RCV;
             }  
             else if (dObj->rcvChar == USI_ESC_KEY_5D)
             {
                 /* Store character after escape it */
-                *pMsg->pDataRd++ = USI_ESC_KEY_7D;
+                store = true;
+                charStore = USI_ESC_KEY_7D;
                 dObj->devStatus = USI_USART_RCV;
             }
             else
@@ -303,10 +326,10 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
     }    
     
     /* Update pointers */
-    if (next)
+    if (store)
     {
         dObj->byteCount++;
-        if (dObj->byteCount == dObj->rdBufferSize)
+        if (dObj->byteCount > dObj->rdBufferSize)
         {
             /* ERROR: Overflow */
             _USI_USART_ABORT_MSG_IN_QUEUE(dObj);
@@ -315,7 +338,7 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
         }
         else
         {
-            *pMsg->pDataRd++ = dObj->rcvChar;
+            *pMsg->pDataRd++ = charStore;
         }        
     }
     
@@ -331,6 +354,9 @@ static void _USI_USART_PLIB_CALLBACK( uintptr_t context)
 
 DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData)
 {
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    OSAL_RESULT semResult;
+</#if>
     USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     USI_USART_INIT_DATA* dObjInit = (USI_USART_INIT_DATA*)initData;
     
@@ -350,6 +376,16 @@ DRV_HANDLE USI_USART_Initialize(uint32_t index, const void* initData)
     dObj->devStatus = USI_USART_IDLE;
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Create semaphore. It is used to suspend and resume task. */
+    semResult = OSAL_SEM_Create(&dObj->semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
+    if ((semResult != OSAL_RESULT_TRUE) || (dObj->semaphoreID == NULL))
+    {
+        /* Error: Not enough memory to create semaphore */
+        dObj->usiStatus = SRV_USI_STATUS_ERROR;
+    }
+
+</#if>
     return (DRV_HANDLE)index;
 }
 
@@ -478,6 +514,22 @@ void USI_USART_Tasks (uint32_t index)
         return;
     }
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Suspend task until semaphore is posted or timeout expires */
+    if (dObj->semaphoreID != NULL)
+    {
+        uint16_t waitMS = 1;
+
+        /* If counter to discard message is active, wait for 1 ms. Otherwise, wait forever. */
+        if (usiUsartCounterDiscardMsg == 0)
+        {
+            waitMS = OSAL_WAIT_FOREVER;
+        }
+
+        OSAL_SEM_Pend(&dObj->semaphoreID, waitMS);
+    }
+
+</#if>
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;

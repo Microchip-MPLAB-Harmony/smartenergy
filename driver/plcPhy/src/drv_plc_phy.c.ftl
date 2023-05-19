@@ -247,7 +247,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
     {
         uint16_t waitMS = 1;
 
-        /* If PLC device is running, wait forever. Otherwise, wait for 1 ms  */
+        /* If PLC device is running, wait forever. Otherwise, wait for 1 ms. */
         if (gDrvPlcPhyObj.status == SYS_STATUS_READY)
         {
             waitMS = OSAL_WAIT_FOREVER;

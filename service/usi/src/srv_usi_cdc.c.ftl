@@ -96,6 +96,9 @@ static void _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
     
     while(readBytes)
     {
+        bool store = false;
+        uint8_t charStore = 0;
+
         switch(dObj->devStatus)
         {
             case USI_CDC_IDLE:
@@ -136,21 +139,8 @@ static void _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
                 } 
                 else
                 {
-                    if (dObj->usiRdInIndex <= dObj->usiEndIndex)
-                    {
-                        /* Store character */
-                        *dObj->usiRdInIndex++ = *pData;
-                        dObj->usiNumBytesRead++;
-                    }
-                    else
-                    {
-                        /* ERROR: Full buffer - restore USI buffer */
-                        dObj->usiRdInIndex = bookmark;
-                        dObj->usiNumBytesRead = 0;
-                        dObj->devStatus = USI_CDC_IDLE;
-                        /* Force exit loop */
-                        readBytes = 0;
-                    }
+                    store = true;
+                    charStore = *pData;
                 }
 
                 break;
@@ -159,16 +149,16 @@ static void _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
                 if (*pData == USI_ESC_KEY_5E)
                 {
                     /* Store character after escape it */
-                    *dObj->usiRdInIndex++ = USI_ESC_KEY_7E;
+                    store = true;
+                    charStore = USI_ESC_KEY_7E;
                     dObj->devStatus = USI_CDC_RCV;
-                    dObj->usiNumBytesRead++;
                 }  
                 else if (*pData == USI_ESC_KEY_5D)
                 {
                     /* Store character after escape it */
-                    *dObj->usiRdInIndex++ = USI_ESC_KEY_7D;
+                    store = true;
+                    charStore = USI_ESC_KEY_7D;
                     dObj->devStatus = USI_CDC_RCV;
-                    dObj->usiNumBytesRead++;
                 }
                 else
                 {
@@ -181,8 +171,27 @@ static void _USI_CDC_Transfer_Received_Data(USI_CDC_OBJ* dObj)
                 }
 
                 break;
-        }    
-        
+        }
+
+        if (store)
+        {
+            if (dObj->usiRdInIndex < dObj->usiEndIndex)
+            {
+                /* Store character */
+                *dObj->usiRdInIndex++ = charStore;
+                dObj->usiNumBytesRead++;
+            }
+            else
+            {
+                /* ERROR: Full buffer - restore USI buffer */
+                dObj->usiRdInIndex = bookmark;
+                dObj->usiNumBytesRead = 0;
+                dObj->devStatus = USI_CDC_IDLE;
+                /* Force exit loop */
+                readBytes = 0;
+            }
+        }
+
         if (readBytes) 
         {
             readBytes--;
@@ -271,7 +280,15 @@ static USB_DEVICE_CDC_EVENT_RESPONSE _USB_CDC_DeviceCDCEventHandler(USB_DEVICE_C
             {
                 dObj->cdcIsReadComplete = true;
                 
-                dObj->cdcNumBytesRead = eventDataRead->length; 
+                dObj->cdcNumBytesRead = eventDataRead->length;
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+
+                /* Post semaphore to resume task */
+                if (dObj->semaphoreID != NULL)
+                {
+                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                }
+</#if>
             }
             break;
 
@@ -331,6 +348,9 @@ static void _USI_CDC_DeviceEventHandler(USB_DEVICE_EVENT event, void * eventData
                 USB_DEVICE_CDC_EventHandlerSet(dObj->cdcInstanceIndex, _USB_CDC_DeviceCDCEventHandler, (uintptr_t)dObj);
                 /* Mark that the device is now configured */
                 dObj->usiStatus = SRV_USI_STATUS_CONFIGURED;
+                /* Request first read */
+                USB_DEVICE_CDC_Read(dObj->cdcInstanceIndex, &dObj->readTransferHandle,
+                        dObj->cdcReadBuffer, dObj->cdcBufferSize);
             }
             break;
 
@@ -362,6 +382,9 @@ static void _USI_CDC_DeviceEventHandler(USB_DEVICE_EVENT event, void * eventData
 
 DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData)
 {
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    OSAL_RESULT semResult;
+</#if>
     USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
     USI_CDC_INIT_DATA* dObjInit = (USI_CDC_INIT_DATA*)initData;
     
@@ -385,10 +408,20 @@ DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData)
     dObj->devStatus = USI_CDC_IDLE;
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 
-    dObj->cdcIsReadComplete = true;
+    dObj->cdcIsReadComplete = false;
     dObj->readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
     dObj->writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Create semaphore. It is used to suspend and resume task. */
+    semResult = OSAL_SEM_Create(&dObj->semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
+    if ((semResult != OSAL_RESULT_TRUE) || (dObj->semaphoreID == NULL))
+    {
+        /* Error: Not enough memory to create semaphore */
+        dObj->usiStatus = SRV_USI_STATUS_ERROR;
+    }
+
+</#if>
     return (DRV_HANDLE)index;
 }
 
@@ -483,6 +516,9 @@ void USI_CDC_Close(uint32_t index)
         return;
     }
 
+    /* Close the USB device layer */
+    USB_DEVICE_Close(dObj->devHandle);
+
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
 }
 
@@ -509,6 +545,14 @@ void USI_CDC_Tasks (uint32_t index)
         return;
     }
 
+<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
+    /* Suspend task until semaphore is posted */
+    if (dObj->semaphoreID != NULL)
+    {
+        OSAL_SEM_Pend(&dObj->semaphoreID, OSAL_WAIT_FOREVER);
+    }
+
+</#if>
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;
@@ -517,16 +561,18 @@ void USI_CDC_Tasks (uint32_t index)
     /* CDC reception process */
     if (dObj->cdcIsReadComplete == true)
     {
+        size_t cdcReadLen = dObj->cdcBufferSize;
+
         dObj->cdcIsReadComplete = false;
         
         /* Extract CDC received data to USI buffer */
         _USI_CDC_Transfer_Received_Data(dObj);
         
-        if ((dObj->usiEndIndex - dObj->usiRdInIndex) >= dObj->cdcBufferSize)
+        if ((dObj->usiEndIndex - dObj->usiRdInIndex) < dObj->cdcBufferSize)
         {
-            USB_DEVICE_CDC_Read (dObj->cdcInstanceIndex, &dObj->readTransferHandle, dObj->cdcReadBuffer,
-                    dObj->cdcBufferSize);
+            cdcReadLen = dObj->usiEndIndex - dObj->usiRdInIndex;
         }
-        
+
+        USB_DEVICE_CDC_Read(dObj->cdcInstanceIndex, &dObj->readTransferHandle, dObj->cdcReadBuffer, cdcReadLen);
     } 
 }
