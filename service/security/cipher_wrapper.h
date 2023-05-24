@@ -89,7 +89,7 @@
     keyLen - Length of key in bytes.
 
   Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful initalization.
+    - CIPHER_WRAPPER_RETURN_GOOD: Successful initialization.
     - Any other value: Error in the initialization.
 
   Example:
@@ -121,7 +121,7 @@ int32_t CIPHER_Wrapper_CmacStart(const uint8_t *key, uint32_t keyLen);
 
   Parameters:
     input - Pointer to buffer holding the input data.
-    ilen  - Lenght of the input data in bytes.
+    iLen  - Length of the input data in bytes.
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful process.
@@ -204,7 +204,7 @@ int32_t CIPHER_Wrapper_CmacFinish(uint8_t *output);
     keyLen - Length of key in bytes.
 
   Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful initalization.
+    - CIPHER_WRAPPER_RETURN_GOOD: Successful initialization.
     - Any other value: Error in the initialization.
 
   Example:
@@ -357,7 +357,7 @@ int32_t CIPHER_Wrapper_CcmEncryptAndTag(uint32_t length,
     keyLen - Length of key in bytes.
 
   Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful initalization.
+    - CIPHER_WRAPPER_RETURN_GOOD: Successful initialization.
     - Any other value: Error in the initialization.
 
   Example:
