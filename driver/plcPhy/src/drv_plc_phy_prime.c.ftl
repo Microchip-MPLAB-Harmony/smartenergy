@@ -446,18 +446,21 @@ void DRV_PLC_PHY_Task(void)
         if ((gPlcPhyObj->evTxCfm[idx]) || (gPlcPhyObj->evResetTxCfm))
         {
             DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
-            
+
+            /* Reset event flag */
+            gPlcPhyObj->evTxCfm[idx] = false;
+
             if (gPlcPhyObj->evResetTxCfm)
             {
-				gPlcPhyObj->evResetTxCfm = false;
-            	gPlcPhyObj->state[idx] = DRV_PLC_PHY_STATE_IDLE;
-				
+                gPlcPhyObj->evResetTxCfm = false;
+                gPlcPhyObj->state[idx] = DRV_PLC_PHY_STATE_IDLE;
+
                 cfmObj.bufferId = (DRV_PLC_PHY_BUFFER_ID)idx;
                 cfmObj.rmsCalc = 0;
                 cfmObj.time = 0;
                 cfmObj.result = DRV_PLC_PHY_TX_RESULT_NO_TX;
             } else {
-                _DRV_PLC_PHY_COMM_TxCfmEvent(&cfmObj, idx);            
+                _DRV_PLC_PHY_COMM_TxCfmEvent(&cfmObj, idx);
             }
             
             if (gPlcPhyObj->txCfmCallback)
@@ -465,26 +468,23 @@ void DRV_PLC_PHY_Task(void)
                 /* Report to upper layer */
                 gPlcPhyObj->txCfmCallback(&cfmObj, gPlcPhyObj->contextCfm);
             }
-            
-            /* Reset event flag */
-            gPlcPhyObj->evTxCfm[idx] = false;
         }
     }
     
     if (gPlcPhyObj->evRxPar && gPlcPhyObj->evRxDat)
     {
         DRV_PLC_PHY_RECEPTION_OBJ rxObj;
-        
+
+        /* Reset event flags */
+        gPlcPhyObj->evRxPar = false;
+        gPlcPhyObj->evRxDat = false;
+
         _DRV_PLC_PHY_COMM_RxEvent(&rxObj);
         if (gPlcPhyObj->dataIndCallback)
         {
             /* Report to upper layer */
             gPlcPhyObj->dataIndCallback(&rxObj, gPlcPhyObj->contextInd);
         }
-        
-        /* Reset event flags */
-        gPlcPhyObj->evRxPar = false;
-        gPlcPhyObj->evRxDat = false;
     }
 }
 

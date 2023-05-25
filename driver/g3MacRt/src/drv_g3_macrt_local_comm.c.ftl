@@ -273,7 +273,10 @@ void DRV_G3_MACRT_Task(void)
     {
         MAC_RT_TX_CFM_OBJ *pTxCfmObj;
         MAC_RT_TX_CFM_OBJ txCfmObj;
-    
+
+        /* Reset event flag */
+        gG3MacRtObj->evTxCfm = false;
+
         if (gG3MacRtObj->evResetTxCfm)
         {
             /* Reset event flag */
@@ -295,68 +298,72 @@ void DRV_G3_MACRT_Task(void)
         
         /* Update MAC RT state */
         gG3MacRtObj->state = DRV_G3_MACRT_STATE_READY;
-        /* Reset event flag */
-        gG3MacRtObj->evTxCfm = false;
     }
     
     if (gG3MacRtObj->evRxParams)
-    {   
+    {
+        /* Reset event flag */
+        gG3MacRtObj->evRxParams = false;
+
         if (gG3MacRtObj->rxParamsIndCallback)
         {
             /* Report to upper layer */
             gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters);
         }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evRxParams = false;
     }
     
     if (gG3MacRtObj->evDataIndLength)
-    {   
+    {
+        uint16_t evDataLength = gG3MacRtObj->evDataIndLength;
+
+        /* Reset event flag */
+        gG3MacRtObj->evDataIndLength = 0;
+
         if (gG3MacRtObj->dataIndCallback)
         {
             /* Report to upper layer */
-            gG3MacRtObj->dataIndCallback(gG3RxData, gG3MacRtObj->evDataIndLength);
+            gG3MacRtObj->dataIndCallback(gG3RxData, evDataLength);
         }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evDataIndLength = 0;
     }
     
     if (gG3MacRtObj->evMacSnifLength)
-    {   
+    {
+        uint16_t evDataLength = gG3MacRtObj->evMacSnifLength;
+
+        /* Reset event flag */
+        gG3MacRtObj->evMacSnifLength = 0;
+
         if ((gG3MacRtObj->macSnifferIndCallback) && (gG3MacRtObj->pMacDataSniffer))
         {
             /* Report to upper layer */
-            gG3MacRtObj->macSnifferIndCallback(gG3MacRtObj->pMacDataSniffer, gG3MacRtObj->evMacSnifLength);
+            gG3MacRtObj->macSnifferIndCallback(gG3MacRtObj->pMacDataSniffer, evDataLength);
         }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evMacSnifLength = 0;
     }
     
     if (gG3MacRtObj->evCommStatus)
-    {   
+    {
+        /* Reset event flag */
+        gG3MacRtObj->evCommStatus = false;
+
         if (gG3MacRtObj->commStatusIndCallback)
         {
             /* Report to upper layer */
             gG3MacRtObj->commStatusIndCallback(gG3CommStatus);
         }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evCommStatus = false;
     }
     
     if (gG3MacRtObj->evPhySnifLength)
-    {   
+    {
+        uint16_t evDataLength = gG3MacRtObj->evPhySnifLength;
+
+        /* Reset event flag */
+        gG3MacRtObj->evPhySnifLength = 0;
+
         if ((gG3MacRtObj->phySnifferIndCallback) && (gG3MacRtObj->pPhyDataSniffer))
         {
             /* Report to upper layer */
-            gG3MacRtObj->phySnifferIndCallback(gG3MacRtObj->evPhySnifLength);
+            gG3MacRtObj->phySnifferIndCallback(evDataLength);
         }
-        
-        /* Reset event flag */
-        gG3MacRtObj->evPhySnifLength = 0;
     }
 }
 
