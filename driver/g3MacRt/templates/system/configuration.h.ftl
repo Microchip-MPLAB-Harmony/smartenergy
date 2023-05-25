@@ -34,11 +34,14 @@
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
 #define DRV_PLC_SPI_CS_PIN                    ${DRV_PLC_SPI_CS_PIN?string}
 #define DRV_PLC_EXT_INT_SRC                   EIC_IRQn
+#define DRV_PLC_EXT_INT_PIO                   ${DRV_PLC_EXT_INT_PIN?string}
+#define DRV_PLC_EXT_INT_PIN                   ${DRV_PLC_EIC_SIGNAL?string}
 <#else>
 #define DRV_PLC_EXT_INT_PIO_PORT              ${DRV_PLC_EXT_INT_PIO_PORT?string}
 #define DRV_PLC_EXT_INT_SRC                   ${DRV_PLC_EXT_INT_SRC?string}
-</#if>
+#define DRV_PLC_EXT_INT_PIO                   ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_EXT_INT_PIN                   ${DRV_PLC_EXT_INT_PIN?string}
+</#if>
 #define DRV_PLC_RESET_PIN                     ${DRV_PLC_RESET_PIN?string}
 #define DRV_PLC_LDO_EN_PIN                    ${DRV_PLC_LDO_EN_PIN?string}
 <#if DRV_PLC_MODE == "PL460">

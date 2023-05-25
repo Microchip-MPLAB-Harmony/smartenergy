@@ -249,6 +249,9 @@ typedef struct
     /* PLC external interrupt pin */
     SYS_PORT_PIN                           extIntPin;
 
+    /* PLC external interrupt pio */
+    SYS_PORT_PIN                           extIntPio;
+
 <#if DRV_PLC_MODE == "PL460"> 
     /* PLC Tx Enable pin */
     SYS_PORT_PIN                           txEnablePin;

@@ -567,6 +567,44 @@ def identifyPeripherals(component):
     plcPioId.setVisible(False)
     plcEicId.setVisible(False)
 
+def getEICSignals():
+    eicSignalsList = []
+    for signal in eicSignalsATDF:
+        index = signal.getAttribute("index")
+        if (index != None):
+            eicPin = "EIC_PIN_{}".format(index)
+            if eicPin not in eicSignalsList:
+                eicSignalsList.append(eicPin)
+    
+    if (eicSignalsList == []):
+        eicSignalsList = ["None"]
+        
+    return eicSignalsList
+
+def getEICSignalsFromPin(pin):
+    eicList = []
+    eicPad = "{}{:02d}".format(pin.replace("R","P")[:2],int(pin[2:]))
+    for signal in eicSignalsATDF:
+        pad = signal.getAttribute("pad")
+        index = signal.getAttribute("index")
+        if ((pad in eicPad) and (index!=None)):
+            eicList.append("EIC_PIN_" + index)
+
+    return eicList
+
+def checkEICSignals(symbol, event):
+    index = plcExtIntPin.getValue()
+    pinDesc = plcExtIntPin.getKeyDescription(index)
+    eic = plcEICSignal.getValue()
+
+    eicSignalsFromPin = getEICSignalsFromPin(pinDesc)
+
+    if eic in eicSignalsFromPin:
+        symbol.setVisible(False)
+    else:
+        symbol.setVisible(True)
+
+
 def instantiateComponent(g3MacRtComponent):
     global isDMAPresent
 
@@ -724,6 +762,7 @@ def instantiateComponent(g3MacRtComponent):
     plibConfigComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_PLIB_CONFIG_COMMENT", None)
     plibConfigComment.setVisible(False)
 
+    global plcExtIntPin
     plcExtIntPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_EXT_INT_PIN", None)
     plcExtIntPin.setLabel("External Interrupt Pin")
     plcExtIntPin.setDefaultValue(0)
@@ -809,10 +848,10 @@ def instantiateComponent(g3MacRtComponent):
 
     availablePinDictionary = {}
 
-    eic = Database.getSymbolValue("drvG3MacRt", "PLC_EIC_ID")
-
     # Send message to core to get available pins
     availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
+
+    eic = Database.getSymbolValue("drvG3MacRt", "PLC_EIC_ID")
 
     for pad in sort_alphanumeric(availablePinDictionary.values()):
         key = "SYS_PORT_PIN_" + pad
@@ -823,29 +862,30 @@ def instantiateComponent(g3MacRtComponent):
         plcTxEnablePin.addKey(key, value, description)
         plcStbyPin.addKey(key, value, description)
         plcThMonPin.addKey(key, value, description)
-        if eic == "0":
-            plcExtIntPin.addKey(key, value, description)
-        else:
+        plcExtIntPin.addKey(key, value, description)
+        if eic != "0":
             plcSPICSPin.addKey(key, value, description)
-
-    if (eic != "0"):
-        plcSPICSPin.setVisible(True) # Set SPI CS as Visible
-        eicRegGroup = ATDF.getNode('/avr-tools-device-file/modules/module@[name="EIC"]').getChildren()
-        eicChannelCount = 0
-        for eicReg in eicRegGroup:
-            if("EIC_CONFIG__SENSE" in eicReg.getAttribute("name")):
-                eicChannelCount += 1
-
-        for pin in range(0, eicChannelCount):
-            key = "EIC_PIN_" + str(pin)
-            value = key
-            description = key
-            plcExtIntPin.addKey(key, value, description)
+            plcSPICSPin.setVisible(True) # Set SPI CS as Visible
 
     plcSymPinConfigComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_PINS_CONFIG_COMMENT", None)
     plcSymPinConfigComment.setVisible(True)
     plcSymPinConfigComment.setLabel("***Above selected pins must be properly configured by Pin Manager***")
-    
+
+    if (eic != "0"):
+        global eicSignalsATDF
+        eicSignalsATDF = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="EIC"]/instance/signals').getChildren()
+        
+        global plcEICSignal
+        eicSignals = getEICSignals()
+        plcEICSignal = g3MacRtComponent.createComboSymbol("DRV_PLC_EIC_SIGNAL", plcExtIntPin, eicSignals)
+        plcEICSignal.setLabel("EIC signal")
+        plcEICSignal.setDefaultValue(eicSignals[0])
+
+        plcEICSignalComment = g3MacRtComponent.createCommentSymbol("DRV_PLC_EIC_SIGNAL_COMMENT", plcExtIntPin)
+        plcEICSignalComment.setVisible(False)
+        plcEICSignalComment.setLabel("***Selected EIC signal cannot be assigned to PIN value. Please check it with the PIN Manager***")
+        plcEICSignalComment.setDependencies(checkEICSignals, ["DRV_PLC_EXT_INT_PIN" ,"DRV_PLC_EIC_SIGNAL"])
+
     ##### Do not modify below symbol names as they are used by Memory Driver #####
 
     global dmaChannelCount

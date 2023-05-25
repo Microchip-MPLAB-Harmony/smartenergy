@@ -373,10 +373,10 @@ void DRV_G3_MACRT_TxRequest(const DRV_HANDLE handle, uint8_t *pData, uint16_t le
        (gG3MacRtObj->state == DRV_G3_MACRT_STATE_READY))
     {
         /* Check Length */
-		if ((length > 0) && (length <= (DRV_G3_MACRT_DATA_MAX_SIZE))) {
+        if ((length > 0) && (length <= (DRV_G3_MACRT_DATA_MAX_SIZE))) {
             uint8_t *pTxData;
             
-			/* Update PLC state: transmitting */
+            /* Update PLC state: transmitting */
             gG3MacRtObj->state = DRV_G3_MACRT_STATE_WAITING_TX_CFM;
 
             /* Build and Send TX data */
@@ -385,7 +385,7 @@ void DRV_G3_MACRT_TxRequest(const DRV_HANDLE handle, uint8_t *pData, uint16_t le
             *pTxData++= (uint8_t)(length >> 8);
             memcpy(pTxData, pData, length);
             _DRV_G3_MACRT_COMM_SpiWriteCmd(TX_REQ_ID, gG3TxData, length + 2);
-		}
+        }
         else
         {
             MAC_RT_TX_CFM_OBJ cfmObj;
@@ -437,31 +437,31 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBGet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         _DRV_G3_MACRT_COMM_SpiWriteCmd(REG_RSP_ID, gG3RegResponse, pDst - gG3RegResponse);
         
         /* Sync function: Wait to response from interrupt */
-		waitCounter = 100;
-		dummyValue = gG3MacRtObj->evRegRspLength;
-		while (!dummyValue) {
-			/* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
-			__asm("WFI");
-			if (!waitCounter--) {
-				/* Error in get cmd */
-				return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
-			}
+        waitCounter = 100;
+        dummyValue = gG3MacRtObj->evRegRspLength;
+        while (!dummyValue) {
+            /* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
+            __asm("WFI");
+            if (!waitCounter--) {
+                /* Error in get cmd */
+                return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
+            }
 
-			dummyValue = gG3MacRtObj->evRegRspLength;
-		}
+            dummyValue = gG3MacRtObj->evRegRspLength;
+        }
 
-		/* Check Response Content */
-		if (*gG3RegResponse != MAC_RT_STATUS_SUCCESS) {
-			/* Not success process */
-			return (MAC_RT_STATUS)*gG3RegResponse;
-		}
+        /* Check Response Content */
+        if (*gG3RegResponse != MAC_RT_STATUS_SUCCESS) {
+            /* Not success process */
+            return (MAC_RT_STATUS)*gG3RegResponse;
+        }
 
         /* Copy Reg data in PIB object */
-		memcpy(pibObj->pData, gG3RegResponse + 8, gG3MacRtObj->evRegRspLength);
-		pibObj->length = gG3MacRtObj->evRegRspLength;
+        memcpy(pibObj->pData, gG3RegResponse + 8, gG3MacRtObj->evRegRspLength);
+        pibObj->length = gG3MacRtObj->evRegRspLength;
 
-		/* Reset event flag */
-		gG3MacRtObj->evRegRspLength = 0;
+        /* Reset event flag */
+        gG3MacRtObj->evRegRspLength = 0;
 
         return MAC_RT_STATUS_SUCCESS;
     }
@@ -478,10 +478,10 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         uint16_t dummyValue;
         
         /* Check Length */
-		if (pibObj->length > MAC_RT_PIB_MAX_VALUE_LENGTH) {
-			/* Length error */
-			return MAC_RT_STATUS_INVALID_PARAMETER;
-		}
+        if (pibObj->length > MAC_RT_PIB_MAX_VALUE_LENGTH) {
+            /* Length error */
+            return MAC_RT_STATUS_INVALID_PARAMETER;
+        }
 
         /* Reset event flag */
         gG3MacRtObj->evRegRspLength = 0;
@@ -504,18 +504,18 @@ MAC_RT_STATUS DRV_G3_MACRT_PIBSet(const DRV_HANDLE handle, MAC_RT_PIB_OBJ *pibOb
         _DRV_G3_MACRT_COMM_SpiWriteCmd(REG_RSP_ID, gG3RegResponse, pDst - gG3RegResponse);
         
         /* Sync function: Wait to response from interrupt */
-		waitCounter = 100;
-		dummyValue = gG3MacRtObj->evRegRspLength;
-		while (!dummyValue) {
-			/* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
-			__asm("WFI");
-			if (!waitCounter--) {
-				/* Error in get cmd */
-				return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
-			}
+        waitCounter = 100;
+        dummyValue = gG3MacRtObj->evRegRspLength;
+        while (!dummyValue) {
+            /* Wait for interrupt. The CPU is in sleep mode until an interrupt occurs. */
+            __asm("WFI");
+            if (!waitCounter--) {
+                /* Error in get cmd */
+                return MAC_RT_STATUS_TRANSACTION_OVERFLOW;
+            }
 
-			dummyValue = gG3MacRtObj->evRegRspLength;
-		}
+            dummyValue = gG3MacRtObj->evRegRspLength;
+        }
 
         /* Reset event flag */
         gG3MacRtObj->evRegRspLength = 0;

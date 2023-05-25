@@ -142,12 +142,11 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
     SYS_PORT_PinClear(sPlcPlib->stByPin);
 
 </#if>
-
     /* Disable External Interrupt */
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
-    EIC_InterruptDisable(DRV_PLC_EXT_INT_PIN);
+    EIC_InterruptDisable((EIC_PIN)sPlcPlib->extIntPin);
 <#else>
-    PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
+    PIO_PinInterruptDisable((PIO_PIN)sPlcPlib->extIntPin);
 </#if>
     /* Enable External Interrupt Source */
     SYS_INT_SourceEnable(DRV_PLC_EXT_INT_SRC);
@@ -253,13 +252,16 @@ void DRV_PLC_HAL_Reset(void)
 <#if DRV_PLC_SLEEP_MODE == true>        
 void DRV_PLC_HAL_SetStandBy(bool enable)
 {
-    if (enable) {
+    if (enable) 
+    {
         /* Enable Reset pin */
         SYS_PORT_PinClear(sPlcPlib->resetPin);
 
         /* Enable Stby Pin */
         SYS_PORT_PinSet(sPlcPlib->stByPin);
-    } else {
+    } 
+    else 
+    {
         /* Disable Stby Pin */
         SYS_PORT_PinClear(sPlcPlib->stByPin);
 
@@ -275,9 +277,12 @@ void DRV_PLC_HAL_SetStandBy(bool enable)
 <#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
 bool DRV_PLC_HAL_GetThermalMonitor(void)
 {
-    if (SYS_PORT_PinRead(sPlcPlib->thMonPin)) {
+    if (SYS_PORT_PinRead(sPlcPlib->thMonPin)) 
+    {
         return false;
-    } else {
+    } 
+    else 
+    {
         return true;
     }
 }
@@ -286,10 +291,13 @@ bool DRV_PLC_HAL_GetThermalMonitor(void)
 <#if DRV_PLC_MODE == "PL460"> 
 void DRV_PLC_HAL_SetTxEnable(bool enable)
 {
-    if (enable) {
+    if (enable) 
+    {
         /* Set TX Enable Pin */
         SYS_PORT_PinSet(sPlcPlib->txEnablePin);
-    } else {
+    } 
+    else 
+    {
         /* Clear TX Enable Pin */
         SYS_PORT_PinClear(sPlcPlib->txEnablePin);
     }
@@ -313,17 +321,17 @@ void DRV_PLC_HAL_EnableInterrupts(bool enable)
     {
         SYS_INT_SourceStatusClear(DRV_PLC_EXT_INT_SRC);
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
-        EIC_InterruptEnable(DRV_PLC_EXT_INT_PIN);
+        EIC_InterruptEnable((EIC_PIN)sPlcPlib->extIntPin);
 <#else>
-        PIO_PinInterruptEnable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
+        PIO_PinInterruptEnable((PIO_PIN)sPlcPlib->extIntPin);
 </#if>
     }
     else
     {
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
-        EIC_InterruptDisable(DRV_PLC_EXT_INT_PIN);
+        EIC_InterruptDisable((EIC_PIN)sPlcPlib->extIntPin);
 <#else>
-        PIO_PinInterruptDisable((PIO_PIN)DRV_PLC_EXT_INT_PIN);
+        PIO_PinInterruptDisable((PIO_PIN)sPlcPlib->extIntPin);
 </#if>
     }
 }
@@ -360,10 +368,12 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
         
-        if (pDataWr) {
+        if (pDataWr) 
+        {
             memcpy(pTxData, pDataWr, dataLength);
         }
-        else{
+        else
+        {
             /* Insert dummy data */
             memset(pTxData, 0, dataLength);
         }
@@ -375,6 +385,7 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
     size = pTxData - sTxSpiData;
 
 <#if core.DMA_ENABLE?has_content>
+<#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
     if (DATA_CACHE_IS_ENABLED())
     {
         /* Invalidate cache lines having received buffer before using it
@@ -382,7 +393,8 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
         DCACHE_CLEAN_BY_ADDR((uint32_t *)sTxSpiData, HAL_SPI_BUFFER_SIZE);
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
-
+    
+</#if> 
     /* Assert CS pin */
     SYS_PORT_PinClear(sPlcPlib->spiCSPin);
    
@@ -458,6 +470,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     }
        
 <#if core.DMA_ENABLE?has_content>
+<#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
     if (DATA_CACHE_IS_ENABLED())
     {
         /* Invalidate cache lines having received buffer before using it
@@ -466,6 +479,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
         DCACHE_INVALIDATE_BY_ADDR((uint32_t *)sRxSpiData, HAL_SPI_BUFFER_SIZE);
     }
 
+</#if>  
     /* Assert CS pin */
     SYS_PORT_PinClear(sPlcPlib->spiCSPin);
    
@@ -535,10 +549,12 @@ void DRV_PLC_HAL_SendBootCmd(uint16_t cmd, uint32_t addr, uint32_t dataLength, u
             dataLength = HAL_SPI_BUFFER_SIZE - 6;
         }
         
-        if (pDataWr) {
+        if (pDataWr) 
+        {
             memcpy(pTxData, pDataWr, dataLength);
         }
-        else{
+        else
+        {
             /* Insert dummy data */
             memset(pTxData, 0, dataLength);
         }

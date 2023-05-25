@@ -59,18 +59,18 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .dmaChannelTx = SYS_DMA_CHANNEL_${DRV_PLC_TX_DMA_CHANNEL?string},
 
     /* DMA Channel for Receive */
-    .dmaChannelRx  = SYS_DMA_CHANNEL_${DRV_PLC_RX_DMA_CHANNEL?string},
+    .dmaChannelRx = SYS_DMA_CHANNEL_${DRV_PLC_RX_DMA_CHANNEL?string},
 
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
     /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(${SPI_PLIB}_REGS->SPIM.SERCOM_DATA),
+    .spiAddressTx = (void *)&(${SPI_PLIB}_REGS->SPIM.SERCOM_DATA),
 
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(${SPI_PLIB}_REGS->SPIM.SERCOM_DATA),
 
 <#else>
     /* SPI Transmit Register */
-    .spiAddressTx =  (void *)&(${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_TDR),
+    .spiAddressTx = (void *)&(${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_TDR),
 
     /* SPI Receive Register */
     .spiAddressRx  = (void *)&(${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_REGS->SPI_RDR),
@@ -97,6 +97,9 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
        
     /* PLC External Interrupt Pin */
     .extIntPin = DRV_PLC_EXT_INT_PIN,
+       
+    /* PLC External Interrupt Pio */
+    .extIntPio = DRV_PLC_EXT_INT_PIO,
 
 <#if DRV_PLC_MODE == "PL460"> 
     /* PLC TX Enable Pin */
