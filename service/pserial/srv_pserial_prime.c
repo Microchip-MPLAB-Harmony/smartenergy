@@ -174,13 +174,19 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t*
         pDataDst->pTransmitData[1] = 0xAA;
         pDataDst->pTransmitData[2] = 0xAA;
         pDataDst->dataLength += 3;
-        /* copy data */
-        memcpy(pDataDst->pTransmitData + 3, pDataSrc, pDataDst->dataLength);
+        if (pDataDst->dataLength <= PSERIAL_MAX_DATA_LEN)
+        {
+            /* copy data */
+            memcpy(pDataDst->pTransmitData + 3, pDataSrc, pDataDst->dataLength);
+        }
     }
     else
     {
-        /* copy data */
-        memcpy(pDataDst->pTransmitData, pDataSrc, pDataDst->dataLength);
+        if (pDataDst->dataLength <= PSERIAL_MAX_DATA_LEN)
+        {
+            /* copy data */
+            memcpy(pDataDst->pTransmitData, pDataSrc, pDataDst->dataLength);
+        }
     }
 }
 
