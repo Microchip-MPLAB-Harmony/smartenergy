@@ -160,8 +160,7 @@ int32_t CIPHER_Wrapper_CmacUpdate(const uint8_t *input, uint32_t iLen);
 
   Parameters:
     output - Pointer to buffer holding the output data. The size of the buffer
-             must be equal or larger than the sum of input data provided with
-             CIPHER_Wrapper_CmacUpdate.
+             must be equal or larger than AES_BLOCK_SIZE (16 bytes).
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful process.
@@ -171,7 +170,7 @@ int32_t CIPHER_Wrapper_CmacUpdate(const uint8_t *input, uint32_t iLen);
     <code>
     int32_t ret;
     uint8_t in1[] = { some input data };
-    uint8_t out1[sizeof(in1)];
+    uint8_t out1[AES_BLOCK_SIZE];
     uint8_t key[] = { some key };
 
     ret = CIPHER_Wrapper_CmacStart(key, sizeof(key));
@@ -309,8 +308,8 @@ int32_t CIPHER_Wrapper_CcmAuthDecrypt(uint32_t length,
     tagLen  - Length of the authentication field in bytes.
 
   Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful decryption.
-    - Any other value: Error in the decryption.
+    - CIPHER_WRAPPER_RETURN_GOOD: Successful encryption.
+    - Any other value: Error in the encryption.
 
   Example:
     <code>
@@ -400,8 +399,8 @@ int32_t CIPHER_Wrapper_EaxInitKey(const uint8_t *key, uint32_t keyLen);
     tagLen  - Length of the tag in bytes.
 
   Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful decryption.
-    - Any other value: Error in the decryption.
+    - CIPHER_WRAPPER_RETURN_GOOD: Successful encryption.
+    - Any other value: Error in the encryption.
 
   Example:
     <code>

@@ -81,8 +81,8 @@
 
   Example:
     <code>
-    char in1[CRYPT_AES_BLOCK_SIZE];
-    char out1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t in1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t out1[CRYPT_AES_BLOCK_SIZE];
     uint8_t key[] = { some 16, 24, or 32 byte key };
 
     AES_Wrapper_ContextInit();
@@ -118,8 +118,8 @@ void AES_Wrapper_ContextInit(void);
 
   Example:
     <code>
-    char in1[CRYPT_AES_BLOCK_SIZE];
-    char out1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t in1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t out1[CRYPT_AES_BLOCK_SIZE];
     uint8_t key[] = { some 16, 24, or 32 byte key };
 
     AES_Wrapper_ContextInit();
@@ -156,8 +156,8 @@ void AES_Wrapper_ContextFree(void);
 
   Example:
     <code>
-    char in1[CRYPT_AES_BLOCK_SIZE];
-    char out1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t in1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t out1[CRYPT_AES_BLOCK_SIZE];
     uint8_t key[] = { some 16, 24, or 32 byte key };
 
     AES_Wrapper_KeySet(key, sizeof(key));
@@ -192,8 +192,8 @@ void AES_Wrapper_Encrypt(const uint8_t *in, uint8_t *out);
 
   Example:
     <code>
-    char in1[CRYPT_AES_BLOCK_SIZE];
-    char out1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t in1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t out1[CRYPT_AES_BLOCK_SIZE];
     uint8_t key[] = { some 16, 24, or 32 byte key };
 
     AES_Wrapper_KeySet(key, sizeof(key));
@@ -295,8 +295,8 @@ void AES_Wrapper_SetEncryptKey(const uint8_t *key, uint32_t keyLen);
 
   Example:
     <code>
-    char in1[CRYPT_AES_BLOCK_SIZE];
-    char out1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t in1[CRYPT_AES_BLOCK_SIZE];
+    uint8_t out1[CRYPT_AES_BLOCK_SIZE];
     uint8_t key[] = { some 16, 24, or 32 byte key };
 
     AES_Wrapper_SetEncryptKey(key, sizeof(key));
