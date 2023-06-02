@@ -317,6 +317,15 @@ def configureSpiPlib(localComponent):
             spiSymbol.clearValues()
             spiSymbol.setValue(spiFrequency["frequency"])
 
+    elif plibUsed.startswith("spi"):
+        # Set baudrate
+        peripheralClock = Database.getSymbolValue("core", plibUsed.upper() + "_CLOCK_FREQUENCY")
+        spiFrequency = getSpiFrequency(peripheralClock, 0)
+        spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(spiFrequency["frequency"])
+
 def deconfigureSpiPlib(localComponent):
     global currentNPCS
 

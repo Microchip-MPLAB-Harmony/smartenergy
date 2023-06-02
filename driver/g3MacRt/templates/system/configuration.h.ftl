@@ -59,7 +59,25 @@
 #define DRV_PLC_SPI_CHIP_SELECT               SPI_CHIP_SELECT_NPCS${DRV_PLC_SPI_NPCS}
 </#if>
 </#if>
-#define DRV_PLC_SPI_CLK                       8000000
+<#if DRV_PLC_SPI_NUM_CSR != 0>
+  <#--  PLIB with multiple CSR/NPCS  -->
+  <#if SPI_PLIB?contains("FLEXCOM")>
+    <#assign PLIB_SPI_CSR = "${SPI_PLIB?lower_case}.FLEXCOM_SPI_CSR${DRV_PLC_SPI_NPCS}">
+  <#else>
+    <#assign PLIB_SPI_CSR = "${SPI_PLIB?lower_case}.SPI_CSR${DRV_PLC_SPI_NPCS}">
+  </#if>
+  <#assign PLIB_SPI_BAUD_RATE = ("${PLIB_SPI_CSR}_BAUD_RATE")?eval>
+<#else>
+  <#if SPI_PLIB?contains("USART")>
+    <#assign PLIB_SPI_BAUD_RATE = .vars["${SPI_PLIB?lower_case}"].USART_SPI_BAUD_RATE>
+  <#elseif SPI_PLIB?contains("SERCOM") || SPI_PLIB?contains("SPI")>
+    <#assign PLIB_SPI_BAUD_RATE = .vars["${SPI_PLIB?lower_case}"].SPI_BAUD_RATE>
+  <#else>
+    <#-- PLIB not supported, set baudrate to 8MHz  -->
+    <#assign PLIB_SPI_BAUD_RATE = 8000000>
+  </#if>
+</#if>
+#define DRV_PLC_SPI_CLK                       ${PLIB_SPI_BAUD_RATE}
 
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
     <#lt>/* PLC MAC RT Driver RTOS Configuration Options */

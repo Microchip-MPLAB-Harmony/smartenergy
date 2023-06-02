@@ -102,8 +102,7 @@ def configureSpiPlib(localComponent):
         if spiSymbol != None:
             spiSymbol.clearValues()
             spiSymbol.setValue(8000000)
-            spiSymbol.setReadOnly(True)
-        
+
         # Set polarity to 0
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
         if spiSymbol != None:
@@ -153,7 +152,6 @@ def configureSpiPlib(localComponent):
         if spiSymbol != None:
             spiSymbol.clearValues()
             spiSymbol.setValue(8000000)
-            spiSymbol.setReadOnly(True)
 
     elif plibUsed.startswith("sercom"):
         # Set polarity to 0
@@ -175,7 +173,13 @@ def configureSpiPlib(localComponent):
         if spiSymbol != None:
             spiSymbol.clearValues()
             spiSymbol.setValue(8000000)
-            spiSymbol.setReadOnly(True)
+
+    elif plibUsed.startswith("spi"):
+        # Set baudrate
+        spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(8000000)
 
 def deconfigureSpiPlib(localComponent):
     global currentNPCS
@@ -213,10 +217,6 @@ def deconfigureSpiPlib(localComponent):
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
 
-        spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_BAUD_RATE")
-        if spiSymbol != None:
-            spiSymbol.setReadOnly(False)
-        
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
@@ -226,34 +226,22 @@ def deconfigureSpiPlib(localComponent):
             spiSymbol.setReadOnly(False)
 
     elif plibUsed.startswith("usart"):
-        # Set polarity to 0
+        # Disable read-only
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_POLARITY")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
 
-        # Set phase to 1
         spiSymbol = remoteComponent.getSymbolByID("USART_SPI_CLOCK_PHASE")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
 
-        # Set baudrate
-        spiSymbol = remoteComponent.getSymbolByID("USART_SPI_BAUD_RATE")
-        if spiSymbol != None:
-            spiSymbol.setReadOnly(False)
-
     elif plibUsed.startswith("sercom"):
-        # Set polarity to 0
+        # Disable read-only
         spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_POLARITY")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
 
-        # Set phase to 0
         spiSymbol = remoteComponent.getSymbolByID("SPI_CLOCK_PHASE")
-        if spiSymbol != None:
-            spiSymbol.setReadOnly(False)
-
-        # Set baudrate
-        spiSymbol = remoteComponent.getSymbolByID("SPI_BAUD_RATE")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
 
