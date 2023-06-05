@@ -49,6 +49,8 @@ def instantiateComponent(rSnifferComponentCommon):
     
     Log.writeInfoMessage("Loading RF Phy Sniffer Service")
 
+    processor = Variables.get("__PROCESSOR")
+
     global rSnifferProtocol
     rSnifferProtocol = rSnifferComponentCommon.createComboSymbol("SRV_RSNF_PROTOCOL", None, ["G3", "PRIME"])
     rSnifferProtocol.setLabel("PLC-RF Hybrid Protocol")
@@ -72,25 +74,32 @@ def instantiateComponent(rSnifferComponentCommon):
 
     # Phy Serial Files
     rSnifferSourceFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_SOURCE_G3", None)
-    rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer.c.ftl")
     rSnifferSourceFile.setOutputName("srv_rsniffer.c")
     rSnifferSourceFile.setDestPath("service/rsniffer")
     rSnifferSourceFile.setProjectPath("config/" + configName + "/service/rsniffer/")
     rSnifferSourceFile.setType("SOURCE")
     rSnifferSourceFile.setMarkup(True)
     rSnifferSourceFile.setOverwrite(True)
-    rSnifferSourceFile.setEnabled(True)
 
     rSnifferHeaderFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_HEADER", None)
-    rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer.h.ftl")
     rSnifferHeaderFile.setOutputName("srv_rsniffer.h")
     rSnifferHeaderFile.setDestPath("service/rsniffer")
     rSnifferHeaderFile.setProjectPath("config/" + configName + "/service/rsniffer/")
     rSnifferHeaderFile.setType("HEADER")
     rSnifferHeaderFile.setMarkup(True)
     rSnifferHeaderFile.setOverwrite(True)
-    rSnifferHeaderFile.setEnabled(True)
 
+    if "WBZ45" in processor:
+        rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.c")
+        rSnifferSourceFile.setEnabled(False)
+        rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.h")
+        rSnifferHeaderFile.setEnabled(False)
+    else:
+        rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer.c.ftl")
+        rSnifferSourceFile.setEnabled(True)
+        rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer.h.ftl")
+        rSnifferHeaderFile.setEnabled(True)
+        
     rSnifferSystemDefIncFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_SYSTEM_DEF", None)
     rSnifferSystemDefIncFile.setType("STRING")
     rSnifferSystemDefIncFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
