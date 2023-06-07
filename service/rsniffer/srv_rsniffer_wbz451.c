@@ -181,6 +181,9 @@ uint8_t* SRV_RSNIFFER_SerialCfmMessage ( SRV_RSNIFFER_PHY_DATA *txData, size_t *
     srvRsnifferTxMsg[1] = RSNIFFER_VERSION;
     srvRsnifferTxMsg[2] = RSNIFFER_RF215_G3;
 
+    /* Modulation scheme */
+    srvRsnifferRxMsg[3] = RSNIFFER_MOD_SCHEME_RF_OQPSK;
+
     /* Modulation type depending on RF PHY configuration */
     srvRsnifferTxMsg[4] = RSNIFFER_MOD_TYPE_RF_OQPSK;
 

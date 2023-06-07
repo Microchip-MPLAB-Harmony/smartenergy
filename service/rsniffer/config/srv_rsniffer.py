@@ -23,6 +23,7 @@
 *****************************************************************************"""
 
 global rsniffer_helpkeyword
+global protocolValues
 
 rsniffer_helpkeyword = "srv_rsniffer_configurations"
 
@@ -41,7 +42,8 @@ def handleMessage(messageID, args):
         rSnifferProtocol.setValue("G3")
 
     elif (messageID == "SRV_RSNIFFER_PRIME"):
-        rSnifferProtocol.setValue("PRIME")
+        if ("PRIME" in protocolValues):
+            rSnifferProtocol.setValue("PRIME")
 
     return result_dict
 
@@ -50,9 +52,13 @@ def instantiateComponent(rSnifferComponentCommon):
     Log.writeInfoMessage("Loading RF Phy Sniffer Service")
 
     processor = Variables.get("__PROCESSOR")
+    if "WBZ451" in processor:
+        protocolValues = ["G3"]
+    else:
+        protocolValues = ["G3", "PRIME"]
 
     global rSnifferProtocol
-    rSnifferProtocol = rSnifferComponentCommon.createComboSymbol("SRV_RSNF_PROTOCOL", None, ["G3", "PRIME"])
+    rSnifferProtocol = rSnifferComponentCommon.createComboSymbol("SRV_RSNF_PROTOCOL", None, protocolValues)
     rSnifferProtocol.setLabel("PLC-RF Hybrid Protocol")
     rSnifferProtocol.setDefaultValue("G3")
     rSnifferProtocol.setHelp(rsniffer_helpkeyword)
@@ -78,7 +84,6 @@ def instantiateComponent(rSnifferComponentCommon):
     rSnifferSourceFile.setDestPath("service/rsniffer")
     rSnifferSourceFile.setProjectPath("config/" + configName + "/service/rsniffer/")
     rSnifferSourceFile.setType("SOURCE")
-    rSnifferSourceFile.setMarkup(True)
     rSnifferSourceFile.setOverwrite(True)
 
     rSnifferHeaderFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_HEADER", None)
@@ -86,19 +91,18 @@ def instantiateComponent(rSnifferComponentCommon):
     rSnifferHeaderFile.setDestPath("service/rsniffer")
     rSnifferHeaderFile.setProjectPath("config/" + configName + "/service/rsniffer/")
     rSnifferHeaderFile.setType("HEADER")
-    rSnifferHeaderFile.setMarkup(True)
     rSnifferHeaderFile.setOverwrite(True)
 
-    if "WBZ45" in processor:
+    if "WBZ451" in processor:
         rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.c")
-        rSnifferSourceFile.setEnabled(False)
+        rSnifferSourceFile.setMarkup(False)
         rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.h")
-        rSnifferHeaderFile.setEnabled(False)
+        rSnifferHeaderFile.setMarkup(False)
     else:
         rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer.c.ftl")
-        rSnifferSourceFile.setEnabled(True)
+        rSnifferSourceFile.setMarkup(True)
         rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer.h.ftl")
-        rSnifferHeaderFile.setEnabled(True)
+        rSnifferHeaderFile.setMarkup(True)
         
     rSnifferSystemDefIncFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_SYSTEM_DEF", None)
     rSnifferSystemDefIncFile.setType("STRING")
