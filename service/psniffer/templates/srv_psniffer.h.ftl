@@ -218,7 +218,7 @@ SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
       // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
-      DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
+      DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
@@ -272,7 +272,7 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
       // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
-      DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
+      DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
@@ -360,7 +360,7 @@ void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj);
       // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
-      DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
+      DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
@@ -407,7 +407,7 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
       // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
-      DRV_PLC_PHY_PIBGet(appData.drvPl360Handle, &appData.plcPIB);
+      DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
@@ -466,7 +466,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
                 appData.plcPIB.id = PLC_ID_CHANNEL_CFG;
                 appData.plcPIB.length = 1;
                 *appData.plcPIB.pData = channel;
-                DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+                DRV_PLC_PHY_PIBSet(appData.drvPlcHandle, &appData.plcPIB);
                 // Update channel in PSniffer
                 SRV_PSNIFFER_SetPLCChannel(appData.channel);
             }
@@ -523,7 +523,7 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
             // Send data to PLC
             appData.plcPIB.id = PLC_ID_TONE_MASK;
             appData.plcPIB.length = PSNIFFER_CARRIERS_SIZE;
-            DRV_PLC_PHY_PIBSet(appData.drvPl360Handle, &appData.plcPIB);
+            DRV_PLC_PHY_PIBSet(appData.drvPlcHandle, &appData.plcPIB);
         }
         break;
 

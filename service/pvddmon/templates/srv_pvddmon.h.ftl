@@ -116,7 +116,7 @@ typedef enum
         if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
         {
             // PLC Transmission is not permitted
-            DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);
+            DRV_PLC_PHY_EnableTX(appPlc.drvPlcHandle, false);
             appPlc.pvddMonTxEnable = false;
             // Restart PVDD Monitor to check when VDD is within the comparison window
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);
@@ -124,7 +124,7 @@ typedef enum
         else
         {
             // PLC Transmission is permitted again
-            DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
+            DRV_PLC_PHY_EnableTX(appPlc.drvPlcHandle, true);
             appPlc.pvddMonTxEnable = true;
             // Restart PVDD Monitor to check when VDD is out of the comparison window
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);
@@ -248,7 +248,7 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode);
         if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
         {
             // PLC Transmission is not permitted 
-            DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, false);
+            DRV_PLC_PHY_EnableTX(appPlc.drvPlcHandle, false);
             appPlc.pvddMonTxEnable = false;
             // Restart PVDD Monitor to check when VDD is within the comparison window 
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_IN);
@@ -256,7 +256,7 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode);
         else
         {
             // PLC Transmission is permitted again 
-            DRV_PLC_PHY_EnableTX(appPlc.drvPl360Handle, true);
+            DRV_PLC_PHY_EnableTX(appPlc.drvPlcHandle, true);
             appPlc.pvddMonTxEnable = true;
             // Restart PVDD Monitor to check when VDD is out of the comparison window 
             SRV_PVDDMON_Restart(SRV_PVDDMON_CMP_MODE_OUT);
@@ -337,7 +337,7 @@ void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t cont
     if (SRV_PVDDMON_CheckWindow())
     {
         // PLC Transmission is permitted again
-        DRV_PLC_PHY_EnableTX(appData.drvPl360Handle, true);
+        DRV_PLC_PHY_EnableTX(appData.drvPlcHandle, true);
 
         // Set PVDD Monitor tracking data
         appData.pvddMonTxEnable = true;
@@ -345,7 +345,7 @@ void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t cont
     else
     {
         // PLC Transmission is not permitted
-        DRV_PLC_PHY_EnableTX(appData.drvPl360Handle, false);
+        DRV_PLC_PHY_EnableTX(appData.drvPlcHandle, false);
 
         // Set PVDD Monitor tracking data
         appData.pvddMonTxEnable = false;

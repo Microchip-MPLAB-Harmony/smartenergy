@@ -192,7 +192,7 @@ typedef enum {
     MAC_RT_PIB_SLEEP_MODE = 0x08000024,
     /* Set PLC Debug Mode */
     MAC_RT_PIB_DEBUG_SET = 0x08000025,
-    /* Read PL360 Debug Information */
+    /* Read PLC Debug Information */
     MAC_RT_PIB_DEBUG_READ = 0x08000026,
     /* Provides access to POS table by short address (referenced as index) */
     MAC_RT_PIB_MANUF_POS_TABLE_ELEMENT = 0x08000027,
