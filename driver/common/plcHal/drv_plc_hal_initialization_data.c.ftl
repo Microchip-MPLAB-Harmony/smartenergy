@@ -22,8 +22,66 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 -->
-// <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 
+// <editor-fold defaultstate="collapsed" desc="_on_reset() critical function">
+<#assign SUPPORTED_BOARDS = [
+    "PIC32CXMTSH Development Board",
+    "PIC32CXMTC Development Board",
+    "PIC32CXMTG Evaluation Kit",
+    "SAM E70 Xplained Ultra",
+    "WBZ451 Curiosity"
+]>
+<#assign BOARD_FIND = "">
+/* This routine should initialize the PL460 control pins as soon as possible */
+/* after a power up reset to avoid risks on starting up PL460 device when */ 
+/* pull up resistors are configured by default */
+void _on_reset(void)
+{
+<#list SUPPORTED_BOARDS as BOARD>
+    <#assign BSP_BOARD_NAME = "BSP_${BOARD}"?replace(" ", "_")>
+    <#if .vars[BSP_BOARD_NAME]??>
+        <#assign BOARD_FIND = BSP_BOARD_NAME>
+        <#if BOARD?matches("PIC32CXMTSH Development Board") || BOARD?matches("PIC32CXMTC Development Board") || BOARD?matches("PIC32CXMTG Evaluation Kit")>
+            <#lt>    CLK_Core1BusMasterClkEnable();
+            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
+            <#lt>    {
+            <#lt>        /* Wait for clock to be initialized */
+            <#lt>    }
+            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
+            <#lt>    while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == false)
+            <#lt>    {
+            <#lt>        /* Wait for clock to be initialized */
+            <#lt>    }
+        </#if>
+        <#if BOARD?matches("SAM E70 Xplained Ultra")>
+            <#lt>    /* Enables PIOA and PIOC */
+            <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID10_Msk | PMC_PCER0_PID12_Msk;
+        </#if>
+        <#if BOARD?matches("WBZ451 Curiosity")>
+            <#lt>    
+        </#if>
+    </#if>
+</#list>
+<#if BOARD_FIND == "">
+    #warning Board not supported. Please, review CLK configuration to enable PIO peripherals
+</#if>
+
+    /* Enable Reset Pin */
+    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+<#if DRV_PLC_SLEEP_MODE == true> 
+    /* Disable STBY Pin */
+    SYS_PORT_PinOutputEnable(DRV_PLC_STBY_PIN);
+    SYS_PORT_PinClear(DRV_PLC_STBY_PIN);
+</#if>
+    /* Disable LDO Pin */
+    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+    SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
+}
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
 <#if DRV_PLC_PLIB == "SRV_SPISPLIT">
 <#--  Connected to SPI PLIB through SPI Splitter  -->
     <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
