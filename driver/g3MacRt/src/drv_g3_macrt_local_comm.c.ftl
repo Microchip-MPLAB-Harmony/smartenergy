@@ -642,7 +642,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         
         /* Check MAC Sniffer event */
         if (evObj.evMacSniffer)
-        {          
+        {
             uint8_t *pData;
             uint8_t dummyData;
             
@@ -665,7 +665,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             _DRV_G3_MACRT_COMM_SpiReadCmd(MAC_SNIF_ID, pData, evObj.macSnifLength);
             
             /* update event flag */
-            if (evObj.phySnifLength > 1)
+            if (evObj.macSnifLength > 1)
             {
                 gG3MacRtObj->evMacSnifLength = evObj.macSnifLength;
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
@@ -697,7 +697,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             uint8_t dummyData;
             
             if ((evObj.phySnifLength == 0) || 
-                (evObj.phySnifLength > DRV_G3_MACRT_PHY_MAX_SIZE))
+                (evObj.phySnifLength > (DRV_G3_MACRT_PHY_MAX_SIZE + sizeof(MAC_RT_PHY_SNIFFER_HEADER))))
             {
                 evObj.phySnifLength = 1;
             }
