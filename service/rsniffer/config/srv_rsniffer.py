@@ -52,7 +52,7 @@ def instantiateComponent(rSnifferComponentCommon):
     Log.writeInfoMessage("Loading RF Phy Sniffer Service")
 
     processor = Variables.get("__PROCESSOR")
-    if "WBZ451" in processor:
+    if ("WBZ45" in processor) or ("PIC32CX1012BZ" in processor):
         protocolValues = ["G3"]
     else:
         protocolValues = ["G3", "PRIME"]
@@ -93,7 +93,7 @@ def instantiateComponent(rSnifferComponentCommon):
     rSnifferHeaderFile.setType("HEADER")
     rSnifferHeaderFile.setOverwrite(True)
 
-    if "WBZ451" in processor:
+    if ("WBZ45" in processor) or ("PIC32CX1012BZ" in processor):
         rSnifferSourceFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.c")
         rSnifferSourceFile.setMarkup(False)
         rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer_wbz451.h")

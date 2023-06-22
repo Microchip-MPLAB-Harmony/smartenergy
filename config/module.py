@@ -51,7 +51,7 @@ def loadModule():
         drvMetrologyComponent.setDisplayType("Metrology")
 
     ## RF215 Driver
-    if "WBZ45" not in processor:
+    if ("WBZ45" not in processor) and ("PIC32CX1012BZ" not in processor):
         drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
         drvRf215Component.addCapability("libdrvRf215", "DRV_RF_PHY", True)
         drvRf215Component.addDependency("drv_rf215_SPI_dependency", "SPI", False, True)
