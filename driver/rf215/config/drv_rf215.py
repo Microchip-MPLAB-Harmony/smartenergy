@@ -843,7 +843,7 @@ def instantiateComponent(rf215Component):
     rf215RTOSStackSize = rf215Component.createIntegerSymbol("DRV_RF215_RTOS_STACK_SIZE", rf215RTOSMenu)
     rf215RTOSStackSize.setLabel("Stack Size (in bytes)")
     rf215RTOSStackSize.setDefaultValue(1024)
-    rf215RTOSStackSize.setMin(1024)
+    rf215RTOSStackSize.setMin(256)
     rf215RTOSStackSize.setMax(16*1024)
     rf215RTOSStackSize.setHelp(rf215_helpkeyword)
 

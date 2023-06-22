@@ -635,7 +635,7 @@ def instantiateComponent(g3MacRtComponent):
     plcRTOSStackSize = g3MacRtComponent.createIntegerSymbol("DRV_PLC_RTOS_STACK_SIZE", plcRTOSMenu)
     plcRTOSStackSize.setLabel("Stack Size (in bytes)")
     plcRTOSStackSize.setDefaultValue(1024)
-    plcRTOSStackSize.setMin(1024)
+    plcRTOSStackSize.setMin(256)
     plcRTOSStackSize.setMax(16*1024)
     plcRTOSStackSize.setHelp(plc_mac_rt_helpkeyword)
 

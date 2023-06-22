@@ -782,7 +782,7 @@ def instantiateComponent(plcComponent):
     plcRTOSStackSize = plcComponent.createIntegerSymbol("DRV_PLC_RTOS_STACK_SIZE", plcRTOSMenu)
     plcRTOSStackSize.setLabel("Stack Size (in bytes)")
     plcRTOSStackSize.setDefaultValue(1024)
-    plcRTOSStackSize.setMin(1024)
+    plcRTOSStackSize.setMin(256)
     plcRTOSStackSize.setMax(16*1024)
     plcRTOSStackSize.setHelp(plc_phy_helpkeyword)
 

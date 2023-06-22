@@ -115,7 +115,7 @@ def instantiateComponent(usiComponent, index):
     usiRTOSStackSize = usiComponent.createIntegerSymbol("SRV_USI_RTOS_STACK_SIZE", usiRTOSMenu)
     usiRTOSStackSize.setLabel("Stack Size (in bytes)")
     usiRTOSStackSize.setDefaultValue(1024)
-    usiRTOSStackSize.setMin(1024)
+    usiRTOSStackSize.setMin(256)
     usiRTOSStackSize.setMax(16*1024)
     usiRTOSStackSize.setHelp(srv_usi_helpkeyword)
 
