@@ -241,14 +241,8 @@ DRV_RF215_TRX_ID SRV_RSERIAL_ParseTxMessageTrxId(uint8_t* pDataSrc)
     return (DRV_RF215_TRX_ID) *pDataSrc++;
 }
 
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    <#assign PHY_TYPE_INDENT = "        ">
-<#else>
-    <#assign PHY_TYPE_INDENT = "    ">
-</#if>
 bool SRV_RSERIAL_ParseTxMessage (
     uint8_t* pDataSrc,
-    DRV_RF215_PHY_CFG_OBJ* pPhyCfgObj,
     DRV_RF215_TX_REQUEST_OBJ* pDataDst,
     DRV_RF215_TX_HANDLE* pTxHandleCancel
 )
@@ -256,7 +250,7 @@ bool SRV_RSERIAL_ParseTxMessage (
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
     uint32_t txTimeUS;
 </#if>
-    uint8_t modScheme, timeMode;
+    uint8_t timeMode;
     bool txCancel;
 
     /* Skip command and TRX identifier */
@@ -273,7 +267,7 @@ bool SRV_RSERIAL_ParseTxMessage (
 </#if>
     pDataDst->psduLen = ((uint16_t) *pDataSrc++) << 8;
     pDataDst->psduLen += (uint16_t) *pDataSrc++;
-    modScheme = *pDataSrc++;
+    pDataDst->modScheme = (DRV_RF215_PHY_MOD_SCHEME) *pDataSrc++;
     pDataDst->ccaMode = (DRV_RF215_PHY_CCA_MODE) *pDataSrc++;
     timeMode = *pDataSrc++;
     pDataDst->cancelByRx = (bool) *pDataSrc++;
@@ -290,26 +284,6 @@ bool SRV_RSERIAL_ParseTxMessage (
 
     /* Pointer to TX data */
     pDataDst->psdu = pDataSrc;
-
-    /* Parse modulation scheme depending on PHY type */
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
-    {
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true>
-${PHY_TYPE_INDENT}pDataDst->modScheme = (DRV_RF215_PHY_MOD_SCHEME) modScheme;
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    }
-    else /* PHY_TYPE_OFDM */
-    {
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true>
-${PHY_TYPE_INDENT}pDataDst->modScheme = (DRV_RF215_PHY_MOD_SCHEME) (modScheme + OFDM_MCS_0);
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    }
-</#if>
 
     /* Parse time mode and TX time */
     txCancel = false;
@@ -393,7 +367,6 @@ void SRV_RSERIAL_SetTxHandle(DRV_RF215_TX_HANDLE txHandle)
 uint8_t* SRV_RSERIAL_SerialRxMessage (
     DRV_RF215_RX_INDICATION_OBJ* pIndObj,
     DRV_RF215_TRX_ID trxId,
-    DRV_RF215_PHY_CFG_OBJ* pPhyCfgObj,
     size_t* pMsgLen
 )
 {
@@ -428,24 +401,7 @@ uint8_t* SRV_RSERIAL_SerialRxMessage (
     psduLen = pIndObj->psduLen;
     *pData++ = (uint8_t) (psduLen >> 8);
     *pData++ = (uint8_t) (psduLen);
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
-    {
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true>
-${PHY_TYPE_INDENT}*pData++ = (uint8_t) pIndObj->modScheme;
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    }
-    else /* PHY_TYPE_OFDM */
-    {
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true>
-${PHY_TYPE_INDENT}*pData++ = (uint8_t) (pIndObj->modScheme - OFDM_MCS_0);
-</#if>
-<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
-    }
-</#if>
+    *pData++ = (uint8_t) pIndObj->modScheme;
     *pData++ = (uint8_t) pIndObj->rssiDBm;
 <#if drvRf215.DRV_RF215_FCS_MODE != "0">
     *pData++ = (uint8_t) pIndObj->fcsOk;

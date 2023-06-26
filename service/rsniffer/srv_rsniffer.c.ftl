@@ -308,7 +308,24 @@ uint8_t* SRV_RSNIFFER_SerialRxMessage (
     srvRsnifferRxMsg[2] = RSNIFFER_RF215_G3;
 
     /* Modulation scheme */
-    srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_MOD_SCHEME_RF_FSK_FEC_OFF;
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_MOD_SCHEME_RF_FSK_FEC_OFF;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if drvRf215.DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_MOD_SCHEME_RF_OFDM_MCS0;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+</#if>
 
     /* Modulation type depending on RF PHY configuration */
     srvRsnifferRxMsg[4] = _SRV_RSNIFFER_ModType(pPhyCfgObj);
@@ -354,7 +371,24 @@ uint8_t* SRV_RSNIFFER_SerialRxMessage (
     srvRsnifferRxMsg[2] = RSNIFFER_RF215_PRIME;
 
     /* Frame modulation */
-    srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_FSK_FEC_OFF;
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_FSK_FEC_OFF;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if drvRf215.DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_OFDM_MCS0;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+</#if>
 
     /* Number of payload symbols */
     srvRsnifferRxMsg[4] = (uint8_t) (paySymbols >> 8);
@@ -422,7 +456,24 @@ void SRV_RSNIFFER_SetTxMessage (
 
 <#if SRV_RSNF_PROTOCOL == "G3">
     /* Modulation scheme */
-    pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MOD_SCHEME_RF_FSK_FEC_OFF;
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MOD_SCHEME_RF_FSK_FEC_OFF;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if drvRf215.DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MOD_SCHEME_RF_OFDM_MCS0;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+</#if>
 
     /* RSSI */
     rssi = 14 - (int16_t) pReqObj->txPwrAtt;
@@ -435,7 +486,24 @@ void SRV_RSNIFFER_SetTxMessage (
     pMsgDest[24] = (uint8_t) (psduLen);
 <#else>
     /* Frame modulation */
-    pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_FSK_FEC_OFF;
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_FSK_FEC_OFF;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if drvRf215.DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_PHY_MESSAGE_MOD_RF_OFDM_MCS0;
+</#if>
+<#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
+    }
+</#if>
 
 <#if drvRf215.DRV_RF215_FREQ_HOPPING_SUPPORT == true>
     /* Channel */
