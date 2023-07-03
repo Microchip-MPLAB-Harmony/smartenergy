@@ -517,7 +517,7 @@ def setPlcProfile(symbol, event):
 
     if (event["value"] == "PRIME"):
         plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_prime.c.ftl")
-        plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_prime.h")
+        plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_prime.h.ftl")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_prime.h")
     else:
         plcSourceBinFilePRIME.setEnabled(False)

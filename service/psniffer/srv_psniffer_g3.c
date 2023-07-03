@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -147,14 +147,14 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     /* Delimiter Type */
     *pData++ = pDataSrc->delimiterType;
     /* TimeIni */
-    timeIni = pDataSrc->time - pDataSrc->frameDuration;
+    timeIni = pDataSrc->timeEnd - pDataSrc->frameDuration;
 
     *pData++ = (timeIni >> 24);
     *pData++ = (timeIni >> 16) & 0xFF;
     *pData++ = (timeIni >> 8) & 0xFF;
     *pData++ = timeIni & 0xFF;
     /* TimeEnd */
-    timeEnd = pDataSrc->time;
+    timeEnd = pDataSrc->timeEnd;
     *pData++ = (timeEnd >> 24);
     *pData++ = (timeEnd >> 16) & 0xFF;
     *pData++ = (timeEnd >> 8) & 0xFF;
@@ -216,14 +216,14 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     /* Delimiter Type */
     *pData++ = srvPsnifferLastTxObj.delimiterType;
     /* TimeIni */
-    timeIni = srvPsnifferLastTxObj.time;
+    timeIni = srvPsnifferLastTxObj.timeIni;
 
     *pData++ = (timeIni >> 24);
     *pData++ = (timeIni >> 16) & 0xFF;
     *pData++ = (timeIni >> 8) & 0xFF;
     *pData++ = timeIni & 0xFF;
     /* TimeEnd */
-    timeEnd = pDataCfm->time;
+    timeEnd = pDataCfm->timeEnd;
     *pData++ = (timeEnd >> 24);
     *pData++ = (timeEnd >> 16) & 0xFF;
     *pData++ = (timeEnd >> 8) & 0xFF;

@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -57,7 +57,7 @@
 // *****************************************************************************
 
 /* This is the driver instance object array. */
-DRV_PLC_PHY_OBJ gDrvPlcPhyObj<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal"> = {.semaphoreID = NULL}</#if>;
+static DRV_PLC_PHY_OBJ gDrvPlcPhyObj<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal"> = {.semaphoreID = NULL}</#if>;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -70,7 +70,23 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
     const SYS_MODULE_INIT * const init
 )
 {
-    DRV_PLC_PHY_INIT* plcPhyInit = (DRV_PLC_PHY_INIT *)init;
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+</#if>
+    const DRV_PLC_PHY_INIT * const plcPhyInit = (const DRV_PLC_PHY_INIT * const)init;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
 
     /* Validate the request */
     if(index >= DRV_PLC_PHY_INSTANCES_NUMBER)
@@ -99,12 +115,12 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
 </#if>
     
     /* Callbacks initialization */
-    gDrvPlcPhyObj.txCfmCallback         = 0;
-    gDrvPlcPhyObj.dataIndCallback       = 0;
-    gDrvPlcPhyObj.exceptionCallback     = 0;
-    gDrvPlcPhyObj.bootDataCallback      = 0;
-<#if DRV_PLC_SLEEP_MODE == true>     
-    gDrvPlcPhyObj.sleepDisableCallback  = 0;
+    gDrvPlcPhyObj.txCfmCallback         = NULL;
+    gDrvPlcPhyObj.dataIndCallback       = NULL;
+    gDrvPlcPhyObj.exceptionCallback     = NULL;
+    gDrvPlcPhyObj.bootDataCallback      = NULL;
+<#if DRV_PLC_SLEEP_MODE == true>
+    gDrvPlcPhyObj.sleepDisableCallback  = NULL;
 </#if>
 
     /* HAL init */
@@ -118,7 +134,7 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
     {
         /* Create semaphore. It is used to suspend and resume task */
         OSAL_RESULT semResult = OSAL_SEM_Create(&gDrvPlcPhyObj.semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
-        if ((semResult != OSAL_RESULT_TRUE) || (gDrvPlcPhyObj.semaphoreID == NULL))
+        if ((semResult != OSAL_RESULT_SUCCESS) || (gDrvPlcPhyObj.semaphoreID == NULL))
         {
             /* Error: Not enough memory to create semaphore */
             gDrvPlcPhyObj.status = SYS_STATUS_ERROR;
@@ -162,9 +178,9 @@ DRV_HANDLE DRV_PLC_PHY_Open(
     bootInfo.binSize = gDrvPlcPhyObj.binSize;
     bootInfo.binStartAddress = gDrvPlcPhyObj.binStartAddress;
     bootInfo.pendingLength = gDrvPlcPhyObj.binSize;
-    bootInfo.pSrc = gDrvPlcPhyObj.binStartAddress;    
+    bootInfo.pSrc = gDrvPlcPhyObj.binStartAddress;
     bootInfo.secure = gDrvPlcPhyObj.secure;
-    if (callback)
+    if (callback != NULL)
     {
         bootInfo.bootDataCallback = callback;
         bootInfo.contextBoot = index;
@@ -183,7 +199,7 @@ DRV_HANDLE DRV_PLC_PHY_Open(
     /* Post semaphore to resume task */
     if (gDrvPlcPhyObj.semaphoreID != NULL)
     {
-        OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
+        (void) OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
     }
 
 </#if>
@@ -192,7 +208,7 @@ DRV_HANDLE DRV_PLC_PHY_Open(
 
 void DRV_PLC_PHY_Close( const DRV_HANDLE handle )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         gDrvPlcPhyObj.nClients--;
         gDrvPlcPhyObj.inUse = false;
@@ -206,7 +222,7 @@ void DRV_PLC_PHY_TxCfmCallbackRegister(
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         gDrvPlcPhyObj.txCfmCallback = callback;
         gDrvPlcPhyObj.contextCfm = context;
@@ -219,7 +235,7 @@ void DRV_PLC_PHY_DataIndCallbackRegister(
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         gDrvPlcPhyObj.dataIndCallback = callback;
         gDrvPlcPhyObj.contextInd = context;
@@ -232,7 +248,7 @@ void DRV_PLC_PHY_ExceptionCallbackRegister(
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         gDrvPlcPhyObj.exceptionCallback = callback;
         gDrvPlcPhyObj.contextExc = context;
@@ -253,7 +269,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
             waitMS = OSAL_WAIT_FOREVER;
         }
 
-        OSAL_SEM_Pend(&gDrvPlcPhyObj.semaphoreID, waitMS);
+        (void) OSAL_SEM_Pend(&gDrvPlcPhyObj.semaphoreID, waitMS);
     }
 
 </#if>
@@ -282,12 +298,12 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
 </#if>
 <#if DRV_PLC_SLEEP_MODE == true>
 
-            if (gDrvPlcPhyObj.sleep && gDrvPlcPhyObj.sleepDisableCallback)
+            if (gDrvPlcPhyObj.sleep && (gDrvPlcPhyObj.sleepDisableCallback != NULL))
             {
                 gDrvPlcPhyObj.sleep = false;
                 gDrvPlcPhyObj.sleepDisableCallback(gDrvPlcPhyObj.contextSleep);
             }
-</#if>            
+</#if>
         }
         else
         {
@@ -311,7 +327,7 @@ void DRV_PLC_PHY_SleepDisableCallbackRegister(
     const uintptr_t context 
 )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         gDrvPlcPhyObj.sleepDisableCallback = callback;
         gDrvPlcPhyObj.contextSleep = context;
@@ -320,7 +336,7 @@ void DRV_PLC_PHY_SleepDisableCallbackRegister(
 
 void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
 {
-    if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         if (gDrvPlcPhyObj.sleep != enable)
         {
@@ -346,7 +362,7 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
                 /* Post semaphore to resume task */
                 if (gDrvPlcPhyObj.semaphoreID != NULL)
                 {
-                    OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
+                    (void) OSAL_SEM_Post(&gDrvPlcPhyObj.semaphoreID);
                 }
 </#if>
             }
@@ -358,7 +374,7 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable )
 <#if DRV_PLC_MODE == "PL460">
 void DRV_PLC_PHY_EnableTX( const DRV_HANDLE handle, bool enable )
 {
-     if((handle != DRV_HANDLE_INVALID) && (handle == 0))
+     if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         /* Set Tx Enable pin */
         gDrvPlcPhyObj.plcHal->setTxEnable(enable);

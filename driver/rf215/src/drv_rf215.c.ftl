@@ -475,7 +475,7 @@ SYS_MODULE_OBJ DRV_RF215_Initialize (
     /* Create semaphore. It is used to suspend and resume task. Initialized in
      * posted status */
     semResult = OSAL_SEM_Create(&drvRf215Obj.semaphoreID, OSAL_SEM_TYPE_BINARY, 1, 1);
-    if ((semResult == OSAL_RESULT_TRUE) && (drvRf215Obj.semaphoreID != NULL))
+    if ((semResult == OSAL_RESULT_SUCCESS) && (drvRf215Obj.semaphoreID != NULL))
     {
         /* Set busy status. Initialization will continue from interrupt */
         drvRf215Obj.sysStatus = SYS_STATUS_BUSY;

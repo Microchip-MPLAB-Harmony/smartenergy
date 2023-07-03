@@ -118,7 +118,7 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     {
         /* Create semaphore. It is used to suspend and resume task */
         OSAL_RESULT semResult = OSAL_SEM_Create(&gDrvG3MacRtObj.semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
-        if ((semResult != OSAL_RESULT_TRUE) || (gDrvG3MacRtObj.semaphoreID == NULL))
+        if ((semResult != OSAL_RESULT_SUCCESS) || (gDrvG3MacRtObj.semaphoreID == NULL))
         {
             /* Error: Not enough memory to create semaphore */
             gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_ERROR;

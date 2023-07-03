@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -65,20 +65,20 @@
 // Section: Macro Definitions
 // *****************************************************************************
 // ***************************************************************************** 
-/* TX Mode: Absolute transmission */          
-#define TX_MODE_ABSOLUTE                       (0)
-/* TX Mode: Delayed transmission */          
-#define TX_MODE_RELATIVE                       (1 << 0)
+/* TX Mode: Absolute transmission */
+#define TX_MODE_ABSOLUTE                       (0U)
+/* TX Mode: Delayed transmission */
+#define TX_MODE_RELATIVE                       (1U << 0)
 /* TX Mode: Cancel transmission */
-#define TX_MODE_CANCEL                         (1 << 1)
+#define TX_MODE_CANCEL                         (1U << 1)
 /* TX Mode: SYNCP Continuous transmission */
-#define TX_MODE_PREAMBLE_CONTINUOUS            (1 << 2)
+#define TX_MODE_PREAMBLE_CONTINUOUS            (1U << 2)
 /* TX Mode: Symbols Continuous transmission */
-#define TX_MODE_SYMBOLS_CONTINUOUS             (1 << 3)
+#define TX_MODE_SYMBOLS_CONTINUOUS             (1U << 3)
 
 /* Impedance Configuration: High mode */
 #define HI_STATE                               0x00
-/* Impedance Configuration: Low mode */      
+/* Impedance Configuration: Low mode */
 #define LOW_STATE                              0x01
 /* Impedance Configuration: Very Low mode */
 #define VLO_STATE                              0x02  
@@ -293,6 +293,16 @@ typedef enum {
   TX_BUFFER_1 = 1,
 } DRV_PLC_PHY_BUFFER_ID;
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 5.2 deviated once.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.2" "H3_MISRAC_2012_R_5_2_DR_1"
+</#if>
+
 // *****************************************************************************
 /* PRIME Result values of a previous transmission
 
@@ -337,29 +347,37 @@ typedef enum {
   DRV_PLC_PHY_TX_RESULT_NO_TX = 255,
 } DRV_PLC_PHY_TX_RESULT;
 
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
+
 /* Noise Capture Mode Bit Mask */
-#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT      0
-#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL            (0xFu << DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT)
-#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT       4
-#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE        (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)
-#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_LOW    (0x0u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)  /* Signal mode for low signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
-#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_HIGH   (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT) /* Signal mode for high signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
-#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT    5
-#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE          (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT)
-#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_CHN      (0x0u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in Channel Mode */
-#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_FCC      (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in all FCC band Mode */
-#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT    6
-#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE          (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT)
-#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_ABS      (0x0u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Absolute Mode */
-#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_REL      (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Relative Mode */
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_1              0x01
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_2              0x02
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_3              0x03
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_4              0x04
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_5              0x05
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_6              0x06
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_7              0x07
-#define DRV_PLC_SIGNAL_CAPTURE_CHN_8              0x08
+#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT 0
+#define DRV_PLC_SIGNAL_CAPTURE_CHANNEL (0xFu << DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT 4
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_LOW (0x0u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT)  /* Signal mode for low signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
+#define DRV_PLC_SIGNAL_CAPTURE_SIGNAL_MODE_HIGH (0x1u << DRV_PLC_SIGNAL_CAPTURE_SIGNAL_SHIFT) /* Signal mode for high signal level : Only valid in SIGNAL_CAPTURE_BAND_MODE_FCC mode */
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT 5
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_CHN (0x0u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in Channel Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_FCC (0x1u << DRV_PLC_SIGNAL_CAPTURE_BAND_MODE_SHIFT) /* Frequency in all FCC band Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT 6
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT)
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_ABS (0x0u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Absolute Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_REL (0x1u << DRV_PLC_SIGNAL_CAPTURE_TIME_MODE_SHIFT) /* Time in Relative Mode */
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_1 0x01
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_2 0x02
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_3 0x03
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_4 0x04
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_5 0x05
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_6 0x06
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_7 0x07
+#define DRV_PLC_SIGNAL_CAPTURE_CHN_8 0x08
 
 /* Noise Capture States */
 typedef enum {
@@ -389,7 +407,7 @@ typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to data buffer to transmit */
   uint8_t *pTransmitData;
   /* Instant when transmission has to start referred to 1us PHY counter */
-  uint32_t time;
+  uint32_t timeIni;
   /* Length of the data to transmit in bytes */
   uint16_t dataLength;
   /* Transmission Mode (absolute, relative, cancel, continuous). Constants above */
@@ -418,7 +436,7 @@ typedef struct __attribute__((packed, aligned(1))) {
 */
 typedef struct {
   /* Instant when frame transmission started referred to 1us PHY counter */
-  uint32_t time;
+  uint32_t timeIni;
   /* RMS value emitted */
   uint32_t rmsCalc;
   /* PRIME Frame type */
@@ -442,7 +460,7 @@ typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to received data buffer */
   uint8_t *pReceivedData;
   /* Instant when frame was received (start of message) referred to 1us PHY counter */
-  uint32_t time;
+  uint32_t timeIni;
   /* Accumulated Error Vector Magnitude for header */
   uint32_t evmHeaderAcum;
   /* Accumulated Error Vector Magnitude for payload */

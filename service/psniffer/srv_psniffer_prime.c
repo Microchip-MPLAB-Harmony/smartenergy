@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -180,8 +180,7 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     *pData++ = 0;
     *pData++ = 0;
     *pData++ = 0;
-    /* Adapt RX TIME to 10us base */
-    timeIni = pDataSrc->time;
+    timeIni = pDataSrc->timeIni;
     timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pDataSrc->frameType, srvPsnifferLastRxPayloadSymbols);
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);
@@ -260,8 +259,7 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     *pData++ = 0;
     *pData++ = 0;
     *pData++ = 0;
-    /* Adapt RX TIME to 10us base */
-    timeIni = pCfmObj->time;
+    timeIni = pCfmObj->timeIni;
     timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pCfmObj->frameType, srvPsnifferLastTxPayloadSymbols);
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);

@@ -1,6 +1,6 @@
 <#--
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -32,6 +32,20 @@
     "WBZ451 Curiosity"
 ]>
 <#assign BOARD_FIND = "">
+
+
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 8.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_8_4_DR_1 */
+/* MISRA C-2012 Rule 21.2 deviated once. Deviation record ID - H3_MISRAC_2012_R_21_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 8.4" "H3_MISRAC_2012_R_8_4_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 21.2" "H3_MISRAC_2012_R_21_2_DR_1"
+</#if>
+
 /* This routine must initialize the PL460 control pins as soon as possible */
 /* after a power up reset to avoid risks on starting up PL460 device when */ 
 /* pull up resistors are configured by default */
@@ -43,7 +57,7 @@ void _on_reset(void)
         <#assign BOARD_FIND = BSP_BOARD_NAME>
         <#if BOARD?matches("PIC32CXMTSH Development Board")>
             <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
@@ -54,7 +68,7 @@ void _on_reset(void)
         </#if>
         <#if BOARD?matches("PIC32CXMTC Development Board")>
             <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
@@ -65,7 +79,7 @@ void _on_reset(void)
         </#if>
         <#if BOARD?matches("PIC32CXMTG Evaluation Kit")>
             <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
@@ -97,6 +111,16 @@ void _on_reset(void)
     #warning Board not supported. Please, review CLK configuration to enable PIO peripherals
 </#if>
 }
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 8.4"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 21.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="DRV_PLC_HAL Initialization Data">
@@ -115,7 +139,7 @@ void _on_reset(void)
     <#assign SPI_PREFFIX = "SPI">
 </#if>
 /* HAL Interface Initialization for PLC transceiver */
-DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
+static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
     /* SPI Transfer Setup */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
@@ -182,7 +206,7 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     .txEnablePin = DRV_PLC_TX_ENABLE_PIN,
     
 </#if>
-<#if DRV_PLC_SLEEP_MODE == true>     
+<#if DRV_PLC_SLEEP_MODE == true>
     /* PLC StandBy Pin */
     .stByPin = DRV_PLC_STBY_PIN,
     
@@ -208,7 +232,7 @@ DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 };
 
 /* HAL Interface Initialization for PLC transceiver */
-DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
+static DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 
     /* PLC PLIB */
     .plcPlib = &drvPLCPlib,
