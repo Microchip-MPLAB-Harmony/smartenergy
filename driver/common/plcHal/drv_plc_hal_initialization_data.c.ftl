@@ -32,7 +32,7 @@
     "WBZ451 Curiosity"
 ]>
 <#assign BOARD_FIND = "">
-/* This routine should initialize the PL460 control pins as soon as possible */
+/* This routine must initialize the PL460 control pins as soon as possible */
 /* after a power up reset to avoid risks on starting up PL460 device when */ 
 /* pull up resistors are configured by default */
 void _on_reset(void)
@@ -41,22 +41,52 @@ void _on_reset(void)
     <#assign BSP_BOARD_NAME = "BSP_${BOARD}"?replace(" ", "_")>
     <#if .vars[BSP_BOARD_NAME]??>
         <#assign BOARD_FIND = BSP_BOARD_NAME>
-        <#if BOARD?matches("PIC32CXMTSH Development Board") || BOARD?matches("PIC32CXMTC Development Board") || BOARD?matches("PIC32CXMTG Evaluation Kit")>
-            <#lt>    CLK_Core1BusMasterClkEnable();
+        <#if BOARD?matches("PIC32CXMTSH Development Board")>
             <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
             <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
-            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
-            <#lt>    while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == false)
+            <#lt>    
+            <#lt>    /* Disable STBY Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
+            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
+        </#if>
+        <#if BOARD?matches("PIC32CXMTC Development Board")>
+            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
+            <#lt>    
+            <#lt>    /* Disable STBY Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
+            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
+        </#if>
+        <#if BOARD?matches("PIC32CXMTG Evaluation Kit")>
+            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == false)
+            <#lt>    {
+            <#lt>        /* Wait for clock to be initialized */
+            <#lt>    }
+            <#lt>    
+            <#lt>    /* Disable STBY Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
+            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
         </#if>
         <#if BOARD?matches("SAM E70 Xplained Ultra")>
             <#lt>    /* Enables PIOA and PIOC */
             <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID10_Msk | PMC_PCER0_PID12_Msk;
+            <#lt>    
+            <#lt>    /* Enable Reset Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+            <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+            <#lt>    /* Disable STBY Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA3);
+            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA3);
+            <#lt>    /* Disable LDO Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+            <#lt>    SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
         </#if>
         <#if BOARD?matches("WBZ451 Curiosity")>
             <#lt>    
@@ -66,18 +96,6 @@ void _on_reset(void)
 <#if BOARD_FIND == "">
     #warning Board not supported. Please, review CLK configuration to enable PIO peripherals
 </#if>
-
-    /* Enable Reset Pin */
-    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
-<#if DRV_PLC_SLEEP_MODE == true> 
-    /* Disable STBY Pin */
-    SYS_PORT_PinOutputEnable(DRV_PLC_STBY_PIN);
-    SYS_PORT_PinClear(DRV_PLC_STBY_PIN);
-</#if>
-    /* Disable LDO Pin */
-    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-    SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
 }
 // </editor-fold>
 
