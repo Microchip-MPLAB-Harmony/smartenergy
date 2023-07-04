@@ -259,9 +259,52 @@ def handleMessage(messageID, args):
     result_dict = {}
 
     if (messageID == "REQUEST_CONFIG_PARAMS"):
-        if args.get("localComponentID") != None:
-            result_dict = Database.sendMessage(args["localComponentID"], "SPI_MASTER_MODE", {"isReadOnly":True, "isEnabled":True})
-            result_dict = Database.sendMessage(args["localComponentID"], "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True, "isEnabled":False})
+        remoteComponentID = args.get("localComponentID")
+        if remoteComponentID != None:
+            # Set SPI in master mode
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isEnabled":True})
+            # DMA Mode: Disable interrupt mode in PLIB
+            # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
+        
+            remoteComponent = Database.getComponentByID(remoteComponentID)
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                # Enable PDC DMA on PLIB
+                plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.clearValues()
+                    plibUseSpiDma.setValue(True)
+
+            if remoteComponentID.startswith("flexcom"):
+                # Disable FIFO
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibFIFO != None:
+                    plibFIFO.clearValues()
+                    plibFIFO.setValue(False)
+
+            elif remoteComponentID.startswith("sercom"):
+                # Enable receiver
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.clearValues()
+                    plibReceiver.setValue(True)
+
+            # Set symbols read-only
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_MODE", {"isReadOnly":True})
+
+            if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.setReadOnly(True)
+
+            result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+            if remoteComponentID.startswith("flexcom"):
+                if plibFIFO != None:
+                    plibFIFO.setReadOnly(True)
+            elif remoteComponentID.startswith("sercom"):
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(True)
 
     elif (messageID == "SPI_SPLITTER_CONNECTED"):
         spiPlib = args.get("plibUsed")
@@ -1529,27 +1572,25 @@ def onAttachmentConnected(source, target):
                 else:
                     plcRXDMAChannel.setValue(dmaChannel)
 
-            if not isDMAPresent and ("FLEXCOM" in remoteID.upper() or "SPI" in remoteID.upper()):
-                remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
-                if remoteSym != None:
-                    remoteSym.clearValues()
-                    remoteSym.setValue(True)
-                    remoteSym.setReadOnly(True)
-            
-            if "FLEXCOM" in remoteID.upper():
-                remoteSym = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
-                if remoteSym != None:
-                    remoteSym.clearValues()
-                    remoteSym.setValue(False)
-                    remoteSym.setReadOnly(True)
+            # Set symbols read-only
+            Database.sendMessage(remoteID, "SPI_MASTER_MODE", {"isReadOnly":True})
 
-            elif "SERCOM" in remoteID.upper():
-                remoteSym = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
-                if remoteSym != None:
-                    remoteSym.clearValues()
-                    remoteSym.setValue(True)
-                    remoteSym.setReadOnly(True)
+            remoteComponent = Database.getComponentByID(remoteID)
+            if not isDMAPresent and (remoteID.startswith("flexcom") or remoteID.startswith("spi")):
+                plibUseSpiDma = remoteComponent.getSymbolByID("USE_SPI_DMA")
+                if plibUseSpiDma != None:
+                    plibUseSpiDma.setReadOnly(True)
 
+            Database.sendMessage(remoteID, "SPI_MASTER_INTERRUPT_MODE", {"isReadOnly":True})
+
+            if remoteID.startswith("flexcom"):
+                plibFIFO = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
+                if plibFIFO != None:
+                    plibFIFO.setReadOnly(True)
+            elif remoteID.startswith("sercom"):
+                plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
+                if plibReceiver != None:
+                    plibReceiver.setReadOnly(True)
   
 def onAttachmentDisconnected(source, target):
     global isDMAPresent
