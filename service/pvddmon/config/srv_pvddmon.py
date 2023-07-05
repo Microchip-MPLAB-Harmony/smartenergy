@@ -155,7 +155,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonADCComment2.setVisible(True)
 
     if (pvddmon_plib == ""):
-        pPVDDMonADCComment3 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT2", None)
+        pPVDDMonADCComment3 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT3", None)
         pPVDDMonADCComment3.setLabel("**** CRITICAL ERROR. ADC peripheral has not been detected.")
         pPVDDMonADCComment3.setVisible(True)
     
