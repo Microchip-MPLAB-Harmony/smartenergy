@@ -385,51 +385,31 @@ def g3MacRtVisibleEncComment(symbol, event):
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)         
+        symbol.setVisible(False)
 
 def setPlcBandInUse(plcBand):
     dict = {}
 
-    dict = Database.sendMessage("srv_rsniffer", "SRV_RSNIFFER_G3", {})
     if (plcBand == "CEN-A"):
         plcBandInUse.setValue(PLC_PROFILE_G3_CEN_A)
-        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
     elif (plcBand == "CEN-B"):
         plcBandInUse.setValue(PLC_PROFILE_G3_CEN_B)
-        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
     elif (plcBand == "FCC"):
         plcBandInUse.setValue(PLC_PROFILE_G3_FCC)
-        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_FCC", {})
     elif (plcBand == "ARIB"):
         plcBandInUse.setValue(PLC_PROFILE_G3_ARIB)
-        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_ARIB", {})
 
 def setPlcMultiBandInUse(g3_band, g3_aux_band):
-    dict = {}
-
-    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND_AUX_ACTIVE") == True) :
-        g3_aux_band_default = True
-    else:
-        g3_aux_band_default = False
-
     if (g3_band == "FCC"):
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_A)
-            if (g3_aux_band_default == True):
-                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_B)
-            if (g3_aux_band_default == True):
-                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
     else:
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_A)
-            if (g3_aux_band_default == True):
-                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_B)
-            if (g3_aux_band_default == True):
-                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
 
 def removeAllBinFiles():
     g3MacRtBinFileCENA.setEnabled(False)
@@ -438,14 +418,14 @@ def removeAllBinFiles():
     g3MacRtBinFileARIB.setEnabled(False)
 
 def includeBinFile(plcBand):
-    if (plcBand == "CEN-A"):          
+    if (plcBand == "CEN-A"):
         g3MacRtBinFileCENA.setEnabled(True)
-    elif (plcBand == "CEN-B"):            
+    elif (plcBand == "CEN-B"):
         g3MacRtBinFileCENB.setEnabled(True)
-    elif (plcBand == "FCC"):            
+    elif (plcBand == "FCC"):
         g3MacRtBinFileFCC.setEnabled(True)
-    elif (plcBand == "ARIB"):           
-        g3MacRtBinFileARIB.setEnabled(True) 
+    elif (plcBand == "ARIB"):
+        g3MacRtBinFileARIB.setEnabled(True)
 
 def updateBinFiles():
     dict = {}
@@ -658,6 +638,9 @@ def instantiateComponent(g3MacRtComponent):
         isDMAPresent = False
     else:
         isDMAPresent = True
+    
+    # Set G3 mode in RSNIFFER (if present)
+    Database.sendMessage("srv_rsniffer", "SRV_RSNIFFER_G3", {})
     
     identifyPeripherals(g3MacRtComponent)
 
