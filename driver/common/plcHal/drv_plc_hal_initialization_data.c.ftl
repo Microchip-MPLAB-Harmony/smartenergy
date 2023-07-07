@@ -103,12 +103,13 @@ void _on_reset(void)
             <#lt>    SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
         </#if>
         <#if BOARD?matches("WBZ451 Curiosity")>
-            <#lt>    
+            <#lt>    __asm volatile ("NOP");
         </#if>
     </#if>
 </#list>
 <#if BOARD_FIND == "">
     #warning Board not supported. Please, review CLK configuration to enable PIO peripherals
+    __asm volatile ("NOP");
 </#if>
 }
 
