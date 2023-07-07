@@ -27,7 +27,7 @@
     /* Maintain PLC PHY Driver */
     DRV_PLC_PHY_Tasks(sysObj.drvPlcPhy);
 <#elseif HarmonyCore.SELECT_RTOS == "FreeRTOS">
-    xTaskCreate( _DRV_PLC_PHY_Tasks,
+    (void) xTaskCreate( lDRV_PLC_PHY_Tasks,
         "DRV_PLC_PHY_TASKS",
         DRV_PLC_RTOS_STACK_SIZE,
         (void*)NULL,
@@ -35,17 +35,17 @@
         (TaskHandle_t*)NULL
     );
 <#elseif HarmonyCore.SELECT_RTOS == "ThreadX">
-    tx_byte_allocate(&byte_pool_0,
-        (VOID **) &_DRV_PLC_PHY_Task_Stk_Ptr,
+    (void) tx_byte_allocate(&byte_pool_0,
+        (VOID **) &lDRV_PLC_PHY_Task_Stk_Ptr,
         DRV_PLC_RTOS_STACK_SIZE,
         TX_NO_WAIT
     );
 
-    tx_thread_create(&_DRV_PLC_PHY_Task_TCB,
+    (void) tx_thread_create(&lDRV_PLC_PHY_Task_TCB,
         "DRV_PLC_PHY_TASKS",
-        _DRV_PLC_PHY_Tasks,
+        lDRV_PLC_PHY_Tasks,
         0,
-        _DRV_PLC_PHY_Task_Stk_Ptr,
+        lDRV_PLC_PHY_Task_Stk_Ptr,
         DRV_PLC_RTOS_STACK_SIZE,
         DRV_PLC_RTOS_TASK_PRIORITY,
         DRV_PLC_RTOS_TASK_PRIORITY,
@@ -54,12 +54,12 @@
     );
 <#elseif HarmonyCore.SELECT_RTOS == "MicriumOSIII">
     <#assign DRV_PLC_RTOS_TASK_OPTIONS = "OS_OPT_TASK_NONE" + DRV_PLC_RTOS_TASK_OPT_STK_CHK?then(' | OS_OPT_TASK_STK_CHK', '') + DRV_PLC_RTOS_TASK_OPT_STK_CLR?then(' | OS_OPT_TASK_STK_CLR', '') + DRV_PLC_RTOS_TASK_OPT_SAVE_FP?then(' | OS_OPT_TASK_SAVE_FP', '') + DRV_PLC_RTOS_TASK_OPT_NO_TLS?then(' | OS_OPT_TASK_NO_TLS', '')>
-    OSTaskCreate((OS_TCB      *)&_DRV_PLC_PHY_Tasks_TCB,
+    (void) OSTaskCreate((OS_TCB      *)&lDRV_PLC_PHY_Tasks_TCB,
                  (CPU_CHAR    *)"DRV_PLC_PHY_TASKS",
-                 (OS_TASK_PTR  )_DRV_PLC_PHY_Tasks,
+                 (OS_TASK_PTR  )lDRV_PLC_PHY_Tasks,
                  (void        *)0,
                  (OS_PRIO      )DRV_PLC_RTOS_TASK_PRIORITY,
-                 (CPU_STK     *)&_DRV_PLC_PHY_TasksStk[0],
+                 (CPU_STK     *)&lDRV_PLC_PHY_TasksStk[0],
                  (CPU_STK_SIZE )0u,
                  (CPU_STK_SIZE )DRV_PLC_RTOS_STACK_SIZE,
     <#if MicriumOSIII.UCOSIII_CFG_TASK_Q_EN == true>
@@ -76,6 +76,6 @@
                  (OS_OPT       )(${DRV_PLC_RTOS_TASK_OPTIONS}),
                  (OS_ERR      *)&os_err);
 <#elseif HarmonyCore.SELECT_RTOS == "MbedOS">
-    Thread DRV_PLC_PHY_thread((osPriority)(osPriorityNormal + (DRV_PLC_RTOS_TASK_PRIORITY - 1)), DRV_PLC_RTOS_STACK_SIZE, NULL, "_DRV_PLC_PHY_Tasks");
-    DRV_PLC_PHY_thread.start(callback(_DRV_PLC_PHY_Tasks, (void *)NULL));
+    Thread DRV_PLC_PHY_thread((osPriority)(osPriorityNormal + (DRV_PLC_RTOS_TASK_PRIORITY - 1)), DRV_PLC_RTOS_STACK_SIZE, NULL, "lDRV_PLC_PHY_Tasks");
+    (void) DRV_PLC_PHY_thread.start(callback(lDRV_PLC_PHY_Tasks, (void *)NULL));
 </#if>
