@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -114,189 +114,267 @@ static const SRV_PLC_PCOUP_DATA srvPlcCoupAux = {
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: File scope functions
+// Section: PLC PHY Coupling Service Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
+
 SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 {
-  if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
-  {
-    /* PLC PHY Coupling parameters for Main transmission branch */
-    return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
-  }
+    /* MISRA C-2012 deviation block start */
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-  else if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
-  {
-    /* PLC PHY Coupling parameters for Auxiliary transmission branch */
-    return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
-  }
+    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#else>
+    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+</#if>
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
 </#if>
 
-  /* Transmission branch not recognized */
-  return NULL;
+    if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
+    }
+<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
+
+    if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
+    {
+        /* PLC PHY Coupling parameters for Auxiliary transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
+    }
+</#if>
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
+
+    /* Transmission branch not recognized */
+    return NULL;
 }
 
 bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
 {
-  SRV_PLC_PCOUP_DATA *pCoupValues;
+    SRV_PLC_PCOUP_DATA *pCoupValues;
+    bool result, resultOut;
 <#if (drvPlcPhy)??>
-  DRV_PLC_PHY_PIB_OBJ pibObj;
-  bool result;  
+    DRV_PLC_PHY_PIB_OBJ pibObj;
 <#elseif (drvG3MacRt)??>
-  MAC_RT_PIB_OBJ pibObj;
-  MAC_RT_STATUS result;
+    MAC_RT_PIB_OBJ pibObj;
 </#if>
 
-  /* Get PLC PHY Coupling parameters for the desired transmission branch */
-  pCoupValues = SRV_PCOUP_Get_Config(branch);
+    /* Get PLC PHY Coupling parameters for the desired transmission branch */
+    pCoupValues = SRV_PCOUP_Get_Config(branch);
 
-  if (pCoupValues == NULL)
-  {
-    /* Transmission branch not recognized */
-    return false;
-  }
+    if (pCoupValues == NULL)
+    {
+        /* Transmission branch not recognized */
+        return false;
+    }
 
-  /* Set PLC PHY Coupling parameters */
-<#if (drvPlcPhy)??>  
-  pibObj.id = PLC_ID_IC_DRIVER_CFG;
-  pibObj.length = 1;
-  pibObj.pData = &pCoupValues->lineDrvConf;
-  result = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    /* Set PLC PHY Coupling parameters */
+<#if (drvPlcPhy)??>
+    pibObj.id = PLC_ID_IC_DRIVER_CFG;
+    pibObj.length = 1;
+    pibObj.pData = &pCoupValues->lineDrvConf;
+    result = DRV_PLC_PHY_PIBSet(handle, &pibObj);
 
-  pibObj.id = PLC_ID_NUM_TX_LEVELS;
-  pibObj.pData = &pCoupValues->numTxLevels;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_NUM_TX_LEVELS;
+    pibObj.pData = &pCoupValues->numTxLevels;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_DACC_TABLE_CFG;
-  pibObj.length = sizeof(pCoupValues->daccTable);
-  pibObj.pData = (uint8_t *)pCoupValues->daccTable;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);  
+    pibObj.id = PLC_ID_DACC_TABLE_CFG;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->daccTable);
+    pibObj.pData = (uint8_t *)pCoupValues->daccTable;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->rmsHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->rmsHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->rmsHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->rmsHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_MAX_RMS_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->rmsVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_MAX_RMS_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->rmsVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_THRESHOLDS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->thrsHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->thrsHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_THRESHOLDS_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->thrsHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->thrsHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_THRESHOLDS_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->thrsVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_THRESHOLDS_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->thrsVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_GAIN_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->gainHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->gainHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_GAIN_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->gainHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->gainHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->gainVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->gainVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
-  pibObj.length = pCoupValues->equSize;
-  pibObj.pData = (uint8_t *)pCoupValues->equHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
-
-  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->equVlow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
-
-  return result;
-<#elseif (drvG3MacRt)??>
-  pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
-  pibObj.index = PHY_PIB_PLC_IC_DRIVER_CFG;
-  pibObj.length = 1;
-  pibObj.pData[0] = pCoupValues->lineDrvConf;
-  result = DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_NUM_TX_LEVELS;
-  pibObj.pData[0] = pCoupValues->numTxLevels;
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_DACC_TABLE_CFG;
-  pibObj.length = sizeof(pCoupValues->daccTable);
-  memcpy(pibObj.pData, pCoupValues->daccTable, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);  
-
-  pibObj.index = PHY_PIB_MAX_RMS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->rmsHigh);
-  memcpy(pibObj.pData, pCoupValues->rmsHigh, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_MAX_RMS_TABLE_VLO;
-  memcpy(pibObj.pData, pCoupValues->rmsVLow, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_THRESHOLDS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->thrsHigh);
-  memcpy(pibObj.pData, pCoupValues->thrsHigh, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_THRESHOLDS_TABLE_VLO;
-  memcpy(pibObj.pData, pCoupValues->thrsVLow, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_GAIN_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->gainHigh);
-  memcpy(pibObj.pData, pCoupValues->gainHigh, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_GAIN_TABLE_VLO;
-  memcpy(pibObj.pData, pCoupValues->gainVLow, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_PREDIST_COEF_TABLE_HI;
-  pibObj.length = pCoupValues->equSize;
-  memcpy(pibObj.pData, pCoupValues->equHigh, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  pibObj.index = PHY_PIB_PREDIST_COEF_TABLE_VLO;
-  memcpy(pibObj.pData, pCoupValues->equVlow, pibObj.length);
-  result |= DRV_G3_MACRT_PIBSet(handle, &pibObj);
-
-  return (bool)(result == MAC_RT_STATUS_SUCCESS);
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
 </#if>
+
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
+    pibObj.length = pCoupValues->equSize;
+    pibObj.pData = (uint8_t *)pCoupValues->equHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
+
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->equVlow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
+<#elseif (drvG3MacRt)??>
+    pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
+    pibObj.index = (uint16_t)PHY_PIB_PLC_IC_DRIVER_CFG;
+    pibObj.length = 1;
+    pibObj.pData[0] = pCoupValues->lineDrvConf;
+    result = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+
+    pibObj.index = (uint16_t)PHY_PIB_NUM_TX_LEVELS;
+    pibObj.pData[0] = pCoupValues->numTxLevels;
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_DACC_TABLE_CFG;
+    pibObj.length = (uint8_t)sizeof(pCoupValues->daccTable);
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->daccTable, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_MAX_RMS_TABLE_HI;
+    pibObj.length = (uint8_t)sizeof(pCoupValues->rmsHigh);
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->rmsHigh, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_MAX_RMS_TABLE_VLO;
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->rmsVLow, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_THRESHOLDS_TABLE_HI;
+    pibObj.length = (uint8_t)sizeof(pCoupValues->thrsHigh);
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->thrsHigh, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_THRESHOLDS_TABLE_VLO;
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->thrsVLow, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_GAIN_TABLE_HI;
+    pibObj.length = (uint8_t)sizeof(pCoupValues->gainHigh);
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->gainHigh, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_GAIN_TABLE_VLO;
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->gainVLow, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
+
+    pibObj.index = (uint16_t)PHY_PIB_PREDIST_COEF_TABLE_HI;
+    pibObj.length = pCoupValues->equSize;
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->equHigh, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+    pibObj.index = (uint16_t)PHY_PIB_PREDIST_COEF_TABLE_VLO;
+    (void) memcpy(pibObj.pData, (uint8_t *)pCoupValues->equVlow, pibObj.length);
+    resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
+    result = result && resultOut;
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
+</#if>
+
+    return result;
 }
 
 SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void )
 {
-  return SRV_PCOUP_DEFAULT_BRANCH;
+    return SRV_PCOUP_DEFAULT_BRANCH;
 }
 
 uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
 {
-  if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
-  {
-    /* PHY band for Main transmission branch */
+    if (branch == SRV_PLC_PCOUP_MAIN_BRANCH) 
+    {
+        /* PHY band for Main transmission branch */
 <#if (SRV_PCOUP_G3_MAIN_BAND == "CEN-A")>
-    return G3_CEN_A;
+        return (uint8_t)G3_CEN_A;
 <#elseif (SRV_PCOUP_G3_MAIN_BAND == "CEN-B")>
-    return G3_CEN_B;
+       return (uint8_t)G3_CEN_B;
 <#elseif (SRV_PCOUP_G3_MAIN_BAND == "FCC")>
-    return G3_FCC;
+       return (uint8_t)G3_FCC;
 <#else>
-    return G3_ARIB;
+       return (uint8_t)G3_ARIB;
 </#if>
-  }
+   }
 <#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-  else if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
-  {
-    /* PHY band for Main Auxiliary branch */
+
+    if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
+    {
+        /* PHY band for Main Auxiliary branch */
   <#if (SRV_PCOUP_G3_AUX_BAND == "CEN-A")>
-    return G3_CEN_A;
+        return (uint8_t)G3_CEN_A;
   <#else>
-    return G3_CEN_B;
+        return (uint8_t)G3_CEN_B;
   </#if>
-  }
+    }
 </#if>
 
-  /* Transmission branch not recognized */
-  return G3_INVALID;
+    /* Transmission branch not recognized */
+    return (uint8_t)G3_INVALID;
 }

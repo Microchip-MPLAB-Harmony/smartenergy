@@ -25,7 +25,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -75,7 +75,7 @@
 #define SRV_PCOUP_DEFAULT_CHANNEL                ${drvPlcPhy.DRV_PLC_PRIME_DEF_CHN?string}
 
 /* Equalization number of coefficients (number of carriers) */
-#define SRV_PCOUP_EQU_NUM_COEF_CHN               97
+#define SRV_PCOUP_EQU_NUM_COEF_CHN               97U
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256)>
 #define SRV_PCOUP_EQU_NUM_COEF_2_CHN             (SRV_PCOUP_EQU_NUM_COEF_CHN << 1)
 </#if>
@@ -128,21 +128,21 @@
 </#if>
 /* DACC configuration tables */
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
-#define SRV_PCOUP_DACC_CENA_TBL                  {0x${SRV_PCOUP_DACC_CENA_0?string}, 0x${SRV_PCOUP_DACC_CENA_1?string}, 0x${SRV_PCOUP_DACC_CENA_2?string}, 0x${SRV_PCOUP_DACC_CENA_3?string}, 0x${SRV_PCOUP_DACC_CENA_4?string}, 0x${SRV_PCOUP_DACC_CENA_5?string}, \
-                                                 0x${SRV_PCOUP_DACC_CENA_6?string}, 0x${SRV_PCOUP_DACC_CENA_7?string}, 0x${SRV_PCOUP_DACC_CENA_8?string}, 0x${SRV_PCOUP_DACC_CENA_9?string}, 0x${SRV_PCOUP_DACC_CENA_10?string}, 0x${SRV_PCOUP_DACC_CENA_11?string}, \
-                                                 0x${SRV_PCOUP_DACC_CENA_12?string}, 0x${SRV_PCOUP_DACC_CENA_13?string}, 0x${SRV_PCOUP_DACC_CENA_14?string}, 0x${SRV_PCOUP_DACC_CENA_15?string}, 0x${SRV_PCOUP_DACC_CENA_16?string}}
+#define SRV_PCOUP_DACC_CENA_TBL                  {0x${SRV_PCOUP_DACC_CENA_0?string}UL, 0x${SRV_PCOUP_DACC_CENA_1?string}UL, 0x${SRV_PCOUP_DACC_CENA_2?string}UL, 0x${SRV_PCOUP_DACC_CENA_3?string}UL, 0x${SRV_PCOUP_DACC_CENA_4?string}UL, 0x${SRV_PCOUP_DACC_CENA_5?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_CENA_6?string}UL, 0x${SRV_PCOUP_DACC_CENA_7?string}UL, 0x${SRV_PCOUP_DACC_CENA_8?string}UL, 0x${SRV_PCOUP_DACC_CENA_9?string}UL, 0x${SRV_PCOUP_DACC_CENA_10?string}UL, 0x${SRV_PCOUP_DACC_CENA_11?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_CENA_12?string}UL, 0x${SRV_PCOUP_DACC_CENA_13?string}UL, 0x${SRV_PCOUP_DACC_CENA_14?string}UL, 0x${SRV_PCOUP_DACC_CENA_15?string}UL, 0x${SRV_PCOUP_DACC_CENA_16?string}UL}
 
 </#if>
 <#if ((SRV_PCOUP_PRIME_CHN2 == true) || (SRV_PCOUP_PRIME_CHN3 == true) || (SRV_PCOUP_PRIME_CHN4 == true) || (SRV_PCOUP_PRIME_CHN5 == true) || (SRV_PCOUP_PRIME_CHN6 == true) || (SRV_PCOUP_PRIME_CHN7 == true) || (SRV_PCOUP_PRIME_CHN8 == true))>
-#define SRV_PCOUP_DACC_FCC_TBL                   {0x${SRV_PCOUP_DACC_FCC_0?string}, 0x${SRV_PCOUP_DACC_FCC_1?string}, 0x${SRV_PCOUP_DACC_FCC_2?string}, 0x${SRV_PCOUP_DACC_FCC_3?string}, 0x${SRV_PCOUP_DACC_FCC_4?string}, 0x${SRV_PCOUP_DACC_FCC_5?string}, \
-                                                 0x${SRV_PCOUP_DACC_FCC_6?string}, 0x${SRV_PCOUP_DACC_FCC_7?string}, 0x${SRV_PCOUP_DACC_FCC_8?string}, 0x${SRV_PCOUP_DACC_FCC_9?string}, 0x${SRV_PCOUP_DACC_FCC_10?string}, 0x${SRV_PCOUP_DACC_FCC_11?string}, \
-                                                 0x${SRV_PCOUP_DACC_FCC_12?string}, 0x${SRV_PCOUP_DACC_FCC_13?string}, 0x${SRV_PCOUP_DACC_FCC_14?string}, 0x${SRV_PCOUP_DACC_FCC_15?string}, 0x${SRV_PCOUP_DACC_FCC_16?string}}
+#define SRV_PCOUP_DACC_FCC_TBL                   {0x${SRV_PCOUP_DACC_FCC_0?string}UL, 0x${SRV_PCOUP_DACC_FCC_1?string}UL, 0x${SRV_PCOUP_DACC_FCC_2?string}UL, 0x${SRV_PCOUP_DACC_FCC_3?string}UL, 0x${SRV_PCOUP_DACC_FCC_4?string}UL, 0x${SRV_PCOUP_DACC_FCC_5?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_FCC_6?string}UL, 0x${SRV_PCOUP_DACC_FCC_7?string}UL, 0x${SRV_PCOUP_DACC_FCC_8?string}UL, 0x${SRV_PCOUP_DACC_FCC_9?string}UL, 0x${SRV_PCOUP_DACC_FCC_10?string}UL, 0x${SRV_PCOUP_DACC_FCC_11?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_FCC_12?string}UL, 0x${SRV_PCOUP_DACC_FCC_13?string}UL, 0x${SRV_PCOUP_DACC_FCC_14?string}UL, 0x${SRV_PCOUP_DACC_FCC_15?string}UL, 0x${SRV_PCOUP_DACC_FCC_16?string}UL}
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256)>
-#define SRV_PCOUP_DACC_2CHN_TBL                  {0x${SRV_PCOUP_DACC_2CHN_0?string}, 0x${SRV_PCOUP_DACC_2CHN_1?string}, 0x${SRV_PCOUP_DACC_2CHN_2?string}, 0x${SRV_PCOUP_DACC_2CHN_3?string}, 0x${SRV_PCOUP_DACC_2CHN_4?string}, 0x${SRV_PCOUP_DACC_2CHN_5?string}, \
-                                                 0x${SRV_PCOUP_DACC_2CHN_6?string}, 0x${SRV_PCOUP_DACC_2CHN_7?string}, 0x${SRV_PCOUP_DACC_2CHN_8?string}, 0x${SRV_PCOUP_DACC_2CHN_9?string}, 0x${SRV_PCOUP_DACC_2CHN_10?string}, 0x${SRV_PCOUP_DACC_2CHN_11?string}, \
-                                                 0x${SRV_PCOUP_DACC_2CHN_12?string}, 0x${SRV_PCOUP_DACC_2CHN_13?string}, 0x${SRV_PCOUP_DACC_2CHN_14?string}, 0x${SRV_PCOUP_DACC_2CHN_15?string}, 0x${SRV_PCOUP_DACC_2CHN_16?string}}
+#define SRV_PCOUP_DACC_2CHN_TBL                  {0x${SRV_PCOUP_DACC_2CHN_0?string}UL, 0x${SRV_PCOUP_DACC_2CHN_1?string}UL, 0x${SRV_PCOUP_DACC_2CHN_2?string}UL, 0x${SRV_PCOUP_DACC_2CHN_3?string}UL, 0x${SRV_PCOUP_DACC_2CHN_4?string}UL, 0x${SRV_PCOUP_DACC_2CHN_5?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_2CHN_6?string}UL, 0x${SRV_PCOUP_DACC_2CHN_7?string}UL, 0x${SRV_PCOUP_DACC_2CHN_8?string}UL, 0x${SRV_PCOUP_DACC_2CHN_9?string}UL, 0x${SRV_PCOUP_DACC_2CHN_10?string}UL, 0x${SRV_PCOUP_DACC_2CHN_11?string}UL, \
+                                                 0x${SRV_PCOUP_DACC_2CHN_12?string}UL, 0x${SRV_PCOUP_DACC_2CHN_13?string}UL, 0x${SRV_PCOUP_DACC_2CHN_14?string}UL, 0x${SRV_PCOUP_DACC_2CHN_15?string}UL, 0x${SRV_PCOUP_DACC_2CHN_16?string}UL}
 
 </#if>
 
@@ -489,7 +489,6 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL ch
 
   Example:
     <code>
-    // 'handle', returned from DRV_PLC_PHY_Open
     bool result;
 
     result = SRV_PCOUP_Set_Channel_Config(handle, CHN5);

@@ -25,7 +25,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -98,13 +98,13 @@
 /* Equalization number of coefficients (number of carriers) for Main branch */
 <#if SRV_PCOUP_G3_MAIN_BAND == "CEN-A">
 
-#define SRV_PCOUP_EQU_NUM_COEF                   36
+#define SRV_PCOUP_EQU_NUM_COEF                   36U
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "CEN-B">
-#define SRV_PCOUP_EQU_NUM_COEF                   16
+#define SRV_PCOUP_EQU_NUM_COEF                   16U
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "FCC">
-#define SRV_PCOUP_EQU_NUM_COEF                   72
+#define SRV_PCOUP_EQU_NUM_COEF                   72U
 <#elseif SRV_PCOUP_G3_MAIN_BAND == "ARIB">
-#define SRV_PCOUP_EQU_NUM_COEF                   54
+#define SRV_PCOUP_EQU_NUM_COEF                   54U
 </#if>
 
 /* PLC PHY Coupling parameters for Main branch */
@@ -112,9 +112,9 @@
 #define SRV_PCOUP_RMS_VLOW_TBL                   {${SRV_PCOUP_G3_RMS_VLOW_0?string}, ${SRV_PCOUP_G3_RMS_VLOW_1?string}, ${SRV_PCOUP_G3_RMS_VLOW_2?string}, ${SRV_PCOUP_G3_RMS_VLOW_3?string}, ${SRV_PCOUP_G3_RMS_VLOW_4?string}, ${SRV_PCOUP_G3_RMS_VLOW_5?string}, ${SRV_PCOUP_G3_RMS_VLOW_6?string}, ${SRV_PCOUP_G3_RMS_VLOW_7?string}}
 #define SRV_PCOUP_THRS_HIGH_TBL                  {${SRV_PCOUP_G3_THRS_HIGH_0?string}, ${SRV_PCOUP_G3_THRS_HIGH_1?string}, ${SRV_PCOUP_G3_THRS_HIGH_2?string}, ${SRV_PCOUP_G3_THRS_HIGH_3?string}, ${SRV_PCOUP_G3_THRS_HIGH_4?string}, ${SRV_PCOUP_G3_THRS_HIGH_5?string}, ${SRV_PCOUP_G3_THRS_HIGH_6?string}, ${SRV_PCOUP_G3_THRS_HIGH_7?string}, ${SRV_PCOUP_G3_THRS_HIGH_8?string}, ${SRV_PCOUP_G3_THRS_HIGH_9?string}, ${SRV_PCOUP_G3_THRS_HIGH_10?string}, ${SRV_PCOUP_G3_THRS_HIGH_11?string}, ${SRV_PCOUP_G3_THRS_HIGH_12?string}, ${SRV_PCOUP_G3_THRS_HIGH_13?string}, ${SRV_PCOUP_G3_THRS_HIGH_14?string}, ${SRV_PCOUP_G3_THRS_HIGH_15?string}}
 #define SRV_PCOUP_THRS_VLOW_TBL                  {${SRV_PCOUP_G3_THRS_VLOW_0?string}, ${SRV_PCOUP_G3_THRS_VLOW_1?string}, ${SRV_PCOUP_G3_THRS_VLOW_2?string}, ${SRV_PCOUP_G3_THRS_VLOW_3?string}, ${SRV_PCOUP_G3_THRS_VLOW_4?string}, ${SRV_PCOUP_G3_THRS_VLOW_5?string}, ${SRV_PCOUP_G3_THRS_VLOW_6?string}, ${SRV_PCOUP_G3_THRS_VLOW_7?string}, ${SRV_PCOUP_G3_THRS_VLOW_8?string}, ${SRV_PCOUP_G3_THRS_VLOW_9?string}, ${SRV_PCOUP_G3_THRS_VLOW_10?string}, ${SRV_PCOUP_G3_THRS_VLOW_11?string}, ${SRV_PCOUP_G3_THRS_VLOW_12?string}, ${SRV_PCOUP_G3_THRS_VLOW_13?string}, ${SRV_PCOUP_G3_THRS_VLOW_14?string}, ${SRV_PCOUP_G3_THRS_VLOW_15?string}}
-#define SRV_PCOUP_DACC_TBL                       {0x${SRV_PCOUP_G3_DACC_0?string}, 0x${SRV_PCOUP_G3_DACC_1?string}, 0x${SRV_PCOUP_G3_DACC_2?string}, 0x${SRV_PCOUP_G3_DACC_3?string}, 0x${SRV_PCOUP_G3_DACC_4?string}, 0x${SRV_PCOUP_G3_DACC_5?string}, \
-                                                 0x${SRV_PCOUP_G3_DACC_6?string}, 0x${SRV_PCOUP_G3_DACC_7?string}, 0x${SRV_PCOUP_G3_DACC_8?string}, 0x${SRV_PCOUP_G3_DACC_9?string}, 0x${SRV_PCOUP_G3_DACC_10?string}, 0x${SRV_PCOUP_G3_DACC_11?string}, \
-                                                 0x${SRV_PCOUP_G3_DACC_12?string}, 0x${SRV_PCOUP_G3_DACC_13?string}, 0x${SRV_PCOUP_G3_DACC_14?string}, 0x${SRV_PCOUP_G3_DACC_15?string}, 0x${SRV_PCOUP_G3_DACC_16?string}}
+#define SRV_PCOUP_DACC_TBL                       {0x${SRV_PCOUP_G3_DACC_0?string}UL, 0x${SRV_PCOUP_G3_DACC_1?string}UL, 0x${SRV_PCOUP_G3_DACC_2?string}UL, 0x${SRV_PCOUP_G3_DACC_3?string}UL, 0x${SRV_PCOUP_G3_DACC_4?string}UL, 0x${SRV_PCOUP_G3_DACC_5?string}UL, \
+                                                 0x${SRV_PCOUP_G3_DACC_6?string}UL, 0x${SRV_PCOUP_G3_DACC_7?string}UL, 0x${SRV_PCOUP_G3_DACC_8?string}UL, 0x${SRV_PCOUP_G3_DACC_9?string}UL, 0x${SRV_PCOUP_G3_DACC_10?string}UL, 0x${SRV_PCOUP_G3_DACC_11?string}UL, \
+                                                 0x${SRV_PCOUP_G3_DACC_12?string}UL, 0x${SRV_PCOUP_G3_DACC_13?string}UL, 0x${SRV_PCOUP_G3_DACC_14?string}UL, 0x${SRV_PCOUP_G3_DACC_15?string}UL, 0x${SRV_PCOUP_G3_DACC_16?string}UL}
 #define SRV_PCOUP_GAIN_HIGH_TBL                  {${SRV_PCOUP_G3_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_GAIN_HIGH_2?string}}
 #define SRV_PCOUP_GAIN_VLOW_TBL                  {${SRV_PCOUP_G3_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_GAIN_VLOW_2?string}}
 #define SRV_PCOUP_NUM_TX_LEVELS                  ${SRV_PCOUP_G3_NUM_TX_LVL?string}
@@ -213,9 +213,9 @@
 (((drvPlcPhy)?? && (drvPlcPhy.DRV_PLC_COUP_G3_MULTIBAND == true)) || ((drvG3MacRt)?? && (drvG3MacRt.DRV_PLC_COUP_G3_MULTIBAND == true)))>
 /* Equalization number of coefficients (number of carriers) for Auxiliary branch */
 <#if SRV_PCOUP_G3_AUX_BAND == "CEN-A">
-#define SRV_PCOUP_AUX_EQU_NUM_COEF               36
+#define SRV_PCOUP_AUX_EQU_NUM_COEF               36U
 <#elseif SRV_PCOUP_G3_AUX_BAND == "CEN-B">
-#define SRV_PCOUP_AUX_EQU_NUM_COEF               16
+#define SRV_PCOUP_AUX_EQU_NUM_COEF               16U
 </#if>
 
 /* PLC PHY Coupling parameters for Auxiliary branch */
@@ -223,9 +223,9 @@
 #define SRV_PCOUP_AUX_RMS_VLOW_TBL               {${SRV_PCOUP_G3_AUX_RMS_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_2?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_3?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_4?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_5?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_6?string}, ${SRV_PCOUP_G3_AUX_RMS_VLOW_7?string}}
 #define SRV_PCOUP_AUX_THRS_HIGH_TBL              {${SRV_PCOUP_G3_AUX_THRS_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_2?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_3?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_4?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_5?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_6?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_7?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_8?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_9?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_10?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_11?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_12?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_13?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_14?string}, ${SRV_PCOUP_G3_AUX_THRS_HIGH_15?string}}
 #define SRV_PCOUP_AUX_THRS_VLOW_TBL              {${SRV_PCOUP_G3_AUX_THRS_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_2?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_3?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_4?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_5?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_6?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_7?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_8?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_9?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_10?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_11?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_12?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_13?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_14?string}, ${SRV_PCOUP_G3_AUX_THRS_VLOW_15?string}}
-#define SRV_PCOUP_AUX_DACC_TBL                   {0x${SRV_PCOUP_G3_AUX_DACC_0?string}, 0x${SRV_PCOUP_G3_AUX_DACC_1?string}, 0x${SRV_PCOUP_G3_AUX_DACC_2?string}, 0x${SRV_PCOUP_G3_AUX_DACC_3?string}, 0x${SRV_PCOUP_G3_AUX_DACC_4?string}, 0x${SRV_PCOUP_G3_AUX_DACC_5?string}, \
-                                                 0x${SRV_PCOUP_G3_AUX_DACC_6?string}, 0x${SRV_PCOUP_G3_AUX_DACC_7?string}, 0x${SRV_PCOUP_G3_AUX_DACC_8?string}, 0x${SRV_PCOUP_G3_AUX_DACC_9?string}, 0x${SRV_PCOUP_G3_AUX_DACC_10?string}, 0x${SRV_PCOUP_G3_AUX_DACC_11?string}, \
-                                                 0x${SRV_PCOUP_G3_AUX_DACC_12?string}, 0x${SRV_PCOUP_G3_AUX_DACC_13?string}, 0x${SRV_PCOUP_G3_AUX_DACC_14?string}, 0x${SRV_PCOUP_G3_AUX_DACC_15?string}, 0x${SRV_PCOUP_G3_AUX_DACC_16?string}}
+#define SRV_PCOUP_AUX_DACC_TBL                   {0x${SRV_PCOUP_G3_AUX_DACC_0?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_1?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_2?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_3?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_4?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_5?string}UL, \
+                                                 0x${SRV_PCOUP_G3_AUX_DACC_6?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_7?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_8?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_9?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_10?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_11?string}UL, \
+                                                 0x${SRV_PCOUP_G3_AUX_DACC_12?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_13?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_14?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_15?string}UL, 0x${SRV_PCOUP_G3_AUX_DACC_16?string}UL}
 #define SRV_PCOUP_AUX_GAIN_HIGH_TBL              {${SRV_PCOUP_G3_AUX_GAIN_HIGH_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_HIGH_2?string}}
 #define SRV_PCOUP_AUX_GAIN_VLOW_TBL              {${SRV_PCOUP_G3_AUX_GAIN_VLOW_0?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_1?string}, ${SRV_PCOUP_G3_AUX_GAIN_VLOW_2?string}}
 #define SRV_PCOUP_AUX_NUM_TX_LEVELS              ${SRV_PCOUP_G3_AUX_NUM_TX_LVL?string}
@@ -408,7 +408,6 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch);
 
   Example:
     <code>
-    // 'handle', returned from ${SRV_PCOUP_DRV_OPEN}
     bool result;
 
     result = SRV_PCOUP_Set_Config(handle, SRV_PLC_PCOUP_MAIN_BRANCH);
@@ -485,7 +484,7 @@ SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void );
 
     if (phyBand == G3_CEN_A)
     {
-        // G3 CEN-A band
+
     }
     </code>
 

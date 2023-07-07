@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -272,7 +272,7 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn78Data = {
 };
 
 </#if>
-static const SRV_PLC_PCOUP_CHANNEL_DATA * srvPlcCoupChnData[16] = {
+static const SRV_PLC_PCOUP_CHANNEL_DATA * const srvPlcCoupChnData[16] = {
     NULL,
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
     &srvPlcCoupChn1Data,
@@ -353,105 +353,156 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA * srvPlcCoupChnData[16] = {
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: File scope functions
+// Section: PLC PHY Coupling Service Interface Implementation
 // *****************************************************************************
 // *****************************************************************************
 
 DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void )
 {
-  return SRV_PCOUP_DEFAULT_CHANNEL;
+    return SRV_PCOUP_DEFAULT_CHANNEL;
 }
 
 SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
 {
     if ((channel >= CHN1) && (channel <= CHN7_CHN8))
     {
+        /* MISRA C-2012 deviation block start */
+        /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+        #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
+
         return (SRV_PLC_PCOUP_CHANNEL_DATA *)srvPlcCoupChnData[channel];
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+        #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    <#if core.COMPILER_CHOICE == "XC32">
+        #pragma GCC diagnostic pop
+    </#if>
+</#if>
+        /* MISRA C-2012 deviation block end */
     }
-    else
-    {
-        return NULL;
-    }
+
+    /* Channel not recognized */
+    return NULL;
 }
 
 bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 {
-  SRV_PLC_PCOUP_CHANNEL_DATA *pCoupValues;
-  DRV_PLC_PHY_PIB_OBJ pibObj;
-  bool result;  
+    SRV_PLC_PCOUP_CHANNEL_DATA *pCoupValues;
+    DRV_PLC_PHY_PIB_OBJ pibObj;
+    bool result, resultOut;
 
-  /* Get PLC PHY Coupling parameters for the desired transmission channel */
-  pCoupValues = SRV_PCOUP_Get_Channel_Config(channel);
+    /* Get PLC PHY Coupling parameters for the desired transmission channel */
+    pCoupValues = SRV_PCOUP_Get_Channel_Config(channel);
 
-  if (pCoupValues == NULL)
-  {
-    /* Transmission channel not recognized */
-    return false;
-  }
+    if (pCoupValues == NULL)
+    {
+        /* Transmission channel not recognized */
+        return false;
+    }
 
-  /* Set PLC PHY Coupling parameters */
-  pibObj.id = PLC_ID_IC_DRIVER_CFG;
-  pibObj.length = 1;
-  pibObj.pData = &pCoupValues->lineDrvConf;
-  result = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    /* Set PLC PHY Coupling parameters */
+    pibObj.id = PLC_ID_IC_DRIVER_CFG;
+    pibObj.length = 1;
+    pibObj.pData = &pCoupValues->lineDrvConf;
+    result = DRV_PLC_PHY_PIBSet(handle, &pibObj);
 
-  pibObj.id = PLC_ID_NUM_TX_LEVELS;
-  pibObj.pData = &pCoupValues->numTxLevels;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_NUM_TX_LEVELS;
+    pibObj.pData = &pCoupValues->numTxLevels;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_DACC_TABLE_CFG;
-  pibObj.length = 17 << 2;
-  pibObj.pData = (uint8_t *)pCoupValues->daccTable;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);  
+    pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->rmsHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->rmsHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_MAX_RMS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->rmsHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->rmsHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_MAX_RMS_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->rmsVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_MAX_RMS_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->rmsVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_THRESHOLDS_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->thrsHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->thrsHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_THRESHOLDS_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->thrsHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->thrsHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_THRESHOLDS_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->thrsVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_THRESHOLDS_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->thrsVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_GAIN_TABLE_HI;
+    pibObj.length = (uint16_t)sizeof(pCoupValues->gainHigh);
+    pibObj.pData = (uint8_t *)pCoupValues->gainHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_GAIN_TABLE_HI;
-  pibObj.length = sizeof(pCoupValues->gainHigh);
-  pibObj.pData = (uint8_t *)pCoupValues->gainHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_GAIN_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->gainVLow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_GAIN_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->gainVLow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    /* MISRA C-2012 deviation block start */
+<#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
+    /* MISRA C-2012 Rule 11.8 deviated 5 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+<#else>
+    /* MISRA C-2012 Rule 11.8 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+</#if>
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+</#if>
 
-  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
-  pibObj.length = SRV_PCOUP_EQU_NUM_COEF_CHN << 1;
-  pibObj.pData = (uint8_t *)pCoupValues->equHigh;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_DACC_TABLE_CFG;
+    pibObj.length = 17 << 2;
+    pibObj.pData = (uint8_t *)pCoupValues->daccTable;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
-  pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
-  pibObj.pData = (uint8_t *)pCoupValues->equVlow;
-  result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
+    pibObj.length = SRV_PCOUP_EQU_NUM_COEF_CHN << 1;
+    pibObj.pData = (uint8_t *)pCoupValues->equHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
+
+    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->equVlow;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
 
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
-  if (channel >= CHN1_CHN2)
-  {
-    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI_2;
-    pibObj.pData = (uint8_t *)(&pCoupValues->equHigh[SRV_PCOUP_EQU_NUM_COEF_CHN]);
-    result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    if (channel >= CHN1_CHN2)
+    {
+        pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI_2;
+        pibObj.pData = (uint8_t *)(&pCoupValues->equHigh[SRV_PCOUP_EQU_NUM_COEF_CHN]);
+        resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+        result = result && resultOut;
 
-    pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO_2;
-    pibObj.pData = (uint8_t *)(&pCoupValues->equVlow[SRV_PCOUP_EQU_NUM_COEF_CHN]);
-    result &= DRV_PLC_PHY_PIBSet(handle, &pibObj);
-  }
+        pibObj.id = PLC_ID_PREDIST_COEF_TABLE_VLO_2;
+        pibObj.pData = (uint8_t *)(&pCoupValues->equVlow[SRV_PCOUP_EQU_NUM_COEF_CHN]);
+        resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+        result = result && resultOut;
+    }
 
 </#if>
-  return result;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
+
+    return result;
 }
