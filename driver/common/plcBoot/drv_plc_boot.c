@@ -171,7 +171,7 @@ static void DRV_PLC_BOOT_FirmwareUploadTask(void)
     uint8_t *pData;
     uint32_t progAddr;
     uint16_t fragSize;
-    uint8_t padding;
+    uint8_t padding = 0;
     
     /* Get next address to be programmed */
     progAddr = sDrvPlcBootInfo.pDst;
@@ -216,12 +216,15 @@ static void DRV_PLC_BOOT_FirmwareUploadTask(void)
         if (sDrvPlcBootInfo.pendingLength > MAX_FRAG_SIZE)
         {
             fragSizeReal = MAX_FRAG_SIZE;
-            padding = 0;
         }
         else
         {
             fragSizeReal = (uint16_t)sDrvPlcBootInfo.pendingLength;
             padding = (uint8_t)(fragSizeReal % 4U);
+            if (padding > 0U)
+            {
+                padding = 4U - padding;
+            }
         }
 
         fragSize = fragSizeReal + padding;
