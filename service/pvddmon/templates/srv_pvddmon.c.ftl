@@ -16,7 +16,7 @@
 *******************************************************************************/
 
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -54,6 +54,12 @@
 
 </#compress>
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+
 #include "device.h"
 <#if core.CoreSysIntFile == true>
 #include "interrupts.h"
@@ -61,50 +67,66 @@
 #include "srv_pvddmon.h"
 #include "peripheral/${PVDD_MON_MASK_PREFIX?lower_case}/plib_${PVDD_MON_ADC_INSTANCE?lower_case}.h"
 
-static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Data
+// *****************************************************************************
+// *****************************************************************************
 
-<#-- *********************************************************************************************** -->
-// *****************************************************************************
-// *****************************************************************************
-// Section: PLC PVDD Monitor Service Implementation
-// *****************************************************************************
-// *****************************************************************************
+static SRV_PVDDMON_CMP_MODE srv_pvddmon_mode;
 static SRV_PVDDMON_CALLBACK ${PVDD_MON_ADC_INSTANCE}_CompareCallback = NULL;
 
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File Scope Functions
+// *****************************************************************************
+// *****************************************************************************
+
 <#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
-static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
+static void ${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
 {
     /* Avoid warning */
     (void)eocStatus;
     
 <#else>
-static void _${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
+static void ${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
 {
 </#if>
-    if (status & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk)
+    if ((status & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk) != 0U)
     {
-        if (${PVDD_MON_ADC_INSTANCE}_CompareCallback)
+        if (${PVDD_MON_ADC_INSTANCE}_CompareCallback != NULL)
         {
             ${PVDD_MON_ADC_INSTANCE}_CompareCallback(srv_pvddmon_mode, context);
         }
     }
 }
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: PLC PVDD Monitor Service Interface Implementation
+// *****************************************************************************
+// *****************************************************************************
+
 void SRV_PVDDMON_Initialize (void)
 {
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = ${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL}_MASK;
 
     /* Disable ${PVDD_MON_ADC_INSTANCE} channel */
     ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
 
     /* Disable channel interrupt */
-    ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable(channelMsk);
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+    ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable((${PVDD_MON_MASK_PREFIX}_INTERRUPT_EOC_MASK)channelMsk);
+<#else>
+    ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable((${PVDD_MON_MASK_PREFIX}_INTERRUPT_MASK)channelMsk);
+</#if>
 }
 
 void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr = 0;
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = ${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL}_MASK;
 
     /* Set Free Run reset */
 <#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
@@ -159,7 +181,7 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
 void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     uint32_t emr;
-    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = (1 << ${SRV_PVDDMON_ADC_CHANNEL});
+    ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = ${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL}_MASK;
 
     /* Disable channel COMPE interrupt */
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_IDR |= ${PVDD_MON_MASK_PREFIX}_IER_COMPE_Msk;
@@ -185,7 +207,7 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR &= ~${PVDD_MON_MASK_PREFIX}_EMR_CMPMODE_Msk;
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_EMR |= emr;
 
-    while(${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_ISR & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk);
+    while((${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_ISR & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk) != 0U){}
 
 <#if (adc.ADC_INSTANCE_NAME)?has_content>
     /* Comparison Restart */
@@ -202,7 +224,7 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t context)
 {
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
-    ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(_${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
+    ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback;
 }
 
@@ -210,10 +232,10 @@ bool SRV_PVDDMON_CheckWindow(void)
 {
     uint32_t adcValue;
     
-    adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${SRV_PVDDMON_ADC_CHANNEL});
-    while(adcValue == 0)
+    adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL});
+    while(adcValue == 0U)
     {
-        adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${SRV_PVDDMON_ADC_CHANNEL});
+        adcValue = ${PVDD_MON_ADC_INSTANCE}_ChannelResultGet(${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL});
     }
     
     if ((adcValue <= SRV_PVDDMON_HIGH_TRESHOLD) && (adcValue >= SRV_PVDDMON_LOW_TRESHOLD))
