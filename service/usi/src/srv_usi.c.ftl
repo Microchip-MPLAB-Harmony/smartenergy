@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -46,6 +46,8 @@
 // *****************************************************************************
 // *****************************************************************************
 
+#include <string.h>
+#include <stddef.h>
 #include "configuration.h"
 #include "driver/driver_common.h"
 #include "service/usi/srv_usi.h"
@@ -61,17 +63,21 @@
 // *****************************************************************************
 // *****************************************************************************
 /* This is the service instance object array. */
-static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {0};
+static SRV_USI_OBJ gSrvUSIOBJ[SRV_USI_INSTANCES_NUMBER] = {
+<#list 1..__INSTANCE_COUNT as instance>
+    {.status = SRV_USI_STATUS_UNINITIALIZED},
+</#list>
+};
 
 /* This is the USI callback object for each USI instance. */
-static SRV_USI_CALLBACK gSrvUSICallbackOBJ[SRV_USI_INSTANCES_NUMBER][11] = {NULL};
+static SRV_USI_CALLBACK gSrvUSICallbackOBJ[SRV_USI_INSTANCES_NUMBER][11];
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTOCOL_ID protocol)
+static SRV_USI_CALLBACK_INDEX SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTOCOL_ID protocol)
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
 
@@ -131,16 +137,17 @@ static SRV_USI_CALLBACK_INDEX _SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROT
         case SRV_USI_PROT_ID_INVALID:
         default:
 <#if SRV_USI_ERROR_LOG_REPORT == true>
-            SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_PROTOCOL, 
+            SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_PROTOCOL,
                                              "Bad protocol to get callback\r\n");
 </#if>
             callbackIndex = SRV_USI_CALLBACK_INDEX_INVALID;
+            break;
     }
 
-    return callbackIndex;    
+    return callbackIndex;
 }
 
-static PCRC_CRC_TYPE _SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol)
+static PCRC_CRC_TYPE SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol)
 {
     PCRC_CRC_TYPE crcType;
 
@@ -179,14 +186,14 @@ static PCRC_CRC_TYPE _SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protoco
     return crcType;    
 }
 
-static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
+static SRV_USI_HANDLE SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
 {
     /* This function returns the same handle if the handle is valid. Returns 
        SRV_USI_HANDLE_INVALID otherwise. */
 
     uint8_t srvIndex;
 
-    if((handle != SRV_USI_HANDLE_INVALID) && (handle != 0))
+    if((handle != SRV_USI_HANDLE_INVALID) && (handle != 0U))
     {
         /* Look for the handle */
         for (srvIndex = 0; srvIndex < SRV_USI_INSTANCES_NUMBER; srvIndex++)
@@ -200,32 +207,35 @@ static SRV_USI_HANDLE _SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
     return(SRV_USI_HANDLE_INVALID);
 }
 
-static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context ) 
+static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context )
 {    
     SRV_USI_OBJ* dObj;
     uint32_t crcGetValue;
     uint32_t crcRcvValue;
+    uint16_t lengthWithoutCrc;
     SRV_USI_PROTOCOL_ID protocol;
+    uint8_t protocolValue;
     PCRC_CRC_TYPE crcType;
-    size_t dataLength;
+    uint16_t dataLength;
     SRV_USI_CALLBACK_INDEX cbIndex;
     
     /* Check valid context : the driver handle */
-    if (_SRV_USI_HandleValidate((SRV_USI_HANDLE)context) == SRV_USI_HANDLE_INVALID)
+    if (SRV_USI_HandleValidate((SRV_USI_HANDLE)context) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
 
     dObj = (SRV_USI_OBJ*)context;
     
-    if (length) 
+    if (length > 0U) 
     {      
         /* New received message */
         /* Extract Protocol */
-        protocol = (SRV_USI_PROTOCOL_ID)USI_TYPE_PROTOCOL(*(pData + 1));
+        protocolValue = USI_TYPE_PROTOCOL(pData[1]);
+        protocol = (SRV_USI_PROTOCOL_ID)protocolValue;
         
         /* Get CRC type from Protocol */
-        crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
+        crcType = SRV_USI_GetCRCTypeFromProtocol(protocol);
         
         /* Extract data length */
         dataLength = USI_LEN_PROTOCOL(pData[USI_LEN_HI_OFFSET], pData[USI_LEN_LO_OFFSET]);
@@ -235,11 +245,12 @@ static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
             (protocol == SRV_USI_PROT_ID_COORD_G3) ||
             (protocol == SRV_USI_PROT_ID_PRIME_API))
         {
-            dataLength += ((size_t) pData[USI_XLEN_OFFSET] & USI_XLEN_MSK) << USI_XLEN_SHIFT_L;
+            dataLength += ((uint16_t) pData[USI_XLEN_OFFSET] & USI_XLEN_MSK) << USI_XLEN_SHIFT_L;
         }
 
         /* Check invalid length : remove Header and CRC bytes */
-        if (dataLength != (length - (2 + (1 << crcType))))
+        lengthWithoutCrc = length - ((uint16_t)1U << (uint8_t)crcType);
+        if (dataLength != (lengthWithoutCrc - 2U))
         {
             /* Discard message */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
@@ -250,49 +261,49 @@ static void _SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
         }
         
         /* Check CRC */
-        crcGetValue = SRV_PCRC_GetValue(pData, length - (1<<crcType), 
+        crcGetValue = SRV_PCRC_GetValue(pData, lengthWithoutCrc,
                 PCRC_HT_USI, crcType, 0);
  
         if (crcType == PCRC_CRC8)
         {
-            crcRcvValue = (uint32_t)(*(pData + length - 1));
+            crcRcvValue = (uint32_t)(pData[length - 1U]);
         } 
         else if (crcType == PCRC_CRC16)
         {
-            crcRcvValue = (((uint32_t)(*(pData + length - 2))) << 8) + 
-                          (uint32_t)(*(pData + length - 1));
+            crcRcvValue = (((uint32_t)(pData[length - 2U])) << 8) +
+                          (uint32_t)(pData[length - 1U]);
         }
         else
         {            
-            crcRcvValue = (((uint32_t)(*(pData + length - 4))) << 24) + 
-                          (((uint32_t)(*(pData + length - 3))) << 16) + 
-                          (((uint32_t)(*(pData + length - 2))) << 8) + 
-                          (uint32_t)(*(pData + length - 1));
+            crcRcvValue = (((uint32_t)(pData[length - 4U])) << 24) +
+                          (((uint32_t)(pData[length - 3U])) << 16) +
+                          (((uint32_t)(pData[length - 2U])) << 8) +
+                          (uint32_t)(pData[length - 1U]);
         }
         
         if (crcGetValue != crcRcvValue) 
         {
             /* Discard message */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
-            SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_CRC, 
+            SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_CRC,
                                              "Received wrong CRC\r\n");
 </#if>
-            return;            
+            return;
         }
     
         /* Launch USI callback */
-        cbIndex = _SRV_USI_GetCallbackIndexFromProtocol(protocol);
-        if (dObj->callback[cbIndex])
+        cbIndex = SRV_USI_GetCallbackIndexFromProtocol(protocol);
+        if (dObj->callback[cbIndex] != NULL)
         {
             dObj->callback[cbIndex](pData + 2, dataLength);
-        }        
+        }
     }
 }
 
-static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
+static uint8_t* SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
                                       uint16_t length, uint8_t *pEndData )
 {
-    while (length)
+    while (length > 0U)
     {
         if (*pSrcData == USI_ESC_KEY_7D)
         {
@@ -312,7 +323,7 @@ static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
         if (pDstData == pEndData)
         {
             /* Escaped Message can't fit in Write buffer */
-            return 0;
+            return NULL;
         }
         
         pSrcData++;
@@ -322,10 +333,11 @@ static uint8_t* _SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
     return pDstData;
 }
 
-static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength, 
+static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength, 
                                      SRV_USI_PROTOCOL_ID protocol, 
-                                     uint8_t *pData, size_t length )
+                                     uint8_t *pData, uint16_t length )
 {
+    ptrdiff_t size;
     uint8_t* pNewData;
     uint8_t* pEndData;
     uint8_t valueTmp[4];
@@ -334,22 +346,22 @@ static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     PCRC_CRC_TYPE crcType;
     
     /* Get CRC type from Protocol */
-    crcType = _SRV_USI_GetCRCTypeFromProtocol(protocol);
+    crcType = SRV_USI_GetCRCTypeFromProtocol(protocol);
     
     /* Build new message */
     pNewData = pDstData;
-    pEndData = pNewData + (maxDstLength - 3);
+    pEndData = pNewData + (maxDstLength - 3U);
     
     /* Build header message */
     *pNewData++ = USI_ESC_KEY_7E;
     valueTmp[0] = USI_LEN_HI_PROTOCOL(length);
-    valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL(protocol);
+    valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL((uint8_t)protocol);
     
     /* Get CRC from USI header: 2 bytes */
     valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, crcType, 0);
     /* Escape USI header */
-    pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
-    if (pNewData == 0)
+    pNewData = SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
+    if (pNewData == NULL)
     {
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
@@ -371,48 +383,49 @@ static size_t _SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     /* Get CRC from USI data. */
     valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType, valueTmp32);
     /* Escape USI data */
-    pNewData = _SRV_USI_EscapeData(pNewData, pData, length, pEndData);
-    if (pNewData == 0)
+    pNewData = SRV_USI_EscapeData(pNewData, pData, length, pEndData);
+    if (pNewData == NULL)
     {
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE, 
+        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE,
             "Error in Escape Data: can't fit in destination buffer\r\n");
 </#if>
         return 0;
     }
     
     /* Escape CRC value */
-    valueTmp[0] = (valueTmp32 >> 24) & 0xFF;
-    valueTmp[1] = (valueTmp32 >> 16) & 0xFF;
-    valueTmp[2] = (valueTmp32 >> 8) & 0xFF;
-    valueTmp[3] = valueTmp32 & 0xFF;
+    valueTmp[0] = (uint8_t)(valueTmp32 >> 24);
+    valueTmp[1] = (uint8_t)(valueTmp32 >> 16);
+    valueTmp[2] = (uint8_t)(valueTmp32 >> 8);
+    valueTmp[3] = (uint8_t)valueTmp32;
     if (crcType == PCRC_CRC8)
     {
-        pNewData = _SRV_USI_EscapeData(pNewData, &valueTmp[3], 1, pEndData);
+        pNewData = SRV_USI_EscapeData(pNewData, &valueTmp[3], 1, pEndData);
     } 
     else if (crcType == PCRC_CRC16)
     {
-        pNewData = _SRV_USI_EscapeData(pNewData, &valueTmp[2], 2, pEndData);
+        pNewData = SRV_USI_EscapeData(pNewData, &valueTmp[2], 2, pEndData);
     }
     else
     {
-        pNewData = _SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
+        pNewData = SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
     }
     
-    if (pNewData == 0)
+    if (pNewData == NULL)
     {
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
-        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE, 
+        SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE,
             "Error in Escape Data: can't fit in destination buffer\r\n");
 </#if>
         return 0;
     }
     
     *pNewData++ = USI_ESC_KEY_7E;
-    
-    return (pNewData - pDstData);
+
+    size = pNewData - pDstData;
+    return (size_t)size;
 }
 
 // *****************************************************************************
@@ -426,8 +439,24 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     const SYS_MODULE_INIT * const init 
 )
 {
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+</#if>
+    const SRV_USI_INIT * const usiInit = (const SRV_USI_INIT * const)init;
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
     SRV_USI_OBJ* dObj;
-    SRV_USI_INIT* usiInit = (SRV_USI_INIT *)init ;
 
     /* Confirm valid arguments */
     if(index >= SRV_USI_INSTANCES_NUMBER)
@@ -438,22 +467,23 @@ SYS_MODULE_OBJ SRV_USI_Initialize(
     /* Allocate the service object */
     dObj = &gSrvUSIOBJ[index];
     
-   if ((dObj->status == SRV_USI_STATUS_UNINITIALIZED) && usiInit)
+   if ((dObj->status == SRV_USI_STATUS_UNINITIALIZED) && (usiInit != NULL))
     {
         dObj->status                = SRV_USI_STATUS_NOT_CONFIGURED;
         dObj->devIndex              = usiInit->deviceIndex;
         dObj->devDesc               = usiInit->consDevDesc;
         dObj->pWrBuffer             = usiInit->pWrBuffer;
         dObj->wrBufferSize          = usiInit->wrBufferSize;
-        dObj->callback              = &gSrvUSICallbackOBJ[index][0];
-    
+        dObj->callback              = gSrvUSICallbackOBJ[index];
+        (void) memset(gSrvUSICallbackOBJ[index], 0, sizeof(gSrvUSICallbackOBJ[index]));
+
         dObj->devDesc->init(dObj->devIndex, usiInit->deviceInitData);
         
         /* Return the object structure */
         return ( (SYS_MODULE_OBJ)index );
     }
     
-    /* Return the object structure */
+    /* Return the invalid object */
     return SYS_MODULE_OBJ_INVALID;
 }
 
@@ -473,7 +503,8 @@ SRV_USI_HANDLE SRV_USI_Open(
     {
         return SRV_USI_HANDLE_INVALID;
     }
-    else if(dObj->status == SRV_USI_STATUS_NOT_CONFIGURED)
+
+    if(dObj->status == SRV_USI_STATUS_NOT_CONFIGURED)
     {
         /* Open USI device */
         if (dObj->devDesc->open(dObj->devIndex) == DRV_HANDLE_INVALID)
@@ -493,7 +524,7 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
     SRV_USI_OBJ* dObj;
 
     /* Validate the driver handle */
-    if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
@@ -515,7 +546,7 @@ SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle )
     SRV_USI_OBJ* dObj;
 
     /* Validate the driver handle */
-    if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return SRV_USI_STATUS_ERROR;
     }
@@ -526,7 +557,7 @@ SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle )
     return dObj->devDesc->status(dObj->devIndex);
 }
 
-void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle, 
+void SRV_USI_CallbackRegister ( SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, SRV_USI_CALLBACK callback )
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
@@ -534,13 +565,13 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
     SRV_USI_CALLBACK *cb;
 
     /* Validate the driver handle */
-    if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
 
     /* Get callback index from USI protocol */
-    callbackIndex = _SRV_USI_GetCallbackIndexFromProtocol(protocol);
+    callbackIndex = SRV_USI_GetCallbackIndexFromProtocol(protocol);
 
     if (callbackIndex == SRV_USI_CALLBACK_INDEX_INVALID)
     {
@@ -558,16 +589,16 @@ void SRV_USI_CallbackRegister ( const SRV_USI_HANDLE handle,
     *cb = callback;
     
     /* Register reception callback */
-    dObj->devDesc->setReadCallback(dObj->devIndex, _SRV_USI_Callback_Handle, (uintptr_t)dObj);
+    dObj->devDesc->setReadCallback(dObj->devIndex, SRV_USI_Callback_Handle, (uintptr_t)dObj);
 
 }
 
-void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
+void SRV_USI_Tasks( SYS_MODULE_OBJ object )
 {
-    SRV_USI_OBJ* dObj = &gSrvUSIOBJ[index];
+    SRV_USI_OBJ* dObj = &gSrvUSIOBJ[object];
     
     /* Validate the request */
-    if(index >= SRV_USI_INSTANCES_NUMBER)
+    if(object >= SRV_USI_INSTANCES_NUMBER)
     {
         return;
     }
@@ -582,20 +613,20 @@ void SRV_USI_Tasks( const SYS_MODULE_INDEX index )
     
 }
 
-void SRV_USI_Send_Message( const SRV_USI_HANDLE handle, 
+void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 {
     SRV_USI_OBJ* dObj = (SRV_USI_OBJ*)handle;
     size_t writeLength;
 
     /* Validate the driver handle */
-    if (_SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
     
     /* Check length */
-    if ((length == 0) || (length > dObj->wrBufferSize))
+    if ((length == 0U) || (length > dObj->wrBufferSize))
     {
 <#if SRV_USI_ERROR_LOG_REPORT == true>
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_INVALID_LENGTH, 
@@ -604,12 +635,12 @@ void SRV_USI_Send_Message( const SRV_USI_HANDLE handle,
         return;
     }
 
-    /* Waiting for USART is free */
-    while (dObj->devDesc->writeIsBusy(dObj->devIndex) == true);
+    /* Waiting for USART/CDC is free */
+    while (dObj->devDesc->writeIsBusy(dObj->devIndex) == true){}
 
     /* Build USI message */
-    writeLength = _SRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, length);
+    writeLength = SRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, (uint16_t)length);
     
     /* Send message */
-    dObj->devDesc->write(dObj->devIndex, dObj->pWrBuffer, writeLength);
+    dObj->devDesc->writeData(dObj->devIndex, dObj->pWrBuffer, writeLength);
 }

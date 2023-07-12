@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -62,6 +62,16 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
+
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 5.2 deviated twice.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.2" "H3_MISRAC_2012_R_5_2_DR_1"
+</#if>
 
 // *****************************************************************************
 /* USI Service Serial Protocol Identifiers
@@ -141,9 +151,16 @@ typedef enum
 
 } SRV_USI_PROTOCOL_ID;
 
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
+
 // *****************************************************************************
 /* USI Service Serial Protocol Identifiers
-
   Summary:
     List of possible values of USI status.
 

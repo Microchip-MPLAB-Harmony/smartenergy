@@ -1,6 +1,6 @@
 <#--
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -23,7 +23,7 @@
 *******************************************************************************/
 -->
 /* USI Service Common Configuration Options */
-#define SRV_USI_INSTANCES_NUMBER              ${__INSTANCE_COUNT}
-#define SRV_USI_USART_CONNECTIONS             ${SRV_USI_NUM_USART?string}
-#define SRV_USI_CDC_CONNECTIONS               ${SRV_USI_NUM_CDC?string}
-#define SRV_USI_MSG_POOL_SIZE                 ${SRV_USI_MSG_POOL_SIZE?string}
+#define SRV_USI_INSTANCES_NUMBER              ${__INSTANCE_COUNT}U
+#define SRV_USI_USART_CONNECTIONS             ${SRV_USI_NUM_USART?string}U
+#define SRV_USI_CDC_CONNECTIONS               ${SRV_USI_NUM_CDC?string}U
+#define SRV_USI_MSG_POOL_SIZE                 ${SRV_USI_MSG_POOL_SIZE?string}U

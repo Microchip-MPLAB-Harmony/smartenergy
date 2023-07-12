@@ -19,7 +19,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -55,7 +55,7 @@
 #include <stdbool.h>
 #include "system/system.h"
 #include "usb/usb_device_cdc.h"
-#include "service/usi/srv_usi_definitions.h"
+#include "service/usi/srv_usi.h"
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
 #include "osal/osal.h"
 </#if>
@@ -67,6 +67,8 @@
 
 #endif
 // DOM-IGNORE-END
+
+extern const SRV_USI_DEV_DESC srvUSICDCDevDesc;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -92,8 +94,8 @@ typedef bool(* USI_CDC_PLIB_WRITE_ISBUSY)(void);
 typedef struct
 {
     USI_CDC_PLIB_READ_CALLBACK_REG readCallbackRegister;
-    USI_CDC_PLIB_WRRD read;
-    USI_CDC_PLIB_WRRD write;
+    USI_CDC_PLIB_WRRD readData;
+    USI_CDC_PLIB_WRRD writeData;
     USI_CDC_PLIB_WRITE_ISBUSY writeIsBusy;
 } SRV_USI_CDC_INTERFACE;
 
@@ -120,11 +122,9 @@ typedef struct
     
     uint8_t*                                 cdcReadBuffer;
     uint8_t*                                 usiReadBuffer;
-    uint8_t*                                 usiRdInIndex;
-    uint8_t*                                 usiRdOutIndex;
-    uint8_t*                                 usiEndIndex;
     volatile uint32_t                        cdcNumBytesRead;
-    uint32_t                                 usiNumBytesRead;
+    size_t                                   usiBufferSize;
+    size_t                                   usiNumBytesRead;
     size_t                                   cdcBufferSize;
     volatile bool                            cdcIsReadComplete;
     
@@ -143,13 +143,13 @@ typedef struct
 // *****************************************************************************
 // *****************************************************************************
 
-DRV_HANDLE USI_CDC_Initialize(uint32_t index, const void* initData);
+void USI_CDC_Initialize(uint32_t index, const void * const initData);
 
 DRV_HANDLE USI_CDC_Open(uint32_t index);
 
 void USI_CDC_Tasks (uint32_t index);
 
-size_t USI_CDC_Write(uint32_t index, void* pData, size_t length);
+void USI_CDC_Write(uint32_t index, void* pData, size_t length);
 
 bool USI_CDC_WriteIsBusy(uint32_t index);
 

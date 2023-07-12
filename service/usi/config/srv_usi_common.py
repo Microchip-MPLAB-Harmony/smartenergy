@@ -162,11 +162,12 @@ def instantiateComponent(usiComponentCommon):
     usiHeaderFile.setType("HEADER")
     
     usiDefHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_DEF_HEADER", None)
-    usiDefHeaderFile.setSourcePath("service/usi/srv_usi_definitions.h")
+    usiDefHeaderFile.setSourcePath("service/usi/srv_usi_definitions.h.ftl")
     usiDefHeaderFile.setOutputName("srv_usi_definitions.h")
     usiDefHeaderFile.setDestPath("service/usi")
     usiDefHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
     usiDefHeaderFile.setType("HEADER")
+    usiDefHeaderFile.setMarkup(True)
     
     usiLocalHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_LOCAL_HEADER", None)
     usiLocalHeaderFile.setSourcePath("service/usi/src/srv_usi_local.h")
