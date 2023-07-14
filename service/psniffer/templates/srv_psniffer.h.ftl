@@ -18,7 +18,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -69,31 +69,23 @@
 // Section: Macro definitions
 // *****************************************************************************
 // *****************************************************************************
-<#if SRV_PSNF_PLC_PROFILE == "0">
-#define PSNIFFER_TONEMAP_SIZE     1
-#define PSNIFFER_SUBBANDS_SIZE    6   
-#define PSNIFFER_CARRIERS_SIZE    36        
-#define PSNIFFER_RS_2_BLOCKS      0
+
+<#if SRV_PSNF_PLC_PROFILE == "G3_CEN_A">
+#define PSNIFFER_CARRIERS_SIZE    36
 #define PSNIFFER_VERSION          0x02
 #define PSNIFFER_PROFILE          0x12
 </#if>
-<#if SRV_PSNF_PLC_PROFILE == "1">
-#define PSNIFFER_TONEMAP_SIZE     1
-#define PSNIFFER_SUBBANDS_SIZE    4   
-#define PSNIFFER_CARRIERS_SIZE    16        
-#define PSNIFFER_RS_2_BLOCKS      0
+<#if SRV_PSNF_PLC_PROFILE == "G3_CEN_B">
+#define PSNIFFER_CARRIERS_SIZE    16
 #define PSNIFFER_VERSION          0x02
 #define PSNIFFER_PROFILE          0x12
 </#if>
-<#if SRV_PSNF_PLC_PROFILE == "2">
-#define PSNIFFER_TONEMAP_SIZE     3
-#define PSNIFFER_SUBBANDS_SIZE    24   
-#define PSNIFFER_CARRIERS_SIZE    72        
-#define PSNIFFER_RS_2_BLOCKS      1
+<#if SRV_PSNF_PLC_PROFILE == "G3_FCC">
+#define PSNIFFER_CARRIERS_SIZE    72
 #define PSNIFFER_VERSION          0x02
 #define PSNIFFER_PROFILE          0x12
 </#if>
-<#if SRV_PSNF_PLC_PROFILE == "4">
+<#if SRV_PSNF_PLC_PROFILE == "PRIME">
 #define PSNIFFER_VERSION          0x14
 #define PSNIFFER_PROFILE          0x11
 #define PSNIFFER_MSG_TYPE_A       0x20
@@ -121,24 +113,24 @@
     This enumeration defines the PLC commands used by PLC Phy Sniffer Tool
     provided by Microchip.
 */
-<#if SRV_PSNF_PLC_PROFILE == "4">
+<#if SRV_PSNF_PLC_PROFILE == "PRIME">
 typedef enum
 {
-  /* Set PLC Channel */    
-  SRV_PSNIFFER_CMD_SET_CHANNEL = 2,    
+  /* Set PLC Channel */
+  SRV_PSNIFFER_CMD_SET_CHANNEL = 2,
   /* Enable robust modes of PRIME */
   SRV_PSNIFFER_CMD_ENABLE_PRIME_PLUS_ROBUST,
   /* Inject message in PLC */
   SRV_PSNIFFER_CMD_MESSAGE
-} SRV_PSNIFFER_COMMAND;   
+} SRV_PSNIFFER_COMMAND;
 <#else>
 typedef enum
 {
   /* Receive new PLC message */
   SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,
-  /* Set Tone Mask request */ 
+  /* Set Tone Mask request */
   SRV_PSNIFFER_CMD_SET_TONE_MASK,
-} SRV_PSNIFFER_COMMAND;   
+} SRV_PSNIFFER_COMMAND;
 </#if>
 
 // *****************************************************************************
@@ -174,7 +166,6 @@ typedef enum
     <code>
     SRV_PSNIFFER_COMMAND command;
 
-    // Process received message from Sniffer Tool
     command = SRV_PSNIFFER_GetCommand(pData);
     </code>
 
@@ -215,16 +206,13 @@ SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData);
     <code>
     static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
     {
-      // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      // Serialize received message
       length = SRV_PSNIFFER_SerialRxMessage(appData.pSerialData, indObj);
-      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -269,16 +257,13 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     <code>
     static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj)
     {
-      // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      // Serialize transmitted message
       length = SRV_PSNIFFER_SerialCfmMessage(appData.pSerialData, pCfmObj);
-      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -318,10 +303,7 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     <code>
     static void APP_PLCTxFrame(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj)
     {
-      // Give transmission object to Sniffer
       SRV_PSNIFFER_SetTxMessage(pTxObj);
-      // Send PLC frame through PHY Driver
-      // DRV_PLC_PHY_xxx(pTxObj);
     }
     </code>
 
@@ -357,16 +339,13 @@ void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj);
     <code>
     static void APP_PLCDataIndCb(DRV_PLC_PHY_RECEPTION_OBJ *indObj, uintptr_t context)
     {
-      // Report RX Symbols
       appData.plcPIB.id = PLC_ID_RX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetRxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      // Serialize received message
       length = SRV_PSNIFFER_SerialRxMessage(appData.pSerialData, indObj);
-      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -404,16 +383,13 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
     <code>
     static void APP_PLCDataCfmCb(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmObj)
     {
-      // Report TX Symbols
       appData.plcPIB.id = PLC_ID_TX_PAY_SYMBOLS;
       appData.plcPIB.length = 2;
       DRV_PLC_PHY_PIBGet(appData.drvPlcHandle, &appData.plcPIB);
 
       SRV_PSNIFFER_SetTxPayloadSymbols(*(uint16_t *)appData.plcPIB.pData);
 
-      // Serialize transmitted message
       length = SRV_PSNIFFER_SerialCfmMessage(appData.pSerialData, pCfmObj);
-      // Send through USI
       SRV_USI_Send_Message(appData.srvUSIHandle, SRV_USI_PROT_ID_SNIFF_G3,
               appData.pSerialData, length);
     }
@@ -424,7 +400,7 @@ void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym);
 */
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 
-<#if SRV_PSNF_PLC_PROFILE == "4">
+<#if SRV_PSNF_PLC_PROFILE == "PRIME">
 
 // *****************************************************************************
 /* Function:
@@ -451,7 +427,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
 
   Example:
     <code>
-	  switch (command) {
+    switch (command) {
         case SRV_PSNIFFER_CMD_SET_CHANNEL:
         {
             SRV_PLC_PCOUP_CHANNEL channel;
@@ -462,18 +438,14 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
             {
                 appData.channel = channel;
                 
-                // Set channel configuration
                 appData.plcPIB.id = PLC_ID_CHANNEL_CFG;
                 appData.plcPIB.length = 1;
                 *appData.plcPIB.pData = channel;
                 DRV_PLC_PHY_PIBSet(appData.drvPlcHandle, &appData.plcPIB);
-                // Update channel in PSniffer
                 SRV_PSNIFFER_SetPLCChannel(appData.channel);
             }
         }
         break;
-
-        // ...
     }
     </code>
 
@@ -514,20 +486,16 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
 
   Example:
     <code>
-	  switch (command) {
+    switch (command) {
         case SRV_PSNIFFER_CMD_SET_TONE_MASK:
         {
-            // Convert ToneMask from Sniffer Tool to PLC phy layer
             SRV_PSNIFFER_ConvertToneMask(appData.plcPIB.pData, pData + 1);
 
-            // Send data to PLC
             appData.plcPIB.id = PLC_ID_TONE_MASK;
             appData.plcPIB.length = PSNIFFER_CARRIERS_SIZE;
             DRV_PLC_PHY_PIBSet(appData.drvPlcHandle, &appData.plcPIB);
         }
         break;
-
-        // ...
     }
     </code>
 

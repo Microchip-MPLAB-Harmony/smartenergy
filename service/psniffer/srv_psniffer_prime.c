@@ -62,9 +62,9 @@
 // *****************************************************************************
 // *****************************************************************************
 static DRV_PLC_PHY_TRANSMISSION_OBJ srvPsnifferLastTxObj[2];
-static uint8_t srvPsnifferLastTxData[512][2];
-static uint16_t srvPsnifferLastRxPayloadSymbols;
-static uint16_t srvPsnifferLastTxPayloadSymbols;
+static uint8_t srvPsnifferLastTxData[2][512];
+static uint8_t srvPsnifferLastRxPayloadSymbols;
+static uint8_t srvPsnifferLastTxPayloadSymbols;
 static uint8_t srvPsnifferChannel = 1;
 
 // *****************************************************************************
@@ -101,21 +101,21 @@ void SRV_PSNIFFER_SetTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj)
     DRV_PLC_PHY_TRANSMISSION_OBJ* pLastTxObj;
     
     /* Use internal buffer to store TX messages to use it as a received message when TX_CFM arrives */
-    pLastTxObj = (DRV_PLC_PHY_TRANSMISSION_OBJ *)&srvPsnifferLastTxObj[pTxObj->bufferId];
-    memcpy((uint8_t *)pLastTxObj, (uint8_t *)pTxObj, sizeof(DRV_PLC_PHY_TRANSMISSION_OBJ));
-    
-    pLastTxObj->pTransmitData = (uint8_t*)&srvPsnifferLastTxData[pTxObj->bufferId];
-    memcpy(pLastTxObj->pTransmitData, pTxObj->pTransmitData, pTxObj->dataLength);
+    pLastTxObj = &srvPsnifferLastTxObj[pTxObj->bufferId];
+    *pLastTxObj = *pTxObj;
+
+    pLastTxObj->pTransmitData = srvPsnifferLastTxData[pTxObj->bufferId];
+    (void) memcpy(pLastTxObj->pTransmitData, pTxObj->pTransmitData, pTxObj->dataLength);
 }
 
 void SRV_PSNIFFER_SetRxPayloadSymbols(uint16_t payloadSym)
 {
-    srvPsnifferLastRxPayloadSymbols = payloadSym;
+    srvPsnifferLastRxPayloadSymbols = (uint8_t)payloadSym;
 }
 
 void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym)
 {
-    srvPsnifferLastTxPayloadSymbols = payloadSym;
+    srvPsnifferLastTxPayloadSymbols = (uint8_t)payloadSym;
 }
 
 void SRV_PSNIFFER_SetPLCChannel(uint8_t channel)
@@ -128,24 +128,25 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel)
 
 size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ* pDataSrc)
 {
+    ptrdiff_t size;
     uint8_t* pData;
     uint32_t timeIni, timeEnd;
-    uint8_t snr;
+    int16_t snr;
     
     pData = pDataDst;
     
     /* Insert Message type */
     if (pDataSrc->frameType == FRAME_TYPE_A)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_A; 
+        *pData++ = PSNIFFER_MSG_TYPE_A;
     }
     else if (pDataSrc->frameType == FRAME_TYPE_B)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_B;         
+        *pData++ = PSNIFFER_MSG_TYPE_B;
     }
     else if (pDataSrc->frameType == FRAME_TYPE_BC)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_BC;        
+        *pData++ = PSNIFFER_MSG_TYPE_BC;
     }
     else
     {
@@ -154,23 +155,41 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
 
     /* Insert version identifiers */
     *pData++ = PSNIFFER_VERSION; 
-    *pData++ = PSNIFFER_PROFILE;     
+    *pData++ = PSNIFFER_PROFILE;
     /* Fill data */
     *pData++ = (uint8_t)pDataSrc->scheme; 
-    *pData++ = (uint8_t)srvPsnifferLastRxPayloadSymbols;     
+    *pData++ = srvPsnifferLastRxPayloadSymbols;
     /* SNR = (QT/(3 * 4)) + 1 */
     /* QT = CINR_MIN + 12 */
-    snr = ((pDataSrc->cinrMin + 12) / 12) + 1;
-    if (snr > 7) {
-        snr = 7;
+    snr = ((int16_t)pDataSrc->cinrMin + 12 - 40) / 12;
+    if (snr > 7)
+    {
+        *pData++ = 7;
     }
-    *pData++ = snr;
+    else if (snr < 0)
+    {
+        *pData++ = 0;
+    }
+    else
+    {
+        *pData++ = (uint8_t)snr;
+    }
+
     /* Added 2 extra to make round instead trunk */
-    *pData++ = (pDataSrc->cinrAvg + 12 + 2) / 4; 
+    snr = ((int16_t)pDataSrc->cinrAvg + 12 + 2 - 40) / 4;
+    if (snr < 0)
+    {
+        *pData++ = 0;
+    }
+    else
+    {
+        *pData++ = (uint8_t)snr;
+    }
+
     *pData++ = srvPsnifferChannel;
-    *pData++ = (uint8_t)pDataSrc->cinrMin;
-    *pData++ = (uint8_t)pDataSrc->berSoftAvg;
-    *pData++ = (uint8_t)pDataSrc->berSoftMax;
+    *pData++ = pDataSrc->cinrMin;
+    *pData++ = pDataSrc->berSoftAvg;
+    *pData++ = pDataSrc->berSoftMax;
     /* padding (reserved bytes) */
     *pData++ = 0;
     *pData++ = 0;
@@ -185,27 +204,29 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);
     *pData++ = (uint8_t)(timeIni >> 8);
-    *pData++ = (uint8_t)(timeIni);
+    *pData++ = (uint8_t)timeIni;
     *pData++ = (uint8_t)(timeEnd >> 24);
     *pData++ = (uint8_t)(timeEnd >> 16);
     *pData++ = (uint8_t)(timeEnd >> 8);
-    *pData++ = (uint8_t)(timeEnd);
+    *pData++ = (uint8_t)timeEnd;
     *pData++ = 0;
     *pData++ = pDataSrc->rssiAvg;
     /* mac_enable not supported */
     *pData++ = 0;
     /* Length in bytes */
     *pData++ = (uint8_t)(pDataSrc->dataLength >> 8);
-    *pData++ = (uint8_t)(pDataSrc->dataLength);
+    *pData++ = (uint8_t)pDataSrc->dataLength;
     /* PDU */
-    memcpy(pData, pDataSrc->pReceivedData, pDataSrc->dataLength);
+    (void) memcpy(pData, pDataSrc->pReceivedData, pDataSrc->dataLength);
     pData += pDataSrc->dataLength;
-    
-    return (pData - pDataDst);    
+
+    size = pData - pDataDst;
+    return (size_t)size;
 }
 
 size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION_CFM_OBJ* pCfmObj)
-{    
+{
+    ptrdiff_t size;
     DRV_PLC_PHY_TRANSMISSION_OBJ* pTxObj;
     uint8_t* pData;
     uint32_t timeIni, timeEnd;
@@ -216,22 +237,22 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
         return 0;
     }
 
-    pTxObj = (DRV_PLC_PHY_TRANSMISSION_OBJ*)&srvPsnifferLastTxObj[pCfmObj->bufferId];
+    pTxObj = &srvPsnifferLastTxObj[pCfmObj->bufferId];
     
     pData = pDataDst;
     
     /* Insert Message type */
     if (pTxObj->frameType == FRAME_TYPE_A)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_A; 
+        *pData++ = PSNIFFER_MSG_TYPE_A;
     }
     else if (pTxObj->frameType == FRAME_TYPE_B)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_B;         
+        *pData++ = PSNIFFER_MSG_TYPE_B;
     }
     else if (pTxObj->frameType == FRAME_TYPE_BC)
     {
-        *pData++ = PSNIFFER_MSG_TYPE_BC;        
+        *pData++ = PSNIFFER_MSG_TYPE_BC;
     }
     else
     {
@@ -240,10 +261,10 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
 
     /* Insert version identifiers */
     *pData++ = PSNIFFER_VERSION; 
-    *pData++ = PSNIFFER_PROFILE;     
+    *pData++ = PSNIFFER_PROFILE;
     /* Fill data */
     *pData++ = (uint8_t)pTxObj->scheme; 
-    *pData++ = (uint8_t)srvPsnifferLastTxPayloadSymbols; 
+    *pData++ = srvPsnifferLastTxPayloadSymbols;
     *pData++ = 7;               /* fix SNR */
     *pData++ = 60;              /* fix EX_SNR */
     *pData++ = srvPsnifferChannel;
@@ -264,21 +285,22 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);
     *pData++ = (uint8_t)(timeIni >> 8);
-    *pData++ = (uint8_t)(timeIni);
+    *pData++ = (uint8_t)timeIni;
     *pData++ = (uint8_t)(timeEnd >> 24);
     *pData++ = (uint8_t)(timeEnd >> 16);
     *pData++ = (uint8_t)(timeEnd >> 8);
-    *pData++ = (uint8_t)(timeEnd);
+    *pData++ = (uint8_t)timeEnd;
     *pData++ = 0;
     *pData++ = 140;             /* fix RSSI */
     /* mac_enable not supported */
     *pData++ = 0;
     /* Length in bytes */
     *pData++ = (uint8_t)(pTxObj->dataLength >> 8);
-    *pData++ = (uint8_t)(pTxObj->dataLength);
+    *pData++ = (uint8_t)pTxObj->dataLength;
     /* PDU */
-    memcpy(pData, pTxObj->pTransmitData, pTxObj->dataLength);
+    (void) memcpy(pData, pTxObj->pTransmitData, pTxObj->dataLength);
     pData += pTxObj->dataLength;
-    
-    return (pData - pDataDst);    
+
+    size = pData - pDataDst;
+    return (size_t)size;
 }
