@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -60,38 +60,45 @@
 #endif
 // DOM-IGNORE-END
 
+<#if DRV_PLC_BIN_STATIC_ADDRESSING == false>
+// *****************************************************************************
+// *****************************************************************************
+// Section: External Data
+// *****************************************************************************
+// *****************************************************************************
+
+/* PLC MAC RT Binary file addressing */
+extern uint8_t g3_mac_rt_bin_start;
+extern uint8_t g3_mac_rt_bin_end;
+extern uint8_t g3_mac_rt_bin2_start;
+extern uint8_t g3_mac_rt_bin2_end;
+
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Macro Definitions
 // *****************************************************************************
 // *****************************************************************************
-typedef enum {
-    G3_CEN_A = 0,
-    G3_CEN_B,
-    G3_FCC,
-    G3_ARIB,
-    G3_INVALID = 0xFF
-} MAC_RT_BAND;    
 
 /* Tone Map size for Cenelec(A,B) bandplan */
-#define TONE_MAP_SIZE_CENELEC           1
+#define TONE_MAP_SIZE_CENELEC           1U
 /* Tone Map size for FCC bandplan */
-#define TONE_MAP_SIZE_FCC               3
+#define TONE_MAP_SIZE_FCC               3U
 /* Tone Map size for ARIB bandplan */
-#define TONE_MAP_SIZE_ARIB              3
+#define TONE_MAP_SIZE_ARIB              3U
 
-#define MAC_RT_MAX_PAYLOAD_SIZE         (404u)
-#define MAC_RT_FULL_HEADER_SIZE         (32)
+#define MAC_RT_MAX_PAYLOAD_SIZE         (404U)
+#define MAC_RT_FULL_HEADER_SIZE         (32U)
 #define MAC_RT_DATA_MAX_SIZE            (MAC_RT_MAX_PAYLOAD_SIZE + MAC_RT_FULL_HEADER_SIZE)
-#define MAC_RT_SECURITY_HEADER_SIZE     (6)
-#define MAC_RT_SEGMENT_CONTROL_SIZE     (3)
-#define MAC_RT_FCS_SIZE                 (2)
+#define MAC_RT_SECURITY_HEADER_SIZE     (6U)
+#define MAC_RT_SEGMENT_CONTROL_SIZE     (3U)
+#define MAC_RT_FCS_SIZE                 (2U)
         
-#define MAC_RT_SHORT_ADDRESS_BROADCAST  (0xFFFFu)
-#define MAC_RT_SHORT_ADDRESS_UNDEFINED  (0xFFFFu)
+#define MAC_RT_SHORT_ADDRESS_BROADCAST  (0xFFFFU)
+#define MAC_RT_SHORT_ADDRESS_UNDEFINED  (0xFFFFU)
         
-#define MAC_RT_PIB_MAX_VALUE_LENGTH     (144)
-#define MAC_RT_PHY_DATA_MAX_SIZE        (494)
+#define MAC_RT_PIB_MAX_VALUE_LENGTH     (144U)
+#define MAC_RT_PHY_DATA_MAX_SIZE        (494U)
 
 #define MAX_PHY_TONES                   72
 #define MAX_PHY_TONE_GROUPS             24
@@ -102,7 +109,25 @@ typedef enum {
 // *****************************************************************************
 // *****************************************************************************  
 // *****************************************************************************
-        
+
+typedef enum {
+    G3_CEN_A = 0,
+    G3_CEN_B,
+    G3_FCC,
+    G3_ARIB,
+    G3_INVALID = 0xFF
+} MAC_RT_BAND;
+
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 5.2 deviated 4 times.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.2" "H3_MISRAC_2012_R_5_2_DR_1"
+</#if>
+
 /* G3 MAC RT PIB list
 
    Summary
@@ -210,6 +235,14 @@ typedef enum {
        Check 'enum EPhyParam' below for available Phy parameter IDs */
     MAC_RT_PIB_MANUF_PHY_PARAM = 0x08000020
 } MAC_RT_PIB;        
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 5.2"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
 
 /* G3 PHY Parameters list
 
@@ -503,6 +536,16 @@ typedef struct {
     uint8_t txCoef[6];
 } MAC_RT_TX_COEF;
 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated 12 times.  Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
+</#if>
+
 // *****************************************************************************
 /* G3 MAC RT neighbour entry
 
@@ -604,6 +647,14 @@ typedef struct {
     /* Key Identifier */
     uint8_t keyIdentifier;
 } MAC_RT_AUX_SECURITY_HEADER;
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
 
 // *****************************************************************************
 /* G3 MAC RT header

@@ -1045,11 +1045,12 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtHdrFile.setMarkup(True)
 
     g3MacRtHdrCommFile = g3MacRtComponent.createFileSymbol("MACRT_HEADER_COMM", None)
-    g3MacRtHdrCommFile.setSourcePath("driver/g3MacRt/drv_g3_macrt_comm.h")
+    g3MacRtHdrCommFile.setSourcePath("driver/g3MacRt/drv_g3_macrt_comm.h.ftl")
     g3MacRtHdrCommFile.setOutputName("drv_g3_macrt_comm.h")
     g3MacRtHdrCommFile.setDestPath("driver/plc/g3MacRt")
     g3MacRtHdrCommFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt")
     g3MacRtHdrCommFile.setType("HEADER")
+    g3MacRtHdrCommFile.setMarkup(True)
 
     g3MacRtHdrDefFile = g3MacRtComponent.createFileSymbol("MACRT_HEADER_DEF", None)
     g3MacRtHdrDefFile.setSourcePath("driver/g3MacRt/drv_g3_macrt_definitions.h")
