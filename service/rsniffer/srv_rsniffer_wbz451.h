@@ -19,7 +19,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -76,23 +76,23 @@
 
 typedef struct 
 {
-    /* Pointer to RF PHY data payload */
-    uint8_t *pData;
-
     /* Time counter when the packet has been received/transmitted */
-    uint32_t timeIniCount;
+    uint64_t timeIniCount;
 
     /* Packet duration */
     uint32_t durationCount;
 
-    /* RSSI value in dBm */
-    uint16_t rssi;
+    /* Pointer to RF PHY data payload */
+    uint8_t *pData;
 
     /* Number of symbols of the payload */
     uint16_t paySymbols;
 
     /* Payload length in bytes */
     uint16_t payloadLen;
+
+    /* RSSI value in dBm */
+    int8_t rssi;
 
 } SRV_RSNIFFER_PHY_DATA;
 
