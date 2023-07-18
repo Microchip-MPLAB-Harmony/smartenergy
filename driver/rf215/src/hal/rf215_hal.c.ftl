@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -73,16 +73,16 @@
 
 /* Reset pin pulse width.
  * From RF215 datasheet (Table 10-3): Min tRST = 625 ns */
-#define RF215_RST_PULSE_US            7
+#define RF215_RST_PULSE_US            7U
 
 /* SPI DMA buffer size */
 #define RF215_SPI_BUF_SIZE            (RF215_SPI_CMD_SIZE + DRV_RF215_MAX_PSDU_LEN)
 
 /* SPI transfer pool size: Maximum number of SPI transfers that can be queued */
 <#if DRV_RF215_TRX09_EN == true && DRV_RF215_TRX24_EN == true>
-#define RF215_SPI_TRANSFER_POOL_SIZE  35
+#define RF215_SPI_TRANSFER_POOL_SIZE  35U
 <#else>
-#define RF215_SPI_TRANSFER_POOL_SIZE  20
+#define RF215_SPI_TRANSFER_POOL_SIZE  20U
 </#if>
 
 // *****************************************************************************
@@ -112,26 +112,26 @@ static uint8_t halSpiRxData[RF215_SPI_BUF_SIZE];
 // *****************************************************************************
 // *****************************************************************************
 
-static inline void _RF215_HAL_ExtIntDisable()
+static inline void lRF215_HAL_ExtIntDisable(void)
 {
     ${PIO_PLIB}_PinInterruptDisable((PIO_PIN) DRV_RF215_EXT_INT_PIN);
     rf215HalObj.extIntDisableCount++;
 }
 
-static inline void _RF215_HAL_ExtIntEnable()
+static inline void lRF215_HAL_ExtIntEnable(void)
 {
-    if (rf215HalObj.extIntDisableCount > 0)
+    if (rf215HalObj.extIntDisableCount > 0U)
     {
         rf215HalObj.extIntDisableCount--;
     }
 
-    if (rf215HalObj.extIntDisableCount == 0)
+    if (rf215HalObj.extIntDisableCount == 0U)
     {
         ${PIO_PLIB}_PinInterruptEnable((PIO_PIN) DRV_RF215_EXT_INT_PIN);
     }
 }
 
-static inline bool _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>bool* timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, bool* plcExtIntStatus</#if></#if>)
+static inline bool lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>bool* timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, bool* plcExtIntStatus</#if><#else>void</#if>)
 {
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
 <#if (drvPlcPhy)?? || (drvG3MacRt)??>
@@ -142,7 +142,7 @@ static inline bool _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT
     return SYS_INT_SourceDisable(rf215HalObj.dmaIntSource);
 }
 
-static inline void _RF215_HAL_RestoreIntSources(bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, bool timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, bool plcExtIntStatus</#if></#if>)
+static inline void lRF215_HAL_RestoreIntSources(bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, bool timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, bool plcExtIntStatus</#if><#else>void</#if>)
 {
     SYS_INT_SourceRestore(rf215HalObj.dmaIntSource, dmaIntStatus);
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
@@ -153,7 +153,7 @@ static inline void _RF215_HAL_RestoreIntSources(bool dmaIntStatus<#if DRV_RF215_
 </#if>
 }
 
-static void _RF215_HAL_SpiTransferStart (
+static void lRF215_HAL_SpiTransferStart (
     RF215_SPI_TRANSFER_MODE mode,
     uint16_t regAddr,
     void* pData,
@@ -177,12 +177,12 @@ static void _RF215_HAL_SpiTransferStart (
 
     /* Write COMMAND to SPI transmit buffer (MSB first) */
     *pTxData++ = (uint8_t)(cmd >> 8);
-    *pTxData++ = (uint8_t)(cmd & 0xFF);
+    *pTxData++ = (uint8_t)cmd;
 
     if (mode == RF215_SPI_WRITE)
     {
         /* Copy data to SPI transmit buffer */
-        memcpy(pTxData, pData, size);
+        (void) memcpy((void*)pTxData, pData, size);
 <#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
         /* All SPI transmit data cache must be cleaned */
         txCleanCacheSize = transferSize;
@@ -203,8 +203,8 @@ static void _RF215_HAL_SpiTransferStart (
 
 </#if>
     /* Wait if there is SPI transfer in progress */
-    while(hObj->spiPlibIsBusy() == true);
-    while(SYS_DMA_ChannelIsBusy(DRV_RF215_SPI_RX_DMA_CH) == true);
+    while(hObj->spiPlibIsBusy() == true){}
+    while(SYS_DMA_ChannelIsBusy(DRV_RF215_SPI_RX_DMA_CH) == true){}
 
 <#if DRV_RF215_SPI_NUM_CSR != 0>
     /* Set chip select (shared SPI) */
@@ -220,12 +220,12 @@ static void _RF215_HAL_SpiTransferStart (
 </#if>
 <#if core.DMA_ENABLE?has_content>
     /* Configure DMA channel for SPI receive */
-    SYS_DMA_ChannelTransfer(DRV_RF215_SPI_RX_DMA_CH, hObj->spiRxAddr, halSpiRxData, transferSize);
+    (void) SYS_DMA_ChannelTransfer(DRV_RF215_SPI_RX_DMA_CH, hObj->spiRxAddr, halSpiRxData, transferSize);
 
 </#if>
 <#if core.DATA_CACHE_ENABLE?? && core.DATA_CACHE_ENABLE == true >
-	/* Clean cache to push SPI transmit buffer to the main memory */
-    SYS_CACHE_CleanDCache_by_Addr((uint32_t *) halSpiTxData, txCleanCacheSize);
+    /* Clean cache to push SPI transmit buffer to the main memory */
+    SYS_CACHE_CleanDCache_by_Addr(halSpiTxData, (int32_t)txCleanCacheSize);
 
 </#if>
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
@@ -236,10 +236,10 @@ static void _RF215_HAL_SpiTransferStart (
 </#if>
 <#if core.DMA_ENABLE?has_content>
     /* Configure DMA channel for SPI transmit. This triggers the SPI transfer */
-    SYS_DMA_ChannelTransfer(DRV_RF215_SPI_TX_DMA_CH, halSpiTxData, hObj->spiTxAddr, transferSize);
+    (void) SYS_DMA_ChannelTransfer(DRV_RF215_SPI_TX_DMA_CH, halSpiTxData, hObj->spiTxAddr, transferSize);
 <#else>
     /* Write and read through SPI. This triggers the SPI transfer */
-    hObj->spiPlibWriteRead(halSpiTxData, transferSize, halSpiRxData, transferSize);
+    (void) hObj->spiPlibWriteRead(halSpiTxData, transferSize, halSpiRxData, transferSize);
 </#if>
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
 
@@ -262,12 +262,12 @@ static void _RF215_HAL_SpiTransferStart (
     if (mode == RF215_SPI_READ)
     {
         /* Invalidate SPI receive buffer (force CPU to load from main memory) */
-        SYS_CACHE_InvalidateDCache_by_Addr((uint32_t *) halSpiRxData, transferSize);
+        SYS_CACHE_InvalidateDCache_by_Addr(halSpiRxData, (int32_t)transferSize);
     }
 </#if>
 }
 
-static void _RF215_HAL_SpiTransfer (
+static void lRF215_HAL_SpiTransfer (
     RF215_SPI_TRANSFER_MODE mode,
     uint16_t regAddr,
     void* pData,
@@ -284,8 +284,8 @@ static void _RF215_HAL_SpiTransfer (
     RF215_SPI_TRANSFER_OBJ* transferPoolEdge;
 
     /* Critical region to avoid conflict in SPI transfer queue */
-    dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
-    _RF215_HAL_ExtIntDisable();
+    dmaIntStatus = lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
+    lRF215_HAL_ExtIntDisable();
 
     /* Look for a free transfer object in the pool */
     transferPoolEdge = &halSpiTransferPool[RF215_SPI_TRANSFER_POOL_SIZE];
@@ -330,7 +330,7 @@ static void _RF215_HAL_SpiTransfer (
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
         if (fromTasks == false)
         {
-            _RF215_HAL_SpiTransferStart(mode, regAddr, pData, size);
+            lRF215_HAL_SpiTransferStart(mode, regAddr, pData, size);
         }
         else
         {
@@ -340,15 +340,15 @@ static void _RF215_HAL_SpiTransfer (
 </#if>
         }
 <#else>
-        _RF215_HAL_SpiTransferStart(mode, regAddr, pData, size);
+        lRF215_HAL_SpiTransferStart(mode, regAddr, pData, size);
 </#if>
     }
 
     /* Leave critical region */
-    _RF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
+    lRF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
 }
 
-static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
+static void lRF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
 {
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     uint64_t callbackTime;
@@ -361,7 +361,7 @@ static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
     if (transfer->mode == RF215_SPI_READ)
     {
         /* Copy SPI received data to buffer from upper layer */
-        memcpy(transfer->pData, &halSpiRxData[RF215_SPI_CMD_SIZE], transfer->size);
+        (void) memcpy(transfer->pData, (void*)&halSpiRxData[RF215_SPI_CMD_SIZE], transfer->size);
     }
 
     /* Copy needed data to local variables */
@@ -398,7 +398,7 @@ static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
         if (next->fromTasks == false)
         {
-            _RF215_HAL_SpiTransferStart(next->mode, next->regAddr, next->pData, next->size);
+            lRF215_HAL_SpiTransferStart(next->mode, next->regAddr, next->pData, next->size);
         }
         else
         {
@@ -408,7 +408,7 @@ static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
 </#if>
         }
 <#else>
-        _RF215_HAL_SpiTransferStart(next->mode, next->regAddr, next->pData, next->size);
+        lRF215_HAL_SpiTransferStart(next->mode, next->regAddr, next->pData, next->size);
 </#if>
     }
 
@@ -419,11 +419,11 @@ static void _RF215_HAL_SpiTransferFinished(RF215_SPI_TRANSFER_OBJ* transfer)
     }
 
     /* External interrupt can now be enabled */
-    _RF215_HAL_ExtIntEnable();
+    lRF215_HAL_ExtIntEnable();
 }
 
 <#if core.DMA_ENABLE?has_content>
-static void _RF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
+static void lRF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
 {
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     bool dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>;
@@ -440,16 +440,16 @@ static void _RF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
 
     /* Critical region to avoid conflicts */
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-    dmaIntStatus = _RF215_HAL_DisableIntSources(&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if>);
+    dmaIntStatus = lRF215_HAL_DisableIntSources(&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if>);
 </#if>
-    _RF215_HAL_ExtIntDisable();
+    lRF215_HAL_ExtIntDisable();
 
 <#if DRV_RF215_PLIB == "SRV_SPISPLIT">
     if ((rf215HalObj.dmaTransferInProgress == false) || (rf215HalObj.spiPlibIsBusy() == true))
     {
         /* DMA transfer not in progress or still in progress (shared SPI) */
-        _RF215_HAL_ExtIntEnable();
-        _RF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus, plcExtIntStatus);
+        lRF215_HAL_ExtIntEnable();
+        lRF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus, plcExtIntStatus);
         return;
     }
 
@@ -484,7 +484,7 @@ static void _RF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
             else
             {
                 /* SPI transfer finished successfully */
-                _RF215_HAL_SpiTransferFinished(transfer);
+                lRF215_HAL_SpiTransferFinished(transfer);
             }
         }
     }
@@ -494,25 +494,25 @@ static void _RF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
         if (transfer->fromTasks == false)
         {
-            _RF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
+            lRF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
         }
         else
         {
             rf215HalObj.spiTransferFromTasks = true;
         }
 <#else>
-        _RF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
+        lRF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
 </#if>
     }
 
     /* Leave critical region */
-    _RF215_HAL_ExtIntEnable();
+    lRF215_HAL_ExtIntEnable();
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-    _RF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>);
+    lRF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>);
 </#if>
 }
 <#else>
-static void _RF215_HAL_SpiDmaHandler(uintptr_t ctxt)
+static void lRF215_HAL_SpiDmaHandler(uintptr_t ctxt)
 {
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     bool dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>;
@@ -527,32 +527,32 @@ static void _RF215_HAL_SpiDmaHandler(uintptr_t ctxt)
 
     /* Critical region to avoid conflicts */
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-    dmaIntStatus = _RF215_HAL_DisableIntSources(&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if>);
+    dmaIntStatus = lRF215_HAL_DisableIntSources(&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if>);
 </#if>
-    _RF215_HAL_ExtIntDisable();
+    lRF215_HAL_ExtIntDisable();
 
 <#if DRV_RF215_PLIB == "SRV_SPISPLIT">
     if ((rf215HalObj.dmaTransferInProgress == false) || (rf215HalObj.spiPlibIsBusy() == true))
     {
         /* DMA transfer not in progress or still in progress (shared SPI) */
-        _RF215_HAL_ExtIntEnable();
-        _RF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus, plcExtIntStatus);
+        lRF215_HAL_ExtIntEnable();
+        lRF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus, plcExtIntStatus);
         return;
     }
 
 </#if>
     /* SPI transfer finished successfully */
-    _RF215_HAL_SpiTransferFinished(transfer);
+    lRF215_HAL_SpiTransferFinished(transfer);
 
     /* Leave critical region */
-    _RF215_HAL_ExtIntEnable();
+    lRF215_HAL_ExtIntEnable();
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-    _RF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>);
+    lRF215_HAL_RestoreIntSources(dmaIntStatus, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if>);
 </#if>
 }
 </#if>
 
-static void _RF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
+static void lRF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
 {
     /* Check if external interrupt is still active */
     if (SYS_PORT_PinRead((SYS_PORT_PIN)pin) == true)
@@ -605,19 +605,37 @@ void RF215_HAL_Initialize(const DRV_RF215_INIT * const init)
     rf215HalObj.spiTxAddr = init->spiTransmitAddress;
     rf215HalObj.spiRxAddr = init->spiReceiveAddress;
 
+    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2012 Rule 11.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_1_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.1" "H3_MISRAC_2012_R_11_1_DR_1"
+</#if>
+
     /* Register callback for SPI Transmit and Receive DMA */
     SYS_DMA_ChannelCallbackRegister(DRV_RF215_SPI_RX_DMA_CH,
-            _RF215_HAL_SpiDmaHandler, DRV_RF215_SPI_RX_DMA_CH);
+            lRF215_HAL_SpiDmaHandler, (uintptr_t) DRV_RF215_SPI_RX_DMA_CH);
     SYS_DMA_ChannelCallbackRegister(DRV_RF215_SPI_TX_DMA_CH,
-            _RF215_HAL_SpiDmaHandler, DRV_RF215_SPI_TX_DMA_CH);
+            lRF215_HAL_SpiDmaHandler, (uintptr_t) DRV_RF215_SPI_TX_DMA_CH);
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.1"
+    <#if core.COMPILER_CHOICE == "XC32">
+    #pragma GCC diagnostic pop
+    </#if>
+</#if>
+    /* MISRA C-2012 deviation block end */
 <#else>
     /* Register callback for SPI transfer finished */
-    init->spiPlibSetCallback(_RF215_HAL_SpiDmaHandler, 0);
+    init->spiPlibSetCallback(lRF215_HAL_SpiDmaHandler, 0);
 </#if>
 
     /* Register callback for external interrupt pin */
-    ${PIO_PLIB}_PinInterruptCallbackRegister((${PIO_PLIB}_PIN) DRV_RF215_EXT_INT_PIN,
-            _RF215_HAL_ExtIntHandler, 0);
+    (void) ${PIO_PLIB}_PinInterruptCallbackRegister((${PIO_PLIB}_PIN) DRV_RF215_EXT_INT_PIN,
+            lRF215_HAL_ExtIntHandler, 0);
 
     /* Pin interrupt is disabled at initialization */
     rf215HalObj.extIntDisableCount = 1;
@@ -647,13 +665,13 @@ void RF215_HAL_Initialize(const DRV_RF215_INIT * const init)
     }
 }
 
-void RF215_HAL_Deinitialize()
+void RF215_HAL_Deinitialize(void)
 {
     bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>;
 
     /* Critical region to avoid conflict in SPI transfer queue */
-    dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
-    _RF215_HAL_ExtIntDisable();
+    dmaIntStatus = lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
+    lRF215_HAL_ExtIntDisable();
 
     /* Push reset pin */
     SYS_PORT_PinClear(DRV_RF215_RESET_PIN);
@@ -667,45 +685,19 @@ void RF215_HAL_Deinitialize()
     }
 
     /* Leave critical region. External interrupt disabled */
-    _RF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
+    lRF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
 }
 
-void RF215_HAL_Tasks()
-{
-<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-    if (rf215HalObj.spiTransferFromTasks == true)
-    {
-        RF215_SPI_TRANSFER_OBJ* transfer = rf215HalObj.spiQueueFirst;
-
-        if (transfer != NULL)
-        {
-            bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>;
-
-            /* Critical region to avoid new SPI transfers */
-            dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
-
-            /* Start SPI transfer from tasks */
-            _RF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
-
-            /* Leave critical region */
-            _RF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
-        }
-
-        rf215HalObj.spiTransferFromTasks = false;
-    }
-</#if>
-}
-
-void RF215_HAL_Reset()
+void RF215_HAL_Reset(void)
 {
     SYS_TIME_HANDLE timeHandle;
     bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>;
 
     /* Critical region to avoid interrupts during reset */
-    dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
+    dmaIntStatus = lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
     if (rf215HalObj.firstReset == false)
     {
-        _RF215_HAL_ExtIntDisable();
+        lRF215_HAL_ExtIntDisable();
     }
 
     if (rf215HalObj.spiQueueFirst != NULL)
@@ -716,7 +708,7 @@ void RF215_HAL_Reset()
         SYS_DMA_ChannelDisable(DRV_RF215_SPI_RX_DMA_CH);
 <#else>
         /* Wait to SPI transfer to finish */
-        while(rf215HalObj.spiPlibIsBusy() == true);
+        while(rf215HalObj.spiPlibIsBusy() == true){}
 </#if>
     }
 
@@ -743,27 +735,52 @@ void RF215_HAL_Reset()
 </#if>
     if (SYS_TIME_DelayUS(RF215_RST_PULSE_US, &timeHandle) == SYS_TIME_SUCCESS)
     {
-        while (SYS_TIME_DelayIsComplete(timeHandle) == false);
+        while (SYS_TIME_DelayIsComplete(timeHandle) == false){}
     }
 
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     /* Disable again SYS_TIME interrupt */
-    SYS_INT_SourceDisable(rf215HalObj.sysTimeIntSource);
+    (void) SYS_INT_SourceDisable(rf215HalObj.sysTimeIntSource);
 
 </#if>
     /* Release reset pin and enable/restore interrupts */
     SYS_PORT_PinSet(DRV_RF215_RESET_PIN);
-    _RF215_HAL_ExtIntEnable();
-    _RF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
+    lRF215_HAL_ExtIntEnable();
+    lRF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
 }
 
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-bool RF215_HAL_SpiLock()
+void RF215_HAL_Tasks(void)
+{
+
+    if (rf215HalObj.spiTransferFromTasks == true)
+    {
+        RF215_SPI_TRANSFER_OBJ* transfer = rf215HalObj.spiQueueFirst;
+
+        if (transfer != NULL)
+        {
+            bool dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>;
+
+            /* Critical region to avoid new SPI transfers */
+            dmaIntStatus = lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &plcExtIntStatus</#if></#if>);
+
+            /* Start SPI transfer from tasks */
+            lRF215_HAL_SpiTransferStart(transfer->mode, transfer->regAddr, transfer->pData, transfer->size);
+
+            /* Leave critical region */
+            lRF215_HAL_RestoreIntSources(dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, timeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, plcExtIntStatus</#if></#if>);
+        }
+
+        rf215HalObj.spiTransferFromTasks = false;
+    }
+}
+
+bool RF215_HAL_SpiLock(void)
 {
     /* Disable interrupts to avoid new SPI transfers */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-    hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if>);
-    _RF215_HAL_ExtIntDisable();
+    hObj->dmaIntStatus = lRF215_HAL_DisableIntSources(&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if>);
+    lRF215_HAL_ExtIntDisable();
 
     if (hObj->spiQueueFirst == NULL)
     {
@@ -782,16 +799,16 @@ bool RF215_HAL_SpiLock()
     }
 }
 
-void RF215_HAL_SpiUnlock()
+void RF215_HAL_SpiUnlock(void)
 {
     /* Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-    _RF215_HAL_ExtIntEnable();
-    _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if>);
+    lRF215_HAL_ExtIntEnable();
+    lRF215_HAL_RestoreIntSources(hObj->dmaIntStatus, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if>);
 }
 
 </#if>
-void RF215_HAL_EnterCritical()
+void RF215_HAL_EnterCritical(void)
 {
 <#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
     bool intStatus = SYS_INT_Disable();
@@ -801,14 +818,14 @@ void RF215_HAL_EnterCritical()
      * External interrupt not disabled because it just makes one SPI transfer
      * and there is no other static variable update */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-    hObj->dmaIntStatus = _RF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
+    hObj->dmaIntStatus = lRF215_HAL_DisableIntSources(<#if DRV_RF215_TXRX_TIME_SUPPORT == true>&hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, &hObj->plcExtIntStatus</#if></#if>);
 <#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
 
     SYS_INT_Restore(intStatus);
 </#if>
 }
 
-void RF215_HAL_LeaveCritical()
+void RF215_HAL_LeaveCritical(void)
 {
 <#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
     bool intStatus = SYS_INT_Disable();
@@ -816,7 +833,7 @@ void RF215_HAL_LeaveCritical()
 </#if>
     /* Leave critical region: Restore interrupts */
     RF215_HAL_OBJ* hObj = &rf215HalObj;
-    _RF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
+    lRF215_HAL_RestoreIntSources(hObj->dmaIntStatus<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, hObj->sysTimeIntStatus<#if (drvPlcPhy)?? || (drvG3MacRt)??>, hObj->plcExtIntStatus</#if></#if>);
 <#if (DRV_RF215_TXRX_TIME_SUPPORT == true) && ((drvPlcPhy)?? || (drvG3MacRt)??)>
 
     SYS_INT_Restore(intStatus);
@@ -831,7 +848,7 @@ void RF215_HAL_SpiRead (
     uintptr_t context
 )
 {
-    _RF215_HAL_SpiTransfer(RF215_SPI_READ, addr, pData, size<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, false</#if>, cb, context);
+    lRF215_HAL_SpiTransfer(RF215_SPI_READ, addr, pData, size<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, false</#if>, cb, context);
 }
 
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
@@ -843,7 +860,7 @@ void RF215_HAL_SpiReadFromTasks (
     uintptr_t context
 )
 {
-    _RF215_HAL_SpiTransfer(RF215_SPI_READ, addr, pData, size, true, cb, context);
+    lRF215_HAL_SpiTransfer(RF215_SPI_READ, addr, pData, size, true, cb, context);
 }
 
 </#if>
@@ -853,7 +870,7 @@ void RF215_HAL_SpiWrite (
     size_t size
 )
 {
-    _RF215_HAL_SpiTransfer(RF215_SPI_WRITE, addr, pData, size<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, false</#if>, NULL, 0);
+    lRF215_HAL_SpiTransfer(RF215_SPI_WRITE, addr, pData, size<#if DRV_RF215_TXRX_TIME_SUPPORT == true>, false</#if>, NULL, 0);
 }
 
 void RF215_HAL_SpiWriteUpdate (
@@ -864,11 +881,11 @@ void RF215_HAL_SpiWriteUpdate (
 )
 {
     uint8_t* pDataWrite = pDataOld;
-    size_t sizeWrite = 0;
-    size_t sizeSame = 0;
+    size_t sizeWrite = 0U;
+    size_t sizeSame = 0U;
     uint16_t addrWrite = addr;
 
-    for (uint8_t idx = 0; idx < size; idx++)
+    for (uint8_t idx = 0U; idx < size; idx++)
     {
         if (pDataNew[idx] != pDataOld[idx])
         {
@@ -881,29 +898,32 @@ void RF215_HAL_SpiWriteUpdate (
             if (sizeSame > RF215_SPI_CMD_SIZE)
             {
                 RF215_HAL_SpiWrite(addrWrite, pDataWrite, sizeWrite);
-                sizeWrite = 0;
-                sizeSame = 0;
+                sizeWrite = 0U;
+                sizeSame = 0U;
             }
 
             /* Check start of SPI transfer block */
-            if (sizeWrite == 0)
+            if (sizeWrite == 0U)
             {
                 addrWrite = addr + idx;
                 pDataWrite = &pDataOld[idx];
             }
 
             /* Update write counters */
-            sizeWrite += (sizeSame + 1);
-            sizeSame = 0;
+            sizeWrite += (sizeSame + 1U);
+            sizeSame = 0U;
         }
-        else if (sizeWrite != 0)
+        else
         {
-            /* Same byte and SPI transfer block started */
-            sizeSame += 1;
+            if (sizeWrite != 0U)
+            {
+                /* Same byte and SPI transfer block started */
+                sizeSame += 1U;
+            }
         }
     }
 
-    if (sizeWrite != 0)
+    if (sizeWrite != 0U)
     {
         /* Send the last SPI transfer */
         RF215_HAL_SpiWrite(addrWrite, pDataWrite, sizeWrite);
@@ -911,7 +931,7 @@ void RF215_HAL_SpiWriteUpdate (
 }
 
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
-size_t RF215_HAL_GetSpiQueueSize()
+size_t RF215_HAL_GetSpiQueueSize(void)
 {
     size_t queueSize = 0;
     RF215_SPI_TRANSFER_OBJ* transfer = rf215HalObj.spiQueueFirst;
@@ -936,12 +956,12 @@ void RF215_HAL_LedRx(bool on)
     }
     else
     {
-        if (rf215HalObj.ledRxOnCount > 0)
+        if (rf215HalObj.ledRxOnCount > 0U)
         {
             rf215HalObj.ledRxOnCount--;
         }
 
-        if (rf215HalObj.ledRxOnCount == 0)
+        if (rf215HalObj.ledRxOnCount == 0U)
         {
             SYS_PORT_PinClear(DRV_RF215_LED_RX_PIN);
         }
@@ -959,12 +979,12 @@ void RF215_HAL_LedTx(bool on)
     }
     else
     {
-        if (rf215HalObj.ledTxOnCount > 0)
+        if (rf215HalObj.ledTxOnCount > 0U)
         {
             rf215HalObj.ledTxOnCount--;
         }
 
-        if (rf215HalObj.ledTxOnCount == 0)
+        if (rf215HalObj.ledTxOnCount == 0U)
         {
             SYS_PORT_PinClear(DRV_RF215_LED_TX_PIN);
         }

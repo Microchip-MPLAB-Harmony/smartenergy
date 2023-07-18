@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -41,8 +41,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_RF215_H
-#define _DRV_RF215_H
+#ifndef DRV_RF215_H
+#define DRV_RF215_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -154,18 +154,15 @@ typedef enum
     {
         DRV_HANDLE drvRf215Handle;
 
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
 
         if (status == SYS_STATUS_READY)
         {
-            // Driver ready to be opened.
             drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         }
     }
 
-    MY_APP_OBJ myAppObj; // Application specific data object
+    MY_APP_OBJ myAppObj;
 
     DRV_RF215_ReadyStatusCallbackRegister(APP_ReadyNotCb, (uintptr_t) myAppObj);
     </code>
@@ -207,15 +204,11 @@ typedef void ( *DRV_RF215_READY_STATUS_CALLBACK ) (uintptr_t context, SYS_STATUS
     <code>
     static void APP_RxIndCb(DRV_RF215_RX_INDICATION_OBJ* indObj, uintptr_t ctxt)
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Reception handling here.
     }
 
-    DRV_HANDLE drvRf215Handle; // Returned from DRV_RF215_Open
-    MY_APP_OBJ myAppObj; // Application specific data object
+    DRV_HANDLE drvRf215Handle;
+    MY_APP_OBJ myAppObj;
 
     DRV_RF215_RxIndCallbackRegister(drvRf215Handle, APP_RxIndCb,
         (uintptr_t) myAppObj);
@@ -266,15 +259,11 @@ typedef void ( *DRV_RF215_RX_IND_CALLBACK ) (
         uintptr_t ctxt
     )
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Transmission confirmation handling here.
     }
 
-    DRV_HANDLE drvRf215Handle; // Returned from DRV_RF215_Open
-    MY_APP_OBJ myAppObj; // Application specific data object
+    DRV_HANDLE drvRf215Handle;
+    MY_APP_OBJ myAppObj;
 
     DRV_RF215_TxCfmCallbackRegister(drvRf215Handle, _APP_RF_TxCfmCb,
         (uintptr_t) myAppObj);
@@ -322,15 +311,11 @@ typedef void ( *DRV_RF215_TX_CFM_CALLBACK ) (
     <code>
     static void APP_SetChannelCb(DRV_RF215_TX_RESULT result, uintptr_t ctxt)
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Set channel handling here.
     }
 
-    DRV_HANDLE drvRf215Handle; // Returned from DRV_RF215_Open
-    MY_APP_OBJ myAppObj; // Application specific data object
+    DRV_HANDLE drvRf215Handle;
+    MY_APP_OBJ myAppObj;
 
     DRV_RF215_SetChannelCallbackRegister(drvRf215Handle, APP_SetChannelCb,
         (uintptr_t) myAppObj);
@@ -389,24 +374,17 @@ typedef void ( *DRV_RF215_SET_CHANNEL_CALLBACK ) (
     <code>
     SYS_MODULE_OBJ sysObjDrvRf215;
 
-    // RF215 Driver Initialization Data
     const DRV_RF215_INIT drvRf215InitData = {
-        // SPI Transmit Register
         .spiTransmitAddress = (const void *)&(SPI0_REGS->SPI_TDR),
 
-        // SPI Receive Register
         .spiReceiveAddress = (const void *)&(SPI0_REGS->SPI_RDR),
 
-        // Interrupt source ID for DMA
         .dmaIntSource = XDMAC_IRQn,
 
-        // Interrupt source ID for SYS_TIME
         .sysTimeIntSource = TC0_CH0_IRQn,
 
-        // Initial PHY frequency band and operating mode for Sub-GHz transceiver
         .rf09PhyBandOpmIni = SUN_FSK_BAND_863_OPM1,
 
-        // Initial PHY frequency channel number for Sub-GHz transceiver
         .rf09PhyChnNumIni = 0,
 
     };
@@ -452,13 +430,13 @@ SYS_MODULE_OBJ DRV_RF215_Initialize (
 
   Example:
     <code>
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
     SYS_STATUS drvRf215Status;
 
     drvRf215Status = DRV_RF215_Status(sysObjDrvRf215);
     if (drvRf215Status == SYS_STATUS_READY)
     {
-        // This means now the driver can be opened using DRV_RF215_Open routine
+        
     }
     </code>
 
@@ -493,13 +471,11 @@ SYS_STATUS DRV_RF215_Status( SYS_MODULE_OBJ object );
 
   Example:
     <code>
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
 
     while (true)
     {
         DRV_RF215_Tasks (sysObjDrvRf215);
-
-        // Do other tasks
     }
     </code>
 
@@ -546,19 +522,16 @@ void DRV_RF215_Tasks( SYS_MODULE_OBJ object );
     {
         DRV_HANDLE drvRf215Handle;
 
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
 
 
         if (status == SYS_STATUS_READY)
         {
-            // Driver ready to be opened.
             drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         }
     }
 
-    MY_APP_OBJ myAppObj; // Application specific data object
+    MY_APP_OBJ myAppObj;
 
     DRV_RF215_ReadyStatusCallbackRegister(APP_ReadyNotCb, (uintptr_t) myAppObj);
     </code>
@@ -614,18 +587,17 @@ void DRV_RF215_ReadyStatusCallbackRegister (
 
   Example:
     <code>
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
     SYS_STATUS drvRf215Status;
     DRV_HANDLE drvRf215Handle;
 
     drvRf215Status = DRV_RF215_Status(sysObjDrvRf215);
     if (drvRf215Status == SYS_STATUS_READY)
     {
-        // This means now the driver can be opened using DRV_RF215_Open routine
         drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         if (drvRf215Handle != DRV_HANDLE_INVALID)
         {
-            // Driver opened successfully
+            
         }
     }
     </code>
@@ -663,8 +635,6 @@ DRV_HANDLE DRV_RF215_Open (
 
   Example:
     <code>
-    // 'drvHandle', returned from DRV_RF215_Open
-
     DRV_RF215_Close(drvHandle);
     </code>
 
@@ -711,26 +681,20 @@ void DRV_RF215_Close( const DRV_HANDLE drvHandle );
     <code>
     static void APP_RxIndCb(DRV_RF215_RX_INDICATION_OBJ* indObj, uintptr_t ctxt)
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Reception handling here.
     }
 
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
     SYS_STATUS drvRf215Status;
     DRV_HANDLE drvRf215Handle;
-    MY_APP_OBJ myAppObj; // Application specific data object
+    MY_APP_OBJ myAppObj;
 
     drvRf215Status = DRV_RF215_Status(sysObjDrvRf215);
     if (drvRf215Status == SYS_STATUS_READY)
     {
-        // This means now the driver can be opened using DRV_RF215_Open routine
         drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         if (drvRf215Handle != DRV_HANDLE_INVALID)
         {
-            // Driver opened successfully. Register callback
             DRV_RF215_RxIndCallbackRegister(drvRf215Handle, APP_RxIndCb,
                 (uintptr_t) myAppObj);
         }
@@ -790,26 +754,20 @@ void DRV_RF215_RxIndCallbackRegister (
         uintptr_t ctxt
     )
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Transmission confirmation handling here.
     }
 
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
     SYS_STATUS drvRf215Status;
     DRV_HANDLE drvRf215Handle;
-    MY_APP_OBJ myAppObj; // Application specific data object
+    MY_APP_OBJ myAppObj;
 
     drvRf215Status = DRV_RF215_Status(sysObjDrvRf215);
     if (drvRf215Status == SYS_STATUS_READY)
     {
-        // This means now the driver can be opened using DRV_RF215_Open routine
         drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         if (drvRf215Handle != DRV_HANDLE_INVALID)
         {
-            // Driver opened successfully. Register callback
             DRV_RF215_TxCfmCallbackRegister(drvRf215Handle, _APP_RF_TxCfmCb,
                 (uintptr_t) myAppObj);
         }
@@ -864,26 +822,20 @@ void DRV_RF215_TxCfmCallbackRegister (
     <code>
     static void APP_SetChannelCb(DRV_RF215_TX_RESULT result, uintptr_t ctxt)
     {
-        // The context handle was set to an application specific object
-        // It is now retrievable easily in the event handler
         MY_APP_OBJ myAppObj = (MY_APP_OBJ *) ctxt;
-
-        // Set channel handling here.
     }
 
-    SYS_MODULE_OBJ sysObjDrvRf215; // Returned from DRV_RF215_Initialize
+    SYS_MODULE_OBJ sysObjDrvRf215;
     SYS_STATUS drvRf215Status;
     DRV_HANDLE drvRf215Handle;
-    MY_APP_OBJ myAppObj; // Application specific data object
+    MY_APP_OBJ myAppObj;
 
     drvRf215Status = DRV_RF215_Status(sysObjDrvRf215);
     if (drvRf215Status == SYS_STATUS_READY)
     {
-        // This means now the driver can be opened using DRV_RF215_Open routine
         drvRf215Handle = DRV_RF215_Open(DRV_RF215_INDEX_0, RF215_TRX_ID_RF09);
         if (drvRf215Handle != DRV_HANDLE_INVALID)
         {
-            // Driver opened successfully. Register callback
             DRV_RF215_SetChannelCallbackRegister(drvRf215Handle,
                 APP_SetChannelCb, (uintptr_t) myAppObj);
         }
@@ -940,7 +892,7 @@ void DRV_RF215_SetChannelCallbackRegister (
 
   Example:
     <code>
-    DRV_HANDLE drvRf215Handle; // returned from DRV_RF215_Open
+    DRV_HANDLE drvRf215Handle;
     DRV_RF215_TX_REQUEST_OBJ txReqObj;
     DRV_RF215_TX_RESULT txReqResult;
     DRV_RF215_TX_HANDLE txReqHandle;
@@ -958,7 +910,7 @@ void DRV_RF215_SetChannelCallbackRegister (
     txReqHandle = DRV_RF215_TxRequest(drvRf215Handle, &txReqObj, &txReqResult);
     if (txReqHandle != DRV_RF215_TX_HANDLE_INVALID)
     {
-        // TX requested successfully. Result will be notified via TX confirm
+        
     }
     </code>
 
@@ -998,8 +950,8 @@ DRV_RF215_TX_HANDLE DRV_RF215_TxRequest (
 
   Example:
     <code>
-    DRV_HANDLE drvRf215Handle; // returned from DRV_RF215_Open
-    DRV_RF215_TX_HANDLE txReqHandle; // returned from DRV_RF215_TxRequest
+    DRV_HANDLE drvRf215Handle;
+    DRV_RF215_TX_HANDLE txReqHandle;
 
     DRV_RF215_TxCancel(drvRf215Handle, txReqHandle);
     </code>
@@ -1043,11 +995,9 @@ void DRV_RF215_TxCancel(DRV_HANDLE drvHandle, DRV_RF215_TX_HANDLE txHandle);
 
   Example:
     <code>
-    DRV_HANDLE drvRf215Handle; // returned from DRV_RF215_Open
+    DRV_HANDLE drvRf215Handle;
 
-    // Switch to channel 8 in 100 ms
     DRV_RF215_SetChannelRequest(drvRf215Handle, 100000, 8, TX_TIME_RELATIVE);
-
     </code>
 
   Remarks:
@@ -1126,7 +1076,7 @@ uint8_t DRV_RF215_GetPibSize(DRV_RF215_PIB_ATTRIBUTE attr);
 
   Example:
     <code>
-    DRV_HANDLE drvRf215Handle; // returned from DRV_RF215_Open
+    DRV_HANDLE drvRf215Handle;
     DRV_RF215_PHY_BAND_OPM phyBandOpm;
     DRV_RF215_PIB_RESULT pibResult;
 
@@ -1135,7 +1085,7 @@ uint8_t DRV_RF215_GetPibSize(DRV_RF215_PIB_ATTRIBUTE attr);
 
     if (pibResult == RF215_PIB_RESULT_SUCCESS)
     {
-        // PIB get successful
+        
     }
     </code>
 
@@ -1180,7 +1130,7 @@ DRV_RF215_PIB_RESULT DRV_RF215_GetPib (
 
   Example:
     <code>
-    DRV_HANDLE drvRf215Handle; // returned from DRV_RF215_Open
+    DRV_HANDLE drvRf215Handle;
     DRV_RF215_PHY_BAND_OPM phyBandOpm = SUN_FSK_BAND_863_OPM1;
     DRV_RF215_PIB_RESULT pibResult;
 
@@ -1189,7 +1139,7 @@ DRV_RF215_PIB_RESULT DRV_RF215_GetPib (
 
     if (pibResult == RF215_PIB_RESULT_SUCCESS)
     {
-        // PIB set successful
+        
     }
     </code>
 
@@ -1209,4 +1159,4 @@ DRV_RF215_PIB_RESULT DRV_RF215_SetPib (
 #endif
 //DOM-IGNORE-END
 
-#endif // #ifndef _DRV_RF215_H
+#endif // #ifndef DRV_RF215_H

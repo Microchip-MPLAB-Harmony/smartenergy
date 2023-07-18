@@ -1270,21 +1270,23 @@ def instantiateComponent(rf215Component):
     rf215PhySourceFile.setOverwrite(True)
 
     ieeeSunFskHeaderFile = rf215Component.createFileSymbol("DRV_RF215_IEEE_SUN_FSK", None)
-    ieeeSunFskHeaderFile.setSourcePath("driver/rf215/src/phy/ieee_15_4_sun_fsk.h")
+    ieeeSunFskHeaderFile.setSourcePath("driver/rf215/src/phy/ieee_15_4_sun_fsk.h.ftl")
     ieeeSunFskHeaderFile.setOutputName("ieee_15_4_sun_fsk.h")
     ieeeSunFskHeaderFile.setDestPath("driver/rf215/phy")
     ieeeSunFskHeaderFile.setProjectPath("config/" + configName + "/driver/rf215/phy")
     ieeeSunFskHeaderFile.setType("HEADER")
     ieeeSunFskHeaderFile.setOverwrite(True)
+    ieeeSunFskHeaderFile.setMarkup(True)
     ieeeSunFskHeaderFile.setDependencies(enableIeeeSunFile, ["DRV_RF215_FSK_EN"])
 
     ieeeSunOfdmHeaderFile = rf215Component.createFileSymbol("DRV_RF215_IEEE_SUN_OFDM", None)
-    ieeeSunOfdmHeaderFile.setSourcePath("driver/rf215/src/phy/ieee_15_4_sun_ofdm.h")
+    ieeeSunOfdmHeaderFile.setSourcePath("driver/rf215/src/phy/ieee_15_4_sun_ofdm.h.ftl")
     ieeeSunOfdmHeaderFile.setOutputName("ieee_15_4_sun_ofdm.h")
     ieeeSunOfdmHeaderFile.setDestPath("driver/rf215/phy")
     ieeeSunOfdmHeaderFile.setProjectPath("config/" + configName + "/driver/rf215/phy")
     ieeeSunOfdmHeaderFile.setType("HEADER")
     ieeeSunOfdmHeaderFile.setOverwrite(True)
+    ieeeSunOfdmHeaderFile.setMarkup(True)
     ieeeSunOfdmHeaderFile.setDependencies(enableIeeeSunFile, ["DRV_RF215_OFDM_EN"])
 
     #### System Template Files #################################################

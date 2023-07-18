@@ -8,7 +8,7 @@
     <#assign SPI_PLIB = DRV_RF215_PLIB>
 </#if>
 /* RF215 Driver Initialization Data */
-const DRV_RF215_INIT drvRf215InitData = {
+static const DRV_RF215_INIT drvRf215InitData = {
 <#if core.DMA_ENABLE?has_content>
     /* SPI Transmit Register */
     .spiTransmitAddress = (const void *)${.vars["${SPI_PLIB?lower_case}"].TRANSMIT_DATA_REGISTER},
