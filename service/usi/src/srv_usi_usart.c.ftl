@@ -249,7 +249,7 @@ static void USI_USART_PlibCallback( uintptr_t context)
                 /* Post semaphore to resume task */
                 if (dObj->semaphoreID != NULL)
                 {
-                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                    (void) OSAL_SEM_PostISR(&dObj->semaphoreID);
                 }
 <#else>
                 usiUsartCounterDiscardMsg = 0x10000;
@@ -282,7 +282,7 @@ static void USI_USART_PlibCallback( uintptr_t context)
                 /* Post semaphore to resume task */
                 if (dObj->semaphoreID != NULL)
                 {
-                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                    (void) OSAL_SEM_PostISR(&dObj->semaphoreID);
                 }
 </#if>
             }
@@ -524,7 +524,7 @@ void USI_USART_Tasks (uint32_t index)
             waitMS = OSAL_WAIT_FOREVER;
         }
 
-        OSAL_SEM_Pend(&dObj->semaphoreID, waitMS);
+        (void) OSAL_SEM_Pend(&dObj->semaphoreID, waitMS);
     }
 
 </#if>

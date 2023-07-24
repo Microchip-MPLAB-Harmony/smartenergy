@@ -99,9 +99,9 @@ typedef enum
     USI_USART_ESC
 } USI_USART_STATE;
 
-typedef void (* PLIB_CALLBACK)( uintptr_t context );
+typedef void (* USI_USART_PLIB_CALLBACK)( uintptr_t context );
 
-typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
+typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(USI_USART_PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
 typedef bool(* USI_USART_PLIB_WRITE_ISBUSY)(void);
 

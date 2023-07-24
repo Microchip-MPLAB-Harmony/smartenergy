@@ -259,7 +259,7 @@ static USB_DEVICE_CDC_EVENT_RESPONSE USB_CDC_DeviceCDCEventHandler(USB_DEVICE_CD
                 /* Post semaphore to resume task */
                 if (dObj->semaphoreID != NULL)
                 {
-                    OSAL_SEM_PostISR(&dObj->semaphoreID);
+                    (void) OSAL_SEM_PostISR(&dObj->semaphoreID);
                 }
 </#if>
             }
@@ -539,7 +539,7 @@ void USI_CDC_Tasks (uint32_t index)
     /* Suspend task until semaphore is posted */
     if (dObj->semaphoreID != NULL)
     {
-        OSAL_SEM_Pend(&dObj->semaphoreID, OSAL_WAIT_FOREVER);
+        (void) OSAL_SEM_Pend(&dObj->semaphoreID, OSAL_WAIT_FOREVER);
     }
 
 </#if>

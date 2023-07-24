@@ -85,9 +85,9 @@ typedef enum
     USI_CDC_ESC
 } USI_CDC_STATE;
 
-typedef void (* PLIB_CALLBACK)( uintptr_t context );
+typedef void (* USI_CDC_PLIB_CALLBACK)( uintptr_t context );
 
-typedef void(* USI_CDC_PLIB_READ_CALLBACK_REG)(PLIB_CALLBACK callback, uintptr_t context);
+typedef void(* USI_CDC_PLIB_READ_CALLBACK_REG)(USI_CDC_PLIB_CALLBACK callback, uintptr_t context);
 typedef bool(* USI_CDC_PLIB_WRRD)(void *buffer, const size_t size);
 typedef bool(* USI_CDC_PLIB_WRITE_ISBUSY)(void);
 
