@@ -94,7 +94,7 @@ static DRV_PLC_PLIB_INTERFACE *sPlcPlib;
 // *****************************************************************************
 // *****************************************************************************
 
-static void memcpyREV16 (void * pDst, void * pSrc, size_t size)
+static void lDRV_PLC_HAL_memcpyREV16 (void * pDst, void * pSrc, size_t size)
 {
     /* R0=pDst; R1=pSrc; R2=size */
     __asm volatile (
@@ -445,7 +445,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 
     if (pCmd->cmd == DRV_PLC_HAL_CMD_WR) {
         /* Fill with transmission data */
-        memcpyREV16(pTxData, pCmd->pData, pCmd->length);
+        lDRV_PLC_HAL_memcpyREV16(pTxData, pCmd->pData, pCmd->length);
     } else {
         /* Fill with dummy data */
         (void) memset(pTxData, 0, pCmd->length);
@@ -493,7 +493,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 
     if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
         /* Update data received */
-        memcpyREV16(pCmd->pData, &sRxSpiData[4], pCmd->length);
+        lDRV_PLC_HAL_memcpyREV16(pCmd->pData, &sRxSpiData[4], pCmd->length);
     }
     
     /* Get HAL info */

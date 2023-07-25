@@ -77,7 +77,8 @@ static SRV_USI_CALLBACK gSrvUSICallbackOBJ[SRV_USI_INSTANCES_NUMBER][11];
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static SRV_USI_CALLBACK_INDEX SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTOCOL_ID protocol)
+
+static SRV_USI_CALLBACK_INDEX lSRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTOCOL_ID protocol)
 {
     SRV_USI_CALLBACK_INDEX callbackIndex;
 
@@ -147,7 +148,7 @@ static SRV_USI_CALLBACK_INDEX SRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROTO
     return callbackIndex;
 }
 
-static PCRC_CRC_TYPE SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol)
+static PCRC_CRC_TYPE lSRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol)
 {
     PCRC_CRC_TYPE crcType;
 
@@ -186,7 +187,7 @@ static PCRC_CRC_TYPE SRV_USI_GetCRCTypeFromProtocol(SRV_USI_PROTOCOL_ID protocol
     return crcType;    
 }
 
-static SRV_USI_HANDLE SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
+static SRV_USI_HANDLE lSRV_USI_HandleValidate(SRV_USI_HANDLE handle)
 {
     /* This function returns the same handle if the handle is valid. Returns 
        SRV_USI_HANDLE_INVALID otherwise. */
@@ -207,7 +208,7 @@ static SRV_USI_HANDLE SRV_USI_HandleValidate(SRV_USI_HANDLE handle)
     return(SRV_USI_HANDLE_INVALID);
 }
 
-static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context )
+static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t context )
 {    
     SRV_USI_OBJ* dObj;
     uint32_t crcGetValue;
@@ -220,7 +221,7 @@ static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t
     SRV_USI_CALLBACK_INDEX cbIndex;
     
     /* Check valid context : the driver handle */
-    if (SRV_USI_HandleValidate((SRV_USI_HANDLE)context) == SRV_USI_HANDLE_INVALID)
+    if (lSRV_USI_HandleValidate((SRV_USI_HANDLE)context) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
@@ -235,7 +236,7 @@ static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t
         protocol = (SRV_USI_PROTOCOL_ID)protocolValue;
         
         /* Get CRC type from Protocol */
-        crcType = SRV_USI_GetCRCTypeFromProtocol(protocol);
+        crcType = lSRV_USI_GetCRCTypeFromProtocol(protocol);
         
         /* Extract data length */
         dataLength = USI_LEN_PROTOCOL(pData[USI_LEN_HI_OFFSET], pData[USI_LEN_LO_OFFSET]);
@@ -292,7 +293,7 @@ static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t
         }
     
         /* Launch USI callback */
-        cbIndex = SRV_USI_GetCallbackIndexFromProtocol(protocol);
+        cbIndex = lSRV_USI_GetCallbackIndexFromProtocol(protocol);
         if (dObj->callback[cbIndex] != NULL)
         {
             dObj->callback[cbIndex](pData + 2, dataLength);
@@ -300,7 +301,7 @@ static void SRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_t
     }
 }
 
-static uint8_t* SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
+static uint8_t* lSRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
                                       uint16_t length, uint8_t *pEndData )
 {
     while (length > 0U)
@@ -319,7 +320,7 @@ static uint8_t* SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
         {
             *pDstData++ = *pSrcData;
         }
-                  
+
         if (pDstData == pEndData)
         {
             /* Escaped Message can't fit in Write buffer */
@@ -333,7 +334,7 @@ static uint8_t* SRV_USI_EscapeData( uint8_t *pDstData, uint8_t *pSrcData,
     return pDstData;
 }
 
-static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength, 
+static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength, 
                                      SRV_USI_PROTOCOL_ID protocol, 
                                      uint8_t *pData, uint16_t length )
 {
@@ -346,7 +347,7 @@ static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     PCRC_CRC_TYPE crcType;
     
     /* Get CRC type from Protocol */
-    crcType = SRV_USI_GetCRCTypeFromProtocol(protocol);
+    crcType = lSRV_USI_GetCRCTypeFromProtocol(protocol);
     
     /* Build new message */
     pNewData = pDstData;
@@ -360,7 +361,7 @@ static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     /* Get CRC from USI header: 2 bytes */
     valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, crcType, 0);
     /* Escape USI header */
-    pNewData = SRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
+    pNewData = lSRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
     if (pNewData == NULL)
     {
         /* Error in Escape Data: can't fit in destination buffer */
@@ -383,7 +384,7 @@ static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     /* Get CRC from USI data. */
     valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType, valueTmp32);
     /* Escape USI data */
-    pNewData = SRV_USI_EscapeData(pNewData, pData, length, pEndData);
+    pNewData = lSRV_USI_EscapeData(pNewData, pData, length, pEndData);
     if (pNewData == NULL)
     {
         /* Error in Escape Data: can't fit in destination buffer */
@@ -401,15 +402,15 @@ static size_t SRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     valueTmp[3] = (uint8_t)valueTmp32;
     if (crcType == PCRC_CRC8)
     {
-        pNewData = SRV_USI_EscapeData(pNewData, &valueTmp[3], 1, pEndData);
+        pNewData = lSRV_USI_EscapeData(pNewData, &valueTmp[3], 1, pEndData);
     } 
     else if (crcType == PCRC_CRC16)
     {
-        pNewData = SRV_USI_EscapeData(pNewData, &valueTmp[2], 2, pEndData);
+        pNewData = lSRV_USI_EscapeData(pNewData, &valueTmp[2], 2, pEndData);
     }
     else
     {
-        pNewData = SRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
+        pNewData = lSRV_USI_EscapeData(pNewData, valueTmp, 4, pEndData);
     }
     
     if (pNewData == NULL)
@@ -524,7 +525,7 @@ void SRV_USI_Close( SRV_USI_HANDLE handle )
     SRV_USI_OBJ* dObj;
 
     /* Validate the driver handle */
-    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (lSRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
@@ -546,7 +547,7 @@ SRV_USI_STATUS SRV_USI_Status( SRV_USI_HANDLE handle )
     SRV_USI_OBJ* dObj;
 
     /* Validate the driver handle */
-    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (lSRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return SRV_USI_STATUS_ERROR;
     }
@@ -565,13 +566,13 @@ void SRV_USI_CallbackRegister ( SRV_USI_HANDLE handle,
     SRV_USI_CALLBACK *cb;
 
     /* Validate the driver handle */
-    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (lSRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
 
     /* Get callback index from USI protocol */
-    callbackIndex = SRV_USI_GetCallbackIndexFromProtocol(protocol);
+    callbackIndex = lSRV_USI_GetCallbackIndexFromProtocol(protocol);
 
     if (callbackIndex == SRV_USI_CALLBACK_INDEX_INVALID)
     {
@@ -584,12 +585,12 @@ void SRV_USI_CallbackRegister ( SRV_USI_HANDLE handle,
         return;
     }
     
-    /* Register callback to the USI protocol */ 
+    /* Register callback to the USI protocol */
     cb = &(dObj->callback[callbackIndex]);
     *cb = callback;
     
     /* Register reception callback */
-    dObj->devDesc->setReadCallback(dObj->devIndex, SRV_USI_Callback_Handle, (uintptr_t)dObj);
+    dObj->devDesc->setReadCallback(dObj->devIndex, lSRV_USI_Callback_Handle, (uintptr_t)dObj);
 
 }
 
@@ -620,7 +621,7 @@ void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
     size_t writeLength;
 
     /* Validate the driver handle */
-    if (SRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
+    if (lSRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
         return;
     }
@@ -639,7 +640,7 @@ void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
     while (dObj->devDesc->writeIsBusy(dObj->devIndex) == true){}
 
     /* Build USI message */
-    writeLength = SRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, (uint16_t)length);
+    writeLength = lSRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, (uint16_t)length);
     
     /* Send message */
     dObj->devDesc->writeData(dObj->devIndex, dObj->pWrBuffer, writeLength);

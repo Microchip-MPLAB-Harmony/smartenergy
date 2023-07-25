@@ -84,13 +84,13 @@ static SRV_PVDDMON_CALLBACK ${PVDD_MON_ADC_INSTANCE}_CompareCallback = NULL;
 // *****************************************************************************
 
 <#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
-static void ${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
+static void l${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
 {
     /* Avoid warning */
     (void)eocStatus;
     
 <#else>
-static void ${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
+static void l${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uintptr_t context )
 {
 </#if>
     if ((status & ${PVDD_MON_MASK_PREFIX}_ISR_COMPE_Msk) != 0U)
@@ -224,7 +224,7 @@ void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t context)
 {
     /* Register ${PVDD_MON_ADC_INSTANCE} Callback */
-    ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
+    ${PVDD_MON_ADC_INSTANCE}_CallbackRegister(l${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback, context);
     ${PVDD_MON_ADC_INSTANCE}_CompareCallback = callback;
 }
 

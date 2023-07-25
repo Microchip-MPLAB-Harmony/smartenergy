@@ -57,7 +57,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-static void SRV_SERIAL_memcpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, size_t length)
+static void lSRV_SERIAL_memcpyRev(uint8_t *pDataDst, uint8_t *pDataSrc, size_t length)
 {
     uint8_t *pMemDst, *pMemSrc;
     uint16_t indexRev;
@@ -115,7 +115,7 @@ size_t SRV_PSERIAL_SerialGetPIB(uint8_t* pDataDst, DRV_PLC_PHY_PIB_OBJ* pDataSrc
     *pData++ = (uint8_t)((uint16_t)pDataSrc->id >> 8);
     *pData++ = (uint8_t)pDataSrc->id;
     *pData++ = (uint8_t)pDataSrc->length;
-    SRV_SERIAL_memcpyRev(pData, pDataSrc->pData, pDataSrc->length);
+    lSRV_SERIAL_memcpyRev(pData, pDataSrc->pData, pDataSrc->length);
 
     return (size_t)pDataSrc->length + 4U;
 }
@@ -131,7 +131,7 @@ void SRV_PSERIAL_ParseSetPIB(DRV_PLC_PHY_PIB_OBJ *pDataDst, uint8_t *pDataSrc)
     id += (uint16_t)*pDataSrc++;
     pDataDst->id = (DRV_PLC_PHY_ID)id;
     pDataDst->length = *pDataSrc++;
-    SRV_SERIAL_memcpyRev(pDataDst->pData, pDataSrc, pDataDst->length);
+    lSRV_SERIAL_memcpyRev(pDataDst->pData, pDataSrc, pDataDst->length);
 }
 
 size_t SRV_PSERIAL_SerialSetPIB(uint8_t *pDataDst, DRV_PLC_PHY_PIB_OBJ *pDataSrc)

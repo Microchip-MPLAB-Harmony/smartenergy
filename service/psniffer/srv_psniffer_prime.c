@@ -69,10 +69,11 @@ static uint8_t srvPsnifferChannel = 1;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: SRV_PSNIFFER Interface Routines
+// Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static uint32_t SRV_PSNIFFER_GetMessageDuration(DRV_PLC_PHY_FRAME_TYPE frameType, uint8_t symbols)
+
+static uint32_t lSRV_PSNIFFER_GetMessageDuration(DRV_PLC_PHY_FRAME_TYPE frameType, uint8_t symbols)
 {
     uint32_t duration;
 
@@ -89,6 +90,12 @@ static uint32_t SRV_PSNIFFER_GetMessageDuration(DRV_PLC_PHY_FRAME_TYPE frameType
 
     return duration;
 }
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: SRV_PSNIFFER Interface Routines
+// *****************************************************************************
+// *****************************************************************************
 
 SRV_PSNIFFER_COMMAND SRV_PSNIFFER_GetCommand(uint8_t* pData)
 {
@@ -200,7 +207,7 @@ size_t SRV_PSNIFFER_SerialRxMessage(uint8_t* pDataDst, DRV_PLC_PHY_RECEPTION_OBJ
     *pData++ = 0;
     *pData++ = 0;
     timeIni = pDataSrc->timeIni;
-    timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pDataSrc->frameType, srvPsnifferLastRxPayloadSymbols);
+    timeEnd = timeIni + lSRV_PSNIFFER_GetMessageDuration(pDataSrc->frameType, srvPsnifferLastRxPayloadSymbols);
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);
     *pData++ = (uint8_t)(timeIni >> 8);
@@ -281,7 +288,7 @@ size_t SRV_PSNIFFER_SerialCfmMessage(uint8_t* pDataDst, DRV_PLC_PHY_TRANSMISSION
     *pData++ = 0;
     *pData++ = 0;
     timeIni = pCfmObj->timeIni;
-    timeEnd = timeIni + SRV_PSNIFFER_GetMessageDuration(pCfmObj->frameType, srvPsnifferLastTxPayloadSymbols);
+    timeEnd = timeIni + lSRV_PSNIFFER_GetMessageDuration(pCfmObj->frameType, srvPsnifferLastTxPayloadSymbols);
     *pData++ = (uint8_t)(timeIni >> 24);
     *pData++ = (uint8_t)(timeIni >> 16);
     *pData++ = (uint8_t)(timeIni >> 8);

@@ -90,7 +90,8 @@ static uint32_t usiUsartCounterDiscardMsg;
 // Section: File scope functions
 // *****************************************************************************
 // *****************************************************************************
-static USI_USART_MSG* USI_USART_PutMsgToQueue( USI_USART_OBJ* dObj )
+
+static USI_USART_MSG* lUSI_USART_PutMsgToQueue( USI_USART_OBJ* dObj )
 {
     USI_USART_MSG* pMsg;
     uint8_t index;
@@ -126,7 +127,7 @@ static USI_USART_MSG* USI_USART_PutMsgToQueue( USI_USART_OBJ* dObj )
     return NULL;
 }
 
-static void USI_USART_GetMsgFromQueue( USI_USART_OBJ* dObj )
+static void lUSI_USART_GetMsgFromQueue( USI_USART_OBJ* dObj )
 {
     USI_USART_MSG_QUEUE* dObjQueue;
     
@@ -150,7 +151,7 @@ static void USI_USART_GetMsgFromQueue( USI_USART_OBJ* dObj )
     }
 }
 
-static void USI_USART_AbortMsgInQueue( USI_USART_OBJ* dObj )
+static void lUSI_USART_AbortMsgInQueue( USI_USART_OBJ* dObj )
 {
     USI_USART_MSG_QUEUE* dObjQueue;
     USI_USART_MSG* pMsgTmp;
@@ -198,7 +199,7 @@ static void USI_USART_AbortMsgInQueue( USI_USART_OBJ* dObj )
     }
 }
 
-static void USI_USART_PlibCallback( uintptr_t context)
+static void lUSI_USART_PlibCallback( uintptr_t context)
 {
     USI_USART_OBJ* dObj;
     USI_USART_MSG* pMsg;
@@ -226,7 +227,7 @@ static void USI_USART_PlibCallback( uintptr_t context)
                 }
                 
                 /* Create new message */
-                pMsg = USI_USART_PutMsgToQueue(dObj);
+                pMsg = lUSI_USART_PutMsgToQueue(dObj);
                 
                 if (pMsg != NULL)
                 {
@@ -319,7 +320,7 @@ static void USI_USART_PlibCallback( uintptr_t context)
             else
             {
                 /* ERROR: Escape format */
-                USI_USART_AbortMsgInQueue(dObj);
+                lUSI_USART_AbortMsgInQueue(dObj);
                 dObj->pRcvMsg = NULL;
                 dObj->devStatus = USI_USART_IDLE;
             }
@@ -334,7 +335,7 @@ static void USI_USART_PlibCallback( uintptr_t context)
         if (dObj->byteCount > dObj->rdBufferSize)
         {
             /* ERROR: Overflow */
-            USI_USART_AbortMsgInQueue(dObj);
+            lUSI_USART_AbortMsgInQueue(dObj);
             dObj->pRcvMsg = NULL;
             dObj->byteCount = 0;
         }
@@ -461,7 +462,7 @@ void USI_USART_RegisterCallback(uint32_t index, USI_USART_CALLBACK cbFunc,
     }
     
     /* Set USART PLIB handler */
-    dObj->plib->readCallbackRegister(USI_USART_PlibCallback, (uintptr_t)dObj);
+    dObj->plib->readCallbackRegister(lUSI_USART_PlibCallback, (uintptr_t)dObj);
     
     /* Set callback function */
     dObj->cbFunc = cbFunc;
@@ -538,7 +539,7 @@ void USI_USART_Tasks (uint32_t index)
         if (--usiUsartCounterDiscardMsg == 0U)
         {
             /* Discard incomplete message */
-            USI_USART_AbortMsgInQueue(dObj);
+            lUSI_USART_AbortMsgInQueue(dObj);
             dObj->pRcvMsg = NULL;
             dObj->devStatus = USI_USART_IDLE;
         }
@@ -547,7 +548,7 @@ void USI_USART_Tasks (uint32_t index)
     /* Handle callback functions */
     pMsg = dObj->pMsgQueue->front;
     if ((pMsg != NULL) && (pMsg != dObj->pRcvMsg))
-    {        
+    {
         if ((dObj->cbFunc != NULL) && (pMsg->length > 0U))
         {
             dObj->cbFunc(pMsg->pMessage, pMsg->length, dObj->context);
@@ -559,7 +560,7 @@ void USI_USART_Tasks (uint32_t index)
         interruptState = SYS_INT_SourceDisable(aSrcId);
 
         /* Remove Message from Queue */
-        USI_USART_GetMsgFromQueue(dObj);
+        lUSI_USART_GetMsgFromQueue(dObj);
         
         /* Restore interrupt state */
         SYS_INT_SourceRestore(aSrcId, interruptState);

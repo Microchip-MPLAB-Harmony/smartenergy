@@ -208,7 +208,7 @@ static const uint8_t pCrcTable8[256] = {
 // *****************************************************************************
 // *****************************************************************************
 
-static uint32_t SRV_PCRC_Get32(uint8_t *pData, size_t length,
+static uint32_t lSRV_PCRC_Get32(uint8_t *pData, size_t length,
         uint32_t crcInitValue)
 {
     uint32_t crc;
@@ -224,7 +224,7 @@ static uint32_t SRV_PCRC_Get32(uint8_t *pData, size_t length,
     return crc;
 }
 
-static uint16_t SRV_PCRC_Get16(uint8_t *pData, size_t length,
+static uint16_t lSRV_PCRC_Get16(uint8_t *pData, size_t length,
         uint32_t crcInitValue)
 {
     uint16_t crc;
@@ -240,7 +240,7 @@ static uint16_t SRV_PCRC_Get16(uint8_t *pData, size_t length,
     return crc;
 }
 
-static uint8_t SRV_PCRC_Get8(uint8_t *pData, size_t length,
+static uint8_t lSRV_PCRC_Get8(uint8_t *pData, size_t length,
         uint32_t crcInitValue)
 {
     uint8_t crc;
@@ -282,25 +282,25 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
         case PCRC_HT_USI:
             if (crcType == PCRC_CRC8)
             {
-                crc32 = (uint32_t)SRV_PCRC_Get8(pData, length, initValue);
+                crc32 = (uint32_t)lSRV_PCRC_Get8(pData, length, initValue);
             }
             else if (crcType == PCRC_CRC16)
             {
-                crc32 = (uint32_t)SRV_PCRC_Get16(pData, length, initValue);
+                crc32 = (uint32_t)lSRV_PCRC_Get16(pData, length, initValue);
             }
             else if (crcType == PCRC_CRC32)
             {
-                crc32 = (uint32_t)SRV_PCRC_Get32(pData, length, initValue);
+                crc32 = (uint32_t)lSRV_PCRC_Get32(pData, length, initValue);
             }
             else
             {
                 crc32 = PCRC_INVALID;
-            }            
+            }
             break;   
            
         default:
             crc32 = PCRC_INVALID;
-            break;            
+            break;
     }
     
     return crc32;
