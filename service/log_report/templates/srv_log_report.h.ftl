@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -41,8 +41,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _SRV_LOG_REPORT_H
-#define _SRV_LOG_REPORT_H
+#ifndef SRV_LOG_REPORT_H
+#define SRV_LOG_REPORT_H
 
 <#if (ENABLE_TRACES == true)>
 // *****************************************************************************
@@ -295,4 +295,4 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
  }
 #endif
 
-#endif /* _SRV_LOG_REPORT_H */
+#endif /* SRV_LOG_REPORT_H */

@@ -18,7 +18,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -60,20 +60,32 @@ static char message[SYS_CONSOLE_PRINT_BUFFER_SIZE];
 // *****************************************************************************
 // *****************************************************************************
 
-void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel, 
-                                      SRV_LOG_REPORT_CODE code, 
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 17.1 deviated 6 times. Deviation record ID - H3_MISRAC_2012_R_17_1_DR_1 */
+/* MISRA C-2012 Rule 21.6 deviated 4 times. Deviation record ID - H3_MISRAC_2012_R_21_1_DR_6 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+</#if>
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 17.1" "H3_MISRAC_2012_R_17_1_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2012 Rule 21.6" "H3_MISRAC_2012_R_21_1_DR_6"
+</#if>
+
+static va_list srvLogReportArgs;
+
+void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
+                                      SRV_LOG_REPORT_CODE code,
                                       const char *info, ...)
 {
-    va_list args = {0};
-    
     /* Format the information */
-    va_start(args, info);
-    vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, args);
-    va_end(args);
+    va_start(srvLogReportArgs, info);
+    (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
+    va_end(srvLogReportArgs);
 
     SYS_DEBUG_MESSAGE((SYS_ERROR_LEVEL)logLevel, message);
 
-<#if enableReportDisplay == true> 
+<#if enableReportDisplay == true>
 //  #if (BOARD == PIC32CXMTSH_DB) || (BOARD == PIC32CXMTC_DB)
 //  uint32_t errorType;
 //  errorType = code % 100000000; /* Only eight digits in the display */
@@ -82,67 +94,64 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
 </#if>
 }
 
-void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel, 
+void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
                             const char *info, ...)
 {
-    va_list args = {0};
-    
     /* Format the information */
-    va_start(args, info);
-    vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, args);
-    va_end(args);
+    va_start(srvLogReportArgs, info);
+    (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
+    va_end(srvLogReportArgs);
     
     SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, message);
 }
 
-void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel, 
-                           const uint8_t *buffer, uint32_t bufferLength, 
+void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
+                           const uint8_t *buffer, uint32_t bufferLength,
                            const char *info, ...)
 {
-    va_list args = {0};
     uint32_t blockLength;
     uint32_t lastBlockLength;
     uint32_t lastPosition;
-    uint8_t blockNumber;
-    uint8_t lastBlock;
+    uint32_t blockNumber;
+    uint32_t lastBlock;
     
     /* Format the information */
-    va_start(args, info);
-    vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, args);
-    va_end(args);
+    va_start(srvLogReportArgs, info);
+    (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
+    va_end(srvLogReportArgs);
     
     SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, message);
     
     /* The buffer will be printed in hex, so 1 byte turns into 2 chars */
-    blockLength = SYS_CONSOLE_PRINT_BUFFER_SIZE / 2;
+    blockLength = SYS_CONSOLE_PRINT_BUFFER_SIZE / 2U;
     blockNumber = bufferLength / blockLength;
     lastBlockLength = bufferLength % blockLength;
-    if (lastBlockLength) 
+    if (lastBlockLength)
     {
         ++blockNumber;
     } 
-    else 
+    else
     {
         lastBlockLength = blockLength;
     }
     
     /* Format the buffer in hex */
-    lastBlock = 0;
-    while (lastBlock < blockNumber) 
+    lastBlock = 0U;
+    while (lastBlock < blockNumber)
     {
-        if (lastBlock == (blockNumber - 1))
+        if (lastBlock == (blockNumber - 1U))
         {
             blockLength = lastBlockLength;
         }
     
-        if (blockLength) 
+        if (blockLength)
         {
-            lastPosition = lastBlock * (SYS_CONSOLE_PRINT_BUFFER_SIZE / 2);
-            for (int i = 0; i < blockLength; i++) 
+            lastPosition = lastBlock * (SYS_CONSOLE_PRINT_BUFFER_SIZE / 2U);
+            for (uint32_t i = 0U; i < blockLength; i++)
             {
-                sprintf(&message[i*2], "%02x", buffer[lastPosition + i]);
+                (void) sprintf(&message[i << 1], "%02x", buffer[lastPosition + i]);
             }
-    
+
             SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, message);
         }
         
@@ -151,3 +160,12 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
     
     SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, "\r\n");
 }
+
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+#pragma coverity compliance end_block "MISRA C-2012 Rule 17.1"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 21.6"
+<#if core.COMPILER_CHOICE == "XC32">
+#pragma GCC diagnostic pop
+</#if>
+</#if>
+/* MISRA C-2012 deviation block end */
