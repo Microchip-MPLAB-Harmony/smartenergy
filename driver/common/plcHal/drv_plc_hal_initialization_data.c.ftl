@@ -26,7 +26,6 @@
 // <editor-fold defaultstate="collapsed" desc="_on_reset() critical function">
 <#assign SUPPORTED_BOARDS = [
     "PIC32CXMTSH Development Board",
-    "PIC32CXMTC Development Board",
     "PIC32CXMTG Evaluation Kit",
     "SAM E70 Xplained Ultra",
     "WBZ451 Curiosity"
@@ -56,26 +55,40 @@ void _on_reset(void)
     <#if .vars[BSP_BOARD_NAME]??>
         <#assign BOARD_FIND = BSP_BOARD_NAME>
         <#if BOARD?matches("PIC32CXMTSH Development Board")>
-            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-            <#lt>    {
-            <#lt>        /* Wait for clock to be initialized */
-            <#lt>    }
-            <#lt>    
-            <#lt>    /* Disable STBY Pin */
-            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
-            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
-        </#if>
-        <#if BOARD?matches("PIC32CXMTC Development Board")>
-            <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-            <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-            <#lt>    {
-            <#lt>        /* Wait for clock to be initialized */
-            <#lt>    }
-            <#lt>    
-            <#lt>    /* Disable STBY Pin */
-            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
-            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
+            <#lt>   /* Enable co-processor bus clock  */
+            <#lt>   PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
+            <#lt>   /* Coprocessor Peripheral Enable */
+            <#lt>   RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
+            <#lt>
+            <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
+            <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
+            <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
+            <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
+            <#lt>
+            <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+            <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+            <#lt>   {
+            <#lt>       /* Wait for clock to be initialized */
+            <#lt>   }
+            <#lt>
+            <#lt>   /* Disable STBY Pin */
+            <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
+            <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
+            <#lt>
+            <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
+            <#lt>   {
+            <#lt>       /* Wait for status CPMCKRDY */
+            <#lt>   }
+            <#lt>
+            <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
+            <#lt>   while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
+            <#lt>   {
+            <#lt>       /* Wait for clock to be initialized */
+            <#lt>   }
+            <#lt>
+            <#lt>   /* Enable Reset Pin */
+            <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+            <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         </#if>
         <#if BOARD?matches("PIC32CXMTG Evaluation Kit")>
             <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
