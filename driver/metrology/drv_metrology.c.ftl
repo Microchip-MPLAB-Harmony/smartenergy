@@ -210,9 +210,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_NOT_FULL_CYCLE == true>  
     if (status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK)
     {
-        if (gDrvMetObj.FullCycleCallback)
+        if (gDrvMetObj.fullCycleCallback)
         {
-            gDrvMetObj.FullCycleCallback();
+            gDrvMetObj.fullCycleCallback();
         }
     }
 
@@ -220,9 +220,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_NOT_HALF_CYCLE == true>  
     if (status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK)
     {
-        if (gDrvMetObj.HalfCycleCallback)
+        if (gDrvMetObj.halfCycleCallback)
         {
-            gDrvMetObj.HalfCycleCallback();
+            gDrvMetObj.halfCycleCallback();
         }
     }
 
@@ -230,9 +230,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_RAW_ZERO_CROSSING == true>  
     if (status & DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK)
     {
-        if (gDrvMetObj.ZeroCrossCallback)
+        if (gDrvMetObj.zeroCrossCallback)
         {
-            gDrvMetObj.ZeroCrossCallback();
+            gDrvMetObj.zeroCrossCallback();
         }
     }
 
@@ -240,9 +240,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_0 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE0_IRQ_MSK)
     {
-        if (gDrvMetObj.Pulse0Callback)
+        if (gDrvMetObj.pulse0Callback)
         {
-            gDrvMetObj.Pulse0Callback();
+            gDrvMetObj.pulse0Callback();
         }
     }
 
@@ -250,9 +250,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_1 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE1_IRQ_MSK)
     {
-        if (gDrvMetObj.Pulse1Callback)
+        if (gDrvMetObj.pulse1Callback)
         {
-            gDrvMetObj.Pulse1Callback();
+            gDrvMetObj.pulse1Callback();
         }
     }
 
@@ -260,9 +260,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_2 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE2_IRQ_MSK)
     {
-        if (gDrvMetObj.Pulse2Callback)
+        if (gDrvMetObj.pulse2Callback)
         {
-            gDrvMetObj.Pulse2Callback();
+            gDrvMetObj.pulse2Callback();
         }
     }
 
@@ -1063,7 +1063,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLB
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.FullCycleCallback = callback;
+    gDrvMetObj.fullCycleCallback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
@@ -1076,7 +1076,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLB
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.HalfCycleCallback = callback;
+    gDrvMetObj.halfCycleCallback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
@@ -1089,7 +1089,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLB
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.ZeroCrossCallback = callback;
+    gDrvMetObj.zeroCrossCallback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
@@ -1102,7 +1102,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.Pulse0Callback = callback;
+    gDrvMetObj.pulse0Callback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
@@ -1115,7 +1115,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.Pulse1Callback = callback;
+    gDrvMetObj.pulse1Callback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
@@ -1128,7 +1128,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK
         return DRV_METROLOGY_ERROR;
     }
 
-    gDrvMetObj.Pulse2Callback = callback;
+    gDrvMetObj.pulse2Callback = callback;
     return DRV_METROLOGY_SUCCESS;
 }
 
