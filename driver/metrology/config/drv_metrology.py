@@ -331,6 +331,7 @@ def instantiateComponent(metComponentCommon):
     drvMetWaveformCaptureSrc.addKey("16KHz", "0", "16KHz data")
     drvMetWaveformCaptureSrc.addKey("4KHz_FBW", "1", "4KHz Full Bandwidth")
     drvMetWaveformCaptureSrc.addKey("4KHz_NBW", "2", "4KHz Narrow Bandwidth")
+    drvMetWaveformCaptureSrc.addKey("8KHz_FBW", "3", "8KHz Full Bandwidth")
     drvMetWaveformCaptureSrc.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
 
     drvMetWaveformCaptureType = metComponentCommon.createKeyValueSetSymbol("DRV_MET_WAVECAPT_TYPE", drvMetWaveformCapture)
