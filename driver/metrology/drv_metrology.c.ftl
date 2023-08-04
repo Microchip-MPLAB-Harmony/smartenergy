@@ -205,12 +205,16 @@ void IPC1_Handler (void)
             /* Update Harmonics Data */
             _DRV_Metrology_copy((uintptr_t)&gDrvMetObj.metHarData, (uintptr_t)&gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_HARMONICS));
         }
+
+        gDrvMetObj.integrationFlag = true;
     }
 
 <#if DRV_MET_NOT_FULL_CYCLE == true>  
     if (status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK)
     {
-        if (gDrvMetObj.fullCycleCallback)
+        gDrvMetObj.fullCycleIntFlag = true;
+
+        if (gDrvMetObj.FullCycleCallback)
         {
             gDrvMetObj.fullCycleCallback();
         }
@@ -220,7 +224,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_NOT_HALF_CYCLE == true>  
     if (status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK)
     {
-        if (gDrvMetObj.halfCycleCallback)
+        gDrvMetObj.halfCycleIntFlag = true;
+
+        if (gDrvMetObj.HalfCycleCallback)
         {
             gDrvMetObj.halfCycleCallback();
         }
@@ -230,7 +236,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_RAW_ZERO_CROSSING == true>  
     if (status & DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK)
     {
-        if (gDrvMetObj.zeroCrossCallback)
+        gDrvMetObj.zeroCrossIntFlag = true;
+
+        if (gDrvMetObj.ZeroCrossCallback)
         {
             gDrvMetObj.zeroCrossCallback();
         }
@@ -240,7 +248,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_0 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE0_IRQ_MSK)
     {
-        if (gDrvMetObj.pulse0Callback)
+        gDrvMetObj.pulse0IntFlag = true;
+
+        if (gDrvMetObj.Pulse0Callback)
         {
             gDrvMetObj.pulse0Callback();
         }
@@ -250,7 +260,9 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_1 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE1_IRQ_MSK)
     {
-        if (gDrvMetObj.pulse1Callback)
+        gDrvMetObj.pulse1IntFlag = true;
+
+        if (gDrvMetObj.Pulse1Callback)
         {
             gDrvMetObj.pulse1Callback();
         }
@@ -260,21 +272,24 @@ void IPC1_Handler (void)
 <#if DRV_MET_PULSE_2 == true>  
     if (status & DRV_METROLOGY_IPC_PULSE2_IRQ_MSK)
     {
-        if (gDrvMetObj.pulse2Callback)
+        gDrvMetObj.pulse2IntFlag = true;
+
+        if (gDrvMetObj.Pulse2Callback)
         {
             gDrvMetObj.pulse2Callback();
         }
     }
 
 </#if>
-    IPC1_REGS->IPC_ICCR = status;
-
 <#if DRV_MET_RTOS_ENABLE == true>     
     /* Signal Metrology thread to update measurements for an integration period */
     OSAL_SEM_PostISR(&drvMetrologySemID);
 <#else>
-    gDrvMetObj.integrationFlag = true;
+    gDrvMetObj.ipcInterruptFlag = true;
 </#if>
+
+    IPC1_REGS->IPC_ICCR = status;
+
 }
 
 static uint32_t _DRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
@@ -842,11 +857,33 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         return SYS_MODULE_OBJ_INVALID;
     }
 <#else>
-    gDrvMetObj.integrationFlag = false;
+	/* Clean the IPC interrupt generic flag */
+    gDrvMetObj.ipcInterruptFlag = false;
 </#if>    
 
     /* Disable IPC interrupts */
     SYS_INT_SourceDisable(IPC1_IRQn);
+
+	/* Clean the IPC interrupt flags */
+    gDrvMetObj.integrationFlag = false;
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+    gDrvMetObj.fullCycleIntFlag = false;
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+    gDrvMetObj.halfCycleIntFlag = false;
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true> 
+    gDrvMetObj.zeroCrossIntFlag = false;
+    </#if>
+<#if DRV_MET_PULSE_0 == true>  
+    gDrvMetObj.pulse0IntFlag = false;
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+    gDrvMetObj.pulse1IntFlag = false;
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+    gDrvMetObj.pulse2IntFlag = false;
+</#if>
 
     if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
@@ -1168,55 +1205,132 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
     }
 
 <#if DRV_MET_RTOS_ENABLE == true>     
-    /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
+    /* Wait for the metrology semaphore to get IPC notifications */
     OSAL_SEM_Pend(&drvMetrologySemID, OSAL_WAIT_FOREVER);
 <#else>
-    if (gDrvMetObj.integrationFlag == false)
+    if (gDrvMetObj.ipcInterruptFlag == false)
     {
-        /* There is no new integration period */
+        /* There are not IPC interrupts */
         return;
     }
 
-    /* Clear integration flag */
-    gDrvMetObj.integrationFlag = false;
+    /* Clear IPC interrupt flag */
+    gDrvMetObj.ipcInterruptFlag = false;
 </#if>   
 
-    /* Check if there is a calibration process running */
-    if (gDrvMetObj.calibrationData.running)
+    if (gDrvMetObj.integrationFlag == true)
     {
-        if (_DRV_METROLOGY_UpdateCalibrationValues())
-        {
-            /* Launch calibration callback */
-            if (gDrvMetObj.calibrationCallback)
-            {
-                gDrvMetObj.calibrationCallback(gDrvMetObj.calibrationData.result);
-            }
-        }
-    }
-    else
-    {
-        /* Update measurements from metrology library registers */
-        _DRV_METROLOGY_UpdateMeasurements();
+        gDrvMetObj.integrationFlag = false;
 
-        /* Launch integration callback */
-        if (gDrvMetObj.integrationCallback)
+        /* Check if there is a calibration process running */
+        if (gDrvMetObj.calibrationData.running)
         {
-            gDrvMetObj.integrationCallback();
-        }
-        
-        /* Check if there is a harmonic analysis process running */
-        if (gDrvMetObj.harmonicAnalysisData.running)
-        {
-            if (_DRV_METROLOGY_UpdateHarmonicAnalysisValues())
+            if (_DRV_METROLOGY_UpdateCalibrationValues())
             {
                 /* Launch calibration callback */
-                if (gDrvMetObj.harmonicAnalysisCallback)
+                if (gDrvMetObj.calibrationCallback)
                 {
-                    gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+                    gDrvMetObj.calibrationCallback(gDrvMetObj.calibrationData.result);
+                }
+            }
+        }
+        else
+        {
+            /* Update measurements from metrology library registers */
+            _DRV_METROLOGY_UpdateMeasurements();
+
+            /* Launch integration callback */
+            if (gDrvMetObj.integrationCallback)
+            {
+                gDrvMetObj.integrationCallback();
+            }
+            
+            /* Check if there is a harmonic analysis process running */
+            if (gDrvMetObj.harmonicAnalysisData.running)
+            {
+                if (_DRV_METROLOGY_UpdateHarmonicAnalysisValues())
+                {
+                    /* Launch calibration callback */
+                    if (gDrvMetObj.harmonicAnalysisCallback)
+                    {
+                        gDrvMetObj.harmonicAnalysisCallback(gDrvMetObj.harmonicAnalysisData.harmonicNum);
+                    }
                 }
             }
         }
     }
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+    
+    if (gDrvMetObj.fullCycleIntFlag == true)
+    {
+        gDrvMetObj.fullCycleIntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.fullCycleCallback)
+        {
+            gDrvMetObj.fullCycleCallback();
+        }
+    }
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+    
+    if (gDrvMetObj.halfCycleIntFlag == true)
+    {
+        gDrvMetObj.halfCycleIntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.halfCycleCallback)
+        {
+            gDrvMetObj.halfCycleCallback();
+        }
+    }
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+    
+    if (gDrvMetObj.zeroCrossIntFlag == true)
+    {
+        gDrvMetObj.zeroCrossIntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.zeroCrossCallback)
+        {
+            gDrvMetObj.zeroCrossCallback();
+        }
+    }
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+    
+    if (gDrvMetObj.pulse0IntFlag == true)
+    {
+        gDrvMetObj.pulse0IntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.pulse0Callback)
+        {
+            gDrvMetObj.pulse0Callback();
+        }
+    }
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+    
+    if (gDrvMetObj.pulse1IntFlag == true)
+    {
+        gDrvMetObj.pulse1IntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.pulse1Callback)
+        {
+            gDrvMetObj.pulse1Callback();
+        }
+    }
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+    
+    if (gDrvMetObj.pulse2IntFlag == true)
+    {
+        gDrvMetObj.pulse2IntFlag = false;
+        /* Launch callback */
+        if (gDrvMetObj.pulse2Callback)
+        {
+            gDrvMetObj.pulse2Callback();
+        }
+    }
+</#if>
 }
 
 DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus (void)
