@@ -94,10 +94,10 @@ def updateConfigWaveform(symbol, event):
     drvMetRegWaveformCaptureSize.setValue(bufferSize * num_chn)
         
 def updateConfigPKT(symbol, event):
-    m = 1000000000 / event["value"]
-    m = (m << GAIN_P_K_T_Q)
-    m = m / 1000000
-    symbol.setValue(m)
+    m = 1000000000.0 / int(event["value"])
+    m *= 2**GAIN_P_K_T_Q
+    m /= 1000000
+    symbol.setValue(int(m))
 
 def updateConfigMT(symbol, event):
     stValue = event["value"] & 0x03
@@ -133,7 +133,7 @@ def updateConfigKI(symbol, event):
     symbol.setValue(m)
 
 def updateConfigKV(symbol, event):
-    i = (event["value"] << GAIN_VI_Q)
+    i = (event["value"] * 2**GAIN_VI_Q)
     symbol.setValue(i)
 
 def updateConfigSwellSag(symbol, event):
