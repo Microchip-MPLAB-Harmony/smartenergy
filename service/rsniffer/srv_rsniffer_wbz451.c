@@ -173,10 +173,10 @@ static uint8_t* lSRV_RSNIFFER_SerialMessage (SRV_RSNIFFER_PHY_DATA *pData, size_
 
 uint8_t* SRV_RSNIFFER_SerialRxMessage ( SRV_RSNIFFER_PHY_DATA *rxData, size_t *pMsgLen )
 {
-    lSRV_RSNIFFER_SerialMessage(rxData, pMsgLen);
+    return lSRV_RSNIFFER_SerialMessage(rxData, pMsgLen);
 }
 
 uint8_t* SRV_RSNIFFER_SerialCfmMessage ( SRV_RSNIFFER_PHY_DATA *txData, size_t *pMsgLen )
 {
-    lSRV_RSNIFFER_SerialMessage(txData, pMsgLen);
+    return lSRV_RSNIFFER_SerialMessage(txData, pMsgLen);
 }
