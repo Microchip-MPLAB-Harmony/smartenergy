@@ -52,6 +52,7 @@
 
 #include "configuration.h"
 #include "definitions.h"
+#include "sys_tasks.h"
 
 
 
@@ -72,7 +73,7 @@
 void SYS_Tasks ( void )
 {
     /* Maintain system services */
-    
+
 SYS_CMD_Tasks();
 
 
@@ -93,7 +94,7 @@ DRV_METROLOGY_Tasks(sysObj.drvMet);
 
 
     /* Maintain Middleware & Other Libraries */
-    
+
 
     /* Maintain the application's state machine. */
         /* Call Application task APP_METROLOGY. */

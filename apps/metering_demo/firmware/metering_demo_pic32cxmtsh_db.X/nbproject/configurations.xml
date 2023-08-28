@@ -16,6 +16,7 @@
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/drv_memory_definitions.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory_local.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/memory/src/drv_memory_file_system.h</itemPath>
             </logicalFolder>
             <logicalFolder name="metrology" displayName="metrology" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_regs.h</itemPath>
@@ -149,6 +150,7 @@
           <itemPath>../src/config/pic32cxmtsh_db/definitions.h</itemPath>
           <itemPath>../src/config/pic32cxmtsh_db/interrupts.h</itemPath>
           <itemPath>../src/config/pic32cxmtsh_db/configuration.h</itemPath>
+          <itemPath>../src/config/pic32cxmtsh_db/sys_tasks.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="packs" displayName="packs" projectFiles="true">
@@ -440,7 +442,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>j32</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>4.21</languageToolchainVersion>
+        <languageToolchainVersion>4.30</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>

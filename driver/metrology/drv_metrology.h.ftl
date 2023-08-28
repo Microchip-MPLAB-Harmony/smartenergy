@@ -269,7 +269,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
   Remarks:
     None. 
 */
-DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode, DRV_METROLOGY_CONTROL * pConfiguration);
+DRV_METROLOGY_RESULT DRV_METROLOGY_Open(DRV_METROLOGY_START_MODE mode, DRV_METROLOGY_REGS_CONTROL * pConfiguration);
 
 // *****************************************************************************
 /* Function:
@@ -374,7 +374,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
             if (app_metrologyData.state == APP_METROLOGY_STATE_RUNNING)
             {
                 // Signal Metrology thread to update measurements for an integration period 
-                OSAL_SEM_PostISR(&appMetrologySemID);
+                app_metrologyData.integrationFlag = true;
             }
         }
 
@@ -413,7 +413,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_STATE DRV_METROLOGY_GetState (void);
+    DRV_METROLOGY_LIB_STATE DRV_METROLOGY_GetLibState(void);
 
   Summary:
     Get the status of the metrology library application running on the second processor.  
@@ -445,7 +445,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
     <code>
         case APP_METROLOGY_STATE_START:
         {
-            if (DRV_METROLOGY_GetState() == DRV_METROLOGY_STATE_READY)
+            if (DRV_METROLOGY_GetLibState() == DRV_METROLOGY_LIB_STATE_READY)
             {
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
                 {
@@ -466,11 +466,11 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
   Remarks:
     None. 
 */
-DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
+DRV_METROLOGY_LIB_STATE DRV_METROLOGY_GetLibState(void);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus (void);
+    DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatusData (void);
 
   Summary:
     Get the pointer to the status registers of the metrology library application running on the second processor.  
@@ -491,8 +491,8 @@ DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
   Example:
     <code>
         // Get Pointers to metrology data regions 
-        app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
-        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
+        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
         app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
         app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     </code>
@@ -500,7 +500,7 @@ DRV_METROLOGY_STATE DRV_METROLOGY_GetState(void);
   Remarks:
     None. 
 */
-DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatus(void);
+DRV_METROLOGY_REGS_STATUS * DRV_METROLOGY_GetStatusData(void);
 
 /* Function:
     SYS_MODULE_OBJ DRV_METROLOGY_Tasks (
@@ -539,7 +539,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl (void);
+    DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlData (void);
 
   Summary:
     Get the pointer to the control registers of the metrology library application running on the second processor.  
@@ -560,8 +560,8 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
   Example:
     <code>
         // Get Pointers to metrology data regions 
-        app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
-        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
+        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
         app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
         app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     </code>
@@ -569,7 +569,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
   Remarks:
     None. 
 */
-DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl(void);
+DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData(void);
 
 // *****************************************************************************
 /* Function:
@@ -668,7 +668,7 @@ DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControl(void);
   Remarks:
     None. 
 */
-DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
+DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
 
 // *****************************************************************************
 /* Function:
@@ -697,8 +697,8 @@ DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
   Example:
     <code>
         // Get Pointers to metrology data regions 
-        app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
-        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
+        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
         app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
         app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     </code>
@@ -706,7 +706,7 @@ DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
   Remarks:
     None. 
 */
-DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
+DRV_METROLOGY_REGS_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
 
 // *****************************************************************************
 /* Function:
@@ -735,8 +735,8 @@ DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
   Example:
     <code>
         // Get Pointers to metrology data regions 
-        app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
-        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
+        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
         app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
         app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
     </code>
@@ -744,7 +744,7 @@ DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData(void);
   Remarks:
     None. 
 */
-DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData(void);
+DRV_METROLOGY_REGS_HARMONICS * DRV_METROLOGY_GetHarData(void);
 
 // *****************************************************************************
 /* Function:
@@ -779,7 +779,7 @@ DRV_METROLOGY_HARMONICS * DRV_METROLOGY_GetHarData(void);
   Remarks:
     None. 
 */
-void DRV_METROLOGY_SetControl(DRV_METROLOGY_CONTROL * pControl);
+void DRV_METROLOGY_SetControl(DRV_METROLOGY_REGS_CONTROL * pControl);
 
 // *****************************************************************************
 /* Function:

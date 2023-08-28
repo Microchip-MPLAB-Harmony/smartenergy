@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Package name="smartenergy">
     <Dependencies>
-        <Dependency name="dev_packs" version="v3.15.0"/>
-        <Dependency name="core" version="v3.12.0-E1"/>
-        <Dependency name="csp" version="v3.15.0"/>
-        <Dependency name="bsp" version="v3.15.0"/>
-        <Dependency name="gfx" version="v3.12.2"/>
-        <Dependency name="CMSIS-FreeRTOS" version="v10.3.1"/>
+        <Dependency name="bsp" version="v3.16.1"/>
+        <Dependency name="csp" version="v3.17.0"/>
+        <Dependency name="core" version="v3.13.1"/>
+        <Dependency name="dev_packs" version="v3.17.0"/>
+        <Dependency name="gfx" version="v3.13.0"/>
+        <Dependency name="CMSIS-FreeRTOS" version="v10.5.1"/>
     </Dependencies>
 </Package>
