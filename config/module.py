@@ -47,6 +47,7 @@ def loadModule():
     ## Metrology Driver
     if (("MTSH" in processor) or ("MTC" in processor)):
         drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
+        drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
         drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)   
         drvMetrologyComponent.setDisplayType("Metrology")
 

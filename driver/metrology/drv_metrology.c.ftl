@@ -281,14 +281,14 @@ void IPC1_Handler (void)
     }
 
 </#if>
+    IPC1_REGS->IPC_ICCR = status;
+    
 <#if DRV_MET_RTOS_ENABLE == true>     
     /* Signal Metrology thread to update measurements for an integration period */
     OSAL_SEM_PostISR(&drvMetrologySemID);
 <#else>
     gDrvMetObj.ipcInterruptFlag = true;
 </#if>
-
-    IPC1_REGS->IPC_ICCR = status;
 
 }
 

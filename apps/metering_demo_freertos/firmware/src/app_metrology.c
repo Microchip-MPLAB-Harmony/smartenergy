@@ -278,12 +278,12 @@ APP_METROLOGY_DATA CACHE_ALIGN app_metrologyData;
 // *****************************************************************************
 static void _APP_METROLOGY_GetNVMDataCallback(APP_DATALOG_RESULT result);
 
-static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_CONTROL * controlReg)
+static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_REGS_CONTROL * controlReg)
 {
     appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
     appMetrologyDatalogQueueData.operation = APP_DATALOG_READ;
     appMetrologyDatalogQueueData.pData = (uint8_t *)controlReg;
-    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
+    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_REGS_CONTROL);
     appMetrologyDatalogQueueData.endCallback = _APP_METROLOGY_GetNVMDataCallback;
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
@@ -291,12 +291,12 @@ static void _APP_METROLOGY_LoadControlFromMemory(DRV_METROLOGY_CONTROL * control
     xQueueSend(appDatalogQueueID, &appMetrologyDatalogQueueData, (TickType_t) 0);
 }
 
-static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_CONTROL * controlReg)
+static void _APP_METROLOGY_StoreControlInMemory(DRV_METROLOGY_REGS_CONTROL * controlReg)
 {
     appMetrologyDatalogQueueData.userId = APP_DATALOG_USER_METROLOGY;
     appMetrologyDatalogQueueData.operation = APP_DATALOG_WRITE;
     appMetrologyDatalogQueueData.pData = (uint8_t *)controlReg;
-    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_CONTROL);
+    appMetrologyDatalogQueueData.dataLen = sizeof(DRV_METROLOGY_REGS_CONTROL);
     appMetrologyDatalogQueueData.endCallback = NULL;
     appMetrologyDatalogQueueData.date.month = APP_DATALOG_INVALID_MONTH;
     appMetrologyDatalogQueueData.date.year = APP_DATALOG_INVALID_YEAR;
@@ -375,10 +375,10 @@ void APP_METROLOGY_Initialize (void)
 {
     /* Place the App state machine in its initial state. */
     app_metrologyData.state = APP_METROLOGY_STATE_WAITING_DATALOG;
-    
+
     /* Flag to indicate if configuration should be applied */
     app_metrologyData.setConfiguration = false;
-    
+
     /* Detection of the WDOG0 Reset */
     if (RSTC_ResetCauseGet() == RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
@@ -386,27 +386,27 @@ void APP_METROLOGY_Initialize (void)
     }
     else
     {
-        app_metrologyData.startMode = DRV_METROLOGY_START_HARD;        
+        app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
     }
 
     /* Get Pointers to metrology data regions */
-    app_metrologyData.pMetControl = DRV_METROLOGY_GetControl();
-    app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatus();
+    app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+    app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
     app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
     app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
-    
+
     /* Set Callback for each metrology integration process */
     DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_IntegrationCallback);
     /* Set Callback for calibration process */
     DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
     /* Set Callback for harmonic analysis process */
     DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
-    
+
     /* Clear Harmonic Analysis Data */
     app_metrologyData.harmonicAnalysisPending = false;
     app_metrologyData.pHarmonicAnalysisCallback = NULL;
     app_metrologyData.pHarmonicAnalysisResponse = NULL;
-    
+
     /* Clear Calibration Data */
     app_metrologyData.pCalibrationCallback = NULL;
 
@@ -467,14 +467,14 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_INIT:
         {
-            DRV_METROLOGY_CONTROL * pConfiguration = NULL;
-            
+            DRV_METROLOGY_REGS_CONTROL * pConfiguration = NULL;
+
             /* Check if external configuration should be applied */
             if (app_metrologyData.setConfiguration)
             {
                 pConfiguration = &app_metrologyData.configuration;
             }
-            
+
             if (DRV_METROLOGY_Open(app_metrologyData.startMode, pConfiguration) == DRV_METROLOGY_SUCCESS)
             {
                 if (app_metrologyData.startMode == DRV_METROLOGY_START_HARD)
@@ -497,7 +497,7 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_START:
         {
-            if (DRV_METROLOGY_GetState() == DRV_METROLOGY_STATE_READY)
+            if (DRV_METROLOGY_GetLibState() == DRV_METROLOGY_LIB_STATE_READY)
             {
                 /* Check if there are Metrology data in memory */
                 if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL) == false)
@@ -622,7 +622,7 @@ bool APP_METROLOGY_SetControlRegister(CONTROL_REG_ID regId, uint32_t value)
     {
         return false;
     }
-    
+
     pData = (uint32_t *)app_metrologyData.pMetControl;
     pData += regId;
     *pData = value;
@@ -711,7 +711,7 @@ bool APP_METROLOGY_GetRMS(DRV_METROLOGY_RMS_TYPE rmsId, uint32_t * rmsValue, DRV
 
 void APP_METROLOGY_SetControlByDefault(void)
 {
-    DRV_METROLOGY_CONTROL *pSrc;
+    DRV_METROLOGY_REGS_CONTROL *pSrc;
 
     pSrc = DRV_METROLOGY_GetControlByDefault();
     DRV_METROLOGY_SetControl(pSrc);
@@ -769,21 +769,21 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
     {
         return false;
     }
-    
+
     if (app_metrologyData.pHarmonicAnalysisCallback == NULL)
     {
         return false;
     }
-    
+
     if (app_metrologyData.pHarmonicAnalysisResponse == NULL)
     {
         return false;
     }
-    
+
     app_metrologyData.harmonicAnalysisPending = true;
-    
+
     DRV_METROLOGY_StartHarmonicAnalysis(harmonicNum, app_metrologyData.pHarmonicAnalysisResponse);
-    
+
     return true;
 }
 
@@ -795,10 +795,10 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_C
 }
 
 void APP_METROLOGY_Restart (void)
-{   
+{
     app_metrologyData.state = APP_METROLOGY_STATE_INIT;
     app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
-    
+
     sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
     
     OSAL_SEM_Post(&appMetrologySemID);
@@ -806,13 +806,14 @@ void APP_METROLOGY_Restart (void)
 
 void APP_METROLOGY_SetLowPowerMode (void)
 {
+    DRV_METROLOGY_Close();
     SUPC_BackupModeEnter();
 }
 
 bool APP_METROLOGY_CheckPhaseEnabled (APP_METROLOGY_PHASE_ID phase)
 {
     uint32_t regValue = app_metrologyData.pMetControl->FEATURE_CTRL0;
-    
+
     if (regValue & phase)
     {
         return true;

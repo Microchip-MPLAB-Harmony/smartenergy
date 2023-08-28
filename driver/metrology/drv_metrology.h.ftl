@@ -407,8 +407,94 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK
 DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback);
 </#if>
 
+// *****************************************************************************
+/* Function:
+    DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister (
+        DRV_METROLOGY_CALIBRATION_CALLBACK callback 
+    );
+
+  Summary:
+    Registers a function with the metrology driver to be called back when the calibration process has completed.
+
+  Description:
+    This function allows a client to register a handling function with the driver to call back when a calibration process has completed.
+    This function must be always called after DRV_METROLOGY_Initialize routine is called, since the initialization routine sets a NULL pointer to indicate no callback.
+
+  Precondition:
+    DRV_METROLOGY_Initialize routine must have been called before.
+
+  Parameters:
+    callback - Pointer to the function to be called.
+
+  Returns:
+    If successful, returns DRV_METROLOGY_SUCCESS. Otherwise, it returns DRV_METROLOGY_ERROR. 
+
+  Example:
+    <code>
+        static void _APP_METROLOGY_CalibrationCallback(bool result)
+        {
+            if (app_metrologyData.pCalibrationCallback)
+            {
+                app_metrologyData.pCalibrationCallback(result);
+            }
+
+            // Signal Metrology to exit calibration status 
+            OSAL_SEM_Post(&appMetrologyCalibrationSemID);
+        }
+
+        (...)
+
+        // Set Callback for calibration process 
+        DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
+    </code>
+
+  Remarks:
+    None. 
+*/
 DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CALIBRATION_CALLBACK callback);
 
+// *****************************************************************************
+/* Function:
+    DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister (
+        DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback 
+    );
+
+  Summary:
+    Registers a function with the metrology driver to be called back when the harmonic analysis has completed.
+
+  Description:
+    This function allows a client to register a handling function with the driver to call back when the harmonic analysis has completed.
+    This function must be always called after DRV_METROLOGY_Initialize routine is called, since the initialization routine sets a NULL pointer to indicate no callback.
+
+  Precondition:
+    DRV_METROLOGY_Initialize routine must have been called before.
+
+  Parameters:
+    callback - Pointer to the function to be called.
+
+  Returns:
+    If successful, returns DRV_METROLOGY_SUCCESS. Otherwise, it returns DRV_METROLOGY_ERROR. 
+
+  Example:
+    <code>
+        static void _APP_METROLOGY_HarmonicAnalysisCallback(uint8_t harmonicNum)
+        {
+            if (app_metrologyData.pHarmonicAnalysisCallback)
+            {
+                app_metrologyData.harmonicAnalysisPending = false;
+                app_metrologyData.pHarmonicAnalysisCallback(harmonicNum);
+            }
+        }
+
+        (...)
+
+        // Set Callback for harmonic analysis process
+        DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
+    </code>
+
+  Remarks:
+    None. 
+*/
 DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback);
 
 // *****************************************************************************

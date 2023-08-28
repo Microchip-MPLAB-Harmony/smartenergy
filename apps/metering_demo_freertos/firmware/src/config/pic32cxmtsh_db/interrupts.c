@@ -48,11 +48,11 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-
 #include "configuration.h"
 #include "device_vectors.h"
 #include "interrupts.h"
 #include "definitions.h"
+
 
 
 // *****************************************************************************
@@ -68,7 +68,7 @@ extern const H3DeviceVectors exception_table;
 extern void Dummy_Handler(void);
 
 /* Brief default interrupt handler for unused IRQs.*/
-void __attribute__((optimize("-O1"),section(".text.Dummy_Handler"),long_call, noreturn))Dummy_Handler(void)
+void __attribute__((optimize("-O1"), long_call, noreturn, used))Dummy_Handler(void)
 {
 #if defined(__DEBUG) || defined(__DEBUG_D) && defined(__XC32)
     __builtin_software_breakpoint();
@@ -79,11 +79,8 @@ void __attribute__((optimize("-O1"),section(".text.Dummy_Handler"),long_call, no
 }
 
 /* MISRAC 2012 deviation block start */
-/* MISRA C-2012 Rule 8.6 deviated 87 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
+/* MISRA C-2012 Rule 8.6 deviated 84 times.  Deviation record ID -  H3_MISRAC_2012_R_8_6_DR_1 */
 /* Device vectors list dummy definition*/
-extern void vPortSVCHandler            ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void xPortPendSVHandler         ( void ) __attribute__((weak, alias("Dummy_Handler")));
-extern void SUPC_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void RSTC_Handler               ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void RTT_Handler                ( void ) __attribute__((weak, alias("Dummy_Handler")));
 extern void DWDT0_Handler              ( void ) __attribute__((weak, alias("Dummy_Handler")));
@@ -176,7 +173,7 @@ extern void MATRIX3_Handler            ( void ) __attribute__((weak, alias("Dumm
 
 
 
-__attribute__ ((section(".vectors")))
+__attribute__ ((section(".vectors"), used))
 const H3DeviceVectors exception_table=
 {
     /* Configure Initial Stack Pointer, using linker-generated symbols */
@@ -192,7 +189,7 @@ const H3DeviceVectors exception_table=
     .pfnDebugMonitor_Handler       = DebugMonitor_Handler,
     .pfnPendSV_Handler             = xPortPendSVHandler,
     .pfnSysTick_Handler            = xPortSysTickHandler,
-    .pfnSUPC_Handler               = SUPC_Handler,
+    .pfnSUPC_Handler               = SUPC_InterruptHandler,
     .pfnRSTC_Handler               = RSTC_Handler,
     .pfnRTC_Handler                = RTC_InterruptHandler,
     .pfnRTT_Handler                = RTT_Handler,

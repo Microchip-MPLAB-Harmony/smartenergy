@@ -4,7 +4,7 @@
 
 
 project: metering_demo_freertos
-creation_date: 2023-02-06T13:09:35.999+01:00[Europe/Berlin]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2023-08-28T17:21:16.953+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mhc_mode: Standalone            # [IDE|Standalone|Headless]
 mhc_version: v3.8.5
@@ -13,11 +13,11 @@ plugin_version: NA        # if MPLAB X plugin only
 compiler: xc32
 
 modules:
-    - {name: "core", version: "v3.12.0-E1"}
-    - {name: "csp", version: "v3.15.0"}
-    - {name: "harmony_gfx", version: "v3.12.2"}
-    - {name: "dev_packs", version: "v3.15.0"}
-    - {name: "bsp", version: "v3.15.0"}
-    - {name: "smartenergy", version: "v1.1.0"}
-    - {name: "CMSIS-FreeRTOS", version: "v10.3.1"}
+    - {name: "core", version: "v3.13.1"}
+    - {name: "csp", version: "v3.17.0"}
+    - {name: "dev_packs", version: "v3.17.0"}
+    - {name: "gfx", version: "v3.12.2"}
+    - {name: "bsp", version: "v3.16.1"}
+    - {name: "smartenergy", version: "unknown"}
+    - {name: "CMSIS-FreeRTOS", version: "v10.5.1"}
 

@@ -1157,7 +1157,7 @@ typedef struct
     __O  uint32_t I_C_m_I;            /**< Offset: 0x2C (R/  32) The imaginary part of DFT result for current, phase-C, m-th harmonics (sQ25.6) */
     __O  uint32_t V_C_m_I;            /**< Offset: 0x30 (R/  32) The imaginary part of DFT result for voltage, phase-C, m-th harmonics (sQ25.6) */
     __O  uint32_t I_N_m_I;            /**< Offset: 0x34 (R/  32) The imaginary part of DFT result for voltage, phase-N, m-th harmonics (sQ25.6) */
-} DRV_METROLOGY_HARMONICS;
+} DRV_METROLOGY_REGS_HARMONICS;
 
 /** \brief Metrology Accumulated Output register API structure */
 typedef struct
@@ -1210,7 +1210,7 @@ typedef struct
     __O  int64_t  ACC_T1;            /**< Offset: 0x198 (R/  32) Total accumulated quantities specified by PC1_TYPE (sQ33.30) */
     __O  int64_t  ACC_T2;            /**< Offset: 0x1A0 (R/  32) Total accumulated quantities specified by PC2_TYPE (sQ33.30) */
     __O  uint64_t Reserved7[2];
-} DRV_METROLOGY_ACCUMULATORS;
+} DRV_METROLOGY_REGS_ACCUMULATORS;
 
 /** \brief Metrology Status register API structure */
 typedef struct
@@ -1243,7 +1243,7 @@ typedef struct
     __O  uint32_t ZC_N_VC;                 /**< Offset: 0x80 (R/  32) Zero-crossing sample number of phase-C voltage (uQ20.12) */
     __O  uint32_t ATSENSE_CAL_41_44;       /**< Offset: 0x84 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x41 ? 0x44 */
     __O  uint32_t ATSENSE_CAL_45_48;       /**< Offset: 0x88 (R/  32) ATSENSE Calibration Trim Data, Registers: 0x45 ? 0x48 */
-} DRV_METROLOGY_STATUS;
+} DRV_METROLOGY_REGS_STATUS;
 
 /** \brief Metrology Control register API structure */
 typedef struct
@@ -1309,15 +1309,15 @@ typedef struct
    __IO  uint32_t POWER_OFFSET_Q_A;        /**< Offset: 0xE8 (R/W  32) Phase-A reactive power offset (sQ9.40) */
    __IO  uint32_t POWER_OFFSET_Q_B;        /**< Offset: 0xEC (R/W  32) Phase-B reactive power offset (sQ9.40) */
    __IO  uint32_t POWER_OFFSET_Q_C;        /**< Offset: 0xF0 (R/W  32) Phase-C reactive power offset (sQ9.40) */
-} DRV_METROLOGY_CONTROL;
+} DRV_METROLOGY_REGS_CONTROL;
 
 /** \brief METROLOGY register API structure */
 typedef struct
 {
-    DRV_METROLOGY_CONTROL       MET_CONTROL;         /**< Offset: 0x0000 (R/W  32) Metrology Control Registers */
-    DRV_METROLOGY_STATUS        MET_STATUS;          /**< Offset: 0x00F4 (R/   32) Metrology Status Registers */
-    DRV_METROLOGY_ACCUMULATORS  MET_ACCUMULATORS;    /**< Offset: 0x0180 (R/   32) Metrology Accumulated Output Registers */
-    DRV_METROLOGY_HARMONICS     MET_HARMONICS;       /**< Offset: 0x0338 (R/   32) Metrology Harmonic Analysis Output Registers */
+    DRV_METROLOGY_REGS_CONTROL       MET_CONTROL;         /**< Offset: 0x0000 (R/W  32) Metrology Control Registers */
+    DRV_METROLOGY_REGS_STATUS        MET_STATUS;          /**< Offset: 0x00F4 (R/   32) Metrology Status Registers */
+    DRV_METROLOGY_REGS_ACCUMULATORS  MET_ACCUMULATORS;    /**< Offset: 0x0180 (R/   32) Metrology Accumulated Output Registers */
+    DRV_METROLOGY_REGS_HARMONICS     MET_HARMONICS;       /**< Offset: 0x0338 (R/   32) Metrology Harmonic Analysis Output Registers */
 } MET_REGISTERS;
 
 

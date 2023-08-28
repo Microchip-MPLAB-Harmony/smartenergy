@@ -316,12 +316,12 @@ typedef struct
     APP_METROLOGY_STATE state;
     
     DRV_METROLOGY_START_MODE startMode;
-    DRV_METROLOGY_CONTROL configuration;
+    DRV_METROLOGY_REGS_CONTROL configuration;
 
-    DRV_METROLOGY_CONTROL * pMetControl;
-    DRV_METROLOGY_STATUS * pMetStatus;
-    DRV_METROLOGY_ACCUMULATORS * pMetAccData;
-    DRV_METROLOGY_HARMONICS * pMetHarData;
+    DRV_METROLOGY_REGS_CONTROL * pMetControl;
+    DRV_METROLOGY_REGS_STATUS * pMetStatus;
+    DRV_METROLOGY_REGS_ACCUMULATORS * pMetAccData;
+    DRV_METROLOGY_REGS_HARMONICS * pMetHarData;
     
     bool harmonicAnalysisPending;
     DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse;

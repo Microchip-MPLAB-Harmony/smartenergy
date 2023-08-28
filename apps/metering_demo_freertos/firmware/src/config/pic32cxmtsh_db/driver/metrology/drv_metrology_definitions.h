@@ -174,7 +174,7 @@ typedef struct {
     - Rest of the values are internally used to perform the calibration process.
 */
 typedef struct {
-    DRV_METROLOGY_CONTROL metControlConf;
+    DRV_METROLOGY_REGS_CONTROL metControlConf;
     DRV_METROLOGY_CALIBRATION_REFS references;
     uint32_t featureCtrl0Backup;
     double freq;                     
@@ -352,6 +352,28 @@ typedef struct {
     DRV_METROLOGY_GAIN_TYPE gain;
 } DRV_METROLOGY_CONFIGURATION;
 
+/* METROLOGY Driver Status
+
+  Summary:
+    Defines the status of the DRV_METROLOGY driver.
+
+  Description:
+    This enumeration defines the status of the DRV_METROLOGY Driver.
+
+  Remarks:
+    None.
+*/
+
+typedef enum
+{
+    DRV_METROLOGY_STATUS_UNINITIALIZED = SYS_STATUS_UNINITIALIZED,
+    DRV_METROLOGY_STATUS_BUSY = SYS_STATUS_BUSY,
+    DRV_METROLOGY_STATUS_READY = SYS_STATUS_READY,
+    DRV_METROLOGY_STATUS_INITIALIZED = SYS_STATUS_READY_EXTENDED + 1,
+    DRV_METROLOGY_STATUS_RESET,
+    DRV_METROLOGY_STATUS_ERROR = SYS_STATUS_ERROR,
+} DRV_METROLOGY_STATUS;
+
 /* Metrology Library State
 
   Summary:
@@ -364,16 +386,16 @@ typedef struct {
     None.
 */
 typedef enum {
-    DRV_METROLOGY_STATE_HALT = STATUS_STATUS_HALT,
-    DRV_METROLOGY_STATE_RESET = STATUS_STATUS_RESET,
-    DRV_METROLOGY_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
-    DRV_METROLOGY_STATE_DSP_READY = STATUS_STATUS_DSP_READY,
-    DRV_METROLOGY_STATE_INIT_ATSENSE = STATUS_STATUS_INIT_ATSENSE,
-    DRV_METROLOGY_STATE_ATSENSE_READY = STATUS_STATUS_ATSENSE_READY,
-    DRV_METROLOGY_STATE_READY = STATUS_STATUS_READY,
-    DRV_METROLOGY_STATE_SETTLING = STATUS_STATUS_DSP_SETTLING,
-    DRV_METROLOGY_STATE_RUNNING = STATUS_STATUS_DSP_RUNNING
-} DRV_METROLOGY_STATE;
+    DRV_METROLOGY_LIB_STATE_HALT = STATUS_STATUS_HALT,
+    DRV_METROLOGY_LIB_STATE_RESET = STATUS_STATUS_RESET,
+    DRV_METROLOGY_LIB_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
+    DRV_METROLOGY_LIB_STATE_DSP_READY = STATUS_STATUS_DSP_READY,
+    DRV_METROLOGY_LIB_STATE_INIT_ATSENSE = STATUS_STATUS_INIT_ATSENSE,
+    DRV_METROLOGY_LIB_STATE_ATSENSE_READY = STATUS_STATUS_ATSENSE_READY,
+    DRV_METROLOGY_LIB_STATE_READY = STATUS_STATUS_READY,
+    DRV_METROLOGY_LIB_STATE_SETTLING = STATUS_STATUS_DSP_SETTLING,
+    DRV_METROLOGY_LIB_STATE_RUNNING = STATUS_STATUS_DSP_RUNNING
+} DRV_METROLOGY_LIB_STATE;
 
 /* Metrology Driver Initialization Data
 
@@ -413,10 +435,13 @@ typedef struct
     bool                                          inUse;
 
     /* The status of the driver */
-    SYS_STATUS                                    status;
+    DRV_METROLOGY_STATUS                          status;
 
     /* State of the metrology driver  */
-    volatile DRV_METROLOGY_STATE                  state;
+    volatile DRV_METROLOGY_LIB_STATE              libState;
+
+    /* Flag to indicate that a new integration period has been completed */
+    volatile bool                                 integrationFlag;
 
     /* Size (in Bytes) of the PLC binary file */
     uint32_t                                      binSize;
@@ -428,10 +453,10 @@ typedef struct
     MET_REGISTERS *                               metRegisters;
 
     /* Metrology Accumulated Output Data */
-    DRV_METROLOGY_ACCUMULATORS                    metAccData;
+    DRV_METROLOGY_REGS_ACCUMULATORS               metAccData;
 
     /* Metrology Harmonic Analysis Output Data */
-    DRV_METROLOGY_HARMONICS                       metHarData;
+    DRV_METROLOGY_REGS_HARMONICS                  metHarData;
 
     /* Metrology Analog Front End Data */
     DRV_METROLOGY_AFE_DATA                        metAFEData;
