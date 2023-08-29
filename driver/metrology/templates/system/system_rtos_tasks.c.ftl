@@ -1,6 +1,6 @@
 <#--
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -23,17 +23,17 @@
  *******************************************************************************/
 -->
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS == "ThreadX">
-    <#lt>TX_THREAD      _DRV_METROLOGY_Task_TCB;
-    <#lt>uint8_t*       _DRV_METROLOGY_Task_Stk_Ptr;
+    <#lt>TX_THREAD      lDRV_METROLOGY_Task_TCB;
+    <#lt>uint8_t*       lDRV_METROLOGY_Task_Stk_Ptr;
 
 <#elseif (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS == "MicriumOSIII">
-    <#lt>OS_TCB  _DRV_METROLOGY_Tasks_TCB;
-    <#lt>CPU_STK _DRV_METROLOGY_TasksStk[DRV_METROLOGY_RTOS_STACK_SIZE];
+    <#lt>OS_TCB  lDRV_METROLOGY_Tasks_TCB;
+    <#lt>CPU_STK lDRV_METROLOGY_TasksStk[DRV_METROLOGY_RTOS_STACK_SIZE];
 
 </#if>
-    <#lt>void _DRV_METROLOGY_Tasks(  void *pvParameters  )
+    <#lt>void lDRV_METROLOGY_Tasks(  void *pvParameters  )
     <#lt>{
-    <#lt>    while(1)
+    <#lt>    while(1U)
     <#lt>    {
     <#lt>        DRV_METROLOGY_Tasks(sysObj.drvMet);
     <#lt>    }

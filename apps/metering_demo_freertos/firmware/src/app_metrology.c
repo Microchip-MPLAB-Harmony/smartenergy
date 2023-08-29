@@ -332,7 +332,7 @@ static void _APP_METROLOGY_CalibrationCallback(bool result)
     {
         app_metrologyData.pCalibrationCallback(result);
     }
-    
+
     /* Signal Metrology to exit calibration status */
     OSAL_SEM_Post(&appMetrologyCalibrationSemID);
 }
@@ -497,7 +497,7 @@ void APP_METROLOGY_Tasks (void)
 
         case APP_METROLOGY_STATE_START:
         {
-            if (DRV_METROLOGY_GetLibState() == DRV_METROLOGY_LIB_STATE_READY)
+            if (DRV_METROLOGY_GetStatus() == DRV_METROLOGY_STATUS_READY)
             {
                 /* Check if there are Metrology data in memory */
                 if (APP_DATALOG_FileExists(APP_DATALOG_USER_METROLOGY, NULL) == false)
@@ -796,11 +796,17 @@ void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_C
 
 void APP_METROLOGY_Restart (void)
 {
-    app_metrologyData.state = APP_METROLOGY_STATE_INIT;
-    app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
+    DRV_METROLOGY_RESULT result;
 
-    sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
-    
+    result = DRV_METROLOGY_Close();
+    if (result == DRV_METROLOGY_SUCCESS)
+    {
+        app_metrologyData.state = APP_METROLOGY_STATE_INIT;
+        app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
+        
+        sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
+    }
+	
     OSAL_SEM_Post(&appMetrologySemID);
 }
 

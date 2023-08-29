@@ -907,13 +907,23 @@ def instantiateComponent(metComponentCommon):
     drvMetHeaderFileDefs.setOverwrite(True)
     drvMetHeaderFileDefs.setMarkup(True)
 
+    drvMetHeaderFileLocal = metComponentCommon.createFileSymbol("DRV_MET_HEADER_LOCAL", None)
+    drvMetHeaderFileLocal.setSourcePath("driver/metrology/drv_metrology_local.h.ftl")
+    drvMetHeaderFileLocal.setOutputName("drv_metrology_local.h")
+    drvMetHeaderFileLocal.setDestPath("driver/metrology")
+    drvMetHeaderFileLocal.setProjectPath("config/" + configName + "/driver/metrology/")
+    drvMetHeaderFileLocal.setType("HEADER")
+    drvMetHeaderFileLocal.setOverwrite(True)
+    drvMetHeaderFileLocal.setMarkup(True)
+
     drvMetHeaderRegsFile = metComponentCommon.createFileSymbol("DRV_MET_HEADER_REGS", None)
-    drvMetHeaderRegsFile.setSourcePath("driver/metrology/drv_metrology_regs.h")
+    drvMetHeaderRegsFile.setSourcePath("driver/metrology/drv_metrology_regs.h.ftl")
     drvMetHeaderRegsFile.setOutputName("drv_metrology_regs.h")
     drvMetHeaderRegsFile.setDestPath("driver/metrology")
     drvMetHeaderRegsFile.setProjectPath("config/" + configName + "/driver/metrology/")
     drvMetHeaderRegsFile.setType("HEADER")
     drvMetHeaderRegsFile.setOverwrite(True)
+    drvMetHeaderRegsFile.setMarkup(True)
     
     #### ASM Path Settings #####################################################
 

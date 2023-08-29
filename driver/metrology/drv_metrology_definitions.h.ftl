@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_METROLOGY_DEFINITIONS_H
-#define _DRV_METROLOGY_DEFINITIONS_H
+#ifndef DRV_METROLOGY_DEFINITIONS_H
+#define DRV_METROLOGY_DEFINITIONS_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -64,12 +64,19 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: External Data
 // *****************************************************************************
 // *****************************************************************************
-typedef void (* DRV_METROLOGY_CALLBACK)(void);
-typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
-typedef void (* DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK) (uint8_t harmonicNum);          
+
+/* Metrology library Binary file addressing */
+extern uint8_t met_bin_start;
+extern uint8_t met_bin_end;
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Macro Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
@@ -92,18 +99,18 @@ typedef void (* DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK) (uint8_t harmonicNum);
 #define DRV_METROLOGY_IPC_PULSE2_IRQ_MSK          IPC_ISR_IRQ26_Msk
 </#if>
 
-#define  FREQ_Q         12
-#define  GAIN_P_K_T_Q   24
-#define  GAIN_VI_Q      10
-#define  RMS_DIV_G      1024    /* (1<<GAIN_VI_Q) */
-#define  CAL_VI_Q       29
-#define  CAL_PH_Q       31
-#define  RMS_Q          40
-#define  RMS_DIV_Q      0x10000000000  /* (1<<RMS_Q) */
-#define  RMS_Inx_Q      (20)
-#define  RMS_DIV_Inx_Q  0x100000 /* (1<< RMS_Inx_Q) */
-#define  RMS_PQ_SYMB    0x8000000000000000       /* p/q symbol bit */
-#define  RMS_HARMONIC   0x80000000
+#define  FREQ_Q         12U
+#define  GAIN_P_K_T_Q   24U
+#define  GAIN_VI_Q      10U
+#define  RMS_DIV_G      1024U    /* (1<<GAIN_VI_Q) */
+#define  CAL_VI_Q       29U
+#define  CAL_PH_Q       31U
+#define  RMS_Q          40U
+#define  RMS_DIV_Q      0x10000000000ULL  /* (1<<RMS_Q) */
+#define  RMS_Inx_Q      20U
+#define  RMS_DIV_Inx_Q  0x100000UL /* (1<< RMS_Inx_Q) */
+#define  RMS_PQ_SYMB    0x8000000000000000ULL       /* p/q symbol bit */
+#define  RMS_HARMONIC   0x80000000UL
 #define  CONST_Pi       3.1415926
 
 /* Metrology Driver Sensor Type
@@ -263,22 +270,22 @@ typedef struct {
     - swellX. Voltage Swell Detected Flag for Channel X. "1" means that voltage Swell is detected.
 */
 typedef struct {
-    uint32_t paDir : 1;
-    uint32_t pbDir : 1;
-    uint32_t pcDir : 1;
-    uint32_t ptDir : 1;
-    uint32_t qaDir : 1;
-    uint32_t qbDir : 1;
-    uint32_t qcDir : 1;
-    uint32_t qtDir : 1;
-    uint32_t sagA : 1;
-    uint32_t sagB : 1;
-    uint32_t sagC : 1;
-    uint32_t reserved1 : 1;
-    uint32_t swellA : 1;
-    uint32_t swellB : 1;
-    uint32_t swellC : 1;
-    uint32_t reserved2 : 17;
+    unsigned int paDir : 1;
+    unsigned int pbDir : 1;
+    unsigned int pcDir : 1;
+    unsigned int ptDir : 1;
+    unsigned int qaDir : 1;
+    unsigned int qbDir : 1;
+    unsigned int qcDir : 1;
+    unsigned int qtDir : 1;
+    unsigned int sagA : 1;
+    unsigned int sagB : 1;
+    unsigned int sagC : 1;
+    unsigned int reserved1 : 1;
+    unsigned int swellA : 1;
+    unsigned int swellB : 1;
+    unsigned int swellC : 1;
+    unsigned int reserved2 : 17;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver RMS type
@@ -387,8 +394,10 @@ typedef enum
     DRV_METROLOGY_STATUS_UNINITIALIZED = SYS_STATUS_UNINITIALIZED,
     DRV_METROLOGY_STATUS_BUSY = SYS_STATUS_BUSY,
     DRV_METROLOGY_STATUS_READY = SYS_STATUS_READY,
-    DRV_METROLOGY_STATUS_INITIALIZED = SYS_STATUS_READY_EXTENDED + 1,
-    DRV_METROLOGY_STATUS_RESET,
+    DRV_METROLOGY_STATUS_HALT = SYS_STATUS_READY_EXTENDED + 1U,
+    DRV_METROLOGY_STATUS_WAITING_IPC = SYS_STATUS_READY_EXTENDED + 2U,
+    DRV_METROLOGY_STATUS_INIT_DSP = SYS_STATUS_READY_EXTENDED + 3U,
+    DRV_METROLOGY_STATUS_RUNNING = SYS_STATUS_READY_EXTENDED + 4U,
     DRV_METROLOGY_STATUS_ERROR = SYS_STATUS_ERROR,
 } DRV_METROLOGY_STATUS;
 
@@ -434,120 +443,11 @@ typedef struct {
     uint32_t binEndAddress;
 } DRV_METROLOGY_INIT;
 
-// *****************************************************************************
-/* Metrology Driver Object
-
-  Summary:
-    Object used to keep any data required for an instance of the metrology driver.
-
-  Description:
-    None.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* Flag to indicate this object is in use */
-    bool                                          inUse;
-
-    /* The status of the driver */
-    DRV_METROLOGY_STATUS                          status;
-
-    /* State of the metrology driver  */
-    volatile DRV_METROLOGY_LIB_STATE              libState;
-
-<#if DRV_MET_RTOS_ENABLE == false> 
-    /* Flag to indicate that a new integration period has been completed */
-    volatile bool                                 ipcInterruptFlag;
-
-</#if>
-    /* Flag to indicate that a new integration period has been completed */
-    volatile bool                                 integrationFlag;
-
-    /* Size (in Bytes) of the PLC binary file */
-    uint32_t                                      binSize;
-
-    /* Address where PLC binary file is located */
-    uint32_t                                      binStartAddress;
-
-    /* Metrology Control interface */
-    MET_REGISTERS *                               metRegisters;
-
-    /* Metrology Accumulated Output Data */
-    DRV_METROLOGY_REGS_ACCUMULATORS               metAccData;
-
-    /* Metrology Harmonic Analysis Output Data */
-    DRV_METROLOGY_REGS_HARMONICS                  metHarData;
-
-    /* Metrology Analog Front End Data */
-    DRV_METROLOGY_AFE_DATA                        metAFEData;
-
-    /* Metrology Calibration interface */
-    DRV_METROLOGY_CALIBRATION                     calibrationData;
-    
-    /* Harmonic Analysis Data */
-    DRV_METROLOGY_HARMONIC_ANALYSIS               harmonicAnalysisData;
-
-    /* IPC metrology lib integration Callback */
-    DRV_METROLOGY_CALLBACK                        integrationCallback;
-
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
-    /* Flag to indicate every full line cycle */
-    volatile bool                                 fullCycleIntFlag;
-    /* IPC metrology lib Full Cycle Callback */
-    DRV_METROLOGY_CALLBACK                        fullCycleCallback;
-
-</#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
-    /* Flag to indicate every half line cycle */
-    volatile bool                                 halfCycleIntFlag;
-    /* IPC metrology lib Half Cycle Callback */
-    DRV_METROLOGY_CALLBACK                        halfCycleCallback;
-
-</#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true> 
-    /* Flag to indicate zero-crossings using the unfiltered “raw” 16 KHz data stream  */
-    volatile bool                                 zeroCrossIntFlag; 
-    /* IPC metrology lib Zero Cross Callback */
-    DRV_METROLOGY_CALLBACK                        zeroCrossCallback;
-
-</#if>
-<#if DRV_MET_PULSE_0 == true>  
-    /* Flag to indicate that a pulse 0 has computationally committed to be generated */
-    volatile bool                                 pulse0IntFlag;
-    /* IPC metrology lib Pulse 0 Callback */
-    DRV_METROLOGY_CALLBACK                        pulse0Callback;
-
-</#if>
-<#if DRV_MET_PULSE_1 == true>  
-    /* Flag to indicate that a pulse 10 has computationally committed to be generated */
-    volatile bool                                 pulse1IntFlag;
-    /* IPC metrology lib Pulse 1 Callback */
-    DRV_METROLOGY_CALLBACK                        pulse1Callback;
-
-</#if>
-<#if DRV_MET_PULSE_2 == true>  
-    /* Flag to indicate that a pulse 2 has computationally committed to be generated */
-    volatile bool                                 pulse2IntFlag;
-    /* IPC metrology lib Pulse 2 Callback */
-    DRV_METROLOGY_CALLBACK                        pulse2Callback;
-
-</#if>
-    /* Calibration Process Callback */
-    DRV_METROLOGY_CALIBRATION_CALLBACK            calibrationCallback;
-
-    /* Harmonic Analysis Callback */
-    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK      harmonicAnalysisCallback;
-
-} DRV_METROLOGY_OBJ;
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // #ifndef _DRV_METROLOGY_DEFINITIONS_H
+#endif // #ifndef DRV_METROLOGY_DEFINITIONS_H
 /*******************************************************************************
  End of File
 */

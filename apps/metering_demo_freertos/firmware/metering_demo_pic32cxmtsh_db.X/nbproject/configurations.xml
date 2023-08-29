@@ -22,6 +22,7 @@
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_regs.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_definitions.h</itemPath>
               <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology.h</itemPath>
+              <itemPath>../src/config/pic32cxmtsh_db/driver/metrology/drv_metrology_local.h</itemPath>
             </logicalFolder>
             <logicalFolder name="sst26" displayName="sst26" projectFiles="true">
               <itemPath>../src/config/pic32cxmtsh_db/driver/sst26/src/drv_sst26_local.h</itemPath>

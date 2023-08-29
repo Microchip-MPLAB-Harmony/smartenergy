@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_METROLOGY_DEFINITIONS_H
-#define _DRV_METROLOGY_DEFINITIONS_H
+#ifndef DRV_METROLOGY_DEFINITIONS_H
+#define DRV_METROLOGY_DEFINITIONS_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -369,8 +369,10 @@ typedef enum
     DRV_METROLOGY_STATUS_UNINITIALIZED = SYS_STATUS_UNINITIALIZED,
     DRV_METROLOGY_STATUS_BUSY = SYS_STATUS_BUSY,
     DRV_METROLOGY_STATUS_READY = SYS_STATUS_READY,
-    DRV_METROLOGY_STATUS_INITIALIZED = SYS_STATUS_READY_EXTENDED + 1,
-    DRV_METROLOGY_STATUS_RESET,
+    DRV_METROLOGY_STATUS_HALT = SYS_STATUS_READY_EXTENDED + 1U,
+    DRV_METROLOGY_STATUS_WAITING_IPC = SYS_STATUS_READY_EXTENDED + 2U,
+    DRV_METROLOGY_STATUS_INIT_DSP = SYS_STATUS_READY_EXTENDED + 3U,
+    DRV_METROLOGY_STATUS_RUNNING = SYS_STATUS_READY_EXTENDED + 4U,
     DRV_METROLOGY_STATUS_ERROR = SYS_STATUS_ERROR,
 } DRV_METROLOGY_STATUS;
 
@@ -416,73 +418,11 @@ typedef struct {
     uint32_t binEndAddress;
 } DRV_METROLOGY_INIT;
 
-// *****************************************************************************
-/* Metrology Driver Object
-
-  Summary:
-    Object used to keep any data required for an instance of the metrology driver.
-
-  Description:
-    None.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* Flag to indicate this object is in use */
-    bool                                          inUse;
-
-    /* The status of the driver */
-    DRV_METROLOGY_STATUS                          status;
-
-    /* State of the metrology driver  */
-    volatile DRV_METROLOGY_LIB_STATE              libState;
-
-    /* Flag to indicate that a new integration period has been completed */
-    volatile bool                                 integrationFlag;
-
-    /* Size (in Bytes) of the PLC binary file */
-    uint32_t                                      binSize;
-
-    /* Address where PLC binary file is located */
-    uint32_t                                      binStartAddress;
-
-    /* Metrology Control interface */
-    MET_REGISTERS *                               metRegisters;
-
-    /* Metrology Accumulated Output Data */
-    DRV_METROLOGY_REGS_ACCUMULATORS               metAccData;
-
-    /* Metrology Harmonic Analysis Output Data */
-    DRV_METROLOGY_REGS_HARMONICS                  metHarData;
-
-    /* Metrology Analog Front End Data */
-    DRV_METROLOGY_AFE_DATA                        metAFEData;
-
-    /* Metrology Calibration interface */
-    DRV_METROLOGY_CALIBRATION                     calibrationData;
-    
-    /* Harmonic Analysis Data */
-    DRV_METROLOGY_HARMONIC_ANALYSIS               harmonicAnalysisData;
-
-    /* IPC metrology lib integration Callback */
-    DRV_METROLOGY_CALLBACK                        integrationCallback;
-
-    /* Calibration Process Callback */
-    DRV_METROLOGY_CALIBRATION_CALLBACK            calibrationCallback;
-
-    /* Harmonic Analysis Callback */
-    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK      harmonicAnalysisCallback;
-
-} DRV_METROLOGY_OBJ;
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // #ifndef _DRV_METROLOGY_DEFINITIONS_H
+#endif // #ifndef DRV_METROLOGY_DEFINITIONS_H
 /*******************************************************************************
  End of File
 */

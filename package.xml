@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Package name="smartenergy">
+<Package name="smartenergy" version: "v1.2.0">
     <Dependencies>
         <Dependency name="bsp" version="v3.16.1"/>
         <Dependency name="csp" version="v3.17.0"/>
