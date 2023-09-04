@@ -100,9 +100,9 @@ void _SLCDC_Tasks(  void *pvParameters  )
     }
 }
 
-void lDRV_METROLOGY_Tasks(  void *pvParameters  )
+static void lDRV_METROLOGY_Tasks(  void *pvParameters  )
 {
-    while(1U)
+    while(true)
     {
         DRV_METROLOGY_Tasks(sysObj.drvMet);
     }
@@ -229,7 +229,7 @@ void SYS_Tasks ( void )
     );
 
 
-    xTaskCreate(lDRV_METROLOGY_Tasks,
+    (void) xTaskCreate(lDRV_METROLOGY_Tasks,
         "DRV_METROLOGY_TASKS",
         DRV_METROLOGY_RTOS_STACK_SIZE,
         (void*)NULL,

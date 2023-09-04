@@ -64,28 +64,35 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: External Data
 // *****************************************************************************
 // *****************************************************************************
-typedef void (* DRV_METROLOGY_CALLBACK)(void);
-typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
-typedef void (* DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK) (uint8_t harmonicNum);          
+
+/* Metrology library Binary file addressing */
+extern uint8_t met_bin_start;
+extern uint8_t met_bin_end;
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Macro Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
 
-#define  FREQ_Q         12
-#define  GAIN_P_K_T_Q   24
-#define  GAIN_VI_Q      10
-#define  RMS_DIV_G      1024    /* (1<<GAIN_VI_Q) */
-#define  CAL_VI_Q       29
-#define  CAL_PH_Q       31
-#define  RMS_Q          40
-#define  RMS_DIV_Q      0x10000000000  /* (1<<RMS_Q) */
-#define  RMS_Inx_Q      (20)
-#define  RMS_DIV_Inx_Q  0x100000 /* (1<< RMS_Inx_Q) */
-#define  RMS_PQ_SYMB    0x8000000000000000       /* p/q symbol bit */
-#define  RMS_HARMONIC   0x80000000
+#define  FREQ_Q         12U
+#define  GAIN_P_K_T_Q   24U
+#define  GAIN_VI_Q      10U
+#define  RMS_DIV_G      1024U    /* (1<<GAIN_VI_Q) */
+#define  CAL_VI_Q       29U
+#define  CAL_PH_Q       31U
+#define  RMS_Q          40U
+#define  RMS_DIV_Q      0x10000000000ULL  /* (1<<RMS_Q) */
+#define  RMS_Inx_Q      20U
+#define  RMS_DIV_Inx_Q  0x100000UL /* (1<< RMS_Inx_Q) */
+#define  RMS_PQ_SYMB    0x8000000000000000ULL       /* p/q symbol bit */
+#define  RMS_HARMONIC   0x80000000UL
 #define  CONST_Pi       3.1415926
 
 /* Metrology Driver Sensor Type
@@ -245,22 +252,22 @@ typedef struct {
     - swellX. Voltage Swell Detected Flag for Channel X. "1" means that voltage Swell is detected.
 */
 typedef struct {
-    uint32_t paDir : 1;
-    uint32_t pbDir : 1;
-    uint32_t pcDir : 1;
-    uint32_t ptDir : 1;
-    uint32_t qaDir : 1;
-    uint32_t qbDir : 1;
-    uint32_t qcDir : 1;
-    uint32_t qtDir : 1;
-    uint32_t sagA : 1;
-    uint32_t sagB : 1;
-    uint32_t sagC : 1;
-    uint32_t reserved1 : 1;
-    uint32_t swellA : 1;
-    uint32_t swellB : 1;
-    uint32_t swellC : 1;
-    uint32_t reserved2 : 17;
+    unsigned int paDir : 1;
+    unsigned int pbDir : 1;
+    unsigned int pcDir : 1;
+    unsigned int ptDir : 1;
+    unsigned int qaDir : 1;
+    unsigned int qbDir : 1;
+    unsigned int qcDir : 1;
+    unsigned int qtDir : 1;
+    unsigned int sagA : 1;
+    unsigned int sagB : 1;
+    unsigned int sagC : 1;
+    unsigned int reserved1 : 1;
+    unsigned int swellA : 1;
+    unsigned int swellB : 1;
+    unsigned int swellC : 1;
+    unsigned int reserved2 : 17;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver RMS type

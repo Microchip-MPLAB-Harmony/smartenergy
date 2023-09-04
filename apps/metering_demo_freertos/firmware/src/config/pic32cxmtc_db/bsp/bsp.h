@@ -40,8 +40,8 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef _BSP_H
-#define _BSP_H
+#ifndef BSP_H
+#define BSP_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -60,6 +60,9 @@
 // Section: BSP Macros
 // *****************************************************************************
 // *****************************************************************************
+#define pic32cxmtc_db
+#define BSP_NAME             "pic32cxmtc_db"
+
 /*PIOA base address */
 #define PIOA_REGS   ((pio_group_registers_t*)(&(PIO0_REGS->PIO_GROUP[0])))
 /*PIOB base address */
@@ -70,15 +73,15 @@
 #define PIOD_REGS   ((pio_group_registers_t*)(&(PIO1_REGS->PIO_GROUP[0])))
 
 /*** LED Macros for LED_RED ***/
-#define LED_RED_Toggle() do { PIOD_REGS->PIO_MSKR = (1U<<17); (PIOD_REGS->PIO_ODSR ^= (1U<<17)); } while (0)
+#define LED_RED_Toggle() do { PIOD_REGS->PIO_MSKR = (1UL<<17); (PIOD_REGS->PIO_ODSR ^= (1UL<<17)); } while (0)
 #define LED_RED_Get() ((PIOD_REGS->PIO_PDSR >> 17) & 0x1)
-#define LED_RED_On() (PIOD_REGS->PIO_SODR = (1U<<17))
-#define LED_RED_Off() (PIOD_REGS->PIO_CODR = (1U<<17))
+#define LED_RED_On() (PIOD_REGS->PIO_SODR = (1UL<<17))
+#define LED_RED_Off() (PIOD_REGS->PIO_CODR = (1UL<<17))
 /*** LED Macros for LED_IR ***/
-#define LED_IR_Toggle() do { PIOD_REGS->PIO_MSKR = (1U<<18); (PIOD_REGS->PIO_ODSR ^= (1U<<18)); } while (0)
+#define LED_IR_Toggle() do { PIOD_REGS->PIO_MSKR = (1UL<<18); (PIOD_REGS->PIO_ODSR ^= (1UL<<18)); } while (0)
 #define LED_IR_Get() ((PIOD_REGS->PIO_PDSR >> 18) & 0x1)
-#define LED_IR_On() (PIOD_REGS->PIO_SODR = (1U<<18))
-#define LED_IR_Off() (PIOD_REGS->PIO_CODR = (1U<<18))
+#define LED_IR_On() (PIOD_REGS->PIO_SODR = (1UL<<18))
+#define LED_IR_Off() (PIOD_REGS->PIO_CODR = (1UL<<18))
 
 
 
@@ -112,7 +115,6 @@
 
   Example:
     <code>
-    //Initialize the BSP
     BSP_Initialize();
     </code>
 
@@ -122,7 +124,7 @@
 
 void BSP_Initialize(void);
 
-#endif // _BSP_H
+#endif // BSP_H
 
 /*******************************************************************************
  End of File

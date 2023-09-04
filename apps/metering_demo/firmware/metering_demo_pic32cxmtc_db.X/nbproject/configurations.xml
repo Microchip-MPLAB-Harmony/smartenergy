@@ -16,11 +16,13 @@
               <itemPath>../src/config/pic32cxmtc_db/driver/memory/src/drv_memory_local.h</itemPath>
               <itemPath>../src/config/pic32cxmtc_db/driver/memory/drv_memory.h</itemPath>
               <itemPath>../src/config/pic32cxmtc_db/driver/memory/drv_memory_definitions.h</itemPath>
+              <itemPath>../src/config/pic32cxmtc_db/driver/memory/src/drv_memory_file_system.h</itemPath>
             </logicalFolder>
             <logicalFolder name="metrology" displayName="metrology" projectFiles="true">
               <itemPath>../src/config/pic32cxmtc_db/driver/metrology/drv_metrology.h</itemPath>
               <itemPath>../src/config/pic32cxmtc_db/driver/metrology/drv_metrology_definitions.h</itemPath>
               <itemPath>../src/config/pic32cxmtc_db/driver/metrology/drv_metrology_regs.h</itemPath>
+              <itemPath>../src/config/pic32cxmtc_db/driver/metrology/drv_metrology_local.h</itemPath>
             </logicalFolder>
             <logicalFolder name="sst26" displayName="sst26" projectFiles="true">
               <itemPath>../src/config/pic32cxmtc_db/driver/sst26/src/drv_sst26_local.h</itemPath>
@@ -150,6 +152,7 @@
           <itemPath>../src/config/pic32cxmtc_db/configuration.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/device_cache.h</itemPath>
           <itemPath>../src/config/pic32cxmtc_db/device_vectors.h</itemPath>
+          <itemPath>../src/config/pic32cxmtc_db/sys_tasks.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="packs" displayName="packs" projectFiles="true">
@@ -434,14 +437,14 @@
         <targetDevice>PIC32CX2051MTC128</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>j32</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>4.21</languageToolchainVersion>
+        <languageToolchainVersion>4.30</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.1.115"/>
-        <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
+        <pack name="CMSIS" vendor="ARM" version="5.8.0"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -624,6 +627,8 @@
         <property key="communication.speed" value="4"/>
         <property key="debugoptions.debug-startup" value="Halt at main"/>
         <property key="debugoptions.reset-behaviour" value="Main"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
         <property key="jlink.override" value=""/>
         <property key="lastid" value=""/>
         <property key="loader.board_file" value="${ProjectDir}/board.xboard"/>
@@ -657,6 +662,8 @@
         <property key="communication.speed" value="4"/>
         <property key="debugoptions.debug-startup" value="Halt at main"/>
         <property key="debugoptions.reset-behaviour" value="Main"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
         <property key="jlink.override" value=""/>
         <property key="lastid" value=""/>
         <property key="loader.board_file" value="${ProjectDir}/board.xboard"/>

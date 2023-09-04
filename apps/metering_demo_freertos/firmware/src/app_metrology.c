@@ -415,7 +415,7 @@ void APP_METROLOGY_Initialize (void)
     {
         /* Handle error condition. Not sufficient memory to create semaphore */
     }
-    
+
     /* Create the Metrology Calibration Semaphore. */
     if (OSAL_SEM_Create(&appMetrologyCalibrationSemID, OSAL_SEM_TYPE_BINARY, 0, 0) == OSAL_RESULT_FALSE)
     {
@@ -525,7 +525,7 @@ void APP_METROLOGY_Tasks (void)
         {
             /* Wait for the metrology semaphore to get measurements at the end of the integration period. */
             OSAL_SEM_Pend(&appMetrologySemID, OSAL_WAIT_FOREVER);
-            
+
             if (app_metrologyData.state == APP_METROLOGY_STATE_INIT)
             {
                 /* Received Reload Command */
@@ -535,7 +535,7 @@ void APP_METROLOGY_Tasks (void)
             {
                 /* Received Start Calibration Command */
                 break;
-            }            
+            }
 
             // Send new Energy values to the Energy Task
             app_metrologyData.queueFree = uxQueueSpacesAvailable(appEnergyQueueID);
@@ -549,7 +549,7 @@ void APP_METROLOGY_Tasks (void)
             {
                 SYS_CMD_MESSAGE("ENERGY Queue is FULL!!!\r\n");
             }
-            
+
             // Send new Events to the Events Task
             app_metrologyData.queueFree = uxQueueSpacesAvailable(appEventsQueueID);
             if (app_metrologyData.queueFree)
@@ -562,7 +562,7 @@ void APP_METROLOGY_Tasks (void)
             {
                 SYS_CMD_MESSAGE("EVENTS Queue is FULL!!!\r\n");
             }
-            
+
             break;
         }
 
@@ -570,9 +570,9 @@ void APP_METROLOGY_Tasks (void)
         {
             /* Wait for the metrology semaphore to wait calibration ends. */
             OSAL_SEM_Pend(&appMetrologyCalibrationSemID, OSAL_WAIT_FOREVER);
-            
+
             app_metrologyData.state = APP_METROLOGY_STATE_RUNNING;
-            
+
             vTaskDelay(10 / portTICK_PERIOD_MS);
             break;
         }
@@ -787,7 +787,7 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
     return true;
 }
 
-void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback,
+void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse)
 {
     app_metrologyData.pHarmonicAnalysisCallback = callback;
@@ -803,10 +803,10 @@ void APP_METROLOGY_Restart (void)
     {
         app_metrologyData.state = APP_METROLOGY_STATE_INIT;
         app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
-        
+
         sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
     }
-	
+
     OSAL_SEM_Post(&appMetrologySemID);
 }
 

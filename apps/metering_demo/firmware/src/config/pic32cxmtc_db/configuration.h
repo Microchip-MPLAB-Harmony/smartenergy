@@ -82,7 +82,7 @@ extern "C" {
 
 #define SYS_CMD_ENABLE
 #define SYS_CMD_DEVICE_MAX_INSTANCES       SYS_CONSOLE_DEVICE_MAX_INSTANCES
-#define SYS_CMD_PRINT_BUFFER_SIZE          1024
+#define SYS_CMD_PRINT_BUFFER_SIZE          1024U
 #define SYS_CMD_BUFFER_DMA_READY
 
 
@@ -93,25 +93,25 @@ extern "C" {
 #define SYS_TIME_HW_COUNTER_PERIOD                  (4294967295U)
 #define SYS_TIME_HW_COUNTER_HALF_PERIOD             (SYS_TIME_HW_COUNTER_PERIOD>>1)
 #define SYS_TIME_CPU_CLOCK_FREQUENCY                (200000000)
-#define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES    (188)
+#define SYS_TIME_COMPARE_UPDATE_EXECUTION_CYCLES    (232)
 
 
 /* File System Service Configuration */
 
-#define SYS_FS_MEDIA_NUMBER               1
-#define SYS_FS_VOLUME_NUMBER              1
+#define SYS_FS_MEDIA_NUMBER               (1U)
+#define SYS_FS_VOLUME_NUMBER              (1U)
 
 #define SYS_FS_AUTOMOUNT_ENABLE           false
-#define SYS_FS_MAX_FILES                  5
-#define SYS_FS_MAX_FILE_SYSTEM_TYPE       1
-#define SYS_FS_MEDIA_MAX_BLOCK_SIZE       512
-#define SYS_FS_MEDIA_MANAGER_BUFFER_SIZE  2048
-#define SYS_FS_USE_LFN                    1
-#define SYS_FS_FILE_NAME_LEN              255
-#define SYS_FS_CWD_STRING_LEN             1024
+#define SYS_FS_MAX_FILES                  (5U)
+#define SYS_FS_MAX_FILE_SYSTEM_TYPE       (1U)
+#define SYS_FS_MEDIA_MAX_BLOCK_SIZE       (512U)
+#define SYS_FS_MEDIA_MANAGER_BUFFER_SIZE  (2048U)
+#define SYS_FS_USE_LFN                    (1)
+#define SYS_FS_FILE_NAME_LEN              (255U)
+#define SYS_FS_CWD_STRING_LEN             (1024)
 
 
-#define SYS_FS_FAT_VERSION                "v0.14b"
+#define SYS_FS_FAT_VERSION                "v0.15"
 #define SYS_FS_FAT_READONLY               false
 #define SYS_FS_FAT_CODE_PAGE              437
 #define SYS_FS_FAT_MAX_SS                 SYS_FS_MEDIA_MAX_BLOCK_SIZE
@@ -120,10 +120,11 @@ extern "C" {
 
 
 
-#define SYS_CONSOLE_DEVICE_MAX_INSTANCES   			1
-#define SYS_CONSOLE_UART_MAX_INSTANCES 	   			1
-#define SYS_CONSOLE_USB_CDC_MAX_INSTANCES 	   		0
-#define SYS_CONSOLE_PRINT_BUFFER_SIZE        		1024
+
+#define SYS_CONSOLE_DEVICE_MAX_INSTANCES   			(1U)
+#define SYS_CONSOLE_UART_MAX_INSTANCES 	   			(1U)
+#define SYS_CONSOLE_USB_CDC_MAX_INSTANCES 	   		(0U)
+#define SYS_CONSOLE_PRINT_BUFFER_SIZE        		(1024U)
 
 
 #define SYS_CONSOLE_INDEX_0                       0
@@ -139,59 +140,58 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 /* Memory Driver Global Configuration Options */
-#define DRV_MEMORY_INSTANCES_NUMBER          1
+#define DRV_MEMORY_INSTANCES_NUMBER          (1U)
 /* SST26 Driver Instance Configuration */
-#define DRV_SST26_INDEX                 0
-#define DRV_SST26_CLIENTS_NUMBER        1
-#define DRV_SST26_START_ADDRESS         0x0
-#define DRV_SST26_PAGE_SIZE             256
-#define DRV_SST26_ERASE_BUFFER_SIZE     4096
+#define DRV_SST26_INDEX                 (0U)
+#define DRV_SST26_CLIENTS_NUMBER        (1U)
+#define DRV_SST26_START_ADDRESS         (0x0U)
+#define DRV_SST26_PAGE_SIZE             (256U)
+#define DRV_SST26_ERASE_BUFFER_SIZE     (4096U)
 
 
 /* Memory Driver Instance 0 Configuration */
 #define DRV_MEMORY_INDEX_0                   0
 #define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
-#define DRV_MEMORY_BUFFER_QUEUE_SIZE_IDX0    1
-
+#define DRV_MEMORY_BUF_Q_SIZE_IDX0    1
 
 /* Metrology Configuration Options */
-#define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000
+#define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000UL
 /* Metrology Default Config: Meter Constant */
-#define DRV_METROLOGY_CONF_PKT                0x500000
+#define DRV_METROLOGY_CONF_PKT                0x500000UL
 /* Metrology Default Config: Meter Type */
-#define DRV_METROLOGY_CONF_MT                 0xccc
+#define DRV_METROLOGY_CONF_MT                 0xcccUL
 /* Metrology Default Config: Current conversion factor */
-#define DRV_METROLOGY_CONF_KI                 0x9a523
+#define DRV_METROLOGY_CONF_KI                 0x9a523UL
 /* Metrology Default Config: Voltage conversion factor */
-#define DRV_METROLOGY_CONF_KV                 0x19cc00
+#define DRV_METROLOGY_CONF_KV                 0x19cc00UL
 /* Metrology Default Config: ATSENSE CTRL 20 23 */
-#define DRV_METROLOGY_CONF_ATS2023            0x1010103
+#define DRV_METROLOGY_CONF_ATS2023            0x1010103UL
 /* Metrology Default Config: ATSENSE CTRL 24 27 */
-#define DRV_METROLOGY_CONF_ATS2427            0x7010101
+#define DRV_METROLOGY_CONF_ATS2427            0x7010101UL
 /* Metrology Default Config: SWELL */
-#define DRV_METROLOGY_CONF_SWELL              0x5eab918
+#define DRV_METROLOGY_CONF_SWELL              0x5eab918UL
 /* Metrology Default Config: SAG */
-#define DRV_METROLOGY_CONF_SAG                0x1a2ec26
+#define DRV_METROLOGY_CONF_SAG                0x1a2ec26UL
 /* Metrology Default Config: CREEP P */
-#define DRV_METROLOGY_CONF_CREEP_P            0x2e9a
+#define DRV_METROLOGY_CONF_CREEP_P            0x2e9aUL
 /* Metrology Default Config: CREEP Q */
-#define DRV_METROLOGY_CONF_CREEP_Q            0x2e9a
+#define DRV_METROLOGY_CONF_CREEP_Q            0x2e9aUL
 /* Metrology Default Config: CREEP I */
-#define DRV_METROLOGY_CONF_CREEP_I            0x212d
+#define DRV_METROLOGY_CONF_CREEP_I            0x212dUL
 /* Metrology Default Config: FEATURE_CTRL0 */
-#define DRV_METROLOGY_CONF_FCTRL0             0x700
+#define DRV_METROLOGY_CONF_FCTRL0             0x700UL
 /* Metrology Default Config: FEATURE_CTRL1 */
-#define DRV_METROLOGY_CONF_FCTRL1             0x0
+#define DRV_METROLOGY_CONF_FCTRL1             0x0UL
 /* Metrology Default Config: PULSE0_CTRL */
-#define DRV_METROLOGY_CONF_PULSE0_CTRL        0x81009100
+#define DRV_METROLOGY_CONF_PULSE0_CTRL        0x81009100UL
 /* Metrology Default Config: PULSE1_CTRL */
-#define DRV_METROLOGY_CONF_PULSE1_CTRL        0x81029100
+#define DRV_METROLOGY_CONF_PULSE1_CTRL        0x81029100UL
 /* Metrology Default Config: PULSE2_CTRL */
-#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0
+#define DRV_METROLOGY_CONF_PULSE2_CTRL        0x0UL
 /* Metrology Default Config: Waveform Capture */
-#define DRV_METROLOGY_CONF_WAVEFORM           0x3f00
+#define DRV_METROLOGY_CONF_WAVEFORM           0x3f00UL
 /* Metrology Default Config: Capture Buffer Size */
-#define DRV_METROLOGY_CAPTURE_BUF_SIZE        48000
+#define DRV_METROLOGY_CAPTURE_BUF_SIZE        48000UL
 
 
 

@@ -60,8 +60,8 @@
 #include "bsp/bsp.h"
 #include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/tc/plib_tc0.h"
-#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "driver/sst26/drv_sst26.h"
+#include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "peripheral/sefc/plib_sefc0.h"
 #include "system/time/sys_time.h"
 #include "peripheral/sefc/plib_sefc1.h"
@@ -99,6 +99,12 @@ extern "C" {
 
 #endif
 // DOM-IGNORE-END
+
+/* Device Information */
+#define DEVICE_NAME			 "PIC32CX2051MTC128"
+#define DEVICE_ARCH			 "CORTEX-M4"
+#define DEVICE_FAMILY		 "PIC32CX_MT"
+#define DEVICE_SERIES		 "PIC32CXMTC"
 
 /* CPU clock frequency */
 #define CPU_CLOCK_FREQUENCY 200000000

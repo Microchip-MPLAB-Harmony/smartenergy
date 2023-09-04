@@ -31,9 +31,9 @@
     <#lt>CPU_STK lDRV_METROLOGY_TasksStk[DRV_METROLOGY_RTOS_STACK_SIZE];
 
 </#if>
-    <#lt>void lDRV_METROLOGY_Tasks(  void *pvParameters  )
+    <#lt>static void lDRV_METROLOGY_Tasks(  void *pvParameters  )
     <#lt>{
-    <#lt>    while(1U)
+    <#lt>    while(true)
     <#lt>    {
     <#lt>        DRV_METROLOGY_Tasks(sysObj.drvMet);
     <#lt>    }

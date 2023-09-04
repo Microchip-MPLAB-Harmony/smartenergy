@@ -122,8 +122,8 @@ static const DRV_MEMORY_INIT drvMemory0InitData =
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="DRV_METROLOGY Initialization Data">
 
-extern uint8_t met_bin_start;
-extern uint8_t met_bin_end;
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 8.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_8_4_DR_1 */
 
 /* Metrology Driver Initialization Data */
 DRV_METROLOGY_INIT drvMetrologyInitData = {
@@ -138,6 +138,8 @@ DRV_METROLOGY_INIT drvMetrologyInitData = {
     .binEndAddress = (uint32_t)&met_bin_end,
 
 };
+
+/* MISRA C-2012 deviation block end */
 
 // </editor-fold>
 
@@ -319,11 +321,11 @@ void SYS_Initialize ( void* data )
 
 
 
+    RTC_Initialize();
+
 
     TC0_CH0_TimerInitialize();
 
-
-    RTC_Initialize();
 
     FLEXCOM0_USART_Initialize();
 

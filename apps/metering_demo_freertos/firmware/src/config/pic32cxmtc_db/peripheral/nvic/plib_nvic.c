@@ -60,6 +60,8 @@ void NVIC_Initialize( void )
     /* Enable the interrupt sources and configure the priorities as configured
      * from within the "Interrupt Manager" of MHC. */
     NVIC_SetPriority(SysTick_IRQn, 7);
+    NVIC_SetPriority(SUPC_IRQn, 9);
+    NVIC_EnableIRQ(SUPC_IRQn);
     NVIC_SetPriority(RTC_IRQn, 9);
     NVIC_EnableIRQ(RTC_IRQn);
     NVIC_SetPriority(FLEXCOM0_IRQn, 9);
@@ -78,6 +80,9 @@ void NVIC_Initialize( void )
 
     /* Enable Bus fault */
     SCB->SHCSR |= (SCB_SHCSR_BUSFAULTENA_Msk);
+
+    /* Enable memory management fault */
+    SCB->SHCSR |= (SCB_SHCSR_MEMFAULTENA_Msk);
 
 }
 

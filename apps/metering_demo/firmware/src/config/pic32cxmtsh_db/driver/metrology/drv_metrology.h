@@ -117,6 +117,10 @@ typedef enum {
     RMS_SIGN_NEGATIVE = 1,
 } DRV_METROLOGY_RMS_SIGN;
 
+typedef void (* DRV_METROLOGY_CALLBACK)(void);
+typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
+typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint8_t harmonicNum);          
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Driver System Interface Routines
@@ -127,7 +131,7 @@ typedef enum {
 /* Function:
     SYS_MODULE_OBJ DRV_METROLOGY_Initialize (
         SYS_MODULE_INIT * init,
-        uint32_t resetValue
+        uint32_t resetCause
     );
 
   Summary:
@@ -144,7 +148,7 @@ typedef enum {
 
   Parameters:
     init  - Pointer to the init data structure containing any data necessary to initialize the driver.
-    resetValue - Reset cause of the main processor.
+    resetCause - Reset cause of the main processor.
 
   Returns:
     If successful, returns a valid handle to a driver instance object. 
@@ -170,7 +174,7 @@ typedef enum {
   Remarks:
     This routine must be called before any other DRV_METROLOGY routine is called. 
 */
-SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetValue);
+SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetCause);
 
 // *****************************************************************************
 /* Function:
@@ -449,7 +453,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CAL
 // *****************************************************************************
 /* Function:
     DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister (
-        DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback 
+        DRV_METROLOGY_HARMONICS_CALLBACK callback 
     );
 
   Summary:
@@ -487,7 +491,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CAL
   Remarks:
     None. 
 */
-DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback);
+DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOGY_HARMONICS_CALLBACK callback);
 
 // *****************************************************************************
 /* Function:

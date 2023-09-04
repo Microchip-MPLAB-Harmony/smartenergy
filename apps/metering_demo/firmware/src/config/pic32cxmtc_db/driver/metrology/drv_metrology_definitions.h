@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -40,8 +40,8 @@
 *******************************************************************************/
 //DOM-IGNORE-END
 
-#ifndef _DRV_METROLOGY_DEFINITIONS_H
-#define _DRV_METROLOGY_DEFINITIONS_H
+#ifndef DRV_METROLOGY_DEFINITIONS_H
+#define DRV_METROLOGY_DEFINITIONS_H
 
 // *****************************************************************************
 // *****************************************************************************
@@ -64,28 +64,35 @@
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Data Types
+// Section: External Data
 // *****************************************************************************
 // *****************************************************************************
-typedef void (* DRV_METROLOGY_CALLBACK)(void);
-typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
-typedef void (* DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK) (uint8_t harmonicNum);          
+
+/* Metrology library Binary file addressing */
+extern uint8_t met_bin_start;
+extern uint8_t met_bin_end;
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Macro Definitions
+// *****************************************************************************
+// *****************************************************************************
 
 #define DRV_METROLOGY_IPC_INIT_IRQ_MSK            IPC_ISR_IRQ20_Msk
 #define DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK     IPC_ISR_IRQ0_Msk
 
-#define  FREQ_Q         12
-#define  GAIN_P_K_T_Q   24
-#define  GAIN_VI_Q      10
-#define  RMS_DIV_G      1024    /* (1<<GAIN_VI_Q) */
-#define  CAL_VI_Q       29
-#define  CAL_PH_Q       31
-#define  RMS_Q          40
-#define  RMS_DIV_Q      0x10000000000  /* (1<<RMS_Q) */
-#define  RMS_Inx_Q      (20)
-#define  RMS_DIV_Inx_Q  0x100000 /* (1<< RMS_Inx_Q) */
-#define  RMS_PQ_SYMB    0x8000000000000000       /* p/q symbol bit */
-#define  RMS_HARMONIC   0x80000000
+#define  FREQ_Q         12U
+#define  GAIN_P_K_T_Q   24U
+#define  GAIN_VI_Q      10U
+#define  RMS_DIV_G      1024U    /* (1<<GAIN_VI_Q) */
+#define  CAL_VI_Q       29U
+#define  CAL_PH_Q       31U
+#define  RMS_Q          40U
+#define  RMS_DIV_Q      0x10000000000ULL  /* (1<<RMS_Q) */
+#define  RMS_Inx_Q      20U
+#define  RMS_DIV_Inx_Q  0x100000UL /* (1<< RMS_Inx_Q) */
+#define  RMS_PQ_SYMB    0x8000000000000000ULL       /* p/q symbol bit */
+#define  RMS_HARMONIC   0x80000000UL
 #define  CONST_Pi       3.1415926
 
 /* Metrology Driver Sensor Type
@@ -174,7 +181,7 @@ typedef struct {
     - Rest of the values are internally used to perform the calibration process.
 */
 typedef struct {
-    DRV_METROLOGY_CONTROL metControlConf;
+    DRV_METROLOGY_REGS_CONTROL metControlConf;
     DRV_METROLOGY_CALIBRATION_REFS references;
     uint32_t featureCtrl0Backup;
     double freq;                     
@@ -245,22 +252,22 @@ typedef struct {
     - swellX. Voltage Swell Detected Flag for Channel X. "1" means that voltage Swell is detected.
 */
 typedef struct {
-    uint32_t paDir : 1;
-    uint32_t pbDir : 1;
-    uint32_t pcDir : 1;
-    uint32_t ptDir : 1;
-    uint32_t qaDir : 1;
-    uint32_t qbDir : 1;
-    uint32_t qcDir : 1;
-    uint32_t qtDir : 1;
-    uint32_t sagA : 1;
-    uint32_t sagB : 1;
-    uint32_t sagC : 1;
-    uint32_t reserved1 : 1;
-    uint32_t swellA : 1;
-    uint32_t swellB : 1;
-    uint32_t swellC : 1;
-    uint32_t reserved2 : 17;
+    unsigned int paDir : 1;
+    unsigned int pbDir : 1;
+    unsigned int pcDir : 1;
+    unsigned int ptDir : 1;
+    unsigned int qaDir : 1;
+    unsigned int qbDir : 1;
+    unsigned int qcDir : 1;
+    unsigned int qtDir : 1;
+    unsigned int sagA : 1;
+    unsigned int sagB : 1;
+    unsigned int sagC : 1;
+    unsigned int reserved1 : 1;
+    unsigned int swellA : 1;
+    unsigned int swellB : 1;
+    unsigned int swellC : 1;
+    unsigned int reserved2 : 17;
 } DRV_METROLOGY_AFE_EVENTS;
 
 /* Metrology Driver RMS type
@@ -352,6 +359,30 @@ typedef struct {
     DRV_METROLOGY_GAIN_TYPE gain;
 } DRV_METROLOGY_CONFIGURATION;
 
+/* METROLOGY Driver Status
+
+  Summary:
+    Defines the status of the DRV_METROLOGY driver.
+
+  Description:
+    This enumeration defines the status of the DRV_METROLOGY Driver.
+
+  Remarks:
+    None.
+*/
+
+typedef enum
+{
+    DRV_METROLOGY_STATUS_UNINITIALIZED = SYS_STATUS_UNINITIALIZED,
+    DRV_METROLOGY_STATUS_BUSY = SYS_STATUS_BUSY,
+    DRV_METROLOGY_STATUS_READY = SYS_STATUS_READY,
+    DRV_METROLOGY_STATUS_HALT = SYS_STATUS_READY_EXTENDED + 1U,
+    DRV_METROLOGY_STATUS_WAITING_IPC = SYS_STATUS_READY_EXTENDED + 2U,
+    DRV_METROLOGY_STATUS_INIT_DSP = SYS_STATUS_READY_EXTENDED + 3U,
+    DRV_METROLOGY_STATUS_RUNNING = SYS_STATUS_READY_EXTENDED + 4U,
+    DRV_METROLOGY_STATUS_ERROR = SYS_STATUS_ERROR,
+} DRV_METROLOGY_STATUS;
+
 /* Metrology Library State
 
   Summary:
@@ -364,16 +395,16 @@ typedef struct {
     None.
 */
 typedef enum {
-    DRV_METROLOGY_STATE_HALT = STATUS_STATUS_HALT,
-    DRV_METROLOGY_STATE_RESET = STATUS_STATUS_RESET,
-    DRV_METROLOGY_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
-    DRV_METROLOGY_STATE_DSP_READY = STATUS_STATUS_DSP_READY,
-    DRV_METROLOGY_STATE_INIT_ATSENSE = STATUS_STATUS_INIT_ATSENSE,
-    DRV_METROLOGY_STATE_ATSENSE_READY = STATUS_STATUS_ATSENSE_READY,
-    DRV_METROLOGY_STATE_READY = STATUS_STATUS_READY,
-    DRV_METROLOGY_STATE_SETTLING = STATUS_STATUS_DSP_SETTLING,
-    DRV_METROLOGY_STATE_RUNNING = STATUS_STATUS_DSP_RUNNING
-} DRV_METROLOGY_STATE;
+    DRV_METROLOGY_LIB_STATE_HALT = STATUS_STATUS_HALT,
+    DRV_METROLOGY_LIB_STATE_RESET = STATUS_STATUS_RESET,
+    DRV_METROLOGY_LIB_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
+    DRV_METROLOGY_LIB_STATE_DSP_READY = STATUS_STATUS_DSP_READY,
+    DRV_METROLOGY_LIB_STATE_INIT_ATSENSE = STATUS_STATUS_INIT_ATSENSE,
+    DRV_METROLOGY_LIB_STATE_ATSENSE_READY = STATUS_STATUS_ATSENSE_READY,
+    DRV_METROLOGY_LIB_STATE_READY = STATUS_STATUS_READY,
+    DRV_METROLOGY_LIB_STATE_SETTLING = STATUS_STATUS_DSP_SETTLING,
+    DRV_METROLOGY_LIB_STATE_RUNNING = STATUS_STATUS_DSP_RUNNING
+} DRV_METROLOGY_LIB_STATE;
 
 /* Metrology Driver Initialization Data
 
@@ -394,73 +425,11 @@ typedef struct {
     uint32_t binEndAddress;
 } DRV_METROLOGY_INIT;
 
-// *****************************************************************************
-/* Metrology Driver Object
-
-  Summary:
-    Object used to keep any data required for an instance of the metrology driver.
-
-  Description:
-    None.
-
-  Remarks:
-    None.
-*/
-
-typedef struct
-{
-    /* Flag to indicate this object is in use */
-    bool                                          inUse;
-
-    /* The status of the driver */
-    SYS_STATUS                                    status;
-
-    /* State of the metrology driver  */
-    volatile DRV_METROLOGY_STATE                  state;
-
-    /* Flag to indicate that a new integration period has been completed */
-    volatile bool                                 integrationFlag;
-
-    /* Size (in Bytes) of the PLC binary file */
-    uint32_t                                      binSize;
-
-    /* Address where PLC binary file is located */
-    uint32_t                                      binStartAddress;
-
-    /* Metrology Control interface */
-    MET_REGISTERS *                               metRegisters;
-
-    /* Metrology Accumulated Output Data */
-    DRV_METROLOGY_ACCUMULATORS                    metAccData;
-
-    /* Metrology Harmonic Analysis Output Data */
-    DRV_METROLOGY_HARMONICS                       metHarData;
-
-    /* Metrology Analog Front End Data */
-    DRV_METROLOGY_AFE_DATA                        metAFEData;
-
-    /* Metrology Calibration interface */
-    DRV_METROLOGY_CALIBRATION                     calibrationData;
-    
-    /* Harmonic Analysis Data */
-    DRV_METROLOGY_HARMONIC_ANALYSIS               harmonicAnalysisData;
-
-    /* IPC metrology lib integration Callback */
-    DRV_METROLOGY_CALLBACK                        integrationCallback;
-
-    /* Calibration Process Callback */
-    DRV_METROLOGY_CALIBRATION_CALLBACK            calibrationCallback;
-
-    /* Harmonic Analysis Callback */
-    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK      harmonicAnalysisCallback;
-
-} DRV_METROLOGY_OBJ;
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // #ifndef _DRV_METROLOGY_DEFINITIONS_H
+#endif // #ifndef DRV_METROLOGY_DEFINITIONS_H
 /*******************************************************************************
  End of File
 */

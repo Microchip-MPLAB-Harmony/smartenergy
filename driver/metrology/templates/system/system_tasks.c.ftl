@@ -26,7 +26,7 @@
 <#if HarmonyCore.SELECT_RTOS == "BareMetal">
     <#lt>   DRV_METROLOGY_Tasks(sysObj.drvMet);
 <#elseif HarmonyCore.SELECT_RTOS == "FreeRTOS">
-    <#lt>    xTaskCreate(lDRV_METROLOGY_Tasks,
+    <#lt>    (void) xTaskCreate(lDRV_METROLOGY_Tasks,
     <#lt>        "DRV_METROLOGY_TASKS",
     <#lt>        DRV_METROLOGY_RTOS_STACK_SIZE,
     <#lt>        (void*)NULL,

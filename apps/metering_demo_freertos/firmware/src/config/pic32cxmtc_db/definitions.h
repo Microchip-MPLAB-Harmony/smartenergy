@@ -58,8 +58,8 @@
 #include "peripheral/supc/plib_supc.h"
 #include "driver/memory/drv_memory.h"
 #include "bsp/bsp.h"
-#include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/tc/plib_tc0.h"
+#include "peripheral/rtc/plib_rtc.h"
 #include "driver/sst26/drv_sst26.h"
 #include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
 #include "peripheral/sefc/plib_sefc0.h"
@@ -75,11 +75,11 @@
 #include "system/console/sys_console.h"
 #include "system/console/src/sys_console_uart_definitions.h"
 #include "gfx/driver/controller/slcdc/cl010.h"
-#include "FreeRTOS.h"
-#include "task.h"
 #include "driver/metrology/drv_metrology_definitions.h"
 #include "driver/metrology/drv_metrology.h"
 #include "driver/metrology/drv_metrology_regs.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "system/int/sys_int.h"
 #include "system/cache/sys_cache.h"
 #include "system/reset/sys_reset.h"
@@ -101,6 +101,12 @@ extern "C" {
 
 #endif
 // DOM-IGNORE-END
+
+/* Device Information */
+#define DEVICE_NAME			 "PIC32CX2051MTC128"
+#define DEVICE_ARCH			 "CORTEX-M4"
+#define DEVICE_FAMILY		 "PIC32CX_MT"
+#define DEVICE_SERIES		 "PIC32CXMTC"
 
 /* CPU clock frequency */
 #define CPU_CLOCK_FREQUENCY 200000000

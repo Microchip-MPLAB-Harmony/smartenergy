@@ -763,7 +763,7 @@ bool APP_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum)
     return true;
 }
 
-void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback,
+void APP_METROLOGY_SetHarmonicAnalysisCallback(DRV_METROLOGY_HARMONICS_CALLBACK callback,
         DRV_METROLOGY_HARMONICS_RMS * pHarmonicAnalysisResponse)
 {
     app_metrologyData.pHarmonicAnalysisCallback = callback;
@@ -779,7 +779,7 @@ void APP_METROLOGY_Restart (void)
     {
         app_metrologyData.state = APP_METROLOGY_STATE_INIT;
         app_metrologyData.startMode = DRV_METROLOGY_START_HARD;
-        
+
         sysObj.drvMet = DRV_METROLOGY_Reinitialize((SYS_MODULE_INIT *)&drvMetrologyInitData);
     }
 }

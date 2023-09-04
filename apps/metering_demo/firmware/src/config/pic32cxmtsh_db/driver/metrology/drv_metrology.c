@@ -56,6 +56,7 @@
 #include "drv_metrology_definitions.h"
 #include "drv_metrology_local.h"
 #include "peripheral/pio/plib_pio.h"
+#include "interrupts.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -63,18 +64,17 @@
 // *****************************************************************************
 // *****************************************************************************
 
-
 typedef enum {
     PENERGY = 0U,
     QENERGY = 1U,
 } DRV_METROLOGY_ENERGY_TYPE;
 
 /* This is the driver instance object array. */
-DRV_METROLOGY_OBJ gDrvMetObj;
+static DRV_METROLOGY_OBJ gDrvMetObj;
 
 static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BUF_SIZE)];
 
-const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
+static const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
 {
     STATE_CTRL_STATE_CTRL_RESET_Val,                  /* 00 STATE_CTRL */
     (uint32_t)(DRV_METROLOGY_CONF_FCTRL0),            /* 01 FEATURE_CTRL0 */
@@ -145,9 +145,19 @@ const DRV_METROLOGY_REGS_CONTROL gDrvMetControlDefault =
 // *****************************************************************************
 // *****************************************************************************
 
+static double lDRV_Metrology_GetDouble(int64_t value)
+{
+    if (value < 0)
+    {
+        value = -value;
+    }
+
+    return (double)value;
+}
+
 static void lDRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
 {
-    uint16_t size;
+    uint32_t size;
 
     /* Enable PMC clock */
     PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN(1U) | PMC_PCR_PID(ID_MEM2MEM0);
@@ -171,9 +181,9 @@ static void lDRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
 
     /* Prepare MEM2MEM transfer */
     MEM2MEM0_REGS->MEM2MEM_TPR = (uint32_t)pSrc;
-    MEM2MEM0_REGS->MEM2MEM_TCR = (uint32_t)size;
+    MEM2MEM0_REGS->MEM2MEM_TCR = size;
     MEM2MEM0_REGS->MEM2MEM_RPR = (uint32_t)pDst;
-    MEM2MEM0_REGS->MEM2MEM_RCR = (uint32_t)size;
+    MEM2MEM0_REGS->MEM2MEM_RCR = size;
 
     /* Start PDC transfer */
     MEM2MEM0_REGS->MEM2MEM_PTCR = (MEM2MEM_PTCR_RXTEN_Msk | MEM2MEM_PTCR_TXTEN_Msk);
@@ -227,12 +237,19 @@ static uint32_t lDRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
 {
     double m;
 
-    m = (double)(val);
-    m = (m / RMS_DIV_Q);
-    m = (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-    m = sqrt(m);
-    m = m * k_x / RMS_DIV_G;
-    m = m * 10000U;
+    m = (double)val;
+    m = (m / (double)RMS_DIV_Q);
+    m = (m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    if (m < 0.0)
+    {
+        m = 0.0;
+    }
+    else
+    {
+        m = sqrt(m);
+        m = m * (double)k_x / (double)RMS_DIV_G;
+        m = m * (double)10000;
+    }
 
     return ((uint32_t)(m));
 }
@@ -241,11 +258,18 @@ static uint32_t lDRV_Metrology_GetInxRMS(uint64_t val)
 {
     double m;
 
-    m = (double)(val);
-    m = (m / RMS_DIV_Inx_Q);
-    m = (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-    m = sqrt(m);
-    m = m * 10000U;
+    m = (double)val;
+    m = (m / (double)RMS_DIV_Inx_Q);
+    m = (m / (double)gDrvMetObj.metRegisters->MET_STATUS.N);
+    if (m < 0.0)
+    {
+        m = 0.0;
+    }
+    else
+    {
+        m = sqrt(m);
+        m = m * (double)10000U;
+    }
 
     return ((uint32_t)(m));
 }
@@ -253,79 +277,54 @@ static uint32_t lDRV_Metrology_GetInxRMS(uint64_t val)
 static uint32_t lDRV_Metrology_GetPQRMS(int64_t val, uint32_t k_ix, uint32_t k_vx)
 {
     double m;
+    double divisor, mult;
 
-    if (val < 0U)
-    {
-        m = (double)((~val) + 1);
-    }
-    else
-    {
-        m = (double)(val);
-    }
+    m = lDRV_Metrology_GetDouble(val);
 
-    m = (m / RMS_DIV_Q);
-    m = (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-    m = (m * k_ix * k_vx) / (RMS_DIV_G * RMS_DIV_G);
-    m = m * 10U;
+    m = m / (double)RMS_DIV_Q;
+    m = m / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    mult = (double)k_ix * (double)k_vx;
+    divisor = (double)RMS_DIV_G * (double)RMS_DIV_G;
+    m = (m * mult) / divisor;
+    m = m * 10.0;
 
     return ((uint32_t)(m));
 }
 
-static uint32_t lDRV_Metrology_CheckPQDir(int64_t val)
+static unsigned char lDRV_Metrology_CheckPQDir(int64_t val)
 {
-    if (val < 0U)
+    if (val < 0)
     {
-        return 1UL;
+        return 1U;
     }
     else
     {
-        return 0UL;
-    }
-}
-
-static uint32_t lDRV_Metrology_CheckPQtDir(int64_t val_a, int64_t val_b, int64_t val_c)
-{
-    if ((val_a + val_b + val_c) < 0U)
-    {
-        return 1UL;
-    }
-    else
-    {
-        return 0UL;
+        return 0U;
     }
 }
 
 static uint32_t lDRV_Metrology_GetSRMS(int64_t pv, int64_t qv, uint32_t k_ix, uint32_t k_vx)
 {
     double m, n;
+    double divisor, mult;
 
-    if (pv < 0U)
-    {
-        m = (double)((~pv) + 1);
-    }
-    else
-    {
-        m = (double)(pv);
-    }
+    m = lDRV_Metrology_GetDouble(pv);
 
-    m = (m / RMS_DIV_Q);
-    m = (m / gDrvMetObj.metRegisters->MET_STATUS.N);
-    m = (m * k_ix * k_vx) / (RMS_DIV_G * RMS_DIV_G);
-    m = m * 10U;
+    m = m / (double)RMS_DIV_Q;
+    m = m / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    mult = (double)k_ix * (double)k_vx;
+    divisor = (double)RMS_DIV_G * (double)RMS_DIV_G;
+    m = (m * mult) / divisor;
+    m = m * 10.0;
 
-    if (qv < 0U)
-    {
-        n = (double)((~qv) + 1);
-    }
-    else
-    {
-        n = (double)(qv);
-    }
+    n = lDRV_Metrology_GetDouble(qv);
 
-    n = (n / RMS_DIV_Q);
-    n = (n / gDrvMetObj.metRegisters->MET_STATUS.N);
-    n = (n * k_ix * k_vx) / (RMS_DIV_G * RMS_DIV_G);
-    n = n * 10U;
+    n = n / (double)RMS_DIV_Q;
+    n = n / (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    mult = (double)k_ix * (double)k_vx;
+    divisor = (double)RMS_DIV_G * (double)RMS_DIV_G;
+    n = (n * mult) / divisor;
+    n = n * 10.0;
 
     m = m * m;
     n = n * n;
@@ -336,123 +335,88 @@ static uint32_t lDRV_Metrology_GetSRMS(int64_t pv, int64_t qv, uint32_t k_ix, ui
 
 static uint32_t lDRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
 {
-    double m;
+    double m, pd, qd;
     int32_t n;
+    uint32_t angle;
 
-    m = atan2(q, p);
-    m = 180U * m;
-    m = m * 100000UL;
+    pd = lDRV_Metrology_GetDouble(p);
+    qd = lDRV_Metrology_GetDouble(q);
+    m = atan2(qd, pd);
+    m = 180.0 * m;
+    m = m * 100000.0;
     m = m / CONST_Pi;
     n = (int32_t)m;
 
-    if (n < 0U)
+    if (n < 0)
     {
-        n = ~n + 1;
-        n |= 0x80000000UL;
+        n = -n;
     }
 
-    return ((uint32_t)(n));
+    angle = (uint32_t)n;
+    angle |= 0x80000000UL;
+
+    return (angle);
 }
 
 static uint32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
 {
     double m, k;
+    double divisor;
+    double ki, kv;
 
-    m = 0U;
-    k = 0U;
+    divisor = (double)RMS_DIV_G * (double)RMS_DIV_G;
+
     /* Calculated as absolute values */
     if (id == PENERGY)
     {
-        if (gDrvMetObj.metAccData.P_A < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.P_A);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.P_A);
-        }
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_A);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k = m / 4000.0;                 /* k =k/fs */
 
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_B);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k += m / 4000.0;                 /* k =k/fs */
 
-        if (gDrvMetObj.metAccData.P_B < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.P_B);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.P_B);
-        }
-
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
-
-        if (gDrvMetObj.metAccData.P_C < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.P_C);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.P_C);
-        }
-
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.P_C);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k += m / 4000.0;                 /* k =k/fs */
     }
     else
     {
         /* reactive energy */
-        if (gDrvMetObj.metAccData.Q_A < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.Q_A);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.Q_A);
-        }
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_A);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IA;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VA;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k = m / 4000.0;                 /* k =k/fs */
 
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IA * gDrvMetObj.metRegisters->MET_CONTROL.K_VA) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_B);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IB;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VB;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k += m / 4000.0;                 /* k =k/fs */
 
-        if (gDrvMetObj.metAccData.Q_B < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.Q_B);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.Q_B);
-        }
-
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IB * gDrvMetObj.metRegisters->MET_CONTROL.K_VB) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
-
-        if (gDrvMetObj.metAccData.Q_C < 0U)
-        {
-            m = (double)(~gDrvMetObj.metAccData.Q_C);
-            m += 1U;
-        }
-        else
-        {
-            m = (double)(gDrvMetObj.metAccData.Q_C);
-        }
-
-        m = (m * gDrvMetObj.metRegisters->MET_CONTROL.K_IC * gDrvMetObj.metRegisters->MET_CONTROL.K_VC) / (RMS_DIV_G * RMS_DIV_G); /* m =m*k_v*k_i */
-        m = (m / RMS_DIV_Q);            /* k =k/2^40 */
-        k += (m / 4000U);                /* k =k/fs */
+        m = lDRV_Metrology_GetDouble(gDrvMetObj.metAccData.Q_C);
+        ki = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_IC;
+        kv = (double)gDrvMetObj.metRegisters->MET_CONTROL.K_VC;
+        m = (m * ki * kv) / divisor;    /* m =m*k_v*k_i */
+        m = m / (double)RMS_DIV_Q;      /* k =k/2^40 */
+        k += m / 4000.0;                 /* k =k/fs */
     }
 
-    k = k / 3600U;         /* xxxxxx (Wh/Varh) */
-    k = k * 10000U;        /* *10000 (kWh/kVarh) */
+    k = k / 3600.0;         /* xxxxxx (Wh/Varh) */
+    k = k * 10000.0;        /* *10000 (kWh/kVarh) */
 
     return ((uint32_t)(k));  /* xxxx (kWh/kVarh) */
 }
@@ -467,41 +431,41 @@ static void lDRV_Metrology_IpcInitialize (void)
 
 static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, double reference)
 {
-    int64_t measured_angle, correction_angle;
-    uint64_t m;
-    int abs_value;
+    double freq;
+    int64_t correction_angle, divisor;
+    uint32_t measured_angle;
 
     measured_angle = measured;
-    if ((measured & 0x80000000UL) != 0U)
+    if ((measured_angle & 0x80000000UL) != 0UL)
     {
         measured_angle = 0x80000000UL - measured_angle;
     }
 
     /* Improve accuracy */
-    reference *= 100U;
-    correction_angle = measured_angle - (int64_t)reference;
+    reference *= 100.0;
+    correction_angle = (int64_t)measured_angle - (int64_t)reference;
 
     /* Correction angle should be between -180 and 180 degrees */
-    while (correction_angle < (-18000000UL))
+    while (correction_angle < (-18000000))
     {
-        correction_angle += 36000000UL;
+        correction_angle += 36000000;
     }
 
-    while (correction_angle > 18000000UL)
+    while (correction_angle > 18000000)
     {
-        correction_angle -= 36000000UL;
+        correction_angle -= 36000000;
     }
 
-    correction_angle = (correction_angle * 7158278827UL) / (gDrvMetObj.calibrationData.freq * 10000U);
-    correction_angle = (correction_angle + 50U) / 100U;
-    abs_value = abs(correction_angle);
-    m = (uint64_t)abs_value;
-    if (correction_angle < 0U)
+    freq = gDrvMetObj.calibrationData.freq * 10000.0;
+    divisor = (int64_t)freq;
+    correction_angle = (correction_angle * 7158278827L) / divisor;
+    correction_angle = (correction_angle + 50) / 100;
+    if (correction_angle < 0)
     {
-        m = (~m) + 1U;
+        correction_angle = -correction_angle;
     }
 
-    return (uint32_t)m;
+    return (uint32_t)correction_angle;
 }
 
 static void lDRV_METROLOGY_UpdateMeasurements(void)
@@ -548,10 +512,10 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     afeRMS[RMS_SC]  = lDRV_Metrology_GetSRMS(gDrvMetObj.metAccData.P_C, gDrvMetObj.metAccData.Q_C, gDrvMetObj.metRegisters->MET_CONTROL.K_IC, gDrvMetObj.metRegisters->MET_CONTROL.K_VC);
 
     afeRMS[RMS_PT]  = afeRMS[RMS_PA] + afeRMS[RMS_PB] + afeRMS[RMS_PC];
-    gDrvMetObj.metAFEData.afeEvents.ptDir = lDRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.P_A, gDrvMetObj.metAccData.P_B, gDrvMetObj.metAccData.P_C);
+    gDrvMetObj.metAFEData.afeEvents.ptDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.P_A + gDrvMetObj.metAccData.P_B + gDrvMetObj.metAccData.P_C);
 
     afeRMS[RMS_QT]  = afeRMS[RMS_QA] + afeRMS[RMS_QB] + afeRMS[RMS_QC];
-    gDrvMetObj.metAFEData.afeEvents.qtDir = lDRV_Metrology_CheckPQtDir(gDrvMetObj.metAccData.Q_A, gDrvMetObj.metAccData.Q_B, gDrvMetObj.metAccData.Q_C);
+    gDrvMetObj.metAFEData.afeEvents.qtDir = lDRV_Metrology_CheckPQDir(gDrvMetObj.metAccData.Q_A + gDrvMetObj.metAccData.Q_B + gDrvMetObj.metAccData.Q_C);
 
     afeRMS[RMS_ST]  = afeRMS[RMS_SA] + afeRMS[RMS_SB] + afeRMS[RMS_SC];
 
@@ -565,12 +529,12 @@ static void lDRV_METROLOGY_UpdateMeasurements(void)
     gDrvMetObj.metAFEData.energy += lDRV_Metrology_GetPQEnergy(PENERGY);
 
     /* Update Swell/Sag events */
-    gDrvMetObj.metAFEData.afeEvents.sagA = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.sagB = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.sagC = stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellA = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellB = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk? 1U : 0U;
-    gDrvMetObj.metAFEData.afeEvents.swellC = stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.sagA = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VA_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.sagB = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VB_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.sagC = (stateFlagReg & STATUS_STATE_FLAG_SAG_DET_VC_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellA = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VA_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellB = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VB_Msk) > 0U? 1U : 0U;
+    gDrvMetObj.metAFEData.afeEvents.swellC = (stateFlagReg & STATUS_STATE_FLAG_SWELL_DET_VC_Msk) > 0U? 1U : 0U;
 
 }
 
@@ -617,7 +581,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration I RMS */
             pCalibrationData->dspAccIa >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccIa, pMetControlRegs->K_IA);
-            m = pCalibrationData->references.aimIA;
+            m = (uint64_t)pCalibrationData->references.aimIA;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_IA = (uint32_t)m_div;
@@ -628,7 +592,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration V RMS */
             pCalibrationData->dspAccUa >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccUa, pMetControlRegs->K_VA);
-            m = pCalibrationData->references.aimVA;
+            m = (uint64_t)pCalibrationData->references.aimVA;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_VA = (uint32_t)m_div;
@@ -638,8 +602,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             }
 
             /* Calibration Phase */
-            pCalibrationData->dspAccPa >>= 2U;
-            pCalibrationData->dspAccQa >>= 2U;
+            pCalibrationData->dspAccPa /= 4;
+            pCalibrationData->dspAccQa /= 4;
             k = lDRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPa, pCalibrationData->dspAccQa);
             pMetControlRegs->CAL_PH_IA = lDRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleA);
 
@@ -651,7 +615,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration I RMS */
             pCalibrationData->dspAccIb >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccIb, pMetControlRegs->K_IB);
-            m = pCalibrationData->references.aimIB;
+            m = (uint64_t)pCalibrationData->references.aimIB;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_IB = (uint32_t)m_div;
@@ -662,7 +626,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration V RMS */
             pCalibrationData->dspAccUb >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccUb, pMetControlRegs->K_VB);
-            m = pCalibrationData->references.aimVB;
+            m = (uint64_t)pCalibrationData->references.aimVB;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_VB = (uint32_t)m_div;
@@ -672,8 +636,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             }
 
             /* Calibration Phase */
-            pCalibrationData->dspAccPb >>= 2U;
-            pCalibrationData->dspAccQb >>= 2U;
+            pCalibrationData->dspAccPb /= 4;
+            pCalibrationData->dspAccQb /= 4;
             k = lDRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPb, pCalibrationData->dspAccQb);
             pMetControlRegs->CAL_PH_IB = lDRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleB);
 
@@ -685,7 +649,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration I RMS */
             pCalibrationData->dspAccIc >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccIc, pMetControlRegs->K_IC);
-            m = pCalibrationData->references.aimIC;
+            m = (uint64_t)pCalibrationData->references.aimIC;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_IC = (uint32_t)m_div;
@@ -696,7 +660,7 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             /* Calibration V RMS */
             pCalibrationData->dspAccUc >>= 2U;
             k = lDRV_Metrology_GetVIRMS(pCalibrationData->dspAccUc, pMetControlRegs->K_VC);
-            m = pCalibrationData->references.aimVC;
+            m = (uint64_t)pCalibrationData->references.aimVC;
             m = m << CAL_VI_Q;
             m_div = m / k;
             pMetControlRegs->CAL_M_VC = (uint32_t)m_div;
@@ -706,8 +670,8 @@ static bool lDRV_METROLOGY_UpdateCalibrationValues(void)
             }
 
             /* Calibration Phase */
-            pCalibrationData->dspAccPc >>= 2U;
-            pCalibrationData->dspAccQc >>= 2U;
+            pCalibrationData->dspAccPc /= 4;
+            pCalibrationData->dspAccQc /= 4;
             k = lDRV_Metrology_GetAngleRMS(pCalibrationData->dspAccPc, pCalibrationData->dspAccQc);
             pMetControlRegs->CAL_PH_IC = lDRV_Metrology_CorrectCalibrationAngle(k, pCalibrationData->references.angleC);
 
@@ -739,38 +703,35 @@ static bool lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
     {
         DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
         double sqrt2;
-        uint64_t div;
-        uint32_t *pHarReg;
+        uint32_t divisor;
+        int32_t harTemp[14];
         uint8_t index;
-        uint32_t harTemp[12U];
 
-        pHarReg = (uint32_t *)&gDrvMetObj.metHarData;
+        (void) memcpy((void *)harTemp, (void *)&gDrvMetObj.metHarData, sizeof(harTemp));
+
         for (index = 0; index < 14U; index++) {
-            if (*pHarReg > RMS_HARMONIC) {
-                harTemp[index] = (~(*pHarReg)) + 1U;
-            } else {
-                harTemp[index] = *pHarReg;
+            if (harTemp[index] < 0) {
+                harTemp[index] = -harTemp[index];
             }
-            pHarReg++;
         }
 
-        sqrt2 = sqrt(2U);
-        div = gDrvMetObj.metRegisters->MET_STATUS.N << 6U; /* format sQ25.6 */
+        sqrt2 = sqrt(2.0);
+        divisor = gDrvMetObj.metRegisters->MET_STATUS.N << 6U; /* format sQ25.6 */
 
-        pHarmonicsRsp->Irms_A_m = (sqrt(pow((double)harTemp[0U], 2U) + pow((double)harTemp[7U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Irms_B_m = (sqrt(pow((double)harTemp[2U], 2U) + pow((double)harTemp[9U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Irms_C_m = (sqrt(pow((double)harTemp[4U], 2U) + pow((double)harTemp[11U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Irms_N_m = (sqrt(pow((double)harTemp[6U], 2U) + pow((double)harTemp[13U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Vrms_A_m = (sqrt(pow((double)harTemp[1U], 2U) + pow((double)harTemp[8U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Vrms_B_m = (sqrt(pow((double)harTemp[3U], 2U) + pow((double)harTemp[10U], 2U)) * sqrt2) / div;
-        pHarmonicsRsp->Vrms_C_m = (sqrt(pow((double)harTemp[5U], 2U) + pow((double)harTemp[12U], 2U)) * sqrt2) / div;
+        pHarmonicsRsp->Irms_A_m = (sqrt(pow((double)harTemp[0], 2.0) + pow((double)harTemp[7], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Irms_B_m = (sqrt(pow((double)harTemp[2], 2.0) + pow((double)harTemp[9], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Irms_C_m = (sqrt(pow((double)harTemp[4], 2.0) + pow((double)harTemp[11], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Irms_N_m = (sqrt(pow((double)harTemp[6], 2.0) + pow((double)harTemp[13], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2.0) + pow((double)harTemp[8], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2.0) + pow((double)harTemp[10], 2.0)) * sqrt2) / (double)divisor;
+        pHarmonicsRsp->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2.0) + pow((double)harTemp[12], 2.0)) * sqrt2) / (double)divisor;
 
         /* Disable Harmonic Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
         /* Clear Number of Harmonic for Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_m_REQ_Msk;
 
-        gDrvMetObj.harmonicAnalysisData.harmonicNum = statusMConf;
+        gDrvMetObj.harmonicAnalysisData.harmonicNum = (uint8_t)statusMConf;
         gDrvMetObj.harmonicAnalysisData.running = false;
 
         return true;
@@ -803,13 +764,15 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
     gDrvMetObj.ipcInterruptFlag = false;
 
     /* Disable IPC interrupts */
-    SYS_INT_SourceDisable(IPC1_IRQn);
+    (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
 	/* Clean the IPC interrupt flags */
     gDrvMetObj.integrationFlag = false;
 
     if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
+        uint32_t *pSrc;
+        uint32_t *pDst;
         uint32_t tmp;
 
         /* Assert reset of the coprocessor and its peripherals */
@@ -833,7 +796,9 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
 
         /* Copy the Metrology bin file to SRAM1 */
-        (void) memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
+        pSrc = (uint32_t *)gDrvMetObj.binStartAddress;
+        pDst = (uint32_t *)IRAM1_ADDR;
+        (void) memcpy(pDst, pSrc, gDrvMetObj.binSize);
     }
 
     /* Initialization of the interface with Metrology Lib */
@@ -841,10 +806,10 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
     gDrvMetObj.inUse = true;
     gDrvMetObj.integrationCallback = NULL;
 
-    (void) memset(&gDrvMetObj.metAccData, 0U, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
-    (void) memset(&gDrvMetObj.metHarData, 0U, sizeof(DRV_METROLOGY_REGS_HARMONICS));
-    (void) memset(&gDrvMetObj.calibrationData, 0U, sizeof(DRV_METROLOGY_CALIBRATION));
-    (void) memset(&gDrvMetObj.metAFEData, 0U, sizeof(DRV_METROLOGY_AFE_DATA));
+    (void) memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
+    (void) memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_REGS_HARMONICS));
+    (void) memset(&gDrvMetObj.calibrationData, 0, sizeof(DRV_METROLOGY_CALIBRATION));
+    (void) memset(&gDrvMetObj.metAFEData, 0, sizeof(DRV_METROLOGY_AFE_DATA));
 
     /* Initialization of the Metrology object */
     gDrvMetObj.status = DRV_METROLOGY_STATUS_HALT;
@@ -862,6 +827,8 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     DRV_METROLOGY_INIT *metInit = (DRV_METROLOGY_INIT *)init;
     /* MISRA C-2012 deviation block end */
     uint32_t tmp;
+    uint32_t *pSrc;
+    uint32_t *pDst;
 
     if ((gDrvMetObj.inUse == false) || (init == NULL))
     {
@@ -871,7 +838,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     /* Disable ICM : TBD -> icm_reset, disable ICM int, clear pending ICM */
 
     /* Disable IPC interrupts */
-    SYS_INT_SourceDisable(IPC1_IRQn);
+    (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Assert reset of the coprocessor and its peripherals */
     tmp = RSTC_REGS->RSTC_MR;
@@ -894,15 +861,17 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
     PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
 
     /* Copy the Metrology bin file to SRAM1 */
-    (void) memcpy((uint32_t *)IRAM1_ADDR, (uint32_t *)gDrvMetObj.binStartAddress, gDrvMetObj.binSize);
+    pSrc = (uint32_t *)gDrvMetObj.binStartAddress;
+    pDst = (uint32_t *)IRAM1_ADDR;
+    (void) memcpy(pDst, pSrc, gDrvMetObj.binSize);
 
     /* Initialization of the interface with Metrology Lib */
     gDrvMetObj.metRegisters = (MET_REGISTERS *)metInit->regBaseAddress;
 
-    (void) memset(&gDrvMetObj.metAccData, 0U, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
-    (void) memset(&gDrvMetObj.metHarData, 0U, sizeof(DRV_METROLOGY_REGS_HARMONICS));
-    (void) memset(&gDrvMetObj.calibrationData, 0U, sizeof(DRV_METROLOGY_CALIBRATION));
-    (void) memset(&gDrvMetObj.metAFEData, 0U, sizeof(DRV_METROLOGY_AFE_DATA));
+    (void) memset(&gDrvMetObj.metAccData, 0, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
+    (void) memset(&gDrvMetObj.metHarData, 0, sizeof(DRV_METROLOGY_REGS_HARMONICS));
+    (void) memset(&gDrvMetObj.calibrationData, 0, sizeof(DRV_METROLOGY_CALIBRATION));
+    (void) memset(&gDrvMetObj.metAFEData, 0, sizeof(DRV_METROLOGY_AFE_DATA));
 
     /* Initialization of the Metrology object */
     gDrvMetObj.status = DRV_METROLOGY_STATUS_HALT;
@@ -980,7 +949,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Close (void)
     }
 
     /* Disable IPC1 Interrupt Source */
-    SYS_INT_SourceDisable(IPC1_IRQn);
+    (void) SYS_INT_SourceDisable(IPC1_IRQn);
     NVIC_ClearPendingIRQ(IPC1_IRQn);
 
     /* Keep Metrology Lib in reset */
@@ -1047,7 +1016,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister (
 }
 
 DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister (
-    DRV_METROLOGY_HARMONIC_ANALYSIS_CALLBACK callback
+    DRV_METROLOGY_HARMONICS_CALLBACK callback
 )
 {
     if (callback == NULL)
@@ -1086,7 +1055,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             if (lDRV_METROLOGY_UpdateCalibrationValues() == true)
             {
                 /* Launch calibration callback */
-                if (gDrvMetObj.calibrationCallback)
+                if (gDrvMetObj.calibrationCallback != NULL)
                 {
                     gDrvMetObj.calibrationCallback(gDrvMetObj.calibrationData.result);
                 }
@@ -1131,7 +1100,10 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData (void)
 
 DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
 {
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
+      H3_MISRAC_2012_R_11_8_DR_1*/
     return (DRV_METROLOGY_REGS_CONTROL *)&gDrvMetControlDefault;
+   /* MISRAC 2012 deviation block end */
 }
 
 DRV_METROLOGY_REGS_ACCUMULATORS * DRV_METROLOGY_GetAccData (void)
@@ -1151,15 +1123,13 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl)
 {
-    uint32_t * pDstControl;
-    uint32_t * pSrcControl;
-
-    pDstControl = (uint32_t *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0;
-    pSrcControl = (uint32_t *)&pControl->FEATURE_CTRL0;
-
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
+      H3_MISRAC_2012_R_11_8_DR_1*/
     /* Keep State Control Register value */
-    (void) memcpy(pDstControl, pSrcControl, sizeof(DRV_METROLOGY_REGS_CONTROL) - sizeof(uint32_t));
-
+    (void) memcpy((void *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0,
+                  (void *)&pControl->FEATURE_CTRL0,
+                  sizeof(DRV_METROLOGY_REGS_CONTROL) - sizeof(uint32_t));
+   /* MISRAC 2012 deviation block end */
 }
 
 uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
@@ -1176,7 +1146,7 @@ uint32_t DRV_METROLOGY_GetEnergyValue(bool restartEnergy)
 
 uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type)
 {
-    int32_t value;
+    uint32_t value;
 
     value = gDrvMetObj.metAFEData.RMS[type];
 
@@ -1188,20 +1158,18 @@ uint32_t DRV_METROLOGY_GetRMSValue(DRV_METROLOGY_RMS_TYPE type)
         }
 
         /* Absolute value should be between 0 and 180 degrees */
-        while ((value > 18000000L) != 0U)
+        while ((value > 18000000UL) == true)
         {
-            value -= 36000000L;
+            value -= 36000000UL;
         }
     }
 
-    return (uint32_t)value;
+    return value;
 }
 
 DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
 {
     DRV_METROLOGY_RMS_SIGN sign;
-
-    sign = RMS_SIGN_POSITIVE;
 
     if ((type == RMS_PA) && (gDrvMetObj.metAFEData.afeEvents.paDir == 1U))
     {
@@ -1239,16 +1207,21 @@ DRV_METROLOGY_RMS_SIGN DRV_METROLOGY_GetRMSSign(DRV_METROLOGY_RMS_TYPE type)
     {
         sign = RMS_SIGN_NEGATIVE;
     }
+    else
+    {
+        sign = RMS_SIGN_POSITIVE;
+    }
 
     return sign;
 }
 
 void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
 {
+    double res;
     uint64_t m;
     DRV_METROLOGY_REGS_CONTROL *pControl;
-    uint32_t i = 0UL;
-    uint32_t reg;
+    uint32_t i;
+    uint32_t reg, gain;
 
     /* Store Calibration parameters */
     gDrvMetObj.calibrationData.freq = config->freq;
@@ -1256,13 +1229,15 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     pControl = &gDrvMetObj.calibrationData.metControlConf;
     *pControl = gDrvMetObj.metRegisters->MET_CONTROL;
 
-    m = 1000000000UL / (config->mc);
+    reg = 1000000000UL / (config->mc);
+    m = (uint64_t)reg;
     m = (m << GAIN_P_K_T_Q);
     m = m / 1000000UL;
+    reg = (uint32_t)m;
 
-    pControl->P_K_t = (uint32_t)m;
-    pControl->Q_K_t = (uint32_t)m;
-    pControl->I_K_t = (uint32_t)m;
+    pControl->P_K_t = reg;
+    pControl->Q_K_t = reg;
+    pControl->I_K_t = reg;
 
     reg = pControl->METER_TYPE;
     reg &= ~(METER_TYPE_SENSOR_TYPE_I_A_Msk | METER_TYPE_SENSOR_TYPE_I_B_Msk | METER_TYPE_SENSOR_TYPE_I_C_Msk);
@@ -1281,40 +1256,41 @@ void DRV_METROLOGY_SetConfiguration(DRV_METROLOGY_CONFIGURATION * config)
     reg |= ATSENSE_CTRL_24_27_I3_GAIN(config->gain);
     pControl->ATSENSE_CTRL_24_27 = reg;
 
+    gain = (uint32_t)config->gain;
+    gain = 1UL << gain;
     if (config->st == SENSOR_CT)
     {
-        double div;
-        double res;
+        double divisor;
 
-        m = config->tr * 1000000UL; /* improve accuracy * (ohm -> uohm) */
-        div = config->rl * 1000000UL; /* improve accuracy * (ohm -> uohm) */
-        div *= (1UL << config->gain);
-        res = m / div;
-        res *= (1UL << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t) res;
+        res = config->tr * 1000000.0; /* improve accuracy * (ohm -> uohm) */
+        divisor = config->rl * 1000000.0; /* improve accuracy * (ohm -> uohm) */
+        divisor *= (double)gain;
+        res = res / divisor;
     }
     else if (config->st == SENSOR_ROGOWSKI)
     {
-        double res;
-        double div;
+        double divisor;
 
-        res = 1000000UL / config->tr;
-        div = 60U / config->freq;
-        res = res / ((1UL << config->gain) * div);
-        res *= (1UL << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t) res;
+        res = 1000000.0 / config->tr;
+        divisor = 60.0 / config->freq;
+        divisor *= (double)gain;
+        res = res / divisor;
     }
     else if (config->st == SENSOR_SHUNT)
     {
-        m = 1000000UL; /* (uOhm -> Ohm) */
-        reg = (1U << config->gain) * config->rl;
-        m = m / reg; /* (ohm -> mohm) */
-        m = (m << GAIN_VI_Q); /* format Q22.10 */
-        i = (uint32_t) m;
+        double divisor;
+
+        divisor = (double)gain * config->rl;
+        res = 1000000.0 / divisor;
     }
-    else{
-        i = 0U;
+    else
+    {
+        res = 0.0;
     }
+
+    m = (uint64_t)res;
+    m = m << GAIN_VI_Q; /* format Q22.10 */
+    i = (uint32_t) m;
 
     pControl->K_IA = i;
     pControl->K_IB = i;
@@ -1347,15 +1323,15 @@ void DRV_METROLOGY_StartCalibration(void)
         pCalibrationData->numIntegrationPeriods = 4U;
 
         /* Increase accuracy of references for calibrating procedure */
-        pCalibrationData->references.aimIA *= 10000U;
-        pCalibrationData->references.aimVA *= 10000U;
-        pCalibrationData->references.angleA *= 1000U;
-        pCalibrationData->references.aimIB *= 10000U;
-        pCalibrationData->references.aimVB *= 10000U;
-        pCalibrationData->references.angleB *= 1000U;
-        pCalibrationData->references.aimIC *= 10000U;
-        pCalibrationData->references.aimVC *= 10000U;
-        pCalibrationData->references.angleC *= 1000U;
+        pCalibrationData->references.aimIA *= 10000.0;
+        pCalibrationData->references.aimVA *= 10000.0;
+        pCalibrationData->references.angleA *= 1000.0;
+        pCalibrationData->references.aimIB *= 10000.0;
+        pCalibrationData->references.aimVB *= 10000.0;
+        pCalibrationData->references.angleB *= 1000.0;
+        pCalibrationData->references.aimIC *= 10000.0;
+        pCalibrationData->references.aimVC *= 10000.0;
+        pCalibrationData->references.angleC *= 1000.0;
 
         /* Save FEATURE_CTRL0 register value, to be restored after calibration */
         pCalibrationData->featureCtrl0Backup = pMetControlRegs->FEATURE_CTRL0;
@@ -1368,12 +1344,13 @@ void DRV_METROLOGY_StartCalibration(void)
         pCalibrationData->dspAccUa = 0U;
         pCalibrationData->dspAccUb = 0U;
         pCalibrationData->dspAccUc = 0U;
-        pCalibrationData->dspAccPa = 0U;
-        pCalibrationData->dspAccPb = 0U;
-        pCalibrationData->dspAccPc = 0U;
-        pCalibrationData->dspAccQa = 0U;
-        pCalibrationData->dspAccQb = 0U;
-        pCalibrationData->dspAccQc = 0U;
+        pCalibrationData->dspAccUn = 0U;
+        pCalibrationData->dspAccPa = 0;
+        pCalibrationData->dspAccPb = 0;
+        pCalibrationData->dspAccPc = 0;
+        pCalibrationData->dspAccQa = 0;
+        pCalibrationData->dspAccQb = 0;
+        pCalibrationData->dspAccQc = 0;
 
         /* Initialize calibration registers to the default values */
         switch (pCalibrationData->references.lineId)
@@ -1402,6 +1379,7 @@ void DRV_METROLOGY_StartCalibration(void)
             default:
                 pMetControlRegs->FEATURE_CTRL0 = FEATURE_CTRL0_RZC_CHAN_SELECT(FEATURE_CTRL0_RZC_CHAN_SELECT_V1_Val) |
                         FEATURE_CTRL0_SYNCH(FEATURE_CTRL0_SYNCH_A_Val) | FEATURE_CTRL0_PHASE_A_EN_Msk;
+                break;
 
         }
 

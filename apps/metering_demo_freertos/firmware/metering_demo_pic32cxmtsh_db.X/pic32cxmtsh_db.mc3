@@ -95,7 +95,7 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.1.1"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.1.2"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
       <entry>
@@ -737,7 +737,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;691&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTSH_Development_Board&quot; x=&quot;14&quot; y=&quot;59&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;348&quot; y=&quot;168&quot;/&gt;
@@ -762,7 +763,6 @@
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;30&quot; y=&quot;145&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;630&quot; canvasWidth=&quot;691&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -8193,12 +8193,12 @@
          <hash>eb1fc577dda2e5ab9c11eb3ff8195c88477355a8b3d13c0a2aad54103cef0546</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>25f9a0ef6cf4cce454456c91cc5c99dd4c504f45745a503fcb6d2aff7688d91e</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
          <hash>dc572f54391c0407fc25db360d912fca9118cddae7bd2e3099eb13f18804e5a9</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
+         <hash>9ba815eca2b9d81176bdbe5b4c49b30fe41b9d93919fc6613ccb6d831594a71f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8226,15 +8226,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_regs.h</file>
-         <hash>9125fc05679c507ccfc6af4e33f85a3832c1a69ea125e4c182800654be821183</hash>
+         <hash>9aa421c5a3aa129f0d06034056c4c704e45173cd8af81116523ef242d2fc0f52</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_local.h</file>
-         <hash>f62d2a6c735e4506566bb2638afa142e9cb17086ca275017470407fcf78084d4</hash>
+         <hash>6666cab441475eb141271fdabef70212090e775965683e9103ddab8fa0ee49f5</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.h</file>
-         <hash>3c36b24b686c695d478a4954bebd88b8afa92581d613bacefb0fe493e75e24cf</hash>
+         <hash>44d000e7c4824a1cbe64fbc9055726bf1caa84380fed1a3cccf58653524e1d2e</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\src\sys_fs_media_manager_local.h</file>
@@ -8366,7 +8366,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>9988c525be1ff3cff7f5d80f0c42e824716ef8b24bc7cdfd6ec60fa1c221189a</hash>
+         <hash>1004e7d68e2a4d2302a27b077a902a760e8789a56c1de94f6a08dd4d78abdbd7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8558,7 +8558,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>1373f2630170377ac6fa06861711f488dbe0335360626bddc081b24b52e052ba</hash>
+         <hash>c12fb809ea451e1660167de0229f9e32780a77abe6d12a4b71b6d13f6f2d6414</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -8798,7 +8798,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\bin\core1_metlib.bin</file>
-         <hash>8d4136dbc7c0e487aded4163d92ae3b3693865abf98f49f95320a72ce74e0d43</hash>
+         <hash>7eaf759212f3c398badc75cceacb382edcba3759c6e219015afcbdbd09d4b1c2</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\sefc\plib_sefc0.c</file>
@@ -8806,7 +8806,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\tasks.c</file>
-         <hash>5b59747307a44eaed9153f558914a50457f986424d3cc8d5ace112e185f5eafd</hash>
+         <hash>91f6ef5c22d8cb06da20479a06ad47c28200e64a65ec3b237b3a3b89f4d49dfd</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\component\tc.h</file>
@@ -9174,7 +9174,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>e6d9e2671552ce0933ea3b77a9804eaa73409d69c5361669521087675e02ad0c</hash>
+         <hash>c7c78cb9d835eb3f3f6e96b7b60750bb8faa53f0248e0bf0d736cddf0d744c20</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
