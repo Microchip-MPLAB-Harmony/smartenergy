@@ -362,9 +362,6 @@
             </makeArtifact>
             <simage>DualCoreDemo_Core1</simage>
             <saddress>0x20080000</saddress>
-            <scextraargs>
-              <scextraarg>Manual</scextraarg>
-            </scextraargs>
           </sproject>
           <score>
             <scdebug>true</scdebug>

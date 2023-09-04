@@ -350,12 +350,15 @@ static uint32_t lDRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
     if (n < 0)
     {
         n = -n;
+        angle = (uint32_t)n;
+        angle |= 0x80000000UL;
+    }
+    else
+    {
+        angle = (uint32_t)n;
     }
 
-    angle = (uint32_t)n;
-    angle |= 0x80000000UL;
-
-    return (angle);
+    return angle;
 }
 
 static uint32_t lDRV_Metrology_GetPQEnergy(DRV_METROLOGY_ENERGY_TYPE id)
@@ -433,17 +436,22 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
 {
     double freq;
     int64_t correction_angle, divisor;
-    uint32_t measured_angle;
 
-    measured_angle = measured;
-    if ((measured_angle & 0x80000000UL) != 0UL)
+    if ((measured & 0x80000000UL) != 0UL)
     {
-        measured_angle = 0x80000000UL - measured_angle;
+        uint32_t measured_angle;
+        measured_angle = 0x7FFFFFFFUL & measured;
+        correction_angle = (int64_t)measured_angle;
+        correction_angle = -correction_angle;
+    }
+    else
+    {
+        correction_angle = (int64_t)measured;
     }
 
     /* Improve accuracy */
     reference *= 100.0;
-    correction_angle = (int64_t)measured_angle - (int64_t)reference;
+    correction_angle = correction_angle - (int64_t)reference;
 
     /* Correction angle should be between -180 and 180 degrees */
     while (correction_angle < (-18000000))
