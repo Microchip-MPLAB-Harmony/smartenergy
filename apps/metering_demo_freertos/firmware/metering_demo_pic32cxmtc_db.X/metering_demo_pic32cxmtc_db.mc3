@@ -1,5 +1,27 @@
 <config configName="pic32cxmtc_db" projectName="metering_demo_pic32cxmtc_db" configVersion="1.1" device="PIC32CX2051MTC128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
-   <usedPackages class="java.util.ArrayList"/>
+   <usedPackages class="java.util.ArrayList">
+      <package packageName="CMSIS-FreeRTOS" version="10.5.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="core" version="3.13.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="csp" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="gfx" version="3.12.2" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+   </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
          <string>BSP_PIC32CXMTC_Development_Board</string>
@@ -5768,7 +5790,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.h</file>
-         <hash>44d000e7c4824a1cbe64fbc9055726bf1caa84380fed1a3cccf58653524e1d2e</hash>
+         <hash>8d81687358ffc2e1a96b4efb3bd31984e32f0a377eb189a0ace8bf4e6e8a55db</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\stream_buffer.h</file>
@@ -5800,7 +5822,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>9ba815eca2b9d81176bdbe5b4c49b30fe41b9d93919fc6613ccb6d831594a71f</hash>
+         <hash>26d9b3050f02d26be2363a60c0cecbd9e45e4d1073a411a2b7147ab6a5ca12df</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
@@ -6372,7 +6394,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>c12fb809ea451e1660167de0229f9e32780a77abe6d12a4b71b6d13f6f2d6414</hash>
+         <hash>a1320ff9b9e36ab66868200b7ba43491dd51d73998d4478a8c2a1b9e1a68eb43</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\device_vectors.h</file>
@@ -6476,7 +6498,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>c078f3a3e1f9d4bfd608a593511e96ce0cb2e2835503f99d19b96e35fba99337</hash>
+         <hash>48db2a938d46a646c43f67bba6b2f6b0c16f3cbde0a985491b7673fa1f393763</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>

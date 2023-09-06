@@ -173,6 +173,7 @@ typedef struct {
     Specifies all data internally needed for the auto calibration process.
 
   Description:
+    - metControlConf. Dummy variable used in internal computations.
     - references. Calibration references. Client must be set the references before starting the calibration process.
     - freq. Stores the mains frequency passed as parameter in the DRV_METROLOGY_SetConfiguration() routine.
     - numIntegrationPeriods. Number of integration periods needed to complete the calibration process. It is set internally to 4.
@@ -365,7 +366,16 @@ typedef struct {
     Defines the status of the DRV_METROLOGY driver.
 
   Description:
-    This enumeration defines the status of the DRV_METROLOGY Driver.
+    This enumeration defines the status of the DRV_METROLOGY Driver:
+        - DRV_METROLOGY_STATUS_UNINITIALIZED: Metrology driver has not been initialized.
+        - DRV_METROLOGY_STATUS_READY: Metrology driver is ready to be used.
+        - DRV_METROLOGY_STATUS_HALT: Metrology driver has been initialized but not opened.
+        - DRV_METROLOGY_STATUS_WAITING_IPC: Metrology driver is waiting the init IPC interrupt 
+        from the metrology lib as part of the opening routine.
+        - DRV_METROLOGY_STATUS_INIT_DSP: IPC interrupt has been triggered indicating that DSP 
+        filters has been stabilized to full accuracy.
+        - DRV_METROLOGY_STATUS_RUNNING: Metrology library is running and periodic data 
+        acquisition is performed.
 
   Remarks:
     None.
@@ -382,29 +392,6 @@ typedef enum
     DRV_METROLOGY_STATUS_RUNNING = SYS_STATUS_READY_EXTENDED + 4U,
     DRV_METROLOGY_STATUS_ERROR = SYS_STATUS_ERROR,
 } DRV_METROLOGY_STATUS;
-
-/* Metrology Library State
-
-  Summary:
-    Identifies the state of the metrology library.
-
-  Description:
-    For further information about the state diagram, refer to DRV_METROLOGY_GetState() online documentation.
-
-  Remarks:
-    None.
-*/
-typedef enum {
-    DRV_METROLOGY_LIB_STATE_HALT = STATUS_STATUS_HALT,
-    DRV_METROLOGY_LIB_STATE_RESET = STATUS_STATUS_RESET,
-    DRV_METROLOGY_LIB_STATE_INIT_DSP = STATUS_STATUS_INIT_DSP,
-    DRV_METROLOGY_LIB_STATE_DSP_READY = STATUS_STATUS_DSP_READY,
-    DRV_METROLOGY_LIB_STATE_INIT_ATSENSE = STATUS_STATUS_INIT_ATSENSE,
-    DRV_METROLOGY_LIB_STATE_ATSENSE_READY = STATUS_STATUS_ATSENSE_READY,
-    DRV_METROLOGY_LIB_STATE_READY = STATUS_STATUS_READY,
-    DRV_METROLOGY_LIB_STATE_SETTLING = STATUS_STATUS_DSP_SETTLING,
-    DRV_METROLOGY_LIB_STATE_RUNNING = STATUS_STATUS_DSP_RUNNING
-} DRV_METROLOGY_LIB_STATE;
 
 /* Metrology Driver Initialization Data
 

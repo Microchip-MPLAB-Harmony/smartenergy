@@ -94,7 +94,7 @@ typedef enum {
 /* Metrology Driver Start mode
 
   Summary:
-    Describes how is the startup process.
+    Describes how the startup process is.
 
   Description:
     HARD mode implies a full reload of Core 1 application. SOFT mode does not
@@ -119,9 +119,62 @@ typedef enum {
     RMS_SIGN_NEGATIVE = 1,
 } DRV_METROLOGY_RMS_SIGN;
 
+// *****************************************************************************
+/* Metrology Callback Function Pointer
+
+  Summary:
+    Defines the data type and function signature for the Metrology driver
+    callback function.
+
+  Description:
+    The Metrology driver will call back the client's function with this signature 
+    when the IPC interrupt event has occurred.
+
+  Remarks:
+    None.
+*/
 typedef void (* DRV_METROLOGY_CALLBACK)(void);
+
+// *****************************************************************************
+/* Metrology Calibration Callback Function Pointer
+
+  Summary:
+    Defines the data type and function signature for the callback function of the 
+    calibration procedure.
+
+  Description:
+    The Metrology driver will call back the client's function with this signature 
+    when the Calibration procedure has been completed.
+
+  Parameters:
+    result  - Flag o indicate if at least one phase has been calibrated successfully. 
+    Otherwise none of the phases have been calibrated.
+
+  Remarks:
+    None.
+*/
 typedef void (* DRV_METROLOGY_CALIBRATION_CALLBACK) (bool result); 
+
+// *****************************************************************************
+/* Metrology Harmonics Callback Function Pointer
+
+  Summary:
+    Defines the data type and function signature for the callback function of the 
+    harmonics analysis.
+
+  Description:
+    The Metrology driver will call back the client's function with this signature 
+    when the Harmonics analysis has been completed.
+
+  Parameters:
+    harmonicNum  - The number of the harmonic that has been analyzed.
+
+  Remarks:
+    None.
+*/
 typedef void (* DRV_METROLOGY_HARMONICS_CALLBACK) (uint8_t harmonicNum);          
+
+// *****************************************************************************
 
 // *****************************************************************************
 // *****************************************************************************
@@ -221,7 +274,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize(SYS_MODULE_INIT * init, uint32_t resetCa
     </code>
 
   Remarks:
-    This routine must be called after DRV_METROLOGY_Initialize routine is called. 
+    DRV_METROLOGY_Initialize routine has to be called at some point before this routine is called.
 */
 SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init);
 
@@ -400,7 +453,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Start(void);
 
         (...)
 
-        DRV_METROLOGY_IntegrationCallbackRegister(_APP_METROLOGY_NewIntegrationCallback);
+        DRV_METROLOGY_IntegrationCallbackRegister(lAPP_METROLOGY_NewIntegrationCallback);
     </code>
 
   Remarks:
@@ -462,7 +515,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK
 
         (...)
 
-        DRV_METROLOGY_CalibrationCallbackRegister(_APP_METROLOGY_CalibrationCallback);
+        DRV_METROLOGY_CalibrationCallbackRegister(lAPP_METROLOGY_CalibrationCallback);
     </code>
 
   Remarks:
@@ -505,7 +558,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_CalibrationCallbackRegister(DRV_METROLOGY_CAL
 
         (...)
 
-        DRV_METROLOGY_HarmonicAnalysisCallbackRegister(_APP_METROLOGY_HarmonicAnalysisCallback);
+        DRV_METROLOGY_HarmonicAnalysisCallbackRegister(lAPP_METROLOGY_HarmonicAnalysisCallback);
     </code>
 
   Remarks:
@@ -521,18 +574,19 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
     Get the status of the metrology driver.  
 
   Description:
-    Metrology function state:
-        - 0 = HALT: Metrology module is halted.
-        - 1 = RESET: Resetting metrology module. 
-        - 2 = INIT_DSP: Initializing DSP filters.
-        - 3 = DSP_READY: DSP filters have been initialized.
-        - 4 = INIT_ATSENSE: Initializing ATSENSE.
-        - 5 = ATSENSE_READY: ATSENSE has been initialized.
-        - 6 = READY: ATSENSE temperature configuration & calibration data has been copied into output registers.
-        - 7 = DSP_SETTLING: waiting for DSP filters to stabilize to full accuracy.
-        - 8 = DSP_RUNNING: DSP filters have stabilized to full accuracy.
+    Metrology function status:
+        - DRV_METROLOGY_STATUS_UNINITIALIZED: Metrology driver has not been initialized.
+        - DRV_METROLOGY_STATUS_READY: Metrology driver is ready to be used.
+        - DRV_METROLOGY_STATUS_HALT: Metrology driver has been initialized but not opened.
+        - DRV_METROLOGY_STATUS_WAITING_IPC: Metrology driver is waiting the init IPC interrupt 
+        from the metrology lib as part of the opening routine.
+        - DRV_METROLOGY_STATUS_INIT_DSP: IPC interrupt has been triggered indicating that DSP 
+        filters has been stabilized to full accuracy.
+        - DRV_METROLOGY_STATUS_RUNNING: Metrology library is running and periodic data 
+        acquisition is performed.
  
-    For further information about the state diagram, refer to online documentation.
+    These status values are closely related to the metrology library states.
+    For further information about the metrology library state diagram, refer to online documentation.
 
   Precondition:
     None.
@@ -541,13 +595,13 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
     None.
 
   Returns:
-    Returns the metrology state. 
+    Returns the status of the metrology driver.
 
   Example:
     <code>
         case APP_METROLOGY_STATE_START:
         {
-            if (DRV_METROLOGY_GetLibState() == DRV_METROLOGY_LIB_STATE_READY)
+            if (DRV_METROLOGY_GetStatus() == DRV_METROLOGY_STATUS_READY)
             {
                 if (DRV_METROLOGY_Start() == DRV_METROLOGY_SUCCESS)
                 {
@@ -557,8 +611,6 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
                 {
                     app_metrologyData.state = APP_METROLOGY_STATE_ERROR;
                 }
-
-                vTaskDelay(10 / portTICK_PERIOD_MS);
             }
 
             break;
@@ -569,39 +621,6 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HarmonicAnalysisCallbackRegister(DRV_METROLOG
     None. 
 */
 DRV_METROLOGY_STATUS DRV_METROLOGY_GetStatus(void);
-
-// *****************************************************************************
-/* Function:
-    DRV_METROLOGY_STATUS * DRV_METROLOGY_GetStatusData (void);
-
-  Summary:
-    Get the pointer to the status registers of the metrology library application running on the second processor.  
-
-  Description:
-    The Metrology library generates primary 32-bit output measurement quantities for each measurement interval.
-    For a detailed description of the status registers, refer to "drv_metrology_regs.h" header file.
-
-  Precondition:
-    None.
-
-  Parameters:
-    None.
-
-  Returns:
-    Pointer to the 32-bit metrology output measurement quantities for each measurement interval. 
-
-  Example:
-    <code>
-        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
-        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
-        app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
-        app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
-    </code>
-
-  Remarks:
-    None. 
-*/
-DRV_METROLOGY_REGS_STATUS * DRV_METROLOGY_GetStatusData(void);
 
 /* Function:
     SYS_MODULE_OBJ DRV_METROLOGY_Tasks (
@@ -640,7 +659,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object);
 
 // *****************************************************************************
 /* Function:
-    DRV_METROLOGY_CONTROL * DRV_METROLOGY_GetControlData (void);
+    DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData (void);
 
   Summary:
     Get the pointer to the control registers of the metrology library application running on the second processor.  
@@ -772,6 +791,39 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault(void);
 
 // *****************************************************************************
 /* Function:
+    DRV_METROLOGY_REGS_STATUS * DRV_METROLOGY_GetStatusData (void);
+
+  Summary:
+    Get the pointer to the status registers of the metrology library application running on the second processor.  
+
+  Description:
+    The Metrology library generates primary 32-bit output measurement quantities for each measurement interval.
+    For a detailed description of the status registers, refer to "drv_metrology_regs.h" header file.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    Pointer to the 32-bit metrology output measurement quantities for each measurement interval. 
+
+  Example:
+    <code>
+        app_metrologyData.pMetControl = DRV_METROLOGY_GetControlData();
+        app_metrologyData.pMetStatus = DRV_METROLOGY_GetStatusData();
+        app_metrologyData.pMetAccData = DRV_METROLOGY_GetAccData();
+        app_metrologyData.pMetHarData = DRV_METROLOGY_GetHarData();
+    </code>
+
+  Remarks:
+    None. 
+*/
+DRV_METROLOGY_REGS_STATUS * DRV_METROLOGY_GetStatusData(void);
+
+// *****************************************************************************
+/* Function:
     DRV_METROLOGY_ACCUMULATORS * DRV_METROLOGY_GetAccData (void);
 
   Summary:
@@ -846,7 +898,7 @@ DRV_METROLOGY_REGS_HARMONICS * DRV_METROLOGY_GetHarData(void);
 
 // *****************************************************************************
 /* Function:
-    void DRV_METROLOGY_SetControl (DRV_METROLOGY_CONTROL * pControl);
+    void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl);
 
   Summary:
     Establishes the content of all control registers at once.  
@@ -867,7 +919,7 @@ DRV_METROLOGY_REGS_HARMONICS * DRV_METROLOGY_GetHarData(void);
     <code>
         void APP_METROLOGY_SetControlByDefault(void)
        {
-           DRV_METROLOGY_CONTROL *pSrc;
+           DRV_METROLOGY_REGS_CONTROL *pSrc;
 
            pSrc = DRV_METROLOGY_GetControlByDefault();
            DRV_METROLOGY_SetControl(pSrc);

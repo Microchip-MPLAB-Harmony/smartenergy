@@ -241,7 +241,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.fullCycleIntFlag = true;
 
-        if (gDrvMetObj.FullCycleCallback != NULL)
+        if (gDrvMetObj.fullCycleCallback != NULL)
         {
             gDrvMetObj.fullCycleCallback();
         }
@@ -253,7 +253,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.halfCycleIntFlag = true;
 
-        if (gDrvMetObj.HalfCycleCallback != NULL)
+        if (gDrvMetObj.halfCycleCallback != NULL)
         {
             gDrvMetObj.halfCycleCallback();
         }
@@ -265,7 +265,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.zeroCrossIntFlag = true;
 
-        if (gDrvMetObj.ZeroCrossCallback != NULL)
+        if (gDrvMetObj.zeroCrossCallback != NULL)
         {
             gDrvMetObj.zeroCrossCallback();
         }
@@ -277,7 +277,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.pulse0IntFlag = true;
 
-        if (gDrvMetObj.Pulse0Callback != NULL)
+        if (gDrvMetObj.pulse0Callback != NULL)
         {
             gDrvMetObj.pulse0Callback();
         }
@@ -289,7 +289,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.pulse1IntFlag = true;
 
-        if (gDrvMetObj.Pulse1Callback != NULL)
+        if (gDrvMetObj.pulse1Callback != NULL)
         {
             gDrvMetObj.pulse1Callback();
         }
@@ -301,7 +301,7 @@ void IPC1_Handler (void)
     {
         gDrvMetObj.pulse2IntFlag = true;
 
-        if (gDrvMetObj.Pulse2Callback != NULL)
+        if (gDrvMetObj.pulse2Callback != NULL)
         {
             gDrvMetObj.pulse2Callback();
         }
