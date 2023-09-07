@@ -79,25 +79,26 @@ extern uint8_t plc_phy_bin2_end;
 // Section: Macro Definitions
 // *****************************************************************************
 // *****************************************************************************
-/* G3 Bandplan */
+
+/* G3-PLC Bandplan */
 #define G3_CEN_A                                   0U
 #define G3_CEN_B                                   1U
 #define G3_FCC                                     2U
 #define G3_ARIB                                    3U
 #define G3_INVALID                                 0xFFU
 
-/* Number of carriers for Cenelec-A bandplan */
+/* Number of carriers for CENELEC-A bandplan */
 #define NUM_CARRIERS_CENELEC_A                     36U
-/* Number of carriers for Cenelec-B bandplan */
+/* Number of carriers for CENELEC-B bandplan */
 #define NUM_CARRIERS_CENELEC_B                     16U
 /* Number of carriers for FCC bandplan */
 #define NUM_CARRIERS_FCC                           72U
 /* Number of carriers for ARIB bandplan */
 #define NUM_CARRIERS_ARIB                          54U
 
-/* Subbands for Cenelec-A bandplan */
+/* Subbands for CENELEC-A bandplan */
 #define NUM_SUBBANDS_CENELEC_A                     6U
-/* Subbands for Cenelec-B bandplan */
+/* Subbands for CENELEC-B bandplan */
 #define NUM_SUBBANDS_CENELEC_B                     4U
 /* Subbands for FCC bandplan */
 #define NUM_SUBBANDS_FCC                           24U
@@ -113,7 +114,7 @@ extern uint8_t plc_phy_bin2_end;
 /* ARIB Band Plan (155 - 404 Khz) */
 #define PLC_ARIB                                   3U
       
-/* Tone Map size for Cenelec(A,B) bandplan */
+/* Tone Map size for CENELEC-A/B bandplan */
 #define TONE_MAP_SIZE_CENELEC                      1U
 /* Tone Map size for FCC bandplan */
 #define TONE_MAP_SIZE_FCC                          3U
@@ -153,19 +154,21 @@ extern uint8_t plc_phy_bin2_end;
 // *****************************************************************************
 
 // *****************************************************************************
-/* G3 PHY Information Base (PIBs)
+/* G3-PLC PHY Information Base (PIBs)
 
-   Summary
+  Summary:
     The list of all available PIB attributes.
 
-   Description
-    The G3 FW stack supports all the mandatory attributes of the PLC Information 
-    Base (PIB) defined in the G3 specification. In addition, Microchip has added 
-    several proprietary PIB attributes to support extra functionalities. 
-    The list of all available PIB attributes can be found in this file.
+  Description:
+    The G3-PLC PHY layer supports all the mandatory attributes of the PHY
+    Information Base (PIB) defined in the G3-PLC specification. In addition,
+    Microchip has added several proprietary PIB attributes to support extra
+    functionalities.
+ 
+    The list of all available PIB attributes can be found in this data type.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 
 typedef enum {
@@ -260,13 +263,13 @@ typedef enum {
 } DRV_PLC_PHY_ID;
 
 // *****************************************************************************
-/* G3 Modulation types
+/* G3-PLC Modulation types
 
-   Summary
-    The list of all types of modulation supported by G3 spec.
+  Summary:
+    The list of all types of modulation supported by G3-PLC spec.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef enum {
   MOD_TYPE_BPSK = 0,
@@ -276,13 +279,13 @@ typedef enum {
 }DRV_PLC_PHY_MOD_TYPE;
 
 // *****************************************************************************
-/* G3 Modulation schemes
+/* G3-PLC Modulation schemes
 
-   Summary
-    The list of all modulation schemes supported by G3 spec.
+  Summary:
+    The list of all modulation schemes supported by G3-PLC spec.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef enum {
   MOD_SCHEME_DIFFERENTIAL = 0,
@@ -290,13 +293,13 @@ typedef enum {
 }DRV_PLC_PHY_MOD_SCHEME;
 
 // *****************************************************************************
-/* G3 Frame Delimiter Types
+/* G3-PLC Frame Delimiter Types
 
-   Summary
-    The list of all delimiter types supported by G3 spec.
+  Summary:
+    The list of all delimiter types supported by G3-PLC spec.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef enum {
   DT_SOF_NO_RESP = 0,
@@ -316,13 +319,14 @@ typedef enum {
 </#if>
 
 // *****************************************************************************
-/* G3 Result values of a previous transmission
+/* G3-PLC Result values of a previous transmission
 
-   Summary
-    This list involves all available results from MCHP implementation
+  Summary:
+    This list provides all available transimission results in MCHP
+    implementation.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef enum {
   /* Transmission result: already in process */
@@ -349,9 +353,11 @@ typedef enum {
   DRV_PLC_PHY_TX_RESULT_INV_DT = 10,
   /* Transmission result: transmission cancelled */
   DRV_PLC_PHY_TX_CANCELLED = 11,
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
+<#if DRV_PLC_MODE == "PL460">
   /* Transmission result: high temperature error */
   DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_120 = 12,
+</#if>
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
   /* Transmission result: high temperature warning */
   DRV_PLC_PHY_TX_RESULT_HIGH_TEMP_110 = 13,
 </#if>
@@ -368,14 +374,14 @@ typedef enum {
 /* MISRA C-2012 deviation block end */
 
 // *****************************************************************************
-/* G3 Tone map response data
+/* G3-PLC Tone map response data
 
-   Summary
-    This struct includes modulation type, modulation scheme and Tone Map data
+  Summary:
+    This struct includes modulation type, modulation scheme and Tone Map data.
 
-   Remarks:
+  Remarks:
     For more information about Tone Map Response functionality, please refer to
-    G3 Specification
+    G3-PLC Specification.
 */
 typedef struct {
   /* Modulation type */
@@ -387,14 +393,14 @@ typedef struct {
 } DRV_PLC_PHY_TONE_MAP_RSP;
 
 // *****************************************************************************
-/* G3 maximum PSDU length parameters data
+/* G3-PLC maximum PSDU length parameters data
 
-   Summary
+  Summary:
     This struct includes the parameters used for the maximum PSDU length
     computation.
 
-   Remarks:
-    This struct is related to PLC_ID_MAX_PSDU_LEN_PARAMS
+  Remarks:
+    This struct is related to PLC_ID_MAX_PSDU_LEN_PARAMS.
 */
 typedef struct {
   /* Modulation type */
@@ -408,13 +414,14 @@ typedef struct {
 } DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS;
 
 // *****************************************************************************
-/* G3 Transmission setup data
+/* G3-PLC Transmission parameters data
 
-   Summary
-    This struct includes all information to describe any transmissions.
+  Summary:
+    This struct includes all the parameters needed to request a G3-PLC PHY
+    transmission.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef struct __attribute__((packed, aligned(1))) {
   /* Pointer to data buffer to transmit */
@@ -444,14 +451,13 @@ typedef struct __attribute__((packed, aligned(1))) {
 } DRV_PLC_PHY_TRANSMISSION_OBJ;
 
 // *****************************************************************************
-/* G3 Result of a transmission
+/* G3-PLC Result of a transmission
 
-   Summary
-    This struct includes all information to describe any result of a previous 
-    transmission.
+  Summary:
+    This struct includes all the parameters provided in transmission confirm.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef struct {
   /* Instant when frame transmission ended referred to 1us PHY counter */
@@ -463,13 +469,13 @@ typedef struct {
 } DRV_PLC_PHY_TRANSMISSION_CFM_OBJ;
 
 // *****************************************************************************
-/* G3 Reception parameters
+/* G3-PLC Reception parameters
 
-   Summary
-    This struct includes all information to describe any new received message.
+  Summary:
+    This struct includes all the parameters provided for a received message.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef struct __attribute__((packed, aligned(1))) {
    /* Pointer to received data buffer */
@@ -531,13 +537,13 @@ typedef struct __attribute__((packed, aligned(1))) {
 } DRV_PLC_PHY_RECEPTION_OBJ;
 
 // *****************************************************************************
-/* G3 PHY Information Base (PIB)
+/* G3-PLC PHY Information Base (PIB)
 
-   Summary
+  Summary:
     This struct includes all information to access any defined PIB.
 
-   Remarks:
-    None
+  Remarks:
+    None.
 */
 typedef struct {
   /* Pointer to PIB data */

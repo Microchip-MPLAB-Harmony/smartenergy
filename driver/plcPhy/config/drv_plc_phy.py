@@ -480,7 +480,7 @@ def includeBinFile(plcBand):
 def updateBinFiles():
     dict = {}
     removeAllBinFiles()
-    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE") == "G3") :
+    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE") == "G3-PLC") :
         g3_band = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND")
         includeBinFile(g3_band)
         setPlcBandInUse(g3_band)
@@ -667,7 +667,7 @@ def updateShowCoupSettings(symbol, event):
     global plcCoupPRIMESettings
     global plcCoupG3Settings
 
-    if (event["value"] == "G3"):
+    if (event["value"] == "G3-PLC"):
         plcCoupG3Settings.setVisible(True)
         plcCoupPRIMESettings.setVisible(False)
     else :
@@ -1302,12 +1302,12 @@ def instantiateComponent(plcComponent):
     
     ##### PLC Profile Selector  ####################################################
 
-    plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3", "PRIME"])
+    plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3-PLC", "PRIME"])
     plcProfile.setLabel("PLC Profile")
-    plcProfile.setDefaultValue("G3")
+    plcProfile.setDefaultValue("G3-PLC")
     plcProfile.setHelp(plc_phy_helpkeyword)
 
-    ##### Coupling Settings : G3  ####################################################
+    ##### Coupling Settings : G3-PLC ###############################################
 
     updBinFilesCtrl = plcComponent.createBooleanSymbol("DRV_PLC_UPD_BIN_FILES", None)
     updBinFilesCtrl.setLabel("updBinFilesCtrl")

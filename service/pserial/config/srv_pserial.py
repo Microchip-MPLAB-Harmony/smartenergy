@@ -75,7 +75,7 @@ def setProfile(symbol, event):
     else:
         pSerialSourceFilePrime.setEnabled(False)
         pSerialSourceFileG3.setEnabled(True)
-        print ("pSerial as G3 mode")
+        print ("pSerial as G3-PLC mode")
 
 def instantiateComponent(pSerialComponentCommon):
     
@@ -89,10 +89,10 @@ def instantiateComponent(pSerialComponentCommon):
     global pSerialPLCProfile
     pSerialPLCProfile = pSerialComponentCommon.createKeyValueSetSymbol("SRV_PSER_PLC_PROFILE", None)
     pSerialPLCProfile.setLabel("PLC Profile")
-    pSerialPLCProfile.addKey("G3_CEN_A", "G3_CEN_A", "G3 CENELEC-A")
-    pSerialPLCProfile.addKey("G3_CEN_B", "G3_CEN_B", "G3 CENELEC-B")
-    pSerialPLCProfile.addKey("G3_FCC", "G3_FCC", "G3 FCC")
-    # pSerialPLCProfile.addKey("G3_ARIB", "G3_ARIB", "G3 ARIB")
+    pSerialPLCProfile.addKey("G3_CEN_A", "G3_CEN_A", "G3-PLC CENELEC-A")
+    pSerialPLCProfile.addKey("G3_CEN_B", "G3_CEN_B", "G3-PLC CENELEC-B")
+    pSerialPLCProfile.addKey("G3_FCC", "G3_FCC", "G3-PLC FCC")
+    # pSerialPLCProfile.addKey("G3_ARIB", "G3_ARIB", "G3-PLC ARIB")
     pSerialPLCProfile.addKey("PRIME", "PRIME", "PRIME")
     pSerialPLCProfile.setDisplayMode("Description")
     pSerialPLCProfile.setOutputMode("Value")

@@ -500,7 +500,7 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
     </code>
 
   Remarks:
-    This function is only available in G3 PLC profile.
+    This function is only available in G3-PLC profile.
 */
 void SRV_PSNIFFER_ConvertToneMask(uint8_t* pToneMaskDst, uint8_t* pToneMaskSrc);
 

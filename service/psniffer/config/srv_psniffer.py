@@ -73,7 +73,7 @@ def setProfile(symbol, event):
     else:
         pSnifferSourceFilePrime.setEnabled(False)
         pSnifferSourceFileG3.setEnabled(True)
-        print ("pSniffer as G3 mode")
+        print ("pSniffer as G3-PLC mode")
 
 def instantiateComponent(pSnifferComponentCommon):
     
@@ -87,10 +87,10 @@ def instantiateComponent(pSnifferComponentCommon):
     global pSnifferPLCProfile
     pSnifferPLCProfile = pSnifferComponentCommon.createKeyValueSetSymbol("SRV_PSNF_PLC_PROFILE", None)
     pSnifferPLCProfile.setLabel("PLC Profile")
-    pSnifferPLCProfile.addKey("G3_CEN_A", "G3_CEN_A", "G3 CENELEC-A")
-    pSnifferPLCProfile.addKey("G3_CEN_B", "G3_CEN_B", "G3 CENELEC-B")
-    pSnifferPLCProfile.addKey("G3_FCC", "G3_FCC", "G3 FCC")
-    # pSnifferPLCProfile.addKey("G3_ARIB", "G3_ARIB", "G3 ARIB")
+    pSnifferPLCProfile.addKey("G3_CEN_A", "G3_CEN_A", "G3-PLC CENELEC-A")
+    pSnifferPLCProfile.addKey("G3_CEN_B", "G3_CEN_B", "G3-PLC CENELEC-B")
+    pSnifferPLCProfile.addKey("G3_FCC", "G3_FCC", "G3-PLC FCC")
+    # pSnifferPLCProfile.addKey("G3_ARIB", "G3_ARIB", "G3-PLC ARIB")
     pSnifferPLCProfile.addKey("PRIME", "PRIME", "PRIME")
     pSnifferPLCProfile.setDisplayMode("Description")
     pSnifferPLCProfile.setOutputMode("Value")

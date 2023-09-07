@@ -67,7 +67,10 @@ def instantiateComponent(rSnifferComponentCommon):
     plcComponent = Database.getComponentByID("drvPlcPhy")
     if plcComponent != None:
         protocol = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
-        rSnifferProtocol.setValue(protocol)
+        if protocol == "G3-PLC":
+            rSnifferProtocol.setValue("G3")
+        else:
+            rSnifferProtocol.setValue("PRIME")
     else:
         plcComponent = Database.getComponentByID("drvG3MacRt")
         if plcComponent != None:
