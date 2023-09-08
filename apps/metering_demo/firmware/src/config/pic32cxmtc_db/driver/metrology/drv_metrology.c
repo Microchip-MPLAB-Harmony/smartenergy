@@ -349,6 +349,7 @@ static uint32_t lDRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
 
     if (n < 0)
     {
+        /* Get the positive value and set the MSB */
         n = -n;
         angle = (uint32_t)n;
         angle |= 0x80000000UL;
@@ -434,8 +435,8 @@ static void lDRV_Metrology_IpcInitialize (void)
 
 static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, double reference)
 {
-    double freq;
-    int64_t correction_angle, divisor;
+    double bams, phase_correction;
+    int64_t correction_angle;
 
     if ((measured & 0x80000000UL) != 0UL)
     {
@@ -449,7 +450,7 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
         correction_angle = (int64_t)measured;
     }
 
-    /* Improve accuracy */
+    /* Improved angle accuracy */
     reference *= 100.0;
     correction_angle = correction_angle - (int64_t)reference;
 
@@ -464,14 +465,12 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
         correction_angle -= 36000000;
     }
 
-    freq = gDrvMetObj.calibrationData.freq * 10000.0;
-    divisor = (int64_t)freq;
-    correction_angle = (correction_angle * 7158278827L) / divisor;
-    correction_angle = (correction_angle + 50) / 100;
-    if (correction_angle < 0)
-    {
-        correction_angle = -correction_angle;
-    }
+    correction_angle = correction_angle * (60.00 / gDrvMetObj.calibrationData.freq);
+    bams = (double)correction_angle;
+    bams = bams / 18000000.00; /* get bams and remove precision adjust */
+
+    phase_correction = bams * 2147483648.00; /* sQ0.31 */
+    correction_angle = (int64_t)phase_correction;
 
     return (uint32_t)correction_angle;
 }

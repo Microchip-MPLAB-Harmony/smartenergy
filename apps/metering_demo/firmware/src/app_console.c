@@ -591,7 +591,7 @@ static void _commandCALT(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
         parseError = true;
     }
-    else if(_getCalibrationValue(argv[7], "UCc", &newCalibration.aimVC) == false)
+    else if(_getCalibrationValue(argv[7], "UC", &newCalibration.aimVC) == false)
     {
         parseError = true;
     }

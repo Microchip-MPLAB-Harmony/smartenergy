@@ -931,7 +931,7 @@ def instantiateComponent(metComponentCommon):
     drvMetAsmPathSetting.setCategory("C32-AS")
     drvMetAsmPathSetting.setKey("extra-include-directories-for-assembler")
     drvMetAsmPathSetting.setValue("../src/config/" + configName + "/driver/metrology/bin")
-    drvMetAsmPathSetting.setAppend(False, None)
+    drvMetAsmPathSetting.setAppend(True, ";")
 
     #### Binary MET Files ######################################################
 

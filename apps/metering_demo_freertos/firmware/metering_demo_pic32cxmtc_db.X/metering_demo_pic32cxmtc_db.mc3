@@ -1,26 +1,5 @@
 <config configName="pic32cxmtc_db" projectName="metering_demo_pic32cxmtc_db" configVersion="1.1" device="PIC32CX2051MTC128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList">
-      <package packageName="CMSIS-FreeRTOS" version="10.5.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="core" version="3.13.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="csp" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="gfx" version="3.12.2" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
    </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -624,7 +603,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTC_Development_Board&quot; x=&quot;18&quot; y=&quot;51&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;FreeRTOS&quot; x=&quot;328&quot; y=&quot;160&quot;/&gt;
@@ -649,7 +629,6 @@
         &lt;ElementPosition dnOrder=&quot;20&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -5822,7 +5801,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>26d9b3050f02d26be2363a60c0cecbd9e45e4d1073a411a2b7147ab6a5ca12df</hash>
+         <hash>3916005c93e169f9723034dfd66c9cc7feb12f3dadfc0f03f4faca337de24c13</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
@@ -6498,7 +6477,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\definitions.h</file>
-         <hash>48db2a938d46a646c43f67bba6b2f6b0c16f3cbde0a985491b7673fa1f393763</hash>
+         <hash>4cca7293cb69bdcbb32f89270e6f4de9828919c46379e9efea62df663f1c2db0</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\sst26\drv_sst26_definitions.h</file>
@@ -6566,7 +6545,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\gfx\driver\controller\slcdc\drv_gfx_slcdc.c</file>
-         <hash>a0557c8df778d0df6b288e4cfe92987016312559a33f1346c2d2f920449e1373</hash>
+         <hash>e5031d82e4cac700540eaf01a0b94c85b574de3fca8ad90c87d18f72a15b6f76</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\semphr.h</file>

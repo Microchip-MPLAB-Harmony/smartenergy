@@ -1,26 +1,5 @@
 <config configName="pic32cxmtsh_db" projectName="pic32cxmtsh_db" configVersion="1.1" device="PIC32CX2051MTSH128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList">
-      <package packageName="CMSIS-FreeRTOS" version="10.5.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="core" version="3.13.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="csp" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="gfx" version="3.12.2" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
    </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -8215,12 +8194,12 @@
          <hash>eb1fc577dda2e5ab9c11eb3ff8195c88477355a8b3d13c0a2aad54103cef0546</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>26d9b3050f02d26be2363a60c0cecbd9e45e4d1073a411a2b7147ab6a5ca12df</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
          <hash>dc572f54391c0407fc25db360d912fca9118cddae7bd2e3099eb13f18804e5a9</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
+         <hash>3916005c93e169f9723034dfd66c9cc7feb12f3dadfc0f03f4faca337de24c13</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8688,7 +8667,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\gfx\driver\controller\slcdc\drv_gfx_slcdc.c</file>
-         <hash>a0557c8df778d0df6b288e4cfe92987016312559a33f1346c2d2f920449e1373</hash>
+         <hash>e5031d82e4cac700540eaf01a0b94c85b574de3fca8ad90c87d18f72a15b6f76</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ff.h</file>
@@ -9196,7 +9175,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>e6d9e2671552ce0933ea3b77a9804eaa73409d69c5361669521087675e02ad0c</hash>
+         <hash>0499175062f89eb013d5e47dededc40f96505501ad34ca28c5489dd8bc1c9c48</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
