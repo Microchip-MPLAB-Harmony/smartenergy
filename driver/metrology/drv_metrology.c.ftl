@@ -550,9 +550,9 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     {
         correction_angle -= 36000000;
     }
-    
-    correction_angle = correction_angle * (60.00 / gDrvMetObj.calibrationData.freq);
+
     bams = (double)correction_angle;
+    bams = bams * (60.00 / gDrvMetObj.calibrationData.freq);
     bams = bams / 18000000.00; /* get bams and remove precision adjust */
     
     phase_correction = bams * 2147483648.00; /* sQ0.31 */

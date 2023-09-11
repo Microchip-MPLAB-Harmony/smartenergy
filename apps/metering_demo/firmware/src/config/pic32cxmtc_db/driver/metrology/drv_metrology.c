@@ -228,7 +228,7 @@ void IPC1_Handler (void)
     }
 
     IPC1_REGS->IPC_ICCR = status;
-
+    
     gDrvMetObj.ipcInterruptFlag = true;
 
 }
@@ -465,13 +465,13 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
         correction_angle -= 36000000;
     }
 
-    correction_angle = correction_angle * (60.00 / gDrvMetObj.calibrationData.freq);
     bams = (double)correction_angle;
+    bams = bams * (60.00 / gDrvMetObj.calibrationData.freq);
     bams = bams / 18000000.00; /* get bams and remove precision adjust */
-
+    
     phase_correction = bams * 2147483648.00; /* sQ0.31 */
     correction_angle = (int64_t)phase_correction;
-
+    
     return (uint32_t)correction_angle;
 }
 
@@ -1107,7 +1107,7 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData (void)
 
 DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
       H3_MISRAC_2012_R_11_8_DR_1*/
     return (DRV_METROLOGY_REGS_CONTROL *)&gDrvMetControlDefault;
    /* MISRAC 2012 deviation block end */
@@ -1130,7 +1130,7 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
       H3_MISRAC_2012_R_11_8_DR_1*/
     /* Keep State Control Register value */
     (void) memcpy((void *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0,
