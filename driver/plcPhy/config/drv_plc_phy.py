@@ -1179,7 +1179,7 @@ def instantiateComponent(plcComponent):
     plcAsmPathSetting.setCategory("C32-AS")
     plcAsmPathSetting.setKey("extra-include-directories-for-assembler")
     plcAsmPathSetting.setValue("../src/config/" + configName + "/driver/plc/phy/bin")
-    plcAsmPathSetting.setAppend(False, None)
+    plcAsmPathSetting.setAppend(True, ";")
 
     #### Miscellanea ###########################################################
 

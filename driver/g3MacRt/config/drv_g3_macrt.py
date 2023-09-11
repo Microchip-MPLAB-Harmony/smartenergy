@@ -1015,7 +1015,7 @@ def instantiateComponent(g3MacRtComponent):
     plcAsmPathSetting.setCategory("C32-AS")
     plcAsmPathSetting.setKey("extra-include-directories-for-assembler")
     plcAsmPathSetting.setValue("../src/config/" + configName + "/driver/plc/g3MacRt/bin")
-    plcAsmPathSetting.setAppend(False, None)
+    plcAsmPathSetting.setAppend(True, ";")
 
     #### Miscellanea ###########################################################
 
