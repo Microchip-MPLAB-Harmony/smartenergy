@@ -330,6 +330,11 @@ static void _calibrationCallback(bool result)
 // *****************************************************************************
 // COMMANDS
 // *****************************************************************************
+static inline void _removePrompt(void)
+{
+    SYS_CMD_MESSAGE("\b");
+}
+
 static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
 {
     if (argc == 2) 
@@ -361,6 +366,9 @@ static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         app_consoleData.state = APP_CONSOLE_STATE_PRINT_HELP;
         app_consoleData.cmdNumToShowHelp = app_consoleData.numCommands;
         app_consoleData.pCmdDescToShowHelp = (SYS_CMD_DESCRIPTOR *)appCmdTbl;
+
+        // Remove Prompt symbol
+        _removePrompt();
     }
     
     /* Show console communication icon */
@@ -1713,11 +1721,6 @@ static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
 }
 
-static inline void _removePrompt(void)
-{
-    SYS_CMD_MESSAGE("\b");
-}
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Initialization and State Machine Functions
@@ -2821,9 +2824,6 @@ void APP_CONSOLE_Tasks ( void )
         {
             uint8_t idx;
             uint8_t idxMax = 2;
-            
-            // Remove Prompt symbol
-            _removePrompt();
 
             if (app_consoleData.cmdNumToShowHelp > 0)
             {
