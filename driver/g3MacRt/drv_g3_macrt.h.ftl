@@ -79,7 +79,8 @@
     Defines the status of the G3 MAC RT driver.
 
   Description:
-    This enumeration defines the status of the G3 MAC RT Driver.
+    This data type defines the status of the G3 MAC RT Driver. It is used as
+    output of DRV_G3_MACRT_Status.
 
   Remarks:
     None.
@@ -107,6 +108,9 @@ typedef enum
     This data type defines the G3 MAC RT Driver transfer errors. This will be
     used to indicate the error of an SPI transfer.
 
+    It is used as parameter of the callback function defined by
+    DRV_G3_MACRT_EXCEPTION_CALLBACK.
+
   Remarks:
     None.
 */
@@ -122,14 +126,14 @@ typedef enum
 } DRV_G3_MACRT_EXCEPTION; 
 
 // *****************************************************************************
-/* G3 MAC RT Driver Transmission Confirm Event Handler Function Pointer
+/* G3 MAC RT Driver Initialization Event Handler Function Pointer
 
   Summary:
-    Pointer to a G3 MAC RT Driver Transmission Confirm Event handler function.
+    Pointer to a G3 MAC RT Driver Initialization Event handler function.
 
   Description:
     This data type defines the required function signature for the G3 MAC RT
-    driver transmission confirm event handling callback function. A client must
+    driver initialization event handling callback function. A client must
     register a pointer using the callback register function whose function
     signature (parameter and return value types) match the types specified by
     this function pointer in order to receive transfer related event calls back
@@ -139,33 +143,24 @@ typedef enum
     implementation is provided.
 
   Parameters:
-    cfmObj - Pointer to the object containing any data necessary to identify the
-             result of the last transmission.
+    initResult - Initialization result (true if success, false if error).
 
   Returns:
     None.
 
   Example:
     <code>
-    void APP_MyTXCfmEventHandler( MAC_RT_TX_CFM_OBJ *cfmObj )
+    void APP_MyInitEventHandler( bool initResult )
     {
-        switch(cfmObj->status)
+        if (initResult)
         {
-            case MAC_RT_STATUS_SUCCESS:
-                break;   
-            case MAC_RT_STATUS_CHANNEL_ACCESS_FAILURE:
-                break;   
-            case MAC_RT_STATUS_NO_ACK:
-                break;
+
         }
     }
     </code>
 
   Remarks:
-    - If the status field is MAC_RT_STATUS_SUCCESS, it means that the data was
-      transferred successfully.
-
-    - Otherwise, it means that the data was not transferred successfully.
+    None.
 
 */
 
@@ -443,7 +438,7 @@ typedef void ( *DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK )( uint16_t length );
     <code>
     void APP_MyExceptionEventHandler( DRV_G3_MACRT_EXCEPTION exception )
     {
-        switch (exceptionObj) 
+        switch (exception) 
         {
             case DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY:
                 break;
@@ -1599,8 +1594,8 @@ void DRV_G3_MACRT_SleepIndCallbackRegister(
     handle.
 
   Parameters:
-    handle - Object handle for the specified driver instance (returned from
-             DRV_G3_MACRT_Initialize)
+    handle - A valid open-instance handle, returned from the driver's open
+             routine.
     enable - Set true to enter in sleep mode. Set false to exit from sleep
              mode.
 
@@ -1640,7 +1635,7 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
     This function allows a client to enable or disable the PLC tranmission.
     If there is any transmission on going, it will be cancelled and notified
     through the TX confirmation callback.
-    
+
   Precondition:
     DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
     handle.

@@ -349,6 +349,13 @@ typedef enum {
   Summary:
     Tone Map definition supported by G3-PLC spec.
 
+  Description:
+    This data type defines the Tone Map (dynamic notching) supported by G3-PLC
+    spec.
+
+    Each bit corresponds to a sub-band of carriers and it indicates if such
+    carriers carry message data (1) or pseudo-random data (0).
+
   Remarks:
     None.
 */
@@ -361,6 +368,13 @@ typedef struct {
 
   Summary:
     Tone Mask definition supported by G3-PLC spec.
+
+  Description:
+    This data type defines the Tone Mask (static notching) supported by G3-PLC
+    spec.
+
+    Each bit corresponds to a sub-carriers and it indicates if it carries
+    energy (0) or not (1).
 
   Remarks:
     None.
@@ -455,7 +469,7 @@ typedef struct {
 /* G3 MAC Address
 
   Summary:
-    This struct includes addressing mode and address.
+    This struct includes addressing mode and address (short or extended).
 
   Remarks:
     The format of the address depends on the addressing mode field.
@@ -475,7 +489,7 @@ typedef struct {
 /* G3 MAC Frame Type
 
   Summary:
-    The list of frame types supported by G3 spec.
+    The list of MAC frame types supported by G3 spec.
 
   Remarks:
     For more information, please refer to G3 Specification.
@@ -509,7 +523,7 @@ typedef enum {
 /* G3 MAC DSN Table entry
 
   Summary:
-    This struct includes DSN Table entry definition.
+    This data type defines a G3 MAC DSN Table entry.
 
   Remarks:
     For more information, please refer to G3 Specification.
@@ -524,7 +538,7 @@ typedef struct {
 /* G3 MAC POS entry
 
   Summary:
-    This struct includes POS entry definition.
+    This data type defines a G3 MAC POS entry.
 
    Remarks:
     For more information, please refer to G3 Specification.
@@ -539,7 +553,7 @@ typedef struct __attribute__((packed)) {
 /* G3-PLC TX coefficients
 
   Summary:
-    This struct includes TX coefficients definition.
+    This data type defines the G3-PLC TX coefficients.
 
   Remarks:
     For more information, please refer to G3-PLC Specification.
@@ -562,7 +576,7 @@ typedef struct {
 /* G3-PLC MAC neighbour entry
 
   Summary:
-    This struct includes neighbour entry definition.
+    This data type defines a G3-PLC MAC Neighbour Table entry.
 
   Remarks:
     For more information, please refer to G3-PLC Specification.
@@ -584,7 +598,8 @@ typedef struct __attribute__((packed)) {
 /* G3 MAC Frame Control information
 
   Summary:
-    This struct includes information related to MAC frame control field.
+    This data type includes information related to the G3 MAC frame control
+    field.
 
   Remarks:
     For more information, please refer to G3 Specification.
@@ -614,7 +629,8 @@ typedef struct {
 /* G3-PLC MAC Segment Control information
 
   Summary:
-    This struct includes information related to MAC segment control field.
+    This data type includes information related to the G3-PLC MAC segment
+    control field.
 
   Remarks:
     For more information, please refer to G3-PLC Specification.
@@ -640,7 +656,8 @@ typedef struct {
 /* G3 MAC Auxiliary Security Header
 
   Summary:
-    This struct includes information related to MAC auxiliary security header.
+    This data type includes information related to the G3 MAC Auxiliary Security
+    Header.
 
    Remarks:
     For more information, please refer to G3 Specification.
@@ -670,7 +687,7 @@ typedef struct {
 /* G3 MAC header
 
   Summary:
-    This struct includes information related to G3 MAC header.
+    This data type includes information related to the G3 MAC Header.
 
   Remarks:
     For more information, please refer to G3 Specification.
@@ -696,7 +713,8 @@ typedef struct __attribute__((packed, aligned(1))) {
 /* G3-PLC MAC Tone Map response
 
   Summary:
-    This struct includes information related to Tone Map response frame.
+    This data type includes information related to the G3-PLC Tone Map Response
+    frame.
 
   Remarks:
     For more information, please refer to G3-PLC Specification.
@@ -855,10 +873,12 @@ typedef struct {
 /* G3-PLC PHY sniffer parameters
 
   Summary:
-    This struct includes information about G3-PLC PHY Sniffer packet.
+    This data type includes information about G3-PLC PHY Sniffer packet.
 
   Remarks:
-    None.
+    This header is contained in the data reported by the callback set with
+    DRV_G3_MACRT_PhySnifferCallbackRegister and it is compliant with Microchip
+    Hybrid Sniffer Tool.
 */
 typedef struct {
     /* SNIFFER_IF_PHY_COMMAND_G3_VERSION */
