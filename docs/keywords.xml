@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <keywords publicationid="GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B"
           language="en-US"
-          version="1"
+          version="2"
           documenttitle="MPLAB Harmony Smart Energy Library"
           pubtype="Online Reference"
           pubsubtype=""
           pubuserguidesubtype=""
-          pubproductheirarchy=""
+          pubproducthierarchy=""
           devices=""
-          revisiondate="16/02/2022 00:00:00"
-          revisionletter="A"
+          revisiondate="21/09/2022 00:00:00"
+          revisionletter="2"
           isbn=""
           pubid=""
           reachid=""
           description=""
-          lastmodified="31/01/2023 10:33:55"
+          lastmodified="13/09/2023 11:01:59"
           covertitle="MPLAB Harmony Smart Energy Library"
           frontcover="">
-   <keyworditem topicid="GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789"
+   <keyworditem topicid="GUID-FF588554-E4C6-4178-A019-F342A035D533"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSNIFFER_SerialCfmMessage Function</register>
+      <title>SRV_RSNIFFER_SerialCfmMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSNIFFER_SerialCfmMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B97CF006-172A-4DC1-B8FE-204A3ACC5513"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSNIFFER_SetTxMessage Function</register>
+      <title>SRV_RSNIFFER_SetTxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSNIFFER_SetTxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-661A7A3C-7775-475E-B35E-FCD6A4628D34"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSNIFFER_SerialRxMessage Function</register>
+      <title>SRV_RSNIFFER_SerialRxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSNIFFER_SerialRxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9652FB09-5C02-4360-8106-CF1A4D12CA4D"
                 nocomponent="true"
                 parent="">
       <device/>
@@ -26,526 +59,9 @@
       <register>Configuring The Library</register>
       <title>Configuring The Library</title>
       <bitfield/>
-      <keyword>mcc_h3_plc_phy_driver_configurations</keyword>
+      <keyword>srv_rsniffer_configurations</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-3FE78AB9-5672-4748-BEEE-ADD364C8774A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Initialize Function</register>
-      <title>DRV_PLC_PHY_Initialize Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Initialize</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Open Function</register>
-      <title>DRV_PLC_PHY_Open Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Open</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-CC2FC1BB-40F6-41C6-9676-40E1BA7DB412"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Close Function</register>
-      <title>DRV_PLC_PHY_Close Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Close</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-EB2FF372-3E82-4F17-8A72-E36EFEFD1B6A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TxRequest Function</register>
-      <title>DRV_PLC_PHY_TxRequest Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TxRequest</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-51BE7E9A-45DF-4673-9AE2-7D7163536E44"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_PIBGet Function</register>
-      <title>DRV_PLC_PHY_PIBGet Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_PIBGet</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-01855CB4-57E8-4BE3-A093-14CBFFAABD51"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_PIBSet Function</register>
-      <title>DRV_PLC_PHY_PIBSet Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_PIBSet</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-8E175C09-6CD6-4846-A1D3-C49B7CB583E6"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TxCfmCallbackRegister Function</register>
-      <title>DRV_PLC_PHY_TxCfmCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TxCfmCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D33A9EC1-6EB5-4EB8-820A-BF8B6AFAC54D"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_DataIndCallbackRegister Function</register>
-      <title>DRV_PLC_PHY_DataIndCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_DataIndCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-A48A9C4F-4251-4807-A3CB-FE22524FF8B1"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_ExceptionCallbackRegister Function</register>
-      <title>DRV_PLC_PHY_ExceptionCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_ExceptionCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-B7C7F0AD-BC60-40E7-AFBA-2B1E32343684"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_SleepDisableCallbackRegister Function</register>
-      <title>DRV_PLC_PHY_SleepDisableCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_SleepDisableCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-CAC25733-1D0F-44AE-84B4-82D140523B79"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_ExternalInterruptHandler Function</register>
-      <title>DRV_PLC_PHY_ExternalInterruptHandler Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_ExternalInterruptHandler</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-E1673D08-316E-42AF-A8D8-9B2D3E9DABCE"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Status Function</register>
-      <title>DRV_PLC_PHY_Status Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Status</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D08B8E46-56BF-4AE9-996E-B096DE7CCBA5"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Tasks Function</register>
-      <title>DRV_PLC_PHY_Tasks Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Tasks</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-5DCB155E-01FF-4C75-9BB8-64521923327F"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_Sleep Function</register>
-      <title>DRV_PLC_PHY_Sleep Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_Sleep</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-800E7E2E-B682-4D22-8CFA-9820472A966B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_EnableTX Function</register>
-      <title>DRV_PLC_PHY_EnableTX Function</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_EnableTX</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-E467AA51-4BBE-4E17-A290-7C8C7B73AF9D"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_INIT Struct</register>
-      <title>DRV_PLC_PHY_INIT Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_INIT</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-559A006E-859E-45E8-BB5A-70CE63853872"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_HAL_INTERFACE Struct</register>
-      <title>DRV_PLC_HAL_INTERFACE Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_HAL_INTERFACE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-50946BC4-586A-4660-A918-D3CED116127A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PLIB_INTERFACE Struct</register>
-      <title>DRV_PLC_PLIB_INTERFACE Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PLIB_INTERFACE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-725B3EE4-66DB-443D-BFAF-6BAE2C541655"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TX_CFM_CALLBACK Typedef</register>
-      <title>DRV_PLC_PHY_TX_CFM_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TX_CFM_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D7A3C017-0DC8-473F-93D5-E5FF0507B1BA"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_DATA_IND_CALLBACK Typedef</register>
-      <title>DRV_PLC_PHY_DATA_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_DATA_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-9D9C46CF-4296-4502-B64F-9115B5A9C08B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_SLEEP_IND_CALLBACK Typedef</register>
-      <title>DRV_PLC_PHY_SLEEP_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_SLEEP_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-E34B89AE-146E-4416-8D1D-5CD2075F5A80"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_EXCEPTION_CALLBACK Typedef</register>
-      <title>DRV_PLC_PHY_EXCEPTION_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_EXCEPTION_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-DFD74282-E687-4256-A70B-A787486FF4B5"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_EXCEPTION Enum</register>
-      <title>DRV_PLC_PHY_EXCEPTION Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_EXCEPTION</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-FB84DD36-66A1-4AC7-8809-C528890A4B16"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_ID Enum</register>
-      <title>DRV_PLC_PHY_ID Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_ID</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-5DA261DF-FDDC-4A4D-9FB9-4001FF3036DD"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_MOD_TYPE Enum</register>
-      <title>DRV_PLC_PHY_MOD_TYPE Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_MOD_TYPE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-B89FD8FD-29D0-4A95-A949-4F22179558D0"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_MOD_TYPE Enum</register>
-      <title>DRV_PLC_PHY_MOD_TYPE Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_MOD_SCHEME</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-7BD82710-5BEA-4FEA-BF26-D2B0693F9B54"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_DEL_TYPE Enum</register>
-      <title>DRV_PLC_PHY_DEL_TYPE Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_DEL_TYPE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-9F6DC912-C55A-4BCD-90FA-BC4CCACA9138"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TX_RESULT Enum</register>
-      <title>DRV_PLC_PHY_TX_RESULT Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TX_RESULT</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-AF19D487-59D9-4D2F-AA35-E1583DDFB82D"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TONE_MAP_RSP Struct</register>
-      <title>DRV_PLC_PHY_TONE_MAP_RSP Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TONE_MAP_RSP</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-443BB1EE-2B22-45AB-AD80-E0011189606F"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS Struct</register>
-      <title>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C351E8B0-8A8B-4006-89E0-3DE133B33D5E"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</register>
-      <title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TRANSMISSION_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-F65CE03F-4B50-4092-AB96-CA7DE388B46B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</register>
-      <title>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-EE53EE94-8EDB-4740-AE6B-F8C1E3277BC5"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_RECEPTION_OBJ Struct</register>
-      <title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_RECEPTION_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-3BCCA565-F529-442A-BE9B-324CCA7F2702"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_PIB_OBJ Struct</register>
-      <title>DRV_PLC_PHY_PIB_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_PIB_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-35725EB2-BDEE-4B6A-B204-9B892470097A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_ID Enum</register>
-      <title>DRV_PLC_PHY_ID Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_ID</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-FF6556EE-43F6-41E6-87E4-B10CBEA8DF12"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_SCH Enum</register>
-      <title>DRV_PLC_PHY_SCH Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_SCH</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C33C587B-747B-4FAB-9976-F27A7875D841"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_FRAME_TYPE Enum</register>
-      <title>DRV_PLC_PHY_FRAME_TYPE Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_FRAME_TYPE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-CE36C238-4FFB-4E75-BF61-A16DEFE6C538"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_HEADER Enum</register>
-      <title>DRV_PLC_PHY_HEADER Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_HEADER</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D74B0E99-F889-4785-907E-AD92A06C9D2A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_CHANNEL Enum</register>
-      <title>DRV_PLC_PHY_CHANNEL Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_CHANNEL</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-610A01D5-B3B5-43BF-968F-EB6B6BE00373"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_BUFFER_ID Enum</register>
-      <title>DRV_PLC_PHY_BUFFER_ID Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_BUFFER_ID</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-BE95F15B-2EE5-4955-A737-8EACFC145E48"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TX_RESULT Enum</register>
-      <title>DRV_PLC_PHY_TX_RESULT Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TX_RESULT</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-313FB4A6-7FAE-4AF5-AA07-CBD513967D27"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</register>
-      <title>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-0D3D6A14-02C7-4AD3-B221-BC057153A38B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO Enum</register>
-      <title>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO Enum</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D6A8F4B2-ABF8-4BB2-B38F-28A4A20CA152"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</register>
-      <title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TRANSMISSION_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D0C15B1D-39F9-4EE2-8C8E-E0D13695B096"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</register>
-      <title>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-F9A46118-1365-4666-88F4-980A97C99850"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_RECEPTION_OBJ Struct</register>
-      <title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_RECEPTION_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-56CEDA9B-50C8-4747-8849-4C5E3FA88FF7"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_PLC_PHY_PIB_OBJ Struct</register>
-      <title>DRV_PLC_PHY_PIB_OBJ Struct</title>
-      <bitfield/>
-      <keyword>DRV_PLC_PHY_PIB_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-EEC710D4-41F0-4CBF-88C6-9DDAF6BBE7E5"
+   <keyworditem topicid="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123"
                 nocomponent="true"
                 parent="">
       <device/>
@@ -554,416 +70,86 @@
       <register>Configuring The Library</register>
       <title>Configuring The Library</title>
       <bitfield/>
-      <keyword>drv_g3_macrt_configurations</keyword>
+      <keyword>mcc_h3_srv_usi_configurations</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-8D6705DB-D96A-4786-9724-F6B586F876B7"
+   <keyworditem topicid="GUID-FA6D55E0-FFF4-4BE5-A80C-C57E20F20172"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_Initialize Function</register>
-      <title>DRV_G3_MACRT_Initialize Function</title>
+      <register>SRV_USI_STATUS Enum</register>
+      <title>SRV_USI_STATUS Enum</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_Initialize</keyword>
+      <keyword>SRV_USI_STATUS</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-CFC0A3D7-6B3D-4D47-A061-7314346BFFCF"
+   <keyworditem topicid="GUID-9C3076C9-0171-469B-B059-048A45B45047"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_Open Function</register>
-      <title>DRV_G3_MACRT_Open Function</title>
+      <register>SRV_USI_HANDLE Typedef</register>
+      <title>SRV_USI_HANDLE Typedef</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_Open</keyword>
+      <keyword>SRV_USI_HANDLE</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-ED53495E-E570-4FBC-9472-16BCF057AD77"
+   <keyworditem topicid="GUID-ABD93EB0-3099-42B8-9559-30F072F02739"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_Close Function</register>
-      <title>DRV_G3_MACRT_Close Function</title>
+      <register>SRV_USI_HANDLE_INVALID Macro</register>
+      <title>SRV_USI_HANDLE_INVALID Macro</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_Close</keyword>
+      <keyword>SRV_USI_HANDLE_INVALID</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-0C474247-A02D-4DAA-B7CA-976F25A16403"
+   <keyworditem topicid="GUID-48BB87BF-AAC0-4DE0-A21F-6F00E5B1FF24"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_TxRequest Function</register>
-      <title>DRV_G3_MACRT_TxRequest Function</title>
+      <register>SRV_USI_CALLBACK Typedef</register>
+      <title>SRV_USI_CALLBACK Typedef</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_TxRequest</keyword>
+      <keyword>SRV_USI_CALLBACK</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-39692EBF-C9ED-41F6-A1BB-52B76247E293"
+   <keyworditem topicid="GUID-95D6239D-4487-418B-ADEC-587C659BFEE0"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_PIBGet Function</register>
-      <title>DRV_G3_MACRT_PIBGet Function</title>
+      <register>SRV_USI_DEV_DESC Struct</register>
+      <title>SRV_USI_DEV_DESC Struct</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_PIBGet</keyword>
+      <keyword>SRV_USI_DEV_DESC</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-C38AD3F4-CA6C-48DE-A6A1-28C18B778318"
+   <keyworditem topicid="GUID-9FF36725-3200-489F-8E5A-08E6DA599D4E"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_PIBSet Function</register>
-      <title>DRV_G3_MACRT_PIBSet Function</title>
+      <register>SRV_PSERIAL_ParseGetPIB Function</register>
+      <title>SRV_PSERIAL_ParseGetPIB Function</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_PIBSet</keyword>
+      <keyword>SRV_PSERIAL_ParseGetPIB</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-F3DA568F-1791-4DD6-9397-5528439DEEEE"
+   <keyworditem topicid="GUID-2155582A-0939-41A5-91DE-53D1FC6F1003"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>DRV_G3_MACRT_GetTimerReference Function</register>
-      <title>DRV_G3_MACRT_GetTimerReference Function</title>
+      <register>SRV_USI_INIT Struct</register>
+      <title>SRV_USI_INIT Struct</title>
       <bitfield/>
-      <keyword>DRV_G3_MACRT_GetTimerReference</keyword>
+      <keyword>SRV_USI_INIT</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-7696B688-2CF7-4EC3-BAA2-FE442F8A9CA3"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_TxCfmCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_TxCfmCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_TxCfmCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-E254FA9C-1F59-4868-98F7-97FC767992D1"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_DataIndCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_DataIndCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_DataIndCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-292AE054-43EB-4942-A030-F4D2A2F55F87"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_RxParamsIndCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_RxParamsIndCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_RxParamsIndCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D8DBD579-20F6-4CBF-BA28-FCB386F1E9B8"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_MacSnifferCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_MacSnifferCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_MacSnifferCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-59DADBE8-E54E-42C0-B62A-5652DAFB766E"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_CommStatusCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_CommStatusCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_CommStatusCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-791DBB8A-FE97-43D1-AD04-41B7AE192649"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_PhySnifferCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_PhySnifferCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_PhySnifferCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-517695B0-A450-411B-8033-B8B837C26FD3"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_ExceptionCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_ExceptionCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_ExceptionCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-0582DE0E-C854-4C96-BA08-C165BF90A15F"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_ExternalInterruptHandler Function</register>
-      <title>DRV_G3_MACRT_ExternalInterruptHandler Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_ExternalInterruptHandler</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-96988540-2CDE-43E3-B49A-FED2B49DEA37"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_Status Function</register>
-      <title>DRV_G3_MACRT_Status Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_Status</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-6ACB9986-8D9A-42C0-B408-82F14C261ADA"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_Tasks Function</register>
-      <title>DRV_G3_MACRT_Tasks Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_Tasks</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-1D099440-709D-4D2E-AE2C-163F5D2415CE"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_SleepIndCallbackRegister Function</register>
-      <title>DRV_G3_MACRT_SleepIndCallbackRegister Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_SleepIndCallbackRegister</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-93531DF8-21C2-4F4D-9540-60E4867FAF8F"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_Sleep Function</register>
-      <title>DRV_G3_MACRT_Sleep Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_Sleep</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C878A278-A038-469F-AA4E-717F236F2131"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_EnableTX Function</register>
-      <title>DRV_G3_MACRT_EnableTX Function</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_EnableTX</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-55498A05-5BFD-4A23-8F82-57F0C6736476"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_EXCEPTION Enum</register>
-      <title>DRV_G3_MACRT_EXCEPTION Enum</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_EXCEPTION</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-2073D6BA-CDEC-4E93-9C98-8C6C78D11FF6"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_TX_CFM_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_TX_CFM_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_TX_CFM_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-A528297A-C3D6-48ED-AEC2-C8221CBD4A12"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_DATA_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_DATA_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_DATA_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-F79615A6-B539-4AC6-B6A5-61F185C38ABC"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-86C39B7F-4C57-4AE6-98CE-A878EAF6E667"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C2D20394-132A-400D-9BA7-214987F254B5"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-6333F1EC-0849-49B3-AA6E-9422B26CCFBD"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-41D05A4C-2080-40F6-A2A2-D30E77AC5A64"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_EXCEPTION_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-406ADE0C-D859-4B2B-9B58-E75C9A66D04B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_SLEEP_IND_CALLBACK Typedef</register>
-      <title>DRV_G3_MACRT_SLEEP_IND_CALLBACK Typedef</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_SLEEP_IND_CALLBACK</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-C28059AE-E01B-4F83-9DDC-6E6397DD36F8"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_TX_CFM_OBJ Struct</register>
-      <title>MAC_RT_TX_CFM_OBJ Struct</title>
-      <bitfield/>
-      <keyword>MAC_RT_TX_CFM_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-1750537D-FAC6-4DE9-A207-7F92FCF38D72"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_RX_PARAMETERS_OBJ Struct</register>
-      <title>MAC_RT_RX_PARAMETERS_OBJ Struct</title>
-      <bitfield/>
-      <keyword>MAC_RT_RX_PARAMETERS_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-F2925ACF-B9D7-43CC-830D-549364A186D6"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_STATUS Enum</register>
-      <title>MAC_RT_STATUS Enum</title>
-      <bitfield/>
-      <keyword>MAC_RT_STATUS</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-83EBAE84-CC25-4C58-9377-5B2D633E951D"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_PIB_OBJ Struct</register>
-      <title>MAC_RT_PIB_OBJ Struct</title>
-      <bitfield/>
-      <keyword>MAC_RT_PIB_OBJ</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_PIB Enum</register>
-      <title>MAC_RT_PIB Enum</title>
-      <bitfield/>
-      <keyword>MAC_RT_PIB</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-DCDFA2E5-435B-474F-9824-D4D6B42D70DF"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>MAC_RT_PHY_PIB Enum</register>
-      <title>MAC_RT_PHY_PIB Enum</title>
-      <bitfield/>
-      <keyword>MAC_RT_PHY_PIB</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-97410992-A415-4397-9F09-F55277DD3BF4"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>DRV_G3_MACRT_INIT Struct</register>
-      <title>DRV_G3_MACRT_INIT Struct</title>
-      <bitfield/>
-      <keyword>DRV_G3_MACRT_INIT</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-2356AE43-5731-46E5-8556-A282237A8145"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>Metrology driver Configurations</register>
-      <title>Metrology driver Configurations</title>
-      <bitfield/>
-      <keyword>mcc_h3_drv_metrology_config</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-BAD839D0-DC99-40E6-B406-813928767344"
+   <keyworditem topicid="GUID-1CC5DBE3-7849-4F27-B8F6-C13BB5E48EB1"
                 nocomponent="true"
                 parent="">
       <device/>
@@ -972,128 +158,73 @@
       <register>Configuring The Library</register>
       <title>Configuring The Library</title>
       <bitfield/>
-      <keyword>mcc_h3_srv_pcoup_configurations</keyword>
+      <keyword>mcc_h3_srv_pvddmon_configurations</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-6A734799-58CF-486D-AEAF-6498317A903F"
+   <keyworditem topicid="GUID-8B025891-809C-47BF-B1DF-95AFBFCD6D6C"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PCOUP_Get_Config Function</register>
-      <title>SRV_PCOUP_Get_Config Function</title>
+      <register>SRV_PSERIAL_SerialCfmMessage Function</register>
+      <title>SRV_PSERIAL_SerialCfmMessage Function</title>
       <bitfield/>
-      <keyword>SRV_PCOUP_Get_Config</keyword>
+      <keyword>SRV_PSERIAL_SerialCfmMessage</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-F7F88BE2-2CCE-41EE-A028-2F8E7F231F59"
+   <keyworditem topicid="GUID-621D854B-54BF-4473-91C6-B37A25840333"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PCOUP_Set_Config Function</register>
-      <title>SRV_PCOUP_Set_Config Function</title>
+      <register>SRV_USI_Initialize Function</register>
+      <title>SRV_USI_Initialize Function</title>
       <bitfield/>
-      <keyword>SRV_PCOUP_Set_Config</keyword>
+      <keyword>SRV_USI_Initialize</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-6ED1119A-7A55-4C17-9E56-5835926DD77B"
+   <keyworditem topicid="GUID-7464B9B1-E30E-4C83-BFF4-C8FBC8AE2B97"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PCOUP_Get_Default_Branch Function</register>
-      <title>SRV_PCOUP_Get_Default_Branch Function</title>
+      <register>SRV_USI_Open Function</register>
+      <title>SRV_USI_Open Function</title>
       <bitfield/>
-      <keyword>SRV_PCOUP_Get_Default_Branch</keyword>
+      <keyword>SRV_USI_Open</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-B74CFBEC-2049-4087-B361-12EAE0A6D2D5"
+   <keyworditem topicid="GUID-B3A181FF-1B0E-4CF1-8EBB-0D9000DB82EF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PCOUP_Get_Phy_Band Function</register>
-      <title>SRV_PCOUP_Get_Phy_Band Function</title>
+      <register>SRV_USI_Close Function</register>
+      <title>SRV_USI_Close Function</title>
       <bitfield/>
-      <keyword>SRV_PCOUP_Get_Phy_Band</keyword>
+      <keyword>SRV_USI_Close</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-EC8301E5-93D5-4777-8700-FDEB4DBEB360"
+   <keyworditem topicid="GUID-AEB8DFE3-0BED-4D89-98D8-78F367814AA1"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PLC_PCOUP_BRANCH Enum</register>
-      <title>SRV_PLC_PCOUP_BRANCH Enum</title>
+      <register>SRV_USI_Status Function</register>
+      <title>SRV_USI_Status Function</title>
       <bitfield/>
-      <keyword>SRV_PLC_PCOUP_BRANCH</keyword>
+      <keyword>SRV_USI_Status</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-1B2EA98D-2D73-4430-B618-98A85A520318"
+   <keyworditem topicid="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PLC_PCOUP_DATA Struct</register>
-      <title>SRV_PLC_PCOUP_DATA Struct</title>
+      <register>SRV_USI_CallbackRegister Function</register>
+      <title>SRV_USI_CallbackRegister Function</title>
       <bitfield/>
-      <keyword>SRV_PLC_PCOUP_DATA</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-EE46783A-E2A0-48C2-B479-6436C638C41B"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PCOUP_Get_Default_Channel Function</register>
-      <title>SRV_PCOUP_Get_Default_Channel Function</title>
-      <bitfield/>
-      <keyword>SRV_PCOUP_Get_Default_Channel</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-F053AFD0-4BA9-4ACE-B7CB-7C7A48FB0E0F"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PCOUP_Get_Channel_Config Function</register>
-      <title>SRV_PCOUP_Get_Channel_Config Function</title>
-      <bitfield/>
-      <keyword>SRV_PCOUP_Get_Channel_Config</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-A74E4416-E7F9-4A02-8A29-FC1F2A00BF93"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PCOUP_Set_Channel_Config Function</register>
-      <title>SRV_PCOUP_Set_Channel_Config Function</title>
-      <bitfield/>
-      <keyword>SRV_PCOUP_Set_Config</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-3778B1C9-F454-4097-93C1-EB63083FD1AD"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PLC_PCOUP_CHANNEL_DATA Struct</register>
-      <title>SRV_PLC_PCOUP_CHANNEL_DATA Struct</title>
-      <bitfield/>
-      <keyword>SRV_PLC_PCOUP_CHANNEL_DATA</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-1279B3B1-7AC6-4986-8E88-539CBCEF5F52"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>Configuring The Library</register>
-      <title>Configuring The Library</title>
-      <bitfield/>
-      <keyword>srv_psniffer_configurations</keyword>
+      <keyword>SRV_USI_CallbackRegister</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-16D2166F-F65C-431C-951A-2C4B18120281"
                 nocomponent="true"
@@ -1106,93 +237,38 @@
       <bitfield/>
       <keyword>SRV_PSNIFFER_GetCommand</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-FAC7780A-68D6-4C70-AC4B-25FCF620B196"
+   <keyworditem topicid="GUID-E0E5E6A7-18F0-4315-B9C1-E4D3011230A8"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PSNIFFER_SerialRxMessage Function</register>
-      <title>SRV_PSNIFFER_SerialRxMessage Function</title>
+      <register>SRV_USI_Tasks Function</register>
+      <title>SRV_USI_Tasks Function</title>
       <bitfield/>
-      <keyword>SRV_PSNIFFER_SerialRxMessage</keyword>
+      <keyword>SRV_USI_Tasks</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-1D2064DA-2F59-46DC-8B62-9D61B1B299DD"
+   <keyworditem topicid="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PSNIFFER_SerialCfmMessage Function</register>
-      <title>SRV_PSNIFFER_SerialCfmMessage Function</title>
+      <register>SRV_USI_Send_Message Function</register>
+      <title>SRV_USI_Send_Message Function</title>
       <bitfield/>
-      <keyword>SRV_PSNIFFER_SerialCfmMessage</keyword>
+      <keyword>SRV_USI_Send_Message</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-8F2BCC2D-088B-4489-893D-ADFFCB710E47"
+   <keyworditem topicid="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_PSNIFFER_SetTxMessage Function</register>
-      <title>SRV_PSNIFFER_SetTxMessage Function</title>
+      <register>SRV_USI_PROTOCOL_ID Enum</register>
+      <title>SRV_USI_PROTOCOL_ID Enum</title>
       <bitfield/>
-      <keyword>SRV_PSNIFFER_SetTxMessage</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-8FCCE1DA-FD25-42C5-9C36-243E1E14CDFF"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSNIFFER_SetRxPayloadSymbols Function</register>
-      <title>SRV_PSNIFFER_SetRxPayloadSymbols Function</title>
-      <bitfield/>
-      <keyword>SRV_PSNIFFER_SetRxPayloadSymbols</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-1C3755D7-2C24-4854-B5B1-9F335BA0389D"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSNIFFER_SetTxPayloadSymbols Function</register>
-      <title>SRV_PSNIFFER_SetTxPayloadSymbols Function</title>
-      <bitfield/>
-      <keyword>SRV_PSNIFFER_SetTxPayloadSymbols</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-BCB28663-4E3B-4C51-8F7D-A9495FB0A16A"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSNIFFER_SetPLCChannel Function</register>
-      <title>SRV_PSNIFFER_SetPLCChannel Function</title>
-      <bitfield/>
-      <keyword>SRV_PSNIFFER_SetPLCChannel</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-033E46F6-14A5-4DD2-9BFC-BDA2AE973092"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSNIFFER_ConvertToneMask Function</register>
-      <title>SRV_PSNIFFER_ConvertToneMask Function</title>
-      <bitfield/>
-      <keyword>SRV_PSNIFFER_ConvertToneMask</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-D4A95F17-FA6E-47C8-9FE4-ED986264B809"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSNIFFER_COMMAND Enum</register>
-      <title>SRV_PSNIFFER_COMMAND Enum</title>
-      <bitfield/>
-      <keyword>SRV_PSNIFFER_COMMAND</keyword>
+      <keyword>SRV_USI_PROTOCOL_ID</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-76D58185-B456-47A8-BE17-D5824D22CF3F"
                 nocomponent="true"
@@ -1215,17 +291,6 @@
       <title>SRV_PSERIAL_GetCommand Function</title>
       <bitfield/>
       <keyword>SRV_PSERIAL_GetCommand</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-9FF36725-3200-489F-8E5A-08E6DA599D4E"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSERIAL_ParseGetPIB Function</register>
-      <title>SRV_PSERIAL_ParseGetPIB Function</title>
-      <bitfield/>
-      <keyword>SRV_PSERIAL_ParseGetPIB</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-1B8BAD12-85A8-4E0E-87A8-CE8E4D5867C9"
                 nocomponent="true"
@@ -1282,17 +347,6 @@
       <bitfield/>
       <keyword>SRV_PSERIAL_SerialRxMessage</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-8B025891-809C-47BF-B1DF-95AFBFCD6D6C"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PSERIAL_SerialCfmMessage Function</register>
-      <title>SRV_PSERIAL_SerialCfmMessage Function</title>
-      <bitfield/>
-      <keyword>SRV_PSERIAL_SerialCfmMessage</keyword>
-   </keyworditem>
    <keyworditem topicid="GUID-A2A1EDAC-3C1D-4A42-AC6F-E7CD237D90E4"
                 nocomponent="true"
                 parent="">
@@ -1303,17 +357,6 @@
       <title>SRV_PSERIAL_COMMAND Enum</title>
       <bitfield/>
       <keyword>SRV_PSERIAL_COMMAND</keyword>
-   </keyworditem>
-   <keyworditem topicid="GUID-1CC5DBE3-7849-4F27-B8F6-C13BB5E48EB1"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>Configuring The Library</register>
-      <title>Configuring The Library</title>
-      <bitfield/>
-      <keyword>mcc_h3_srv_pvddmon_configurations</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-FBA5ADF9-861F-4690-AAE9-9188BCD3A6AE"
                 nocomponent="true"
@@ -1381,6 +424,1590 @@
       <bitfield/>
       <keyword>SRV_PVDDMON_CallbackRegister</keyword>
    </keyworditem>
+   <keyworditem topicid="GUID-F053AFD0-4BA9-4ACE-B7CB-7C7A48FB0E0F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Get_Channel_Config Function</register>
+      <title>SRV_PCOUP_Get_Channel_Config Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Get_Channel_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1C3755D7-2C24-4854-B5B1-9F335BA0389D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SetTxPayloadSymbols Function</register>
+      <title>SRV_PSNIFFER_SetTxPayloadSymbols Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SetTxPayloadSymbols</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BCB28663-4E3B-4C51-8F7D-A9495FB0A16A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SetPLCChannel Function</register>
+      <title>SRV_PSNIFFER_SetPLCChannel Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SetPLCChannel</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-033E46F6-14A5-4DD2-9BFC-BDA2AE973092"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_ConvertToneMask Function</register>
+      <title>SRV_PSNIFFER_ConvertToneMask Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_ConvertToneMask</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D4A95F17-FA6E-47C8-9FE4-ED986264B809"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_COMMAND Enum</register>
+      <title>SRV_PSNIFFER_COMMAND Enum</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_COMMAND</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F3B4D4E5-0BE3-42AB-8080-D04E58F54789"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Configuring The Library</register>
+      <title>Configuring The Library</title>
+      <bitfield/>
+      <keyword>mcc_h3_plc_phy_driver_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BAD839D0-DC99-40E6-B406-813928767344"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Configuring The Library</register>
+      <title>Configuring The Library</title>
+      <bitfield/>
+      <keyword>mcc_h3_srv_pcoup_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CC7037AE-6A1F-4EAF-894A-9588EEF3BEAD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Open Function</register>
+      <title>DRV_PLC_PHY_Open Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Open</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6A734799-58CF-486D-AEAF-6498317A903F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Get_Config Function</register>
+      <title>SRV_PCOUP_Get_Config Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Get_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F7F88BE2-2CCE-41EE-A028-2F8E7F231F59"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Set_Config Function</register>
+      <title>SRV_PCOUP_Set_Config Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Set_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B74CFBEC-2049-4087-B361-12EAE0A6D2D5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Get_Phy_Band Function</register>
+      <title>SRV_PCOUP_Get_Phy_Band Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Get_Phy_Band</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EC8301E5-93D5-4777-8700-FDEB4DBEB360"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PLC_PCOUP_BRANCH Enum</register>
+      <title>SRV_PLC_PCOUP_BRANCH Enum</title>
+      <bitfield/>
+      <keyword>SRV_PLC_PCOUP_BRANCH</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1279B3B1-7AC6-4986-8E88-539CBCEF5F52"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Configuring The Library</register>
+      <title>Configuring The Library</title>
+      <bitfield/>
+      <keyword>srv_psniffer_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FAC7780A-68D6-4C70-AC4B-25FCF620B196"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SerialRxMessage Function</register>
+      <title>SRV_PSNIFFER_SerialRxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SerialRxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1D2064DA-2F59-46DC-8B62-9D61B1B299DD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SerialCfmMessage Function</register>
+      <title>SRV_PSNIFFER_SerialCfmMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SerialCfmMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8F2BCC2D-088B-4489-893D-ADFFCB710E47"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SetTxMessage Function</register>
+      <title>SRV_PSNIFFER_SetTxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SetTxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8FCCE1DA-FD25-42C5-9C36-243E1E14CDFF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PSNIFFER_SetRxPayloadSymbols Function</register>
+      <title>SRV_PSNIFFER_SetRxPayloadSymbols Function</title>
+      <bitfield/>
+      <keyword>SRV_PSNIFFER_SetRxPayloadSymbols</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-800E7E2E-B682-4D22-8CFA-9820472A966B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_EnableTX Function</register>
+      <title>DRV_PLC_PHY_EnableTX Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_EnableTX</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3FE78AB9-5672-4748-BEEE-ADD364C8774A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Initialize Function</register>
+      <title>DRV_PLC_PHY_Initialize Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Initialize</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EB2FF372-3E82-4F17-8A72-E36EFEFD1B6A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TxRequest Function</register>
+      <title>DRV_PLC_PHY_TxRequest Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TxRequest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6ED1119A-7A55-4C17-9E56-5835926DD77B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Get_Default_Branch Function</register>
+      <title>SRV_PCOUP_Get_Default_Branch Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Get_Default_Branch</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1B2EA98D-2D73-4430-B618-98A85A520318"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PLC_PCOUP_DATA Struct</register>
+      <title>SRV_PLC_PCOUP_DATA Struct</title>
+      <bitfield/>
+      <keyword>SRV_PLC_PCOUP_DATA</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EE46783A-E2A0-48C2-B479-6436C638C41B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Get_Default_Channel Function</register>
+      <title>SRV_PCOUP_Get_Default_Channel Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Get_Default_Channel</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A74E4416-E7F9-4A02-8A29-FC1F2A00BF93"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCOUP_Set_Channel_Config Function</register>
+      <title>SRV_PCOUP_Set_Channel_Config Function</title>
+      <bitfield/>
+      <keyword>SRV_PCOUP_Set_Config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3778B1C9-F454-4097-93C1-EB63083FD1AD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PLC_PCOUP_CHANNEL_DATA Struct</register>
+      <title>SRV_PLC_PCOUP_CHANNEL_DATA Struct</title>
+      <bitfield/>
+      <keyword>SRV_PLC_PCOUP_CHANNEL_DATA</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5DCB155E-01FF-4C75-9BB8-64521923327F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Sleep Function</register>
+      <title>DRV_PLC_PHY_Sleep Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Sleep</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E467AA51-4BBE-4E17-A290-7C8C7B73AF9D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_INIT Struct</register>
+      <title>DRV_PLC_PHY_INIT Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_INIT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-559A006E-859E-45E8-BB5A-70CE63853872"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_HAL_INTERFACE Struct</register>
+      <title>DRV_PLC_HAL_INTERFACE Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_HAL_INTERFACE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AF19D487-59D9-4D2F-AA35-E1583DDFB82D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TONE_MAP_RSP Struct</register>
+      <title>DRV_PLC_PHY_TONE_MAP_RSP Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TONE_MAP_RSP</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-50946BC4-586A-4660-A918-D3CED116127A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PLIB_INTERFACE Struct</register>
+      <title>DRV_PLC_PLIB_INTERFACE Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PLIB_INTERFACE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-725B3EE4-66DB-443D-BFAF-6BAE2C541655"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TX_CFM_CALLBACK Typedef</register>
+      <title>DRV_PLC_PHY_TX_CFM_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TX_CFM_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D7A3C017-0DC8-473F-93D5-E5FF0507B1BA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_DATA_IND_CALLBACK Typedef</register>
+      <title>DRV_PLC_PHY_DATA_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_DATA_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9D9C46CF-4296-4502-B64F-9115B5A9C08B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_SLEEP_IND_CALLBACK Typedef</register>
+      <title>DRV_PLC_PHY_SLEEP_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_SLEEP_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CC2FC1BB-40F6-41C6-9676-40E1BA7DB412"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Close Function</register>
+      <title>DRV_PLC_PHY_Close Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Close</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E34B89AE-146E-4416-8D1D-5CD2075F5A80"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_EXCEPTION_CALLBACK Typedef</register>
+      <title>DRV_PLC_PHY_EXCEPTION_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_EXCEPTION_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-51BE7E9A-45DF-4673-9AE2-7D7163536E44"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_PIBGet Function</register>
+      <title>DRV_PLC_PHY_PIBGet Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_PIBGet</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-ED53495E-E570-4FBC-9472-16BCF057AD77"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Close Function</register>
+      <title>DRV_G3_MACRT_Close Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Close</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C2D20394-132A-400D-9BA7-214987F254B5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_COMM_STATUS_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-59DADBE8-E54E-42C0-B62A-5652DAFB766E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_CommStatusCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_CommStatusCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_CommStatusCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A528297A-C3D6-48ED-AEC2-C8221CBD4A12"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_DATA_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_DATA_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_DATA_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E254FA9C-1F59-4868-98F7-97FC767992D1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_DataIndCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_DataIndCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_DataIndCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C878A278-A038-469F-AA4E-717F236F2131"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_EnableTX Function</register>
+      <title>DRV_G3_MACRT_EnableTX Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_EnableTX</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-55498A05-5BFD-4A23-8F82-57F0C6736476"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_EXCEPTION Enum</register>
+      <title>DRV_G3_MACRT_EXCEPTION Enum</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_EXCEPTION</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-41D05A4C-2080-40F6-A2A2-D30E77AC5A64"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_EXCEPTION_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_EXCEPTION_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-517695B0-A450-411B-8033-B8B837C26FD3"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_ExceptionCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_ExceptionCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_ExceptionCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0582DE0E-C854-4C96-BA08-C165BF90A15F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_ExternalInterruptHandler Function</register>
+      <title>DRV_G3_MACRT_ExternalInterruptHandler Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_ExternalInterruptHandler</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F3DA568F-1791-4DD6-9397-5528439DEEEE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_GetTimerReference Function</register>
+      <title>DRV_G3_MACRT_GetTimerReference Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_GetTimerReference</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8D6705DB-D96A-4786-9724-F6B586F876B7"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Initialize Function</register>
+      <title>DRV_G3_MACRT_Initialize Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Initialize</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-86C39B7F-4C57-4AE6-98CE-A878EAF6E667"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_MAC_SNIFFER_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D8DBD579-20F6-4CBF-BA28-FCB386F1E9B8"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_MacSnifferCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_MacSnifferCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_MacSnifferCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CFC0A3D7-6B3D-4D47-A061-7314346BFFCF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Open Function</register>
+      <title>DRV_G3_MACRT_Open Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Open</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6333F1EC-0849-49B3-AA6E-9422B26CCFBD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_PHY_SNIFFER_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-791DBB8A-FE97-43D1-AD04-41B7AE192649"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_PhySnifferCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_PhySnifferCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_PhySnifferCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-39692EBF-C9ED-41F6-A1BB-52B76247E293"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_PIBGet Function</register>
+      <title>DRV_G3_MACRT_PIBGet Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_PIBGet</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C38AD3F4-CA6C-48DE-A6A1-28C18B778318"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_PIBSet Function</register>
+      <title>DRV_G3_MACRT_PIBSet Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_PIBSet</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F79615A6-B539-4AC6-B6A5-61F185C38ABC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_RX_PARAMS_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-292AE054-43EB-4942-A030-F4D2A2F55F87"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_RxParamsIndCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_RxParamsIndCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_RxParamsIndCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-93531DF8-21C2-4F4D-9540-60E4867FAF8F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Sleep Function</register>
+      <title>DRV_G3_MACRT_Sleep Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Sleep</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-406ADE0C-D859-4B2B-9B58-E75C9A66D04B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_SLEEP_IND_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_SLEEP_IND_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_SLEEP_IND_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1D099440-709D-4D2E-AE2C-163F5D2415CE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_SleepIndCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_SleepIndCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_SleepIndCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-96988540-2CDE-43E3-B49A-FED2B49DEA37"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Status Function</register>
+      <title>DRV_G3_MACRT_Status Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Status</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6ACB9986-8D9A-42C0-B408-82F14C261ADA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_Tasks Function</register>
+      <title>DRV_G3_MACRT_Tasks Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_Tasks</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2073D6BA-CDEC-4E93-9C98-8C6C78D11FF6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_TX_CFM_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_TX_CFM_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_TX_CFM_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7696B688-2CF7-4EC3-BAA2-FE442F8A9CA3"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_TxCfmCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_TxCfmCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_TxCfmCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0C474247-A02D-4DAA-B7CA-976F25A16403"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_TxRequest Function</register>
+      <title>DRV_G3_MACRT_TxRequest Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_TxRequest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1750537D-FAC6-4DE9-A207-7F92FCF38D72"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_RX_PARAMETERS_OBJ Struct</register>
+      <title>MAC_RT_RX_PARAMETERS_OBJ Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_RX_PARAMETERS_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F2925ACF-B9D7-43CC-830D-549364A186D6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_STATUS Enum</register>
+      <title>MAC_RT_STATUS Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_STATUS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C28059AE-E01B-4F83-9DDC-6E6397DD36F8"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TX_CFM_OBJ Struct</register>
+      <title>MAC_RT_TX_CFM_OBJ Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TX_CFM_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-97410992-A415-4397-9F09-F55277DD3BF4"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_INIT Struct</register>
+      <title>DRV_G3_MACRT_INIT Struct</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_INIT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D33A9EC1-6EB5-4EB8-820A-BF8B6AFAC54D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_DataIndCallbackRegister Function</register>
+      <title>DRV_PLC_PHY_DataIndCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_DataIndCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DFD74282-E687-4256-A70B-A787486FF4B5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_EXCEPTION Enum</register>
+      <title>DRV_PLC_PHY_EXCEPTION Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_EXCEPTION</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A48A9C4F-4251-4807-A3CB-FE22524FF8B1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_ExceptionCallbackRegister Function</register>
+      <title>DRV_PLC_PHY_ExceptionCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_ExceptionCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CAC25733-1D0F-44AE-84B4-82D140523B79"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_ExternalInterruptHandler Function</register>
+      <title>DRV_PLC_PHY_ExternalInterruptHandler Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_ExternalInterruptHandler</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-01855CB4-57E8-4BE3-A093-14CBFFAABD51"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_PIBSet Function</register>
+      <title>DRV_PLC_PHY_PIBSet Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_PIBSet</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B7C7F0AD-BC60-40E7-AFBA-2B1E32343684"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_SleepDisableCallbackRegister Function</register>
+      <title>DRV_PLC_PHY_SleepDisableCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_SleepDisableCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E1673D08-316E-42AF-A8D8-9B2D3E9DABCE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Status Function</register>
+      <title>DRV_PLC_PHY_Status Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Status</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D08B8E46-56BF-4AE9-996E-B096DE7CCBA5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_Tasks Function</register>
+      <title>DRV_PLC_PHY_Tasks Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_Tasks</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8E175C09-6CD6-4846-A1D3-C49B7CB583E6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TxCfmCallbackRegister Function</register>
+      <title>DRV_PLC_PHY_TxCfmCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TxCfmCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FB84DD36-66A1-4AC7-8809-C528890A4B16"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_ID Enum</register>
+      <title>DRV_PLC_PHY_ID Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_ID</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3BCCA565-F529-442A-BE9B-324CCA7F2702"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_PIB_OBJ Struct</register>
+      <title>DRV_PLC_PHY_PIB_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_PIB_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EE53EE94-8EDB-4740-AE6B-F8C1E3277BC5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_RECEPTION_OBJ Struct</register>
+      <title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_RECEPTION_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F65CE03F-4B50-4092-AB96-CA7DE388B46B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</register>
+      <title>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EEC710D4-41F0-4CBF-88C6-9DDAF6BBE7E5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Configuring The Library</register>
+      <title>Configuring The Library</title>
+      <bitfield/>
+      <keyword>drv_g3_macrt_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-443BB1EE-2B22-45AB-AD80-E0011189606F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS Struct</register>
+      <title>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_MAX_PSDU_LEN_PARAMS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5DA261DF-FDDC-4A4D-9FB9-4001FF3036DD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_MOD_TYPE Enum</register>
+      <title>DRV_PLC_PHY_MOD_TYPE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_MOD_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7BD82710-5BEA-4FEA-BF26-D2B0693F9B54"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_DEL_TYPE Enum</register>
+      <title>DRV_PLC_PHY_DEL_TYPE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_DEL_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B89FD8FD-29D0-4A95-A949-4F22179558D0"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_MOD_TYPE Enum</register>
+      <title>DRV_PLC_PHY_MOD_TYPE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_MOD_SCHEME</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FF6556EE-43F6-41E6-87E4-B10CBEA8DF12"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_SCH Enum</register>
+      <title>DRV_PLC_PHY_SCH Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_SCH</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9F6DC912-C55A-4BCD-90FA-BC4CCACA9138"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TX_RESULT Enum</register>
+      <title>DRV_PLC_PHY_TX_RESULT Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TX_RESULT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C351E8B0-8A8B-4006-89E0-3DE133B33D5E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</register>
+      <title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TRANSMISSION_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-35725EB2-BDEE-4B6A-B204-9B892470097A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_ID Enum</register>
+      <title>DRV_PLC_PHY_ID Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_ID</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-610A01D5-B3B5-43BF-968F-EB6B6BE00373"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_BUFFER_ID Enum</register>
+      <title>DRV_PLC_PHY_BUFFER_ID Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_BUFFER_ID</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C33C587B-747B-4FAB-9976-F27A7875D841"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_FRAME_TYPE Enum</register>
+      <title>DRV_PLC_PHY_FRAME_TYPE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_FRAME_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CE36C238-4FFB-4E75-BF61-A16DEFE6C538"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_HEADER Enum</register>
+      <title>DRV_PLC_PHY_HEADER Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_HEADER</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0D3D6A14-02C7-4AD3-B221-BC057153A38B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO Enum</register>
+      <title>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_SIGNAL_CAPTURE_INFO</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-313FB4A6-7FAE-4AF5-AA07-CBD513967D27"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</register>
+      <title>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_SIGNAL_CAPTURE_STATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BE95F15B-2EE5-4955-A737-8EACFC145E48"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TX_RESULT Enum</register>
+      <title>DRV_PLC_PHY_TX_RESULT Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TX_RESULT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D6A8F4B2-ABF8-4BB2-B38F-28A4A20CA152"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</register>
+      <title>DRV_PLC_PHY_TRANSMISSION_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TRANSMISSION_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-56CEDA9B-50C8-4747-8849-4C5E3FA88FF7"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_PIB_OBJ Struct</register>
+      <title>DRV_PLC_PHY_PIB_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_PIB_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F9A46118-1365-4666-88F4-980A97C99850"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_RECEPTION_OBJ Struct</register>
+      <title>DRV_PLC_PHY_RECEPTION_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_RECEPTION_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D0C15B1D-39F9-4EE2-8C8E-E0D13695B096"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</register>
+      <title>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_TRANSMISSION_CFM_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D74B0E99-F889-4785-907E-AD92A06C9D2A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_CHANNEL Enum</register>
+      <title>DRV_PLC_PHY_CHANNEL Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_CHANNEL</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B05F470E-0BF3-4615-92E6-A99FDB6A586B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_GetCommand Function</register>
+      <title>SRV_RSERIAL_GetCommand Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_GetCommand</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-46296B7F-B9D2-43BA-BE98-15F00868C577"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_COMMAND Enum</register>
+      <title>SRV_RSERIAL_COMMAND Enum</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_COMMAND</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CFDAE18E-3ABF-43A8-A019-0EFCCDEE50BC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_ParsePIB Function</register>
+      <title>SRV_RSERIAL_ParsePIB Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_ParsePIB</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C4E70173-892D-4DA2-AB25-559396A72201"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_SerialGetPIB Function</register>
+      <title>SRV_RSERIAL_SerialGetPIB Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_SerialGetPIB</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E488F078-8FB6-492B-B70B-6C19B06A1FAA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_SerialSetPIB Function</register>
+      <title>SRV_RSERIAL_SerialSetPIB Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_SerialSetPIB</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6A6E7B1D-9665-40E0-ACDE-4B0FFC1A1F0B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_ParseTxMessageTrxId Function</register>
+      <title>SRV_RSERIAL_ParseTxMessageTrxId Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_ParseTxMessageTrxId</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-58BF70C4-C29E-4475-A134-176D7F83B9A9"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_ParseTxMessage Function</register>
+      <title>SRV_RSERIAL_ParseTxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_ParseTxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F0E01A8D-D874-42B6-AAC0-6A3A4F30A8AF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_SetTxHandle Function</register>
+      <title>SRV_RSERIAL_SetTxHandle Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_SetTxHandle</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FA4DA82C-D988-46FD-BE3D-AB2DB64220DA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_SerialRxMessage Function</register>
+      <title>SRV_RSERIAL_SerialRxMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_SerialRxMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5BCCD671-3001-4DC6-B905-27E42AD850D2"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_RSERIAL_SerialCfmMessage Function</register>
+      <title>SRV_RSERIAL_SerialCfmMessage Function</title>
+      <bitfield/>
+      <keyword>SRV_RSERIAL_SerialCfmMessage</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-B2276F0A-9A1D-4C44-80B6-0DC6C1953C15"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_HAL_INTERFACE Struct</register>
+      <title>DRV_PLC_HAL_INTERFACE Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_HAL_INTERFACE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7FA67E83-CB6D-401C-9729-F2E4BA5BE490"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PLIB_INTERFACE Struct</register>
+      <title>DRV_PLC_PLIB_INTERFACE Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PLIB_INTERFACE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-98BF5252-AE5E-4B21-BB73-5296E00BA8FC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_CD_RX_STATE Enum</register>
+      <title>DRV_PLC_PHY_CD_RX_STATE Enum</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_CD_RX_STATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6D6D34D5-BB55-41DC-8053-4A12DD51EAA2"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_PLC_PHY_CD_INFO Struct</register>
+      <title>DRV_PLC_PHY_CD_INFO Struct</title>
+      <bitfield/>
+      <keyword>DRV_PLC_PHY_CD_INFO</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1FD111E6-2DDE-4AD0-8643-C1CFFBF423DC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_STATE Enum</register>
+      <title>DRV_G3_MACRT_STATE Enum</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_STATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-571AD747-AD6C-4347-BCDE-55D3D1D9B520"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_INIT_CALLBACK Typedef</register>
+      <title>DRV_G3_MACRT_INIT_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_INIT_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3C07876A-DF6C-48CF-8AA5-D5A69CF58785"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_InitCallbackRegister Function</register>
+      <title>DRV_G3_MACRT_InitCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_InitCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FDAD4D25-00A7-4854-AC5B-504320568AFB"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_SetCoordinator Function</register>
+      <title>DRV_G3_MACRT_SetCoordinator Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_SetCoordinator</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E2512892-0285-45E6-9EE1-8D322328461F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_G3_MACRT_EnablePhySniffer Function</register>
+      <title>DRV_G3_MACRT_EnablePhySniffer Function</title>
+      <bitfield/>
+      <keyword>DRV_G3_MACRT_EnablePhySniffer</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-83EBAE84-CC25-4C58-9377-5B2D633E951D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_PIB_OBJ Struct</register>
+      <title>MAC_RT_PIB_OBJ Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_PIB_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-77BA9E16-C16A-44AB-9E1F-D3AB7430198A"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_PIB Enum</register>
+      <title>MAC_RT_PIB Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_PIB</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-DCDFA2E5-435B-474F-9824-D4D6B42D70DF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_PHY_PIB Enum</register>
+      <title>MAC_RT_PHY_PIB Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_PHY_PIB</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-30BA13D1-160E-469C-B02D-758D6F4C7FE0"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_BAND Enum</register>
+      <title>MAC_RT_BAND Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_BAND</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7DC31C06-84A4-423A-A5DC-50D66271FA64"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TONE_MAP Struct</register>
+      <title>MAC_RT_TONE_MAP Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TONE_MAP</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-3FCFF247-352F-4E8B-AC20-94342814F7F1"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TONE_MASK Struct</register>
+      <title>MAC_RT_TONE_MASK Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TONE_MASK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-4B87E350-45C3-4503-BA09-B30371EA4C3F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_MOD_TYPE Enum</register>
+      <title>MAC_RT_MOD_TYPE Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_MOD_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-47473C73-EF04-489F-A983-9748CBF52551"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_MOD_SCHEME Enum</register>
+      <title>MAC_RT_MOD_SCHEME Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_MOD_SCHEME</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-0C719567-77D5-49EA-8E00-DDF6A1EEA6BC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TONE_MAP_RSP_DATA Struct</register>
+      <title>MAC_RT_TONE_MAP_RSP_DATA Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TONE_MAP_RSP_DATA</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8EA8AD79-6992-4444-9C4A-6F6E787096A2"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_ADDRESS_MODE; Enum</register>
+      <title>MAC_RT_ADDRESS_MODE; Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_ADDRESS_MODE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5F026E7F-2EF8-410F-8FD5-11A97F7699CB"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_EXT_ADDRESS Struct</register>
+      <title>MAC_RT_EXT_ADDRESS Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_EXT_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-4B132AC5-C6C7-4310-9221-DECE8AAC1981"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_ADDRESS Struct</register>
+      <title>MAC_RT_ADDRESS Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_ADDRESS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C737268D-1E58-442D-A649-AC8B132919DE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_FRAME_TYPE Enum</register>
+      <title>MAC_RT_FRAME_TYPE Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_FRAME_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-ABD6B3B9-0277-4F29-815A-CE801C8655BE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_COMMAND Enum</register>
+      <title>MAC_RT_COMMAND Enum</title>
+      <bitfield/>
+      <keyword>MAC_RT_COMMAND</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-8F009C3B-9F52-42A1-B592-4336D8364000"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_DSN_TABLE_ENTRY Struct</register>
+      <title>MAC_RT_DSN_TABLE_ENTRY Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_DSN_TABLE_ENTRY</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-6A67B310-A067-4A4B-8B37-98F1500F9BA6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_POS_ENTRY Struct</register>
+      <title>MAC_RT_POS_ENTRY Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_POS_ENTRY</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-4D439A4D-A717-4EEE-B167-3EC5C3EE2A17"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TX_COEF Struct</register>
+      <title>MAC_RT_TX_COEF Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TX_COEF</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CEFD2803-4402-48B4-A248-D2236229542E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_NEIGHBOUR_ENTRY Struct</register>
+      <title>MAC_RT_NEIGHBOUR_ENTRY Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_NEIGHBOUR_ENTRY</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BCAEB4CE-EDD1-4889-A68B-F1FFADFAE055"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_SEGMENT_CONTROL Struct</register>
+      <title>MAC_RT_SEGMENT_CONTROL Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_SEGMENT_CONTROL</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-33D3E849-2312-429D-9ED1-535E51364C43"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_AUX_SECURITY_HEADER Struct</register>
+      <title>MAC_RT_AUX_SECURITY_HEADER Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_AUX_SECURITY_HEADER</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EA5D665E-E1F1-47E9-940F-2C5CEB54AE9B"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_HEADER Struct</register>
+      <title>MAC_RT_HEADER Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_HEADER</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-E2ED8330-D71B-40DE-B3A9-FF38FCC655F7"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_TONE_MAP_RESPONSE Struct</register>
+      <title>MAC_RT_TONE_MAP_RESPONSE Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_TONE_MAP_RESPONSE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2EAB4E91-C5C6-4CBC-8597-0B04A25D013E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>MAC_RT_PHY_SNIFFER_HEADER Struct</register>
+      <title>MAC_RT_PHY_SNIFFER_HEADER Struct</title>
+      <bitfield/>
+      <keyword>MAC_RT_PHY_SNIFFER_HEADER</keyword>
+   </keyworditem>
    <keyworditem topicid="GUID-9F92936D-DEC9-4403-BC8D-8CAF14F19639"
                 nocomponent="true"
                 parent="">
@@ -1392,7 +2019,29 @@
       <bitfield/>
       <keyword>srv_pcrc_configurations</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-A3663EE4-FB02-4CF3-BD0E-2BE3FED24123"
+   <keyworditem topicid="GUID-95B97160-5425-444C-A258-8746A620D3F9"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>SRV_PCRC_GetValue Function</register>
+      <title>SRV_PCRC_GetValue Function</title>
+      <bitfield/>
+      <keyword>SRV_PCRC_GetValue</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-2356AE43-5731-46E5-8556-A282237A8145"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>Metrology driver Configurations</register>
+      <title>Metrology driver Configurations</title>
+      <bitfield/>
+      <keyword>mcc_h3_drv_metrology_config</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-15C4E6AF-BB4B-4B66-B165-F3B9F3B41EBD"
                 nocomponent="true"
                 parent="">
       <device/>
@@ -1401,7 +2050,139 @@
       <register>Configuring The Library</register>
       <title>Configuring The Library</title>
       <bitfield/>
-      <keyword>mcc_h3_srv_usi_configurations</keyword>
+      <keyword>mcc_h3_rf215_driver_configurations</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9FE80E80-1BF6-42C8-BC7D-FADFB5D11E0D"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_Initialize Function</register>
+      <title>DRV_RF215_Initialize Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_Initialize</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A8DFFB5A-8278-4EA1-93F1-16427061CF00"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_Status Function</register>
+      <title>DRV_RF215_Status Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_Status</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-59517C22-B307-4CF2-A9B2-630CC066EC58"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_Tasks Function</register>
+      <title>DRV_RF215_Tasks Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_Tasks</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-712B5DA4-C2E2-4F22-9D4A-1A4AEA4C58CB"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_ReadyStatusCallbackRegister Function</register>
+      <title>DRV_RF215_ReadyStatusCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_ReadyStatusCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AE244765-6DBD-45B2-8D76-044FCFDE3B96"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_Open Function</register>
+      <title>DRV_RF215_Open Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_Open</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-44FC59DF-A7D5-413B-8584-435BC712C5BE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_Close Function</register>
+      <title>DRV_RF215_Close Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_Close</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-861971CE-75CE-4EBC-8559-C16AF30095B3"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_RxIndCallbackRegister Function</register>
+      <title>DRV_RF215_RxIndCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_RxIndCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-15B67654-0B46-4723-8777-38B0BD16BBEC"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TxCfmCallbackRegister Function</register>
+      <title>DRV_RF215_TxCfmCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TxCfmCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F96A42DF-A9A6-436F-A372-16013B197B2C"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_SetChannelCallbackRegister Function</register>
+      <title>DRV_RF215_SetChannelCallbackRegister Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_SetChannelCallbackRegister</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D555F63A-D302-4331-A45B-5DBE2F35C5DA"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TxRequest Function</register>
+      <title>DRV_RF215_TxRequest Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TxRequest</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D1381F84-612E-4845-863A-52C7BA273A88"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TxCancel Function</register>
+      <title>DRV_RF215_TxCancel Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TxCancel</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-A395CF87-7EC5-432E-BCCC-EBFE88E3DFEE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_SetChannelRequest Function</register>
+      <title>DRV_RF215_SetChannelRequest Function</title>
+      <bitfield/>
+      <keyword>DRV_RF215_SetChannelRequest</keyword>
    </keyworditem>
    <keyworditem topicid="GUID-7C8F8FE0-76A1-4138-81CD-E2A7D3533A92"
                 nocomponent="true"
@@ -1425,17 +2206,6 @@
       <bitfield/>
       <keyword>PCRC_HEADER_TYPE</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-95B97160-5425-444C-A258-8746A620D3F9"
-                nocomponent="true"
-                parent="">
-      <device/>
-      <module/>
-      <component/>
-      <register>SRV_PCRC_GetValue Function</register>
-      <title>SRV_PCRC_GetValue Function</title>
-      <bitfield/>
-      <keyword>SRV_PCRC_GetValue</keyword>
-   </keyworditem>
    <keyworditem topicid="GUID-8B41FF7D-0488-4893-9701-BDF32DB8BBDA"
                 nocomponent="true"
                 parent="">
@@ -1447,158 +2217,422 @@
       <bitfield/>
       <keyword>SRV_PCRC_SetSNAValue</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-B3A181FF-1B0E-4CF1-8EBB-0D9000DB82EF"
+   <keyworditem topicid="GUID-9B97E933-ACCA-4CB3-833E-B2ED35121CF1"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Close Function</register>
-      <title>SRV_USI_Close Function</title>
+      <register>MAC_RT_MIB_INIT_OBJ Struct</register>
+      <title>MAC_RT_MIB_INIT_OBJ Struct</title>
       <bitfield/>
-      <keyword>SRV_USI_Close</keyword>
+      <keyword>MAC_RT_MIB_INIT_OBJ</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-C0B40EB5-8C77-4961-8932-C0C247B4FA29"
+   <keyworditem topicid="GUID-542F4400-4635-4DBE-A3E7-30C07DE8146D"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_CallbackRegister Function</register>
-      <title>SRV_USI_CallbackRegister Function</title>
+      <register>MAC_RT_FRAME_CONTROL Struct</register>
+      <title>MAC_RT_FRAME_CONTROL Struct</title>
       <bitfield/>
-      <keyword>SRV_USI_CallbackRegister</keyword>
+      <keyword>MAC_RT_FRAME_CONTROL</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-621D854B-54BF-4473-91C6-B37A25840333"
+   <keyworditem topicid="GUID-FF81D891-3107-4947-ADFB-863EC756E686"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Initialize Function</register>
-      <title>SRV_USI_Initialize Function</title>
+      <register>DRV_RF215_GetPibSize Function</register>
+      <title>DRV_RF215_GetPibSize Function</title>
       <bitfield/>
-      <keyword>SRV_USI_Initialize</keyword>
+      <keyword>DRV_RF215_GetPibSize</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-7464B9B1-E30E-4C83-BFF4-C8FBC8AE2B97"
+   <keyworditem topicid="GUID-1940493E-6D8C-482D-8D07-1D3A5E8D207B"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Open Function</register>
-      <title>SRV_USI_Open Function</title>
+      <register>DRV_RF215_GetPib Function</register>
+      <title>DRV_RF215_GetPib Function</title>
       <bitfield/>
-      <keyword>SRV_USI_Open</keyword>
+      <keyword>DRV_RF215_GetPib</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-AEB8DFE3-0BED-4D89-98D8-78F367814AA1"
+   <keyworditem topicid="GUID-D255E274-E519-4C2B-A54F-70CDB25A6622"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Status Function</register>
-      <title>SRV_USI_Status Function</title>
+      <register>DRV_RF215_SetPib Function</register>
+      <title>DRV_RF215_SetPib Function</title>
       <bitfield/>
-      <keyword>SRV_USI_Status</keyword>
+      <keyword>DRV_RF215_SetPib</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-E0E5E6A7-18F0-4315-B9C1-E4D3011230A8"
+   <keyworditem topicid="GUID-6D30548F-CC24-4027-9518-BD7CDECF83DC"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Tasks Function</register>
-      <title>SRV_USI_Tasks Function</title>
+      <register>DRV_RF215_TX_HANDLE Typedef</register>
+      <title>DRV_RF215_TX_HANDLE Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_Tasks</keyword>
+      <keyword>DRV_RF215_TX_HANDLE</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-0A58D291-CDCA-4C22-BAE0-D55E4517D530"
+   <keyworditem topicid="GUID-37E2FBCD-2DA4-4ABA-8E30-2B8172A389CF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_Send_Message Function</register>
-      <title>SRV_USI_Send_Message Function</title>
+      <register>DRV_RF215_TX_HANDLE_INVALID Macro</register>
+      <title>DRV_RF215_TX_HANDLE_INVALID Macro</title>
       <bitfield/>
-      <keyword>SRV_USI_Send_Message</keyword>
+      <keyword>DRV_RF215_TX_HANDLE_INVALID</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-9C3076C9-0171-469B-B059-048A45B45047"
+   <keyworditem topicid="GUID-6F02768B-379C-4AF5-B829-5FA362A4305E"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_HANDLE Typedef</register>
-      <title>SRV_USI_HANDLE Typedef</title>
+      <register>DRV_RF215_TRX_ID Enum</register>
+      <title>DRV_RF215_TRX_ID Enum</title>
       <bitfield/>
-      <keyword>SRV_USI_HANDLE</keyword>
+      <keyword>DRV_RF215_TRX_ID</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-FA6D55E0-FFF4-4BE5-A80C-C57E20F20172"
+   <keyworditem topicid="GUID-30B81AFB-7AB5-4FCF-9B5A-0AD04C4CD34B"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_STATUS Enum</register>
-      <title>SRV_USI_STATUS Enum</title>
+      <register>DRV_RF215_READY_STATUS_CALLBACK Typedef</register>
+      <title>DRV_RF215_READY_STATUS_CALLBACK Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_STATUS</keyword>
+      <keyword>DRV_RF215_READY_STATUS_CALLBACK</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-0C07CB6E-5CF9-4C7E-AC48-965198152AAF"
+   <keyworditem topicid="GUID-C523D0B6-9856-488F-8E29-3ECAE2F05AF2"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_PROTOCOL_ID Enum</register>
-      <title>SRV_USI_PROTOCOL_ID Enum</title>
+      <register>DRV_RF215_RX_IND_CALLBACK Typedef</register>
+      <title>DRV_RF215_RX_IND_CALLBACK Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_PROTOCOL_ID</keyword>
+      <keyword>DRV_RF215_RX_IND_CALLBACK</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-48BB87BF-AAC0-4DE0-A21F-6F00E5B1FF24"
+   <keyworditem topicid="GUID-9232474B-DAF7-4259-B6D3-752AF4EA09A3"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_CALLBACK Typedef</register>
-      <title>SRV_USI_CALLBACK Typedef</title>
+      <register>DRV_RF215_TX_CFM_CALLBACK Typedef</register>
+      <title>DRV_RF215_TX_CFM_CALLBACK Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_CALLBACK</keyword>
+      <keyword>DRV_RF215_TX_CFM_CALLBACK</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-ABD93EB0-3099-42B8-9559-30F072F02739"
+   <keyworditem topicid="GUID-780C9F34-A854-44F6-BA5B-2B55B8D8CE8A"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_HANDLE_INVALID Macro</register>
-      <title>SRV_USI_HANDLE_INVALID Macro</title>
+      <register>DRV_RF215_SET_CHANNEL_CALLBACK Typedef</register>
+      <title>DRV_RF215_SET_CHANNEL_CALLBACK Typedef</title>
       <bitfield/>
-      <keyword>SRV_USI_HANDLE_INVALID</keyword>
+      <keyword>DRV_RF215_SET_CHANNEL_CALLBACK</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-95D6239D-4487-418B-ADEC-587C659BFEE0"
+   <keyworditem topicid="GUID-1858EA4A-A068-4235-B35F-D5D3D33203FF"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_DEV_DESC Struct</register>
-      <title>SRV_USI_DEV_DESC Struct</title>
+      <register>DRV_RF215_PHY_BAND_OPM Enum</register>
+      <title>DRV_RF215_PHY_BAND_OPM Enum</title>
       <bitfield/>
-      <keyword>SRV_USI_DEV_DESC</keyword>
+      <keyword>DRV_RF215_PHY_BAND_OPM</keyword>
    </keyworditem>
-   <keyworditem topicid="GUID-2155582A-0939-41A5-91DE-53D1FC6F1003"
+   <keyworditem topicid="GUID-60D97244-36C5-4186-80F8-D71FD9CEC4B5"
                 nocomponent="true"
                 parent="">
       <device/>
       <module/>
       <component/>
-      <register>SRV_USI_INIT Struct</register>
-      <title>SRV_USI_INIT Struct</title>
+      <register>DRV_RF215_FSK_SYM_RATE Enum</register>
+      <title>DRV_RF215_FSK_SYM_RATE Enum</title>
       <bitfield/>
-      <keyword>SRV_USI_INIT</keyword>
+      <keyword>DRV_RF215_FSK_SYM_RATE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-20BB2D40-0955-4924-B3E9-3368E83DBCE5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_FSK_MOD_IDX Enum</register>
+      <title>DRV_RF215_FSK_MOD_IDX Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_FSK_MOD_IDX</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EBECB932-B255-4A3F-8E4F-3A864216394C"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_FSK_MOD_ORD Enum</register>
+      <title>DRV_RF215_FSK_MOD_ORD Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_FSK_MOD_ORD</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-9E75A7C3-42F5-4A1E-B1AF-1203C102A743"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_OFDM_BW_OPT Enum</register>
+      <title>DRV_RF215_OFDM_BW_OPT Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_OFDM_BW_OPT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-1ECD32AA-B8EC-42FD-AABB-9F4FEAC0EAB0"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_OFDM_ITLV_MODE Enum</register>
+      <title>DRV_RF215_OFDM_ITLV_MODE Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_OFDM_ITLV_MODE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-00D7D26B-EF02-4A02-8A14-0A48CC0FDB1E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PHY_TYPE Enum</register>
+      <title>DRV_RF215_PHY_TYPE Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PHY_TYPE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CF14D9CC-81BC-433A-8FFF-3220361ECECE"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PHY_MOD_SCHEME Enum</register>
+      <title>DRV_RF215_PHY_MOD_SCHEME Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PHY_MOD_SCHEME</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F8BC575D-5E43-4688-8A76-CF6225FEB187"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PHY_CCA_MODE Enum</register>
+      <title>DRV_RF215_PHY_CCA_MODE Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PHY_CCA_MODE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-C93798B1-67AA-4BC4-8CB4-CFAA57B821BF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TX_TIME_MODE Enum</register>
+      <title>DRV_RF215_TX_TIME_MODE Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TX_TIME_MODE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7D16DC47-BB29-45D0-B17B-199CDED71286"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TX_RESULT Enum</register>
+      <title>DRV_RF215_TX_RESULT Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TX_RESULT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-EF3D4902-DC9E-4B49-BC9E-0909D536F8CF"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PIB_ATTRIBUTE Enum</register>
+      <title>DRV_RF215_PIB_ATTRIBUTE Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PIB_ATTRIBUTE</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-5B2AAA6C-6B79-4D9F-A024-E606D022247E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PIB_RESULT Enum</register>
+      <title>DRV_RF215_PIB_RESULT Enum</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PIB_RESULT</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AAEC3972-5EE1-4883-9FD4-32F9A29C8C7E"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_FSK_CFG_OBJ Struct</register>
+      <title>DRV_RF215_FSK_CFG_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_FSK_CFG_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-D31559FB-10D7-4F93-B817-0CC7599762D6"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_OFDM_CFG_OBJ Struct</register>
+      <title>DRV_RF215_OFDM_CFG_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_OFDM_CFG_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-595287DF-1D38-4B9E-8455-7997D5845052"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PHY_TYPE_CFG_OBJ Union</register>
+      <title>DRV_RF215_PHY_TYPE_CFG_OBJ Union</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PHY_TYPE_CFG_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-AF9468DD-222F-4B52-843F-E7D3EB3E4867"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PHY_CFG_OBJ Struct</register>
+      <title>DRV_RF215_PHY_CFG_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PHY_CFG_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-FD06DBBC-A4F5-4DA0-98AA-615DFA5C96DB"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_RX_INDICATION_OBJ Struct</register>
+      <title>DRV_RF215_RX_INDICATION_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_RX_INDICATION_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-F4BCF0E3-9D08-4CB8-8EBE-71CEAB09EF04"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TX_REQUEST_OBJ Struct</register>
+      <title>DRV_RF215_TX_REQUEST_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TX_REQUEST_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-CA90392C-FDB3-43DE-9A26-0C6A429FDFD4"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TX_CONFIRM_OBJ Struct</register>
+      <title>DRV_RF215_TX_CONFIRM_OBJ Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_TX_CONFIRM_OBJ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-63EA836B-CB68-4B5B-9DC1-60B85F9A8954"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_FW_VERSION Struct</register>
+      <title>DRV_RF215_FW_VERSION Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_FW_VERSION</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-81933464-433B-4DF8-981E-4D405021F897"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_TX_CFM_CALLBACK Typedef</register>
+      <title>DRV_RF215_TX_CFM_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PLIB_SPI_IS_BUSY</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-95C86FCA-E459-4688-B1C6-39A6D328FE7F"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PLIB_SPI_SET_CS Typedef</register>
+      <title>DRV_RF215_PLIB_SPI_SET_CS Typedef</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PLIB_SPI_SET_CS</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-72A19CAC-4CF1-4CFF-B283-392F2D9A4F0C"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PLIB_SPI_WRITE_READ Typedef</register>
+      <title>DRV_RF215_PLIB_SPI_WRITE_READ Typedef</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PLIB_SPI_WRITE_READ</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-BE3CF636-F9FC-4135-AD31-D569E06C0DC5"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_PLIB_SPI_SET_CALLBACK Typedef</register>
+      <title>DRV_RF215_PLIB_SPI_SET_CALLBACK Typedef</title>
+      <bitfield/>
+      <keyword>DRV_RF215_PLIB_SPI_SET_CALLBACK</keyword>
+   </keyworditem>
+   <keyworditem topicid="GUID-7C40D1B8-4916-409F-A8E6-8C9B9ADE27AD"
+                nocomponent="true"
+                parent="">
+      <device/>
+      <module/>
+      <component/>
+      <register>DRV_RF215_INIT Struct</register>
+      <title>DRV_RF215_INIT Struct</title>
+      <bitfield/>
+      <keyword>DRV_RF215_INIT</keyword>
    </keyworditem>
 </keywords>

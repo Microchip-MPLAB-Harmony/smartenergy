@@ -516,6 +516,9 @@ table.table .vertical-left span, table.table .vertical-center span, table.table 
   writing-mode: tb;
   transform: rotate(180deg);
 }
+.entry.rotate {
+  writing-mode: initial;
+}
 table.table .vertical-left {
   vertical-align: bottom;
   text-align: left;
@@ -713,4 +716,52 @@ kbd {
 
 .keyword.option {
   font-style: italic;
+}
+
+/* Styling for custom list */
+.custom_list li > p:nth-child(2) {
+    margin-left: 2.5em;
+    color: #555 !important;
+}
+
+/* Styling for noboldlist */
+
+dl.noboldlist dt {
+  float: left;
+  clear: left;
+  /* width: 100px; */
+  font-weight: normal;
+}
+dl.noboldlist dd {
+  margin: 0 0 0 100px;
+  padding: 0 0 0.5em 0;
+}
+
+/* Disclaimer */
+.mchp_disclaimer {
+  padding: 0 10px;
+  text-align: center;
+}
+.mchp_disclaimer > .mchp_disclaimer_text {
+  font-size: .8em;
+  margin: 0;
+  color: #000;
+}
+.wh_footer {
+  margin-top: 0 !important;
+}
+
+.table-container{
+  max-height: 500px;
+  overflow: auto !important;
+}
+
+.table-container tr:nth-child(1) th{
+  position: sticky;
+  top: 0;
+}
+
+.table-container tr:nth-child(2) th{
+  position: sticky;
+  top: 29px;
 }

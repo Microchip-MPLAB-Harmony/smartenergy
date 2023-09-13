@@ -1,5 +1,5 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us" data-whc_version="24.1">
-    <head><link rel="shortcut icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><link rel="icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="The G3 PLC MACRT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.However, the underlying use of an SPI port ..."/><meta name="copyright" content="(C) Copyright 2023"/><meta name="DC.rights.owner" content="(C) Copyright 2023"/><meta name="DC.type" content="topic"/><meta name="DC.relation" content="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.md"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="using-the-library"/><title>1.1.2.2 Using The Library</title><!--  Generated with Oxygen version 24.1, build number 2022062014.  --><meta name="wh-path2root" content=""/><meta name="wh-toc-id" content="&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;?workdir /D:\InfoShare\Data\Publish\Data\vwalu1y24qe\work\temp?&gt;&lt;?workdir-uri file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/temp/?&gt;&lt;?path2project?&gt;&lt;?path2project-uri ./?&gt;&lt;?path2rootmap-uri ./?&gt;&lt;topic xmlns:ditaarch=&#34;http://dita.oasis-open.org/architecture/2005/&#34; xmlns:dita-ot=&#34;http://dita-ot.sourceforge.net/ns/201007/dita-ot&#34; class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;1.2&#34; domains=&#34;(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)&#34; id=&#34;using-the-library&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;topic:1;182:3&#34; specializations=&#34;&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;title:1;182:3&#34;&gt;Using The Library&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;body:1;182:3&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:1;182:3&#34;&gt;The G3 PLC MACRT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.&lt;?linebreak?&gt;However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with Data transmission and reception functions and configuration parameters that can be read/written.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:2;182:3&#34;&gt;Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let library provide communication events to the user.&lt;?linebreak?&gt;Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:3;182:3&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;b:1;182:3&#34;&gt;Example application to send data through PLC and wait for a response&lt;/b&gt;&lt;/p&gt;&lt;codeblock class=&#34;+ topic/pre pr-d/codeblock &#34; xml:space=&#34;preserve&#34; outputclass=&#34;c&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;codeblock:1;182:3&#34;&gt;APP_PLC_DATA appPlc; bool txConfirmed; bool frameReceived; uint8_t txBuffer[MAC_RT_MAX_PAYLOAD_SIZE]; uint16_t txLength; static void APP_PLC_SendData ( uint8_t* pData, uint16_t length ) { uint8_t *pFrame; uint8_t headerLen; if (length &amp;gt; MAC_RT_MAX_PAYLOAD_SIZE) { return; } pFrame = appPlcTx.pTxFrame; /* Build MAC RT Frame */ headerLen = APP_PLC_BuildMacRTHeader(pFrame, &amp;amp;appPlcTx.txHeader); pFrame += headerLen; /* Fill Payload */ memcpy(pFrame, pData, length); pFrame += length; /* Send MAC RT Frame */ txConfirmed = false; DRV_G3_MACRT_TxRequest(appPlc.drvPl360Handle, appPlcTx.pTxFrame, pFrame - appPlcTx.pTxFrame); } static void APP_PLC_DataCfmCb( MAC_RT_TX_CFM_OBJ *cfmObj ) { /* Update flag */ txConfirmed = true; } static void APP_PLC_DataIndCb( uint8_t *pData, uint16_t length ) { /* Do whatever with received frame */ frameReceived = true; } static void APP_PLC_RxParamsIndCb( MAC_RT_RX_PARAMETERS_OBJ *pParameters ) { /* Store Rx Parameters here */ } void APP_PLC_Initialize ( void ) { /* Init PLC data buffers */ appPlcTx.pTxFrame = appPlcTxFrameBuffer; appPlcTx.pRxFrame = appPlcRxFrameBuffer; /* Set PLC state */ appPlc.state = APP_PLC_STATE_IDLE; } void APP_PLC_Tasks ( void ) { /* Check the application's current state. */ switch ( appPlc.state ) { case APP_PLC_STATE_IDLE: { /* Initialize PLC driver */ appPlc.state = APP_PLC_STATE_INIT; } break; case APP_PLC_STATE_INIT: { /* Open PLC driver */ appPlc.drvPl360Handle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL); if (appPlc.drvPl360Handle != DRV_HANDLE_INVALID) { appPlc.state = APP_PLC_STATE_OPEN; } else { appPlc.state = APP_PLC_STATE_ERROR; } break; } case APP_PLC_STATE_OPEN: { /* Check PLC transceiver */ if (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_0) == SYS_STATUS_READY) { /* Configure PLC callbacks */ DRV_G3_MACRT_TxCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb); DRV_G3_MACRT_DataIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataIndCb); DRV_G3_MACRT_RxParamsIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_RxParamsIndCb); /* Apply PLC initial configuration */ APP_PLC_SetInitialConfiguration(); /* Enable PLC Transmission */ DRV_G3_MACRT_EnableTX(appPlc.drvPl360Handle, true); /* Set PLC state to transmit a frame */ appPlc.state = APP_PLC_STATE_TX_REQUEST; } } break; case APP_PLC_STATE_TX_REQUEST: { /* Build a frame in buffer and set length before calling SendData */ APP_PLC_SendData(txBuffer, txLength); appPlc.state = APP_PLC_STATE_WAITING_TX_CFM; break; } case APP_PLC_STATE_WAITING: { if (frameReceived) { frameReceived = false; /* Send another frame */ appPlc.state = APP_PLC_STATE_TX_REQUEST; } break; } case APP_PLC_STATE_WAITING_TX_CFM: { if (txConfirmed) { frameReceived = false; appPlc.state = APP_PLC_STATE_WAITING; } break; } /* The default state should never be executed. */ default: { /* Handle error in application's state machine. */ break; } } } &lt;/codeblock&gt;&lt;/body&gt;&lt;related-links class=&#34;- topic/related-links &#34;&gt;&lt;linkpool class=&#34;- topic/linkpool &#34; mapkeyref=&#34;GUID-F454DB36-5AD7-4DBC-882C-6FC64DF4ADB2&#34; xtrc=&#34;topicref:3;3:1659&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-2815F1DF-2086-4A10-BBB4-92305AC00E90.ditamap&#34;&gt;&lt;link class=&#34;- topic/link &#34; format=&#34;dita&#34; href=&#34;GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.md&#34; mapclass=&#34;- map/topicref &#34; role=&#34;parent&#34; scope=&#34;local&#34; type=&#34;topic&#34; xtrc=&#34;topicref:1;3:1378&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/vwalu1y24qe/work/1/en-US/GUID-2815F1DF-2086-4A10-BBB4-92305AC00E90.ditamap&#34;&gt;&lt;?ditaot usertext?&gt;&lt;linktext class=&#34;- topic/linktext &#34;&gt;&lt;?ditaot gentext?&gt;G3 MAC RT Driver&lt;/linktext&gt;&lt;/link&gt;&lt;/linkpool&gt;&lt;/related-links&gt;&lt;/topic&gt;"/><meta name="wh-source-relpath" content="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md"/><meta name="wh-out-relpath" content="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.html"/>
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><link rel="icon" href="oxygen-webhelp\template\resources/images/favicon.ico"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="description" content="The G3 MAC RT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run. However, the underlying use of an SPI port ..."/><meta name="copyright" content="(C) Copyright 2023"/><meta name="generator" content="DITA-OT"/><title>1.1.2.2 Using The Library</title><!--  Generated with Oxygen version 24.1, build number 2022062014.  --><meta name="wh-path2root" content=""/><meta name="wh-toc-id" content="&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;&lt;?workdir /D:\InfoShare\Data\Publish\Data\k23pamdhcxd\work\temp?&gt;&lt;?workdir-uri file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/temp/?&gt;&lt;?path2project?&gt;&lt;?path2project-uri ./?&gt;&lt;?path2rootmap-uri ./?&gt;&lt;topic xmlns:dita-ot=&#34;http://dita-ot.sourceforge.net/ns/201007/dita-ot&#34; xmlns:ditaarch=&#34;http://dita.oasis-open.org/architecture/2005/&#34; class=&#34;- topic/topic &#34; ditaarch:DITAArchVersion=&#34;2.0&#34; specializations=&#34;@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product&#34; id=&#34;using-the-library&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;topic:1;184:15&#34; domains=&#34;a(props audience) a(props deliveryTarget) a(props otherprops) a(props platform) a(props product)&#34;&gt;&lt;title class=&#34;- topic/title &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;title:1;184:15&#34;&gt;Using The Library&lt;/title&gt;&lt;body class=&#34;- topic/body &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;body:1;184:15&#34;&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:1;184:15&#34;&gt;The G3 MAC RT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:2;184:15&#34;&gt;However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with data transmission and reception functions and configuration parameters that can be read/written.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:3;184:15&#34;&gt;Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let the library provide communication events to the user.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:4;184:15&#34;&gt;Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.&lt;/p&gt;&lt;p class=&#34;- topic/p &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;p:5;184:15&#34;&gt;&lt;b class=&#34;+ topic/ph hi-d/b &#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;b:1;184:15&#34;&gt;Example application to send data through PLC and wait for a response&lt;/b&gt;&lt;/p&gt;&lt;codeblock class=&#34;+ topic/pre pr-d/codeblock &#34; xml:space=&#34;preserve&#34; outputclass=&#34;c&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md&#34; xtrc=&#34;codeblock:1;184:15&#34;&gt;#include &#34;app_plc.h&#34; #include &#34;driver/plc/g3MacRt/drv_g3_macrt.h&#34; #include &#34;service/pcoup/srv_pcoup.h&#34; #include &#34;service/random/srv_random.h&#34; typedef enum { /* Application's state machine's initial state. */ APP_PLC_STATE_INIT=0, APP_PLC_STATE_OPEN, APP_PLC_STATE_WAITING, APP_PLC_STATE_WAITING_TX_CFM, APP_PLC_STATE_ERROR, } APP_PLC_STATES; APP_PLC_STATES appPlcState; DRV_HANDLE drvPlcHandle; MAC_RT_HEADER txHeader; uint16_t txLength; uint8_t txBuffer[MAC_RT_DATA_MAX_SIZE]; bool txConfirmed; bool frameReceived; static uint8_t APP_PLC_BuildMacHeader ( uint8_t *pFrame, MAC_RT_HEADER *pHeader ) { uint8_t *pData; pData = pFrame; /* Copy Frame Control and Sequence number */ memcpy(pData, pHeader, 3); pData += 3; /* Build Header to use MAC_RT_SHORT_ADDRESS mode */ /* Destination PAN ID */ *pData++ = (uint8_t)(pHeader-&amp;gt;destinationPAN); *pData++ = (uint8_t)(pHeader-&amp;gt;destinationPAN &amp;gt;&amp;gt; 8); /* Destination address */ *pData++ = (uint8_t)(pHeader-&amp;gt;destinationAddress.shortAddress); *pData++ = (uint8_t)(pHeader-&amp;gt;destinationAddress.shortAddress &amp;gt;&amp;gt; 8); /* panIdCompression = 1 -&amp;gt; No Source PAN ID */ /* Source Address */ *pData++ = (uint8_t)(pHeader-&amp;gt;sourceAddress.shortAddress); *pData++ = (uint8_t)(pHeader-&amp;gt;sourceAddress.shortAddress &amp;gt;&amp;gt; 8); /* Return Header length */ return (uint8_t)(pData - pFrame); } static void APP_PLC_SendData ( uint8_t* pData, uint16_t length ) { uint8_t *pFrame; uint8_t headerLen; if (length &amp;gt; MAC_RT_MAX_PAYLOAD_SIZE) { return; } pFrame = txBuffer; /* Build MAC Frame */ headerLen = APP_PLC_BuildMacHeader(pFrame, &amp;amp;txHeader); pFrame += headerLen; /* Fill Payload */ memcpy(pFrame, pData, length); pFrame += length; /* Send MAC Frame */ txConfirmed = false; DRV_G3_MACRT_TxRequest(drvPlcHandle, txBuffer, pFrame - txBuffer); } static void APP_PLC_DataCfmCb( MAC_RT_TX_CFM_OBJ *cfmObj ) { /* Update flag */ txConfirmed = true; /* Check result */ if (cfmObj-&amp;gt;status == MAC_RT_STATUS_SUCCESS) { } } static void APP_PLC_DataIndCb( uint8_t *pData, uint16_t length ) { /* Do whatever with received frame */ frameReceived = true; txLength = length; } static void APP_PLC_RxParamsIndCb( MAC_RT_RX_PARAMETERS_OBJ *pParameters ) { /* Store Rx Parameters here */ } void APP_PLC_Initialize ( void ) { /* Fill MAC RT Header */ txHeader.frameControl.frameType = MAC_RT_FRAME_TYPE_DATA; txHeader.frameControl.securityEnabled = 0; txHeader.frameControl.framePending = 0; txHeader.frameControl.ackRequest = 0; txHeader.frameControl.panIdCompression = 1; txHeader.frameControl.destAddressingMode = MAC_RT_SHORT_ADDRESS; txHeader.frameControl.frameVersion = 1; txHeader.frameControl.srcAddressingMode = MAC_RT_SHORT_ADDRESS; txHeader.sequenceNumber = 0; txHeader.destinationPAN = 0x781D; txHeader.destinationAddress.addressMode = MAC_RT_SHORT_ADDRESS; txHeader.destinationAddress.shortAddress = 0xFFFF; txHeader.sourcePAN = 0x781D; txHeader.sourceAddress.addressMode = MAC_RT_SHORT_ADDRESS; txHeader.sourceAddress.shortAddress = SRV_RANDOM_Get16bits(); txLength = 100; /* Set application state */ appPlcState = APP_PLC_STATE_INIT; txConfirmed = false; frameReceived = false; } void APP_PLC_Tasks ( void ) { /* Check the application's current state. */ switch ( appPlcState ) { case APP_PLC_STATE_INIT: { /* Open PLC driver */ drvPlcHandle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_0, NULL); if (drvPlcHandle != DRV_HANDLE_INVALID) { appPlcState = APP_PLC_STATE_OPEN; } else { appPlcState = APP_PLC_STATE_ERROR; } break; } case APP_PLC_STATE_OPEN: { /* Check PLC transceiver */ if (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_0) == SYS_STATUS_READY) { SRV_PLC_PCOUP_BRANCH defaultBranch; /* Configure PLC callbacks */ DRV_G3_MACRT_TxCfmCallbackRegister(drvPlcHandle, APP_PLC_DataCfmCb); DRV_G3_MACRT_DataIndCallbackRegister(drvPlcHandle, APP_PLC_DataIndCb); DRV_G3_MACRT_RxParamsIndCallbackRegister(drvPlcHandle, APP_PLC_RxParamsIndCb); /* Apply PLC coupling configuration */ defaultBranch = SRV_PCOUP_Get_Default_Branch(); SRV_PCOUP_Set_Config(drvPlcHandle, defaultBranch); /* Enable PLC Transmission */ DRV_G3_MACRT_EnableTX(drvPlcHandle, true); /* Transmit the first frame */ APP_PLC_SendData(txBuffer, txLength); appPlcState = APP_PLC_STATE_WAITING_TX_CFM; } } break; case APP_PLC_STATE_WAITING: { if (frameReceived) { frameReceived = false; /* Send another frame */ APP_PLC_SendData(txBuffer, txLength); appPlcState = APP_PLC_STATE_WAITING_TX_CFM; } break; } case APP_PLC_STATE_WAITING_TX_CFM: { if (txConfirmed) { txConfirmed = false; appPlcState = APP_PLC_STATE_WAITING; } break; } /* The default state should never be executed. */ default: { /* Handle error in application's state machine. */ break; } } }&lt;/codeblock&gt;&lt;/body&gt;&lt;related-links class=&#34;- topic/related-links &#34;&gt;&lt;linkpool class=&#34;- topic/linkpool &#34; mapkeyref=&#34;GUID-F454DB36-5AD7-4DBC-882C-6FC64DF4ADB2&#34; xtrc=&#34;topicref:3;6:402&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-2815F1DF-2086-4A10-BBB4-92305AC00E90.ditamap&#34;&gt;&lt;link class=&#34;- topic/link &#34; format=&#34;dita&#34; href=&#34;GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.md&#34; mapclass=&#34;- map/topicref &#34; role=&#34;parent&#34; scope=&#34;local&#34; type=&#34;topic&#34; xtrc=&#34;topicref:1;6:99&#34; xtrf=&#34;file:/D:/InfoShare/Data/Publish/Data/k23pamdhcxd/work/2/en-US/GUID-2815F1DF-2086-4A10-BBB4-92305AC00E90.ditamap&#34;&gt;&lt;?ditaot usertext?&gt;&lt;linktext class=&#34;- topic/linktext &#34;&gt;&lt;?ditaot gentext?&gt;G3 MAC RT Driver&lt;/linktext&gt;&lt;/link&gt;&lt;/linkpool&gt;&lt;/related-links&gt;&lt;/topic&gt;"/><meta name="wh-source-relpath" content="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.md"/><meta name="wh-out-relpath" content="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.html"/>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
     
@@ -57,7 +57,7 @@
             
             
             
-            <form id="searchForm" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form>
+            <form id="searchForm" method="get" role="search" action="search.html"><div class="d-flex justify-contents-around"><div class="flex-grow-1"></div><div class="position-relative flex-grow-1"><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div><div class="align-self-center flex-grow-1 ml-2"></div></div></form>
             
             <div class="mchp-color-stripe-grid-container">
   <div class="mchp-main-bar mchp-orange-bar"></div>
@@ -106,18 +106,20 @@ Using The Library</a></div></div></li></ol></div>
                         <nav id="wh_publication_toc" class="col-lg-3 col-md-3 col-sm-12 d-md-block d-none d-print-none" aria-label="Table of Contents Container">
                             <div id="wh_publication_toc_content">
 		                        
-                            	<div class=" wh_publication_toc " data-tooltip-position="right"><span class="expand-button-action-labels"><span id="button-expand-action" role="button" aria-label="Expand"></span><span id="button-collapse-action" role="button" aria-label="Collapse"></span><span id="button-pending-action" role="button" aria-label="Pending"></span></span><ul role="tree" aria-label="Table of Contents"><li role="treeitem" aria-expanded="true"><div data-tocid="mplab-harmony-smart-energy-library-d2732e9" class="topicref" data-id="mplab-harmony-smart-energy-library" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action mplab-harmony-smart-energy-library-d2732e9-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html" id="mplab-harmony-smart-energy-library-d2732e9-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
-MPLAB® Harmony Smart Energy Library</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="true"><div data-tocid="driver-libraries-d2732e17" class="topicref" data-id="driver-libraries" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action driver-libraries-d2732e17-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-97853572-2DF9-4BDC-8CC2-427931EE96D9.html" id="driver-libraries-d2732e17-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1</ph>
-Driver Libraries</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-driver-d2732e25" class="topicref" data-id="plc-phy-driver" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-driver-d2732e25-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html" id="plc-phy-driver-d2732e25-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.1</ph>
-PLC PHY Driver</a></div></div></li><li role="treeitem" aria-expanded="true"><div data-tocid="g3-mac-rt-driver-d2732e477" class="topicref" data-id="g3-mac-rt-driver" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action g3-mac-rt-driver-d2732e477-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" id="g3-mac-rt-driver-d2732e477-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2</ph>
-G3 MAC RT Driver</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem"><div data-tocid="how-the-library-works-d2732e485" class="topicref" data-id="how-the-library-works" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-93466C84-5C2E-4AA6-A8AB-812D804F9074.html" id="how-the-library-works-d2732e485-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.1</ph>
-How the Library Works</a></div></div></li><li role="treeitem" class="active"><div data-tocid="using-the-library-d2732e493" class="topicref" data-id="using-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.html" id="using-the-library-d2732e493-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.2</ph>
-Using The Library</a></div></div></li><li role="treeitem"><div data-tocid="configuring-the-library-d2732e501" class="topicref" data-id="configuring-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-EEC710D4-41F0-4CBF-88C6-9DDAF6BBE7E5.html" id="configuring-the-library-d2732e501-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.3</ph>
-Configuring The Library</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="library-interface-d2732e509" class="topicref" data-id="library-interface" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action library-interface-d2732e509-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" id="library-interface-d2732e509-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.4</ph>
-Library Interface</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="metrology-driver-d2732e832" class="topicref" data-id="metrology-driver" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action metrology-driver-d2732e832-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html" id="metrology-driver-d2732e832-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.3</ph>
-Metrology Driver</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="service-libraries-d2732e1211" class="topicref" data-id="service-libraries" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action service-libraries-d2732e1211-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html" id="service-libraries-d2732e1211-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
-Service Libraries</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="demo-applications-d2732e1908" class="topicref" data-id="demo-applications" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action demo-applications-d2732e1908-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2188B5B7-760D-4261-AEB9-DDCD9B01A109.html" id="demo-applications-d2732e1908-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.3</ph>
-Demo Applications</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d2732e2004" class="topicref backmatter backmatter_parent" data-id="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d2732e2004-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B.html" id="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d2732e2004-link">Microchip Information</a></div></div></li></ul></div>
+                            	<div class=" wh_publication_toc " data-tooltip-position="right"><span class="expand-button-action-labels"><span id="button-expand-action" role="button" aria-label="Expand"></span><span id="button-collapse-action" role="button" aria-label="Collapse"></span><span id="button-pending-action" role="button" aria-label="Pending"></span></span><ul role="tree" aria-label="Table of Contents"><li role="treeitem" aria-expanded="true"><div data-tocid="mplab-harmony-smart-energy-library-d3711e11" class="topicref" data-id="mplab-harmony-smart-energy-library" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action mplab-harmony-smart-energy-library-d3711e11-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-81A73CB2-02C0-41CF-9C28-0AECE56FFF26.html" id="mplab-harmony-smart-energy-library-d3711e11-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1</ph>
+MPLAB® Harmony Smart Energy Library</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="true"><div data-tocid="driver-libraries-d3711e19" class="topicref" data-id="driver-libraries" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action driver-libraries-d3711e19-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-97853572-2DF9-4BDC-8CC2-427931EE96D9.html" id="driver-libraries-d3711e19-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1</ph>
+Driver Libraries</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem" aria-expanded="false"><div data-tocid="plc-phy-driver-d3711e27" class="topicref" data-id="plc-phy-driver" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action plc-phy-driver-d3711e27-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-261B02C6-E685-4C12-8EB7-5E717F054F60.html" id="plc-phy-driver-d3711e27-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.1</ph>
+PLC PHY Driver</a></div></div></li><li role="treeitem" aria-expanded="true"><div data-tocid="g3-mac-rt-driver-d3711e495" class="topicref" data-id="g3-mac-rt-driver" data-state="expanded"><span role="button" tabindex="0" aria-labelledby="button-collapse-action g3-mac-rt-driver-d3711e495-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-A7685FE8-B336-4379-A26B-C821EBD7CD85.html" id="g3-mac-rt-driver-d3711e495-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2</ph>
+G3 MAC RT Driver</a></div></div><ul role="group" class="navbar-nav nav-list"><li role="treeitem"><div data-tocid="how-the-library-works-d3711e503" class="topicref" data-id="how-the-library-works" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-93466C84-5C2E-4AA6-A8AB-812D804F9074.html" id="how-the-library-works-d3711e503-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.1</ph>
+How the Library Works</a></div></div></li><li role="treeitem" class="active"><div data-tocid="using-the-library-d3711e511" class="topicref" data-id="using-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DCCAE10-97B3-4C66-89AA-0A031CE6814F.html" id="using-the-library-d3711e511-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.2</ph>
+Using The Library</a></div></div></li><li role="treeitem"><div data-tocid="configuring-the-library-d3711e519" class="topicref" data-id="configuring-the-library" data-state="leaf"><span role="button" class="wh-expand-btn"></span><div class="title"><a href="GUID-EEC710D4-41F0-4CBF-88C6-9DDAF6BBE7E5.html" id="configuring-the-library-d3711e519-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.3</ph>
+Configuring The Library</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="library-interface-d3711e527" class="topicref" data-id="library-interface" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action library-interface-d3711e527-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-D07D7626-C64B-4A08-A120-8F182086A3FF.html" id="library-interface-d3711e527-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.2.4</ph>
+Library Interface</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="metrology-driver-d3711e1068" class="topicref" data-id="metrology-driver" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action metrology-driver-d3711e1068-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2023FB1C-E7E7-4813-9BA3-480FEB57627B.html" id="metrology-driver-d3711e1068-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.3</ph>
+Metrology Driver</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="rf215-driver-d3711e1447" class="topicref" data-id="rf215-driver" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action rf215-driver-d3711e1447-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2EE5EBF2-6C99-4D66-9EEC-A0C3C8CD40EF.html" id="rf215-driver-d3711e1447-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.1.4</ph>
+RF215 Driver</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="service-libraries-d3711e1875" class="topicref" data-id="service-libraries" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action service-libraries-d3711e1875-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-3DBF4BBC-895F-4E64-901F-C76DB2918FDD.html" id="service-libraries-d3711e1875-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.2</ph>
+Service Libraries</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="demo-applications-d3711e3287" class="topicref" data-id="demo-applications" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action demo-applications-d3711e3287-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-2188B5B7-760D-4261-AEB9-DDCD9B01A109.html" id="demo-applications-d3711e3287-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">1.3</ph>
+Demo Applications</a></div></div></li></ul></li><li role="treeitem" aria-expanded="false"><div data-tocid="getting-started-with-mplab-harmony-plc-stack-d3711e3783" class="topicref" data-id="getting-started-with-mplab-harmony-plc-stack" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action getting-started-with-mplab-harmony-plc-stack-d3711e3783-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-4183CE78-B659-4918-8651-B77A34D15302.html" id="getting-started-with-mplab-harmony-plc-stack-d3711e3783-link"><ph xmlns="http://www.oxygenxml.com/ns/webhelp/toc">2</ph>
+Getting Started with MPLAB® Harmony PLC Stack</a></div></div></li><li role="treeitem" aria-expanded="false"><div data-tocid="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d3711e3888" class="topicref backmatter backmatter_parent" data-id="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B" data-state="not-ready"><span role="button" tabindex="0" aria-labelledby="button-expand-action GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d3711e3888-link" class="wh-expand-btn"></span><div class="title"><a href="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B.html" id="GUID-0FB3F908-88EE-45CE-94F5-E97AF9049C9B-d3711e3888-link">Microchip Information</a></div></div></li></ul></div>
 		                        
                             </div>
                         </nav>
@@ -131,11 +133,54 @@ Demo Applications</a></div></div></li></ul></li><li role="treeitem" aria-expande
                         </button>
                         
                         
-                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><h1 class="- topic/title title topictitle1" id="ariaid-title1" style="">1.1.2.2 Using The Library</h1><div class="- topic/body body"><p class="- topic/p p">The G3 PLC MACRT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with Data transmission and reception functions and configuration parameters that can be read/written.</p><p class="- topic/p p">Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let library provide communication events to the user.Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.</p><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Example application to send data through PLC and wait for a response</strong></p><pre class="+ topic/pre pr-d/codeblock pre codeblock c">APP_PLC_DATA appPlc;
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><h1 class="- topic/title title topictitle1" id="ariaid-title1" style="">1.1.2.2 Using The Library</h1><div class="- topic/body body"><p class="- topic/p p">The G3 MAC RT library builds on top of an SPI peripheral library (PLIB) to communicate with a PLC transceiver in which G3-PLC lower MAC and PHY layers run.</p><p class="- topic/p p">However, the underlying use of an SPI port is abstracted to the user, and library provides a modem-like interface with data transmission and reception functions and configuration parameters that can be read/written.</p><p class="- topic/p p">Data Service access is done in asynchronous mode, requiring some callbacks to be set in order to let the library provide communication events to the user.</p><p class="- topic/p p">Management Service access is done in synchronous mode, and the different Get/Set functions provide the results as part of the returned/referenced parameters.</p><p class="- topic/p p"><strong class="+ topic/ph hi-d/b ph b">Example application to send data through PLC and wait for a response</strong></p><pre class="+ topic/pre pr-d/codeblock pre codeblock c"><span class="hl-directive">#include</span> <span class="hl-string">"app_plc.h"</span>
+<span class="hl-directive">#include</span> <span class="hl-string">"driver/plc/g3MacRt/drv_g3_macrt.h"</span>
+<span class="hl-directive">#include</span> <span class="hl-string">"service/pcoup/srv_pcoup.h"</span>
+<span class="hl-directive">#include</span> <span class="hl-string">"service/random/srv_random.h"</span>
+
+<strong class="hl-keyword">typedef</strong> <strong class="hl-keyword">enum</strong>
+{
+    <em class="hl-comment">/* Application's state machine's initial state. */</em>
+    APP_PLC_STATE_INIT=<span class="hl-number">0</span>,
+    APP_PLC_STATE_OPEN,
+    APP_PLC_STATE_WAITING,
+    APP_PLC_STATE_WAITING_TX_CFM,
+    APP_PLC_STATE_ERROR,
+
+} APP_PLC_STATES;
+
+APP_PLC_STATES appPlcState;
+DRV_HANDLE drvPlcHandle;
+MAC_RT_HEADER txHeader;
+uint16_t txLength;
+uint8_t txBuffer[MAC_RT_DATA_MAX_SIZE];
 bool txConfirmed;
 bool frameReceived;
-uint8_t txBuffer[MAC_RT_MAX_PAYLOAD_SIZE];
-uint16_t txLength;
+
+<strong class="hl-keyword">static</strong> uint8_t APP_PLC_BuildMacHeader ( uint8_t *pFrame, MAC_RT_HEADER *pHeader )
+{
+    uint8_t *pData;
+
+    pData = pFrame;
+
+    <em class="hl-comment">/* Copy Frame Control and Sequence number */</em>
+    memcpy(pData, pHeader, <span class="hl-number">3</span>);
+    pData += <span class="hl-number">3</span>;
+    <em class="hl-comment">/* Build Header to use MAC_RT_SHORT_ADDRESS mode */</em>
+    <em class="hl-comment">/* Destination PAN ID */</em>
+    *pData++ = (uint8_t)(pHeader-&gt;destinationPAN);
+    *pData++ = (uint8_t)(pHeader-&gt;destinationPAN &gt;&gt; <span class="hl-number">8</span>);
+    <em class="hl-comment">/* Destination address */</em>
+    *pData++ = (uint8_t)(pHeader-&gt;destinationAddress.shortAddress);
+    *pData++ = (uint8_t)(pHeader-&gt;destinationAddress.shortAddress &gt;&gt; <span class="hl-number">8</span>);
+    <em class="hl-comment">/* panIdCompression = 1 -&gt; No Source PAN ID */</em>
+    <em class="hl-comment">/* Source Address */</em>
+    *pData++ = (uint8_t)(pHeader-&gt;sourceAddress.shortAddress);
+    *pData++ = (uint8_t)(pHeader-&gt;sourceAddress.shortAddress &gt;&gt; <span class="hl-number">8</span>);
+
+    <em class="hl-comment">/* Return Header length */</em>
+    <strong class="hl-keyword">return</strong> (uint8_t)(pData - pFrame);
+}
 
 <strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> APP_PLC_SendData ( uint8_t* pData, uint16_t length )
 {
@@ -146,32 +191,38 @@ uint16_t txLength;
         <strong class="hl-keyword">return</strong>;
     }
     
-    pFrame = appPlcTx.pTxFrame;
+    pFrame = txBuffer;
     
-    <em class="hl-comment">/* Build MAC RT Frame */</em>
-    headerLen = APP_PLC_BuildMacRTHeader(pFrame, &amp;appPlcTx.txHeader);
+    <em class="hl-comment">/* Build MAC Frame */</em>
+    headerLen = APP_PLC_BuildMacHeader(pFrame, &amp;txHeader);
     pFrame += headerLen;
     
     <em class="hl-comment">/* Fill Payload */</em>
     memcpy(pFrame, pData, length);
     pFrame += length;
 
-    <em class="hl-comment">/* Send MAC RT Frame */</em>
+    <em class="hl-comment">/* Send MAC Frame */</em>
     txConfirmed = false;
-    DRV_G3_MACRT_TxRequest(appPlc.drvPl360Handle, appPlcTx.pTxFrame, 
-            pFrame - appPlcTx.pTxFrame);
+    DRV_G3_MACRT_TxRequest(drvPlcHandle, txBuffer, pFrame - txBuffer);
 }
 
 <strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataCfmCb</span>( MAC_RT_TX_CFM_OBJ *cfmObj )
 {
     <em class="hl-comment">/* Update flag */</em>
     txConfirmed = true;
+
+    <em class="hl-comment">/* Check result */</em>
+    <strong class="hl-keyword">if</strong> (cfmObj-&gt;status == MAC_RT_STATUS_SUCCESS)
+    {
+
+    }
 }
 
 <strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_DataIndCb</span>( uint8_t *pData, uint16_t length )
 {
     <em class="hl-comment">/* Do whatever with received frame */</em>
     frameReceived = true;
+    txLength = length;
 }
 
 <strong class="hl-keyword">static</strong> <strong class="hl-keyword">void</strong> <span class="hl-functions">APP_PLC_RxParamsIndCb</span>( MAC_RT_RX_PARAMETERS_OBJ *pParameters )
@@ -181,38 +232,47 @@ uint16_t txLength;
 
 <strong class="hl-keyword">void</strong> APP_PLC_Initialize ( <strong class="hl-keyword">void</strong> )
 {
-    <em class="hl-comment">/* Init PLC data buffers */</em>
-    appPlcTx.pTxFrame = appPlcTxFrameBuffer;
-    appPlcTx.pRxFrame = appPlcRxFrameBuffer;
+    <em class="hl-comment">/* Fill MAC RT Header */</em>
+    txHeader.frameControl.frameType = MAC_RT_FRAME_TYPE_DATA;
+    txHeader.frameControl.securityEnabled = <span class="hl-number">0</span>;
+    txHeader.frameControl.framePending = <span class="hl-number">0</span>;
+    txHeader.frameControl.ackRequest = <span class="hl-number">0</span>;
+    txHeader.frameControl.panIdCompression = <span class="hl-number">1</span>;
+    txHeader.frameControl.destAddressingMode = MAC_RT_SHORT_ADDRESS;
+    txHeader.frameControl.frameVersion = <span class="hl-number">1</span>;
+    txHeader.frameControl.srcAddressingMode = MAC_RT_SHORT_ADDRESS;
+    txHeader.sequenceNumber = <span class="hl-number">0</span>;
+    txHeader.destinationPAN = <span class="hl-number">0x781D</span>;
+    txHeader.destinationAddress.addressMode = MAC_RT_SHORT_ADDRESS;
+    txHeader.destinationAddress.shortAddress = <span class="hl-number">0xFFFF</span>;
+    txHeader.sourcePAN = <span class="hl-number">0x781D</span>;
+    txHeader.sourceAddress.addressMode = MAC_RT_SHORT_ADDRESS;
+    txHeader.sourceAddress.shortAddress = SRV_RANDOM_Get16bits();
+    txLength = <span class="hl-number">100</span>;
     
-    <em class="hl-comment">/* Set PLC state */</em>
-    appPlc.state = APP_PLC_STATE_IDLE;
+    <em class="hl-comment">/* Set application state */</em>
+    appPlcState = APP_PLC_STATE_INIT;
+    txConfirmed = false;
+    frameReceived = false;
 }
 
 <strong class="hl-keyword">void</strong> APP_PLC_Tasks ( <strong class="hl-keyword">void</strong> )
 {   
     <em class="hl-comment">/* Check the application's current state. */</em>
-    <strong class="hl-keyword">switch</strong> ( appPlc.state )
+    <strong class="hl-keyword">switch</strong> ( appPlcState )
     {
-        <strong class="hl-keyword">case</strong> APP_PLC_STATE_IDLE:
-        {
-            <em class="hl-comment">/* Initialize PLC driver */</em>
-            appPlc.state = APP_PLC_STATE_INIT;
-        }
-        <strong class="hl-keyword">break</strong>;
-
         <strong class="hl-keyword">case</strong> APP_PLC_STATE_INIT:
         {
             <em class="hl-comment">/* Open PLC driver */</em>
-            appPlc.drvPl360Handle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_<span class="hl-number">0</span>, NULL);
+            drvPlcHandle = DRV_G3_MACRT_Open(DRV_G3_MACRT_INDEX_<span class="hl-number">0</span>, NULL);
 
-            <strong class="hl-keyword">if</strong> (appPlc.drvPl360Handle != DRV_HANDLE_INVALID)
+            <strong class="hl-keyword">if</strong> (drvPlcHandle != DRV_HANDLE_INVALID)
             {
-                appPlc.state = APP_PLC_STATE_OPEN;
+                appPlcState = APP_PLC_STATE_OPEN;
             }
             <strong class="hl-keyword">else</strong>
             {
-                appPlc.state = APP_PLC_STATE_ERROR;
+                appPlcState = APP_PLC_STATE_ERROR;
             }
             <strong class="hl-keyword">break</strong>;
         }
@@ -222,30 +282,26 @@ uint16_t txLength;
             <em class="hl-comment">/* Check PLC transceiver */</em>
             <strong class="hl-keyword">if</strong> (DRV_G3_MACRT_Status(DRV_G3_MACRT_INDEX_<span class="hl-number">0</span>) == SYS_STATUS_READY)
             {
+                SRV_PLC_PCOUP_BRANCH defaultBranch;
+
                 <em class="hl-comment">/* Configure PLC callbacks */</em>
-                DRV_G3_MACRT_TxCfmCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataCfmCb);
-                DRV_G3_MACRT_DataIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_DataIndCb);
-                DRV_G3_MACRT_RxParamsIndCallbackRegister(appPlc.drvPl360Handle, APP_PLC_RxParamsIndCb);
+                DRV_G3_MACRT_TxCfmCallbackRegister(drvPlcHandle, APP_PLC_DataCfmCb);
+                DRV_G3_MACRT_DataIndCallbackRegister(drvPlcHandle, APP_PLC_DataIndCb);
+                DRV_G3_MACRT_RxParamsIndCallbackRegister(drvPlcHandle, APP_PLC_RxParamsIndCb);
                 
-                <em class="hl-comment">/* Apply PLC initial configuration */</em>
-                APP_PLC_SetInitialConfiguration();
+                <em class="hl-comment">/* Apply PLC coupling configuration */</em>
+                defaultBranch = SRV_PCOUP_Get_Default_Branch();
+                SRV_PCOUP_Set_Config(drvPlcHandle, defaultBranch);
                 
                 <em class="hl-comment">/* Enable PLC Transmission */</em>
-                DRV_G3_MACRT_EnableTX(appPlc.drvPl360Handle, true);
+                DRV_G3_MACRT_EnableTX(drvPlcHandle, true);
                 
-                <em class="hl-comment">/* Set PLC state to transmit a frame */</em>
-                appPlc.state = APP_PLC_STATE_TX_REQUEST;
+                <em class="hl-comment">/* Transmit the first frame */</em>
+                APP_PLC_SendData(txBuffer, txLength);
+                appPlcState = APP_PLC_STATE_WAITING_TX_CFM;
             }
         }
         <strong class="hl-keyword">break</strong>;
-
-        <strong class="hl-keyword">case</strong> APP_PLC_STATE_TX_REQUEST:
-        {
-            <em class="hl-comment">/* Build a frame in buffer and set length before calling SendData */</em>
-            APP_PLC_SendData(txBuffer, txLength);
-            appPlc.state = APP_PLC_STATE_WAITING_TX_CFM;
-            <strong class="hl-keyword">break</strong>;
-        }
 
         <strong class="hl-keyword">case</strong> APP_PLC_STATE_WAITING:
         {
@@ -253,7 +309,8 @@ uint16_t txLength;
             {
                 frameReceived = false;
                 <em class="hl-comment">/* Send another frame */</em>
-                appPlc.state = APP_PLC_STATE_TX_REQUEST;
+                APP_PLC_SendData(txBuffer, txLength);
+                appPlcState = APP_PLC_STATE_WAITING_TX_CFM;
             }
             <strong class="hl-keyword">break</strong>;
         }
@@ -262,8 +319,8 @@ uint16_t txLength;
         {
             <strong class="hl-keyword">if</strong> (txConfirmed)
             {
-                frameReceived = false;
-                appPlc.state = APP_PLC_STATE_WAITING;
+                txConfirmed = false;
+                appPlcState = APP_PLC_STATE_WAITING;
             }
             <strong class="hl-keyword">break</strong>;
         }
@@ -275,8 +332,7 @@ uint16_t txLength;
             <strong class="hl-keyword">break</strong>;
         }
     }
-}
-</pre></div></article></main></div>
+}</pre></div></article></main></div>
                         
                         
                         
@@ -291,7 +347,7 @@ uint16_t txLength;
             
             
         </div> 
-        <footer class="navbar navbar-default wh_footer">
+        <div class="mchp_disclaimer"><p class="mchp_disclaimer_text">The online versions of the documents are provided as a courtesy. Verify all content and data in the device’s PDF documentation found on the device product page.</p></div><footer class="navbar navbar-default wh_footer">
   <div class=" footer-container mx-auto ">
     <div class="footer">
   <div class="mchp-wh-footer">
