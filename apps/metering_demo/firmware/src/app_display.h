@@ -147,6 +147,24 @@ typedef enum
 } APP_DISPLAY_DIRECTION;
 
 // *****************************************************************************
+/* External communication signal status
+ * 
+  Summary:
+    External communication signal enumeration
+
+  Description:
+    This enumeration defines the status of the signal of external communications.
+*/
+typedef enum
+{
+    APP_DISPLAY_COM_SIGNAL_OFF = 0,
+    APP_DISPLAY_COM_SIGNAL_LOW,
+    APP_DISPLAY_COM_SIGNAL_MED,
+    APP_DISPLAY_COM_SIGNAL_HIG,
+
+} APP_DISPLAY_COM_SIGNAL;
+
+// *****************************************************************************
 /* Application Data
 
   Summary:
@@ -182,8 +200,8 @@ typedef struct
     /* Time to display each information in the display (in seconds) */
 	uint32_t display_time;     
     
-    /* Time to show the communication icon (in seconds) */
-	uint32_t comm_time;     
+    /* Information about the external communication signal */
+	APP_DISPLAY_COM_SIGNAL comm_signal;     
     
     /* Information shown in display */
 	APP_DISPLAY_INFO display_info;
@@ -331,14 +349,14 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
 
 /*******************************************************************************
   Function:
-    void APP_DISPLAY_SetCommIcon(void)
+    void APP_DISPLAY_SetSerialCommunication(void)
 
   Summary:
-    Function to set the communication icon in the display.
+    Function to set the serial communication icon in the display.
 
   Description:
-    This function set the communication icon in the display to indicate that
-    there is an ongoing communication in the console.
+    This function set the serial communication icon in the display to indicate 
+    that there is an ongoing communication through the console.
 
   Precondition:
     The system and application initialization ("SYS_Initialize" and 
@@ -354,7 +372,7 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
     <code>
     static void Command_xx(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     {
-        APP_DISPLAY_SetCommIcon(void);
+        APP_DISPLAY_SetSerialCommunication(void);
     }
     </code>
 
@@ -362,7 +380,42 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len);
     This routine is called from the console application.
  */
 
-void APP_DISPLAY_SetCommIcon(void);
+void APP_DISPLAY_SetSerialCommunication(void);
+
+/*******************************************************************************
+  Function:
+    void APP_DISPLAY_SetCommnicationSignal(APP_DISPLAY_COM_SIGNAL signal)
+
+  Summary:
+    Function to set the status of the external communication signal using 
+    the specific signal icons of the display.
+
+  Description:
+    This function set the signal icons in the display to indicate the status
+    of the external communications signal.
+
+  Precondition:
+    The system and application initialization ("SYS_Initialize" and 
+    "APP_DISPLAY_Initialize") should be called before calling this.
+
+  Parameters:
+    signal - External communication signal status.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    if (ext_com_enable == True)
+    {
+        APP_DISPLAY_SetCommnicationSignal(APP_DISPLAY_COM_SIGNAL_HIG);
+    }
+    </code>
+
+  Remarks:
+    None.
+ */
+void APP_DISPLAY_SetCommnicationSignal(APP_DISPLAY_COM_SIGNAL signal);
 
 /*******************************************************************************
   Function:

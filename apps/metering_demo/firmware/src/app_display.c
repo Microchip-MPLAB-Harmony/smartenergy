@@ -136,6 +136,37 @@ static status_code_t APP_DISPLAY_InitLCD(void)
 
 /*******************************************************************************
   Function:
+    Update the status of the external communication signal.
+ */
+static void _APP_DISPLAY_UpdateComSignal (APP_DISPLAY_COM_SIGNAL signal)
+{
+    if (signal == APP_DISPLAY_COM_SIGNAL_OFF)
+    {
+        cl010_clear_icon(CL010_ICON_COMM_SIGNAL_LOW);
+        cl010_clear_icon(CL010_ICON_COMM_SIGNAL_MED);
+        cl010_clear_icon(CL010_ICON_COMM_SIGNAL_HIG);
+    }
+    else
+    {
+        if (signal >= APP_DISPLAY_COM_SIGNAL_LOW)
+        {
+            cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
+        }
+        
+        if (signal >= APP_DISPLAY_COM_SIGNAL_MED)
+        {
+            cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
+        }
+        
+        if (signal == APP_DISPLAY_COM_SIGNAL_HIG)
+        {
+            cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
+        }
+    }
+}
+
+/*******************************************************************************
+  Function:
     Timer in milliseconds for creating and waiting the delay.
  */
 
@@ -616,6 +647,12 @@ static void APP_DISPLAY_Process(void)
 
     /* Display MCHP logo */
     cl010_show_icon(CL010_ICON_MICROCHIP);
+    
+    /* Update External Communication signal status */
+    if (app_displayData.comm_signal > APP_DISPLAY_COM_SIGNAL_OFF)
+    {
+        _APP_DISPLAY_UpdateComSignal(app_displayData.comm_signal);
+    }
 }
 
 // *****************************************************************************
@@ -661,8 +698,8 @@ void APP_DISPLAY_Initialize ( void )
     /* Init display info */
     app_displayData.display_info = (APP_DISPLAY_INFO)0xFF;
     
-    /* Set communication icon time */
-    app_displayData.comm_time = 0;
+    /* Disable external communication signal */
+    app_displayData.comm_signal = APP_DISPLAY_COM_SIGNAL_OFF;
     
     /* Configure Switches */
     PIO_PinInterruptCallbackRegister(SWITCH_SCRUP_PIN, 
@@ -826,21 +863,6 @@ void APP_DISPLAY_Tasks ( void )
                     APP_DISPLAY_ChangeInfo();  
                     APP_DISPLAY_Process();  
                 }
-                
-                /* Clear communication icon */
-                if (app_displayData.comm_time == 0) 
-                {
-                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_LOW);
-                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_MED);
-                    cl010_clear_icon(CL010_ICON_COMM_SIGNAL_HIG); 
-                }
-                else
-                {
-                    --app_displayData.comm_time;
-                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
-                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
-                    cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
-                } 
 
             break;
         }
@@ -900,18 +922,30 @@ void APP_DISPLAY_SetAppInfo(const char *msg, uint8_t len)
 
 /******************************************************************************
   Function:
-    void APP_DISPLAY_SetCommIcon(void)
+    void APP_DISPLAY_SetSerialCommIcon(void)
 
   Remarks:
     See prototype in app_display.h.
  */
 
-void APP_DISPLAY_SetCommIcon(void)
+void APP_DISPLAY_SetSerialCommunication(void)
 {
-    cl010_show_icon(CL010_ICON_COMM_SIGNAL_LOW);
-    cl010_show_icon(CL010_ICON_COMM_SIGNAL_MED);
-    cl010_show_icon(CL010_ICON_COMM_SIGNAL_HIG);
-    app_displayData.comm_time = 2;
+    cl010_show_icon(CL010_ICON_ARROW_LEFT);
+}
+
+/******************************************************************************
+  Function:
+    void APP_DISPLAY_SetCommnicationSignal(APP_DISPLAY_COM_SIGNAL signal)
+
+  Remarks:
+    See prototype in app_display.h.
+ */
+
+void APP_DISPLAY_SetCommnicationSignal(APP_DISPLAY_COM_SIGNAL signal)
+{
+    app_displayData.comm_signal = signal;
+    
+    _APP_DISPLAY_UpdateComSignal(signal);
 }
 
 /******************************************************************************

@@ -365,7 +365,7 @@ static void _commandHELP(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     }
     
     /* Show console communication icon */
-    APP_DISPLAY_SetCommIcon();
+    APP_DISPLAY_SetSerialCommunication();
 }
 
 static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
@@ -431,7 +431,7 @@ static void _commandBUF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     OSAL_SEM_Post(&appConsoleSemID);
     
     /* Show console communication icon */
-    APP_DISPLAY_SetCommIcon();
+    APP_DISPLAY_SetSerialCommunication();
     
 }
 
@@ -789,7 +789,7 @@ static void _commandCNF(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         SYS_CMD_MESSAGE("Configure Meter is Ok !\r\n");
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
 }
 
@@ -806,7 +806,7 @@ static void _commandDAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else if (argc == 2)
     {
@@ -821,7 +821,7 @@ static void _commandDAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else
         {
@@ -845,7 +845,7 @@ static void _commandDCB(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else
     {
@@ -863,7 +863,7 @@ static void _commandDCD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         APP_METROLOGY_SetControlByDefault();
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else
     {
@@ -914,7 +914,7 @@ static void _commandDCM(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
     }
     else
@@ -949,7 +949,7 @@ static void _commandDCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else
         {
@@ -973,7 +973,7 @@ static void _commandDCS(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         APP_METROLOGY_StoreMetrologyData();
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else
     {
@@ -1002,7 +1002,7 @@ static void _commandDCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                 SYS_CMD_MESSAGE("Set Is Ok !\r\n");
         
                 /* Show console communication icon */
-                APP_DISPLAY_SetCommIcon();
+                APP_DISPLAY_SetSerialCommunication();
             }
             else
             {
@@ -1036,7 +1036,7 @@ static void _commandDSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else if (argc == 2)
     {
@@ -1051,7 +1051,7 @@ static void _commandDSR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else
         {
@@ -1079,7 +1079,7 @@ static void _commandENC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Clear Energy is ok !\r\n");
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else
         {
@@ -1129,7 +1129,7 @@ static void _commandENR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     else
     {
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     // Response will be provided on _monthlyEnergyCallback function
 }
@@ -1146,7 +1146,7 @@ static void _commandEVEC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Clear All Event is ok !\r\n");
             
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
@@ -1204,7 +1204,7 @@ static void _commandEVER(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();            
+            APP_DISPLAY_SetSerialCommunication();            
         }
         else 
         {
@@ -1244,7 +1244,7 @@ static void _commandHAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
@@ -1276,7 +1276,7 @@ static void _commandHRR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         else
         {
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         // Response will be provided on _harmonicAnalysisCallback function
     }
@@ -1297,7 +1297,7 @@ static void _commandIDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);  
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else 
     {
@@ -1328,7 +1328,7 @@ static void _commandIDW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Set Meter ID is Ok\r\n");
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
@@ -1356,7 +1356,7 @@ static void _commandMDC(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             SYS_CMD_MESSAGE("Clear MaxDemand is ok !\r\n");
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
@@ -1406,7 +1406,7 @@ static void _commandMDR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
     else
     {
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     // Response will be provided on _maxDemandCallback function
 }
@@ -1465,7 +1465,7 @@ static void _commandPAR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
             
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
     }
     else
@@ -1485,7 +1485,7 @@ static void _commandRTCR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else 
     {
@@ -1568,7 +1568,7 @@ static void _commandRTCW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
                 SYS_CMD_MESSAGE("Set RTC is ok!\r\n");
         
                 /* Show console communication icon */
-                APP_DISPLAY_SetCommIcon();
+                APP_DISPLAY_SetSerialCommunication();
             }
             else
             {
@@ -1596,7 +1596,7 @@ static void _commandTOUR(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         OSAL_SEM_Post(&appConsoleSemID);
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
     else 
     {
@@ -1688,7 +1688,7 @@ static void _commandTOUW(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
         SYS_CMD_MESSAGE("Set TOU is Ok !\r\n");
         
         /* Show console communication icon */
-        APP_DISPLAY_SetCommIcon();
+        APP_DISPLAY_SetSerialCommunication();
     }
 }
 
@@ -1707,7 +1707,7 @@ static void _commandRST(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             OSAL_SEM_Post(&appConsoleSemID);
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
@@ -1735,7 +1735,7 @@ static void _commandRLD(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv)
             APP_METROLOGY_Restart();
         
             /* Show console communication icon */
-            APP_DISPLAY_SetCommIcon();
+            APP_DISPLAY_SetSerialCommunication();
         }
         else 
         {
