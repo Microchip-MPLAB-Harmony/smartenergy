@@ -1,1 +1,0 @@
-define({"topics":[{"title":"<ph>1.1.2.4.42.1<\/ph>\nG3 MAC RT IBs","href":"GUID-3F0A0B53-ED4C-474E-8255-0416500DEB0B.html","attributes":{"data-id":"g3-mac-rt-ibs"},"menu":{"hasChildren":false},"tocID":"g3-mac-rt-ibs-d3711e874","topics":[]}]});
