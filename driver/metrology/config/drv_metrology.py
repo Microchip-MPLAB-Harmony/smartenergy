@@ -258,6 +258,15 @@ def instantiateComponent(metComponentCommon):
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
 
+    Database.clearSymbolValue("core", "IPC1_INTERRUPT_ENABLE")
+    Database.setSymbolValue("core", "IPC1_INTERRUPT_ENABLE", True)
+    Database.clearSymbolValue("core", "IPC1_INTERRUPT_HANDLER")
+    Database.setSymbolValue("core", "IPC1_INTERRUPT_HANDLER", "IPC1_InterruptHandler")
+    Database.clearSymbolValue("core", "IPC1_CLOCK_ENABLE")
+    Database.setSymbolValue("core", "IPC1_CLOCK_ENABLE", True)
+    Database.clearSymbolValue("core", "SRAM1_CLOCK_ENABLE")
+    Database.setSymbolValue("core", "SRAM1_CLOCK_ENABLE", True)
+
     if ("MTC" in str(Variables.get("__PROCESSOR"))):
         enablePhase3 = 1
         featCtrl0Value = 0x00000700

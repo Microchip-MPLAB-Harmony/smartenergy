@@ -131,10 +131,10 @@ DRV_METROLOGY_INIT drvMetrologyInitData = {
 
     /* MET Binary start address */
     .binStartAddress = (uint32_t)&met_bin_start,
-
+    
     /* MET Binary end address */
     .binEndAddress = (uint32_t)&met_bin_end,
-
+    
 };
 
 /* MISRA C-2012 deviation block end */
@@ -308,7 +308,7 @@ void SYS_Initialize ( void* data )
     SEFC0_Initialize();
 
     SEFC1_Initialize();
-
+  
     DWDT_Initialize();
     CLK_Initialize();
     RSTC_Initialize();
@@ -320,12 +320,12 @@ void SYS_Initialize ( void* data )
 
 
 	BSP_Initialize();
-
-    TC0_CH0_TimerInitialize();
-
-
     RTC_Initialize();
 
+ 
+    TC0_CH0_TimerInitialize(); 
+     
+    
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();
@@ -349,13 +349,13 @@ void SYS_Initialize ( void* data )
 
     SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 
-    /* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -
+    /* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -  
     H3_MISRAC_2012_R_11_3_DR_1 & H3_MISRAC_2012_R_11_8_DR_1*/
-
+        
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
-
+    
     /* MISRAC 2012 deviation block end */
-    /* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -
+    /* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -  
      H3_MISRAC_2012_R_11_3_DR_1 & H3_MISRAC_2012_R_11_8_DR_1*/
         sysObj.sysConsole0 = SYS_CONSOLE_Initialize(SYS_CONSOLE_INDEX_0, (SYS_MODULE_INIT *)&sysConsole0Init);
    /* MISRAC 2012 deviation block end */

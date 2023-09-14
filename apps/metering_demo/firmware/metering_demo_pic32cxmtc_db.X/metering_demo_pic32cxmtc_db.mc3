@@ -1,5 +1,23 @@
 <config configName="pic32cxmtc_db" projectName="metering_demo_pic32cxmtc_db" configVersion="1.1" device="PIC32CX2051MTC128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList">
+      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="core" version="3.13.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="csp" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="gfx" version="3.13.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
    </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -533,7 +551,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;BSP_PIC32CXMTC_Development_Board&quot; x=&quot;18&quot; y=&quot;51&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;HarmonyCore&quot; x=&quot;315&quot; y=&quot;56&quot;/&gt;
@@ -557,7 +576,6 @@
         &lt;ElementPosition dnOrder=&quot;19&quot; id=&quot;tc0&quot; x=&quot;33&quot; y=&quot;137&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;696&quot; canvasWidth=&quot;665&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -5661,7 +5679,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\metrology\drv_metrology.c</file>
-         <hash>cfcdf1734ea4ff5281a7ff6adf1e4603bc397a7aee7c4364b56508b0971b3c96</hash>
+         <hash>6911995a83eda49ab4a02b374b2c69ae975c578fec21e0fd1263a74adb9d6a89</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\driver\memory\src\drv_memory_file_system.h</file>
@@ -6437,7 +6455,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.c</file>
-         <hash>955c7397d2333ae50962091851897ed11d2a928d0a7f36f6800f3e650d7209a1</hash>
+         <hash>8ac5e1935589c985f6671c9c06c0df7514542b34a274ef7cd5f483276653637c</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTC128_DFP\pio\pic32cx2051mtc128.h</file>
@@ -6445,7 +6463,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\interrupts.h</file>
-         <hash>09f4686b1f5244c08fde9a4bb26fcbb40fd7da3902aebefe68aa7643f38c78f4</hash>
+         <hash>11129279b06e336c7175d073d8c9b6ae7cbef3ad80a4c3ab2f59a887845e0d97</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtc_db\initialization.c</file>

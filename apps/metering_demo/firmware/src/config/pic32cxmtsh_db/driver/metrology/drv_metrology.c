@@ -201,7 +201,7 @@ static void lDRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
 
 }
 
-void IPC1_Handler (void)
+void IPC1_InterruptHandler (void)
 {
     uint32_t status = IPC1_REGS->IPC_ISR;
     status &= IPC1_REGS->IPC_IMR;

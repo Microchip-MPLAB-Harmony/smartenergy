@@ -1,5 +1,26 @@
 <config configName="pic32cxmtsh_db" projectName="pic32cxmtsh_db" configVersion="1.1" device="PIC32CX2051MTSH128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList">
+      <package packageName="CMSIS-FreeRTOS" version="10.5.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="core" version="3.13.1" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="csp" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="gfx" version="3.13.0" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
+      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
+         <modules class="java.util.ArrayList"/>
+      </package>
    </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -8194,12 +8215,12 @@
          <hash>eb1fc577dda2e5ab9c11eb3ff8195c88477355a8b3d13c0a2aad54103cef0546</hash>
       </entry>
       <entry>
-         <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
-         <hash>dc572f54391c0407fc25db360d912fca9118cddae7bd2e3099eb13f18804e5a9</hash>
+         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
+         <hash>1757a392ca8b9bd76787d6df95da2e36cdf6076d71522ae2b94cba0beac9c352</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>3916005c93e169f9723034dfd66c9cc7feb12f3dadfc0f03f4faca337de24c13</hash>
+         <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
+         <hash>dc572f54391c0407fc25db360d912fca9118cddae7bd2e3099eb13f18804e5a9</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8367,7 +8388,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>e4626ee84c5d8b263fb9aff87c3f482ea20ccef02d56f66e5caaf9fb2ecbf1f0</hash>
+         <hash>1004e7d68e2a4d2302a27b077a902a760e8789a56c1de94f6a08dd4d78abdbd7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8739,11 +8760,11 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>
-         <hash>ecc1aa5bec4fe8fa59c25e866a1780719ce3ff1c7892b344adda6677f139fadd</hash>
+         <hash>1b16febca6ffbbd471573903bcf6093739237cd51ec94fcfc0c0b24dcd44d0ca</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.h</file>
-         <hash>7d3b7c971d77da3f85cbc74e6d098f8bcf6022ee314186d98d6735ee54e63127</hash>
+         <hash>dacb2d0d7e0e72fad035276eb361cfdd5dc39b27f3c7e74411a4087392d7872a</hash>
       </entry>
       <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\croutine.c</file>
@@ -9175,7 +9196,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>0499175062f89eb013d5e47dededc40f96505501ad34ca28c5489dd8bc1c9c48</hash>
+         <hash>b3b0315f80f3ec80e34ddefb1b1a6386831a399970d1ab41302ce5b5a4c0d1fa</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
