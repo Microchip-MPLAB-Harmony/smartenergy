@@ -516,7 +516,26 @@ static void lDRV_Metrology_IpcInitialize (void)
     /* Clear interrupts */
     IPC1_REGS->IPC_ICCR = 0xFFFFFFFFUL;
     /* Enable interrupts */
-    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
+    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | 
+<#if DRV_MET_NOT_FULL_CYCLE == true>  
+        DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK |
+</#if>
+<#if DRV_MET_NOT_HALF_CYCLE == true>  
+        DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK |
+</#if>
+<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+        DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK |
+</#if>
+<#if DRV_MET_PULSE_0 == true>  
+        DRV_METROLOGY_IPC_PULSE0_IRQ_MSK |
+</#if>
+<#if DRV_MET_PULSE_1 == true>  
+        DRV_METROLOGY_IPC_PULSE1_IRQ_MSK |
+</#if>
+<#if DRV_MET_PULSE_2 == true>  
+        DRV_METROLOGY_IPC_PULSE2_IRQ_MSK |
+</#if>    
+        DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
 static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, double reference)
