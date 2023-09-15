@@ -1,26 +1,5 @@
 <config configName="pic32cxmtsh_db" projectName="pic32cxmtsh_db" configVersion="1.1" device="PIC32CX2051MTSH128" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList">
-      <package packageName="CMSIS-FreeRTOS" version="10.5.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="bsp" version="3.16.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="core" version="3.13.1" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="csp" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="dev_packs" version="3.17.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="gfx" version="3.13.0" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
-      <package packageName="smartenergy" version="unknown" contentType="HARMONY">
-         <modules class="java.util.ArrayList"/>
-      </package>
    </usedPackages>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -8215,12 +8194,12 @@
          <hash>eb1fc577dda2e5ab9c11eb3ff8195c88477355a8b3d13c0a2aad54103cef0546</hash>
       </entry>
       <entry>
-         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>1757a392ca8b9bd76787d6df95da2e36cdf6076d71522ae2b94cba0beac9c352</hash>
-      </entry>
-      <entry>
          <file>..\src\third_party\rtos\FreeRTOS\Source\include\list.h</file>
          <hash>dc572f54391c0407fc25db360d912fca9118cddae7bd2e3099eb13f18804e5a9</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
+         <hash>6569a58e6e5dee74e223662d4f4e2725aa23e7f96498c9be0223e506fdd32f94</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -9196,7 +9175,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>b3b0315f80f3ec80e34ddefb1b1a6386831a399970d1ab41302ce5b5a4c0d1fa</hash>
+         <hash>dbb40f524bb099f4e959f024eca6c2736ae4b3bb87f40d36e2c56138cc5126b9</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

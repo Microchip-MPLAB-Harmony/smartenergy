@@ -430,7 +430,8 @@ static void lDRV_Metrology_IpcInitialize (void)
     /* Clear interrupts */
     IPC1_REGS->IPC_ICCR = 0xFFFFFFFFUL;
     /* Enable interrupts */
-    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
+    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | 
+        DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
 static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, double reference)
@@ -784,23 +785,14 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
 
         /* Assert reset of the coprocessor and its peripherals */
         tmp = RSTC_REGS->RSTC_MR;
-        tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
+        tmp &= ~RSTC_MR_CPROCEN_Msk;
         RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
 
         /* Disable coprocessor Clocks */
         PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
 
-        /* Disable coprocessor peripheral clocks */
-        PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPBMCK_Msk;
-
         gDrvMetObj.binStartAddress = metInit->binStartAddress;
         gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
-
-        /* De-assert reset of the coprocessor peripherals */
-        RSTC_REGS->RSTC_MR |= RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk;
-
-        /* Enable coprocessor peripheral clocks */
-        PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
 
         /* Copy the Metrology bin file to SRAM1 */
         pSrc = (uint32_t *)gDrvMetObj.binStartAddress;
@@ -842,30 +834,19 @@ SYS_MODULE_OBJ DRV_METROLOGY_Reinitialize (SYS_MODULE_INIT * init)
         return SYS_MODULE_OBJ_INVALID;
     }
 
-    /* Disable ICM : TBD -> icm_reset, disable ICM int, clear pending ICM */
-
     /* Disable IPC interrupts */
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
 
     /* Assert reset of the coprocessor and its peripherals */
     tmp = RSTC_REGS->RSTC_MR;
-    tmp &= ~(RSTC_MR_CPROCEN_Msk | RSTC_MR_CPEREN_Msk);
+    tmp &= ~RSTC_MR_CPROCEN_Msk;
     RSTC_REGS->RSTC_MR = RSTC_MR_KEY_PASSWD | tmp;
 
     /* Disable coprocessor Clocks */
     PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPCK_Msk;
 
-    /* Disable coprocessor peripheral clocks */
-    PMC_REGS->PMC_SCDR = PMC_SCDR_CPKEY_PASSWD | PMC_SCDR_CPBMCK_Msk;
-
     gDrvMetObj.binStartAddress = metInit->binStartAddress;
     gDrvMetObj.binSize = metInit->binEndAddress - metInit->binStartAddress;
-
-    /* De-assert reset of the coprocessor peripherals */
-    RSTC_REGS->RSTC_MR |= RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk;
-
-    /* Enable coprocessor peripheral clocks */
-    PMC_REGS->PMC_SCER = PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk;
 
     /* Copy the Metrology bin file to SRAM1 */
     pSrc = (uint32_t *)gDrvMetObj.binStartAddress;
