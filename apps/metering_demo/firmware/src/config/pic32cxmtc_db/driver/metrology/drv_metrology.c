@@ -233,6 +233,52 @@ void IPC1_InterruptHandler (void)
 
 }
 
+static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
+{
+    double res, dre, dim;
+    uint32_t measure, intPart, decPart;
+    
+    /* Get Real contribution */
+    if (real < 0)
+    {
+        measure = (uint32_t)-real;
+    }
+    else
+    {
+        measure = (uint32_t)real;
+    }
+    
+    /* sQ25.6 */
+    intPart = measure >> 6;
+    decPart = measure & 63U;
+    dre = (double)decPart / 64.0;
+    dre += (double)intPart;
+    dre *= dre;
+    
+    /* Get Imaginary contribution */
+    if (imaginary < 0)
+    {
+        measure = (uint32_t)-imaginary;
+    }
+    else
+    {
+        measure = (uint32_t)imaginary;
+    }
+    
+    /* sQ25.6 */
+    intPart = measure >> 6;
+    decPart = measure & 63U;
+    dim = (double)decPart / 64.0;
+    dim += (double)intPart;
+    dim *= dim;
+    
+    res = (dre + dim) * 2.0;
+    res = sqrt(res);
+    res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    
+    return res;
+}
+
 static uint32_t lDRV_Metrology_GetVIRMS(uint64_t val, uint32_t k_x)
 {
     double m;
@@ -710,37 +756,24 @@ static bool lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
     if (controlMReq == statusMConf)
     {
         DRV_METROLOGY_HARMONICS_RMS *pHarmonicsRsp = gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse;
-        double sqrt2;
-        uint32_t divisor;
         int32_t harTemp[14];
-        uint8_t index;
 
         (void) memcpy((void *)harTemp, (void *)&gDrvMetObj.metHarData, sizeof(harTemp));
 
-        for (index = 0; index < 14U; index++) {
-            if (harTemp[index] < 0) {
-                harTemp[index] = -harTemp[index];
-            }
-        }
-
-        sqrt2 = sqrt(2.0);
-        divisor = gDrvMetObj.metRegisters->MET_STATUS.N << 6U; /* format sQ25.6 */
-
-        pHarmonicsRsp->Irms_A_m = (sqrt(pow((double)harTemp[0], 2.0) + pow((double)harTemp[7], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Irms_B_m = (sqrt(pow((double)harTemp[2], 2.0) + pow((double)harTemp[9], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Irms_C_m = (sqrt(pow((double)harTemp[4], 2.0) + pow((double)harTemp[11], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Irms_N_m = (sqrt(pow((double)harTemp[6], 2.0) + pow((double)harTemp[13], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Vrms_A_m = (sqrt(pow((double)harTemp[1], 2.0) + pow((double)harTemp[8], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Vrms_B_m = (sqrt(pow((double)harTemp[3], 2.0) + pow((double)harTemp[10], 2.0)) * sqrt2) / (double)divisor;
-        pHarmonicsRsp->Vrms_C_m = (sqrt(pow((double)harTemp[5], 2.0) + pow((double)harTemp[12], 2.0)) * sqrt2) / (double)divisor;
-
+        pHarmonicsRsp->Irms_A_m = lDRV_Metrology_GetHarmonicRMS(harTemp[0], harTemp[7]);
+        pHarmonicsRsp->Irms_B_m = lDRV_Metrology_GetHarmonicRMS(harTemp[2], harTemp[9]);
+        pHarmonicsRsp->Irms_C_m = lDRV_Metrology_GetHarmonicRMS(harTemp[4], harTemp[11]);
+        pHarmonicsRsp->Irms_N_m = lDRV_Metrology_GetHarmonicRMS(harTemp[6], harTemp[13]);
+        pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(harTemp[1], harTemp[8]);
+        pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(harTemp[3], harTemp[10]);
+        pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(harTemp[5], harTemp[12]);
+                
         /* Disable Harmonic Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
         /* Clear Number of Harmonic for Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_m_REQ_Msk;
 
         gDrvMetObj.harmonicAnalysisData.harmonicNum = (uint8_t)statusMConf;
-        gDrvMetObj.harmonicAnalysisData.running = false;
 
         return true;
     }
@@ -1036,6 +1069,11 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
     if (gDrvMetObj.integrationFlag == true)
     {
         gDrvMetObj.integrationFlag = false;
+        
+        if (gDrvMetObj.harmonicAnalysisData.integrationPeriods > 0U)
+        {
+            gDrvMetObj.harmonicAnalysisData.integrationPeriods--;
+        }
 
         /* Check if there is a calibration process running */
         if (gDrvMetObj.calibrationData.running == true)
@@ -1061,10 +1099,13 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             }
 
             /* Check if there is a harmonic analysis process running */
-            if (gDrvMetObj.harmonicAnalysisData.running == true)
+            if ((gDrvMetObj.harmonicAnalysisData.running == true) && 
+                (gDrvMetObj.harmonicAnalysisData.integrationPeriods == 0U) )
             {
                 if (lDRV_METROLOGY_UpdateHarmonicAnalysisValues() == true)
                 {
+                    gDrvMetObj.harmonicAnalysisData.running = false;
+                    
                     /* Launch calibration callback */
                     if (gDrvMetObj.harmonicAnalysisCallback != NULL)
                     {
@@ -1381,6 +1422,7 @@ void DRV_METROLOGY_StartHarmonicAnalysis(uint8_t harmonicNum, DRV_METROLOGY_HARM
     if (gDrvMetObj.harmonicAnalysisData.running == false)
     {
         gDrvMetObj.harmonicAnalysisData.running = true;
+        gDrvMetObj.harmonicAnalysisData.integrationPeriods = 2;
 
         /* Set Data pointer to store the Harmonic data result */
         gDrvMetObj.harmonicAnalysisData.pHarmonicAnalysisResponse = pHarmonicResponse;
