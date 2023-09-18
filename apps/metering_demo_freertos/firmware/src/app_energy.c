@@ -225,9 +225,8 @@ static bool _APP_ENERGY_CheckRTCFromReset(void)
 static void _APP_ENERGY_SetBuildTimeRTC(struct tm *time)
 {
     char dateBuff[12];
-    uint16_t y, d;
-    uint8_t mon, uc_idx;
-    uint8_t a, m;
+    uint16_t y;
+    uint8_t index, d , m;
 
     /* Set RTC time from COMPILER settings */
     time->tm_hour = BUILD_TIME_HOUR;
@@ -238,20 +237,19 @@ static void _APP_ENERGY_SetBuildTimeRTC(struct tm *time)
 
     sprintf(dateBuff, "%s", __DATE__);
     time->tm_mon = 0;
-    for (uc_idx = 0; uc_idx < 12; uc_idx++) {
-        if (memcmp(&app_energyMonthTbl[uc_idx], dateBuff, 3) == 0) {
-            time->tm_mon = uc_idx;
+    for (index = 0; index < 12; index++) {
+        if (memcmp(&app_energyMonthTbl[index], dateBuff, 3) == 0) {
+            time->tm_mon = index;
             break;
         }
     }
 
-    /* Get day of the week */
-    mon = time->tm_mon + 1;
-    a = (14 - mon) / 12;
-    y = BUILD_DATE_YEAR - ((14 - mon) / 12);
-    m = mon + (12 * a) - 2;
-    d = time->tm_mday + y + y/4 - y/100 + y/400 + ((31*m)/12);
-    time->tm_wday = (d % 7) - 1;
+    /* Get day of the week: Keith's expression */
+    /* 0: Sunday, 1 = Monday ... 6 = Saturday */
+    y = BUILD_DATE_YEAR;
+    m = time->tm_mon + 1;
+    d = time->tm_mday;
+    time->tm_wday = (d+=m<3 ? y-- : y-2,23*m/9+d+4+y/4-y/100+y/400) % 7;
 }
 
 static bool _APP_ENERGY_InitializeRTC(bool dataValid)
