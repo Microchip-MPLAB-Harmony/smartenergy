@@ -239,8 +239,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_NOT_FULL_CYCLE == true>  
     if ((status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.fullCycleIntFlag = true;
-
         if (gDrvMetObj.fullCycleCallback != NULL)
         {
             gDrvMetObj.fullCycleCallback();
@@ -251,8 +249,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_NOT_HALF_CYCLE == true>  
     if ((status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.halfCycleIntFlag = true;
-
         if (gDrvMetObj.halfCycleCallback != NULL)
         {
             gDrvMetObj.halfCycleCallback();
@@ -263,8 +259,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_RAW_ZERO_CROSSING == true>  
     if ((status & DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.zeroCrossIntFlag = true;
-
         if (gDrvMetObj.zeroCrossCallback != NULL)
         {
             gDrvMetObj.zeroCrossCallback();
@@ -275,8 +269,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_PULSE_0 == true>  
     if ((status & DRV_METROLOGY_IPC_PULSE0_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.pulse0IntFlag = true;
-
         if (gDrvMetObj.pulse0Callback != NULL)
         {
             gDrvMetObj.pulse0Callback();
@@ -287,8 +279,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_PULSE_1 == true>  
     if ((status & DRV_METROLOGY_IPC_PULSE1_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.pulse1IntFlag = true;
-
         if (gDrvMetObj.pulse1Callback != NULL)
         {
             gDrvMetObj.pulse1Callback();
@@ -299,8 +289,6 @@ void IPC1_InterruptHandler (void)
 <#if DRV_MET_PULSE_2 == true>  
     if ((status & DRV_METROLOGY_IPC_PULSE2_IRQ_MSK) != 0UL)
     {
-        gDrvMetObj.pulse2IntFlag = true;
-
         if (gDrvMetObj.pulse2Callback != NULL)
         {
             gDrvMetObj.pulse2Callback();
@@ -319,7 +307,7 @@ void IPC1_InterruptHandler (void)
 
 }
 
-static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
+static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
 {
     double res, dre, dim;
     uint32_t measure, intPart, decPart;
@@ -342,13 +330,13 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
     dre *= dre;
     
     /* Get Imaginary contribution */
-    if (imaginary < 0)
+    if (imag < 0)
     {
-        measure = (uint32_t)-imaginary;
+        measure = (uint32_t)-imag;
     }
     else
     {
-        measure = (uint32_t)imaginary;
+        measure = (uint32_t)imag;
     }
     
     /* sQ25.6 */
@@ -359,8 +347,11 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
     dim *= dim;
     
     res = (dre + dim) * 2.0;
-    res = sqrt(res);
-    res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    if (res > 0.0)
+    {
+        res = sqrt(res);
+        res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    }
     
     return res;
 }
@@ -934,24 +925,6 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
 
 	/* Clean the IPC interrupt flags */
     gDrvMetObj.integrationFlag = false;
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
-    gDrvMetObj.fullCycleIntFlag = false;
-</#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
-    gDrvMetObj.halfCycleIntFlag = false;
-</#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true> 
-    gDrvMetObj.zeroCrossIntFlag = false;
-    </#if>
-<#if DRV_MET_PULSE_0 == true>  
-    gDrvMetObj.pulse0IntFlag = false;
-</#if>
-<#if DRV_MET_PULSE_1 == true>  
-    gDrvMetObj.pulse1IntFlag = false;
-</#if>
-<#if DRV_MET_PULSE_2 == true>  
-    gDrvMetObj.pulse2IntFlag = false;
-</#if>
 
     if (resetCause != RSTC_SR_RSTTYP(RSTC_SR_RSTTYP_WDT0_RST_Val))
     {
@@ -1354,78 +1327,6 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             }
         }
     }
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
-    
-    if (gDrvMetObj.fullCycleIntFlag == true)
-    {
-        gDrvMetObj.fullCycleIntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.fullCycleCallback != NULL)
-        {
-            gDrvMetObj.fullCycleCallback();
-        }
-    }
-</#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
-    
-    if (gDrvMetObj.halfCycleIntFlag == true)
-    {
-        gDrvMetObj.halfCycleIntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.halfCycleCallback != NULL)
-        {
-            gDrvMetObj.halfCycleCallback();
-        }
-    }
-</#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true>  
-    
-    if (gDrvMetObj.zeroCrossIntFlag == true)
-    {
-        gDrvMetObj.zeroCrossIntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.zeroCrossCallback != NULL)
-        {
-            gDrvMetObj.zeroCrossCallback();
-        }
-    }
-</#if>
-<#if DRV_MET_PULSE_0 == true>  
-    
-    if (gDrvMetObj.pulse0IntFlag == true)
-    {
-        gDrvMetObj.pulse0IntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.pulse0Callback != NULL)
-        {
-            gDrvMetObj.pulse0Callback();
-        }
-    }
-</#if>
-<#if DRV_MET_PULSE_1 == true>  
-    
-    if (gDrvMetObj.pulse1IntFlag == true)
-    {
-        gDrvMetObj.pulse1IntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.pulse1Callback != NULL)
-        {
-            gDrvMetObj.pulse1Callback();
-        }
-    }
-</#if>
-<#if DRV_MET_PULSE_2 == true>  
-    
-    if (gDrvMetObj.pulse2IntFlag == true)
-    {
-        gDrvMetObj.pulse2IntFlag = false;
-        /* Launch callback */
-        if (gDrvMetObj.pulse2Callback != NULL)
-        {
-            gDrvMetObj.pulse2Callback();
-        }
-    }
-</#if>
 }
 
 DRV_METROLOGY_REGS_STATUS * DRV_METROLOGY_GetStatusData (void)

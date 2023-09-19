@@ -130,43 +130,31 @@ typedef struct
     DRV_METROLOGY_CALLBACK                        integrationCallback;
 
 <#if DRV_MET_NOT_FULL_CYCLE == true>  
-    /* Flag to indicate every full line cycle */
-    volatile bool                                 fullCycleIntFlag;
     /* IPC metrology lib Full Cycle Callback */
     DRV_METROLOGY_CALLBACK                        fullCycleCallback;
 
 </#if>
 <#if DRV_MET_NOT_HALF_CYCLE == true>  
-    /* Flag to indicate every half line cycle */
-    volatile bool                                 halfCycleIntFlag;
     /* IPC metrology lib Half Cycle Callback */
     DRV_METROLOGY_CALLBACK                        halfCycleCallback;
 
 </#if>
 <#if DRV_MET_RAW_ZERO_CROSSING == true> 
-    /* Flag to indicate zero-crossings using the unfiltered “raw” 16 KHz data stream  */
-    volatile bool                                 zeroCrossIntFlag; 
     /* IPC metrology lib Zero Cross Callback */
     DRV_METROLOGY_CALLBACK                        zeroCrossCallback;
 
 </#if>
 <#if DRV_MET_PULSE_0 == true>  
-    /* Flag to indicate that a pulse 0 has computationally committed to be generated */
-    volatile bool                                 pulse0IntFlag;
     /* IPC metrology lib Pulse 0 Callback */
     DRV_METROLOGY_CALLBACK                        pulse0Callback;
 
 </#if>
 <#if DRV_MET_PULSE_1 == true>  
-    /* Flag to indicate that a pulse 10 has computationally committed to be generated */
-    volatile bool                                 pulse1IntFlag;
     /* IPC metrology lib Pulse 1 Callback */
     DRV_METROLOGY_CALLBACK                        pulse1Callback;
 
 </#if>
 <#if DRV_MET_PULSE_2 == true>  
-    /* Flag to indicate that a pulse 2 has computationally committed to be generated */
-    volatile bool                                 pulse2IntFlag;
     /* IPC metrology lib Pulse 2 Callback */
     DRV_METROLOGY_CALLBACK                        pulse2Callback;
 

@@ -235,7 +235,7 @@ void IPC1_InterruptHandler (void)
 
 }
 
-static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
+static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
 {
     double res, dre, dim;
     uint32_t measure, intPart, decPart;
@@ -258,13 +258,13 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
     dre *= dre;
     
     /* Get Imaginary contribution */
-    if (imaginary < 0)
+    if (imag < 0)
     {
-        measure = (uint32_t)-imaginary;
+        measure = (uint32_t)-imag;
     }
     else
     {
-        measure = (uint32_t)imaginary;
+        measure = (uint32_t)imag;
     }
     
     /* sQ25.6 */
@@ -275,8 +275,11 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imaginary)
     dim *= dim;
     
     res = (dre + dim) * 2.0;
-    res = sqrt(res);
-    res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    if (res > 0.0)
+    {
+        res = sqrt(res);
+        res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
+    }
     
     return res;
 }
