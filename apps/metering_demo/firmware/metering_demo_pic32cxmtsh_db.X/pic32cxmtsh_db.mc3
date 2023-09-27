@@ -1229,7 +1229,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;IPC1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -5200,7 +5200,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SRAM1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -8256,7 +8256,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>037195770fc61cf7ec4d8c4e94d9b54d8fd22f1e58e56d18ca24cadb1f8b995e</hash>
+         <hash>dc71cbbfa7ecd5ef9ab7541ee1e8c532db99f349eb6e42f37ef421e61368f5dc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\osal\osal_impl_basic.h</file>
@@ -8416,7 +8416,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>e4626ee84c5d8b263fb9aff87c3f482ea20ccef02d56f66e5caaf9fb2ecbf1f0</hash>
+         <hash>1004e7d68e2a4d2302a27b077a902a760e8789a56c1de94f6a08dd4d78abdbd7</hash>
       </entry>
       <entry>
          <file>..\src\packs\PIC32CX2051MTSH128_DFP\instance\sefc0.h</file>
@@ -8580,7 +8580,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>a1320ff9b9e36ab66868200b7ba43491dd51d73998d4478a8c2a1b9e1a68eb43</hash>
+         <hash>37e22c83e4943715e2e5cf5a2f56114f72eb75a2107629fa4e28a75d9eb5851f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -9132,7 +9132,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>137dcec4b8efb888f28b8dbaf1835e61e63de4f27e09491aee6dcbde4355f645</hash>
+         <hash>2978e99eaa6edac44925276d6b816d8e9b9c0f5db97c5178f576164e8b0f207d</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

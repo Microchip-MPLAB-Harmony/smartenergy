@@ -156,52 +156,6 @@ static double lDRV_Metrology_GetDouble(int64_t value)
     return (double)value;
 }
 
-static void lDRV_Metrology_copy (uintptr_t pDst, uintptr_t pSrc, size_t length)
-{
-    uint32_t size;
-
-    /* Enable PMC clock */
-    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN(1U) | PMC_PCR_PID(ID_MEM2MEM0);
-
-    /* Configure Transfer Size */
-    if ((length & 0x03U) != 0U)
-    {
-        MEM2MEM0_REGS->MEM2MEM_MR = MEM2MEM_MR_TSIZE_T_32BIT;
-        size = length >> 2U;
-    }
-    else if ((length & 0x01U) != 0U)
-    {
-        MEM2MEM0_REGS->MEM2MEM_MR = MEM2MEM_MR_TSIZE_T_16BIT;
-        size = length >> 1U;
-    }
-    else
-    {
-        MEM2MEM0_REGS->MEM2MEM_MR = MEM2MEM_MR_TSIZE_T_8BIT;
-        size = length;
-    }
-
-    /* Prepare MEM2MEM transfer */
-    MEM2MEM0_REGS->MEM2MEM_TPR = (uint32_t)pSrc;
-    MEM2MEM0_REGS->MEM2MEM_TCR = size;
-    MEM2MEM0_REGS->MEM2MEM_RPR = (uint32_t)pDst;
-    MEM2MEM0_REGS->MEM2MEM_RCR = size;
-
-    /* Start PDC transfer */
-    MEM2MEM0_REGS->MEM2MEM_PTCR = (MEM2MEM_PTCR_RXTEN_Msk | MEM2MEM_PTCR_TXTEN_Msk);
-
-    /* Wait until transfer done */
-    while (0U == (MEM2MEM0_REGS->MEM2MEM_ISR & MEM2MEM_ISR_RXEND_Msk))
-    {
-    }
-
-    /* Stop PDC transfer */
-    MEM2MEM0_REGS->MEM2MEM_PTCR = (MEM2MEM_PTCR_RXTDIS_Msk | MEM2MEM_PTCR_TXTDIS_Msk);
-
-    /* Disable PMC clock */
-    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN(0U) | PMC_PCR_PID(ID_MEM2MEM0);
-
-}
-
 void IPC1_InterruptHandler (void)
 {
     uint32_t status = IPC1_REGS->IPC_ISR;
@@ -220,16 +174,16 @@ void IPC1_InterruptHandler (void)
         if (gDrvMetObj.metRegisters->MET_STATUS.STATUS == STATUS_STATUS_DSP_RUNNING)
         {
             /* Update Accumulators Data */
-            lDRV_Metrology_copy((uintptr_t)&gDrvMetObj.metAccData, (uintptr_t)&gDrvMetObj.metRegisters->MET_ACCUMULATORS, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
+            (void) memcpy(&gDrvMetObj.metAccData, &gDrvMetObj.metRegisters->MET_ACCUMULATORS, sizeof(DRV_METROLOGY_REGS_ACCUMULATORS));
             /* Update Harmonics Data */
-            lDRV_Metrology_copy((uintptr_t)&gDrvMetObj.metHarData, (uintptr_t)&gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_REGS_HARMONICS));
+            (void) memcpy(&gDrvMetObj.metHarData, &gDrvMetObj.metRegisters->MET_HARMONICS, sizeof(DRV_METROLOGY_REGS_HARMONICS));
         }
 
         gDrvMetObj.integrationFlag = true;
     }
 
     IPC1_REGS->IPC_ICCR = status;
-    
+
     /* Signal Metrology thread to attend IPC interrupt */
     (void) OSAL_SEM_PostISR(&gDrvMetObj.semaphoreID);
 
@@ -239,7 +193,7 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
 {
     double res, dre, dim;
     uint32_t measure, intPart, decPart;
-    
+
     /* Get Real contribution */
     if (real < 0)
     {
@@ -249,14 +203,14 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
     {
         measure = (uint32_t)real;
     }
-    
+
     /* sQ25.6 */
     intPart = measure >> 6;
     decPart = measure & 63U;
     dre = (double)decPart / 64.0;
     dre += (double)intPart;
     dre *= dre;
-    
+
     /* Get Imaginary contribution */
     if (imag < 0)
     {
@@ -266,21 +220,21 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
     {
         measure = (uint32_t)imag;
     }
-    
+
     /* sQ25.6 */
     intPart = measure >> 6;
     decPart = measure & 63U;
     dim = (double)decPart / 64.0;
     dim += (double)intPart;
     dim *= dim;
-    
+
     res = (dre + dim) * 2.0;
     if (res > 0.0)
     {
         res = sqrt(res);
         res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
     }
-    
+
     return res;
 }
 
@@ -481,7 +435,7 @@ static void lDRV_Metrology_IpcInitialize (void)
     /* Clear interrupts */
     IPC1_REGS->IPC_ICCR = 0xFFFFFFFFUL;
     /* Enable interrupts */
-    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | 
+    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK |
         DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
@@ -520,10 +474,10 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     bams = (double)correction_angle;
     bams = bams * (60.00 / gDrvMetObj.calibrationData.freq);
     bams = bams / 18000000.00; /* get bams and remove precision adjust */
-    
+
     phase_correction = bams * 2147483648.00; /* sQ0.31 */
     correction_angle = (int64_t)phase_correction;
-    
+
     return (uint32_t)correction_angle;
 }
 
@@ -772,7 +726,7 @@ static bool lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
         pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(harTemp[1], harTemp[8]);
         pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(harTemp[3], harTemp[10]);
         pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(harTemp[5], harTemp[12]);
-                
+
         /* Disable Harmonic Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
         /* Clear Number of Harmonic for Analysis */
@@ -1071,7 +1025,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
     if (gDrvMetObj.integrationFlag == true)
     {
         gDrvMetObj.integrationFlag = false;
-        
+
         if (gDrvMetObj.harmonicAnalysisData.integrationPeriods > 0U)
         {
             gDrvMetObj.harmonicAnalysisData.integrationPeriods--;
@@ -1101,13 +1055,13 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             }
 
             /* Check if there is a harmonic analysis process running */
-            if ((gDrvMetObj.harmonicAnalysisData.running == true) && 
+            if ((gDrvMetObj.harmonicAnalysisData.running == true) &&
                 (gDrvMetObj.harmonicAnalysisData.integrationPeriods == 0U) )
             {
                 if (lDRV_METROLOGY_UpdateHarmonicAnalysisValues() == true)
                 {
                     gDrvMetObj.harmonicAnalysisData.running = false;
-                    
+
                     /* Launch calibration callback */
                     if (gDrvMetObj.harmonicAnalysisCallback != NULL)
                     {
@@ -1131,7 +1085,7 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData (void)
 
 DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
       H3_MISRAC_2012_R_11_8_DR_1*/
     return (DRV_METROLOGY_REGS_CONTROL *)&gDrvMetControlDefault;
    /* MISRAC 2012 deviation block end */
@@ -1154,7 +1108,7 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
       H3_MISRAC_2012_R_11_8_DR_1*/
     /* Keep State Control Register value */
     (void) memcpy((void *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0,

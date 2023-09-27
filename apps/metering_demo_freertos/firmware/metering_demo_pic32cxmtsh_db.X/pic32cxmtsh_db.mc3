@@ -1300,7 +1300,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;IPC1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -5260,7 +5260,7 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
   &lt;core dnOrder=&quot;0&quot; id=&quot;SRAM1_CLOCK_ENABLE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;drvMet&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -8199,7 +8199,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology.c</file>
-         <hash>6569a58e6e5dee74e223662d4f4e2725aa23e7f96498c9be0223e506fdd32f94</hash>
+         <hash>ced44bf50cfa0bccb148b8aa06f0b89c0e208d53819796045d0e959317aceb74</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\bsp\bsp.c</file>
@@ -8559,7 +8559,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\metrology\drv_metrology_definitions.h</file>
-         <hash>a1320ff9b9e36ab66868200b7ba43491dd51d73998d4478a8c2a1b9e1a68eb43</hash>
+         <hash>37e22c83e4943715e2e5cf5a2f56114f72eb75a2107629fa4e28a75d9eb5851f</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\int\sys_int.h</file>
@@ -9175,7 +9175,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>dbb40f524bb099f4e959f024eca6c2736ae4b3bb87f40d36e2c56138cc5126b9</hash>
+         <hash>cd6fe666bafd874b3fd0ba3289900291d97147a9ec6ac1bfc3b60e1fa4b5ac65</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
