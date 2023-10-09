@@ -580,6 +580,9 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
             
             /* Update PLC state: waiting confirmation */
             gPlcPhyObj->state[bufIdx] = DRV_PLC_PHY_STATE_WAITING_TX_CFM;
+
+            /* Time guard */
+            gPlcPhyObj->plcHal->delay(20);
         }
         else
         {
@@ -900,7 +903,7 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         }
         
         /* Time guard */
-        gPlcPhyObj->plcHal->delay(50);
+        gPlcPhyObj->plcHal->delay(20);
     }
 <#if SPI_PLIB?lower_case[0..*6] != "sercom">
     

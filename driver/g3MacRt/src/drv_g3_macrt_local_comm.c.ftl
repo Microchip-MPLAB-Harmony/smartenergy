@@ -774,7 +774,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         }
         
         /* Time guard */
-        gG3MacRtObj->plcHal->delay(50);
+        gG3MacRtObj->plcHal->delay(20);
     }
 <#if SPI_PLIB?lower_case[0..*6] != "sercom">
 
