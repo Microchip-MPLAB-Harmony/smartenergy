@@ -4346,18 +4346,23 @@ static void lRF215_TX_StartTimeExpired(uintptr_t context)
     uint64_t currentTime, txCommandTime;
     uint32_t txCommandDelay;
     bool spiFree;
-    uint8_t trxIdx = (uint8_t) context;
-    RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
-    DRV_RF215_TX_BUFFER_OBJ* txBufObj = pObj->txBufObj;
+    uint8_t trxIdx;
+    RF215_PHY_OBJ* pObj;
+    DRV_RF215_TX_BUFFER_OBJ* txBufObj;
+    uint64_t txTime;
     uint32_t startDelayUSq5 = 0;
-    uint64_t txTime = txBufObj->reqObj.timeCount;
     SYS_TIME_HANDLE timeHandle = SYS_TIME_HANDLE_INVALID;
 
-    /* Check if TX buffer is still in use */
-    if (txBufObj->inUse == false)
+    /* Validate TX handle and obtain pointer to TX buffer object */
+    txBufObj = DRV_RF215_TxHandleValidate(context);
+    if (txBufObj == NULL)
     {
         return;
     }
+
+    trxIdx = txBufObj->clientObj->trxIndex;
+    txTime = txBufObj->reqObj.timeCount;
+    pObj = &rf215PhyObj[trxIdx];
 
     /* Critical region to avoid new SPI transfers */
     spiFree = RF215_HAL_SpiLock();
@@ -4524,15 +4529,19 @@ ${CCA_CW_INDENT}        }
 static void lRF215_TX_PrepareTimeExpired(uintptr_t context)
 {
     DRV_RF215_TX_RESULT result;
-    DRV_RF215_TX_BUFFER_OBJ* txBufObj = (DRV_RF215_TX_BUFFER_OBJ *) context;
-    uint8_t trxIdx = txBufObj->clientObj->trxIndex;
-    RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
+    uint8_t trxIdx;
+    RF215_PHY_OBJ* pObj;
+    DRV_RF215_TX_BUFFER_OBJ* txBufObj;
 
-    /* Check if TX buffer is still in use */
-    if (txBufObj->inUse == false)
+    /* Validate TX handle and obtain pointer to TX buffer object */
+    txBufObj = DRV_RF215_TxHandleValidate(context);
+    if (txBufObj == NULL)
     {
         return;
     }
+
+    trxIdx = txBufObj->clientObj->trxIndex;
+    pObj = &rf215PhyObj[trxIdx];
 
     /* Critical region to avoid conflicts in PHY object data */
     RF215_HAL_EnterCritical();
@@ -4589,7 +4598,7 @@ static void lRF215_TX_PrepareTimeExpired(uintptr_t context)
 
             /* Schedule timer for TX start */
             timeHandle = lRF215_TX_TimeSchedule(interruptTime, true,
-                    lRF215_TX_StartTimeExpired, (uintptr_t) trxIdx);
+                    lRF215_TX_StartTimeExpired, context);
         }
 
         if (timeHandle == SYS_TIME_HANDLE_INVALID)
@@ -4843,7 +4852,9 @@ ${PHY_TYPE_INDENT}trxCountDiff += (int32_t) lRF215_OFDM_RxStartDelayUSq5(&phyCfg
     /* Compute SYS_TIME counter associated to RX event */
     timeIni = (int64_t) timeRead - lRF215_PHY_USq5ToSysTimeCount(trxCountDiff);
     pObj->rxInd.timeIniCount = (uint64_t) timeIni;
+<#if DRV_RF215_CCA_CONTENTION_WINDOW == true>
     pObj->rxTimeValid = true;
+</#if>
 }
 
 </#if>
@@ -5067,7 +5078,7 @@ bool RF215_PHY_Initialize (
 </#if>
     pObj->txStarted = false;
     pObj->txAutoInProgress = false;
-<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if DRV_RF215_CCA_CONTENTION_WINDOW == true>
     pObj->rxTimeValid = false;
 </#if>
     pObj->trxResetPending = false;
@@ -5490,7 +5501,7 @@ DRV_RF215_TX_RESULT RF215_PHY_TxRequest(DRV_RF215_TX_BUFFER_OBJ* txBufObj)
 
         /* Schedule timer for the specified time */
         timeHandle = lRF215_TX_TimeSchedule(interruptTime, true,
-                lRF215_TX_PrepareTimeExpired, (uintptr_t) txBufObj);
+                lRF215_TX_PrepareTimeExpired, txBufObj->txHandle);
 
         if (timeHandle == SYS_TIME_HANDLE_INVALID)
         {
@@ -5582,7 +5593,6 @@ void RF215_PHY_TxCancel(DRV_RF215_TX_BUFFER_OBJ* txBufObj)
     if (txCancel == true)
     {
         RF215_PHY_SetTxCfm(txBufObj, RF215_TX_CANCELLED);
-        (void) SYS_TIME_TimerDestroy(txBufObj->timeHandle);
 
         /* Free TX buffer. TX confirm will not be notified */
         txBufObj->inUse = false;
@@ -5599,6 +5609,7 @@ void RF215_PHY_SetTxCfm (
     /* Set 0 duration if not successful transmission */
     if ((result != RF215_TX_SUCCESS) && (result != RF215_TX_ERROR_UNDERRUN))
     {
+        (void) SYS_TIME_TimerDestroy(txBufObj->timeHandle);
         txBufObj->cfmObj.ppduDurationCount = 0;
     }
 

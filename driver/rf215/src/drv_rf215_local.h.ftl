@@ -306,6 +306,8 @@ void DRV_RF215_AbortTxByRx(uint8_t trxIdx);
 void DRV_RF215_AbortTxByPhyConfig(uint8_t trxIdx);
 
 </#if>
+DRV_RF215_TX_BUFFER_OBJ* DRV_RF215_TxHandleValidate(DRV_RF215_TX_HANDLE txHandle);
+
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
 void DRV_RF215_ResumeTask(void);
 

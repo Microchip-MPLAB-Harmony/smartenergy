@@ -776,7 +776,7 @@ typedef struct
     /* CCATX/TX2RX auto procedure in progress */
     bool                            txAutoInProgress;
 
-<#if DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if DRV_RF215_CCA_CONTENTION_WINDOW == true>
     /* Flag to indicate that RX time is valid (at least one frame received) */
     bool                            rxTimeValid;
 

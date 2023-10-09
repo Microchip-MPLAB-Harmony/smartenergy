@@ -429,6 +429,28 @@ void DRV_RF215_NotifyChannelSwitch(uint8_t trxIdx, DRV_RF215_TX_RESULT result)
 }
 
 </#if>
+DRV_RF215_TX_BUFFER_OBJ* DRV_RF215_TxHandleValidate(DRV_RF215_TX_HANDLE txHandle)
+{
+    DRV_RF215_TX_BUFFER_OBJ* txBufObj;
+    uint8_t bufIdx;
+
+    /* Extract the TX buffer index from the handle */
+    bufIdx = (uint8_t) txHandle;
+    if (bufIdx >= DRV_RF215_TX_BUFFERS_NUMBER)
+    {
+        return NULL;
+    }
+
+    /* Obtain the TX buffer object */
+    txBufObj = &drvRf215TxBufPool[bufIdx];
+    if ((txBufObj->txHandle != txHandle) || (txBufObj->inUse == false))
+    {
+        txBufObj = NULL;
+    }
+
+    return txBufObj;
+}
+
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
 void DRV_RF215_ResumeTask(void)
 {
@@ -920,8 +942,8 @@ void DRV_RF215_TxCancel(DRV_HANDLE drvHandle, DRV_RF215_TX_HANDLE txHandle)
 {
     DRV_RF215_CLIENT_OBJ* clientObj;
     DRV_RF215_TX_BUFFER_OBJ* txBufObj;
-    uint8_t bufIdx;
 
+    /* Validate client handle */
     clientObj = lDRV_RF215_DrvHandleValidate(drvHandle);
     if (clientObj == NULL)
     {
@@ -929,28 +951,23 @@ void DRV_RF215_TxCancel(DRV_HANDLE drvHandle, DRV_RF215_TX_HANDLE txHandle)
     }
 
     /* Validate TX handle */
-    bufIdx = (uint8_t) txHandle;
-    if (bufIdx >= DRV_RF215_TX_BUFFERS_NUMBER)
+    txBufObj = DRV_RF215_TxHandleValidate(txHandle);
+    if (txBufObj == NULL)
     {
         return;
     }
 
-    /* Obtain the TX buffer object */
-    txBufObj = &drvRf215TxBufPool[bufIdx];
-    if ((txBufObj->txHandle == txHandle) && (txBufObj->inUse == true))
+    /* Critical region to avoid changes from interrupts */
+    RF215_HAL_EnterCritical();
+
+    /* Check that TX has not finished */
+    if (txBufObj->cfmPending == false)
     {
-        /* Critical region to avoid changes from interrupts */
-        RF215_HAL_EnterCritical();
-
-        /* Check that TX has not finished */
-        if (txBufObj->cfmPending == false)
-        {
-            RF215_PHY_TxCancel(txBufObj);
-        }
-
-        /* Leave critical region. TX confirm ready to be notified */
-        RF215_HAL_LeaveCritical();
+        RF215_PHY_TxCancel(txBufObj);
     }
+
+    /* Leave critical region */
+    RF215_HAL_LeaveCritical();
 }
 
 <#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>
