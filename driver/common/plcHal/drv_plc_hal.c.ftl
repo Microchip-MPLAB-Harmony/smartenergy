@@ -98,23 +98,19 @@ static void lDRV_PLC_HAL_memcpyREV16 (void * pDst, void * pSrc, size_t size)
 {
     /* R0=pDst; R1=pSrc; R2=size */
     __asm volatile (
-        "TST R2, #1\n"
-        "IT NE\n"
-            "ADDNE R2, R2, #1\n"
+        "PUSH {R4}"
+        "MOV R4, #0\n"
 
     "COPY_DATA_LOOP:\n"
-        "CMP R2, #0\n"
-        "BEQ COPY_DATA_END\n"
-        "LDR R3, [R1], #4\n"
+        "CMP R2, R4\n"
+        "BLS COPY_DATA_END\n"
+        "LDR R3, [R1, R4]\n"
         "REV16 R3, R3\n"
-        "CMP R2, #3\n"
-        "ITTT GT\n"
-            "STRGT R3, [R0], #4\n"
-            "SUBGT R2, R2, #4\n"
-            "BGT COPY_DATA_LOOP\n"
-
-        "STRH R3, [R0]\n"
+        "STR R3, [R0, R4]\n"
+        "ADD R4, R4, #4\n"
+        "B COPY_DATA_LOOP\n"
     "COPY_DATA_END:\n"
+        "POP {R4}"
     );
 }
 
@@ -428,7 +424,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     dataLength = ((pCmd->length + 1U) >> 1) & 0x7FFFU;
     
     /* Protect length */
-    if ((dataLength == 0U) || (dataLength > (HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)))
+    if ((dataLength == 0U) || (pCmd->length > (HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)))
     {
         return;
     }
@@ -453,7 +449,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 
     pTxData += pCmd->length;
 
-    totalLength = 4U + pCmd->length;
+    totalLength = HAL_SPI_HEADER_SIZE + pCmd->length;
     cmdSize = totalLength;
     
     if ((cmdSize % 2U) > 0U) {
@@ -633,7 +629,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     dataLength = ((pCmd->length + 1U) >> 1) & 0x7FFFU;
     
     /* Protect length */
-    if ((dataLength == 0U) || (dataLength > (HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)))
+    if ((dataLength == 0U) || (pCmd->length > (HAL_SPI_MSG_DATA_SIZE + HAL_SPI_MSG_PARAMS_SIZE)))
     {
         return;
     }
@@ -658,7 +654,7 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
 
     pTxData += pCmd->length;
 
-    totalLength = 4U + pCmd->length;
+    totalLength = HAL_SPI_HEADER_SIZE + pCmd->length;
     cmdSize = totalLength;
     
     if ((cmdSize % 2U) > 0U) {

@@ -72,36 +72,43 @@ def identifyPeripherals(component):
     flexcomIdCreated = False
     adcIdCreated = False
     pioIdCreated = False
+    eicIdCreated = False
 
     for module in range (0, len(peripherals)):
         if str(peripherals[module].getAttribute("name")) == "FLEXCOM":
-            plcFlexcomId = component.createIntegerSymbol("PLC_FLEXCOM_ID", None)
-            plcFlexcomId.setDefaultValue(int(peripherals[module].getAttribute("id")))
-            plcFlexcomId.setVisible(False)
+            plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
+            plcFlexcomId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             flexcomIdCreated = True
         elif str(peripherals[module].getAttribute("name")) == "ADC":
-            plcAdcId = component.createIntegerSymbol("PLC_ADC_ID", None)
-            plcAdcId.setDefaultValue(int(peripherals[module].getAttribute("id")))
-            plcAdcId.setVisible(False)
+            plcAdcId = component.createStringSymbol("PLC_ADC_ID", None)
+            plcAdcId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             adcIdCreated = True
         elif str(peripherals[module].getAttribute("name")) == "PIO":
-            plcPioId = component.createIntegerSymbol("PLC_PIO_ID", None)
-            plcPioId.setDefaultValue(int(peripherals[module].getAttribute("id")))
-            plcPioId.setVisible(False)
+            plcPioId = component.createStringSymbol("PLC_PIO_ID", None)
+            plcPioId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             pioIdCreated = True
+        elif str(peripherals[module].getAttribute("name")) == "EIC":
+            plcEicId = component.createStringSymbol("PLC_EIC_ID", None)
+            plcEicId.setDefaultValue(str(peripherals[module].getAttribute("id")))
+            eicIdCreated = True
     
     if not flexcomIdCreated:
-        plcFlexcomId = component.createIntegerSymbol("PLC_FLEXCOM_ID", None)
-        plcFlexcomId.setDefaultValue(0)
-        plcFlexcomId.setVisible(False)
+        plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
+        plcFlexcomId.setDefaultValue("0")
     if not adcIdCreated:
-        plcAdcId = component.createIntegerSymbol("PLC_ADC_ID", None)
-        plcAdcId.setDefaultValue(0)
-        plcAdcId.setVisible(False)
+        plcAdcId = component.createStringSymbol("PLC_ADC_ID", None)
+        plcAdcId.setDefaultValue("0")
     if not pioIdCreated:
-        plcPioId = component.createIntegerSymbol("PLC_PIO_ID", None)
-        plcPioId.setDefaultValue(0)
-        plcPioId.setVisible(False)
+        plcPioId = component.createStringSymbol("PLC_PIO_ID", None)
+        plcPioId.setDefaultValue("0")
+    if not eicIdCreated:
+        plcEicId = component.createStringSymbol("PLC_EIC_ID", None)
+        plcEicId.setDefaultValue("0")
+
+    plcFlexcomId.setVisible(False)
+    plcAdcId.setVisible(False)
+    plcPioId.setVisible(False)
+    plcEicId.setVisible(False)
 
 def instantiateComponent(pPVDDMonComponent):
     

@@ -28,7 +28,8 @@
     "PIC32CXMTSH Development Board",
     "PIC32CXMTG Evaluation Kit",
     "SAM E70 Xplained Ultra",
-    "WBZ451 Curiosity"
+    "WBZ451 Curiosity",
+    "SAM D20 Xplained Pro"
 ]>
 <#assign BOARD_FIND = "">
 
@@ -118,11 +119,31 @@ void _on_reset(void)
         <#if BOARD?matches("WBZ451 Curiosity")>
             <#lt>    __asm volatile ("NOP");
         </#if>
+        <#if BOARD?matches("SAM D20 Xplained Pro")>
+            <#lt>    /* Disable STBY Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
+            <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
+            <#lt>    /* Enable Reset Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+            <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+            <#lt>    /* Disable LDO Pin */
+            <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+            <#lt>    SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
+        </#if>
     </#if>
 </#list>
 <#if BOARD_FIND == "">
-    #warning Board not supported. Please, review CLK configuration to enable PIO peripherals
-    __asm volatile ("NOP");
+    #warning Board not supported. Please, review Pin configuration to initialize the PL460-EK GPIOs (RESET, STBY and LDO_EN).
+    <#lt>    __asm volatile ("NOP");
+    <#lt>    /* Enable Reset Pin */
+    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+    <#lt>    // SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#lt>    /* Disable STBY Pin */
+    <#lt>    // SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
+    <#lt>    // SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
+    <#lt>    /* Disable LDO Pin */
+    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+    <#lt>    // SYS_PORT_PinClear(DRV_PLC_LDO_EN_PIN);
 </#if>
 }
 
@@ -160,7 +181,7 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 
 <#if (core.DMA_ENABLE?has_content == false) || (DRV_PLC_PLIB == "SRV_SPISPLIT")>
     /* SPI Is Busy */
-    .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsTransmitterBusy,
+    .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsBusy,
 
 </#if>
 <#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (DRV_PLC_SPI_NUM_CSR != 0)>

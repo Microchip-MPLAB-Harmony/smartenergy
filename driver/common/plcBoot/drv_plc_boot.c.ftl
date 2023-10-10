@@ -54,6 +54,20 @@
 // Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_PLC_PLIB>
+</#if>
+<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+    <#assign SPI_PREFFIX = "SPI">
+<#elseif SPI_PLIB?lower_case[0..*7] == "flexcom">
+    <#assign SPI_PREFFIX = "FLEX_SPI">
+<#elseif SPI_PLIB?lower_case[0..*3] == "spi">
+    <#assign SPI_PREFFIX = "SPI">
+</#if>
 
 /* This is the pointer to refer Hardware Abstraction Layer (HAL) object. */
 static DRV_PLC_HAL_INTERFACE *sDrvPlcHalObj;
@@ -300,9 +314,11 @@ static void lDRV_PLC_BOOT_DisableBootCmd(void)
 
     /* Disable Bootloader */
     sDrvPlcHalObj->sendBootCmd(DRV_PLC_BOOT_CMD_DIS_SPI_CLK_CTRL, 0, 0, NULL, NULL);
-    
+
+<#if SPI_PLIB?lower_case[0..*6] != "sercom"> 
     /* Configure 16 bits transfer */
     sDrvPlcHalObj->setup(true);
+</#if>
 }
 
 static bool lDRV_PLC_BOOT_CheckFirmware(void)
@@ -450,9 +466,11 @@ void DRV_PLC_BOOT_Restart(DRV_PLC_BOOT_RESTART_MODE mode)
         /* Disable Bootloader */
         sDrvPlcHalObj->sendBootCmd(DRV_PLC_BOOT_CMD_DIS_SPI_CLK_CTRL, 0, 0, NULL, NULL);
 
+<#if SPI_PLIB?lower_case[0..*6] != "sercom"> 
         /* Configure 16 bits transfer */
         sDrvPlcHalObj->setup(true);
 
+</#if>
         /* Wait to PLC startup */
         sDrvPlcHalObj->delay(200);
     }

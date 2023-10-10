@@ -83,7 +83,7 @@ static SRV_PVDDMON_CALLBACK ${PVDD_MON_ADC_INSTANCE}_CompareCallback = NULL;
 // *****************************************************************************
 // *****************************************************************************
 
-<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == "44134")>
 static void l${PVDD_MON_ADC_INSTANCE}_PVDDMONCallback( uint32_t status, uint32_t eocStatus, uintptr_t context )
 {
     /* Avoid warning */
@@ -116,7 +116,7 @@ void SRV_PVDDMON_Initialize (void)
     ${PVDD_MON_ADC_INSTANCE}_ChannelsDisable(channelMsk);
 
     /* Disable channel interrupt */
-<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == "44134")>
     ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable((${PVDD_MON_MASK_PREFIX}_INTERRUPT_EOC_MASK)channelMsk);
 <#else>
     ${PVDD_MON_ADC_INSTANCE}_ChannelsInterruptDisable((${PVDD_MON_MASK_PREFIX}_INTERRUPT_MASK)channelMsk);
@@ -129,7 +129,7 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     ${PVDD_MON_MASK_PREFIX}_CHANNEL_MASK channelMsk = ${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL}_MASK;
 
     /* Set Free Run reset */
-<#if (PLC_ADC_ID??) && (PLC_ADC_ID == 44134)>
+<#if (PLC_ADC_ID??) && (PLC_ADC_ID == "44134")>
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_TRGR |= ${PVDD_MON_MASK_PREFIX}_TRGR_TRGMOD_CONTINUOUS;
 <#else>
     ${PVDD_MON_ADC_INSTANCE}_REGS->${PVDD_MON_MASK_PREFIX}_MR |= ${PVDD_MON_MASK_PREFIX}_MR_FREERUN_Msk;
