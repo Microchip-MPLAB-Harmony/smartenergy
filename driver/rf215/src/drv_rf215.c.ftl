@@ -999,7 +999,8 @@ uint8_t DRV_RF215_GetPibSize(DRV_RF215_PIB_ATTRIBUTE attr)
         case RF215_PIB_DEVICE_RESET:
         case RF215_PIB_TRX_RESET:
         case RF215_PIB_TRX_SLEEP:
-        case RF215_PIB_PHY_CCA_ED_THRESHOLD:
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_DBM:
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_SENSITIVITY:
         case RF215_PIB_PHY_TX_CONTINUOUS:
             len = 1U;
             break;
@@ -1008,7 +1009,8 @@ uint8_t DRV_RF215_GetPibSize(DRV_RF215_PIB_ATTRIBUTE attr)
         case RF215_PIB_PHY_CHANNEL_NUM:
         case RF215_PIB_PHY_TX_PAY_SYMBOLS:
         case RF215_PIB_PHY_RX_PAY_SYMBOLS:
-        case RF215_PIB_PHY_CCA_ED_DURATION:
+        case RF215_PIB_PHY_CCA_ED_DURATION_US:
+        case RF215_PIB_PHY_CCA_ED_DURATION_SYMBOLS:
         case RF215_PIB_PHY_TURNAROUND_TIME:
         case RF215_PIB_MAC_UNIT_BACKOFF_PERIOD:
             len = 2U;

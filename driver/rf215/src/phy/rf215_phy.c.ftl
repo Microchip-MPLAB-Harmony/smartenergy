@@ -157,7 +157,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_32us,
         .BBCn_FSKPE0 = 0x02U,
         .BBCn_FSKPE1 = 0x03U,
-        .BBCn_FSKPE2 = 0xFCU
+        .BBCn_FSKPE2 = 0xFCU,
+        .sensitivityDBm = -91
     },
 
     /* 100 kHz */
@@ -175,7 +176,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_16us,
         .BBCn_FSKPE0 = 0x0EU,
         .BBCn_FSKPE1 = 0x0FU,
-        .BBCn_FSKPE2 = 0xF0U
+        .BBCn_FSKPE2 = 0xF0U,
+        .sensitivityDBm = -88
     },
 
     /* 150 kHz */
@@ -193,7 +195,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_16us,
         .BBCn_FSKPE0 = 0x3CU,
         .BBCn_FSKPE1 = 0x3FU,
-        .BBCn_FSKPE2 = 0xC0U
+        .BBCn_FSKPE2 = 0xC0U,
+        .sensitivityDBm = -86
     },
 
     /* 200 kHz */
@@ -211,7 +214,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_16us,
         .BBCn_FSKPE0 = 0x74U,
         .BBCn_FSKPE1 = 0x7FU,
-        .BBCn_FSKPE2 = 0x80U
+        .BBCn_FSKPE2 = 0x80U,
+        .sensitivityDBm = -85
     },
 
     /* 300 kHz */
@@ -229,7 +233,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_8us,
         .BBCn_FSKPE0 = 0x05U,
         .BBCn_FSKPE1 = 0x3CU,
-        .BBCn_FSKPE2 = 0xC3U
+        .BBCn_FSKPE2 = 0xC3U,
+        .sensitivityDBm = -83
     },
 
     /* 400 kHz */
@@ -247,7 +252,8 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .RFn_TXCUT_PARAMP = RF215_RFn_TXCUTC_PARAMP_8us,
         .BBCn_FSKPE0 = 0x13U,
         .BBCn_FSKPE1 = 0x29U,
-        .BBCn_FSKPE2 = 0xC7U
+        .BBCn_FSKPE2 = 0xC7U,
+        .sensitivityDBm = -82
     }
 };
 
@@ -268,7 +274,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_1333kHz,
         /* Higher threshold than in Table 6-93 to avoid false detections */
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(6U),
-        .minMCS = OFDM_MCS_0
+        .minMCS = OFDM_MCS_0,
+        .sensitivityDBm = -85
     },
 
     /* Option 2 */
@@ -283,7 +290,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_RXDFE_SR = RF215_RFn_RXDFE_SR_1333kHz,
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_1333kHz,
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(5U),
-        .minMCS = OFDM_MCS_0
+        .minMCS = OFDM_MCS_0,
+        .sensitivityDBm = -88
     },
 
     /* Option 3 */
@@ -298,7 +306,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_RXDFE_SR = RF215_RFn_RXDFE_SR_667kHz,
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_667kHz,
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(4U),
-        .minMCS = OFDM_MCS_1 /* MCS0 not available in option 3 */
+        .minMCS = OFDM_MCS_1, /* MCS0 not available in option 3 */
+        .sensitivityDBm = -91
     },
 
     /* Option 4 */
@@ -314,7 +323,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_667kHz,
         /* Higher threshold than in Table 6-93 to avoid false detections */
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(4U),
-        .minMCS = OFDM_MCS_2 /* MCS0 and MCS1 not available in option 4 */
+        .minMCS = OFDM_MCS_2, /* MCS0 and MCS1 not available in option 4 */
+        .sensitivityDBm = -94
     }
 };
 
@@ -1813,6 +1823,60 @@ ${PHY_TYPE_INDENT}        psduLen, pSymbolsPayload);
 <#if DRV_RF215_OFDM_EN == true>
 ${PHY_TYPE_INDENT}return lRF215_OFDM_PpduDuration(&phyConfig->phyTypeCfg.ofdm, modScheme,
 ${PHY_TYPE_INDENT}        psduLen, pSymbolsPayload);
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+</#if>
+}
+
+static uint16_t lRF215_PHY_SymbolDurationUSq5(uint8_t trxIdx)
+{
+<#if DRV_RF215_FSK_EN == true>
+    DRV_RF215_PHY_CFG_OBJ* phyCfg = &rf215PhyObj[trxIdx].phyConfig;
+
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    if (phyCfg->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}/* Symbol rate in kHz */
+${PHY_TYPE_INDENT}uint16_t symbRateKHz = fskSymRateConst[phyCfg->phyTypeCfg.fsk.symRate].kHz;
+
+${PHY_TYPE_INDENT}/* Compute symbol duration in us [uQ14.5] */
+${PHY_TYPE_INDENT}return DIV_ROUND(1000U << 5, symbRateKHz);
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}return 120U << 5;
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+</#if>
+}
+
+static int8_t lRF215_PHY_SensitivityDBm(uint8_t trxIdx)
+{
+    DRV_RF215_PHY_CFG_OBJ* phyCfg = &rf215PhyObj[trxIdx].phyConfig;
+
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    if (phyCfg->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}return fskSymRateConst[phyCfg->phyTypeCfg.fsk.symRate].sensitivityDBm;
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}return ofdmBwOptConst[phyCfg->phyTypeCfg.ofdm.opt].sensitivityDBm;
 </#if>
 <#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
     }
@@ -5769,12 +5833,24 @@ DRV_RF215_PIB_RESULT RF215_PHY_GetPib (
             *((uint32_t *) value) = pObj->pllParams.chnFreq;
             break;
 
-        case RF215_PIB_PHY_CCA_ED_DURATION:
+        case RF215_PIB_PHY_CCA_ED_DURATION_US:
             *((uint16_t *) value) = pObj->phyConfig.ccaEdDurationUS;
             break;
 
-        case RF215_PIB_PHY_CCA_ED_THRESHOLD:
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_DBM:
             *((int8_t *) value) = pObj->phyConfig.ccaEdThresholdDBm;
+            break;
+
+        case RF215_PIB_PHY_CCA_ED_DURATION_SYMBOLS:
+        {
+            uint16_t symbDurationUSq5 = lRF215_PHY_SymbolDurationUSq5(trxIndex);
+            uint32_t ccaEdDurationSymbols = DIV_ROUND((uint32_t) pObj->phyConfig.ccaEdDurationUS << 5, symbDurationUSq5);
+            *((uint16_t *) value) = (uint16_t) ccaEdDurationSymbols;
+            break;
+        }
+
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_SENSITIVITY:
+            *((int8_t *) value) = pObj->phyConfig.ccaEdThresholdDBm - lRF215_PHY_SensitivityDBm(trxIndex);
             break;
 
         case RF215_PIB_PHY_TURNAROUND_TIME:
@@ -5986,14 +6062,41 @@ DRV_RF215_PIB_RESULT RF215_PHY_SetPib (
             break;
         }
 
-        case RF215_PIB_PHY_CCA_ED_DURATION:
+        case RF215_PIB_PHY_CCA_ED_DURATION_US:
             pObj->phyConfig.ccaEdDurationUS = *((uint16_t *) value);
             lRF215_RXFE_AdjustEDD(trxIndex);
             break;
 
-        case RF215_PIB_PHY_CCA_ED_THRESHOLD:
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_DBM:
             pObj->phyConfig.ccaEdThresholdDBm = *((int8_t *) value);
             break;
+
+        case RF215_PIB_PHY_CCA_ED_DURATION_SYMBOLS:
+        {
+            uint16_t symbDurationUSq5 = lRF215_PHY_SymbolDurationUSq5(trxIndex);
+            uint32_t ccaEdDurationUSq5 = (uint32_t) symbDurationUSq5 * (*((uint16_t *) value));
+            uint32_t ccaEdDurationUS = (ccaEdDurationUSq5 + 16U) >> 5;
+            if (ccaEdDurationUS > 0xFFFFU)
+            {
+                ccaEdDurationUS = 0xFFFFU;
+            }
+
+            pObj->phyConfig.ccaEdDurationUS = (uint16_t) ccaEdDurationUS;
+            lRF215_RXFE_AdjustEDD(trxIndex);
+            break;
+        }
+
+        case RF215_PIB_PHY_CCA_ED_THRESHOLD_SENSITIVITY:
+        {
+            int16_t ccaEdThresholdDBm = (int16_t) lRF215_PHY_SensitivityDBm(trxIndex) + (*((int8_t *) value));
+            if (ccaEdThresholdDBm < -128)
+            {
+                ccaEdThresholdDBm = -128;
+            }
+
+            pObj->phyConfig.ccaEdThresholdDBm = (int8_t) ccaEdThresholdDBm;
+            break;
+        }
 
         case RF215_PIB_PHY_STATS_RESET:
             (void) memset(&pObj->phyStatistics, 0, sizeof(RF215_PHY_STATISTICS_OBJ));
