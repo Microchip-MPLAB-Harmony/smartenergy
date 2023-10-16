@@ -1002,6 +1002,7 @@ uint8_t DRV_RF215_GetPibSize(DRV_RF215_PIB_ATTRIBUTE attr)
         case RF215_PIB_PHY_CCA_ED_THRESHOLD_DBM:
         case RF215_PIB_PHY_CCA_ED_THRESHOLD_SENSITIVITY:
         case RF215_PIB_PHY_SENSITIVITY:
+        case RF215_PIB_PHY_MAX_TX_POWER:
         case RF215_PIB_PHY_TX_CONTINUOUS:
             len = 1U;
             break;
@@ -1093,6 +1094,10 @@ DRV_RF215_PIB_RESULT DRV_RF215_GetPib (
             (void) memcpy(value, (const void *) &rf215FwVersion, sizeof(rf215FwVersion));
             break;
 
+        case RF215_PIB_PHY_MAX_TX_POWER:
+            *((int8_t *) value) = 14;
+            break;
+
         default:
             result = RF215_PHY_GetPib(clientObj->trxIndex, attr, value);
             break;
@@ -1121,7 +1126,8 @@ DRV_RF215_PIB_RESULT DRV_RF215_SetPib (
         case RF215_PIB_DEVICE_ID:
         case RF215_PIB_FW_VERSION:
         case RF215_PIB_PHY_CHANNEL_FREQ_HZ:
-        case case RF215_PIB_PHY_SENSITIVITY:
+        case RF215_PIB_PHY_SENSITIVITY:
+        case RF215_PIB_PHY_MAX_TX_POWER:
         case RF215_PIB_PHY_TURNAROUND_TIME:
         case RF215_PIB_PHY_TX_PAY_SYMBOLS:
         case RF215_PIB_PHY_RX_PAY_SYMBOLS:

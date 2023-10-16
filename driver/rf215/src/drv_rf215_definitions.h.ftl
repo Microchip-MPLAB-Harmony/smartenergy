@@ -589,6 +589,9 @@ typedef enum
     /* Sensitivity in dBm (according to 802.15.4). 8 bits */
     RF215_PIB_PHY_SENSITIVITY = 0x0150,
 
+    /* Maximum TX power in dBm. 8 bits */
+    RF215_PIB_PHY_MAX_TX_POWER = 0x0151,
+
     /* Turnaround time in us (aTurnaroundTime in IEEE 802.15.4).
      * 16 bits (read-only) */
     RF215_PIB_PHY_TURNAROUND_TIME              = 0x0160,
