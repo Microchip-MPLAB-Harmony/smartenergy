@@ -5853,6 +5853,10 @@ DRV_RF215_PIB_RESULT RF215_PHY_GetPib (
             *((int8_t *) value) = pObj->phyConfig.ccaEdThresholdDBm - lRF215_PHY_SensitivityDBm(trxIndex);
             break;
 
+        case RF215_PIB_PHY_SENSITIVITY:
+            *((int8_t *) value) = lRF215_PHY_SensitivityDBm(trxIndex);
+            break;
+
         case RF215_PIB_PHY_TURNAROUND_TIME:
             *((uint16_t *) value) = pObj->turnaroundTimeUS;
             break;
