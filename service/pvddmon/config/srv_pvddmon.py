@@ -28,6 +28,8 @@ global pPVDDMonLowThrsHex
 global pPVDDMonHighThrsHexHyst
 global pPVDDMonLowThrsHexHyst
 
+global plcAdcId
+
 srv_pvddmon_helpkeyword = "mcc_h3_srv_pvddmon_configurations"
 
 def handleMessage(messageID, args):
@@ -36,6 +38,8 @@ def handleMessage(messageID, args):
     return result_dict
 
 def getNewADCThresholds(symbol, event):
+    global plcAdcId
+    
     print("PLC PVDD Monitor Service: Getting new threshold levels")
 
     maxValue = pow(2, Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_ADC_BITS")) - 1
@@ -50,11 +54,17 @@ def getNewADCThresholds(symbol, event):
     VoutLow = LowThrs * ResDown / (ResUp + ResDown)
     VoutHighHyst = (HighThrs - Hysteresis) * ResDown / (ResUp + ResDown)
     VoutLowHyst = (LowThrs + Hysteresis) * ResDown / (ResUp + ResDown)
+
+    adcPeriphId = plcAdcId.getValue()
+    if (adcPeriphId == "U2204"):
+        vref = 1650
+    else:
+        vref = 3300
     
-    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3300)))
-    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3300)))
-    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / 3300)))
-    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / 3300)))
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / vref)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / vref)))
+    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / vref)))
+    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / vref)))
     
     pPVDDMonHighThrsHex.setValue(HighThresholdHex)
     pPVDDMonLowThrsHex.setValue(LowThresholdHex)
@@ -66,6 +76,8 @@ def setPlibValue(symbol, event):
     symbol.setValue(event["value"])
 
 def identifyPeripherals(component):
+    global plcAdcId
+    
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     peripherals = periphNode.getChildren()
 
@@ -143,15 +155,21 @@ def instantiateComponent(pPVDDMonComponent):
 
     identifyPeripherals(pPVDDMonComponent)
 
-    pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
-    pPVDDMonADCChannel.setLabel("Channel")
-    pPVDDMonADCChannel.setDefaultValue(0)
-    pPVDDMonADCChannel.setHelp(srv_pvddmon_helpkeyword)
+    adcPeriphId = plcAdcId.getValue()
+    if not (adcPeriphId in ["U2204", "44134", "11147"]):
+        print("PLC PVDD Monitor Service is not supported for " + pvddmon_plib + " Plib")
+        return   
+
+    if (adcPeriphId != "U2204"):
+        pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
+        pPVDDMonADCChannel.setLabel("Channel")
+        pPVDDMonADCChannel.setDefaultValue(0)
+        pPVDDMonADCChannel.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonADCResolution = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_BITS", pPVDDMonPlib)
     pPVDDMonADCResolution.setLabel("Result Resolution bits")
     pPVDDMonADCResolution.setDefaultValue(pVddResolution)
-    pPVDDMonADCChannel.setHelp(srv_pvddmon_helpkeyword)
+    pPVDDMonADCResolution.setHelp(srv_pvddmon_helpkeyword)
 
     pPVDDMonADCComment1 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT1", pPVDDMonPlib)
     pPVDDMonADCComment1.setLabel("**** ADC must be manually configured in FreeRun mode.")
@@ -172,21 +190,24 @@ def instantiateComponent(pPVDDMonComponent):
     VoutHighHyst = (pVddHighThrs - Hysteresis) * ResDown / (ResUp + ResDown)
     VoutLowHyst = (pVddLowThrs + Hysteresis) * ResDown / (ResUp + ResDown)
 
-    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / 3300)))
-    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / 3300)))
-    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / 3300)))
-    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / 3300)))
+    if (adcPeriphId == "U2204"):
+        vref = 1650
+    else:
+        vref = 3300
+        
+    HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / vref)))
+    LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / vref)))
+    HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / vref)))
+    LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / vref)))
 
     global pPVDDMonHighThrsHex
     pPVDDMonHighThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_HIGH_THRESHOLD_HEX", None)
-    pPVDDMonHighThrsHex.setLabel("High Threshold [Hex]")
     pPVDDMonHighThrsHex.setDefaultValue(HighThresholdHex)
-    pPVDDMonHighThrsHex.setDependencies(getNewADCThresholds, ["SRV_PVDDMON_HIGH_TH", "SRV_PVDDMON_LOW_TH", "SRV_PVDDMON_ADC_BITS"])
+    pPVDDMonHighThrsHex.setDependencies(getNewADCThresholds, ["SRV_PVDDMON_HIGH_TH", "SRV_PVDDMON_LOW_TH", "SRV_PVDDMON_ADC_BITS", "SRV_PVDDMON_RES_UP", "SRV_PVDDMON_RES_DOWN"])
     pPVDDMonHighThrsHex.setVisible(False)
     
     global pPVDDMonLowThrsHex
     pPVDDMonLowThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_LOW_THRESHOLD_HEX", None)
-    pPVDDMonLowThrsHex.setLabel("Low Threshold [Hex]")
     pPVDDMonLowThrsHex.setDefaultValue(LowThresholdHex)
     pPVDDMonLowThrsHex.setVisible(False)
 
@@ -236,21 +257,37 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonHisteresys.setHelp(srv_pvddmon_helpkeyword)
 
     # PLC PVDD Monitor Files
-    pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
-    pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.h.ftl")
-    pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
-    pPVDDMonHeaderFile.setDestPath("service/pvddmon")
-    pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
-    pPVDDMonHeaderFile.setType("HEADER")
-    pPVDDMonHeaderFile.setMarkup(True)
+    if (adcPeriphId == "U2204"):
+        pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
+        pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon_u2204.h.ftl")
+        pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
+        pPVDDMonHeaderFile.setDestPath("service/pvddmon")
+        pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+        pPVDDMonHeaderFile.setType("HEADER")
+        pPVDDMonHeaderFile.setMarkup(True)
 
-    pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
-    pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.c.ftl")
-    pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
-    pPVDDMonSourceFile.setDestPath("service/pvddmon")
-    pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
-    pPVDDMonSourceFile.setType("SOURCE")
-    pPVDDMonSourceFile.setMarkup(True)
+        pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
+        pPVDDMonSourceFile.setSourcePath("service/pvddmon/srv_pvddmon_u2204.c")
+        pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
+        pPVDDMonSourceFile.setDestPath("service/pvddmon")
+        pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+        pPVDDMonSourceFile.setType("SOURCE")
+    else:
+        pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
+        pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.h.ftl")
+        pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
+        pPVDDMonHeaderFile.setDestPath("service/pvddmon")
+        pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+        pPVDDMonHeaderFile.setType("HEADER")
+        pPVDDMonHeaderFile.setMarkup(True)
+
+        pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
+        pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.c.ftl")
+        pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
+        pPVDDMonSourceFile.setDestPath("service/pvddmon")
+        pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+        pPVDDMonSourceFile.setType("SOURCE")
+        pPVDDMonSourceFile.setMarkup(True)
 
     pPVDDMonSystemDefIncFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SYSTEM_DEF", None)
     pPVDDMonSystemDefIncFile.setType("STRING")

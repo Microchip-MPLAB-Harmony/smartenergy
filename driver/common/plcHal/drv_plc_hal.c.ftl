@@ -98,7 +98,7 @@ static void lDRV_PLC_HAL_memcpyREV16 (void * pDst, void * pSrc, size_t size)
 {
     /* R0=pDst; R1=pSrc; R2=size */
     __asm volatile (
-        "PUSH {R4}"
+        "PUSH {R4}\n"
         "MOV R4, #0\n"
 
     "COPY_DATA_LOOP:\n"
@@ -110,7 +110,7 @@ static void lDRV_PLC_HAL_memcpyREV16 (void * pDst, void * pSrc, size_t size)
         "ADD R4, R4, #4\n"
         "B COPY_DATA_LOOP\n"
     "COPY_DATA_END:\n"
-        "POP {R4}"
+        "POP {R4}\n"
     );
 }
 
