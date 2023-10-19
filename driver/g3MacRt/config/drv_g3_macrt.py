@@ -643,6 +643,12 @@ def instantiateComponent(g3MacRtComponent):
     Database.sendMessage("srv_rsniffer", "SRV_RSNIFFER_G3", {})
     
     identifyPeripherals(g3MacRtComponent)
+    deviceNode = ATDF.getNode("/avr-tools-device-file/devices/device")
+    architecture = deviceNode.getAttribute("architecture")
+
+    architectureDevice = g3MacRtComponent.createStringSymbol("DRV_PLC_ARCH", None)
+    architectureDevice.setDefaultValue(str(architecture))
+    architectureDevice.setVisible(False)
 
     global plcDriverMode
     plcDriverMode = g3MacRtComponent.createComboSymbol("DRV_PLC_MODE", None, ["PL360", "PL460"])
@@ -996,11 +1002,12 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtHALInitDataFile.setMarkup(True)
 
     g3MacRtBootFile = g3MacRtComponent.createFileSymbol("PLC_BOOT", None)
-    g3MacRtBootFile.setSourcePath("driver/common/plcBoot/drv_plc_boot.c")
+    g3MacRtBootFile.setSourcePath("driver/common/plcBoot/drv_plc_boot.c.ftl")
     g3MacRtBootFile.setOutputName("drv_plc_boot.c")
     g3MacRtBootFile.setDestPath("driver/plc/common")
     g3MacRtBootFile.setProjectPath("config/" + configName + "/driver/plc/common")
     g3MacRtBootFile.setType("SOURCE")
+    g3MacRtBootFile.setMarkup(True)
 
     g3MacRtBootHeaderFile = g3MacRtComponent.createFileSymbol("PLC_BOOT_HEADER", None)
     g3MacRtBootHeaderFile.setSourcePath("driver/common/plcBoot/drv_plc_boot.h")
