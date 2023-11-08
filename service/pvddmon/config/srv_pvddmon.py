@@ -91,7 +91,7 @@ def identifyPeripherals(component):
             plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
             plcFlexcomId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             flexcomIdCreated = True
-        elif str(peripherals[module].getAttribute("name")) == "ADC":
+        elif str(peripherals[module].getAttribute("name")) in ["ADC", "AFEC"]:
             plcAdcId = component.createStringSymbol("PLC_ADC_ID", None)
             plcAdcId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             adcIdCreated = True
@@ -158,6 +158,7 @@ def instantiateComponent(pPVDDMonComponent):
     adcPeriphId = plcAdcId.getValue()
     if not (adcPeriphId in ["U2204", "44134", "11147"]):
         print("PLC PVDD Monitor Service is not supported for " + pvddmon_plib + " Plib")
+        print("CHRIS dbg-> adcPeriphId: {}".format(adcPeriphId))
         return   
 
     if (adcPeriphId != "U2204"):

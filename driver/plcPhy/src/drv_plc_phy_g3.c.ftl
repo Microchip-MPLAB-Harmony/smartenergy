@@ -894,7 +894,7 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
 <#if SPI_PLIB?lower_case[0..*6] != "sercom">
     
     /* PORT Interrupt Status Clear */
-<#if (PLC_PIO_ID??) && (PLC_PIO_ID == 11264)>
+<#if (PLC_PIO_ID??) && (PLC_PIO_ID == "11264")>
     (&(PIO0_REGS->PIO_GROUP[DRV_PLC_EXT_INT_PIO_PORT]))->PIO_ISR;
 <#else>
     ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
