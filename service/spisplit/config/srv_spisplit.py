@@ -26,8 +26,10 @@ import math
 global clientList
 clientList = []
 
+srv_spisplit_helpkeyword = "srv_spisplitter_configurations"
+
 def instantiateComponent(spiSplitterComponent):
-    
+
     print("Loading PLC-RF SPI Splitter Service")
 
     global isDMAPresent
@@ -42,18 +44,20 @@ def instantiateComponent(spiSplitterComponent):
     plibUsed.setLabel("PLIB Used")
     plibUsed.setDescription("PLIB connected to SPI dependency")
     plibUsed.setReadOnly(True)
+    plibUsed.setHelp(srv_spisplit_helpkeyword)
 
     spiDependencyComment = spiSplitterComponent.createCommentSymbol("SRV_SPISPLIT_SPI_DEPENDENCY_COMMENT", None)
     spiDependencyComment.setLabel("!!! Satisfy SPI Dependency !!!")
 
     global dmaChannelCount
-    if isDMAPresent:    
+    if isDMAPresent:
         dmaTxChannel = spiSplitterComponent.createIntegerSymbol("SRV_SPISPLIT_TX_DMA_CHANNEL", None)
         dmaTxChannel.setLabel("DMA Channel For Transmit")
         dmaTxChannel.setDescription("Allocated DMA channel for SPI Transmit")
         dmaTxChannel.setMin(-1)
         dmaTxChannel.setReadOnly(True)
         dmaTxChannel.setVisible(False)
+        dmaTxChannel.setHelp(srv_spisplit_helpkeyword)
 
         dmaTxChannelComment = spiSplitterComponent.createCommentSymbol("SRV_SPISPLIT_TX_DMA_CH_COMMENT", None)
         dmaTxChannelComment.setLabel("!!! Couldn't Allocate DMA Channel for Transmit. Check DMA manager !!!")
@@ -65,6 +69,7 @@ def instantiateComponent(spiSplitterComponent):
         dmaRxChannel.setMin(-1)
         dmaRxChannel.setReadOnly(True)
         dmaRxChannel.setVisible(False)
+        dmaRxChannel.setHelp(srv_spisplit_helpkeyword)
 
         dmaRxChannelComment = spiSplitterComponent.createCommentSymbol("SRV_SPISPLIT_RX_DMA_CH_COMMENT", None)
         dmaRxChannelComment.setLabel("!!! Couldn't Allocate DMA Channel for Receive. Check DMA manager !!!")
@@ -78,7 +83,7 @@ def instantiateComponent(spiSplitterComponent):
 
 ################################################################################
 #### Business Logic ####
-################################################################################  
+################################################################################
 def destroyComponent(spiSplitterComponent):
     pass
 
@@ -103,7 +108,7 @@ def onAttachmentConnected(source, target):
             dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteComponentID.upper() + "_Transmit"
             Database.sendMessage("core", "DMA_CHANNEL_ENABLE", {"dma_channel":dmaRequestID})
             dmaChannel = Database.getSymbolValue("core", dmaChannelID)
-            
+
             dmaTxChannel.setVisible(True)
             if (dmaChannel == None) or (dmaChannel < 0) or (dmaChannel >= dmaChannelCount):
                 # Error in DMA channel allocation
@@ -117,7 +122,7 @@ def onAttachmentConnected(source, target):
             dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteComponentID.upper() + "_Receive"
             Database.sendMessage("core", "DMA_CHANNEL_ENABLE", {"dma_channel":dmaRequestID})
             dmaChannel = Database.getSymbolValue("core", dmaChannelID)
-            
+
             dmaRxChannel.setVisible(True)
             if (dmaChannel == None) or (dmaChannel < 0) or (dmaChannel >= dmaChannelCount):
                 # Error in DMA channel allocation
@@ -185,7 +190,7 @@ def onAttachmentDisconnected(source, target):
             localComponent.getSymbolByID("SRV_SPISPLIT_RX_DMA_CHANNEL").setVisible(False)
             localComponent.getSymbolByID("SRV_SPISPLIT_TX_DMA_CH_COMMENT").setVisible(False)
             localComponent.getSymbolByID("SRV_SPISPLIT_RX_DMA_CH_COMMENT").setVisible(False)
-            
+
             # Deactivate requested DMA channels for transmit and receive
             dmaChannelID = "DMA_CH_FOR_" + remoteComponentID.upper() + "_Transmit"
             dmaRequestID = "DMA_CH_NEEDED_FOR_" + remoteComponentID.upper() + "_Transmit"

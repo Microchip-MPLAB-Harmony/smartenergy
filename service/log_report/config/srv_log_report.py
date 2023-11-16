@@ -21,8 +21,10 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
+srv_log_report_helpkeyword = "srv_log_report_configurations"
+
 def instantiateComponent(srvLogReportComponent):
-    
+
     Log.writeInfoMessage("Loading Log Report service")
 
     ############################################################################
@@ -38,13 +40,14 @@ def instantiateComponent(srvLogReportComponent):
         enabledValue = False
     pTracesEnabled.setValue(enabledValue)
     pTracesEnabled.setVisible(False)
- 
+
     # Create a checkbox to report in display
     pLogReportDisplay = srvLogReportComponent.createBooleanSymbol("enableReportDisplay", None)
     pLogReportDisplay.setLabel("Report errors in display?")
     pLogReportDisplay.setDefaultValue(False)
     pLogReportDisplay.setVisible(True)
-   
+    pLogReportDisplay.setHelp(srv_log_report_helpkeyword)
+
     # Log Report Files
     global pLogReportSource
     pLogReportSource = srvLogReportComponent.createFileSymbol("SRV_LOG_REPORT_SOURCE", None)
@@ -56,7 +59,7 @@ def instantiateComponent(srvLogReportComponent):
     pLogReportSource.setMarkup(True)
     pLogReportSource.setEnabled(enabledValue)
     pLogReportSource.setDependencies(enableTracesChange, ["ENABLE_TRACES"])
-    
+
     pLogReportHeader = srvLogReportComponent.createFileSymbol("SRV_LOG_REPORT_HEADER", None)
     pLogReportHeader.setSourcePath("service/log_report/templates/srv_log_report.h.ftl")
     pLogReportHeader.setOutputName("srv_log_report.h")
