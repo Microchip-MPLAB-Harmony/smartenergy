@@ -22,12 +22,10 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global rserial_helpkeyword
-
 rserial_helpkeyword = "srv_rserial_configurations"
 
 def instantiateComponent(rSerialComponentCommon):
-    
+
     Log.writeInfoMessage("Loading RF Phy Serial Common Service")
 
     ############################################################################

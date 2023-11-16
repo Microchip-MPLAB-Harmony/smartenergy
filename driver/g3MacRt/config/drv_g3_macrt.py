@@ -27,7 +27,6 @@
 ################################################################################
 
 global sort_alphanumeric
-global plc_mac_rt_helpkeyword
 
 global g3MacRtBinFileCENA
 global g3MacRtBinFileCENB
@@ -60,7 +59,7 @@ def configureSpiPlib(localComponent):
 
     if plibUsed == "srv_spisplit":
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB_SPISPLIT").getValue().lower()
-    
+
     remoteComponent = Database.getComponentByID(plibUsed)
     if remoteComponent == None:
         return
@@ -211,7 +210,7 @@ def deconfigureSpiPlib(localComponent):
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSNAAT")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
-        
+
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CPOL")
         if spiSymbol != None:
             spiSymbol.setReadOnly(False)
@@ -261,7 +260,7 @@ def handleMessage(messageID, args):
             # DMA Mode: Disable interrupt mode in PLIB
             # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
             result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
-        
+
             remoteComponent = Database.getComponentByID(remoteComponentID)
 
             if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
@@ -379,7 +378,7 @@ def g3MacRtEnableEncScript(symbol, event):
     if (event["value"] == True):
         symbol.setEnabled(True)
     else:
-        symbol.setEnabled(False) 
+        symbol.setEnabled(False)
 
 def g3MacRtVisibleEncComment(symbol, event):
     if (event["value"] == True):
@@ -438,10 +437,10 @@ def updateBinFiles():
         includeBinFile(g3_aux_band)
         setPlcMultiBandInUse(g3_band, g3_aux_band)
 
-    # Update Coupling Parameters    
+    # Update Coupling Parameters
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
-    
-    # Check Internal/External Addressing    
+
+    # Check Internal/External Addressing
     if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
         # Internal Addressing
         g3MacRtAsmBinFile.setEnabled(True)
@@ -461,7 +460,7 @@ def showPL460Pins(symbol, event):
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)  
+        symbol.setVisible(False)
 
 def showSleepPin(symbol, event):
     symbol.setVisible(event["value"])
@@ -506,8 +505,8 @@ def showG3AuxBand(symbol, event):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
-    
-def resetPlcBand(symbol, event):  
+
+def resetPlcBand(symbol, event):
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
@@ -559,7 +558,7 @@ def identifyPeripherals(component):
             plcEicId = component.createStringSymbol("PLC_EIC_ID", None)
             plcEicId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             eicIdCreated = True
-    
+
     if not flexcomIdCreated:
         plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
         plcFlexcomId.setDefaultValue("0")
@@ -586,10 +585,10 @@ def getEICSignals():
             eicPin = "EIC_PIN_{}".format(index)
             if eicPin not in eicSignalsList:
                 eicSignalsList.append(eicPin)
-    
+
     if (eicSignalsList == []):
         eicSignalsList = ["None"]
-        
+
     return eicSignalsList
 
 def getEICSignalsFromPin(pin):
@@ -638,10 +637,10 @@ def instantiateComponent(g3MacRtComponent):
         isDMAPresent = False
     else:
         isDMAPresent = True
-    
+
     # Set G3 mode in RSNIFFER (if present)
     Database.sendMessage("srv_rsniffer", "SRV_RSNIFFER_G3", {})
-    
+
     identifyPeripherals(g3MacRtComponent)
     deviceNode = ATDF.getNode("/avr-tools-device-file/devices/device")
     architecture = deviceNode.getAttribute("architecture")
@@ -842,7 +841,7 @@ def instantiateComponent(g3MacRtComponent):
     plcStbyPin.setVisible(False)
     plcStbyPin.setHelp(plc_mac_rt_helpkeyword)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
-    
+
     plcThermalMonitor = g3MacRtComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
@@ -894,7 +893,7 @@ def instantiateComponent(g3MacRtComponent):
     if (eic != "0"):
         global eicSignalsATDF
         eicSignalsATDF = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="EIC"]/instance/signals').getChildren()
-        
+
         global plcEICSignal
         eicSignals = getEICSignals()
         plcEICSignal = g3MacRtComponent.createComboSymbol("DRV_PLC_EIC_SIGNAL", plcExtIntPin, eicSignals)
@@ -1135,7 +1134,7 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtAsmBinFile.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
     g3MacRtAsmBinFile.setType("SOURCE")
     g3MacRtAsmBinFile.setMarkup(True)
-    
+
     ##### Coupling Settings : G3  ####################################################
 
     updBinFilesCtrl = g3MacRtComponent.createBooleanSymbol("DRV_PLC_UPD_BIN_FILES", None)
@@ -1196,7 +1195,7 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupG3HighAttenuation.setDefaultValue(False)
     plcCoupG3HighAttenuation.setHelp(plc_mac_rt_helpkeyword)
     plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
-    
+
     ##### Coupling Settings : Generic  ####################################################
 
     global plcBandInUse
@@ -1258,7 +1257,7 @@ def instantiateComponent(g3MacRtComponent):
 
 ################################################################################
 #### Business Logic ####
-################################################################################  
+################################################################################
 def onAttachmentConnected(source, target):
     global isDMAPresent
 
@@ -1343,7 +1342,7 @@ def onAttachmentConnected(source, target):
                 if plibReceiver != None:
                     plibReceiver.setReadOnly(True)
 
-  
+
 def onAttachmentDisconnected(source, target):
     global isDMAPresent
 
@@ -1389,7 +1388,7 @@ def onAttachmentDisconnected(source, target):
                 remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
                 if remoteSym != None:
                     remoteSym.setReadOnly(False)
-            
+
             if "FLEXCOM" in remoteID.upper():
                 remoteSym = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
                 if remoteSym != None:

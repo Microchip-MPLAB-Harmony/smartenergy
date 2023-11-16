@@ -151,7 +151,7 @@ dacc_chn1_drv_aux  = [0x00000000, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC
 # dacc_chn1_drv_full = [0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
 # 				      0x00002020, 0x00000044, 0x0FD20005, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF] #TBD
 
-rms_high_chn1_c07  = [1725, 1522, 1349, 1202, 1071, 957, 855, 764] 
+rms_high_chn1_c07  = [1725, 1522, 1349, 1202, 1071, 957, 855, 764]
 rms_vlow_chn1_c07  = [4874, 4427, 3986, 3555, 3157, 2795, 2470, 2184]
 thrs_high_chn1_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 1467, 1292, 1145, 1019, 910, 811, 725, 648]
 thrs_vlow_chn1_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 8479, 7515, 6665, 5874, 5192, 4576, 4030, 3557]
@@ -165,8 +165,8 @@ thrs_vlow_chn1_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 8010, 7179, 6390, 5723, 5105, 4
 gain_high_chn1_drv_sb = [81, 40, 128]
 gain_vlow_chn1_drv_sb = [256, 128, 281]
 
-rms_high_chn1_drv_aux  = rms_high_chn1_c07 
-rms_vlow_chn1_drv_aux  = rms_vlow_chn1_c07 
+rms_high_chn1_drv_aux  = rms_high_chn1_c07
+rms_vlow_chn1_drv_aux  = rms_vlow_chn1_c07
 thrs_high_chn1_drv_aux = thrs_high_chn1_c07
 thrs_vlow_chn1_drv_aux = thrs_vlow_chn1_c07
 gain_high_chn1_drv_aux = gain_high_chn1_c07
@@ -640,7 +640,6 @@ thrs_vlow_2chn_drv_himp = [thrs_vlow_2chn12_drv_himp, thrs_vlow_2chn23_drv_himp,
 gain_high_2chn_drv_himp = [gain_high_2chn12_drv_himp, gain_high_2chn23_drv_himp, gain_high_2chn34_drv_himp, gain_high_2chn45_drv_himp, gain_high_2chn56_drv_himp, gain_high_2chn67_drv_himp, gain_high_2chn78_drv_himp]
 gain_vlow_2chn_drv_himp = [gain_vlow_2chn12_drv_himp, gain_vlow_2chn23_drv_himp, gain_vlow_2chn34_drv_himp, gain_vlow_2chn45_drv_himp, gain_vlow_2chn56_drv_himp, gain_vlow_2chn67_drv_himp, gain_vlow_2chn78_drv_himp]
 
-global srv_pcoup_helpkeyword
 srv_pcoup_helpkeyword = "mcc_h3_srv_pcoup_configurations"
 
 ############################################################################
@@ -653,7 +652,7 @@ def updateCouplingParameters():
     if plcProfile == "PRIME":
         updatePRIMECouplingParameters()
     else:
-        updateG3CouplingParameters()    
+        updateG3CouplingParameters()
 
 ############################################################################
 #### G3 function to update the Coupling Parameters ####
@@ -684,7 +683,7 @@ def updateG3CouplingParameters():
     # Show G3 setting, hide PRIME setting
     pCoupG3TXBranches.setVisible(True)
     pCoupPRIMETXChannels.setVisible(False)
-    
+
     plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
 
     # Enable G3 COUP files
@@ -705,11 +704,11 @@ def updateG3CouplingParameters():
     if (plcDevice == "PL460"):
         if plcPhyBand == "CEN-A":
             print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
-            rms_high  = rms_high_cena 
-            rms_vlow  = rms_vlow_cena 
+            rms_high  = rms_high_cena
+            rms_vlow  = rms_vlow_cena
             thrs_high = thrs_high_cena
             thrs_vlow = thrs_vlow_cena
-            dacc      = dacc_cena     
+            dacc      = dacc_cena
             gain_high = gain_high_cena
             gain_vlow = gain_vlow_cena
             line_drv  = drv_conf_cena
@@ -718,10 +717,10 @@ def updateG3CouplingParameters():
         elif plcPhyBand == "CEN-B":
             print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-B")
             rms_high  = rms_high_cenb
-            rms_vlow  = rms_vlow_cenb 
+            rms_vlow  = rms_vlow_cenb
             thrs_high = thrs_high_cenb
             thrs_vlow = thrs_vlow_cenb
-            dacc      = dacc_cenb     
+            dacc      = dacc_cenb
             gain_high = gain_high_cenb
             gain_vlow = gain_vlow_cenb
             line_drv  = drv_conf_cenb
@@ -735,21 +734,21 @@ def updateG3CouplingParameters():
 
             if (plcHighAtt == True):
                 print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
-                rms_high  = rms_high_fcc_himp 
-                rms_vlow  = rms_vlow_fcc_himp 
+                rms_high  = rms_high_fcc_himp
+                rms_vlow  = rms_vlow_fcc_himp
                 thrs_high = thrs_high_fcc_himp
                 thrs_vlow = thrs_vlow_fcc_himp
-                dacc      = dacc_fcc_himp     
+                dacc      = dacc_fcc_himp
                 gain_high = gain_high_fcc_himp
                 gain_vlow = gain_vlow_fcc_himp
                 line_drv  = drv_conf_fcc_himp
             else:
                 print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
-                rms_high  = rms_high_fcc 
-                rms_vlow  = rms_vlow_fcc 
+                rms_high  = rms_high_fcc
+                rms_vlow  = rms_vlow_fcc
                 thrs_high = thrs_high_fcc
                 thrs_vlow = thrs_vlow_fcc
-                dacc      = dacc_fcc     
+                dacc      = dacc_fcc
                 gain_high = gain_high_fcc
                 gain_vlow = gain_vlow_fcc
                 line_drv  = drv_conf_fcc
@@ -759,11 +758,11 @@ def updateG3CouplingParameters():
 
                 if (plcBandAux == "CEN-A"):
                     print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
-                    rms_high_aux  = rms_high_cena_c07 
-                    rms_vlow_aux  = rms_vlow_cena_c07 
+                    rms_high_aux  = rms_high_cena_c07
+                    rms_vlow_aux  = rms_vlow_cena_c07
                     thrs_high_aux = thrs_high_cena_c07
                     thrs_vlow_aux = thrs_vlow_cena_c07
-                    dacc_aux      = dacc_cena_c07_drv     
+                    dacc_aux      = dacc_cena_c07_drv
                     gain_high_aux = gain_high_cena_c07
                     gain_vlow_aux = gain_vlow_cena_c07
                     line_drv_aux  = drv_conf_cena_c07
@@ -771,11 +770,11 @@ def updateG3CouplingParameters():
                 else:
                     # "CEN-B"
                     print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
-                    rms_high_aux  = rms_high_cenb_c14 
-                    rms_vlow_aux  = rms_vlow_cenb_c14 
+                    rms_high_aux  = rms_high_cenb_c14
+                    rms_vlow_aux  = rms_vlow_cenb_c14
                     thrs_high_aux = thrs_high_cenb_c14
                     thrs_vlow_aux = thrs_vlow_cenb_c14
-                    dacc_aux      = dacc_cenb_c14_drv     
+                    dacc_aux      = dacc_cenb_c14_drv
                     gain_high_aux = gain_high_cenb_c14
                     gain_vlow_aux = gain_vlow_cenb_c14
                     line_drv_aux  = drv_conf_cenb_c14
@@ -798,8 +797,8 @@ def updateG3CouplingParameters():
         line_drv_aux = 0
         if plcPhyBand == "CEN-A":
             print("UpdatePlcCouplingParameters -> PL360 G3 CEN-A")
-            rms_high  = rms_high_cena_c07 
-            rms_vlow  = rms_vlow_cena_c07 
+            rms_high  = rms_high_cena_c07
+            rms_vlow  = rms_vlow_cena_c07
             thrs_high = thrs_high_cena_c07
             thrs_vlow = thrs_vlow_cena_c07
             dacc      = dacc_cena_c07
@@ -812,19 +811,19 @@ def updateG3CouplingParameters():
             if (plcInternal == True):
                 print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B Internal")
                 rms_high  = rms_high_cenb_c12
-                rms_vlow  = rms_vlow_cenb_c12 
+                rms_vlow  = rms_vlow_cenb_c12
                 thrs_high = thrs_high_cenb_c12
                 thrs_vlow = thrs_vlow_cenb_c12
-                dacc      = dacc_cenb_c12     
+                dacc      = dacc_cenb_c12
                 gain_high = gain_high_cenb_c12
                 gain_vlow = gain_vlow_cenb_c12
             else:
                 print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B External")
                 rms_high  = rms_high_cenb_c14
-                rms_vlow  = rms_vlow_cenb_c14 
+                rms_vlow  = rms_vlow_cenb_c14
                 thrs_high = thrs_high_cenb_c14
                 thrs_vlow = thrs_vlow_cenb_c14
-                dacc      = dacc_cenb_c14     
+                dacc      = dacc_cenb_c14
                 gain_high = gain_high_cenb_c14
                 gain_vlow = gain_vlow_cenb_c14
 
@@ -833,30 +832,30 @@ def updateG3CouplingParameters():
             if (plcMultiband == True):
                 auxiliaryBand = True
                 print("UpdatePlcCouplingParameters ->  PL360 G3 FCC SB")
-                rms_high  = rms_high_fcc_c11 
-                rms_vlow  = rms_vlow_fcc_c11 
+                rms_high  = rms_high_fcc_c11
+                rms_vlow  = rms_vlow_fcc_c11
                 thrs_high = thrs_high_fcc_c11
                 thrs_vlow = thrs_vlow_fcc_c11
-                dacc      = dacc_fcc_c11     
+                dacc      = dacc_fcc_c11
                 gain_high = gain_high_fcc_c11
                 gain_vlow = gain_vlow_fcc_c11
 
                 print("UpdatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
-                rms_high_aux  = rms_high_cena_c07 
-                rms_vlow_aux  = rms_vlow_cena_c07 
+                rms_high_aux  = rms_high_cena_c07
+                rms_vlow_aux  = rms_vlow_cena_c07
                 thrs_high_aux = thrs_high_cena_c07
                 thrs_vlow_aux = thrs_vlow_cena_c07
-                dacc_aux      = dacc_cena_c07     
+                dacc_aux      = dacc_cena_c07
                 gain_high_aux = gain_high_cena_c07
                 gain_vlow_aux = gain_vlow_cena_c07
                 pCoupG3AuxPhyBand.setValue("CEN-A")
             else:
                 print("UpdatePlcCouplingParameters ->  PL360 G3 FCC 2B")
-                rms_high  = rms_high_fcc_c06 
-                rms_vlow  = rms_vlow_fcc_c06 
+                rms_high  = rms_high_fcc_c06
+                rms_vlow  = rms_vlow_fcc_c06
                 thrs_high = thrs_high_fcc_c06
                 thrs_vlow = thrs_vlow_fcc_c06
-                dacc      = dacc_fcc_c06     
+                dacc      = dacc_fcc_c06
                 gain_high = gain_high_fcc_c06
                 gain_vlow = gain_vlow_fcc_c06
 
@@ -865,30 +864,30 @@ def updateG3CouplingParameters():
             if (plcMultiband == True):
                 auxiliaryBand = True
                 print("UpdatePlcCouplingParameters ->  PL360 G3 ARIB SB")
-                rms_high  = rms_high_arib_c11 
-                rms_vlow  = rms_vlow_arib_c11 
+                rms_high  = rms_high_arib_c11
+                rms_vlow  = rms_vlow_arib_c11
                 thrs_high = thrs_high_arib_c11
                 thrs_vlow = thrs_vlow_arib_c11
-                dacc      = dacc_arib_c11     
+                dacc      = dacc_arib_c11
                 gain_high = gain_high_arib_c11
                 gain_vlow = gain_vlow_arib_c11
 
                 print("UpdatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
-                rms_high_aux  = rms_high_cena_c07 
-                rms_vlow_aux  = rms_vlow_cena_c07 
+                rms_high_aux  = rms_high_cena_c07
+                rms_vlow_aux  = rms_vlow_cena_c07
                 thrs_high_aux = thrs_high_cena_c07
                 thrs_vlow_aux = thrs_vlow_cena_c07
-                dacc_aux      = dacc_cena_c07     
+                dacc_aux      = dacc_cena_c07
                 gain_high_aux = gain_high_cena_c07
                 gain_vlow_aux = gain_vlow_cena_c07
                 pCoupG3AuxPhyBand.setValue("CEN-A")
             else:
                 print("UpdatePlcCouplingParameters ->  PL360 G3 ARIB 2B")
-                rms_high  = rms_high_arib_c06 
-                rms_vlow  = rms_vlow_arib_c06 
+                rms_high  = rms_high_arib_c06
+                rms_vlow  = rms_vlow_arib_c06
                 thrs_high = thrs_high_arib_c06
                 thrs_vlow = thrs_vlow_arib_c06
-                dacc      = dacc_arib_c06     
+                dacc      = dacc_arib_c06
                 gain_high = gain_high_arib_c06
                 gain_vlow = gain_vlow_arib_c06
 
@@ -960,7 +959,7 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
             # C07
             cen_enable = True
             dacc_cen = dacc_chn1_c07
-        
+
         if (channels & 0xFE):
             fcc_enable = True
             # Channels 2 - 8
@@ -1001,7 +1000,7 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
             # Double Channels
             # drv_sb / drv_himp
             dacc_2chn = dacc_2chn_fcc_drv
-                
+
     if (cen_enable == True):
         for idx in range(17):
             pCoupPRIMEDACCCENA[idx].setValue(dacc_cen[idx])
@@ -1111,7 +1110,7 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
     if (plcDevice == "PL360"):
         line_drv = 0
         if (multiband):
-            # C11 
+            # C11
             rms_high  = rms_high_2chn_c11[channel]
             rms_vlow  = rms_vlow_2chn_c11[channel]
             thrs_high = thrs_high_2chn_c11[channel]
@@ -1184,13 +1183,13 @@ def updatePRIMECouplingParameters():
     # Show PRIME setting, hide G3 setting
     pCoupG3TXBranches.setVisible(False)
     pCoupPRIMETXChannels.setVisible(True)
-    
+
     # Enable PRIME COUP files
     pCoupG3SourceFile.setEnabled(False)
     pCoupG3HeaderFile.setEnabled(False)
     pCoupPRIMESourceFile.setEnabled(True)
     pCoupPRIMEHeaderFile.setEnabled(True)
-    
+
     plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
     channels_sel = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_CHANNELS_SELECTED")
     auxBranch = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_BAND_AUX")
@@ -1234,7 +1233,7 @@ def handleMessage(messageID, args):
     elif (messageID == "SRV_PCOUP_UPDATE_PRIME_PARAMETERS"):
         updatePRIMECouplingParameters()
 
-    return result_dict            
+    return result_dict
 
 
 def dependenciesHandler(symbol, event):
@@ -1247,7 +1246,7 @@ def onAttachmentConnected(source, target):
     updateCouplingParameters()
 
 def instantiateComponent(pCoupComponentCommon):
-    
+
     Log.writeInfoMessage("Loading PLC Phy Coupling service")
 
     ############################################################################
@@ -1275,7 +1274,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3MainPhyBand.setDefaultValue("FCC")
     pCoupG3MainPhyBand.setReadOnly(True)
     pCoupG3MainPhyBand.setHelp(srv_pcoup_helpkeyword)
-    
+
     pCoupG3NumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_NUM_TX_LVL", pCoupG3MainBranch)
     pCoupG3NumTxLvl.setLabel("Number of TX levels")
     pCoupG3NumTxLvl.setDefaultValue(8)
@@ -1347,7 +1346,7 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupG3DACC[idx].setMin(0)
         pCoupG3DACC[idx].setMax(0xFFFFFFFF)
         pCoupG3DACC[idx].setHelp(srv_pcoup_helpkeyword)
-    
+
     pCoupG3GainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_GAIN_HIGH", pCoupG3MainBranch)
     pCoupG3GainHigh.setLabel("Tx gain values for HIGH mode")
     pCoupG3GainHigh.setHelp(srv_pcoup_helpkeyword)
@@ -1413,7 +1412,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3AuxNumTxLvl.setLabel("Number of TX levels")
     pCoupG3AuxNumTxLvl.setDefaultValue(8)
     pCoupG3AuxNumTxLvl.setHelp(srv_pcoup_helpkeyword)
-   
+
     pCoupG3AuxRMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_HIGH", pCoupG3RAuxBranch)
     pCoupG3AuxRMSHigh.setLabel("Target RMS values in HIGH mode for dynamic Tx gain")
     pCoupG3AuxRMSHigh.setHelp(srv_pcoup_helpkeyword)
@@ -1471,7 +1470,7 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupG3DACCAux[idx].setMin(0)
         pCoupG3DACCAux[idx].setMax(0xFFFFFFFF)
         pCoupG3DACCAux[idx].setHelp(srv_pcoup_helpkeyword)
-    
+
     pCoupG3AuxGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH", pCoupG3RAuxBranch)
     pCoupG3AuxGainHigh.setLabel("Tx gain values for HIGH mode")
     pCoupG3AuxGainHigh.setHelp(srv_pcoup_helpkeyword)
@@ -1553,7 +1552,7 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPRIMEDACCCENA[idx].setMin(0)
         pCoupPRIMEDACCCENA[idx].setMax(0xFFFFFFFF)
         pCoupPRIMEDACCCENA[idx].setHelp(srv_pcoup_helpkeyword)
-        
+
         pCoupPRIMEDACCFCC.append(pCoupComponentCommon.createHexSymbol("SRV_PCOUP_DACC_FCC_" + str(idx), pCoupPRIMEDACCFCCMenu))
         pCoupPRIMEDACCFCC[idx].setLabel("DACC_" + str(idx))
         pCoupPRIMEDACCFCC[idx].setDefaultValue(dacc_chn_fcc_drv[idx])
@@ -1567,7 +1566,7 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupPRIMEDACC2CHN[idx].setMin(0)
         pCoupPRIMEDACC2CHN[idx].setMax(0xFFFFFFFF)
         pCoupPRIMEDACC2CHN[idx].setHelp(srv_pcoup_helpkeyword)
-    
+
     #### Single channel ########################################################
     for chn_idx in range(8):
         pCoupPRIMEMenuChn.append(pCoupComponentCommon.createMenuSymbol("DRV_PLC_PRIME_MENU_CH" + str(chn_idx + 1), pCoupPRIMETXChannels))
@@ -1631,7 +1630,7 @@ def instantiateComponent(pCoupComponentCommon):
                 pCoupPRIMESymbol.setDefaultValue(thrs_high_chn1_drv_aux[idx])
             else:
                 pCoupPRIMESymbol.setDefaultValue(thrs_high_drv_sb[chn_idx - 1][idx])
-            
+
             if (idx < 8):
                 pCoupPRIMESymbol.setLabel("THRESHOLD_HIGH_LOW_" + str(idx))
             else:
@@ -1644,7 +1643,7 @@ def instantiateComponent(pCoupComponentCommon):
                 pCoupPRIMESymbol.setDefaultValue(thrs_vlow_chn1_drv_aux[idx])
             else:
                 pCoupPRIMESymbol.setDefaultValue(thrs_vlow_drv_sb[chn_idx - 1][idx])
-            
+
             if (idx < 8):
                 pCoupPRIMESymbol.setLabel("THRESHOLD_VLOW_LOW_" + str(idx))
             else:
@@ -1669,7 +1668,7 @@ def instantiateComponent(pCoupComponentCommon):
             pCoupPRIMESymbol.setMax(0xFFFF)
             pCoupPRIMESymbol.setHelp(srv_pcoup_helpkeyword)
             pCoupPRIMEGainVlowSymbols.append(pCoupPRIMESymbol)
-            
+
             if chn_idx == 0:
                 pCoupPRIMEGainHighSymbols[idx].setDefaultValue(gain_high_chn1_drv_aux[idx])
                 pCoupPRIMEGainVlowSymbols[idx].setDefaultValue(gain_vlow_chn1_drv_aux[idx])
@@ -1828,7 +1827,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3HeaderFile.setMarkup(True)
     pCoupG3HeaderFile.setOverwrite(True)
     pCoupG3HeaderFile.setEnabled(True)
-    
+
     global pCoupPRIMESourceFile
     pCoupPRIMESourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_PRIME_SOURCE", None)
     pCoupPRIMESourceFile.setSourcePath("service/pcoup/templates/srv_pcoup_prime.c.ftl")
@@ -1857,4 +1856,4 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupSystemDefFile.setType("STRING")
     pCoupSystemDefFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
     pCoupSystemDefFile.setSourcePath("service/pcoup/templates/system/system_definitions.h.ftl")
-    pCoupSystemDefFile.setMarkup(True)    
+    pCoupSystemDefFile.setMarkup(True)

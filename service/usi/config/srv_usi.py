@@ -22,7 +22,6 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global srv_usi_helpkeyword
 srv_usi_helpkeyword = "mcc_h3_srv_usi_configurations"
 
 def selectDeviceSet(symbol, event):
@@ -182,7 +181,7 @@ def instantiateComponent(usiComponent, index):
     ############################################################################
     #### Code Generation ####
     ############################################################################
-    
+
     # System Template Files
     usiSymSystemDefObjFile = usiComponent.createFileSymbol("SRV_USI_FILE_SYS_DEF_OBJ", None)
     usiSymSystemDefObjFile.setType("STRING")
@@ -224,7 +223,7 @@ def instantiateComponent(usiComponent, index):
 
 ################################################################################
 #### Business Logic ####
-################################################################################  
+################################################################################
 def onAttachmentConnected(source, target):
     localComponent = source["component"]
     remoteComponent = target["component"]
@@ -238,7 +237,7 @@ def onAttachmentConnected(source, target):
         plibUsed.clearValue()
         plibUsed.setValue(remoteID.upper())
         dict = Database.sendMessage("srv_usi", "USI_ADD_USART_API", {})
-    
+
     if connectID == "srv_usi_CDC_dependency":
         plibUsed = localComponent.getSymbolByID("SRV_USI_DEVICE")
         plibUsed.clearValue()
@@ -259,7 +258,7 @@ def onAttachmentDisconnected(source, target):
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
         dict = Database.sendMessage("srv_usi", "USI_REMOVE_USART_API", {})
         dict = Database.sendMessage(remoteID, "UART_NON_BLOCKING_MODE", {"isReadOnly":False})
-    
+
     if connectID == "srv_usi_CDC_dependency":
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
         dict = Database.sendMessage("srv_usi", "USI_REMOVE_CDC_API", {})

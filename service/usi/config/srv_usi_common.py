@@ -22,7 +22,6 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global srv_usi_helpkeyword
 srv_usi_helpkeyword = "mcc_h3_srv_usi_configurations"
 
 def handleMessage(messageID, args):
@@ -61,7 +60,7 @@ def handleMessage(messageID, args):
     return result_dict
 
 def enableFiles(symbol, event):
-    symbol.setEnabled(event["value"])  
+    symbol.setEnabled(event["value"])
     # if(event["value"]):
         # print("Enable Src/Hdr files")
     # else:
@@ -153,14 +152,14 @@ def instantiateComponent(usiComponentCommon):
     usiSourceFile.setProjectPath("config/" + configName + "/service/usi/")
     usiSourceFile.setType("SOURCE")
     usiSourceFile.setMarkup(True)
-    
+
     usiHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_HEADER", None)
     usiHeaderFile.setSourcePath("service/usi/srv_usi.h")
     usiHeaderFile.setOutputName("srv_usi.h")
     usiHeaderFile.setDestPath("service/usi")
     usiHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
     usiHeaderFile.setType("HEADER")
-    
+
     usiDefHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_DEF_HEADER", None)
     usiDefHeaderFile.setSourcePath("service/usi/srv_usi_definitions.h.ftl")
     usiDefHeaderFile.setOutputName("srv_usi_definitions.h")
@@ -168,14 +167,14 @@ def instantiateComponent(usiComponentCommon):
     usiDefHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
     usiDefHeaderFile.setType("HEADER")
     usiDefHeaderFile.setMarkup(True)
-    
+
     usiLocalHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_LOCAL_HEADER", None)
     usiLocalHeaderFile.setSourcePath("service/usi/src/srv_usi_local.h")
     usiLocalHeaderFile.setOutputName("srv_usi_local.h")
     usiLocalHeaderFile.setDestPath("service/usi")
     usiLocalHeaderFile.setProjectPath("config/" + configName + "/service/usi/")
     usiLocalHeaderFile.setType("SOURCE")
-    
+
     usiUsartSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_SOURCE", None)
     usiUsartSourceFile.setSourcePath("service/usi/src/srv_usi_usart.c.ftl")
     usiUsartSourceFile.setOutputName("srv_usi_usart.c")
@@ -185,7 +184,7 @@ def instantiateComponent(usiComponentCommon):
     usiUsartSourceFile.setEnabled(False)
     usiUsartSourceFile.setMarkup(True)
     usiUsartSourceFile.setDependencies(enableFiles, ["SRV_USI_USART_API"])
-    
+
     usiUsartHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_USART_HEADER", None)
     usiUsartHeaderFile.setSourcePath("service/usi/src/srv_usi_usart.h.ftl")
     usiUsartHeaderFile.setOutputName("srv_usi_usart.h")
@@ -195,7 +194,7 @@ def instantiateComponent(usiComponentCommon):
     usiUsartHeaderFile.setEnabled(False)
     usiUsartHeaderFile.setMarkup(True)
     usiUsartHeaderFile.setDependencies(enableFiles, ["SRV_USI_USART_API"])
-    
+
     usiCDCSourceFile = usiComponentCommon.createFileSymbol("SRV_USI_CDC_SOURCE", None)
     usiCDCSourceFile.setSourcePath("service/usi/src/srv_usi_cdc.c.ftl")
     usiCDCSourceFile.setOutputName("srv_usi_cdc.c")
@@ -205,7 +204,7 @@ def instantiateComponent(usiComponentCommon):
     usiCDCSourceFile.setEnabled(False)
     usiCDCSourceFile.setMarkup(True)
     usiCDCSourceFile.setDependencies(enableFiles, ["SRV_USI_CDC_API"])
-    
+
     usiCDCHeaderFile = usiComponentCommon.createFileSymbol("SRV_USI_CDC_HEADER", None)
     usiCDCHeaderFile.setSourcePath("service/usi/src/srv_usi_cdc.h.ftl")
     usiCDCHeaderFile.setOutputName("srv_usi_cdc.h")

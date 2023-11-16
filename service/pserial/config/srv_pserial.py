@@ -22,8 +22,6 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global pserial_helpkeyword
-
 pserial_helpkeyword = "srv_pserial_configurations"
 
 def isKeyPresent(symbol, key):
@@ -78,14 +76,14 @@ def setProfile(symbol, event):
         print ("pSerial as G3-PLC mode")
 
 def instantiateComponent(pSerialComponentCommon):
-    
+
     Log.writeInfoMessage("Loading PLC Phy Serial Common Service")
 
     ############################################################################
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
-    
+
     global pSerialPLCProfile
     pSerialPLCProfile = pSerialComponentCommon.createKeyValueSetSymbol("SRV_PSER_PLC_PROFILE", None)
     pSerialPLCProfile.setLabel("PLC Profile")

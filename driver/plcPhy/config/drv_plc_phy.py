@@ -27,7 +27,6 @@
 ################################################################################
 
 global sort_alphanumeric
-global plc_phy_helpkeyword
 
 global plcSourceBinFileG3CENA
 global plcSourceBinFileG3CENB
@@ -65,7 +64,7 @@ def configureSpiPlib(localComponent):
 
     if plibUsed == "srv_spisplit":
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB_SPISPLIT").getValue().lower()
-    
+
     remoteComponent = Database.getComponentByID(plibUsed)
     if remoteComponent == None:
         return
@@ -266,7 +265,7 @@ def handleMessage(messageID, args):
             # DMA Mode: Disable interrupt mode in PLIB
             # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
             result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
-        
+
             remoteComponent = Database.getComponentByID(remoteComponentID)
 
             if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):
@@ -384,13 +383,13 @@ def plcPhyEnableEncScript(symbol, event):
     if (event["value"] == True):
         symbol.setEnabled(True)
     else:
-        symbol.setEnabled(False) 
+        symbol.setEnabled(False)
 
 def plcPhyVisibleEncComment(symbol, event):
     if (event["value"] == True):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)         
+        symbol.setVisible(False)
 
 def setPlcBandInUse(plcBand):
     dict = {}
@@ -468,14 +467,14 @@ def includeBinFile(plcBand):
         plcSourceBinFileG3ARIB.setEnabled(False)
     else:
         plcSourceBinFilePRIME.setEnabled(False)
-        if (plcBand == "CEN-A"):          
+        if (plcBand == "CEN-A"):
             plcSourceBinFileG3CENA.setEnabled(True)
-        elif (plcBand == "CEN-B"):            
+        elif (plcBand == "CEN-B"):
             plcSourceBinFileG3CENB.setEnabled(True)
-        elif (plcBand == "FCC"):            
+        elif (plcBand == "FCC"):
             plcSourceBinFileG3FCC.setEnabled(True)
-        elif (plcBand == "ARIB"):           
-            plcSourceBinFileG3ARIB.setEnabled(True) 
+        elif (plcBand == "ARIB"):
+            plcSourceBinFileG3ARIB.setEnabled(True)
 
 def updateBinFiles():
     dict = {}
@@ -493,8 +492,8 @@ def updateBinFiles():
         includeBinFile("PRIME")
         setPlcBandInUse("PRIME")
         dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
-    
-    # Check Internal/External Addressing    
+
+    # Check Internal/External Addressing
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
         # Internal Addressing
         plcAssemblyBinFile.setEnabled(True)
@@ -529,7 +528,7 @@ def showPL460Pins(symbol, event):
     if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
-        symbol.setVisible(False)  
+        symbol.setVisible(False)
 
 def showSleepPin(symbol, event):
     symbol.setVisible(event["value"])
@@ -574,7 +573,7 @@ def showG3AuxBand(symbol, event):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
-    
+
 def showChannelSelect(symbol, event):
     symbol.setVisible(event["value"])
 
@@ -603,7 +602,7 @@ def checkPrimeChannelConf(symbol, event):
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH7") << 6)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH8") << 7)
 
-    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CHN_MODE") == True):   
+    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CHN_MODE") == True):
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH1") << 8)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH2") << 9)
         channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH3") << 10)
@@ -618,7 +617,7 @@ def checkPrimeChannelConf(symbol, event):
     else:
         channel_default_idx = int(channel_value[-1]) - 1
 
-    # Set visibility of Warning Selection channel Comment 
+    # Set visibility of Warning Selection channel Comment
     if ((((1 << channel_default_idx) & channels_selected)) == 0):
         symbol.setVisible(True)
     else:
@@ -657,7 +656,7 @@ def checkPrime2ChannelConf(symbol, event):
 
     channel_def = int(plcCoupPRIME2Channel.getValue()[2])
     channel_sel = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH" + str(channel_def))
-    
+
     if (channel_sel == False):
         symbol.setVisible(True)
     else:
@@ -674,7 +673,7 @@ def updateShowCoupSettings(symbol, event):
         plcCoupG3Settings.setVisible(False)
         plcCoupPRIMESettings.setVisible(True)
 
-def resetPlcBand(symbol, event):  
+def resetPlcBand(symbol, event):
     symbol.setReadOnly(True)
     symbol.setValue("CEN-A")
     symbol.setReadOnly(False)
@@ -726,7 +725,7 @@ def identifyPeripherals(component):
             plcEicId = component.createStringSymbol("PLC_EIC_ID", None)
             plcEicId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             eicIdCreated = True
-    
+
     if not flexcomIdCreated:
         plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
         plcFlexcomId.setDefaultValue("0")
@@ -753,10 +752,10 @@ def getEICSignals():
             eicPin = "EIC_PIN_{}".format(index)
             if eicPin not in eicSignalsList:
                 eicSignalsList.append(eicPin)
-    
+
     if (eicSignalsList == []):
         eicSignalsList = ["None"]
-        
+
     return eicSignalsList
 
 def getEICSignalsFromPin(pin):
@@ -805,7 +804,7 @@ def instantiateComponent(plcComponent):
         isDMAPresent = False
     else:
         isDMAPresent = True
-    
+
     identifyPeripherals(plcComponent)
 
     global plcDriverMode
@@ -1000,7 +999,7 @@ def instantiateComponent(plcComponent):
     plcStbyPin.setVisible(False)
     plcStbyPin.setHelp(plc_phy_helpkeyword)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
-    
+
     plcThermalMonitor = plcComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
@@ -1027,7 +1026,7 @@ def instantiateComponent(plcComponent):
     availablePinDictionary = {}
 
     eic = Database.getSymbolValue("drvPlcPhy", "PLC_EIC_ID")
-    
+
     # Send message to core to get available pins
     availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
 
@@ -1052,7 +1051,7 @@ def instantiateComponent(plcComponent):
     if (eic != "0"):
         global eicSignalsATDF
         eicSignalsATDF = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="EIC"]/instance/signals').getChildren()
-        
+
         global plcEICSignal
         eicSignals = getEICSignals()
         plcEICSignal = plcComponent.createComboSymbol("DRV_PLC_EIC_SIGNAL", plcExtIntPin, eicSignals)
@@ -1300,7 +1299,7 @@ def instantiateComponent(plcComponent):
     plcAssemblyBinFile.setType("SOURCE")
     plcAssemblyBinFile.setMarkup(True)
     plcAssemblyBinFile.setOverwrite(True)
-    
+
     ##### PLC Profile Selector  ####################################################
 
     plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3-PLC", "PRIME"])
@@ -1369,7 +1368,7 @@ def instantiateComponent(plcComponent):
     plcCoupG3HighAttenuation.setDefaultValue(False)
     plcCoupG3HighAttenuation.setHelp(plc_phy_helpkeyword)
     plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
-    
+
     ##### Coupling Settings : PRIME  ####################################################
     global plcCoupPRIMESettings
     plcCoupPRIMESettings = plcComponent.createMenuSymbol("DRV_PLC_COUP_PRIME_SETTING", None)
@@ -1592,7 +1591,7 @@ def onAttachmentConnected(source, target):
                 plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
                 if plibReceiver != None:
                     plibReceiver.setReadOnly(True)
-  
+
 def onAttachmentDisconnected(source, target):
     global isDMAPresent
 
@@ -1638,7 +1637,7 @@ def onAttachmentDisconnected(source, target):
                 remoteSym = remoteComponent.getSymbolByID("USE_SPI_DMA")
                 if remoteSym != None:
                     remoteSym.setReadOnly(False)
-            
+
             if "FLEXCOM" in remoteID.upper():
                 remoteSym = remoteComponent.getSymbolByID("FLEXCOM_SPI_FIFO_ENABLE")
                 if remoteSym != None:

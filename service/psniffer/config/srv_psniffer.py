@@ -22,8 +22,6 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global psniffer_helpkeyword
-
 psniffer_helpkeyword = "srv_psniffer_configurations"
 
 def isKeyPresent(symbol, key):
@@ -76,14 +74,14 @@ def setProfile(symbol, event):
         print ("pSniffer as G3-PLC mode")
 
 def instantiateComponent(pSnifferComponentCommon):
-    
+
     Log.writeInfoMessage("Loading PLC Phy Sniffer Service")
 
     ############################################################################
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
-    
+
     global pSnifferPLCProfile
     pSnifferPLCProfile = pSnifferComponentCommon.createKeyValueSetSymbol("SRV_PSNF_PLC_PROFILE", None)
     pSnifferPLCProfile.setLabel("PLC Profile")

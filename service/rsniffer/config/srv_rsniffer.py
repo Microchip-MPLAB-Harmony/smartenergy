@@ -22,7 +22,6 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *****************************************************************************"""
 
-global rsniffer_helpkeyword
 global protocolValues
 
 rsniffer_helpkeyword = "srv_rsniffer_configurations"
@@ -48,7 +47,7 @@ def handleMessage(messageID, args):
     return result_dict
 
 def instantiateComponent(rSnifferComponentCommon):
-    
+
     Log.writeInfoMessage("Loading RF Phy Sniffer Service")
 
     processor = Variables.get("__PROCESSOR")
@@ -106,7 +105,7 @@ def instantiateComponent(rSnifferComponentCommon):
         rSnifferSourceFile.setMarkup(True)
         rSnifferHeaderFile.setSourcePath("service/rsniffer/srv_rsniffer.h.ftl")
         rSnifferHeaderFile.setMarkup(True)
-        
+
     rSnifferSystemDefIncFile = rSnifferComponentCommon.createFileSymbol("SRV_RSNF_SYSTEM_DEF", None)
     rSnifferSystemDefIncFile.setType("STRING")
     rSnifferSystemDefIncFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
