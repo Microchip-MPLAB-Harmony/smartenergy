@@ -781,6 +781,18 @@ def updateG3CouplingParameters():
                     line_drv_aux  = drv_conf_cenb_c14
                     pCoupG3AuxPhyBand.setValue("CEN-B")
 
+        else: # "CEN-A" as default configuration
+            print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
+            rms_high  = rms_high_cena
+            rms_vlow  = rms_vlow_cena
+            thrs_high = thrs_high_cena
+            thrs_vlow = thrs_vlow_cena
+            dacc      = dacc_cena
+            gain_high = gain_high_cena
+            gain_vlow = gain_vlow_cena
+            line_drv  = drv_conf_cena
+            pCoupG3MainPhyBand.setValue("CEN-A")
+
     else: # "PL360"
         line_drv = 0
         line_drv_aux = 0
@@ -880,6 +892,16 @@ def updateG3CouplingParameters():
                 gain_high = gain_high_arib_c06
                 gain_vlow = gain_vlow_arib_c06
 
+        else: # "CEN-A" as default configuration
+            print("UpdatePlcCouplingParameters -> PL360 G3 CEN-A")
+            rms_high  = rms_high_cena_c07
+            rms_vlow  = rms_vlow_cena_c07
+            thrs_high = thrs_high_cena_c07
+            thrs_vlow = thrs_vlow_cena_c07
+            dacc      = dacc_cena_c07
+            gain_high = gain_high_cena_c07
+            gain_vlow = gain_vlow_cena_c07
+            pCoupG3MainPhyBand.setValue("CEN-A")
 
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
