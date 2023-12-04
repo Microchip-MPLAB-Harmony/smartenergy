@@ -179,7 +179,10 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     /* SPI Transfer Setup */
     .spiPlibTransferSetup = (DRV_PLC_SPI_PLIB_TRANSFER_SETUP)${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_TransferSetup,
 
-<#if (core.DMA_ENABLE?has_content == false) || (DRV_PLC_PLIB == "SRV_SPISPLIT")>
+<#if DRV_PLC_PLIB == "SRV_SPISPLIT">
+    /* SPI Is Busy */
+    .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsTransmitterBusy,
+<#elseif core.DMA_ENABLE?has_content == false>
     /* SPI Is Busy */
     .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsBusy,
 
