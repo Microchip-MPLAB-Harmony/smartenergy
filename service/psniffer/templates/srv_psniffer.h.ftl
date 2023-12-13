@@ -104,24 +104,22 @@
 // *****************************************************************************
 // *****************************************************************************
 
-/* PLC Phy Sniffer Tool command
+/* Hybrid PHY Sniffer Tool command
 
   Summary:
-    PLC Sniffer Commands enumeration
+    Hybrid Sniffer Tool Commands enumeration.
 
   Description:
-    This enumeration defines the PLC commands used by PLC Phy Sniffer Tool
+    This enumeration defines the commands used by the Hybrid PHY Sniffer Tool
     provided by Microchip.
 */
 <#if SRV_PSNF_PLC_PROFILE == "PRIME">
 typedef enum
 {
   /* Set PLC Channel */
-  SRV_PSNIFFER_CMD_SET_CHANNEL = 2,
-  /* Enable robust modes of PRIME */
-  SRV_PSNIFFER_CMD_ENABLE_PRIME_PLUS_ROBUST,
-  /* Inject message in PLC */
-  SRV_PSNIFFER_CMD_MESSAGE
+  SRV_PSNIFFER_CMD_SET_PLC_CHANNEL = 2,
+  /* Set RF Band, Operating Mode and Channel */
+  SRV_PSNIFFER_CMD_SET_RF_BAND_OPM_CHANNEL
 } SRV_PSNIFFER_COMMAND;
 <#else>
 typedef enum
@@ -428,7 +426,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
   Example:
     <code>
     switch (command) {
-        case SRV_PSNIFFER_CMD_SET_CHANNEL:
+        case SRV_PSNIFFER_CMD_SET_PLC_CHANNEL:
         {
             SRV_PLC_PCOUP_CHANNEL channel;
             
