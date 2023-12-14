@@ -182,9 +182,14 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 <#if DRV_PLC_PLIB == "SRV_SPISPLIT">
     /* SPI Is Busy */
     .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsTransmitterBusy,
+
 <#elseif core.DMA_ENABLE?has_content == false>
     /* SPI Is Busy */
+<#if core.CoreArchitecture == "CORTEX-M0PLUS">
     .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsBusy,
+<#else>
+    .spiIsBusy = ${.vars["${SPI_PLIB?lower_case}"].SPI_PLIB_API_PREFIX}_IsTransmitterBusy,
+</#if>
 
 </#if>
 <#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (DRV_PLC_SPI_NUM_CSR != 0)>
@@ -222,8 +227,8 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
     /* SPI Chip select pin */
     .spiCSPin = DRV_PLC_SPI_CS_PIN,
+
 </#if>
-    
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
     
