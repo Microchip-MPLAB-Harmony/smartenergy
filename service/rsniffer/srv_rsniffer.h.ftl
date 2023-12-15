@@ -90,8 +90,10 @@ typedef enum
 {
   /* Receive new PLC message */
   SRV_RSNIFFER_CMD_RECEIVE_MSG = 0,
-  /* Set Tone Mask request */
-  SRV_RSNIFFER_CMD_SET_TONE_MASK,
+  /* Set PLC Tone Mask */
+  SRV_RSNIFFER_CMD_SET_PLC_TONE_MASK,
+  /* Set RF Band, Operating Mode and Channel */
+  SRV_RSNIFFER_CMD_SET_RF_BAND_OPM_CHANNEL
 } SRV_RSNIFFER_COMMAND;
 </#if>
 
@@ -370,7 +372,8 @@ uint8_t* SRV_RSNIFFER_SerialCfmMessage (
     )
 
   Summary:
-    Parses a RF configuration command coming the Microchip Hybrid Sniffer Tool.
+    Parses a RF configuration command coming from the Microchip Hybrid Sniffer
+    Tool.
 
   Description:
     This function takes a RF configuration command with the format coming from

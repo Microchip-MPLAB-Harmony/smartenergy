@@ -124,10 +124,12 @@ typedef enum
 <#else>
 typedef enum
 {
-  /* Receive new PLC message */
+  /* Receive new message */
   SRV_PSNIFFER_CMD_RECEIVE_MSG = 0,
-  /* Set Tone Mask request */
-  SRV_PSNIFFER_CMD_SET_TONE_MASK,
+  /* Set PLC Tone Mask */
+  SRV_PSNIFFER_CMD_SET_PLC_TONE_MASK,
+  /* Set RF Band, Operating Mode and Channel */
+  SRV_PSNIFFER_CMD_SET_RF_BAND_OPM_CHANNEL
 } SRV_PSNIFFER_COMMAND;
 </#if>
 
@@ -428,7 +430,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym);
     switch (command) {
         case SRV_PSNIFFER_CMD_SET_PLC_CHANNEL:
         {
-            SRV_PLC_PCOUP_CHANNEL channel;
+            DRV_PLC_PHY_CHANNEL channel;
             
             channel = *(pData + 1);
             
@@ -456,28 +458,25 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
 
 // *****************************************************************************
 /* Function:
-    void SRV_PSNIFFER_ConvertToneMask
-    (
-      uint8_t* pToneMaskDst,
-      uint8_t* pToneMaskSrc
-    )
+    void SRV_PSNIFFER_ConvertToneMask(uint8_t* pDataSrc, uint8_t* pToneMaskDst)
 
   Summary:
-    Converts a Tone Mask configuration coming from an external tool to the
-    right format to be configured on PLC PHY layer.
+    Converts a Tone Mask configuration command coming the Microchip Hybrid
+    Sniffer Tool to the right format to be configured on G3-PLC PHY layer.
 
   Description:
-    This function takes a Tone Mask configuration with the format coming from
-    MCHP PLC Sniffer Tool and converts it to a format to be configured on PLC PHY
-    layer to be used on further transmissions and receptions.
+    This function takes a Tone Mask configuration command with the format coming
+    from the Microchip Hybrid Sniffer Tool and converts it to a format to be
+    configured on G3-PLC PHY layer to be used on further transmissions and
+    receptions.
     If misconfigured, no PLC frames will be seen.
 
   Precondition:
     None.
 
   Parameters:
+    pDataSrc     - Pointer to the data where the command is stored (USI)
     pToneMaskDst - The Tone Mask converted to PHY format
-    pToneMaskSrc - The Tone Mask with format coming from external tool
 
   Returns:
     None.
@@ -485,22 +484,22 @@ void SRV_PSNIFFER_SetPLCChannel(uint8_t channel);
   Example:
     <code>
     switch (command) {
-        case SRV_PSNIFFER_CMD_SET_TONE_MASK:
+        case SRV_PSNIFFER_CMD_SET_PLC_TONE_MASK:
         {
-            SRV_PSNIFFER_ConvertToneMask(appData.plcPIB.pData, pData + 1);
+            SRV_PSNIFFER_ConvertToneMask(pData, appData.plcPIB.pData);
 
             appData.plcPIB.id = PLC_ID_TONE_MASK;
             appData.plcPIB.length = PSNIFFER_CARRIERS_SIZE;
             DRV_PLC_PHY_PIBSet(appData.drvPlcHandle, &appData.plcPIB);
+            break;
         }
-        break;
     }
     </code>
 
   Remarks:
     This function is only available in G3-PLC profile.
 */
-void SRV_PSNIFFER_ConvertToneMask(uint8_t* pToneMaskDst, uint8_t* pToneMaskSrc);
+void SRV_PSNIFFER_ConvertToneMask(uint8_t* pDataSrc, uint8_t* pToneMaskDst);
 
 </#if>
 
