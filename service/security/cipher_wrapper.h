@@ -117,21 +117,20 @@ int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
 
 //******************************************************************************
 /* Function:
-    int32_t CIPHER_Wrapper_CcmSetkey(const uint8_t *key, uint32_t keyLen)
+    int32_t CIPHER_Wrapper_AesCcmSetkey(uint8_t *key)
 
   Summary:
-    Initializes the CCM context and sets the encryption key.
+    Initializes the AES-CCM context and sets the encryption key.
 
   Description:
-    This function initializes the CCM context and sets the encryption key.
+    This function initializes the AES-CCM context and sets the 16-byte
+    encryption key.
 
   Precondition:
-    The crypto initialization routines should be called before calling this
-    routine (in "SYS_Initialize").
+    None.
 
   Parameters:
-    key    - Pointer to buffer holding the key itself.
-    keyLen - Length of key in bytes.
+    key - Pointer to buffer holding the 16-byte key itself.
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful initialization.
@@ -140,44 +139,44 @@ int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
   Example:
     <code>
     int32_t ret;
-    uint8_t key[] = { some key };
-    ret = CIPHER_Wrapper_CcmSetkey(key, sizeof(key));
+    uint8_t key[16] = { some key };
+    ret = CIPHER_Wrapper_AesCcmSetkey(key);
     </code>
 
   Remarks:
     None.
 */
 
-int32_t CIPHER_Wrapper_CcmSetkey(const uint8_t *key, uint32_t keyLen);
+int32_t CIPHER_Wrapper_AesCcmSetkey(uint8_t *key);
 
 //******************************************************************************
 /* Function:
-    int32_t CIPHER_Wrapper_CcmAuthDecrypt(uint32_t length,
-                                          const uint8_t *iv, uint32_t ivLen,
-                                          const uint8_t *add, uint32_t addLen,
-                                          const uint8_t *input, uint8_t *output,
-                                          const uint8_t *tag, uint32_t tagLen)
+    int32_t CIPHER_Wrapper_AesCcmAuthDecrypt(uint32_t length,
+                                             uint8_t *iv, uint32_t ivLen,
+                                             uint8_t *add, uint32_t addLen,
+                                             uint8_t *input, uint8_t *output,
+                                             uint8_t *tag, uint32_t tagLen)
 
   Summary:
-    Performs a CCM authenticated decryption of a buffer.
+    Performs AES-CCM authenticated decryption of a buffer.
 
   Description:
-    This function performs a CCM authenticated decryption of a buffer.
+    This function performs a AES-CCM authenticated decryption of a buffer.
 
   Precondition:
-    Key must be set earlier with a call to CIPHER_Wrapper_CcmSetkey.
+    Key must be set earlier with a call to CIPHER_Wrapper_AesCcmSetkey.
 
   Parameters:
-    length  - Length of the input data in bytes.
-    iv      - Pointer to initialization vector (nonce).
-    ivLen   - Length of the nonce in bytes.
-    add     - Pointer to additional data field.
-    addLen  - Length of additional data in bytes.
-    input   - Pointer to buffer holding the input data.
-    output  - Pointer to buffer holding the output data. The size of the
-              buffer must be equal or larger than the input data.
-    tag     - Pointer to buffer holding the authentication field.
-    tagLen  - Length of the authentication field in bytes.
+    length - Length of the input data in bytes.
+    iv     - Pointer to initialization vector (nonce).
+    ivLen  - Length of the nonce in bytes.
+    add    - Pointer to additional data field.
+    addLen - Length of additional data in bytes.
+    input  - Pointer to buffer holding the input ciphered data.
+    output - Pointer to store the output plain data. The size of the buffer
+             must be equal or larger than the input data.
+    tag    - Pointer to buffer holding the authentication tag.
+    tagLen - Length of the authentication tag in bytes.
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful decryption.
@@ -190,53 +189,54 @@ int32_t CIPHER_Wrapper_CcmSetkey(const uint8_t *key, uint32_t keyLen);
     uint8_t cipher[] = { encrypted message };
     uint8_t plain[sizeof(cipher)];
     uint8_t authIn[] = { some authentication input };
-    uint8_t tag[AES_BLOCK_SIZE] = { authentication tag received for verification };
-    uint8_t key[] = { some key };
+    uint8_t tag[] = { authentication tag received for verification };
+    uint8_t key[16] = { some key };
 
-    ret = CIPHER_Wrapper_CcmSetkey(key, sizeof(key));
-    ret = CIPHER_Wrapper_CcmAuthDecrypt(sizeof(plain), nonce, sizeof(nonce),
-                                        authIn, sizeof(authIn), cipher, plain,
-                                        tag, sizeof(tag));
+    ret = CIPHER_Wrapper_AesCcmSetkey(key, sizeof(key));
+    ret = CIPHER_Wrapper_AesCcmAuthDecrypt(sizeof(plain), nonce, sizeof(nonce),
+                                           authIn, sizeof(authIn),
+                                           cipher, plain,
+                                           tag, sizeof(tag));
     </code>
 
   Remarks:
     None.
 */
 
-int32_t CIPHER_Wrapper_CcmAuthDecrypt(uint32_t length,
-                                      const uint8_t *iv, uint32_t ivLen,
-                                      const uint8_t *add, uint32_t addLen,
-                                      const uint8_t *input, uint8_t *output,
-                                      const uint8_t *tag, uint32_t tagLen);
+int32_t CIPHER_Wrapper_AesCcmAuthDecrypt(uint32_t length,
+                                         uint8_t *iv, uint32_t ivLen,
+                                         uint8_t *add, uint32_t addLen,
+                                         uint8_t *input, uint8_t *output,
+                                         uint8_t *tag, uint32_t tagLen);
 
 //******************************************************************************
 /* Function:
-    int32_t CIPHER_Wrapper_CcmEncryptAndTag(uint32_t length,
-                                            const uint8_t *iv, uint32_t ivLen,
-                                            const uint8_t *add, uint32_t addLen,
-                                            const uint8_t *input, uint8_t *output,
-                                            uint8_t *tag, uint32_t tagLen)
+    int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint32_t length,
+                                               uint8_t *iv, uint32_t ivLen,
+                                               uint8_t *add, uint32_t addLen,
+                                               uint8_t *input, uint8_t *output,
+                                               uint8_t *tag, uint32_t tagLen)
 
   Summary:
-    Performs a CCM authenticated encryption of a buffer.
+    Performs AES-CCM authenticated encryption of a buffer.
 
   Description:
-    This function performs a CCM authenticated encryption of a buffer.
+    This function performs AES-CCM authenticated encryption of a buffer.
 
   Precondition:
-    Key must be set earlier with a call to CIPHER_Wrapper_CcmSetkey.
+    Key must be set earlier with a call to CIPHER_Wrapper_AesCcmSetkey.
 
   Parameters:
-    length  - Length of the input data in bytes.
-    iv      - Pointer to initialization vector (nonce).
-    ivLen   - Length of the nonce in bytes.
-    add     - Pointer to additional data field.
-    addLen  - Length of additional data in bytes.
-    input   - Pointer to buffer holding the input data.
-    output  - Pointer to buffer holding the output data. The size of the
-              buffer must be equal or larger than the input data.
-    tag     - Pointer to buffer holding the authentication field.
-    tagLen  - Length of the authentication field in bytes.
+    length - Length of the input data in bytes.
+    iv     - Pointer to initialization vector (nonce).
+    ivLen  - Length of the nonce in bytes.
+    add    - Pointer to additional data field.
+    addLen - Length of additional data in bytes.
+    input  - Pointer to buffer holding the input plain data.
+    output - Pointer to store the output ciphered data. The size of the buffer
+             must be equal or larger than the input data.
+    tag    - Pointer to sotore the authentication tag.
+    tagLen - Length of the authentication tag in bytes.
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful encryption.
@@ -246,27 +246,28 @@ int32_t CIPHER_Wrapper_CcmAuthDecrypt(uint32_t length,
     <code>
     int32_t ret;
     uint8_t nonce[] = { some initialization nonce };
-    uint8_t plain[] = { some plain text message };
+    uint8_t plain[] = { some plain message };
     uint8_t cipher[sizeof(plain)];
     uint8_t authIn[] = { some authentication input };
-    uint8_t tag[AES_BLOCK_SIZE];
-    uint8_t key[] = { some key };
+    uint8_t tag[];
+    uint8_t key[16] = { some key };
 
-    ret = CIPHER_Wrapper_CcmSetkey(key, sizeof(key));
-    ret = CIPHER_Wrapper_CcmEncryptAndTag(sizeof(cipher), nonce, sizeof(nonce),
-                                          authIn, sizeof(authIn), plain, cipher,
-                                          tag, sizeof(tag));
+    ret = CIPHER_Wrapper_AesCcmSetkey(key);
+    ret = CIPHER_Wrapper_AesCcmEncryptAndTag(sizeof(cipher), nonce, sizeof(nonce),
+                                             authIn, sizeof(authIn),
+                                             plain, cipher,
+                                             tag, sizeof(tag));
     </code>
 
   Remarks:
     None.
 */
 
-int32_t CIPHER_Wrapper_CcmEncryptAndTag(uint32_t length,
-                                        const uint8_t *iv, uint32_t ivLen,
-                                        const uint8_t *add, uint32_t addLen,
-                                        const uint8_t *input, uint8_t *output,
-                                        uint8_t *tag, uint32_t tagLen);
+int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint32_t length,
+                                           uint8_t *iv, uint32_t ivLen,
+                                           uint8_t *add, uint32_t addLen,
+                                           uint8_t *input, uint8_t *output,
+                                           uint8_t *tag, uint32_t tagLen);
 
 //******************************************************************************
 /* Function:
