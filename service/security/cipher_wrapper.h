@@ -72,56 +72,27 @@ Microchip or any third party.
 
 //******************************************************************************
 /* Function:
-    int32_t CIPHER_Wrapper_CmacStart(const uint8_t *key, uint32_t keyLen)
+    int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
+                                         uint8_t *outputMac, uint8_t *key)
 
   Summary:
-    Sets the CMAC key and prepares to authenticate the input data.
+    Performs AES-CMAC to generate the MAC in single step without initialization.
 
   Description:
-    This function sets the CMAC key and prepares to authenticate the input data.
+    This function performs AES-CMAC to generate the MAC in single step without
+    initialization. To verify, the user can compare the generated MAC with the
+    MAC received from sender with message. The size of the key is 16 bytes. The
+    size of the MAC is equal to the AES block size (16 bytes).
 
   Precondition:
-    The crypto initialization routines should be called before calling this
-    routine (in "SYS_Initialize").
-
-  Parameters:
-    key    - Pointer to buffer holding the key itself.
-    keyLen - Length of key in bytes.
-
-  Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful initialization.
-    - Any other value: Error in the initialization.
-
-  Example:
-    <code>
-    int32_t ret;
-    uint8_t key[] = { some key };
-    ret = CIPHER_Wrapper_CmacStart(key, sizeof(key));
-    </code>
-
-  Remarks:
     None.
-*/
-
-int32_t CIPHER_Wrapper_CmacStart(const uint8_t *key, uint32_t keyLen);
-
-//******************************************************************************
-/* Function:
-    int32_t CIPHER_Wrapper_CmacUpdate(const uint8_t *input, uint32_t iLen)
-
-  Summary:
-    Feeds an input buffer into an ongoing CMAC computation.
-
-  Description:
-    This function feeds an input buffer into an ongoing CMAC computation.
-
-  Precondition:
-    The computation must be started earlier with a call to
-    CIPHER_Wrapper_CmaStart.
 
   Parameters:
-    input - Pointer to buffer holding the input data.
-    iLen  - Length of the input data in bytes.
+    input     - Pointer to buffer holding the input data.
+    inputLen  - Length of the input data in bytes.
+    outputMac - Pointer to store the output data (MAC). The size of the buffer
+                must be equal or larger than the AES block size (16 bytes).
+    key       - Pointer to buffer holding the 16-byte key itself.
 
   Returns:
     - CIPHER_WRAPPER_RETURN_GOOD: Successful process.
@@ -131,58 +102,18 @@ int32_t CIPHER_Wrapper_CmacStart(const uint8_t *key, uint32_t keyLen);
     <code>
     int32_t ret;
     uint8_t in1[] = { some input data };
-    uint8_t key[] = { some key };
+    uint8_t out1[16];
+    uint8_t key[16] = { some key };
 
-    ret = CIPHER_Wrapper_CmacStart(key, sizeof(key));
-    ret = CIPHER_Wrapper_CmacUpdate(in1, sizeof(in1));
+    ret = CIPHER_Wrapper_AesCmacDirect(in1, sizeof(in1), out1, key);
     </code>
 
   Remarks:
     None.
 */
 
-int32_t CIPHER_Wrapper_CmacUpdate(const uint8_t *input, uint32_t iLen);
-
-//******************************************************************************
-/* Function:
-    int32_t CIPHER_Wrapper_CmacFinish(uint8_t *output)
-
-  Summary:
-    Finishes the CMAC operation and writes the result to the output buffer.
-
-  Description:
-    This function finishes the CMAC operation and writes the result to the
-    output buffer.
-
-  Precondition:
-    The computation must be started earlier with calls to
-    CIPHER_Wrapper_CmacStart and CIPHER_Wrapper_CmacUpdate.
-
-  Parameters:
-    output - Pointer to buffer holding the output data. The size of the buffer
-             must be equal or larger than AES_BLOCK_SIZE (16 bytes).
-
-  Returns:
-    - CIPHER_WRAPPER_RETURN_GOOD: Successful process.
-    - Any other value: Error in the process.
-
-  Example:
-    <code>
-    int32_t ret;
-    uint8_t in1[] = { some input data };
-    uint8_t out1[AES_BLOCK_SIZE];
-    uint8_t key[] = { some key };
-
-    ret = CIPHER_Wrapper_CmacStart(key, sizeof(key));
-    ret = CIPHER_Wrapper_CmacUpdate(in1, sizeof(in1));
-    ret = CIPHER_Wrapper_CmacFinish(out1);
-    </code>
-
-  Remarks:
-    None.
-*/
-
-int32_t CIPHER_Wrapper_CmacFinish(uint8_t *output);
+int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
+                                     uint8_t *outputMac, uint8_t *key);
 
 //******************************************************************************
 /* Function:

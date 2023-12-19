@@ -55,12 +55,9 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Static Data
+// Section: File Scope Data
 // *****************************************************************************
 // *****************************************************************************
-
-/* CMAC context used in this wrapper */
-static Cmac sCmacCtx;
 
 /* CCM context used in this wrapper */
 static Aes sCcmCtx;
@@ -74,21 +71,11 @@ static eax_ctx sEaxCtx;
 // *****************************************************************************
 // *****************************************************************************
 
-int32_t CIPHER_Wrapper_CmacStart(const uint8_t *key, uint32_t keyLen)
+int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
+                                     uint8_t *outputMac, uint8_t *key)
 {
-    return wc_InitCmac(&sCmacCtx, key, keyLen, (int32_t) WC_CMAC_AES, NULL);
-}
-
-int32_t CIPHER_Wrapper_CmacUpdate(const uint8_t *input, uint32_t iLen)
-{
-    return wc_CmacUpdate(&sCmacCtx, input, iLen);
-}
-
-int32_t CIPHER_Wrapper_CmacFinish(uint8_t *output)
-{
-    unsigned int outputLen = AES_BLOCK_SIZE;
-
-    return wc_CmacFinal(&sCmacCtx, output, &outputLen);
+    return (int32_t) I_Crypto_Mac_AesCmac_Direct(CRYPTO_HANDLER_SW_WOLFCRYPT,
+            input, inputLen, outputMac, 16, key, CRYPTO_AESKEYSIZE_128, 0);
 }
 
 int32_t CIPHER_Wrapper_CcmSetkey(const uint8_t *key, uint32_t keyLen)

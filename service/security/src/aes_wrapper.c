@@ -48,7 +48,7 @@ Microchip or any third party.
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Static Data
+// Section: File Scope Data
 // *****************************************************************************
 // *****************************************************************************
 
@@ -64,7 +64,8 @@ static st_Crypto_Sym_BlockCtx aesWrapperContext;
 void AES_Wrapper_SetEncryptEcbKey(uint8_t *key)
 {
     (void) I_Crypto_Sym_Aes_Init(&aesWrapperContext, CRYPTO_HANDLER_SW_WOLFCRYPT,
-            CRYPTO_SYM_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_ECB, key, 16, NULL, 0)
+            CRYPTO_SYM_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_ECB,
+            key, CRYPTO_AESKEYSIZE_128, NULL, 0)
 }
 
 void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
