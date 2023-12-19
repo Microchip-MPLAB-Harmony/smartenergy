@@ -46,12 +46,9 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include <string.h>
-#include <stdbool.h>
-#include "definitions.h"
 #include "cipher_wrapper.h"
-#include "eax.h"
-#include "wolfssl/wolfcrypt/cmac.h"
+#include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
+#include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -61,9 +58,6 @@ Microchip or any third party.
 
 /* CCM context used in this wrapper */
 static st_Crypto_Aead_AesCcm_ctx cipherWrapperCcmContext;
-
-/* EAX context used in this wrapper */
-static eax_ctx sEaxCtx;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -75,61 +69,53 @@ int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
                                      uint8_t *outputMac, uint8_t *key)
 {
     return (int32_t) I_Crypto_Mac_AesCmac_Direct(CRYPTO_HANDLER_SW_WOLFCRYPT,
-            input, inputLen, outputMac, 16, key, CRYPTO_AESKEYSIZE_128, 0);
+            input, inputLen, outputMac, 16, key, CRYPTO_AESKEYSIZE_128, 1);
 }
 
 int32_t CIPHER_Wrapper_AesCcmSetkey(uint8_t *key)
 {
-    reutrn (int32_t) I_Crypto_Aead_AesCcm_Init(&cipherWrapperCcmContext,
-            CRYPTO_HANDLER_SW_WOLFCRYPT, key, CRYPTO_AESKEYSIZE_128, 0);
+    return (int32_t) I_Crypto_Aead_AesCcm_Init(&cipherWrapperCcmContext,
+            CRYPTO_HANDLER_SW_WOLFCRYPT, key, CRYPTO_AESKEYSIZE_128, 1);
 }
 
-int32_t CIPHER_Wrapper_AesCcmAuthDecrypt(uint32_t length,
+int32_t CIPHER_Wrapper_AesCcmAuthDecrypt(uint8_t *data, uint32_t dataLen,
                                          uint8_t *iv, uint32_t ivLen,
-                                         uint8_t *add, uint32_t addLen,
-                                         uint8_t *input, uint8_t *output,
+                                         uint8_t *aad, uint32_t aadLen,
                                          uint8_t *tag, uint32_t tagLen)
 {
-    reutrn (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
-            CRYPTO_CIOP_DECRYPT, input, length, output,
-            iv, ivLen, tag, tagLen, add, addLen);
+    return (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
+            CRYPTO_CIOP_DECRYPT, data, dataLen, data,
+            iv, ivLen, tag, tagLen, aad, aadLen);
 }
 
-int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint32_t length,
+int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint8_t *data, uint32_t dataLen,
                                            uint8_t *iv, uint32_t ivLen,
-                                           uint8_t *add, uint32_t addLen,
-                                           uint8_t *input, uint8_t *output,
+                                           uint8_t *aad, uint32_t aadLen,
                                            uint8_t *tag, uint32_t tagLen)
 {
-    reutrn (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
-            CRYPTO_CIOP_ENCRYPT, input, length, output,
-            iv, ivLen, tag, tagLen, add, addLen);
+    return (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
+            CRYPTO_CIOP_ENCRYPT, data, dataLen, data,
+            iv, ivLen, tag, tagLen, aad, aadLen);
 }
 
-int32_t CIPHER_Wrapper_EaxInitKey(const uint8_t *key, uint32_t keyLen)
+int32_t CIPHER_Wrapper_AesEaxEncrypt(uint8_t *data, uint32_t dataLen,
+                                     uint8_t *iv, uint32_t ivLen,
+                                     uint8_t *aad, uint32_t aadLen,
+                                     uint8_t *tag, uint32_t tagLen,
+                                     uint8_t *key)
 {
-    return eax_init_and_key(key, keyLen, &sEaxCtx);
+    return (int32_t) I_Crypto_Aead_AesEax_EncryptAuthDirect(
+            CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, data, key, CRYPTO_AESKEYSIZE_128,
+            iv, ivLen, aad, aadLen, tag, tagLen, 1);
 }
 
-int32_t CIPHER_Wrapper_EaxEncrypt(const uint8_t *iv, uint32_t ivLen,
-                                  const uint8_t *hdr, uint32_t hdrLen,
-                                  uint8_t *msg, uint32_t msgLen,
-                                  uint8_t *tag, uint32_t tagLen)
+int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
+                                     uint8_t *iv, uint32_t ivLen,
+                                     uint8_t *aad, uint32_t aadLen,
+                                     uint8_t *tag, uint32_t tagLen,
+                                     uint8_t *key)
 {
-    return eax_encrypt_message(iv, ivLen, hdr, hdrLen, msg, msgLen, tag,
-                               tagLen, &sEaxCtx);
-}
-
-int32_t CIPHER_Wrapper_EaxDecrypt(const uint8_t *iv, uint32_t ivLen,
-                                  const uint8_t *hdr, uint32_t hdrLen,
-                                  uint8_t *msg, uint32_t msgLen,
-                                  const uint8_t *tag, uint32_t tagLen)
-{
-    return eax_decrypt_message(iv, ivLen, hdr, hdrLen, msg, msgLen, tag,
-                               tagLen, &sEaxCtx);
-}
-
-int32_t CIPHER_Wrapper_EaxEnd(void)
-{
-    return eax_end(&sEaxCtx);
+    return (int32_t) I_Crypto_Aead_AesEax_DecryptAuthDirect(
+            CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, data, key, CRYPTO_AESKEYSIZE_128,
+            iv, ivLen, aad, aadLen, tag, tagLen, 1);
 }

@@ -43,8 +43,8 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-#include "definitions.h"
 #include "aes_wrapper.h"
+#include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -64,8 +64,8 @@ static st_Crypto_Sym_BlockCtx aesWrapperContext;
 void AES_Wrapper_SetEncryptEcbKey(uint8_t *key)
 {
     (void) I_Crypto_Sym_Aes_Init(&aesWrapperContext, CRYPTO_HANDLER_SW_WOLFCRYPT,
-            CRYPTO_SYM_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_ECB,
-            key, CRYPTO_AESKEYSIZE_128, NULL, 0)
+            CRYPTO_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_ECB,
+            key, CRYPTO_AESKEYSIZE_128, NULL, 1);
 }
 
 void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
