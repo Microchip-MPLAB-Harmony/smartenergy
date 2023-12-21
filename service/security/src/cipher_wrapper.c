@@ -49,6 +49,7 @@ Microchip or any third party.
 #include "cipher_wrapper.h"
 #include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
 #include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
+#include <string.h>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -58,6 +59,9 @@ Microchip or any third party.
 
 /* CCM context used in this wrapper */
 static st_Crypto_Aead_AesCcm_ctx cipherWrapperCcmContext;
+
+/* Auxiliary buffer for EAX output */
+static uint8_t cipherWrapperOutAux[128];
 
 // *****************************************************************************
 // *****************************************************************************
@@ -104,9 +108,18 @@ int32_t CIPHER_Wrapper_AesEaxEncrypt(uint8_t *data, uint32_t dataLen,
                                      uint8_t *tag, uint32_t tagLen,
                                      uint8_t *key)
 {
-    return (int32_t) I_Crypto_Aead_AesEax_EncryptAuthDirect(
-            CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, data, key, CRYPTO_AESKEYSIZE_128,
-            iv, ivLen, aad, aadLen, tag, tagLen, 1);
+    int32_t result = (int32_t) CRYPTO_AEAD_ERROR_INPUTDATA;
+
+    if (dataLen <= sizeof(cipherWrapperOutAux))
+    {
+        result = (int32_t) I_Crypto_Aead_AesEax_EncryptAuthDirect(
+                CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, cipherWrapperOutAux, key,
+                CRYPTO_AESKEYSIZE_128, iv, ivLen, aad, aadLen, tag, tagLen, 1);
+
+        (void) memcpy(data, cipherWrapperOutAux, dataLen);
+    }
+
+    return result;
 }
 
 int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
@@ -115,7 +128,16 @@ int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
                                      uint8_t *tag, uint32_t tagLen,
                                      uint8_t *key)
 {
-    return (int32_t) I_Crypto_Aead_AesEax_DecryptAuthDirect(
-            CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, data, key, CRYPTO_AESKEYSIZE_128,
-            iv, ivLen, aad, aadLen, tag, tagLen, 1);
+    int32_t result = (int32_t) CRYPTO_AEAD_ERROR_INPUTDATA;
+
+    if (dataLen <= sizeof(cipherWrapperOutAux))
+    {
+        result = (int32_t) I_Crypto_Aead_AesEax_DecryptAuthDirect(
+                CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, cipherWrapperOutAux, key,
+                CRYPTO_AESKEYSIZE_128, iv, ivLen, aad, aadLen, tag, tagLen, 1);
+
+        (void) memcpy(data, cipherWrapperOutAux, dataLen);
+    }
+
+    return result;
 }
