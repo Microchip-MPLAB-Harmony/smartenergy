@@ -51,7 +51,7 @@ Microchip or any third party.
 #include "definitions.h"
 <#if (trng)??>
 <#elseif (lib_crypto)??>
-#include "crypto/crypto.h"
+#include "wolfssl/wolfcrypt/random.h"
 <#else>
 #include <rand.h>
 </#if>
@@ -70,11 +70,11 @@ uint8_t SRV_RANDOM_Get8bits(void)
 <#if (trng)??>
     retValue = (uint8_t)TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    CRYPT_RNG_CTX rngCtx;
+    WC_RNG rngCtx;
 
-    (void) CRYPT_RNG_Initialize(&rngCtx);
-    (void) CRYPT_RNG_Get(&rngCtx, (unsigned char*)&retValue);
-    (void) CRYPT_RNG_Deinitialize(&rngCtx);
+    (void) wc_InitRng(&rngCtx);
+    (void) wc_RNG_GenerateByte(&rngCtx, (byte*)&retValue);
+    (void) wc_FreeRng(&rngCtx);
 <#else>
     uint32_t seed; // use uninitialized value
 
@@ -92,11 +92,11 @@ uint16_t SRV_RANDOM_Get16bits(void)
 <#if (trng)??>
     retValue = (uint16_t)TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    CRYPT_RNG_CTX rngCtx;
+    WC_RNG rngCtx;
 
-    (void) CRYPT_RNG_Initialize(&rngCtx);
-    (void) CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)&retValue, 2);
-    (void) CRYPT_RNG_Deinitialize(&rngCtx);
+    (void) wc_InitRng(&rngCtx);
+    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)&retValue, 2);
+    (void) wc_FreeRng(&rngCtx);
 <#else>
     uint32_t seed; // use uninitialized value
 
@@ -127,11 +127,11 @@ uint32_t SRV_RANDOM_Get32bits(void)
 <#if (trng)??>
     retValue = TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    CRYPT_RNG_CTX rngCtx;
+    WC_RNG rngCtx;
 
-    (void) CRYPT_RNG_Initialize(&rngCtx);
-    (void) CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)&retValue, 4);
-    (void) CRYPT_RNG_Deinitialize(&rngCtx);
+    (void) wc_InitRng(&rngCtx);
+    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)&retValue, 4);
+    (void) wc_FreeRng(&rngCtx);
 <#else>
     uint32_t seed; // use uninitialized value
 
@@ -171,11 +171,11 @@ void SRV_RANDOM_Get128bits(uint8_t *rndValue)
         *rndValue++ = (uint8_t)randNum;
     }
 <#elseif (lib_crypto)??>
-    CRYPT_RNG_CTX rngCtx;
+    WC_RNG rngCtx;
 
-    (void) CRYPT_RNG_Initialize(&rngCtx);
-    (void) CRYPT_RNG_BlockGenerate(&rngCtx, (unsigned char*)rndValue, 16);
-    (void) CRYPT_RNG_Deinitialize(&rngCtx);
+    (void) wc_InitRng(&rngCtx);
+    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)rndValue, 16);
+    (void) wc_FreeRng(&rngCtx);
 <#else>
     uint32_t seed; // use uninitialized value
     uint32_t randNum;
