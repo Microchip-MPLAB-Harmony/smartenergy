@@ -23,8 +23,8 @@
 *****************************************************************************"""
 
 def instantiateComponent(crcComponentCommon):
-    
-    Log.writeInfoMessage("Loading PLC CRC Common Service")
+
+    Log.writeInfoMessage("Loading SE CRC Common Service")
 
     ############################################################################
     #### Code Generation ####

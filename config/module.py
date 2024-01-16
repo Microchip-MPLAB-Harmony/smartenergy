@@ -23,32 +23,32 @@
 
 ######################  Harmony Smart Energy  ######################
 def loadModule():
-    
+
     print("Load Module: Harmony Smart Energy")
 
     processor = Variables.get("__PROCESSOR")
-    
+
     ## PLC PHY Driver (G3, PRIME)
     drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC PHY", "/SmartEnergy/Drivers/", "driver/plcPhy/config/drv_plc_phy.py")
-    drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY", True) 
+    drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY", True)
     drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
     drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
     drvPlcPhyComponent.addDependency("drv_plc_phy_CouplingDependency", "PCOUP", "PCOUP", True, False)
     drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
-    
+
     ## G3 MAC RT Driver
     drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3 MAC RT", "/SmartEnergy/Drivers/", "driver/g3MacRt/config/drv_g3_macrt.py")
-    drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT", True) 
+    drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT", True)
     drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
     drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
     drvG3MacRTComponent.addDependency("drv_g3_macrt_CouplingDependency", "PCOUP", "PCOUP", True, False)
     drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
-    
+
     ## Metrology Driver
     if (("MTSH" in processor) or ("MTC" in processor)):
         drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
         drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-        drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)   
+        drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)
         drvMetrologyComponent.setDisplayType("Metrology")
 
     ## RF215 Driver
@@ -81,10 +81,10 @@ def loadModule():
     ## srvUSITCPAuxComponent.addDependency("srv_usi_TCP_dependency", "TCP", True, True)
     ## srvUSITCPAuxComponent.setDisplayType("PLC Service")
 
-    ## PCRC Service (CRC service)
-    srvPCRCComponent = Module.CreateComponent("srv_pcrc", "CRC", "/SmartEnergy/Services/", "service/pcrc/config/srv_pcrc.py")
+    ## PCRC Service (SE CRC service)
+    srvPCRCComponent = Module.CreateComponent("srv_pcrc", "SE CRC", "/SmartEnergy/Services/", "service/pcrc/config/srv_pcrc.py")
     srvPCRCComponent.addCapability("libsrvPCRC", "PCRC", "PCRC", True)
-    srvPCRCComponent.setDisplayType("CRC Service")
+    srvPCRCComponent.setDisplayType("SE CRC Service")
 
     ## PSERIAL Service (PHY Layer serialization service)
     srvPSERIALComponent = Module.CreateComponent("srv_pserial", "PLC PHY Serial", "/SmartEnergy/Services/", "service/pserial/config/srv_pserial.py")
@@ -117,7 +117,7 @@ def loadModule():
     srvSPISplitterComponent.addMultiCapability("srv_spiplit_SPI_capability", "SPI", "SPI")
     srvSPISplitterComponent.setDisplayType("SPI SPlitter")
 
-    ## Log Report Service  
+    ## Log Report Service
     srvLogReportComponent = Module.CreateComponent("srvLogReport", "Log Report", "/SmartEnergy/Services", "service/log_report/config/srv_log_report.py")
     srvLogReportComponent.addCapability("libsrvLogReport", "Log Report", True)
     srvLogReportComponent.addDependency("srv_logreport_sys_debug_dependency", "SYS_DEBUG", True, False)
@@ -125,18 +125,18 @@ def loadModule():
 
     ## Queue Service
     srvQueueComponent = Module.CreateComponent("srvQueue", "Queue", "/SmartEnergy/Services", "service/queue/config/srv_queue.py")
-    srvQueueComponent.addCapability("libsrvQueue", "Queue", True)	
+    srvQueueComponent.addCapability("libsrvQueue", "Queue", True)
     srvQueueComponent.addDependency("srv_queue_logreport_dependency", "Log Report", True, True)
     srvQueueComponent.setDisplayType("Queue Service")
-    
+
     ## Random Service
     srvRandomComponent = Module.CreateComponent("srvRandom", "Random", "/SmartEnergy/Services", "service/random/config/srv_random.py")
     srvRandomComponent.addCapability("libsrvRandom", "Random", True)
     srvRandomComponent.addDependency("srv_random_crypto_dependency", "LIB_CRYPTO", True, False)
     srvRandomComponent.setDisplayType("Random Service")
-    
+
     ## Security
     srvSecurityComponent = Module.CreateComponent("srvSecurity", "Security", "/SmartEnergy/Services", "service/security/config/srv_security.py")
-    srvSecurityComponent.addCapability("libsrvSecurity", "Security", True)  
+    srvSecurityComponent.addCapability("libsrvSecurity", "Security", True)
     srvSecurityComponent.addDependency("security_crypto_dependency", "LIB_CRYPTO", True, True)
     srvSecurityComponent.setDisplayType("Security Service")
