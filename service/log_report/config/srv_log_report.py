@@ -25,7 +25,7 @@ srv_log_report_helpkeyword = "srv_log_report_configurations"
 
 def instantiateComponent(srvLogReportComponent):
 
-    Log.writeInfoMessage("Loading Log Report service")
+    Log.writeInfoMessage("Loading SE Log Report service")
 
     ############################################################################
     #### Code Generation ####

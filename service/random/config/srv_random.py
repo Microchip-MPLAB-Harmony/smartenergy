@@ -22,8 +22,8 @@
 *****************************************************************************"""
 
 def instantiateComponent(srvRandomComponent):
-    
-    Log.writeInfoMessage("Loading Random service")
+
+    Log.writeInfoMessage("Loading SE Random service")
 
     # Activate TRNG if exists
     Database.activateComponents(["trng"])
@@ -32,7 +32,7 @@ def instantiateComponent(srvRandomComponent):
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
-    
+
     # Random Files
     pRandomSource = srvRandomComponent.createFileSymbol("SRV_RANDOM_SOURCE", None)
     pRandomSource.setSourcePath("service/random/srv_random.c.ftl")
@@ -41,7 +41,7 @@ def instantiateComponent(srvRandomComponent):
     pRandomSource.setProjectPath("config/" + configName + "/service/random/")
     pRandomSource.setType("SOURCE")
     pRandomSource.setMarkup(True)
-    
+
     pRandomHeader = srvRandomComponent.createFileSymbol("SRV_RANDOM_HEADER", None)
     pRandomHeader.setSourcePath("service/random/srv_random.h")
     pRandomHeader.setOutputName("srv_random.h")

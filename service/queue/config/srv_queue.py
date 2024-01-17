@@ -22,14 +22,14 @@
 *****************************************************************************"""
 
 def instantiateComponent(srvQueueComponent):
-    
-    Log.writeInfoMessage("Loading Queue service")
+
+    Log.writeInfoMessage("Loading SE Queue service")
 
     ############################################################################
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
-    
+
     # Queue Files
     pQueueSource = srvQueueComponent.createFileSymbol("SRV_QUEUE_SOURCE", None)
     pQueueSource.setSourcePath("service/queue/srv_queue.c")
@@ -37,7 +37,7 @@ def instantiateComponent(srvQueueComponent):
     pQueueSource.setDestPath("service/queue")
     pQueueSource.setProjectPath("config/" + configName + "/service/queue/")
     pQueueSource.setType("SOURCE")
-    
+
     pQueueHeader = srvQueueComponent.createFileSymbol("SRV_QUEUE_HEADER", None)
     pQueueHeader.setSourcePath("service/queue/srv_queue.h")
     pQueueHeader.setOutputName("srv_queue.h")

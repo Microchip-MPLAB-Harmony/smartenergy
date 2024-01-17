@@ -73,7 +73,7 @@ def loadModule():
     ## srvUSIComponent.addDependency("srv_usi_TCP_AUX_dependency", "USI_TCP_AUX", False, False)
     srvUSIComponent.addDependency("srv_usi_HarmonyCore_dependency", "Core Service", "Core Service", True, True)
     srvUSIComponent.addDependency("srv_usi_CRC_dependency", "PCRC", "PCRC", True, True)
-    srvUSIComponent.addDependency("srv_usi_logreport_dependency", "Log Report", True, True)
+    srvUSIComponent.addDependency("srv_usi_logreport_dependency", "SE Log Report", True, True)
     srvUSIComponent.setDisplayType("USI Service")
 
     ## srvUSITCPAuxComponent = Module.CreateComponent("usi_tcp_aux", "USI_TCP_AUX", "/SmartEnergy/Services/", "service/usi_tcp_aux/config/srv_usi_tcp_aux.py")
@@ -96,7 +96,7 @@ def loadModule():
     srvPSNIFFERComponent.addCapability("libsrvPSniffer", "PSNF", "PSNF", True)
     srvPSNIFFERComponent.setDisplayType("Phy Sniffer Service")
 
-    ## PLC PVDD Monitor Service (True Random Generator Service)
+    ## PLC PVDD Monitor Service (Voltage Monitor Service)
     srvPVDDMonitorComponent = Module.CreateComponent("srv_pvddmon", "PLC PVDD Monitor", "/SmartEnergy/Services/", "service/pvddmon/config/srv_pvddmon.py")
     srvPVDDMonitorComponent.addDependency("srv_pvddmon_ADC_dependency", "ADC", False, False)
     srvPVDDMonitorComponent.setDisplayType("PLC PVDD Monitor Service")
@@ -118,25 +118,25 @@ def loadModule():
     srvSPISplitterComponent.setDisplayType("SPI SPlitter")
 
     ## Log Report Service
-    srvLogReportComponent = Module.CreateComponent("srvLogReport", "Log Report", "/SmartEnergy/Services", "service/log_report/config/srv_log_report.py")
-    srvLogReportComponent.addCapability("libsrvLogReport", "Log Report", True)
+    srvLogReportComponent = Module.CreateComponent("srvLogReport", "SE Log Report", "/SmartEnergy/Services", "service/log_report/config/srv_log_report.py")
+    srvLogReportComponent.addCapability("libsrvLogReport", "SE Log Report", True)
     srvLogReportComponent.addDependency("srv_logreport_sys_debug_dependency", "SYS_DEBUG", True, False)
-    srvLogReportComponent.setDisplayType("Log Report Service")
+    srvLogReportComponent.setDisplayType("SE Log Report Service")
 
     ## Queue Service
-    srvQueueComponent = Module.CreateComponent("srvQueue", "Queue", "/SmartEnergy/Services", "service/queue/config/srv_queue.py")
-    srvQueueComponent.addCapability("libsrvQueue", "Queue", True)
-    srvQueueComponent.addDependency("srv_queue_logreport_dependency", "Log Report", True, True)
-    srvQueueComponent.setDisplayType("Queue Service")
+    srvQueueComponent = Module.CreateComponent("srvQueue", "SE Queue", "/SmartEnergy/Services", "service/queue/config/srv_queue.py")
+    srvQueueComponent.addCapability("libsrvQueue", "SE Queue", True)
+    srvQueueComponent.addDependency("srv_queue_logreport_dependency", "SE Log Report", True, True)
+    srvQueueComponent.setDisplayType("SE Queue Service")
 
     ## Random Service
-    srvRandomComponent = Module.CreateComponent("srvRandom", "Random", "/SmartEnergy/Services", "service/random/config/srv_random.py")
-    srvRandomComponent.addCapability("libsrvRandom", "Random", True)
+    srvRandomComponent = Module.CreateComponent("srvRandom", "SE Random", "/SmartEnergy/Services", "service/random/config/srv_random.py")
+    srvRandomComponent.addCapability("libsrvRandom", "SE Random", True)
     srvRandomComponent.addDependency("srv_random_crypto_dependency", "LIB_CRYPTO", True, False)
-    srvRandomComponent.setDisplayType("Random Service")
+    srvRandomComponent.setDisplayType("SE Random Service")
 
-    ## Security
-    srvSecurityComponent = Module.CreateComponent("srvSecurity", "Security", "/SmartEnergy/Services", "service/security/config/srv_security.py")
-    srvSecurityComponent.addCapability("libsrvSecurity", "Security", True)
+    ## Security Service
+    srvSecurityComponent = Module.CreateComponent("srvSecurity", "SE Security", "/SmartEnergy/Services", "service/security/config/srv_security.py")
+    srvSecurityComponent.addCapability("libsrvSecurity", "SE Security", True)
     srvSecurityComponent.addDependency("security_crypto_dependency", "LIB_CRYPTO", True, True)
-    srvSecurityComponent.setDisplayType("Security Service")
+    srvSecurityComponent.setDisplayType("SE Security Service")
