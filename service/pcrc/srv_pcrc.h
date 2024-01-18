@@ -12,34 +12,34 @@
 
   Description:
     The CRC wrapper provides a simple interface to manage the CRC needs
-    for PLC components. This file implements the CRC core interface routines
-    for PLC.
+    for PLC components. This file implements the CRC core interface routines 
+    for PLC. 
 
 *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
-/*
-Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
-
-The software and documentation is provided by microchip and its contributors
-"as is" and any express, implied or statutory warranties, including, but not
-limited to, the implied warranties of merchantability, fitness for a particular
-purpose and non-infringement of third party intellectual property rights are
-disclaimed to the fullest extent permitted by law. In no event shall microchip
-or its contributors be liable for any direct, indirect, incidental, special,
-exemplary, or consequential damages (including, but not limited to, procurement
-of substitute goods or services; loss of use, data, or profits; or business
-interruption) however caused and on any theory of liability, whether in contract,
-strict liability, or tort (including negligence or otherwise) arising in any way
-out of the use of the software and documentation, even if advised of the
-possibility of such damage.
-
-Except as expressly permitted hereunder and subject to the applicable license terms
-for any third-party software incorporated in the software and any applicable open
-source software license terms, no license or other rights, whether express or
-implied, are granted under any patent or other intellectual property rights of
-Microchip or any third party.
-*/
+/*******************************************************************************
+* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
+*
+* Subject to your compliance with these terms, you may use Microchip software
+* and any derivatives exclusively with Microchip products. It is your
+* responsibility to comply with third party license terms applicable to your
+* use of third party software (including open source software) that may
+* accompany Microchip software.
+*
+* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
+* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
+* PARTICULAR PURPOSE.
+*
+* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
+* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
+* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
+* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+*******************************************************************************/
 // DOM-IGNORE-END
 
 #ifndef SRV_PCRC_H    // Guards against multiple inclusion
@@ -80,12 +80,14 @@ Microchip or any third party.
     None
 */
 
-typedef enum
+typedef enum 
 {
     PCRC_HT_GENERIC = 0, /* PRIME Generic Packet type */
     PCRC_HT_PROMOTION = 1, /* PRIME Promotion Packet type */
     PCRC_HT_BEACON = 2, /* PRIME Beacon Packet type */
-    PCRC_HT_USI = 3 /* USI Packet type */
+    PCRC_HT_USI = 3, /* USI Packet type */
+    PCRC_HT_SAR = 4, /*PRIME SAR Packet type  */
+    PCRC_HT_FU = 5 /* PRIME FU Packet type */
 }PCRC_HEADER_TYPE;
 
 // *****************************************************************************
@@ -98,7 +100,7 @@ typedef enum
     None
 */
 
-typedef enum
+typedef enum 
 {
     PCRC_CRC8 = 0, /* 8-bit CRC */
     PCRC_CRC16 = 1, /* 16-bit CRC */
@@ -106,11 +108,15 @@ typedef enum
     PCRC_NOCRC = 3 /* No CRC */
 }PCRC_CRC_TYPE;
 
-/* SRV_PCRC Handle Macro: Invalid CRC */
+/* SRV_PCRC Handle Macro: Invalid CRC */  
 #define PCRC_INVALID     0xFFFFFFFFUL
 
-/* SRV_PCRC Handle Macro: SNA size */
+/* SRV_PCRC Handle Macro: SNA size */  
 #define PCRC_SNA_SIZE 6
+
+
+/* PRIME v1.4 constant CRC size: Constant CRC field size */
+#define PCRC_CONST_BCN_PRIME_1_4_SIZE       4
 
 // *****************************************************************************
 // *****************************************************************************
@@ -121,11 +127,12 @@ typedef enum
 // *****************************************************************************
 /* Function:
     uint32_t SRV_PCRC_GetValue(
-      uint8_t *pData,
+      uint8_t *pData, 
       size_t length,
-      PCRC_HEADER_TYPE hdrType,
+      PCRC_HEADER_TYPE hdrType, 
       PCRC_CRC_TYPE crcType,
-      uint32_t initValue
+      uint32_t initValue,
+      bool v14Mode
     );
 
   Summary:
@@ -143,16 +150,18 @@ typedef enum
 
     length -    Length of the data stream.
 
-    hdrType -   Header type to determine the method to obtain CRC.
-                It is different for USI and PRIME
+    hdrType -   Header type to determine the method to obtain CRC. 
+                It is different for USI and PRIME 
                 packets (GENERIC, PROMOTION and BEACON).
 
     crcType -   CRC type(8, 16 or 32 bits). Valid only in case of
                 header type PCRC_HT_USI.
 
-    initValue - Initialization value for CRC computation. Valid only in case
+    initValue - Initialization value for CRC computation. Valid only in case 
                 of header type PCRC_HT_USI.
-
+    
+    v14Mode - true for Prime v1.4 mode and otherwise false.
+ 
   Returns:
     If successful, the routine returns a valid CRC value.
     If an error occurs, the return value is PCRC_INVALID. Error can occur if
@@ -163,19 +172,19 @@ typedef enum
   Example:
     <code>
     uint32_t valueTmp32;
-
+    
     valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, PCRC_CRC32);
     </code>
 
   Remarks:
     None.
-*/
+*/        
 uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
-        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue);
+        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue,bool v14Mode);
 
 // *****************************************************************************
 /* Function:
-    void SRV_PCRC_SetSNAValue (uint8_t* sna);
+    void SRV_PCRC_ConfigureSNA (uint8_t* sna);
 
   Summary:
     Sets SNA (Sub-Network Address) value to be used as initial value on
@@ -197,13 +206,13 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
   Example:
     <code>
     uint8_t sna[PCRC_SNA_SIZE];
-
+    
     SRV_PCRC_SetSNAValue(sna);
     </code>
 
   Remarks:
     None.
-*/
-void SRV_PCRC_SetSNAValue (uint8_t* sna);
+*/  
+void SRV_PCRC_ConfigureSNA (uint8_t* sna);
 
 #endif //SRV_PCRC_H
