@@ -160,7 +160,7 @@ typedef enum
     initValue - Initialization value for CRC computation. Valid only in case 
                 of header type PCRC_HT_USI.
     
-    v14Mode - true for Prime v1.4 mode and otherwise false.
+    v14Mode - true for PRIME v1.4 mode and otherwise false.
  
   Returns:
     If successful, the routine returns a valid CRC value.
