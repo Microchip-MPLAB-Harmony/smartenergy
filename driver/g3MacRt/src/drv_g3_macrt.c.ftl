@@ -434,15 +434,15 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable )
         }
     }
 }
-</#if>
 
-<#if DRV_PLC_MODE == "PL460">
+</#if>
 void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable )
 {
-     if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
+<#if DRV_PLC_MODE == "PL460">
+    if((handle != DRV_HANDLE_INVALID) && (handle == 0U))
     {
         /* Set Tx Enable pin */
         gDrvG3MacRtObj.plcHal->setTxEnable(enable);
     }
+</#if>
 }
-</#if>   

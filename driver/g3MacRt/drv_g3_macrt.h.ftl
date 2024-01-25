@@ -1623,7 +1623,6 @@ void DRV_G3_MACRT_SleepIndCallbackRegister(
 void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
 
 </#if> 
-<#if DRV_PLC_MODE == "PL460">
 //***************************************************************************
 /* Function:
     void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable )
@@ -1635,6 +1634,10 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
     This function allows a client to enable or disable the PLC tranmission.
     If there is any transmission on going, it will be cancelled and notified
     through the TX confirmation callback.
+<#if DRV_PLC_MODE == "PL460">
+
+    For PL360 this function does nothing.
+</#if>
 
   Precondition:
     DRV_G3_MACRT_Open must have been called to obtain a valid opened device 
@@ -1672,7 +1675,6 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
 
 void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable );
 
-</#if> 
 //***************************************************************************
 /*
   Function:

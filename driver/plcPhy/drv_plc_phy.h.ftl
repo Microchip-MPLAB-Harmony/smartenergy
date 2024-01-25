@@ -1127,12 +1127,7 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object );
 
 void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable );
 
-</#if> 
-#ifdef __cplusplus
-}
-#endif
-
-<#if DRV_PLC_MODE == "PL460">
+</#if>
 /***************************************************************************
   Function:
     void DRV_PLC_PHY_EnableTX( const DRV_HANDLE handle, bool enable )
@@ -1144,6 +1139,10 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable );
     This function allows a client to enable or disable the PLC tranmission.
     If there is any transmission on going, it will be cancelled and notified
     through the TX confirmation callback.
+<#if DRV_PLC_MODE == "PL360">
+
+    For PL360 this function does nothing.
+</#if>
 
   Precondition:
     DRV_PLC_PHY_Open must have been called to obtain a valid opened device
@@ -1181,7 +1180,6 @@ void DRV_PLC_PHY_Sleep( const DRV_HANDLE handle, bool enable );
 
 void DRV_PLC_PHY_EnableTX( const DRV_HANDLE handle, bool enable );
 
-</#if> 
 #ifdef __cplusplus
 }
 #endif
