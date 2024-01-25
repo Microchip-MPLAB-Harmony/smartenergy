@@ -1634,7 +1634,7 @@ void DRV_G3_MACRT_Sleep( const DRV_HANDLE handle, bool enable );
     This function allows a client to enable or disable the PLC tranmission.
     If there is any transmission on going, it will be cancelled and notified
     through the TX confirmation callback.
-<#if DRV_PLC_MODE == "PL460">
+<#if DRV_PLC_MODE == "PL360">
 
     For PL360 this function does nothing.
 </#if>

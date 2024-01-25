@@ -517,6 +517,9 @@ def enablePL460Capabilities(symbol, event):
     else:
         symbol.setVisible(False)
 
+    # Send PL360/PL460 to PLC PAL (if present) to set PVDD Monitor as read-only
+    Database.sendMessage("g3PalPlc", "PLC_DEVICE", {"Device": event["value"]})
+
 def showRTOSMenu(symbol, event):
     symbol.setVisible(event["value"] != "BareMetal")
 
@@ -654,6 +657,7 @@ def instantiateComponent(g3MacRtComponent):
     plcDriverMode.setLabel("PLC Driver Mode")
     plcDriverMode.setDefaultValue("PL460")
     plcDriverMode.setHelp(plc_mac_rt_helpkeyword)
+    Database.sendMessage("g3PalPlc", "PLC_DEVICE", {"Device": "PL460"})
 
     # RTOS CONFIG
     plcRTOSMenu = g3MacRtComponent.createMenuSymbol("DRV_PLC_RTOS_MENU", None)
