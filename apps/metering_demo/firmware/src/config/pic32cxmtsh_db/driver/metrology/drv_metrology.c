@@ -342,8 +342,8 @@ static uint32_t lDRV_Metrology_GetAngleRMS(int64_t p, int64_t q)
     int32_t n;
     uint32_t angle;
 
-    pd = lDRV_Metrology_GetDouble(p);
-    qd = lDRV_Metrology_GetDouble(q);
+    pd = (double)p;
+    qd = (double)q;
     m = atan2(qd, pd);
     m = 180.0 * m;
     m = m * 100000.0;
