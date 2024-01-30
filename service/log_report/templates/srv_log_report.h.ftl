@@ -137,33 +137,135 @@ typedef enum
 
 typedef enum
 {
-    /* Queue Management errors */
-    QUEUE_FULL_INSERT_END          =   600,
-    QUEUE_FULL_INSERT_BEFORE       =   601,
-    QUEUE_FULL_INSERT_AFTER        =   602,
-    QUEUE_FULL_INSERT_FIRST        =   603,
-    QUEUE_EMPTY_REMOVE_HEAD        =   604,
-    QUEUE_EMPTY_READ_REMOVE        =   605,
-    QUEUE_FULL_APPEND              =   606,
-    QUEUE_APPEND_BAD_ELEMENT       =   607,
-    QUEUE_BAD_ELEMENT              =   608,
-    QUEUE_BAD_TAIL                 =   609,
-    QUEUE_APPEND_PRIO_SINGLE       =   610,
-    QUEUE_NOT_INIT_NULL_SIZE       =   611,
-    QUEUE_FIRST_BAD_INIT           =   612,
-    QUEUE_LAST_NOT_TAIL            =   613,
-    QUEUE_TOO_BIG                  =   614,
-    QUEUE_BAD_NEXT_ELEMENT         =   615,
-    QUEUE_WRONG_CHAIN              =   616,
-    QUEUE_APPEND_AGAIN             =   617,
-    QUEUE_APPEND_AGAIN_ONE_ELEMENT =   618,
+   /* CL_432 errors */
+    CL_432_BAD_HANDLER_RECEIVED         =   100,
+    CL_432_UNKNOWN_HANDLER_IN_CONFIRM   =   101,
 
-    /* USI errors */
-    USI_BAD_LENGTH                 =   9001, 
-    USI_BAD_PROTOCOL               =   9002,  
-    USI_BAD_CRC                    =   9003, 
-    USI_INVALID_LENGTH             =   9004,  
-    USI_ERROR_ESCAPE               =   9005
+   /* DB errors */
+    DB_GET_PARAM_BAD_ID                 =   200,
+    DB_GET_PARAM_BAD_SIZE               =   201,
+    DB_SET_PARAM_BAD_ID                 =   202,
+    DB_SET_PARAM_BAD_SIZE               =   203,
+    DB_GET_ELEM_BAD_ID                  =   204,
+    DB_GET_ELEM_BAD_SIZE                =   205,
+    DB_GET_ELEM_BAD_INDEX               =   206,
+    DB_SET_ELEM_BAD_ID                  =   207,
+    DB_SET_ELEM_BAD_SIZE                =   208,
+    DB_SET_ELEM_BAD_INDEX               =   209,
+    
+   /* DISPATCHER errors */
+    DIS_ERROR_BUFF_ADDRESS_PROCESS      =   300,
+    DIS_ERROR_BUFF_ADDRESS_SEND         =   301,
+    DIS_EMPTY_ELEM_INSERT               =   302,
+    DIS_MODULE_NOT_REGISTERED           =   303,
+    DIS_ADD_MSG_ALREADY_ADDED           =   304,
+    DIS_MSG_GEN_ERROR_MSG_DEL           =   305,
+    DIS_TRY_SEND_MSG_DEL                =   306,
+    
+   /* NOTIFICATIONS errors */
+    NOT_NOT_VALID_SIGNAL                =   400,
+    NOT_TABLE_FULL                      =   401,
+    NOT_TOO_MANY_EVENTS                 =   402,
+
+   /* BMM errors */
+    BMM_ALLOC_BUFF_BIGGER_THAN_AVAILABLE=   500,
+    BMM_ALLOC_NO_FREE_BUFF              =   501,
+    BMM_FREE_FREE_BUFF                  =   502,
+
+   /* Queue Management Errors */
+    QUEUE_FULL_INSERT_END               =   600,
+    QUEUE_FULL_INSERT_BEFORE            =   601,
+    QUEUE_FULL_INSERT_AFTER             =   602,
+    QUEUE_FULL_INSERT_FIRST             =   603,
+    QUEUE_EMPTY_REMOVE_HEAD             =   604,
+    QUEUE_EMPTY_READ_REMOVE             =   605,
+    QUEUE_FULL_APPEND                   =   606,
+    QUEUE_APPEND_BAD_ELEMENT            =   607,
+    QUEUE_BAD_ELEMENT                   =   608,
+    QUEUE_BAD_TAIL                      =   609,
+    QUEUE_APPEND_PRIO_SINGLE            =   610,
+    QUEUE_NOT_INIT_NULL_SIZE            =   611,
+    QUEUE_FIRST_BAD_INIT                =   612,
+    QUEUE_LAST_NOT_TAIL                 =   613,
+    QUEUE_TOO_BIG                       =   614,
+    QUEUE_BAD_NEXT_ELEMENT              =   615,
+    QUEUE_WRONG_CHAIN                   =   616,
+    QUEUE_APPEND_AGAIN                  =   617,
+    QUEUE_APPEND_AGAIN_ONE_ELEMENT      =   618,
+
+   /* TMM errors */
+    TMM_NO_FREE_TIMER                   =   700,
+    TMM_QUEUE_EMPTY_REMOVE              =   701,
+    TMM_START_NULL_CB_FUNCTION          =   702,
+    TMM_START_INVALID_TIMER_VALUE       =   703,
+    TMM_UPDATE_TIMER_NOT_RUNNING        =   704,
+    TMM_UPDATE_INVALID_TIMER_VALUE      =   705,
+    TMM_REMOVE_INVALID_TIMER_ID         =   706,
+    TMM_REMOVE_TIMER_NOT_RUNNING        =   707,
+    TMM_RUNNING_INVALID_TIMER_ID        =   708,
+
+   /* BCN errors */
+    BCN_BAD_VALUES_ADJUSTING            =   800,
+
+   /* IQ_PRO errors */
+    IQ_PRO_BAD_QUEUE                    =   900,
+    IQ_PRO_START_PRO                    =   901,
+    IQ_PRO_CONT_PRO                     =   902,
+    IQ_PRO_END_PRO                      =   903,
+    IQ_PRO_BUSY_START_PRO               =   904,
+    IQ_PRO_SERVICE_BAD_STATE            =   905,
+    IQ_PRO_MAX_TIME_PROMOTING           =   906,
+
+   /* BSI Errors */
+    BSI_ERROR                           =   1000,
+
+   /* PRO errors */
+    PRO_START_PRO                       =   1100,
+    PRO_END_PRO_OK                      =   1101,
+    PRO_END_PRO_BAD                     =   1102,
+    PRO_START_DEM                       =   1103,
+    PRO_END_NODE_DISCONNECTED           =   1104,
+    PRO_FIRST_DEM                       =   1105,
+    PRO_NO_VBS_FREE                     =   1106,
+
+   /* PHY Wrapper errors */
+    PHY_WRP_CRC_WRONG_HEADER_TYPE       =   1200,
+    PHY_WRP_WRONG_LEN                   =   1201,
+    PHY_WRP_WRONG_MSG_TYPE              =   1202,
+
+   /* PNPDU errors */
+    PNU_ENHANCED_NOT_AVAILABLE          =   1300,
+
+   /* SWI errors */
+    SWI_INVALID_CHANNEL                 =   1400,
+
+   /* USI Rx Errors */
+
+    USI_NOT_ENOUGH_DATA                 =   9001,
+    USI_BAD_LENGTH                      =   9002,
+    USI_BAD_PROTOCOL                    =   9003,
+    USI_BAD_CRC                         =   9004,
+    USI_INVALID_LENGTH                  =   9005,
+    USI_INTEGRITY_LENGTH                =   9006,
+    USI_WARNING_MSG_NON_PROCESSED       =   9007,
+    USI_WARNING_MSG_NO_INI              =   9008,
+    USI_WARNING_MSG_NO_END              =   9009,
+
+
+   /* PHY Layer Errors */
+    PHY_LAYER_PLC_NOT_AVAILABLE         =   9100,
+    PHY_LAYER_RF_NOT_AVAILABLE          =   9101,
+    PAL_PLC_TIMER_SYNC_ERROR            =   9102,
+
+
+/* Critical system error */
+
+    CRITICAL_ERROR_PRIME_NO_PHY         =   9995,
+    CRITICAL_ERROR_PRIME_NO_PLC         =   9996,
+    CRITICAL_ERROR_PL360_FAILURE        =   9997,
+    CRITICAL_ERROR_RF215_FAILURE        =   9998,
+    CRITICAL_ERROR                      =   9999
+
 
 } SRV_LOG_REPORT_CODE;
 

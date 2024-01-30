@@ -36,6 +36,8 @@ def instantiateComponent(srvLogReportComponent):
     pTracesEnabled = srvLogReportComponent.createBooleanSymbol("ENABLE_TRACES", None)
     if Database.getSymbolValue("g3_config", "G3_DEBUG_ENABLE") != None:
         enabledValue = Database.getSymbolValue("g3_config", "G3_DEBUG_ENABLE")
+    elif (Database.getComponentByID("prime_stack_config") != None):
+        enabledValue = True
     else:
         enabledValue = False
     pTracesEnabled.setValue(enabledValue)

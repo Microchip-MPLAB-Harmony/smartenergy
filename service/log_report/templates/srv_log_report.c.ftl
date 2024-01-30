@@ -51,6 +51,9 @@
 #include <stdarg.h>
 #include "configuration.h"
 #include "srv_log_report.h"
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+#include "gfx/driver/controller/slcdc/cl010.h"
+</#if>
 
 static char message[SYS_CONSOLE_PRINT_BUFFER_SIZE];
 
@@ -74,6 +77,16 @@ static char message[SYS_CONSOLE_PRINT_BUFFER_SIZE];
 
 static va_list srvLogReportArgs;
 
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+static void lshow_cl010_slcdc_numeric_string(enum cl010_line disp_line, SRV_LOG_REPORT_CODE code_type)
+{
+    uint32_t errorType;
+    
+    errorType = code_type % 100000000; /* Only eight digits in the display */
+    cl010_show_numeric_string(disp_line, (const uint8_t *)&errorType);	
+}
+</#if>
+
 void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
                                       SRV_LOG_REPORT_CODE code,
                                       const char *info, ...)
@@ -85,13 +98,9 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
 
     SYS_DEBUG_MESSAGE((SYS_ERROR_LEVEL)logLevel, message);
 
-<#if enableReportDisplay == true>
-//  #if (BOARD == PIC32CXMTSH_DB) || (BOARD == PIC32CXMTC_DB)
-//  uint32_t errorType;
-//  errorType = code % 100000000; /* Only eight digits in the display */
-//  cl010_show_numeric_string(CL010_LINE_UP, (const uint8_t *)&errorType);
-//  #endif
-</#if>
+<#if __PROCESSOR?matches("PIC32CX.*MT.*")>
+    lshow_cl010_slcdc_numeric_string(CL010_LINE_UP,code);
+</#if>    
 }
 
 void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
