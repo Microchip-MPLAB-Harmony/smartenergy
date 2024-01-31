@@ -1254,9 +1254,9 @@ typedef struct
     __O  uint32_t V_C_MAX;                 /**< Offset: 0x50 (R/  32) Max phase-C measured current during measurement interval (sQ2.29)*/
     __O  uint32_t FEATURES;                /**< Offset: 0x54 (R/  32) Compiled feature indicator */
     __O  uint32_t Reserved2[3];
-    __O  uint32_t PULSE0_COUNTER;
-    __O  uint32_t PULSE1_COUNTER;
-    __O  uint32_t PULSE2_COUNTER;
+    __O  uint32_t PULSE0_COUNTER;          /**< Offset: 0x64 (R/  32) Counter of Pulse 0 */
+    __O  uint32_t PULSE1_COUNTER;          /**< Offset: 0x68 (R/  32) Counter of Pulse 1 */
+    __O  uint32_t PULSE2_COUNTER;          /**< Offset: 0x6C (R/  32) Counter of Pulse 2 */
     __O  uint32_t Reserved3[2];
     __O  uint32_t ZC_N_VA;                 /**< Offset: 0x78 (R/  32) Zero-crossing sample number of phase-A voltage (uQ20.12) */
     __O  uint32_t ZC_N_VB;                 /**< Offset: 0x7C (R/  32) Zero-crossing sample number of phase-B voltage (uQ20.12) */
