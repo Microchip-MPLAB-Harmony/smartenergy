@@ -137,11 +137,11 @@ typedef enum
 
 typedef enum
 {
-   /* CL_432 errors */
+    /* PRIME CL_432 Errors */
     CL_432_BAD_HANDLER_RECEIVED         =   100,
     CL_432_UNKNOWN_HANDLER_IN_CONFIRM   =   101,
 
-   /* DB errors */
+    /* PRIME DB Errors */
     DB_GET_PARAM_BAD_ID                 =   200,
     DB_GET_PARAM_BAD_SIZE               =   201,
     DB_SET_PARAM_BAD_ID                 =   202,
@@ -153,7 +153,7 @@ typedef enum
     DB_SET_ELEM_BAD_SIZE                =   208,
     DB_SET_ELEM_BAD_INDEX               =   209,
     
-   /* DISPATCHER errors */
+    /* PRIME DISPATCHER Errors */
     DIS_ERROR_BUFF_ADDRESS_PROCESS      =   300,
     DIS_ERROR_BUFF_ADDRESS_SEND         =   301,
     DIS_EMPTY_ELEM_INSERT               =   302,
@@ -162,17 +162,17 @@ typedef enum
     DIS_MSG_GEN_ERROR_MSG_DEL           =   305,
     DIS_TRY_SEND_MSG_DEL                =   306,
     
-   /* NOTIFICATIONS errors */
+    /* PRIME NOTIFICATIONS Errors */
     NOT_NOT_VALID_SIGNAL                =   400,
     NOT_TABLE_FULL                      =   401,
     NOT_TOO_MANY_EVENTS                 =   402,
 
-   /* BMM errors */
+    /* PRIME BMM Errors */
     BMM_ALLOC_BUFF_BIGGER_THAN_AVAILABLE=   500,
     BMM_ALLOC_NO_FREE_BUFF              =   501,
     BMM_FREE_FREE_BUFF                  =   502,
 
-   /* Queue Management Errors */
+    /* Queue Management Errors */
     QUEUE_FULL_INSERT_END               =   600,
     QUEUE_FULL_INSERT_BEFORE            =   601,
     QUEUE_FULL_INSERT_AFTER             =   602,
@@ -193,7 +193,7 @@ typedef enum
     QUEUE_APPEND_AGAIN                  =   617,
     QUEUE_APPEND_AGAIN_ONE_ELEMENT      =   618,
 
-   /* TMM errors */
+    /* PRIME TMM Errors */
     TMM_NO_FREE_TIMER                   =   700,
     TMM_QUEUE_EMPTY_REMOVE              =   701,
     TMM_START_NULL_CB_FUNCTION          =   702,
@@ -204,10 +204,10 @@ typedef enum
     TMM_REMOVE_TIMER_NOT_RUNNING        =   707,
     TMM_RUNNING_INVALID_TIMER_ID        =   708,
 
-   /* BCN errors */
+    /* PRIME BCN Errors */
     BCN_BAD_VALUES_ADJUSTING            =   800,
 
-   /* IQ_PRO errors */
+    /* PRIME IQ_PRO errors */
     IQ_PRO_BAD_QUEUE                    =   900,
     IQ_PRO_START_PRO                    =   901,
     IQ_PRO_CONT_PRO                     =   902,
@@ -216,10 +216,10 @@ typedef enum
     IQ_PRO_SERVICE_BAD_STATE            =   905,
     IQ_PRO_MAX_TIME_PROMOTING           =   906,
 
-   /* BSI Errors */
+    /* PRIME BSI Errors */
     BSI_ERROR                           =   1000,
 
-   /* PRO errors */
+    /* PRIME PRO Errors */
     PRO_START_PRO                       =   1100,
     PRO_END_PRO_OK                      =   1101,
     PRO_END_PRO_BAD                     =   1102,
@@ -228,38 +228,30 @@ typedef enum
     PRO_FIRST_DEM                       =   1105,
     PRO_NO_VBS_FREE                     =   1106,
 
-   /* PHY Wrapper errors */
+    /* PRIME PHY Wrapper Errors */
     PHY_WRP_CRC_WRONG_HEADER_TYPE       =   1200,
     PHY_WRP_WRONG_LEN                   =   1201,
     PHY_WRP_WRONG_MSG_TYPE              =   1202,
 
-   /* PNPDU errors */
+    /* PRIME PNPDU Errors */
     PNU_ENHANCED_NOT_AVAILABLE          =   1300,
 
-   /* SWI errors */
+    /* PRIME SWI Errors */
     SWI_INVALID_CHANNEL                 =   1400,
 
-   /* USI Rx Errors */
+    /* USI Errors */
+    USI_BAD_LENGTH                      =   9001, 
+    USI_BAD_PROTOCOL                    =   9002,  
+    USI_BAD_CRC                         =   9003, 
+    USI_INVALID_LENGTH                  =   9004,  
+    USI_ERROR_ESCAPE                    =   9005,
 
-    USI_NOT_ENOUGH_DATA                 =   9001,
-    USI_BAD_LENGTH                      =   9002,
-    USI_BAD_PROTOCOL                    =   9003,
-    USI_BAD_CRC                         =   9004,
-    USI_INVALID_LENGTH                  =   9005,
-    USI_INTEGRITY_LENGTH                =   9006,
-    USI_WARNING_MSG_NON_PROCESSED       =   9007,
-    USI_WARNING_MSG_NO_INI              =   9008,
-    USI_WARNING_MSG_NO_END              =   9009,
-
-
-   /* PHY Layer Errors */
+   /* PRIME PHY Layer Errors */
     PHY_LAYER_PLC_NOT_AVAILABLE         =   9100,
     PHY_LAYER_RF_NOT_AVAILABLE          =   9101,
     PAL_PLC_TIMER_SYNC_ERROR            =   9102,
 
-
-/* Critical system error */
-
+    /* PRIME Critical System Error */
     CRITICAL_ERROR_PRIME_NO_PHY         =   9995,
     CRITICAL_ERROR_PRIME_NO_PLC         =   9996,
     CRITICAL_ERROR_PL360_FAILURE        =   9997,

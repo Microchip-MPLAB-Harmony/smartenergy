@@ -31,6 +31,7 @@ def instantiateComponent(srvLogReportComponent):
     #### Code Generation ####
     ############################################################################
     configName = Variables.get("__CONFIGURATION_NAME")
+    processor = Variables.get("__PROCESSOR")
 
     # Boolean value to control traces enabled/disabled
     pTracesEnabled = srvLogReportComponent.createBooleanSymbol("ENABLE_TRACES", None)
@@ -49,7 +50,11 @@ def instantiateComponent(srvLogReportComponent):
     pLogReportDisplay.setDefaultValue(False)
     pLogReportDisplay.setVisible(True)
     pLogReportDisplay.setHelp(srv_log_report_helpkeyword)
-
+    if (("MTSH" in processor) or ("MTC" in processor)):
+        pLogReportDisplay.setReadOnly(False)
+    else:
+        pLogReportDisplay.setReadOnly(True)
+    
     # Log Report Files
     global pLogReportSource
     pLogReportSource = srvLogReportComponent.createFileSymbol("SRV_LOG_REPORT_SOURCE", None)
