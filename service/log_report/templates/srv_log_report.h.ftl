@@ -13,32 +13,32 @@
   Description:
     This file defines the interface for the log report service.
     Debug messages and log information is printed on the console.
-    If a display is available, debug code errors will be shown. 
+    If a display is available, debug code errors will be shown.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2024 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2024, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 //DOM-IGNORE-END
 
 #ifndef SRV_LOG_REPORT_H
@@ -72,7 +72,7 @@
     Log message priority levels.
 
    Description:
-    This enumeration maps the log levels to the supported system error 
+    This enumeration maps the log levels to the supported system error
     message priority values.
 
    Remarks:
@@ -85,7 +85,7 @@ typedef enum
 {
     /* Errors that have the potential to cause a system crash. */
     SRV_LOG_REPORT_FATAL = SYS_ERROR_FATAL,
-    
+
     /* Errors that have the potential to cause incorrect behavior. */
     SRV_LOG_REPORT_ERROR = SYS_ERROR_ERROR,
 
@@ -105,7 +105,7 @@ typedef enum
 {
     /* Errors that have the potential to cause a system crash. */
     SRV_LOG_REPORT_FATAL = 0,
-    
+
     /* Errors that have the potential to cause incorrect behavior. */
     SRV_LOG_REPORT_ERROR = 1,
 
@@ -152,7 +152,7 @@ typedef enum
     DB_SET_ELEM_BAD_ID                  =   207,
     DB_SET_ELEM_BAD_SIZE                =   208,
     DB_SET_ELEM_BAD_INDEX               =   209,
-    
+
     /* PRIME DISPATCHER Errors */
     DIS_ERROR_BUFF_ADDRESS_PROCESS      =   300,
     DIS_ERROR_BUFF_ADDRESS_SEND         =   301,
@@ -161,7 +161,7 @@ typedef enum
     DIS_ADD_MSG_ALREADY_ADDED           =   304,
     DIS_MSG_GEN_ERROR_MSG_DEL           =   305,
     DIS_TRY_SEND_MSG_DEL                =   306,
-    
+
     /* PRIME NOTIFICATIONS Errors */
     NOT_NOT_VALID_SIGNAL                =   400,
     NOT_TABLE_FULL                      =   401,
@@ -240,10 +240,10 @@ typedef enum
     SWI_INVALID_CHANNEL                 =   1400,
 
     /* USI Errors */
-    USI_BAD_LENGTH                      =   9001, 
-    USI_BAD_PROTOCOL                    =   9002,  
-    USI_BAD_CRC                         =   9003, 
-    USI_INVALID_LENGTH                  =   9004,  
+    USI_BAD_LENGTH                      =   9001,
+    USI_BAD_PROTOCOL                    =   9002,
+    USI_BAD_CRC                         =   9003,
+    USI_INVALID_LENGTH                  =   9004,
     USI_ERROR_ESCAPE                    =   9005,
 
    /* PRIME PHY Layer Errors */
@@ -270,8 +270,8 @@ typedef enum
 
 //******************************************************************************
 /* Function:
-    void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel, 
-                                          SRV_LOG_REPORT_CODE code, 
+    void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
+                                          SRV_LOG_REPORT_CODE code,
                                           const char *info, ...)
   Summary:
     Reports an error/warning code with related information.
@@ -282,9 +282,9 @@ typedef enum
   Precondition:
     The SYS_DEBUG initialization routines should be called before calling
     this routine (in "SYS_Initialize").
-    
+
   Parameters:
-    logLevel       - Log priority level 
+    logLevel       - Log priority level
     code           - Code of the reported error/warning
     info           - Formatted description of the reported error/warning
 
@@ -293,7 +293,7 @@ typedef enum
 
   Example:
     <code>
-    SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_WARNING, 100, 
+    SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_WARNING, 100,
                                      "Wrong input\r\n");
     </code>
 
@@ -301,13 +301,13 @@ typedef enum
     The function does not add a newline after printing the information.
 */
 
-void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel, 
-                                      SRV_LOG_REPORT_CODE code, 
+void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
+                                      SRV_LOG_REPORT_CODE code,
                                       const char *info, ...);
 
 //******************************************************************************
 /* Function:
-    void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel, 
+    void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
                                 const char *info, ...)
   Summary:
     Reports log information.
@@ -318,9 +318,9 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
   Precondition:
     The SYS_DEBUG initialization routines should be called before calling
     this routine (in "SYS_Initialize").
-    
+
   Parameters:
-    logLevel       - Log priority level 
+    logLevel       - Log priority level
     info           - Formatted description of the information
 
   Returns:
@@ -335,13 +335,13 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
     The function does not add a newline after printing the information.
 */
 
-void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel, 
+void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
                             const char *info, ...);
-                                      
+
 //******************************************************************************
 /* Function:
-    void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel, 
-                               const uint8_t *buffer, uint32_t bufferLength, 
+    void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
+                               const uint8_t *buffer, uint32_t bufferLength,
                                const char *info, ...)
 
   Summary:
@@ -353,13 +353,13 @@ void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
   Precondition:
     The SYS_DEBUG initialization routines should be called before calling
     this routine (in "SYS_Initialize").
-    
+
   Parameters:
-    logLevel          - Log priority level 
+    logLevel          - Log priority level
     buffer            - Buffer to be reported
     bufferLength      - Length of the buffer
     info              - Formatted description of the information
-    
+
   Returns:
     None.
 
@@ -367,7 +367,7 @@ void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
     <code>
     uint8_t macAddress[6] = {0xAA, 0xBB, 0xCC, 0xDD, 0x00, 0x01};
     uint8_t maxNumberNodes = 100;
-  
+
     SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_INFO, macAddress, 6, "MAC Address: ");
     </code>
 
@@ -375,8 +375,8 @@ void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
     The function automatically adds a newline after printing the buffer.
 */
 
-void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel, 
-                           const uint8_t *buffer, uint32_t bufferLength, 
+void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
+                           const uint8_t *buffer, uint32_t bufferLength,
                            const char *info, ...);
 
 <#else>

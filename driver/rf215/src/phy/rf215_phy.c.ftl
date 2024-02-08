@@ -17,28 +17,28 @@
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2024 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2024, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 //DOM-IGNORE-END
 
 // *****************************************************************************
@@ -2621,7 +2621,7 @@ static bool lRF215_TRX_SwitchTxPrep(uint8_t trxIdx)
 static void lRF215_TRX_EnableTxContinuousMode(uint8_t trxIdx)
 {
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
-    
+
     /* Swith to TRXOFF state before to configure continuous transmission */
     if (pObj->txAutoInProgress == false)
     {
@@ -2810,7 +2810,7 @@ static void lRF215_TRX_Reset(uint8_t trxIdx)
         lRF215_TRX_CommandReset(trxIdx);
         pObj->trxResetPending = false;
         pObj->resetInProgress = true;
-    }    
+    }
 }
 
 static void lRF215_TRX_Sleep(uint8_t trxIdx)
@@ -3314,16 +3314,16 @@ static void lRF215_PHY_SetChannelTimeExpired(uintptr_t context)
 {
     uint8_t trxIdx = (uint8_t) context;
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
-    
+
     /* Critical region to avoid conflicts in PHY object data */
     RF215_HAL_EnterCritical();
-    
+
     /* Update frequency channel and continue listening */
     (void) lRF215_PHY_SetPhyConfig(trxIdx, &pObj->phyConfig, pObj->channelNumSwitch, true);
     pObj->setChannelTimeHandle = SYS_TIME_HANDLE_INVALID;
     pObj->setChannelNotify = true;
     pObj->channelSwitchResult = RF215_TX_SUCCESS;
-    
+
     /* Leave critical region */
     RF215_HAL_LeaveCritical();
 }
@@ -3818,7 +3818,7 @@ static void lRF215_TX_ReadCaptureTimeExpired(uintptr_t context)
             if (SYS_TIME_TimerStart(timeHandle) != SYS_TIME_SUCCESS)
             {
                 (void) SYS_TIME_TimerDestroy(timeHandle);
-            }            
+            }
         }
     }
 
@@ -5598,7 +5598,7 @@ DRV_RF215_TX_RESULT RF215_PHY_TxRequest(DRV_RF215_TX_BUFFER_OBJ* txBufObj)
             pObj->txBufObjPending = txBufObj;
             return result;
         }
-        
+
         /* Carrier sense CCA and TX parameters configuration */
         result = lRF215_TX_ParamCfg(txBufObj);
     }
@@ -5706,7 +5706,7 @@ void RF215_PHY_SetChannelRequest (
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIndex];
     DRV_RF215_PHY_CFG_OBJ* phyCfg = &pObj->phyConfig;
     const RF215_PLL_CONST_OBJ* pllConst = &rf215PllConst[trxIndex];
-    
+
     if ((timeMode > TX_TIME_RELATIVE) || (timeMode < TX_TIME_ABSOLUTE))
     {
         /* Error: invalid TX time mode */
@@ -5728,14 +5728,14 @@ void RF215_PHY_SetChannelRequest (
         /* Error: invalid channel number */
         result = RF215_TX_INVALID_PARAM;
     }
-    
+
     if (result == RF215_TX_SUCCESS)
     {
         bool intStatus;
-        
+
         /* Critical region to avoid conflicts */
         RF215_HAL_EnterCritical();
-        
+
         if (timeMode == TX_TIME_RELATIVE)
         {
             /* Relative time mode */
@@ -5744,7 +5744,7 @@ void RF215_PHY_SetChannelRequest (
 
         /* Critical region to avoid delays in current time computations */
         intStatus = SYS_INT_Disable();
-        
+
         if (pObj->setChannelTimeHandle != SYS_TIME_HANDLE_INVALID)
         {
             (void) SYS_TIME_TimerDestroy(pObj->setChannelTimeHandle);
@@ -5765,7 +5765,7 @@ void RF215_PHY_SetChannelRequest (
         SYS_INT_Restore(intStatus);
         RF215_HAL_LeaveCritical();
     }
-    
+
     if (result != RF215_TX_SUCCESS)
     {
         pObj->setChannelNotify = true;

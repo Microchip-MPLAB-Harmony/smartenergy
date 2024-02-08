@@ -1,26 +1,26 @@
 # coding: utf-8
-"""*****************************************************************************
-* Copyright (C) 2024 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*****************************************************************************"""
+"""
+Copyright (C) 2024, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+"""
 
 import math
 
@@ -37,7 +37,7 @@ rf09Band866OpModes = {"value": "866",
                     "description": "865-867 MHz band",
                     "fskModes": 3, "fskMinChannel": [0, 0, 0], "fskMaxChannel": [18, 9, 9],
                     "ofdmOptions": 1, "ofdmMinChannel": [0], "ofdmMaxChannel": [9]}
-                
+
 rf09Band870OpModes = {"value": "870",
                     "description": "870-876 MHz band. Europe",
                     "fskModes": 3, "fskMinChannel": [0, 0, 0], "fskMaxChannel": [58, 29, 29],
@@ -50,7 +50,7 @@ rf09Band915OpModes = {"value": "915",
 
 rf09Band915aOpModes = {"value": "915A",
                     "description": "902-928 MHz band (alternate). USA, Canada, Mexico",
-                    "fskModes": 5, "fskMinChannel": [0, 0, 0, 0, 0], "fskMaxChannel": [128, 128, 128, 63, 63],                    
+                    "fskModes": 5, "fskMinChannel": [0, 0, 0, 0, 0], "fskMaxChannel": [128, 128, 128, 63, 63],
                     "ofdmOptions": 4, "ofdmMinChannel": [0, 0, 0, 0], "ofdmMaxChannel": [128, 63, 30, 19]}
 
 rf09Band915bOpModes = {"value": "915B",
@@ -180,7 +180,7 @@ def configureSpiPlib(localComponent):
 
     if plibUsed == "srv_spisplit":
         plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB_SPISPLIT").getValue().lower()
-    
+
     remoteComponent = Database.getComponentByID(plibUsed)
     if remoteComponent == None:
         return
@@ -738,7 +738,7 @@ def rf09PhyChnNumCommentHandler(symbol, event):
         phyChnNum = eventValue
         phyBand = eventSource.getSymbolByID("DRV_RF215_TRX09_PHY_BAND").getSelectedKey()
         phyType = eventSource.getSymbolByID("DRV_RF215_TRX09_PHY_TYPE").getSelectedKey()
-        phyOpMode = eventSource.getSymbolByID("DRV_RF215_TRX09_PHY_OPM").getValue()        
+        phyOpMode = eventSource.getSymbolByID("DRV_RF215_TRX09_PHY_OPM").getValue()
         updateChnNumComment(symbol, phyBand, phyType, phyOpMode, phyChnNum, "RF09")
     elif eventID == "DRV_RF215_TRX09_EN":
         # Hide comment if RF09 disabled
@@ -930,7 +930,7 @@ def instantiateComponent(rf215Component):
     global dmaTxChannelComment
     global dmaRxChannel
     global dmaRxChannelComment
-    if isDMAPresent:    
+    if isDMAPresent:
         dmaTxChannel = rf215Component.createIntegerSymbol("DRV_RF215_TX_DMA_CHANNEL", None)
         dmaTxChannel.setLabel("DMA Channel For Transmit")
         dmaTxChannel.setDescription("Allocated DMA channel for SPI Transmit")
@@ -1506,7 +1506,7 @@ def handleMessage(messageID, args):
             # DMA Mode: Disable interrupt mode in PLIB
             # PDC Mode: Enable interrupt mode in PLIB (needed to enable PDC DMA)
             result_dict = Database.sendMessage(remoteComponentID, "SPI_MASTER_INTERRUPT_MODE", {"isEnabled":not isDMAPresent})
-            
+
             remoteComponent = Database.getComponentByID(remoteComponentID)
 
             if not isDMAPresent and (remoteComponentID.startswith("flexcom") or remoteComponentID.startswith("spi")):

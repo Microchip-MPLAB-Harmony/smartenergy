@@ -1,26 +1,26 @@
 <#--
-/*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 -->
 
 // <editor-fold defaultstate="collapsed" desc="_on_reset() critical function">
@@ -47,7 +47,7 @@
 </#if>
 
 /* This routine must initialize the PL460 control pins as soon as possible */
-/* after a power up reset to avoid risks on starting up PL460 device when */ 
+/* after a power up reset to avoid risks on starting up PL460 device when */
 /* pull up resistors are configured by default */
 void _on_reset(void)
 {
@@ -97,7 +97,7 @@ void _on_reset(void)
             <#lt>    {
             <#lt>        /* Wait for clock to be initialized */
             <#lt>    }
-            <#lt>    
+            <#lt>
             <#lt>    /* Disable STBY Pin */
             <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
             <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
@@ -105,7 +105,7 @@ void _on_reset(void)
         <#if BOARD?matches("SAM E70 Xplained Ultra")>
             <#lt>    /* Enables PIOA and PIOC */
             <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID10_Msk | PMC_PCER0_PID12_Msk;
-            <#lt>    
+            <#lt>
             <#lt>    /* Enable Reset Pin */
             <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
             <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
@@ -231,33 +231,33 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
 </#if>
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
-    
+
     /* PLC LDO Enable Pin */
-    .ldoPin = DRV_PLC_LDO_EN_PIN, 
-    
+    .ldoPin = DRV_PLC_LDO_EN_PIN,
+
     /* PLC Reset Pin */
     .resetPin = DRV_PLC_RESET_PIN,
-       
+
     /* PLC External Interrupt Pin */
     .extIntPin = DRV_PLC_EXT_INT_PIN,
-       
+
     /* PLC External Interrupt Pio */
     .extIntPio = DRV_PLC_EXT_INT_PIO,
 
-<#if DRV_PLC_MODE == "PL460"> 
+<#if DRV_PLC_MODE == "PL460">
     /* PLC TX Enable Pin */
     .txEnablePin = DRV_PLC_TX_ENABLE_PIN,
-    
+
 </#if>
 <#if DRV_PLC_SLEEP_MODE == true>
     /* PLC StandBy Pin */
     .stByPin = DRV_PLC_STBY_PIN,
-    
+
 </#if>
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
     /* PLC External Interrupt Pin */
     .thMonPin = DRV_PLC_THMON_PIN,
-    
+
 </#if>
 <#if (DRV_PLC_PLIB == "SRV_SPISPLIT") && (drvRf215)??>
     /* Interrupt source ID for RF external interrupt */
@@ -292,21 +292,21 @@ static DRV_PLC_HAL_INTERFACE drvPLCHalAPI = {
 <#if DRV_PLC_SLEEP_MODE == true>
     /* PLC Set StandBy Mode */
     .setStandBy = (DRV_PLC_HAL_SET_STBY)DRV_PLC_HAL_SetStandBy,
-    
+
 </#if>
-<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true> 
+<#if DRV_PLC_MODE == "PL460" && DRV_PLC_THERMAL_MONITOR == true>
     /* PLC Get Thermal Monitor value */
     .getThermalMonitor = (DRV_PLC_HAL_GET_THMON)DRV_PLC_HAL_GetThermalMonitor,
-    
+
 </#if>
-<#if DRV_PLC_MODE == "PL460"> 
+<#if DRV_PLC_MODE == "PL460">
     /* PLC Set TX Enable Pin */
     .setTxEnable = (DRV_PLC_HAL_SET_TXENABLE)DRV_PLC_HAL_SetTxEnable,
-    
+
 </#if>
     /* PLC HAL Enable/Disable external interrupt */
     .enableExtInt = (DRV_PLC_HAL_ENABLE_EXT_INT)DRV_PLC_HAL_EnableInterrupts,
-    
+
     /* PLC HAL Enable/Disable external interrupt */
     .getPinLevel = (DRV_PLC_HAL_GET_PIN_LEVEL)DRV_PLC_HAL_GetPinLevel,
 

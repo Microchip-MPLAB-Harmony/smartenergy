@@ -1,27 +1,27 @@
 # coding: utf-8
-"""*****************************************************************************
-* Copyright (C) 2021 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*****************************************************************************"""
-import math 
+"""
+Copyright (C) 2021, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+"""
+import math
 
 global pPVDDMonHighThrsHex
 global pPVDDMonLowThrsHex
@@ -39,7 +39,7 @@ def handleMessage(messageID, args):
 
 def getNewADCThresholds(symbol, event):
     global plcAdcId
-    
+
     print("PLC PVDD Monitor Service: Getting new threshold levels")
 
     maxValue = pow(2, Database.getSymbolValue("srv_pvddmon", "SRV_PVDDMON_ADC_BITS")) - 1
@@ -60,12 +60,12 @@ def getNewADCThresholds(symbol, event):
         vref = 1650
     else:
         vref = 3300
-    
+
     HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / vref)))
     LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / vref)))
     HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / vref)))
     LowThresholdHexHyst = hex(int(math.ceil(VoutLowHyst * maxValue / vref)))
-    
+
     pPVDDMonHighThrsHex.setValue(HighThresholdHex)
     pPVDDMonLowThrsHex.setValue(LowThresholdHex)
     pPVDDMonHighThrsHexHyst.setValue(HighThresholdHexHyst)
@@ -77,7 +77,7 @@ def setPlibValue(symbol, event):
 
 def identifyPeripherals(component):
     global plcAdcId
-    
+
     periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
     peripherals = periphNode.getChildren()
 
@@ -103,7 +103,7 @@ def identifyPeripherals(component):
             plcEicId = component.createStringSymbol("PLC_EIC_ID", None)
             plcEicId.setDefaultValue(str(peripherals[module].getAttribute("id")))
             eicIdCreated = True
-    
+
     if not flexcomIdCreated:
         plcFlexcomId = component.createStringSymbol("PLC_FLEXCOM_ID", None)
         plcFlexcomId.setDefaultValue("0")
@@ -123,7 +123,7 @@ def identifyPeripherals(component):
     plcEicId.setVisible(False)
 
 def instantiateComponent(pPVDDMonComponent):
-    
+
     print("Loading PLC PVDD Monitor Service")
 
     ############################################################################
@@ -150,7 +150,7 @@ def instantiateComponent(pPVDDMonComponent):
             pvddmon_plib = ""
         else:
             pvddmon_plib = "AFEC"
-    else:            
+    else:
         pvddmon_plib = "ADC"
 
     identifyPeripherals(pPVDDMonComponent)
@@ -159,7 +159,7 @@ def instantiateComponent(pPVDDMonComponent):
     if not (adcPeriphId in ["U2204", "44134", "11147"]):
         print("PLC PVDD Monitor Service is not supported for " + pvddmon_plib + " Plib")
         print("CHRIS dbg-> adcPeriphId: {}".format(adcPeriphId))
-        return   
+        return
 
     if (adcPeriphId != "U2204"):
         pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
@@ -184,7 +184,7 @@ def instantiateComponent(pPVDDMonComponent):
         pPVDDMonADCComment3 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT3", None)
         pPVDDMonADCComment3.setLabel("**** CRITICAL ERROR. ADC peripheral has not been detected.")
         pPVDDMonADCComment3.setVisible(True)
-    
+
     maxValue = pow(2, pVddResolution) - 1
     VoutHigh = pVddHighThrs * ResDown / (ResUp + ResDown)
     VoutLow = pVddLowThrs * ResDown / (ResUp + ResDown)
@@ -195,7 +195,7 @@ def instantiateComponent(pPVDDMonComponent):
         vref = 1650
     else:
         vref = 3300
-        
+
     HighThresholdHex = hex(int(math.ceil(VoutHigh * maxValue / vref)))
     LowThresholdHex = hex(int(math.ceil(VoutLow * maxValue / vref)))
     HighThresholdHexHyst = hex(int(math.ceil(VoutHighHyst * maxValue / vref)))
@@ -206,7 +206,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonHighThrsHex.setDefaultValue(HighThresholdHex)
     pPVDDMonHighThrsHex.setDependencies(getNewADCThresholds, ["SRV_PVDDMON_HIGH_TH", "SRV_PVDDMON_LOW_TH", "SRV_PVDDMON_ADC_BITS", "SRV_PVDDMON_RES_UP", "SRV_PVDDMON_RES_DOWN"])
     pPVDDMonHighThrsHex.setVisible(False)
-    
+
     global pPVDDMonLowThrsHex
     pPVDDMonLowThrsHex = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_LOW_THRESHOLD_HEX", None)
     pPVDDMonLowThrsHex.setDefaultValue(LowThresholdHex)
@@ -216,7 +216,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonHighThrsHexHyst = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_HIGH_THRESHOLD_HEX_HYST", None)
     pPVDDMonHighThrsHexHyst.setVisible(False)
     pPVDDMonHighThrsHexHyst.setDefaultValue(HighThresholdHexHyst)
-    
+
     global pPVDDMonLowThrsHexHyst
     pPVDDMonLowThrsHexHyst = pPVDDMonComponent.createStringSymbol("SRV_PVDDMON_LOW_THRESHOLD_HEX_HYST", None)
     pPVDDMonLowThrsHexHyst.setVisible(False)
@@ -304,7 +304,7 @@ def instantiateComponent(pPVDDMonComponent):
 
 ################################################################################
 #### Business Logic ####
-################################################################################  
+################################################################################
 def onAttachmentConnected(source, target):
     localComponent = source["component"]
     remoteComponent = target["component"]

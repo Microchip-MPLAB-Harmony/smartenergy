@@ -1,26 +1,26 @@
 # coding: utf-8
-"""*****************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*****************************************************************************"""
+"""
+Copyright (C) 2022-2024, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+"""
 srv_met_helpkeyword = "mcc_h3_drv_metrology_config"
 
 GAIN_P_K_T_Q = 24
@@ -32,16 +32,16 @@ def _get_KI():
     tr = Database.getSymbolValue("drvMet", "DRV_MET_CONF_TR")
     gain = 2**Database.getSymbolValue("drvMet", "DRV_MET_CONF_GAIN")
     rl = Database.getSymbolValue("drvMet", "DRV_MET_CONF_RL")
-    
-    if (st == 0): 
+
+    if (st == 0):
         # Current Transformer
         rl = float(rl) / 1000000
         m = float(tr) / (rl * gain)
-    elif (st == 1): 
+    elif (st == 1):
         rl = float(rl) / 1000000
         # Shunt Resistor
         m = 1 / float(gain * rl)
-    elif (st == 2): 
+    elif (st == 2):
         # Rogowski Coil
         Ksf = float(1000000) / tr
         Kdi = float(60) / freq
@@ -64,7 +64,7 @@ def updateRLLabel(symbol, event):
 
 def updateConfigWaveform(symbol, event):
     global drvMetRegWaveformCaptureSize
-    
+
     enable = Database.getSymbolValue("drvMet", "DRV_MET_WAVEFORM_CAPTURE")
     ia = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_IA")
     va = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_CH_VA")
@@ -76,7 +76,7 @@ def updateConfigWaveform(symbol, event):
     type = Database.getSymbolValue("drvMet", "DRV_MET_WAVECAPT_TYPE")
 
     reg = (vc << 13) | (ic << 12) | (vb << 11) | (ib << 10) | (va << 9) | (ia << 8) | (src << 4) | type
-    symbol.setValue(reg)        
+    symbol.setValue(reg)
 
     if (enable):
         bufferSize = Database.getSymbolValue("drvMet", "DRV_MET_CAPTURE_BUF_SIZE_CHN")
@@ -85,14 +85,14 @@ def updateConfigWaveform(symbol, event):
         for ch_sel in range(0, 6):
             if (channels_sel & 0x01) == 0x01:
                 num_chn = num_chn + 1
-            
+
             channels_sel = channels_sel >> 1
     else:
         bufferSize = 0
         num_chn = 0
 
     drvMetRegWaveformCaptureSize.setValue(bufferSize * num_chn)
-        
+
 def updateConfigPKT(symbol, event):
     m = 1000000000.0 / int(event["value"])
     m *= 2**GAIN_P_K_T_Q
@@ -121,7 +121,7 @@ def updateConfigATS2427(symbol, event):
     v2 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_V2")
     i3 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_I3")
     v3 = Database.getSymbolValue("drvMet", "DRV_MET_CONF_V3")
-    
+
     reg = symbol.getValue()
     reg = reg & 0xFF000000
     reg = reg | (gainValue << 12) | (v3 << 16) | (i3 << 8) | v2
@@ -234,7 +234,7 @@ def commandRtosMicriumOSIIITaskOptVisibility(symbol, event):
 
 def commandSendMessageHeapSize(symbol, event):
     dummyDict = {}
-    dummyDict = Database.sendMessage("core", "HEAP_SIZE", {"heap_size" : 1024})  
+    dummyDict = Database.sendMessage("core", "HEAP_SIZE", {"heap_size" : 1024})
 
 def getActiveRtos():
     activeComponents = Database.getActiveComponentIDs()
@@ -247,10 +247,10 @@ def getActiveRtos():
         elif (activeComponents[i] == "MicriumOSIII"):
             return "MicriumOSIII"
         elif (activeComponents[i] == "MbedOS"):
-            return "MbedOS"      
+            return "MbedOS"
 
 def instantiateComponent(metComponentCommon):
-    
+
     Log.writeInfoMessage("Loading Metrology Driver")
 
     ############################################################################
@@ -275,54 +275,54 @@ def instantiateComponent(metComponentCommon):
         enablePhase3 = 0
         featCtrl0Value = 0x00000300
         at2427Value = 0x07000001
-    
+
     drvMetRegBaseAddress = metComponentCommon.createHexSymbol("DRV_MET_BASE_ADDRESS", None)
     drvMetRegBaseAddress.setLabel("Register Base Address")
     drvMetRegBaseAddress.setVisible(True)
     drvMetRegBaseAddress.setDefaultValue(0x20088000)
     drvMetRegBaseAddress.setReadOnly(True)
     drvMetRegBaseAddress.setHelp(srv_met_helpkeyword)
-    
+
     drvMetWaveformCapture = metComponentCommon.createBooleanSymbol("DRV_MET_WAVEFORM_CAPTURE", None)
     drvMetWaveformCapture.setLabel("Waveform Capture")
     drvMetWaveformCapture.setDefaultValue(False)
     drvMetWaveformCapture.setHelp(srv_met_helpkeyword)
-    
+
     drvMetWaveformCaptureChIA = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IA", drvMetWaveformCapture)
     drvMetWaveformCaptureChIA.setLabel("Capture Channel IA")
     drvMetWaveformCaptureChIA.setDefaultValue(False)
     drvMetWaveformCaptureChIA.setVisible(False)
     drvMetWaveformCaptureChIA.setHelp(srv_met_helpkeyword)
     drvMetWaveformCaptureChIA.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    
+
     drvMetWaveformCaptureChVA = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VA", drvMetWaveformCapture)
     drvMetWaveformCaptureChVA.setLabel("Capture Channel VA")
     drvMetWaveformCaptureChVA.setDefaultValue(False)
     drvMetWaveformCaptureChVA.setVisible(False)
     drvMetWaveformCaptureChVA.setHelp(srv_met_helpkeyword)
     drvMetWaveformCaptureChVA.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    
+
     drvMetWaveformCaptureChIB = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IB", drvMetWaveformCapture)
     drvMetWaveformCaptureChIB.setLabel("Capture Channel IB")
     drvMetWaveformCaptureChIB.setDefaultValue(False)
     drvMetWaveformCaptureChIB.setVisible(False)
     drvMetWaveformCaptureChIB.setHelp(srv_met_helpkeyword)
     drvMetWaveformCaptureChIB.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    
+
     drvMetWaveformCaptureChVB = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VB", drvMetWaveformCapture)
     drvMetWaveformCaptureChVB.setLabel("Capture Channel VB")
     drvMetWaveformCaptureChVB.setDefaultValue(False)
     drvMetWaveformCaptureChVB.setVisible(False)
     drvMetWaveformCaptureChVB.setHelp(srv_met_helpkeyword)
     drvMetWaveformCaptureChVB.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    
+
     drvMetWaveformCaptureChIC = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_IC", drvMetWaveformCapture)
     drvMetWaveformCaptureChIC.setLabel("Capture Channel IC")
     drvMetWaveformCaptureChIC.setDefaultValue(False)
     drvMetWaveformCaptureChIC.setVisible(False)
     drvMetWaveformCaptureChIC.setHelp(srv_met_helpkeyword)
     drvMetWaveformCaptureChIC.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_WAVEFORM_CAPTURE"])
-    
+
     drvMetWaveformCaptureChVC = metComponentCommon.createBooleanSymbol("DRV_MET_WAVECAPT_CH_VC", drvMetWaveformCapture)
     drvMetWaveformCaptureChVC.setLabel("Capture Channel VC")
     drvMetWaveformCaptureChVC.setDefaultValue(False)
@@ -364,39 +364,39 @@ def instantiateComponent(metComponentCommon):
     drvMetNotificationMenu = metComponentCommon.createMenuSymbol("DRV_MET_NOTIFICATION_MENU", None)
     drvMetNotificationMenu.setLabel("Additional Notifications")
     drvMetNotificationMenu.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotFullCycle = metComponentCommon.createBooleanSymbol("DRV_MET_NOT_FULL_CYCLE", drvMetNotificationMenu)
     drvMetNotFullCycle.setLabel("Line Cycle")
     drvMetNotFullCycle.setDefaultValue(False)
     drvMetNotFullCycle.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotHalfCycle = metComponentCommon.createBooleanSymbol("DRV_MET_NOT_HALF_CYCLE", drvMetNotificationMenu)
     drvMetNotHalfCycle.setLabel("Half Line Cycle")
     drvMetNotHalfCycle.setDefaultValue(False)
     drvMetNotHalfCycle.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotRawZeroCrossing = metComponentCommon.createBooleanSymbol("DRV_MET_RAW_ZERO_CROSSING", drvMetNotificationMenu)
     drvMetNotRawZeroCrossing.setLabel("Raw Zero Crossing")
     drvMetNotRawZeroCrossing.setDefaultValue(False)
     drvMetNotRawZeroCrossing.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotPulse0 = metComponentCommon.createBooleanSymbol("DRV_MET_PULSE_0", drvMetNotificationMenu)
     drvMetNotPulse0.setLabel("Pulse 0")
     drvMetNotPulse0.setDefaultValue(False)
     drvMetNotPulse0.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotPulse1 = metComponentCommon.createBooleanSymbol("DRV_MET_PULSE_1", drvMetNotificationMenu)
     drvMetNotPulse1.setLabel("Pulse 1")
     drvMetNotPulse1.setDefaultValue(False)
     drvMetNotPulse1.setHelp(srv_met_helpkeyword)
-    
+
     drvMetNotPulse2 = metComponentCommon.createBooleanSymbol("DRV_MET_PULSE_2", drvMetNotificationMenu)
     drvMetNotPulse2.setLabel("Pulse 2")
     drvMetNotPulse2.setDefaultValue(False)
     drvMetNotPulse2.setHelp(srv_met_helpkeyword)
 
     #####################################################################################################################################
-    # CONFIGURATION PARAMS 
+    # CONFIGURATION PARAMS
 
     drvMetConfChannels = metComponentCommon.createMenuSymbol("DRV_MET_CONF_CHANNELS", None)
     drvMetConfChannels.setLabel("Enable Channels")
@@ -436,7 +436,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfV3.setLabel("Enable Channel V3")
     drvMetConfV3.setDefaultValue(enablePhase3)
     drvMetConfV3.setHelp(srv_met_helpkeyword)
-    
+
     drvMetConfByfDef = metComponentCommon.createMenuSymbol("DRV_MET_CONF_BY_DEFAULT", None)
     drvMetConfByfDef.setLabel("Configuration")
     drvMetConfByfDef.setHelp(srv_met_helpkeyword)
@@ -534,7 +534,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfCreepI.setVisible(False)
     drvMetConfCreepI.setHelp(srv_met_helpkeyword)
     drvMetConfCreepI.setDependencies(showSymbolOnBoolEvent, ["DRV_MET_CONF_CREEP_I_EN"])
-    
+
     drvMetConfPulse0 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE0", drvMetConfByfDef)
     drvMetConfPulse0.setLabel("Pulse 0 Control")
     drvMetConfPulse0.setHelp(srv_met_helpkeyword)
@@ -575,14 +575,14 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP0Type.addKey("Q_T", "2", "Q_T")
     drvMetConfP0Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP0Type.addKey("I_T", "4", "I_T")
-    drvMetConfP0Type.addKey("I_T_F", "5", "I_T_F")  
+    drvMetConfP0Type.addKey("I_T_F", "5", "I_T_F")
 
     drvMetConfP0Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P0", drvMetConfPulse0)
     drvMetConfP0Width.setLabel("Width")
     drvMetConfP0Width.setVisible(True)
     drvMetConfP0Width.setDefaultValue(0x9100)
     drvMetConfP0Width.setHelp(srv_met_helpkeyword)
-    
+
     drvMetConfPulse1 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE1", drvMetConfByfDef)
     drvMetConfPulse1.setLabel("Pulse 1 Control")
     drvMetConfPulse1.setHelp(srv_met_helpkeyword)
@@ -623,14 +623,14 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP1Type.addKey("Q_T", "2", "Q_T")
     drvMetConfP1Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP1Type.addKey("I_T", "4", "I_T")
-    drvMetConfP1Type.addKey("I_T_F", "5", "I_T_F")    
+    drvMetConfP1Type.addKey("I_T_F", "5", "I_T_F")
 
     drvMetConfP1Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P1", drvMetConfPulse1)
     drvMetConfP1Width.setLabel("Width")
     drvMetConfP1Width.setVisible(True)
     drvMetConfP1Width.setDefaultValue(0x9100)
     drvMetConfP1Width.setHelp(srv_met_helpkeyword)
-    
+
     drvMetConfPulse2 = metComponentCommon.createMenuSymbol("DRV_MET_CONF_PULSE2", drvMetConfByfDef)
     drvMetConfPulse2.setLabel("Pulse 2 Control")
     drvMetConfPulse2.setHelp(srv_met_helpkeyword)
@@ -671,7 +671,7 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP2Type.addKey("Q_T", "2", "Q_T")
     drvMetConfP2Type.addKey("Q_T_F", "3", "Q_T_F")
     drvMetConfP2Type.addKey("I_T", "4", "I_T")
-    drvMetConfP2Type.addKey("I_T_F", "5", "I_T_F")    
+    drvMetConfP2Type.addKey("I_T_F", "5", "I_T_F")
 
     drvMetConfP2Width = metComponentCommon.createHexSymbol("DRV_MET_CONF_WID_P2", drvMetConfPulse2)
     drvMetConfP2Width.setLabel("Width")
@@ -680,8 +680,8 @@ def instantiateComponent(metComponentCommon):
     drvMetConfP2Width.setHelp(srv_met_helpkeyword)
 
     #####################################################################################################################################
-    # METROLOGY REGISTERS 
-    
+    # METROLOGY REGISTERS
+
     drvMetRegWaveformCapture = metComponentCommon.createHexSymbol("DRV_MET_CONF_WAVEFORM_CAPTURE", None)
     drvMetRegWaveformCapture.setLabel("WAVEFORM_CAPTURE")
     drvMetRegWaveformCapture.setVisible(False)
@@ -695,7 +695,7 @@ def instantiateComponent(metComponentCommon):
     drvMetRegWaveformCaptureSize.setVisible(False)
     drvMetRegWaveformCaptureSize.setDefaultValue(0)
     drvMetRegWaveformCaptureSize.setReadOnly(True)
-    
+
     drvMetRegPKT = metComponentCommon.createHexSymbol("DRV_MET_CTRL_PKT", None)
     drvMetRegPKT.setLabel("PKT")
     drvMetRegPKT.setVisible(False)
@@ -885,9 +885,9 @@ def instantiateComponent(metComponentCommon):
     metrologyRTOSTaskNoTls.setDefaultValue(False)
     metrologyRTOSTaskNoTls.setDependencies(commandRtosMicriumOSIIITaskOptVisibility, ["DRV_MET_RTOS_TASK_OPT_NONE"])
 
-    
+
     #####################################################################################################################################
-    # METROLOGY FILES 
+    # METROLOGY FILES
 
     drvMetSourceFile = metComponentCommon.createFileSymbol("DRV_MET_SOURCE", None)
     drvMetSourceFile.setSourcePath("driver/metrology/drv_metrology.c.ftl")
@@ -933,7 +933,7 @@ def instantiateComponent(metComponentCommon):
     drvMetHeaderRegsFile.setType("HEADER")
     drvMetHeaderRegsFile.setOverwrite(True)
     drvMetHeaderRegsFile.setMarkup(True)
-    
+
     #### ASM Path Settings #####################################################
 
     drvMetAsmPathSetting = metComponentCommon.createSettingSymbol("DRV_MET_ASM_PATH_SETTING", None)

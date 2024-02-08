@@ -1,25 +1,25 @@
-/*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 
 /*******************************************************************************
   MPLAB Harmony Application Source File
@@ -130,14 +130,14 @@ void APPCORE1_Initialize ( void )
     appcore1Data.state = APPCORE1_STATE_INIT;
     /* Clear status of IPC0 flag */
     appcore1Data.core0Signal = false;
-    
+
     /* Initialize shared counter */
     appSharedData.counter = 0;
-    
+
     /* Start LED activity */
-    appcore1Data.timerLed = SYS_TIME_CallbackRegisterMS(_APPCORE1_SysTimeCallbackLedToggle, 0, 
+    appcore1Data.timerLed = SYS_TIME_CallbackRegisterMS(_APPCORE1_SysTimeCallbackLedToggle, 0,
             APPCORE1_TIMER_LED_MS, SYS_TIME_PERIODIC);
-    
+
     /* Set IPC0 callback to attend the IPC signals from Core 0 */
     IPC1_SetIRQHandler(IPC_IRQ0_MASK, _APPCORE1_IPC1Callback, 0);
 }
@@ -162,15 +162,15 @@ void APPCORE1_Tasks ( void )
             if (appcore1Data.core0Signal)
             {
                 appcore1Data.core0Signal = false;
-                
+
                 printf("APPCORE1_STATE_INIT done!!\r\n");
-                
+
                 SYS_TIME_DelayMS(APPCORE1_DELAYS_BETWEEN_CMDS_MS, &appcore1Data.timer);
                 appcore1Data.state = APPCORE1_STATE_SEND_CMD;
             }
             break;
         }
-        
+
         case APPCORE1_STATE_WAIT_CMD:
         {
             if (appcore1Data.core0Signal)
@@ -179,13 +179,13 @@ void APPCORE1_Tasks ( void )
                 appcore1Data.core0Signal = false;
                 // Increase counter in shared memory
                 appSharedData.counter++;
-                
+
                 SYS_TIME_DelayMS(APPCORE1_DELAYS_BETWEEN_CMDS_MS, &appcore1Data.timer);
                 appcore1Data.state = APPCORE1_STATE_SEND_CMD;
             }
             break;
         }
-        
+
         case APPCORE1_STATE_SEND_CMD:
         {
             if (SYS_TIME_DelayIsComplete(appcore1Data.timer) == true)
@@ -198,7 +198,7 @@ void APPCORE1_Tasks ( void )
             }
             break;
         }
-        
+
         /* The default state should never be executed. */
         default:
         {

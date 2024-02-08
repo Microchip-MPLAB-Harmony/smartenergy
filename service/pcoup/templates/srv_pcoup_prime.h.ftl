@@ -11,41 +11,41 @@
     PLC PHY Coupling service library interface.
 
   Description
-    The Microchip G3-PLC and PRIME implementations include default PHY layer 
-    configuration values optimized for the Evaluation Kits. With the help of 
-    the PHY Calibration Tool it is possible to obtain the optimal configuration 
+    The Microchip G3-PLC and PRIME implementations include default PHY layer
+    configuration values optimized for the Evaluation Kits. With the help of
+    the PHY Calibration Tool it is possible to obtain the optimal configuration
     values for the customer's hardware implementation. Refer to the online
-    documentation for more details about the available configuration values and 
+    documentation for more details about the available configuration values and
     their purpose.
 
   Remarks:
-    This service provides the required information to be included on PLC 
+    This service provides the required information to be included on PLC
     projects for PL360/PL460 in order to apply the custom calibration.
 *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 // DOM-IGNORE-END
 
 #ifndef SRV_PCOUP_H    // Guards against multiple inclusion
@@ -326,51 +326,51 @@
     PLC PHY Coupling data.
 
   Description:
-    This structure contains all the data required to set the PLC PHY Coupling 
+    This structure contains all the data required to set the PLC PHY Coupling
     parameters, for a specific PRIME channel.
 
   Remarks:
-    Equalization coefficients and DACC table are not stored in the structure, 
-    just pointers to arrays were they are actually stored. This allows to use 
+    Equalization coefficients and DACC table are not stored in the structure,
+    just pointers to arrays were they are actually stored. This allows to use
     the same type for different PRIME channels.
 */
 
 typedef struct
-{  
+{
     /* Target RMS values in HIGH mode for dynamic Tx gain */
     uint32_t rmsHigh[8];
-    
+
     /* Target RMS values in VLOW mode for dynamic Tx gain */
     uint32_t rmsVLow[8];
-    
+
     /* Threshold RMS values in HIGH mode for dynamic Tx mode */
     uint32_t thrsHigh[16];
-    
+
     /* Threshold RMS values in VLOW mode for dynamic Tx mode */
     uint32_t thrsVLow[16];
 
-    /* Pointer to values for configuration of PLC DACC peripheral, according to 
+    /* Pointer to values for configuration of PLC DACC peripheral, according to
        hardware coupling design and PLC device (PL360/PL460) */
     const uint32_t * daccTable;
-    
-    /* Pointer to Tx equalization coefficients table in HIGH mode. 
+
+    /* Pointer to Tx equalization coefficients table in HIGH mode.
        There is one coefficient for each carrier in the used band */
     const uint16_t * equHigh;
-    
-    /* Pointer to Tx equalization coefficients table in VLOW mode. 
+
+    /* Pointer to Tx equalization coefficients table in VLOW mode.
        There is one coefficient for each carrier in the used band */
     const uint16_t * equVlow;
-    
+
     /* Tx gain values for HIGH mode [HIGH_INI, HIGH_MIN, HIGH_MAX] */
     uint16_t gainHigh[3];
-    
+
     /* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
     uint16_t gainVLow[3];
-    
+
     /* Number of Tx attenuation levels (1 dB step) suppoting dynamic Tx mode */
     uint8_t numTxLevels;
-    
-    /* Configuration of the PLC Tx Line Driver, according to hardware coupling 
+
+    /* Configuration of the PLC Tx Line Driver, according to hardware coupling
        design and PLC device (PL360/PL460) */
     uint8_t lineDrvConf;
 
@@ -385,7 +385,7 @@ typedef struct
 /***************************************************************************
   Function:
     DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel(void)
-    
+
   Summary:
     Get the default PRIME channel.
 
@@ -412,7 +412,7 @@ typedef struct
     pibObj.length = 1;
     pibObj.pData = &plcDefaultChannel;
     DRV_PLC_PHY_PIBSet(handle, &pibObj);
-                
+
     SRV_PCOUP_Set_Channel_Config(handle, plcDefaultChannel);
     </code>
 
@@ -425,13 +425,13 @@ DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
 /***************************************************************************
   Function:
     SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
-    
+
   Summary:
     Get the PLC PHY Coupling parameters for the specified PRIME channel.
 
   Description:
-    This function allows to get the PLC PHY Coupling parameters for the 
-    specified PRIME channel. These parameters can be sent to the PLC device 
+    This function allows to get the PLC PHY Coupling parameters for the
+    specified PRIME channel. These parameters can be sent to the PLC device
     through PLC Driver PIB interface (DRV_PLC_PHY_PIBSet).
 
   Precondition:
@@ -454,7 +454,7 @@ DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     </code>
 
   Remarks:
-    If SRV_PCOUP_Set_Channel_Config is used to set the PLC PHY Coupling 
+    If SRV_PCOUP_Set_Channel_Config is used to set the PLC PHY Coupling
     parameters, this function is not needed.
   ***************************************************************************/
 
@@ -463,17 +463,17 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL ch
 /***************************************************************************
   Function:
     bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
-    
+
   Summary:
     Set the PLC PHY Coupling parameters for the specified PRIME channel.
 
   Description:
-    This function allows to set the PLC PHY Coupling parameters for the 
-    specified PRIME channel, using the PLC Driver PIB interface 
+    This function allows to set the PLC PHY Coupling parameters for the
+    specified PRIME channel, using the PLC Driver PIB interface
     (DRV_PLC_PHY_PIBSet).
 
   Precondition:
-    DRV_PLC_PHY_Open must have been called to obtain a valid opened device 
+    DRV_PLC_PHY_Open must have been called to obtain a valid opened device
     handle.
 
   Parameters:

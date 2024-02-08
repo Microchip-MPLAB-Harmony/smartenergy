@@ -15,28 +15,28 @@
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 //DOM-IGNORE-END
 
 // *****************************************************************************
@@ -55,7 +55,7 @@
 #include "drv_metrology.h"
 #include "drv_metrology_definitions.h"
 #include "drv_metrology_local.h"
-<#if DRV_MET_RTOS_ENABLE == true> 
+<#if DRV_MET_RTOS_ENABLE == true>
 #include "osal/osal.h"
 </#if>
 #include "peripheral/pio/plib_pio.h"
@@ -75,7 +75,7 @@ typedef enum {
 /* This is the driver instance object array. */
 static DRV_METROLOGY_OBJ gDrvMetObj;
 
-<#if DRV_MET_WAVEFORM_CAPTURE == true>    
+<#if DRV_MET_WAVEFORM_CAPTURE == true>
 static CACHE_ALIGN uint32_t sCaptureBuffer[CACHE_ALIGNED_SIZE_GET(MET_CAPTURE_BUF_SIZE)];
 
 </#if>
@@ -190,7 +190,7 @@ void IPC1_InterruptHandler (void)
         gDrvMetObj.integrationFlag = true;
     }
 
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
+<#if DRV_MET_NOT_FULL_CYCLE == true>
     if ((status & DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.fullCycleCallback != NULL)
@@ -200,7 +200,7 @@ void IPC1_InterruptHandler (void)
     }
 
 </#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
+<#if DRV_MET_NOT_HALF_CYCLE == true>
     if ((status & DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.halfCycleCallback != NULL)
@@ -210,7 +210,7 @@ void IPC1_InterruptHandler (void)
     }
 
 </#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+<#if DRV_MET_RAW_ZERO_CROSSING == true>
     if ((status & DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.zeroCrossCallback != NULL)
@@ -220,7 +220,7 @@ void IPC1_InterruptHandler (void)
     }
 
 </#if>
-<#if DRV_MET_PULSE_0 == true>  
+<#if DRV_MET_PULSE_0 == true>
     if ((status & DRV_METROLOGY_IPC_PULSE0_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.pulse0Callback != NULL)
@@ -230,7 +230,7 @@ void IPC1_InterruptHandler (void)
     }
 
 </#if>
-<#if DRV_MET_PULSE_1 == true>  
+<#if DRV_MET_PULSE_1 == true>
     if ((status & DRV_METROLOGY_IPC_PULSE1_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.pulse1Callback != NULL)
@@ -240,7 +240,7 @@ void IPC1_InterruptHandler (void)
     }
 
 </#if>
-<#if DRV_MET_PULSE_2 == true>  
+<#if DRV_MET_PULSE_2 == true>
     if ((status & DRV_METROLOGY_IPC_PULSE2_IRQ_MSK) != 0UL)
     {
         if (gDrvMetObj.pulse2Callback != NULL)
@@ -251,8 +251,8 @@ void IPC1_InterruptHandler (void)
 
 </#if>
     IPC1_REGS->IPC_ICCR = status;
-    
-<#if DRV_MET_RTOS_ENABLE == true>     
+
+<#if DRV_MET_RTOS_ENABLE == true>
     /* Signal Metrology thread to attend IPC interrupt */
     (void) OSAL_SEM_PostISR(&gDrvMetObj.semaphoreID);
 <#else>
@@ -265,7 +265,7 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
 {
     double res, dre, dim;
     uint32_t measure, intPart, decPart;
-    
+
     /* Get Real contribution */
     if (real < 0)
     {
@@ -275,14 +275,14 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
     {
         measure = (uint32_t)real;
     }
-    
+
     /* sQ25.6 */
     intPart = measure >> 6;
     decPart = measure & 63U;
     dre = (double)decPart / 64.0;
     dre += (double)intPart;
     dre *= dre;
-    
+
     /* Get Imaginary contribution */
     if (imag < 0)
     {
@@ -292,21 +292,21 @@ static double lDRV_Metrology_GetHarmonicRMS(int32_t real, int32_t imag)
     {
         measure = (uint32_t)imag;
     }
-    
+
     /* sQ25.6 */
     intPart = measure >> 6;
     decPart = measure & 63U;
     dim = (double)decPart / 64.0;
     dim += (double)intPart;
     dim *= dim;
-    
+
     res = (dre + dim) * 2.0;
     if (res > 0.0)
     {
         res = sqrt(res);
         res /= (double)gDrvMetObj.metRegisters->MET_STATUS.N;
     }
-    
+
     return res;
 }
 
@@ -507,25 +507,25 @@ static void lDRV_Metrology_IpcInitialize (void)
     /* Clear interrupts */
     IPC1_REGS->IPC_ICCR = 0xFFFFFFFFUL;
     /* Enable interrupts */
-    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK | 
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
+    IPC1_REGS->IPC_IECR = DRV_METROLOGY_IPC_INIT_IRQ_MSK |
+<#if DRV_MET_NOT_FULL_CYCLE == true>
         DRV_METROLOGY_IPC_FULLCYCLE_IRQ_MSK |
 </#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
+<#if DRV_MET_NOT_HALF_CYCLE == true>
         DRV_METROLOGY_IPC_HALFCYCLE_IRQ_MSK |
 </#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+<#if DRV_MET_RAW_ZERO_CROSSING == true>
         DRV_METROLOGY_IPC_ZEROCROSS_IRQ_MSK |
 </#if>
-<#if DRV_MET_PULSE_0 == true>  
+<#if DRV_MET_PULSE_0 == true>
         DRV_METROLOGY_IPC_PULSE0_IRQ_MSK |
 </#if>
-<#if DRV_MET_PULSE_1 == true>  
+<#if DRV_MET_PULSE_1 == true>
         DRV_METROLOGY_IPC_PULSE1_IRQ_MSK |
 </#if>
-<#if DRV_MET_PULSE_2 == true>  
+<#if DRV_MET_PULSE_2 == true>
         DRV_METROLOGY_IPC_PULSE2_IRQ_MSK |
-</#if>    
+</#if>
         DRV_METROLOGY_IPC_INTEGRATION_IRQ_MSK;
 }
 
@@ -564,10 +564,10 @@ static uint32_t lDRV_Metrology_CorrectCalibrationAngle (uint32_t measured, doubl
     bams = (double)correction_angle;
     bams = bams * (60.00 / gDrvMetObj.calibrationData.freq);
     bams = bams / 18000000.00; /* get bams and remove precision adjust */
-    
+
     phase_correction = bams * 2147483648.00; /* sQ0.31 */
     correction_angle = (int64_t)phase_correction;
-    
+
     return (uint32_t)correction_angle;
 }
 
@@ -816,7 +816,7 @@ static bool lDRV_METROLOGY_UpdateHarmonicAnalysisValues(void)
         pHarmonicsRsp->Vrms_A_m = lDRV_Metrology_GetHarmonicRMS(harTemp[1], harTemp[8]);
         pHarmonicsRsp->Vrms_B_m = lDRV_Metrology_GetHarmonicRMS(harTemp[3], harTemp[10]);
         pHarmonicsRsp->Vrms_C_m = lDRV_Metrology_GetHarmonicRMS(harTemp[5], harTemp[12]);
-                
+
         /* Disable Harmonic Analysis */
         gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL1 &= ~FEATURE_CTRL1_HARMONIC_EN_Msk;
         /* Clear Number of Harmonic for Analysis */
@@ -863,7 +863,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
         return SYS_MODULE_OBJ_INVALID;
     }
 
-<#if DRV_MET_RTOS_ENABLE == true>     
+<#if DRV_MET_RTOS_ENABLE == true>
     /* Create the Semaphore */
     if (OSAL_SEM_Create(&gDrvMetObj.semaphoreID, OSAL_SEM_TYPE_BINARY, 0U, 0U) == OSAL_RESULT_FAIL)
     {
@@ -872,7 +872,7 @@ SYS_MODULE_OBJ DRV_METROLOGY_Initialize (SYS_MODULE_INIT * init, uint32_t resetC
 <#else>
 	/* Clean the IPC interrupt generic flag */
     gDrvMetObj.ipcInterruptFlag = false;
-</#if>    
+</#if>
 
     /* Disable IPC interrupts */
     (void) SYS_INT_SourceDisable(IPC1_IRQn);
@@ -1106,7 +1106,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_IntegrationCallbackRegister (
     return DRV_METROLOGY_SUCCESS;
 }
 
-<#if DRV_MET_NOT_FULL_CYCLE == true>  
+<#if DRV_MET_NOT_FULL_CYCLE == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1119,7 +1119,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_FullCycleCallbackRegister(DRV_METROLOGY_CALLB
 }
 
 </#if>
-<#if DRV_MET_NOT_HALF_CYCLE == true>  
+<#if DRV_MET_NOT_HALF_CYCLE == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1132,7 +1132,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_HalfCycleCallbackRegister(DRV_METROLOGY_CALLB
 }
 
 </#if>
-<#if DRV_MET_RAW_ZERO_CROSSING == true>  
+<#if DRV_MET_RAW_ZERO_CROSSING == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1145,7 +1145,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_ZeroCrossCallbackRegister(DRV_METROLOGY_CALLB
 }
 
 </#if>
-<#if DRV_MET_PULSE_0 == true>  
+<#if DRV_MET_PULSE_0 == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1158,7 +1158,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse0CallbackRegister(DRV_METROLOGY_CALLBACK
 }
 
 </#if>
-<#if DRV_MET_PULSE_1 == true>  
+<#if DRV_MET_PULSE_1 == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1171,7 +1171,7 @@ DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse1CallbackRegister(DRV_METROLOGY_CALLBACK
 }
 
 </#if>
-<#if DRV_MET_PULSE_2 == true>  
+<#if DRV_MET_PULSE_2 == true>
 DRV_METROLOGY_RESULT DRV_METROLOGY_Pulse2CallbackRegister(DRV_METROLOGY_CALLBACK callback)
 {
     if (callback == NULL)
@@ -1218,7 +1218,7 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
         return;
     }
 
-<#if DRV_MET_RTOS_ENABLE == true>     
+<#if DRV_MET_RTOS_ENABLE == true>
     /* Wait for the metrology semaphore to get IPC interrupts */
     (void) OSAL_SEM_Pend(&gDrvMetObj.semaphoreID, OSAL_WAIT_FOREVER);
 <#else>
@@ -1230,12 +1230,12 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
 
     /* Clear IPC interrupt flag */
     gDrvMetObj.ipcInterruptFlag = false;
-</#if>   
+</#if>
 
     if (gDrvMetObj.integrationFlag == true)
     {
         gDrvMetObj.integrationFlag = false;
-        
+
         if (gDrvMetObj.harmonicAnalysisData.integrationPeriods > 0U)
         {
             gDrvMetObj.harmonicAnalysisData.integrationPeriods--;
@@ -1265,13 +1265,13 @@ void DRV_METROLOGY_Tasks(SYS_MODULE_OBJ object)
             }
 
             /* Check if there is a harmonic analysis process running */
-            if ((gDrvMetObj.harmonicAnalysisData.running == true) && 
+            if ((gDrvMetObj.harmonicAnalysisData.running == true) &&
                 (gDrvMetObj.harmonicAnalysisData.integrationPeriods == 0U) )
             {
                 if (lDRV_METROLOGY_UpdateHarmonicAnalysisValues() == true)
                 {
                     gDrvMetObj.harmonicAnalysisData.running = false;
-                    
+
                     /* Launch calibration callback */
                     if (gDrvMetObj.harmonicAnalysisCallback != NULL)
                     {
@@ -1295,9 +1295,9 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlData (void)
 
 DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
       H3_MISRAC_2012_R_11_8_DR_1*/
-<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>    
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
@@ -1306,11 +1306,11 @@ DRV_METROLOGY_REGS_CONTROL * DRV_METROLOGY_GetControlByDefault (void)
 </#if>
     return (DRV_METROLOGY_REGS_CONTROL *)&gDrvMetControlDefault;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8" 
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
-    </#if>  
-</#if> 
+    </#if>
+</#if>
    /* MISRAC 2012 deviation block end */
 }
 
@@ -1331,25 +1331,25 @@ DRV_METROLOGY_CALIBRATION_REFS * DRV_METROLOGY_GetCalibrationReferences (void)
 
 void DRV_METROLOGY_SetControl (DRV_METROLOGY_REGS_CONTROL * pControl)
 {
-    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -  
+    /* MISRA C-2012 Rule 11.8 deviated below. Deviation record ID -
       H3_MISRAC_2012_R_11_8_DR_1*/
-<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>    
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1" 
+    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
 </#if>
     /* Keep State Control Register value */
     (void) memcpy((void *)&gDrvMetObj.metRegisters->MET_CONTROL.FEATURE_CTRL0,
                   (void *)&pControl->FEATURE_CTRL0,
                   sizeof(DRV_METROLOGY_REGS_CONTROL) - sizeof(uint32_t));
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"   
+    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
-</#if> 
+</#if>
    /* MISRAC 2012 deviation block end */
 }
 
