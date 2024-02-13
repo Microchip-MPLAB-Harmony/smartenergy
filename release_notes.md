@@ -3,6 +3,51 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.2.0
+
+### New Features
+
+- **Applications**
+  - Metering Demo and Dual Core Demo applications updated to use latest Smart Energy Drivers and Services.
+
+- **New Features and Enhancements**
+  - Added *rf215* driver which provides support to [AT86RF215 radio transceiver](https://www.microchip.com/en-us/development-tool/ATREB215-XPRO-A).
+  - Added new Services:
+    - log_report - Provides unified access to logging system from Smart Energy stacks.
+    - queue - Implements a queing system for Smart Energy stacks.
+    - random - Provides unified access to Random Number Generation from Smart Energy stacks.
+    - rserial - Implements RF transceiver serialization.
+    - rsniffer - Implements RF transceiver sniffer capabilities.
+    - security - Provides unified access to Cryptographic functions from Smart Energy stacks.
+    - spisplit - Allows to connect both PLC and RF transceiver to the same SPI Peripheral.
+  - Updated PL360/PL460 binaries to latest versions.
+  - Added RTOS support to Drivers implementation.
+  - Extended support on PLC and RF Drivers to new parts:
+    - [WBZ451](https://www.microchip.com/en-us/products/wireless-connectivity/bluetooth-low-energy/pic32cx-bz2-family)
+    - [SAMD20](https://www.microchip.com/en-us/product/ATSAMD20J18)
+  - Updated Metrology Driver to latest Metrology binaries.
+
+### Bug fixes
+
+- None
+
+### Known Issues
+
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in MISTRAL Dual Core 0 Demo application. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.20](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v4.35](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.5.0 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.3.132 or higher
+
+### Notes
+
+- None
+
 ## Smart Energy Release v1.1.1
 
 ### New Features

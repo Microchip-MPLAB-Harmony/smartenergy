@@ -3,41 +3,40 @@
 
 # MPLAB® Harmony 3 Smart Energy Support Package
 
-MPLAB Harmony 3 is an extension of the MPLAB® ecosystem for creating
-embedded firmware solutions for Microchip 32-bit SAM and PIC microcontroller
-and microprocessor devices.  Refer to the following links for more information.
- - [Microchip 32-bit MCUs](https://www.microchip.com/design-centers/32-bit)
- - [Microchip 32-bit MPUs](https://www.microchip.com/design-centers/32-bit-mpus)
- - [Microchip MPLAB X IDE]( https://www.microchip.com/mplab/mplab-x-ide )
- - [Microchip MPLAB Harmony]( https://www.microchip.com/mplab/mplab-harmony )
- - [Microchip MPLAB Harmony Pages]( https://microchip-mplab-harmony.github.io/ )
+MPLAB® Harmony 3 is an extension of the MPLAB® ecosystem for creating embedded firmware solutions for Microchip 32-bit SAM and PIC® microcontroller and microprocessor devices. Refer to the following links for more information.
+
+- [Microchip 32-bit MCUs](https://www.microchip.com/design-centers/32-bit)
+- [Microchip 32-bit MPUs](https://www.microchip.com/design-centers/32-bit-mpus)
+- [Microchip MPLAB X IDE](https://www.microchip.com/mplab/mplab-x-ide)
+- [Microchip MPLAB® Harmony](https://www.microchip.com/mplab/mplab-harmony)
+- [Microchip MPLAB® Harmony Pages](https://microchip-mplab-harmony.github.io/)
 
 This repository contains the MPLAB® Harmony 3 Smart Energy package, which includes solutions for Power Line Communications (PLC), Metering/Metrology and Dual Core applications.
 Refer to the following link for more information about PLC.
- - [Microchip Smart Energy]( https://www.microchip.com/design-centers/smart-energy-products/power-line-communications )
- 
-The Smart Energy package supports initialization of Microchip PLC modem devices, PLC communication 
-stacks such as G3 and PRIME, and development of standard PLC applications.
-The Smart Energy package also offers solutions to evaluate the features and to test the high accuracy that can be achieved
-with the Microchip Smart Metering library based on MTSH and MTC devices, as well as support solutions for Dual Core applications.
+
+- [Microchip Smart Energy](https://www.microchip.com/design-centers/smart-energy-products/power-line-communications)
+
+The Smart Energy package supports initialization of Microchip PLC modem devices, PLC communication stacks such as G3 and PRIME, and development of standard PLC applications.
+The Smart Energy package also offers solutions to evaluate the features and to test the high accuracy that can be achieved with the Microchip Smart Metering library based on MTSH and MTC devices, as well as support solutions for Dual Core applications.
 Refer to the following links for release notes, training materials, and interface reference information.
- - [Release Notes](./release_notes.md)
- - [MPLAB Harmony License](mplab_harmony_license.md)
- - [MPLAB Harmony 3 Smart Energy Help]( https://microchip-mplab-harmony.github.io/smartenergy/ )
+
+- [Release Notes](./release_notes.md)
+- [MPLAB® Harmony License](Microchip_SLA001.md)
+- [MPLAB® Harmony 3 Smart Energy API Help](https://microchip-mplab-harmony.github.io/smartenergy/)
 
 # Contents Summary
 
-| Folder     | Description                                                           |
-|------------|-----------------------------------------------------------------------|
-| apps       | Metering demo and Dual Core demo applications                         |
-| driver     | Drivers for PLC, RF devices and Metrology                             |
-| service    | Common PLC services for communication stacks (G3, PRIME)              |
-| stack      | Common services for communication staks (G3, PRIME)                   |
-| docs       | Smart Energy help documentation                                       |
+| Folder     | Description                                               |
+| ---        | ---                                                       |
+| apps       | Metering demo and Dual Core demo applications             |
+| config     | Smart Energy module configuration file                    |
+| docs       | Smart Energy help documentation                           |
+| driver     | Drivers for PLC, RF devices and Metrology                 |
+| service    | Common PLC services for communication stacks (G3, PRIME)  |
 
 ____
 
-[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/blob/master/mplab_harmony_license.md)
+[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/blob/master/Microchip_SLA001.md)
 [![Latest release](https://img.shields.io/github/release/Microchip-MPLAB-Harmony/smartenergy.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/releases/latest)
 [![Latest release date](https://img.shields.io/github/release-date/Microchip-MPLAB-Harmony/smartenergy.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/releases/latest)
 [![Commit activity](https://img.shields.io/github/commit-activity/y/Microchip-MPLAB-Harmony/smartenergy.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/graphs/commit-activity)

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Module name="SmartEnergy" id="e45688b5-4eb2-4921-982c-2cc3cfdffb03" version="1.1.0">
+<Module name="SmartEnergy" id="e45688b5-4eb2-4921-982c-2cc3cfdffb03" version="1.2.0">
     <ConfigRoot path="config/module.py"/>
 </Module>
