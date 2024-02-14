@@ -11,7 +11,7 @@
   - Metering Demo and Dual Core Demo applications updated to use latest Smart Energy Drivers and Services.
 
 - **New Features and Enhancements**
-  - Added *rf215* driver which provides support to [AT86RF215 radio transceiver](https://www.microchip.com/en-us/development-tool/ATREB215-XPRO-A).
+  - Added *rf215* driver which provides support to [AT86RF215 radio transceiver](https://www.microchip.com/en-us/product/at86rf215).
   - Added new Services:
     - log_report - Provides unified access to logging system from Smart Energy stacks.
     - queue - Implements a queing system for Smart Energy stacks.
@@ -22,9 +22,9 @@
     - spisplit - Allows to connect both PLC and RF transceiver to the same SPI Peripheral.
   - Updated PL360/PL460 binaries to latest versions.
   - Added RTOS support to Drivers implementation.
-  - Extended support on PLC and RF Drivers to new parts:
-    - [WBZ451](https://www.microchip.com/en-us/products/wireless-connectivity/bluetooth-low-energy/pic32cx-bz2-family)
-    - [SAMD20](https://www.microchip.com/en-us/product/ATSAMD20J18)
+  - Extended support on PLC Driver to new parts:
+    - [WBZ451](https://www.microchip.com/en-us/products/wireless-connectivity/bluetooth-low-energy/pic32cx-bz2-family).
+    - [SAMD20](https://www.microchip.com/en-us/product/ATSAMD20J18).
   - Updated Metrology Driver to latest Metrology binaries.
 
 ### Bug fixes
@@ -33,7 +33,7 @@
 
 ### Known Issues
 
-- "Image Copy Mode" setting value of the Secondary Project is not persisting in MISTRAL Dual Core 0 Demo application. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in PIC32CX-MT Dual Core 0 Demo applications. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
 
 ### Development Tools
 
