@@ -100,6 +100,7 @@ void _SLCDC_Tasks(  void *pvParameters  )
     }
 }
 
+
 static void lDRV_METROLOGY_Tasks(  void *pvParameters  )
 {
     while(true)
@@ -112,7 +113,7 @@ static void lDRV_METROLOGY_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_METROLOGY_Tasks;
 
 static void lAPP_METROLOGY_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_METROLOGY_Tasks();
@@ -122,7 +123,7 @@ static void lAPP_METROLOGY_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_CONSOLE_Tasks;
 
 static void lAPP_CONSOLE_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_CONSOLE_Tasks();
@@ -132,7 +133,7 @@ static void lAPP_CONSOLE_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_DATALOG_Tasks;
 
 static void lAPP_DATALOG_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_DATALOG_Tasks();
@@ -143,7 +144,7 @@ static void lAPP_DATALOG_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_DISPLAY_Tasks;
 
 static void lAPP_DISPLAY_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_DISPLAY_Tasks();
@@ -153,7 +154,7 @@ static void lAPP_DISPLAY_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_ENERGY_Tasks;
 
 static void lAPP_ENERGY_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_ENERGY_Tasks();
@@ -163,7 +164,7 @@ static void lAPP_ENERGY_Tasks(  void *pvParameters  )
 TaskHandle_t xAPP_EVENTS_Tasks;
 
 static void lAPP_EVENTS_Tasks(  void *pvParameters  )
-{
+{   
     while(true)
     {
         APP_EVENTS_Tasks();
@@ -189,7 +190,7 @@ static void lAPP_EVENTS_Tasks(  void *pvParameters  )
 void SYS_Tasks ( void )
 {
     /* Maintain system services */
-
+    
     (void) xTaskCreate( lSYS_CMD_Tasks,
         "SYS_CMD_TASKS",
         SYS_CMD_RTOS_STACK_SIZE,
@@ -240,7 +241,7 @@ void SYS_Tasks ( void )
 
 
     /* Maintain Middleware & Other Libraries */
-
+    
 
     /* Maintain the application's state machine. */
         /* Create OS Thread for APP_METROLOGY_Tasks. */
@@ -295,7 +296,7 @@ void SYS_Tasks ( void )
 
 
     /* Start RTOS Scheduler. */
-
+    
      /**********************************************************************
      * Create all Threads for APP Tasks before starting FreeRTOS Scheduler *
      ***********************************************************************/

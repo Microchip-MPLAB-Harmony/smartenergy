@@ -363,11 +363,11 @@ bool DRV_SST26_GeometryGet( const DRV_HANDLE handle, DRV_SST26_GEOMETRY *geometr
 
         flash_size = DRV_SST26_GetFlashSize(jedec_id[2]);
 
-        if (flash_size == 0U)
+        if (flash_size == 0U) 
         {
             status = false;
         }
-
+        
         if(DRV_SST26_START_ADDRESS >= flash_size)
         {
             status = false;
@@ -453,7 +453,7 @@ void DRV_SST26_Close( const DRV_HANDLE handle )
         dObj->nClients--;
     }
 }
-/* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -
+/* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -  
    H3_MISRAC_2012_R_11_3_DR_1 & H3_MISRAC_2012_R_11_8_DR_1*/
 SYS_MODULE_OBJ DRV_SST26_Initialize
 (
@@ -486,7 +486,7 @@ SYS_MODULE_OBJ DRV_SST26_Initialize
     /* Return the driver index */
     return ( (SYS_MODULE_OBJ)drvIndex );
 }
-/* MISRAC 2012 deviation block end */
+/* MISRAC 2012 deviation block end */ 
 
 SYS_STATUS DRV_SST26_Status( const SYS_MODULE_INDEX drvIndex )
 {

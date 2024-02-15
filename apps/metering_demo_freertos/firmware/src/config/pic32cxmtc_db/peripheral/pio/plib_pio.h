@@ -91,41 +91,41 @@
 
 
 /*** Macros for SWITCH_SCRDOWN pin ***/
-#define SWITCH_SCRDOWN_Set()               (PIOC_REGS->PIO_SODR = (1<<22))
-#define SWITCH_SCRDOWN_Clear()             (PIOC_REGS->PIO_CODR = (1<<22))
+#define SWITCH_SCRDOWN_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<22U))
+#define SWITCH_SCRDOWN_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<22U))
 #define SWITCH_SCRDOWN_Toggle()            do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<22); \
-                                            PIOC_REGS->PIO_ODSR ^= (1<<22);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
+                                            PIOC_REGS->PIO_ODSR ^= ((uint32_t)1U<<22U);\
                                         } while (0)
 #define SWITCH_SCRDOWN_OutputEnable()      do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<22); \
-                                            PIOC_REGS->PIO_CFGR |=(1 << PIO_CFGR_DIR_Pos);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
+                                            PIOC_REGS->PIO_CFGR |=((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         }while(0)
 #define SWITCH_SCRDOWN_InputEnable()       do { \
-                                            PIOC_REGS->PIO_MSKR = (1<<22); \
-                                            PIOC_REGS->PIO_CFGR &= ~(1 << PIO_CFGR_DIR_Pos);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<22U); \
+                                            PIOC_REGS->PIO_CFGR &= ~((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         } while (0)
-#define SWITCH_SCRDOWN_Get()               ((PIOC_REGS->PIO_PDSR >> 22) & 0x1)
+#define SWITCH_SCRDOWN_Get()               ((PIOC_REGS->PIO_PDSR >> 22U) & 0x1U)
 #define SWITCH_SCRDOWN_PIN                  PIO_PIN_PC22
 #define SWITCH_SCRDOWN_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<22))
 #define SWITCH_SCRDOWN_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<22))
 
 /*** Macros for SWITCH_SCRUP pin ***/
-#define SWITCH_SCRUP_Set()               (PIOC_REGS->PIO_SODR = (1<<4))
-#define SWITCH_SCRUP_Clear()             (PIOC_REGS->PIO_CODR = (1<<4))
+#define SWITCH_SCRUP_Set()               (PIOC_REGS->PIO_SODR = ((uint32_t)1U<<4U))
+#define SWITCH_SCRUP_Clear()             (PIOC_REGS->PIO_CODR = ((uint32_t)1U<<4U))
 #define SWITCH_SCRUP_Toggle()            do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<4); \
-                                            PIOC_REGS->PIO_ODSR ^= (1<<4);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
+                                            PIOC_REGS->PIO_ODSR ^= ((uint32_t)1U<<4U);\
                                         } while (0)
 #define SWITCH_SCRUP_OutputEnable()      do {\
-                                            PIOC_REGS->PIO_MSKR = (1<<4); \
-                                            PIOC_REGS->PIO_CFGR |=(1 << PIO_CFGR_DIR_Pos);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
+                                            PIOC_REGS->PIO_CFGR |=((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         }while(0)
 #define SWITCH_SCRUP_InputEnable()       do { \
-                                            PIOC_REGS->PIO_MSKR = (1<<4); \
-                                            PIOC_REGS->PIO_CFGR &= ~(1 << PIO_CFGR_DIR_Pos);\
+                                            PIOC_REGS->PIO_MSKR = ((uint32_t)1U<<4U); \
+                                            PIOC_REGS->PIO_CFGR &= ~((uint32_t)1U << PIO_CFGR_DIR_Pos);\
                                         } while (0)
-#define SWITCH_SCRUP_Get()               ((PIOC_REGS->PIO_PDSR >> 4) & 0x1)
+#define SWITCH_SCRUP_Get()               ((PIOC_REGS->PIO_PDSR >> 4U) & 0x1U)
 #define SWITCH_SCRUP_PIN                  PIO_PIN_PC4
 #define SWITCH_SCRUP_InterruptEnable()   (PIOC_REGS->PIO_IER = (1<<4))
 #define SWITCH_SCRUP_InterruptDisable()  (PIOC_REGS->PIO_IDR = (1<<4))

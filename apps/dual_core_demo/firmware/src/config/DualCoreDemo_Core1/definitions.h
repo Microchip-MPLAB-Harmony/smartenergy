@@ -55,12 +55,12 @@
 #include "peripheral/ipc/plib_ipc0.h"
 #include "peripheral/tc/plib_tc3.h"
 #include "peripheral/flexcom/usart/plib_flexcom0_usart.h"
+#include "peripheral/ipc/plib_ipc1.h"
 #include "system/time/sys_time.h"
 #include "system/int/sys_int.h"
 #include "system/ports/sys_ports.h"
 #include "osal/osal.h"
 #include "system/debug/sys_debug.h"
-#include "peripheral/ipc/plib_ipc1.h"
 #include "appcore1.h"
 
 
@@ -72,6 +72,12 @@ extern "C" {
 
 #endif
 // DOM-IGNORE-END
+
+/* Device Information */
+#define DEVICE_NAME			 "PIC32CX2051MTSH128S1"
+#define DEVICE_ARCH			 "CORTEX-M4"
+#define DEVICE_FAMILY		 "PIC32CX_MT"
+#define DEVICE_SERIES		 "PIC32CXMTSH"
 
 /* CPU clock frequency */
 #define CPU_CLOCK_FREQUENCY 240000000

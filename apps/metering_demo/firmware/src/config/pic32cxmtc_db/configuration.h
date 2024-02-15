@@ -154,6 +154,7 @@ extern "C" {
 #define DRV_MEMORY_CLIENTS_NUMBER_IDX0       1
 #define DRV_MEMORY_BUF_Q_SIZE_IDX0    1
 
+
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000UL
 /* Metrology Default Config: Meter Constant */

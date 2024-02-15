@@ -117,9 +117,9 @@ void PIO_Initialize ( void )
     uint32_t i;
     /* Initialize Interrupt Pin data structures */
     portPinCbObj[0 + 0].pin = PIO_PIN_PA14;
-
+    
     portPinCbObj[0 + 1].pin = PIO_PIN_PA15;
-
+    
     for(i = 0U; i < 2U; i++)
     {
         portPinCbObj[i].callback = NULL;

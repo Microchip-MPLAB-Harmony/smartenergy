@@ -52,7 +52,7 @@ typedef struct
     uintptr_t context;
 }ipc1_callback_object_t;
 
-static ipc1_callback_object_t ipc1_callback_obj[TOTAL_IPC_IRQS];
+volatile static ipc1_callback_object_t ipc1_callback_obj[TOTAL_IPC_IRQS];
 
 void  IPC1_Initialize(void)
 {
@@ -76,7 +76,7 @@ void IPC1_SetIRQHandler(ipc_irq_mask_t irq_mask, IPC_CALLBACK handler, uintptr_t
 }
 
 
-void  IPC1_InterruptHandler(void)
+void  __attribute__((used)) IPC1_InterruptHandler(void)
 {
     for (uint32_t irq_id = 0 ; irq_id < TOTAL_IPC_IRQS; irq_id++)
     {

@@ -25,6 +25,8 @@
 #define PLIB_CLK_H
 
 #include <stddef.h>
+#include <stdbool.h>
+#include "device.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -37,6 +39,25 @@
 // Section: CLK Module System Interface Routines
 // *****************************************************************************
 // *****************************************************************************
+
+typedef uint32_t ID_PERIPH;
+
+
+typedef enum
+{
+    GCLK_SRC_MD_SLOW_CLK = PMC_PCR_GCLKCSS_MD_SLOW_CLK_Val,
+	GCLK_SRC_TD_SLOW_CLOCK = PMC_PCR_GCLKCSS_TD_SLOW_CLOCK_Val,
+	GCLK_SRC_MAINCK = PMC_PCR_GCLKCSS_MAINCK_Val,
+	GCLK_SRC_MCK0 = PMC_PCR_GCLKCSS_MCK0_Val,
+	GCLK_SRC_PLLACK1 = PMC_PCR_GCLKCSS_PLLACK1_Val,
+	GCLK_SRC_PLLBCK = PMC_PCR_GCLKCSS_PLLBCK_Val,
+	GCLK_SRC_PLLCCK = PMC_PCR_GCLKCSS_PLLCCK_Val,
+	GCLK_SRC_PLLCSRC = PMC_PCR_GCLKCSS_PLLCSRC_Val,
+	
+}GCLK_SRC;
+
+
+
 
 // *****************************************************************************
 /* Function:

@@ -81,6 +81,7 @@ static inline ipc_irq_mask_t IPC1_GetIRQStatus(void)
     return IPC1_REGS->IPC_ISR;
 }
 
+void  IPC1_Initialize(void);
 
 void IPC1_SetIRQHandler(ipc_irq_mask_t irq, IPC_CALLBACK handler, uintptr_t context);
 

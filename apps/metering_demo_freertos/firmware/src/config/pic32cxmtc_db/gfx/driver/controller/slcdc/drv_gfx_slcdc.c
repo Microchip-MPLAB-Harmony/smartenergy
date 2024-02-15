@@ -93,7 +93,7 @@ status_code_t slcdc_init(slcdc_registers_t *p_slcdc, struct slcdc_config *slcdc_
 	}
 
 	/* SLCDC basic configuration */
-	p_slcdc->SLCDC_MR =
+	p_slcdc->SLCDC_MR = 
 			((slcdc_cfg->bias_buffer_duration)<< SLCDC_MR_BIAS_Pos) |
 			((CONF_COMM_SEL-1)<< SLCDC_MR_COMSEL_Pos) |
 			SLCDC_MR_SEGSEL(CONF_SEG_SEL-1) |

@@ -118,6 +118,7 @@ static const DRV_MEMORY_INIT drvMemory0InitData =
 };
 
 // </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="DRV_METROLOGY Initialization Data">
 
 /* MISRA C-2012 deviation block start */
@@ -320,12 +321,12 @@ void SYS_Initialize ( void* data )
 
 
 	BSP_Initialize();
-    RTC_Initialize();
-
  
     TC0_CH0_TimerInitialize(); 
      
     
+    RTC_Initialize();
+
     FLEXCOM0_USART_Initialize();
 
     QSPI_Initialize();
@@ -343,9 +344,10 @@ void SYS_Initialize ( void* data )
 
     DRV_SLCDC_Initialize();
 
+
     /* Initialize Metrology Driver Instance */
     sysObj.drvMet = DRV_METROLOGY_Initialize((SYS_MODULE_INIT *)&drvMetrologyInitData, RSTC_ResetCauseGet());
-
+    
 
     SYS_CMD_Initialize((SYS_MODULE_INIT*)&sysCmdInit);
 

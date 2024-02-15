@@ -164,6 +164,7 @@ extern "C" {
 #define DRV_MEMORY_PRIORITY_IDX0                 1
 #define DRV_MEMORY_RTOS_DELAY_IDX0               10U
 
+
 /* Metrology Configuration Options */
 #define DRV_METROLOGY_REG_BASE_ADDRESS        0x20088000UL
 /* Metrology Default Config: Meter Constant */

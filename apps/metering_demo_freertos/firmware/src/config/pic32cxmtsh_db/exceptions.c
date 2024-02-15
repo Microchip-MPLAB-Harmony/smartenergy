@@ -48,7 +48,7 @@
 #include "interrupts.h"
 #include "definitions.h"
 
-
+ 
 
 // *****************************************************************************
 // *****************************************************************************
@@ -66,7 +66,7 @@ void __attribute__((noreturn, weak)) NonMaskableInt_Handler(void)
     {
     }
 }
-
+ 
 void __attribute__((noreturn, weak)) HardFault_Handler(void)
 {
 #if defined(__DEBUG) || defined(__DEBUG_D) && defined(__XC32)
@@ -116,7 +116,7 @@ void __attribute__((noreturn, weak)) UsageFault_Handler(void)
    {
    }
 }
-
+ 
 /*******************************************************************************
  End of File
  */

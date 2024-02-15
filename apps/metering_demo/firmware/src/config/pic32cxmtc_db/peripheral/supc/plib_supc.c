@@ -227,7 +227,7 @@ void SUPC_CallbackRegister(SUPC_CALLBACK callback, uintptr_t context)
 void __attribute__((used)) SUPC_InterruptHandler(void)
 {
     uint32_t supc_status = SUPC_REGS->SUPC_ISR;
-    uintptr_t context = supcObj.context;
+    uintptr_t context = supcObj.context; 
     /* Callback user function */
     if(supcObj.callback != NULL)
     {
