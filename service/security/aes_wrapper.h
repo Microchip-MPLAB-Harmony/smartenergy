@@ -128,6 +128,94 @@ void AES_Wrapper_SetEncryptEcbKey(uint8_t *key);
 
 void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out);
 
+//******************************************************************************
+/* Function:
+    void AES_Wrapper_WrapKey(
+        const uint8_t *key, 
+        uint32_t keyLen, 
+        const uint8_t *in, 
+        uint32_t inLen,
+        uint8_t *out)
+    
+  Summary:
+    Wraps a key with AES Key Wrap Algorithm.
+
+  Description:
+    This function wraps a key using AES Key Wrap Algorithm.
+
+  Precondition:
+    None.
+
+  Parameters:
+    key    - Pointer to buffer holding the AES key for the algorithm.
+    keyLen - Length of key in bytes.
+    in     - Pointer to buffer where the key to wrap is located.
+    inLen  - Length in bytes of the key to wrap.
+    out    - Pointer to buffer to store the wrapped key.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    uint8_t in1[16];
+    uint8_t out1[24];
+    uint8_t key[] = { some 16, 24, or 32 byte key };
+
+    AES_Wrapper_WrapKey(key, sizeof(key), in1, sizeof(in1), out1);
+    </code>
+
+  Remarks:
+    The wrapped key is one byte longer than the plain key.
+*/
+
+void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+    uint32_t inLen, uint8_t *out);
+
+///******************************************************************************
+/* Function:
+    bool AES_Wrapper_UnwrapKey(
+        const uint8_t *key, 
+        uint32_t keyLen, 
+        const uint8_t *in, 
+        uint32_t inLen,
+        uint8_t *out)
+    
+  Summary:
+    Unwraps a key with AES Key Wrap Algorithm.
+
+  Description:
+    This function unwraps a key using AES Key Wrap Algorithm.
+
+  Precondition:
+    None.
+
+  Parameters:
+    key    - Pointer to buffer holding the AES key for the algorithm.
+    keyLen - Length of key in bytes.
+    in     - Pointer to buffer where the wrapped key is located.
+    inLen  - Length in bytes of the key to unwrap.
+    out    - Pointer to buffer to store the unwrapped key.
+
+  Returns:
+    True if key was correctly unwrapped. Otherwise, false.
+
+  Example:
+    <code>
+    uint8_t in1[24];
+    uint8_t out1[16];
+    uint8_t key[] = { some 16, 24, or 32 byte key };
+
+    AES_Wrapper_UnwrapKey(key, sizeof(key), in1, sizeof(in1), out1);
+    </code>
+
+  Remarks:
+    The unwrapped key is one byte shorter than the wrapped key.
+*/
+
+void AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+    uint32_t inLen, uint8_t *out);
+
 #ifdef __cplusplus // Provide C++ Compatibility
 }
 #endif

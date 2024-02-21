@@ -72,3 +72,28 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
 {
     (void) Crypto_Sym_Aes_Cipher(&aesWrapperContext, in, 16, out);
 }
+
+void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+    uint32_t inLen, uint8_t *out)
+{
+    (void) Crypto_Sym_AesKeyWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen, 
+        out, key, keyLen, NULL, 1);
+}
+
+bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+    uint32_t inLen, uint8_t *out)
+{
+    crypto_Sym_Status_E unwrapResult;
+    
+    unwrapResult = Crypto_Sym_AesKeyUnWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen, 
+        out, key, keyLen, NULL, 1);
+    
+    if (unwrapResult == CRYPTO_SYM_CIPHER_SUCCESS) 
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
