@@ -72,13 +72,13 @@ static uint8_t cipherWrapperOutAux[128];
 int32_t CIPHER_Wrapper_AesCmacDirect(uint8_t *input, uint32_t inputLen,
                                      uint8_t *outputMac, uint8_t *key)
 {
-    return (int32_t) I_Crypto_Mac_AesCmac_Direct(CRYPTO_HANDLER_SW_WOLFCRYPT,
+    return (int32_t) Crypto_Mac_AesCmac_Direct(CRYPTO_HANDLER_SW_WOLFCRYPT,
             input, inputLen, outputMac, 16, key, CRYPTO_AESKEYSIZE_128, 1);
 }
 
 int32_t CIPHER_Wrapper_AesCcmSetkey(uint8_t *key)
 {
-    return (int32_t) I_Crypto_Aead_AesCcm_Init(&cipherWrapperCcmContext,
+    return (int32_t) Crypto_Aead_AesCcm_Init(&cipherWrapperCcmContext,
             CRYPTO_HANDLER_SW_WOLFCRYPT, key, CRYPTO_AESKEYSIZE_128, 1);
 }
 
@@ -87,7 +87,7 @@ int32_t CIPHER_Wrapper_AesCcmAuthDecrypt(uint8_t *data, uint32_t dataLen,
                                          uint8_t *aad, uint32_t aadLen,
                                          uint8_t *tag, uint32_t tagLen)
 {
-    return (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
+    return (int32_t) Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
             CRYPTO_CIOP_DECRYPT, data, dataLen, data,
             iv, ivLen, tag, tagLen, aad, aadLen);
 }
@@ -97,7 +97,7 @@ int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint8_t *data, uint32_t dataLen,
                                            uint8_t *aad, uint32_t aadLen,
                                            uint8_t *tag, uint32_t tagLen)
 {
-    return (int32_t) I_Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
+    return (int32_t) Crypto_Aead_AesCcm_Cipher(&cipherWrapperCcmContext,
             CRYPTO_CIOP_ENCRYPT, data, dataLen, data,
             iv, ivLen, tag, tagLen, aad, aadLen);
 }
@@ -112,7 +112,7 @@ int32_t CIPHER_Wrapper_AesEaxEncrypt(uint8_t *data, uint32_t dataLen,
 
     if (dataLen <= sizeof(cipherWrapperOutAux))
     {
-        result = (int32_t) I_Crypto_Aead_AesEax_EncryptAuthDirect(
+        result = (int32_t) Crypto_Aead_AesEax_EncryptAuthDirect(
                 CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, cipherWrapperOutAux, key,
                 CRYPTO_AESKEYSIZE_128, iv, ivLen, aad, aadLen, tag, tagLen, 1);
 
@@ -132,7 +132,7 @@ int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
 
     if (dataLen <= sizeof(cipherWrapperOutAux))
     {
-        result = (int32_t) I_Crypto_Aead_AesEax_DecryptAuthDirect(
+        result = (int32_t) Crypto_Aead_AesEax_DecryptAuthDirect(
                 CRYPTO_HANDLER_SW_WOLFCRYPT, data, dataLen, cipherWrapperOutAux, key,
                 CRYPTO_AESKEYSIZE_128, iv, ivLen, aad, aadLen, tag, tagLen, 1);
 
