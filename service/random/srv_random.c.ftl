@@ -51,9 +51,10 @@ Microchip or any third party.
 #include "definitions.h"
 <#if (trng)??>
 <#elseif (lib_crypto)??>
-#include "wolfssl/wolfcrypt/random.h"
+#include <stdlib.h>
+#include "crypto/common_crypto/MCHP_Crypto_RNG.h"
 <#else>
-#include <rand.h>
+#include <stdlib.h>
 </#if>
 #include "srv_random.h"
 
@@ -70,14 +71,26 @@ uint8_t SRV_RANDOM_Get8bits(void)
 <#if (trng)??>
     retValue = (uint8_t)TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    WC_RNG rngCtx;
+    crypto_Rng_Status_E status;
+    uint32_t seed;
+    uint8_t randBuf[1];
 
-    (void) wc_InitRng(&rngCtx);
-    (void) wc_RNG_GenerateByte(&rngCtx, (byte*)&retValue);
-    (void) wc_FreeRng(&rngCtx);
+    // Generate random number from Crypto
+    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+        randBuf, 1, NULL, 0, 1);
+
+    if (status == CRYPTO_RNG_SUCCESS) {
+        retValue = randBuf[0];
+    }
+    else {
+        seed = SYS_TIME_CounterGet();
+        srand(seed);
+        retValue = (uint8_t)rand();
+    }
 <#else>
-    uint32_t seed; // use uninitialized value
+    uint32_t seed;
 
+    seed = SYS_TIME_CounterGet();
     srand(seed);
     retValue = (uint8_t)rand();
 </#if>
@@ -92,14 +105,26 @@ uint16_t SRV_RANDOM_Get16bits(void)
 <#if (trng)??>
     retValue = (uint16_t)TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    WC_RNG rngCtx;
+    crypto_Rng_Status_E status;
+    uint32_t seed;
+    uint8_t randBuf[2];
 
-    (void) wc_InitRng(&rngCtx);
-    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)&retValue, 2);
-    (void) wc_FreeRng(&rngCtx);
+    // Generate random number from Crypto
+    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+        randBuf, 2, NULL, 0, 1);
+
+    if (status == CRYPTO_RNG_SUCCESS) {
+        retValue = (randBuf[1] << 8) + randBuf[0];
+    }
+    else {
+        seed = SYS_TIME_CounterGet();
+        srand(seed);
+        retValue = (uint16_t)rand();
+    }
 <#else>
-    uint32_t seed; // use uninitialized value
+    uint32_t seed;
 
+    seed = SYS_TIME_CounterGet();
     srand(seed);
     retValue = (uint16_t)rand();
 </#if>
@@ -127,14 +152,27 @@ uint32_t SRV_RANDOM_Get32bits(void)
 <#if (trng)??>
     retValue = TRNG_ReadData();
 <#elseif (lib_crypto)??>
-    WC_RNG rngCtx;
+    crypto_Rng_Status_E status;
+    uint32_t seed;
+    uint8_t randBuf[4];
 
-    (void) wc_InitRng(&rngCtx);
-    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)&retValue, 4);
-    (void) wc_FreeRng(&rngCtx);
+    // Generate random number from Crypto
+    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+        randBuf, 4, NULL, 0, 1);
+
+    if (status == CRYPTO_RNG_SUCCESS) {
+        retValue = (randBuf[3] << 24) + (randBuf[2] << 16) +
+            (randBuf[1] << 8) + randBuf[0];
+    }
+    else {
+        seed = SYS_TIME_CounterGet();
+        srand(seed);
+        retValue = rand();
+    }
 <#else>
-    uint32_t seed; // use uninitialized value
+    uint32_t seed;
 
+    seed = SYS_TIME_CounterGet();
     srand(seed);
     retValue = rand();
 </#if>
@@ -171,16 +209,35 @@ void SRV_RANDOM_Get128bits(uint8_t *rndValue)
         *rndValue++ = (uint8_t)randNum;
     }
 <#elseif (lib_crypto)??>
-    WC_RNG rngCtx;
-
-    (void) wc_InitRng(&rngCtx);
-    (void) wc_RNG_GenerateBlock(&rngCtx, (byte*)rndValue, 16);
-    (void) wc_FreeRng(&rngCtx);
-<#else>
-    uint32_t seed; // use uninitialized value
+    crypto_Rng_Status_E status;
+    uint32_t seed;
     uint32_t randNum;
     uint8_t n;
 
+    // Generate random number from Crypto
+    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+        rndValue, 16, NULL, 0, 1);
+
+    if (status != CRYPTO_RNG_SUCCESS) {
+        seed = SYS_TIME_CounterGet();
+        srand(seed);
+
+        for (n = 0; n < 4; n ++)
+        {
+            randNum = rand();
+
+            *rndValue++ = (uint8_t)(randNum >> 24);
+            *rndValue++ = (uint8_t)(randNum >> 16);
+            *rndValue++ = (uint8_t)(randNum >> 8);
+            *rndValue++ = (uint8_t)randNum;
+        }
+    }
+<#else>
+    uint32_t seed;
+    uint32_t randNum;
+    uint8_t n;
+
+    seed = SYS_TIME_CounterGet();
     srand(seed);
 
     for (n = 0; n < 4; n ++)
