@@ -213,7 +213,7 @@ void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in,
     The unwrapped key is one byte shorter than the wrapped key.
 */
 
-void AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
     uint32_t inLen, uint8_t *out);
 
 #ifdef __cplusplus // Provide C++ Compatibility

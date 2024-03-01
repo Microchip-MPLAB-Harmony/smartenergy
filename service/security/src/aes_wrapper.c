@@ -92,8 +92,6 @@ bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *i
     {
         return true;
     }
-    else 
-    {
-        return false;
-    }
+
+    return false;
 }
