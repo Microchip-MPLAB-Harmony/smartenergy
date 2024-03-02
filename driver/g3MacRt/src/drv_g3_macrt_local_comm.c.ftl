@@ -67,8 +67,8 @@ static DRV_G3_MACRT_OBJ *gG3MacRtObj = NULL;
 /* Buffer definition to communicate with G3 MAC RT device */
 static CACHE_ALIGN uint8_t gG3StatusInfo[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_STATUS_LENGTH)];
 static CACHE_ALIGN uint8_t gG3TxData[CACHE_ALIGNED_SIZE_GET((DRV_G3_MACRT_DATA_MAX_SIZE + 2))];
-static CACHE_ALIGN uint8_t gG3RxData[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_DATA_MAX_SIZE)];
-static CACHE_ALIGN uint8_t gG3RxParameters[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_RX_PAR_SIZE)];
+static CACHE_ALIGN uint8_t gG3RxData[2][CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_DATA_MAX_SIZE)];
+static CACHE_ALIGN uint8_t gG3RxParameters[2][CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_RX_PAR_SIZE)];
 static CACHE_ALIGN uint8_t gG3CommStatus[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_COMM_STATUS_SIZE)];
 static CACHE_ALIGN uint8_t gG3TxConfirm[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_TX_CFM_SIZE)];
 static CACHE_ALIGN uint8_t gG3RegResponse[CACHE_ALIGNED_SIZE_GET(DRV_G3_MACRT_REG_PKT_SIZE)];
@@ -253,14 +253,18 @@ void DRV_G3_MACRT_Init(DRV_G3_MACRT_OBJ *g3MacRt)
     gG3MacRtObj = g3MacRt;
 
     /* Clear PLC events information */
-    gG3MacRtObj->evDataIndLength = 0;
+    gG3MacRtObj->evDataIndLength[0] = 0;
+    gG3MacRtObj->evDataIndLength[1] = 0;
     gG3MacRtObj->evRegRspLength = 0;
     gG3MacRtObj->evMacSnifLength = 0;
     gG3MacRtObj->evPhySnifLength = 0;
     gG3MacRtObj->evCommStatus = false;
-    gG3MacRtObj->evRxParams = false;
+    gG3MacRtObj->evRxParams[0] = false;
+    gG3MacRtObj->evRxParams[1] = false;
     gG3MacRtObj->evResetTxCfm = false;
     gG3MacRtObj->evTxCfm = false;
+    gG3MacRtObj->evDataIndLengthIndex = 0;
+    gG3MacRtObj->evRxParamsIndex = 0;
 
     /* Enable external interrupt from PLC */
     gG3MacRtObj->plcHal->enableExtInt(true);
@@ -318,10 +322,10 @@ void DRV_G3_MACRT_Task(void)
         gG3MacRtObj->state = DRV_G3_MACRT_STATE_READY;
     }
 
-    if (gG3MacRtObj->evRxParams)
+    if (gG3MacRtObj->evRxParams[0])
     {
         /* Reset event flag */
-        gG3MacRtObj->evRxParams = false;
+        gG3MacRtObj->evRxParams[0] = false;
 
         /* Report to upper layer */
         if (gG3MacRtObj->rxParamsIndCallback != NULL)
@@ -335,7 +339,34 @@ void DRV_G3_MACRT_Task(void)
     </#if>
             #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
 </#if>
-            gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters);
+            gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[0]);
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+            #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+    <#if core.COMPILER_CHOICE == "XC32">
+            #pragma GCC diagnostic pop
+    </#if>
+</#if>
+            /* MISRA C-2012 deviation block end */
+        }
+    }
+    else if (gG3MacRtObj->evRxParams[1])
+    {
+        /* Reset event flag */
+        gG3MacRtObj->evRxParams[1] = false;
+
+        /* Report to upper layer */
+        if (gG3MacRtObj->rxParamsIndCallback != NULL)
+        {
+            /* MISRA C-2012 deviation block start */
+            /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+<#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
+    <#if core.COMPILER_CHOICE == "XC32">
+            #pragma GCC diagnostic push
+            #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+    </#if>
+            #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+</#if>
+            gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[1]);
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
             #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
@@ -346,17 +377,30 @@ void DRV_G3_MACRT_Task(void)
         }
     }
 
-    if (gG3MacRtObj->evDataIndLength > 0U)
+    if (gG3MacRtObj->evDataIndLength[0] > 0U)
     {
-        uint16_t evDataLength = gG3MacRtObj->evDataIndLength;
+        uint16_t evDataLength = gG3MacRtObj->evDataIndLength[0];
 
         /* Reset event flag */
-        gG3MacRtObj->evDataIndLength = 0U;
+        gG3MacRtObj->evDataIndLength[0] = 0U;
 
         if (gG3MacRtObj->dataIndCallback != NULL)
         {
             /* Report to upper layer */
-            gG3MacRtObj->dataIndCallback(gG3RxData, evDataLength);
+            gG3MacRtObj->dataIndCallback(gG3RxData[0], evDataLength);
+        }
+    }
+    else if (gG3MacRtObj->evDataIndLength[1] > 0U)
+    {
+        uint16_t evDataLength = gG3MacRtObj->evDataIndLength[1];
+
+        /* Reset event flag */
+        gG3MacRtObj->evDataIndLength[1] = 0U;
+
+        if (gG3MacRtObj->dataIndCallback != NULL)
+        {
+            /* Report to upper layer */
+            gG3MacRtObj->dataIndCallback(gG3RxData[1], evDataLength);
         }
     }
 
@@ -662,10 +706,19 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         /* Check RX paramenters indication event */
         if (evObj.evRxParInd)
         {
-            lDRV_G3_MACRT_COMM_SpiReadCmd(RX_PAR_IND_ID, gG3RxParameters,
+            lDRV_G3_MACRT_COMM_SpiReadCmd(RX_PAR_IND_ID, gG3RxParameters[gG3MacRtObj->evRxParamsIndex],
                     (uint16_t)DRV_G3_MACRT_RX_PAR_SIZE);
             /* update event flag */
-            gG3MacRtObj->evRxParams = true;
+            gG3MacRtObj->evRxParams[gG3MacRtObj->evRxParamsIndex] = true;
+
+            if (gG3MacRtObj->evRxParamsIndex == 1)
+            {
+                gG3MacRtObj->evRxParamsIndex = 0;
+            }
+            else
+            {
+                gG3MacRtObj->evRxParamsIndex = 1;
+            }
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
 
             /* Post semaphore to resume task */
@@ -681,10 +734,19 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             {
                 evObj.rcvDataLength = 1U;
             }
-            lDRV_G3_MACRT_COMM_SpiReadCmd(DATA_IND_ID, gG3RxData,
+            lDRV_G3_MACRT_COMM_SpiReadCmd(DATA_IND_ID, gG3RxData[gG3MacRtObj->evDataIndLengthIndex],
                     evObj.rcvDataLength);
             /* update event flag */
-            gG3MacRtObj->evDataIndLength = evObj.rcvDataLength;
+            gG3MacRtObj->evDataIndLength[gG3MacRtObj->evDataIndLengthIndex] = evObj.rcvDataLength;
+
+            if (gG3MacRtObj->evDataIndLengthIndex == 1)
+            {
+                gG3MacRtObj->evDataIndLengthIndex = 0;
+            }
+            else
+            {
+                gG3MacRtObj->evDataIndLengthIndex = 1;
+            }
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
 
             /* Post semaphore to resume task */
