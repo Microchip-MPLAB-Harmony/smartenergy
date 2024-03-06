@@ -22,7 +22,7 @@ Refer to the following links for release notes, training materials, and interfac
 
 - [Release Notes](./release_notes.md)
 - [MPLAB® Harmony License](Microchip_SLA001.md)
-- [MPLAB® Harmony 3 Smart Energy API Help](https://microchip-mplab-harmony.github.io/smartenergy/)
+- [MPLAB® Harmony 3 Smart Energy API Help](https://onlinedocs.microchip.com/g/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-en-US-2/index.html?output=oxygen)
 
 # Contents Summary
 
