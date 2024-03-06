@@ -349,31 +349,34 @@ void DRV_G3_MACRT_Task(void)
             /* MISRA C-2012 deviation block end */
         }
     }
-    else if (gG3MacRtObj->evRxParams[1])
+    else
     {
-        /* Reset event flag */
-        gG3MacRtObj->evRxParams[1] = false;
-
-        /* Report to upper layer */
-        if (gG3MacRtObj->rxParamsIndCallback != NULL)
+        if (gG3MacRtObj->evRxParams[1])
         {
-            /* MISRA C-2012 deviation block start */
-            /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+            /* Reset event flag */
+            gG3MacRtObj->evRxParams[1] = false;
+
+            /* Report to upper layer */
+            if (gG3MacRtObj->rxParamsIndCallback != NULL)
+            {
+                /* MISRA C-2012 deviation block start */
+                /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
-            #pragma GCC diagnostic push
-            #pragma GCC diagnostic ignored "-Wunknown-pragmas"
+                #pragma GCC diagnostic push
+                #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-            #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+                #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
 </#if>
-            gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[1]);
+                gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[1]);
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-            #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+                #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
-            #pragma GCC diagnostic pop
+                #pragma GCC diagnostic pop
     </#if>
 </#if>
-            /* MISRA C-2012 deviation block end */
+                /* MISRA C-2012 deviation block end */
+            }
         }
     }
 
@@ -390,17 +393,20 @@ void DRV_G3_MACRT_Task(void)
             gG3MacRtObj->dataIndCallback(gG3RxData[0], evDataLength);
         }
     }
-    else if (gG3MacRtObj->evDataIndLength[1] > 0U)
+    else
     {
-        uint16_t evDataLength = gG3MacRtObj->evDataIndLength[1];
-
-        /* Reset event flag */
-        gG3MacRtObj->evDataIndLength[1] = 0U;
-
-        if (gG3MacRtObj->dataIndCallback != NULL)
+        if (gG3MacRtObj->evDataIndLength[1] > 0U)
         {
-            /* Report to upper layer */
-            gG3MacRtObj->dataIndCallback(gG3RxData[1], evDataLength);
+            uint16_t evDataLength = gG3MacRtObj->evDataIndLength[1];
+
+            /* Reset event flag */
+            gG3MacRtObj->evDataIndLength[1] = 0U;
+
+            if (gG3MacRtObj->dataIndCallback != NULL)
+            {
+                /* Report to upper layer */
+                gG3MacRtObj->dataIndCallback(gG3RxData[1], evDataLength);
+            }
         }
     }
 
@@ -711,7 +717,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             /* update event flag */
             gG3MacRtObj->evRxParams[gG3MacRtObj->evRxParamsIndex] = true;
 
-            if (gG3MacRtObj->evRxParamsIndex == 1)
+            if (gG3MacRtObj->evRxParamsIndex == 1U)
             {
                 gG3MacRtObj->evRxParamsIndex = 0;
             }
@@ -739,7 +745,7 @@ void DRV_G3_MACRT_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
             /* update event flag */
             gG3MacRtObj->evDataIndLength[gG3MacRtObj->evDataIndLengthIndex] = evObj.rcvDataLength;
 
-            if (gG3MacRtObj->evDataIndLengthIndex == 1)
+            if (gG3MacRtObj->evDataIndLengthIndex == 1U)
             {
                 gG3MacRtObj->evDataIndLengthIndex = 0;
             }
