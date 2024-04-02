@@ -646,23 +646,16 @@ gain_vlow_2chn_drv_himp = [gain_vlow_2chn12_drv_himp, gain_vlow_2chn23_drv_himp,
 
 pCoupMMDACC = []
 
-mm_rms_high_cena  = [2226, 1586, 1132, 805, 573, 408, 290, 206]
-mm_rms_vlow_cena  = [5920, 4604, 3331, 2374, 1686, 1193, 846, 599]
-mm_thrs_high_cena = [0, 0, 0, 0, 0, 0, 0, 0, 1884, 1341, 955, 677, 483, 341, 243, 173]
-mm_thrs_vlow_cena = [0, 0, 0, 0, 0, 0, 0, 0, 9551, 6881, 4936, 3541, 2532, 1805, 1290, 922]
-mm_dacc_cena      = [0, 0, 0x00000100, 0x00000100, 0, 0, 0xFFFF00FF, 0x17171717, 0, 0, 0x00000004, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+# from rms_high_cena_c07
+mm_rms_high_cena  = [1991, 1381, 976, 695, 495, 351, 250, 179]
+mm_rms_vlow_cena  = [6356, 4706, 3317, 2308, 1602, 1112, 778, 546]
+mm_thrs_high_cena = [0, 0, 0, 0, 0, 0, 0, 0, 1685, 1173, 828, 589, 419, 298, 212, 151]
+mm_thrs_vlow_cena = [0, 0, 0, 0, 0, 0, 0, 0, 8988, 6370, 4466, 3119, 2171, 1512, 1061, 752]
+mm_dacc_cena      = [0, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0, 0xFFFF00FF, 0x17171717, 0x00002020, 0x00000044, 0x0FD20001, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
+mm_dacc_cena_drv  = [0, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC, 0, 0xFFFF00FF, 0x17171717, 0x20200000, 0x00004400, 0x0FD20001, 0x000003AA, 0xF0000000, 0x001020F0, 0x000003AA, 0xF0000000, 0x001020FF]
 mm_gain_high_cena = [32, 32, 32]
 mm_gain_vlow_cena = [16, 16, 16]
-mm_drv_conf_cena  = 5
-
-mm_rms_high_cena_c07  = [1991, 1381, 976, 695, 495, 351, 250, 179]
-mm_rms_vlow_cena_c07  = [6356, 4706, 3317, 2308, 1602, 1112, 778, 546]
-mm_thrs_high_cena_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 1685, 1173, 828, 589, 419, 298, 212, 151]
-mm_thrs_vlow_cena_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 8988, 6370, 4466, 3119, 2171, 1512, 1061, 752]
-mm_dacc_cena_c07      = [0, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0, 0xFFFF00FF, 0x17171717, 0x00002020, 0x00000044, 0x0FD20004, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
-mm_gain_high_cena_c07 = [32, 32, 32]
-mm_gain_vlow_cena_c07 = [16, 16, 16]
-mm_drv_conf_cena_c07  = 8
+mm_drv_conf_cena  = 8
 
 ############################################################################
 
@@ -1310,30 +1303,22 @@ def updateMMCouplingParameters():
     pCoupG3MainPhyBand.setVisible(False)
     pCoupG3MainPhyBand.setValue("CEN-A")
 
-    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_MM_BAND")
+    rms_high  = mm_rms_high_cena
+    rms_vlow  = mm_rms_vlow_cena
+    thrs_high = mm_thrs_high_cena
+    thrs_vlow = mm_thrs_vlow_cena
+    gain_high = mm_gain_high_cena
+    gain_vlow = mm_gain_vlow_cena
+
     if (plcDevice == "PL460"):
-        if plcPhyBand == "CEN-A":
-            # print("UpdatePlcCouplingParameters -> PL460 MM CEN-A")
-            rms_high  = mm_rms_high_cena
-            rms_vlow  = mm_rms_vlow_cena
-            thrs_high = mm_thrs_high_cena
-            thrs_vlow = mm_thrs_vlow_cena
-            dacc      = mm_dacc_cena
-            gain_high = mm_gain_high_cena
-            gain_vlow = mm_gain_vlow_cena
-            line_drv  = mm_drv_conf_cena
+        # print("UpdatePlcCouplingParameters -> PL460 MM CEN-A")
+        line_drv  = mm_drv_conf_cena
+        dacc      = mm_dacc_cena_drv
 
     else: # "PL360"
-        line_drv = 0
-        if plcPhyBand == "CEN-A":
-            # print("UpdatePlcCouplingParameters -> PL360 MM CEN-A")
-            rms_high  = mm_rms_high_cena_c07
-            rms_vlow  = mm_rms_vlow_cena_c07
-            thrs_high = mm_thrs_high_cena_c07
-            thrs_vlow = mm_thrs_vlow_cena_c07
-            dacc      = mm_dacc_cena_c07
-            gain_high = mm_gain_high_cena_c07
-            gain_vlow = mm_gain_vlow_cena_c07
+        # print("UpdatePlcCouplingParameters -> PL360 MM CEN-A")
+        line_drv  = 0
+        dacc      = mm_dacc_cena
 
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
