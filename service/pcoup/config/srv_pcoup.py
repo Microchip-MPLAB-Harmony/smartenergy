@@ -640,6 +640,32 @@ thrs_vlow_2chn_drv_himp = [thrs_vlow_2chn12_drv_himp, thrs_vlow_2chn23_drv_himp,
 gain_high_2chn_drv_himp = [gain_high_2chn12_drv_himp, gain_high_2chn23_drv_himp, gain_high_2chn34_drv_himp, gain_high_2chn45_drv_himp, gain_high_2chn56_drv_himp, gain_high_2chn67_drv_himp, gain_high_2chn78_drv_himp]
 gain_vlow_2chn_drv_himp = [gain_vlow_2chn12_drv_himp, gain_vlow_2chn23_drv_himp, gain_vlow_2chn34_drv_himp, gain_vlow_2chn45_drv_himp, gain_vlow_2chn56_drv_himp, gain_vlow_2chn67_drv_himp, gain_vlow_2chn78_drv_himp]
 
+############################################################################
+#### Meters & More Coupling Parameters ####
+############################################################################
+
+pCoupMMDACC = []
+
+mm_rms_high_cena  = [2226, 1586, 1132, 805, 573, 408, 290, 206]
+mm_rms_vlow_cena  = [5920, 4604, 3331, 2374, 1686, 1193, 846, 599]
+mm_thrs_high_cena = [0, 0, 0, 0, 0, 0, 0, 0, 1884, 1341, 955, 677, 483, 341, 243, 173]
+mm_thrs_vlow_cena = [0, 0, 0, 0, 0, 0, 0, 0, 9551, 6881, 4936, 3541, 2532, 1805, 1290, 922]
+mm_dacc_cena      = [0, 0, 0x00000100, 0x00000100, 0, 0, 0xFFFF00FF, 0x17171717, 0, 0, 0x00000004, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+mm_gain_high_cena = [32, 32, 32]
+mm_gain_vlow_cena = [16, 16, 16]
+mm_drv_conf_cena  = 5
+
+mm_rms_high_cena_c07  = [1991, 1381, 976, 695, 495, 351, 250, 179]
+mm_rms_vlow_cena_c07  = [6356, 4706, 3317, 2308, 1602, 1112, 778, 546]
+mm_thrs_high_cena_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 1685, 1173, 828, 589, 419, 298, 212, 151]
+mm_thrs_vlow_cena_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 8988, 6370, 4466, 3119, 2171, 1512, 1061, 752]
+mm_dacc_cena_c07      = [0, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0, 0xFFFF00FF, 0x17171717, 0x00002020, 0x00000044, 0x0FD20004, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
+mm_gain_high_cena_c07 = [32, 32, 32]
+mm_gain_vlow_cena_c07 = [16, 16, 16]
+mm_drv_conf_cena_c07  = 8
+
+############################################################################
+
 srv_pcoup_helpkeyword = "mcc_h3_srv_pcoup_configurations"
 
 ############################################################################
@@ -651,8 +677,10 @@ def updateCouplingParameters():
 
     if plcProfile == "PRIME":
         updatePRIMECouplingParameters()
-    else:
+    elif plcProfile == "G3-PLC":
         updateG3CouplingParameters()
+    else:
+        updateMMCouplingParameters()
 
 ############################################################################
 #### G3 function to update the Coupling Parameters ####
@@ -691,6 +719,8 @@ def updateG3CouplingParameters():
     pCoupG3HeaderFile.setEnabled(True)
     pCoupPRIMESourceFile.setEnabled(False)
     pCoupPRIMEHeaderFile.setEnabled(False)
+    pCoupMMSourceFile.setEnabled(False)
+    pCoupMMHeaderFile.setEnabled(False)
 
     pCoupG3RAuxBranch.setVisible(False)
     auxiliaryBand = False
@@ -701,6 +731,10 @@ def updateG3CouplingParameters():
     plcMultiband = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_MULTIBAND")
     plcInternal = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_INTERNAL")
     plcBandAux = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND_AUX")
+
+    pCoupG3MainPhyBand.setLabel("G3-PLC PHY Band")
+    pCoupG3MainPhyBand.setVisible(True)
+            
     if (plcDevice == "PL460"):
         if plcPhyBand == "CEN-A":
             print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
@@ -1192,6 +1226,8 @@ def updatePRIMECouplingParameters():
     # Enable PRIME COUP files
     pCoupG3SourceFile.setEnabled(False)
     pCoupG3HeaderFile.setEnabled(False)
+    pCoupMMSourceFile.setEnabled(False)
+    pCoupMMHeaderFile.setEnabled(False)
     pCoupPRIMESourceFile.setEnabled(True)
     pCoupPRIMEHeaderFile.setEnabled(True)
 
@@ -1230,6 +1266,92 @@ def updatePRIMECouplingParameters():
     pCoupPRIMEChannelsSelected.setValue(channels_sel)
     pCoupPRIMEChannelImpedanceDetection.setSelectedKey(channel_imp_det)
 
+############################################################################
+#### Meters&More function to update the Coupling Parameters ####
+############################################################################
+def updateMMCouplingParameters():
+    global pCoupG3RAuxBranch
+    global pCoupG3MainPhyBand
+    global pCoupG3AuxPhyBand
+    global pCoupG3SourceFile
+    global pCoupG3HeaderFile
+    global pCoupPRIMESourceFile
+    global pCoupPRIMEHeaderFile
+    global pCoupPRIMETXChannels
+    global pCoupG3TXBranches
+    global pCoupMMSourceFile
+    global pCoupMMHeaderFile
+
+    if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
+        # print("------------------------- [CHRIS_dbg]: Encontrado PLC_PHY driver, atualizamos parametros")
+        plcDriver = "drvPlcPhy"
+    else:
+        plcDriver = ""
+        # print("------------------------- [CHRIS_dbg]: NO Encontrado DRV_PLC_MODE")
+        return
+
+    # Show G3 setting, hide PRIME setting
+    pCoupG3TXBranches.setVisible(True)
+    pCoupPRIMETXChannels.setVisible(False)
+
+    plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
+
+    # Enable MM COUP files
+    pCoupG3SourceFile.setEnabled(False)
+    pCoupG3HeaderFile.setEnabled(False)
+    pCoupPRIMESourceFile.setEnabled(False)
+    pCoupPRIMEHeaderFile.setEnabled(False)
+    pCoupMMSourceFile.setEnabled(True)
+    pCoupMMHeaderFile.setEnabled(True)
+
+    pCoupG3RAuxBranch.setVisible(False)
+    pCoupG3AuxPhyBand.setValue("None")
+
+    pCoupG3MainPhyBand.setVisible(False)
+    pCoupG3MainPhyBand.setValue("CEN-A")
+
+    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_MM_BAND")
+    if (plcDevice == "PL460"):
+        if plcPhyBand == "CEN-A":
+            # print("UpdatePlcCouplingParameters -> PL460 MM CEN-A")
+            rms_high  = mm_rms_high_cena
+            rms_vlow  = mm_rms_vlow_cena
+            thrs_high = mm_thrs_high_cena
+            thrs_vlow = mm_thrs_vlow_cena
+            dacc      = mm_dacc_cena
+            gain_high = mm_gain_high_cena
+            gain_vlow = mm_gain_vlow_cena
+            line_drv  = mm_drv_conf_cena
+
+    else: # "PL360"
+        line_drv = 0
+        if plcPhyBand == "CEN-A":
+            # print("UpdatePlcCouplingParameters -> PL360 MM CEN-A")
+            rms_high  = mm_rms_high_cena_c07
+            rms_vlow  = mm_rms_vlow_cena_c07
+            thrs_high = mm_thrs_high_cena_c07
+            thrs_vlow = mm_thrs_vlow_cena_c07
+            dacc      = mm_dacc_cena_c07
+            gain_high = mm_gain_high_cena_c07
+            gain_vlow = mm_gain_vlow_cena_c07
+
+    # Update Values of the Main Branch in Configuration Window
+    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
+
+    for idx in range(8):
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_HIGH_" + str(idx), rms_high[idx])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_VLOW_" + str(idx), rms_vlow[idx])
+
+    for idx in range(16):
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_HIGH_" + str(idx), thrs_high[idx])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_VLOW_" + str(idx), thrs_vlow[idx])
+
+    for idx in range(17):
+        pCoupG3DACC[idx].setValue(dacc[idx])
+
+    for idx in range(3):
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_" + str(idx), gain_high[idx])
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_" + str(idx), gain_vlow[idx])
 
 
 def handleMessage(messageID, args):
@@ -1239,6 +1361,8 @@ def handleMessage(messageID, args):
         updateG3CouplingParameters()
     elif (messageID == "SRV_PCOUP_UPDATE_PRIME_PARAMETERS"):
         updatePRIMECouplingParameters()
+    elif (messageID == "SRV_PCOUP_UPDATE_MM_PARAMETERS"):
+        updateMMCouplingParameters()
 
     return result_dict
 
@@ -1866,6 +1990,28 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPRIMEHeaderFile.setMarkup(True)
     pCoupPRIMEHeaderFile.setOverwrite(True)
     pCoupPRIMEHeaderFile.setEnabled(False)
+    
+    global pCoupMMSourceFile
+    pCoupMMSourceFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_MM_SOURCE", None)
+    pCoupMMSourceFile.setSourcePath("service/pcoup/templates/srv_pcoup_mm.c.ftl")
+    pCoupMMSourceFile.setOutputName("srv_pcoup.c")
+    pCoupMMSourceFile.setDestPath("service/pcoup")
+    pCoupMMSourceFile.setProjectPath("config/" + configName + "/service/pcoup/")
+    pCoupMMSourceFile.setType("SOURCE")
+    pCoupMMSourceFile.setMarkup(True)
+    pCoupMMSourceFile.setOverwrite(True)
+    pCoupMMSourceFile.setEnabled(False)
+
+    global pCoupMMHeaderFile
+    pCoupMMHeaderFile = pCoupComponentCommon.createFileSymbol("SRV_PCOUP_MM_HEADER", None)
+    pCoupMMHeaderFile.setSourcePath("service/pcoup/templates/srv_pcoup_mm.h.ftl")
+    pCoupMMHeaderFile.setOutputName("srv_pcoup.h")
+    pCoupMMHeaderFile.setDestPath("service/pcoup")
+    pCoupMMHeaderFile.setProjectPath("config/" + configName + "/service/pcoup/")
+    pCoupMMHeaderFile.setType("HEADER")
+    pCoupMMHeaderFile.setMarkup(True)
+    pCoupMMHeaderFile.setOverwrite(True)
+    pCoupMMHeaderFile.setEnabled(False)
 
     #### FreeMaker System Files ######################################################
 

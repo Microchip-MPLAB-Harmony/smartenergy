@@ -104,6 +104,11 @@
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3600U
 #define DRV_PLC_PHY_HOST_VERSION              0x36000300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36000003UL
+<#elseif DRV_PLC_BAND_IN_USE == 10>
+#define DRV_PLC_PHY_PROFILE                   8U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3608U
+#define DRV_PLC_PHY_HOST_VERSION              0x36080000UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36080000UL
 <#elseif (DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7)>
     <#if DRV_PLC_G3_BAND_AUX_ACTIVE == true>
         <#if (DRV_PLC_BAND_IN_USE == 6)>

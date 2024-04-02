@@ -33,6 +33,7 @@ global plcSourceBinFileG3CENB
 global plcSourceBinFileG3FCC
 global plcSourceBinFilePRIME
 global plcSourceBinFileARIB
+global plcSourceBinFileMM
 global plcAssemblyBinFile
 
 global plcBandInUse
@@ -53,6 +54,7 @@ PLC_PROFILE_G3_FCC_CEN_A = 6
 PLC_PROFILE_G3_FCC_CEN_B = 7
 PLC_PROFILE_G3_ARIB_CEN_A = 8
 PLC_PROFILE_G3_ARIB_CEN_B = 9
+PLC_PROFILE_MM_CEN_A = 10
 
 # PL360 Bin reserved region: 0x20000 = 128KB
 PLC_PHY_BIN_RESERVED_SIZE  = 131072
@@ -512,6 +514,8 @@ def setPlcBandInUse(plcBand):
         dict = Database.sendMessage("srv_pserial", "SRV_PSERIAL_PRIME", {})
         dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_PRIME", {})
         dict = Database.sendMessage("srv_rsniffer", "SRV_RSNIFFER_PRIME", {})
+    elif (plcBand == "MM"):
+        plcBandInUse.setValue(PLC_PROFILE_MM_CEN_A)
 
 def setPlcMultiBandInUse(g3_band, g3_aux_band):
     dict = {}
@@ -550,6 +554,7 @@ def removeAllBinFiles():
     plcSourceBinFileG3CENB.setEnabled(False)
     plcSourceBinFileG3FCC.setEnabled(False)
     plcSourceBinFileG3ARIB.setEnabled(False)
+    plcSourceBinFileMM.setEnabled(False)
 
 def includeBinFile(plcBand):
     if (plcBand == "PRIME"):
@@ -558,8 +563,18 @@ def includeBinFile(plcBand):
         plcSourceBinFileG3CENB.setEnabled(False)
         plcSourceBinFileG3FCC.setEnabled(False)
         plcSourceBinFileG3ARIB.setEnabled(False)
-    else:
+        plcSourceBinFileMM.setEnabled(False)
+    elif (plcBand == "MM"):
         plcSourceBinFilePRIME.setEnabled(False)
+        plcSourceBinFileG3CENA.setEnabled(False)
+        plcSourceBinFileG3CENB.setEnabled(False)
+        plcSourceBinFileG3FCC.setEnabled(False)
+        plcSourceBinFileG3ARIB.setEnabled(False)
+        plcSourceBinFileMM.setEnabled(True)
+    else:
+        # G3-PLC
+        plcSourceBinFilePRIME.setEnabled(False)
+        plcSourceBinFileMM.setEnabled(False)
         if (plcBand == "CEN-A"):
             plcSourceBinFileG3CENA.setEnabled(True)
         elif (plcBand == "CEN-B"):
@@ -572,7 +587,8 @@ def includeBinFile(plcBand):
 def updateBinFiles():
     dict = {}
     removeAllBinFiles()
-    if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE") == "G3-PLC") :
+    drvPlcProfile = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
+    if (drvPlcProfile == "G3-PLC") :
         g3_band = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_G3_BAND")
         includeBinFile(g3_band)
         setPlcBandInUse(g3_band)
@@ -581,6 +597,10 @@ def updateBinFiles():
             includeBinFile(g3_aux_band)
             setPlcMultiBandInUse(g3_band, g3_aux_band)
         dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
+    elif (drvPlcProfile == "Meters&More") :
+        includeBinFile("MM")
+        setPlcBandInUse("MM")
+        dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_MM_PARAMETERS", {})
     else:
         includeBinFile("PRIME")
         setPlcBandInUse("PRIME")
@@ -613,15 +633,20 @@ def setPlcProfile(symbol, event):
     global plcProfileDefFile
     global plcProfileHeaderLocalFile
 
-    if (event["value"] == "PRIME"):
+    eventValue = event["value"]
+    if (eventValue == "PRIME"):
         plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_prime.c.ftl")
         plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_prime.h.ftl")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_prime.h")
-    else:
-        plcSourceBinFilePRIME.setEnabled(False)
+    elif (eventValue == "G3-PLC"):
         plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_g3.c.ftl")
         plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_g3.h.ftl")
         plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_g3.h")
+    else:
+        # MM
+        plcProfileFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_mm.c.ftl")
+        plcProfileDefFile.setSourcePath("driver/plcPhy/drv_plc_phy_mm.h.ftl")
+        plcProfileHeaderLocalFile.setSourcePath("driver/plcPhy/src/drv_plc_phy_local_mm.h")
 
 def showPL460Pins(symbol, event):
     if (event["value"] == "PL460"):
@@ -763,13 +788,16 @@ def checkPrime2ChannelConf(symbol, event):
 def updateShowCoupSettings(symbol, event):
     global plcCoupPRIMESettings
     global plcCoupG3Settings
-
+    
     if (event["value"] == "G3-PLC"):
         plcCoupG3Settings.setVisible(True)
         plcCoupPRIMESettings.setVisible(False)
-    else :
+    elif (event["value"] == "PRIME"):
         plcCoupG3Settings.setVisible(False)
         plcCoupPRIMESettings.setVisible(True)
+    else :
+        plcCoupG3Settings.setVisible(False)
+        plcCoupPRIMESettings.setVisible(False)
 
 def resetPlcBand(symbol, event):
     symbol.setReadOnly(True)
@@ -881,7 +909,7 @@ def checkEICSignals(symbol, event):
 
 def showSymbol(symbol, event):
     symbol.setVisible(event["value"])
-    
+
 def instantiateComponent(plcComponent):
     global isDMAPresent
 
@@ -1368,6 +1396,13 @@ def instantiateComponent(plcComponent):
     plcSourceBinFilePRIME.setDestPath("driver/plc/phy/bin")
     plcSourceBinFilePRIME.setEnabled(False)
 
+    global plcSourceBinFileMM
+    plcSourceBinFileMM = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_MM", None)
+    plcSourceBinFileMM.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_MM.bin")
+    plcSourceBinFileMM.setOutputName("PLC_PHY_MM.bin")
+    plcSourceBinFileMM.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileMM.setEnabled(False)
+
     global plcAssemblyBinFile
     plcAssemblyBinFile = plcComponent.createFileSymbol("PLC_ASSEMBLY_BIN", None)
     plcAssemblyBinFile.setSourcePath("driver/plcPhy/src/bin/plc_phy_bin.S.ftl")
@@ -1380,7 +1415,7 @@ def instantiateComponent(plcComponent):
 
     ##### PLC Profile Selector  ####################################################
 
-    plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3-PLC", "PRIME"])
+    plcProfile = plcComponent.createComboSymbol("DRV_PLC_PROFILE", None, ["G3-PLC", "PRIME", "Meters&More"])
     plcProfile.setLabel("PLC Profile")
     plcProfile.setDefaultValue("G3-PLC")
     plcProfile.setHelp(plc_phy_helpkeyword)
@@ -1417,14 +1452,14 @@ def instantiateComponent(plcComponent):
     plcSecureMode.setVisible(False)
     plcSecureMode.setDefaultValue(False)
 
-    ##### Coupling Settings : G3-PLC ###############################################
-
     updBinFilesCtrl = plcComponent.createBooleanSymbol("DRV_PLC_UPD_BIN_FILES", None)
     updBinFilesCtrl.setLabel("updBinFilesCtrl")
     updBinFilesCtrl.setDescription("Auxiliary control")
     updBinFilesCtrl.setVisible(False)
     updBinFilesCtrl.setDefaultValue(False)
     updBinFilesCtrl.setDependencies(updateShowCoupSettings, ["DRV_PLC_PROFILE"])
+
+    ##### Coupling Settings : G3-PLC ###############################################
 
     global plcCoupG3Settings
     plcCoupG3Settings = plcComponent.createMenuSymbol("DRV_PLC_COUP_G3_SETTING", None)
@@ -1552,13 +1587,29 @@ def instantiateComponent(plcComponent):
     pCoupPRIMEChannelsSelected.setVisible(False)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
 
+    ##### Coupling Settings : Meters&More ###############################################
+
+    global plcCoupMMSettings
+    plcCoupMMSettings = plcComponent.createMenuSymbol("DRV_PLC_COUP_MM_SETTING", None)
+    plcCoupMMSettings.setLabel("PLC Coupling Settings")
+    plcCoupMMSettings.setDescription("Coupling Settings")
+    plcCoupMMSettings.setVisible(False)
+    plcCoupMMSettings.setHelp(plc_phy_helpkeyword)
+
+    global plcMMBand
+    plcMMBand = plcComponent.createComboSymbol("DRV_PLC_MM_BAND", plcCoupMMSettings, ["CEN-A"])
+    plcMMBand.setLabel("Main Branch")
+    plcMMBand.setDefaultValue("CEN-A")
+    plcMMBand.setReadOnly(True)
+    plcMMBand.setHelp(plc_phy_helpkeyword)
+
+    ##### Coupling Settings : Generic  ####################################################
+
     plcPhyKeyCortex = plcComponent.createHexSymbol("DRV_PLC_CORE_KEY", None)
     plcPhyKeyCortex.setLabel("PLC Phy Key Cortex")
     plcPhyKeyCortex.setDefaultValue(0x1122)
     plcPhyKeyCortex.setVisible(False)
     plcPhyKeyCortex.setReadOnly(True)
-
-    ##### Coupling Settings : Generic  ####################################################
 
     global plcBandInUse
     plcBandInUse = plcComponent.createIntegerSymbol("DRV_PLC_BAND_IN_USE", None)

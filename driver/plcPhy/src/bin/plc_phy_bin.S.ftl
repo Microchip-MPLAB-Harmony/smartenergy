@@ -49,6 +49,8 @@ plc_phy_bin_start:
   .incbin "./PLC_PHY_G3_CENB.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 5>
   .incbin "./PLC_PHY_PRIME_2CHN.bin"
+<#elseif DRV_PLC_BAND_IN_USE == 10>
+  .incbin "./PLC_PHY_MM.bin"
 </#if>
   .align 8
 plc_phy_bin_end:
