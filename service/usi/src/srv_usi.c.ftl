@@ -614,7 +614,7 @@ void SRV_USI_Tasks( SYS_MODULE_OBJ object )
     
 }
 
-void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
+size_t SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 {
     SRV_USI_OBJ* dObj = (SRV_USI_OBJ*)handle;
@@ -623,7 +623,7 @@ void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
     /* Validate the driver handle */
     if (lSRV_USI_HandleValidate(handle) == SRV_USI_HANDLE_INVALID)
     {
-        return;
+        return 0;
     }
     
     /* Check length */
@@ -633,7 +633,7 @@ void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_INVALID_LENGTH, 
                                          "Invalid length\r\n");
 </#if>
-        return;
+        return 0;
     }
 
     /* Waiting for USART/CDC is free */
@@ -644,4 +644,6 @@ void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
     
     /* Send message */
     dObj->devDesc->writeData(dObj->devIndex, dObj->pWrBuffer, writeLength);
+    
+    return writeLength;
 }

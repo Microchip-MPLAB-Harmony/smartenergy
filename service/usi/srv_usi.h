@@ -118,7 +118,7 @@ typedef uintptr_t SRV_USI_HANDLE;
 
 // *****************************************************************************
 /* Function:
-    typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
+    typedef bool ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
    Summary:
     Pointer to an USI service callback function.
@@ -152,7 +152,7 @@ typedef uintptr_t SRV_USI_HANDLE;
     None.
 */
 
-typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
+typedef bool ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
 // *****************************************************************************
 /*  USI device descriptor function prototypes
@@ -588,7 +588,7 @@ void SRV_USI_Tasks( SYS_MODULE_OBJ object );
 
 // *****************************************************************************
 /* Function:
-      void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
+      size_t SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length )
 
   Summary:
@@ -622,7 +622,7 @@ void SRV_USI_Tasks( SYS_MODULE_OBJ object );
     None.
   */
 
-void SRV_USI_Send_Message( SRV_USI_HANDLE handle,
+size_t SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         SRV_USI_PROTOCOL_ID protocol, uint8_t *data, size_t length );
 
 // DOM-IGNORE-BEGIN
