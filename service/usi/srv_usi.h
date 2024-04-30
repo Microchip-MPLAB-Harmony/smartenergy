@@ -118,7 +118,7 @@ typedef uintptr_t SRV_USI_HANDLE;
 
 // *****************************************************************************
 /* Function:
-    typedef bool ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
+    typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
    Summary:
     Pointer to an USI service callback function.
@@ -152,7 +152,7 @@ typedef uintptr_t SRV_USI_HANDLE;
     None.
 */
 
-typedef bool ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
+typedef void ( * SRV_USI_CALLBACK ) ( uint8_t *pData, size_t length );
 
 // *****************************************************************************
 /*  USI device descriptor function prototypes
