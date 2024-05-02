@@ -357,12 +357,12 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA * const srvPlcCoupChnData[16] = {
 // *****************************************************************************
 // *****************************************************************************
 
-DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void )
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetDefaultChannel( void )
 {
     return SRV_PCOUP_DEFAULT_CHANNEL;
 }
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_GetChannelConfig(DRV_PLC_PHY_CHANNEL channel)
 {
     if ((channel >= CHN1) && (channel <= CHN7_CHN8))
     {
@@ -391,14 +391,14 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL ch
     return NULL;
 }
 
-bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
+bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 {
     SRV_PLC_PCOUP_CHANNEL_DATA *pCoupValues;
     DRV_PLC_PHY_PIB_OBJ pibObj;
     bool result, resultOut;
 
     /* Get PLC PHY Coupling parameters for the desired transmission channel */
-    pCoupValues = SRV_PCOUP_Get_Channel_Config(channel);
+    pCoupValues = SRV_PCOUP_GetChannelConfig(channel);
 
     if (pCoupValues == NULL)
     {
@@ -505,4 +505,16 @@ bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel
     /* MISRA C-2012 deviation block end */
 
     return result;
+}
+
+uint16_t SRV_PCOUP_GetChannelList(void)
+{
+  return (uint16_t)SRV_PCOUP_CHANNEL_LIST;
+}
+
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetChannelImpedanceDetection(void)
+{
+  DRV_PLC_PHY_CHANNEL channel = (DRV_PLC_PHY_CHANNEL)SRV_PCOUP_CHANNEL_IMP_DET;
+
+  return channel;
 }

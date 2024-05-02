@@ -26,7 +26,11 @@ def instantiateComponent(srvRandomComponent):
     Log.writeInfoMessage("Loading SE Random service")
 
     # Activate TRNG if exists
-    Database.activateComponents(["trng"])
+    primeDrvGroup = Database.findGroup("PRIME STACK")
+    if (primeDrvGroup == None):
+        Database.activateComponents(["trng"])
+    else:
+        Database.activateComponents(["trng"], primeDrvGroup.getID())
 
     ############################################################################
     #### Code Generation ####

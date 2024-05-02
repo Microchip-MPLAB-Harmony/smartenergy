@@ -74,6 +74,12 @@ Microchip or any third party.
 /* PLC PRIME PHY default channel */
 #define SRV_PCOUP_DEFAULT_CHANNEL                ${drvPlcPhy.DRV_PLC_PRIME_DEF_CHN?string}
 
+/* PLC PRIME PHY Channel for impedance detection */
+#define SRV_PCOUP_CHANNEL_IMP_DET                ${SRV_PCOUP_PRIME_CHANNEL_IMP_DET?string}
+
+/* PLC PRIME PHY Channel List */
+#define SRV_PCOUP_CHANNEL_LIST                   ${drvPlcPhy.DRV_PLC_PRIME_CHANNELS_SELECTED?string}
+
 /* Equalization number of coefficients (number of carriers) */
 #define SRV_PCOUP_EQU_NUM_COEF_CHN               97U
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256)>
@@ -367,7 +373,7 @@ typedef struct
     /* Tx gain values for VLOW mode [VLOW_INI, VLOW_MIN, VLOW_MAX] */
     uint16_t gainVLow[3];
 
-    /* Number of Tx attenuation levels (1 dB step) suppoting dynamic Tx mode */
+    /* Number of Tx attenuation levels (1 dB step) supporting dynamic Tx mode */
     uint8_t numTxLevels;
 
     /* Configuration of the PLC Tx Line Driver, according to hardware coupling
@@ -384,7 +390,7 @@ typedef struct
 
 /***************************************************************************
   Function:
-    DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel(void)
+    DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetDefaultChannel(void)
 
   Summary:
     Get the default PRIME channel.
@@ -406,25 +412,25 @@ typedef struct
     DRV_PLC_PHY_CHANNEL plcDefaultChannel;
     DRV_PLC_PHY_PIB_OBJ pibObj;
 
-    plcDefaultChannel = SRV_PCOUP_Get_Default_Channel();
+    plcDefaultChannel = SRV_PCOUP_GetDefaultChannel();
 
     pibObj.id = PLC_ID_CHANNEL_CFG;
     pibObj.length = 1;
     pibObj.pData = &plcDefaultChannel;
     DRV_PLC_PHY_PIBSet(handle, &pibObj);
 
-    SRV_PCOUP_Set_Channel_Config(handle, plcDefaultChannel);
+    SRV_PCOUP_SetChannelConfig(handle, plcDefaultChannel);
     </code>
 
   Remarks:
     None.
   ***************************************************************************/
 
-DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetDefaultChannel( void );
 
 /***************************************************************************
   Function:
-    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel)
+    SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_GetChannelConfig (DRV_PLC_PHY_CHANNEL channel)
 
   Summary:
     Get the PLC PHY Coupling parameters for the specified PRIME channel.
@@ -450,19 +456,20 @@ DRV_PLC_PHY_CHANNEL SRV_PCOUP_Get_Default_Channel( void );
     <code>
     SRV_PLC_PCOUP_CHANNEL_DATA *pCoupChannelData;
 
-    pCoupChannelData = SRV_PCOUP_Get_Channel_Config(SRV_PCOUP_DEFAULT_CHANNEL);
+    pCoupChannelData = SRV_PCOUP_GetChannelConfig
+(SRV_PCOUP_DEFAULT_CHANNEL);
     </code>
 
   Remarks:
-    If SRV_PCOUP_Set_Channel_Config is used to set the PLC PHY Coupling
+    If SRV_PCOUP_SetChannelConfig is used to set the PLC PHY Coupling
     parameters, this function is not needed.
   ***************************************************************************/
 
-SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL channel);
+SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_GetChannelConfig (DRV_PLC_PHY_CHANNEL channel);
 
 /***************************************************************************
   Function:
-    bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
+    bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
 
   Summary:
     Set the PLC PHY Coupling parameters for the specified PRIME channel.
@@ -491,14 +498,67 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_Get_Channel_Config(DRV_PLC_PHY_CHANNEL ch
     <code>
     bool result;
 
-    result = SRV_PCOUP_Set_Channel_Config(handle, CHN5);
+    result = SRV_PCOUP_SetChannelConfig(handle, CHN5);
     </code>
 
   Remarks:
     None.
   ***************************************************************************/
 
-bool SRV_PCOUP_Set_Channel_Config(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
+bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
+
+/***************************************************************************
+  Function:
+    uint16_t SRV_PCOUP_GetChannelList(void)
+
+  Summary:
+    Get the PRIME channel list.
+
+  Description:
+    This function allows to get the PRIME channel list.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    PRIME channel list. The channel list is a bitmask corresponding to the 
+    following values.
+    Single channel:
+      Channel 1 : bit 0
+      Channel 2 : bit 1
+      Channel 3 : bit 2
+      Channel 4 : bit 3
+      Channel 5 : bit 4
+      Channel 6 : bit 5
+      Channel 7 : bit 6
+      Channel 8 : bit 7
+    In double channel:
+      Channel 1-2 : bit 8
+      Channel 2-3 : bit 9
+      Channel 3-4 : bit 10
+      Channel 4-5 : bit 11
+      Channel 5-6 : bit 12
+      Channel 6-7 : bit 13
+      Channel 7-8 : bit 14
+
+  Example:
+    <code>
+    uint16_t plcChannelList;
+
+    plcChannelList = SRV_PCOUP_GetChannelList();
+
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
+
+uint16_t SRV_PCOUP_GetChannelList(void);
+
+DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetChannelImpedanceDetection(void);
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

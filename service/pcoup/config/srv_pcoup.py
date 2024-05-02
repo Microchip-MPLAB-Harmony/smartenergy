@@ -1017,6 +1017,11 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
     pCoupPRIMEDACCFCCMenu.setVisible(fcc_enable)
     pCoupPRIMEDACC2CHNMenu.setVisible(double_chn_enable)
 
+def pCoupConfigureChannelDetImp(channels):
+    if (channels & 1):
+        return "CHN1"
+    else:
+        return "CHN6"
 
 def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
 
@@ -1162,7 +1167,6 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
         Database.setSymbolValue("srv_pcoup", symbol_id + "_GAIN_HIGH_" + str(idx), gain_high[idx])
         Database.setSymbolValue("srv_pcoup", symbol_id + "_GAIN_VLOW_" + str(idx), gain_vlow[idx])
 
-
 def updatePRIMECouplingParameters():
     global pCoupG3SourceFile
     global pCoupG3HeaderFile
@@ -1171,6 +1175,7 @@ def updatePRIMECouplingParameters():
     global pCoupPRIMEChannelsSelected
     global pCoupPRIMETXChannels
     global pCoupG3TXBranches
+    global pCoupPRIMEChannelImpedanceDetection
 
     if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
         # print("------------------------- [CHRIS_dbg]: Found PLC_PHY driver, updating parameters")
@@ -1198,6 +1203,7 @@ def updatePRIMECouplingParameters():
 
     # Configure DACC
     pCoupConfigureDACC(plcDevice, channels_sel, auxBranch, highImp)
+    channel_imp_det = pCoupConfigureChannelDetImp(channels_sel)
 
     # Configure Single channels selected in PHY driver
     for idx in range(8):
@@ -1222,6 +1228,7 @@ def updatePRIMECouplingParameters():
             Database.setSymbolValue("srv_pcoup", symbol_id, False)
 
     pCoupPRIMEChannelsSelected.setValue(channels_sel)
+    pCoupPRIMEChannelImpedanceDetection.setSelectedKey(channel_imp_det)
 
 
 
@@ -1528,6 +1535,16 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPRIMEChannelsSelected.setLabel("PRIME Channels selected")
     pCoupPRIMEChannelsSelected.setVisible(False)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
+
+    global pCoupPRIMEChannelImpedanceDetection
+    pCoupPRIMEChannelImpedanceDetection = pCoupComponentCommon.createKeyValueSetSymbol("SRV_PCOUP_PRIME_CHANNEL_IMP_DET", pCoupPRIMETXChannels)
+    pCoupPRIMEChannelImpedanceDetection.setLabel("Impedance Detection")
+    pCoupPRIMEChannelImpedanceDetection.setVisible(True)
+    pCoupPRIMEChannelImpedanceDetection.setReadOnly(True)
+    pCoupPRIMEChannelImpedanceDetection.setOutputMode("Key")
+    pCoupPRIMEChannelImpedanceDetection.setDisplayMode("Description")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN1", "1", "CHN1")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN6", "6", "CHN6")
 
     global pCoupPRIMEDACCCENAMenu
     pCoupPRIMEDACCCENAMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC_CENA", pCoupPRIMETXChannels)
