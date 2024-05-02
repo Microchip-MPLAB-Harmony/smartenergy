@@ -410,7 +410,14 @@ typedef enum {
 typedef struct {
 	uint8_t numFrags;
 	uint8_t status;
-} DRV_PLC_PHY_SIGNAL_CAPTURE_INFO;
+} DRV_PLC_PHY_SIGNAL_CAPTURE;
+
+/* Structure defining information about CSMA algorithm */
+typedef struct {
+	uint8_t disableRx : 1;
+	uint8_t senseCount : 3;
+	uint8_t senseDelayMs : 4;
+} DRV_PLC_PHY_CSMA;
 
 // *****************************************************************************
 /* PRIME Transmission setup data
@@ -433,8 +440,8 @@ typedef struct __attribute__((packed, aligned(1))) {
   uint8_t mode;
   /* Attenuation level with which the message will be transmitted */
   uint8_t attenuation;
-  /* Forced transmission */
-  uint8_t forced;
+  /* CSMA algorithm parameters */
+  DRV_PLC_PHY_CSMA csma;
   /* Buffer Id used for transmission */
   DRV_PLC_PHY_BUFFER_ID bufferId;
   /* Scheme of Modulation */

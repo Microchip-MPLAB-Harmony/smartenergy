@@ -143,6 +143,7 @@ static size_t lDRV_PLC_PHY_COMM_TxStringify(DRV_PLC_PHY_TRANSMISSION_OBJ *pSrc)
 {
     uint8_t *pDst;
     ptrdiff_t size;
+    uint8_t csma;
 
     pDst = sDataTx;
 
@@ -154,7 +155,8 @@ static size_t lDRV_PLC_PHY_COMM_TxStringify(DRV_PLC_PHY_TRANSMISSION_OBJ *pSrc)
     *pDst++ = (uint8_t)(pSrc->dataLength >> 8);
     *pDst++ = pSrc->attenuation;
     *pDst++ = (uint8_t)pSrc->scheme;
-    *pDst++ = pSrc->forced;
+    csma = pSrc->csma.disableRx | pSrc->csma.senseCount << 1 | pSrc->csma.senseDelayMs << 4;
+    *pDst++ = csma;
     *pDst++ = (uint8_t)pSrc->frameType;
     *pDst++ = pSrc->mode;
     *pDst++ = (uint8_t)pSrc->bufferId;
