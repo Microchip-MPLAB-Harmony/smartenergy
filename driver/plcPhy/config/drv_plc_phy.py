@@ -50,8 +50,17 @@ PLC_PROFILE_G3_FCC_CEN_B = 7
 PLC_PROFILE_G3_ARIB_CEN_A = 8
 PLC_PROFILE_G3_ARIB_CEN_B = 9
 
+PLC_PHY_BIN_RESERVED_SIZE  = 131072
+
 plcCoupPRIMECH = []
 plcCoupPRIME2CH = []
+
+def getFlashMemoryDescription():
+    nodeIFLASH = ATDF.getNode("/avr-tools-device-file/devices/device/address-spaces/address-space/memory-segment@[type=\"flash\"]")
+    if nodeIFLASH is not None:
+        return (nodeIFLASH.getAttribute("start"), nodeIFLASH.getAttribute("size"))
+
+    return (0, 0)
 
 def configureSpiPlib(localComponent):
     global currentNPCS
@@ -576,6 +585,12 @@ def updateBinFiles():
 def updateG3PLCBandInUse(symbol, event):
     updateBinFiles()
 
+def plcShowAddressingMode(symbol, event):
+    if (event["value"] == "PRIME"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
+    
 def plcBinAddressingMode(symbol, event):
     symbol.setVisible(event["value"])
     updateBinFiles()
@@ -852,7 +867,9 @@ def checkEICSignals(symbol, event):
     else:
         symbol.setVisible(True)
 
-
+def showSymbol(symbol, event):
+    symbol.setVisible(event["value"])
+    
 def instantiateComponent(plcComponent):
     global isDMAPresent
 
@@ -1177,28 +1194,6 @@ def instantiateComponent(plcComponent):
     plcDependencyDMAComment.setLabel("!!! Satisfy PLIB Dependency to Allocate DMA Channel !!!")
     plcDependencyDMAComment.setVisible(isDMAPresent)
 
-    plcStaticAddressing = plcComponent.createBooleanSymbol("DRV_PLC_BIN_STATIC_ADDRESSING", None)
-    plcStaticAddressing.setLabel("Static Bin file Addressing")
-    plcStaticAddressing.setVisible(False)
-    plcStaticAddressing.setDefaultValue(False)
-
-    plcBinaryAddress = plcComponent.createHexSymbol("DRV_PLC_PLC_BIN_ADDRESS", plcStaticAddressing)
-    plcBinaryAddress.setLabel("PLC Bin Address")
-    plcBinaryAddress.setVisible(False)
-    plcBinaryAddress.setDefaultValue(0x004A0000)
-    plcBinaryAddress.setDependencies(plcBinAddressingMode, ["DRV_PLC_BIN_STATIC_ADDRESSING"])
-
-    plcBinarySize = plcComponent.createHexSymbol("DRV_PLC_PLC_BIN_SIZE", plcStaticAddressing)
-    plcBinarySize.setLabel("PLC Bin Size (bytes)")
-    plcBinarySize.setVisible(False)
-    plcBinarySize.setDefaultValue(0x10000)
-    plcBinarySize.setDependencies(plcBinAddressingMode, ["DRV_PLC_BIN_STATIC_ADDRESSING"])
-
-    plcSecureMode = plcComponent.createBooleanSymbol("DRV_PLC_SECURE_MODE", None)
-    plcSecureMode.setLabel("PLC Secure Mode")
-    plcSecureMode.setVisible(False)
-    plcSecureMode.setDefaultValue(False)
-
     ############################################################################
     #### Code Generation ####
     ############################################################################
@@ -1377,6 +1372,35 @@ def instantiateComponent(plcComponent):
     plcProfile.setLabel("PLC Profile")
     plcProfile.setDefaultValue("G3-PLC")
     plcProfile.setHelp(plc_phy_helpkeyword)
+
+    plcStaticAddressing = plcComponent.createBooleanSymbol("DRV_PLC_BIN_STATIC_ADDRESSING", plcProfile)
+    plcStaticAddressing.setLabel("Static Bin file Addressing")
+    plcStaticAddressing.setVisible(False)
+    plcStaticAddressing.setDefaultValue(False)
+    plcStaticAddressing.setDependencies(plcShowAddressingMode, ["DRV_PLC_PROFILE"])
+
+    # Start address
+    memStartAddressHex, memSizeHex = getFlashMemoryDescription()
+    memStartAddressInt = int(memStartAddressHex, 0)
+    memSizeInt = int(memSizeHex, 0)
+    pl360BinStartAddressInt = memStartAddressInt + memSizeInt - PLC_PHY_BIN_RESERVED_SIZE
+
+    plcBinaryAddress = plcComponent.createHexSymbol("DRV_PLC_BIN_ADDRESS", plcStaticAddressing)
+    plcBinaryAddress.setLabel("PLC Bin Address")
+    plcBinaryAddress.setVisible(False)
+    plcBinaryAddress.setDefaultValue(pl360BinStartAddressInt)
+    plcBinaryAddress.setDependencies(plcBinAddressingMode, ["DRV_PLC_BIN_STATIC_ADDRESSING"])
+
+    plcBinarySize = plcComponent.createIntegerSymbol("DRV_PLC_BIN_SIZE", plcStaticAddressing)
+    plcBinarySize.setLabel("PLC Bin Size (bytes)")
+    plcBinarySize.setVisible(False)
+    plcBinarySize.setDefaultValue(PLC_PHY_BIN_RESERVED_SIZE)
+    plcBinarySize.setDependencies(plcBinAddressingMode, ["DRV_PLC_BIN_STATIC_ADDRESSING"])
+
+    plcSecureMode = plcComponent.createBooleanSymbol("DRV_PLC_SECURE_MODE", None)
+    plcSecureMode.setLabel("PLC Secure Mode")
+    plcSecureMode.setVisible(False)
+    plcSecureMode.setDefaultValue(False)
 
     ##### Coupling Settings : G3-PLC ###############################################
 

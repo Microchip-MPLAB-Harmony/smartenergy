@@ -152,3 +152,8 @@
 #define DRV_PLC_PHY_HOST_DESC                 "${__PROCESSOR?string}"
 #define DRV_PLC_PHY_HOST_MODEL                3U
 #define DRV_PLC_PHY_HOST_BAND                 DRV_PLC_PHY_PROFILE
+
+ <#if DRV_PLC_BIN_STATIC_ADDRESSING == true>
+#define DRV_PLC_BIN_START_ADDRESS             0x${DRV_PLC_BIN_ADDRESS?string}
+#define DRV_PLC_BIN_SIZE                      ${DRV_PLC_BIN_SIZE?string}
+ </#if>

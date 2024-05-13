@@ -25,10 +25,10 @@ DRV_PLC_PHY_INIT drvPlcPhyInitData = {
  <#if DRV_PLC_BIN_STATIC_ADDRESSING == true>
  
     /* PLC Binary start address */
-    .binStartAddress = 0,
+    .binStartAddress = DRV_PLC_BIN_START_ADDRESS,
     
     /* PLC Binary end address */
-    .binEndAddress = 0,
+    .binEndAddress = DRV_PLC_BIN_START_ADDRESS + DRV_PLC_BIN_SIZE - 1,
 <#else>
   <#if ((DRV_PLC_BAND_IN_USE >= 6) && (DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
  
