@@ -34,6 +34,7 @@ def isKeyPresent(symbol, key):
 
 def handleMessage(messageID, args):
     global rSnifferProtocol
+    global protocolValues
 
     result_dict = {}
 
@@ -47,6 +48,7 @@ def handleMessage(messageID, args):
     return result_dict
 
 def instantiateComponent(rSnifferComponentCommon):
+    global protocolValues
 
     Log.writeInfoMessage("Loading RF Phy Sniffer Service")
 
