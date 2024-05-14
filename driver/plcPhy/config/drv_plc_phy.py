@@ -54,6 +54,7 @@ PLC_PROFILE_G3_FCC_CEN_B = 7
 PLC_PROFILE_G3_ARIB_CEN_A = 8
 PLC_PROFILE_G3_ARIB_CEN_B = 9
 
+# PL360 Bin reserved region: 0x20000 = 128KB
 PLC_PHY_BIN_RESERVED_SIZE  = 131072
 
 plcCoupPRIMECH = []
@@ -449,7 +450,6 @@ def handleMessage(messageID, args):
                             result_dict = {"Result": "Fail"}
 
     elif (messageID == "SET_STATIC_ADDRESSING"):
-        print("CHRIS dbg-> received SET_STATIC_ADDRESSING -> enable:{} address:{} size:{} ".format(args["enable"], int(args["address"]), int(args["size"])))
         plcStaticAddressing.setValue(args["enable"])
         plcBinaryAddress.setValue(int(args["address"]))
         plcBinarySize.setValue(int(args["size"]))
