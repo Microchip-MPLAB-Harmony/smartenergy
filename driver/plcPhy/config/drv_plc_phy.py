@@ -37,6 +37,10 @@ global plcAssemblyBinFile
 
 global plcBandInUse
 
+global plcStaticAddressing
+global plcBinaryAddress
+global plcBinarySize
+
 plc_phy_helpkeyword = "mcc_h3_plc_phy_driver_configurations"
 gPlcBand = ""
 
@@ -274,6 +278,9 @@ def getIndexFromPinId(pinId):
     return None
 
 def handleMessage(messageID, args):
+    global plcStaticAddressing
+    global plcBinaryAddress
+    global plcBinarySize
 
     result_dict = {}
 
@@ -441,6 +448,12 @@ def handleMessage(messageID, args):
                         else:
                             result_dict = {"Result": "Fail"}
 
+    elif (messageID == "SET_STATIC_ADDRESSING"):
+        print("CHRIS dbg-> received SET_STATIC_ADDRESSING -> enable:{} address:{} size:{} ".format(args["enable"], int(args["address"]), int(args["size"])))
+        plcStaticAddressing.setValue(args["enable"])
+        plcBinaryAddress.setValue(int(args["address"]))
+        plcBinarySize.setValue(int(args["size"]))
+        
     return result_dict
 
 def sort_alphanumeric(l):
@@ -735,7 +748,6 @@ def checkPrimeChannelConf(symbol, event):
     # Send message to PLC COUP to update PRIME configuration
     dict = {}
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
-
 
 def checkPrime2ChannelConf(symbol, event):
     global plcCoupPRIME2Channel
@@ -1373,6 +1385,7 @@ def instantiateComponent(plcComponent):
     plcProfile.setDefaultValue("G3-PLC")
     plcProfile.setHelp(plc_phy_helpkeyword)
 
+    global plcStaticAddressing
     plcStaticAddressing = plcComponent.createBooleanSymbol("DRV_PLC_BIN_STATIC_ADDRESSING", plcProfile)
     plcStaticAddressing.setLabel("Static Bin file Addressing")
     plcStaticAddressing.setVisible(False)
@@ -1385,12 +1398,14 @@ def instantiateComponent(plcComponent):
     memSizeInt = int(memSizeHex, 0)
     pl360BinStartAddressInt = memStartAddressInt + memSizeInt - PLC_PHY_BIN_RESERVED_SIZE
 
+    global plcBinaryAddress
     plcBinaryAddress = plcComponent.createHexSymbol("DRV_PLC_BIN_ADDRESS", plcStaticAddressing)
     plcBinaryAddress.setLabel("PLC Bin Address")
     plcBinaryAddress.setVisible(False)
     plcBinaryAddress.setDefaultValue(pl360BinStartAddressInt)
     plcBinaryAddress.setDependencies(plcBinAddressingMode, ["DRV_PLC_BIN_STATIC_ADDRESSING"])
 
+    global plcBinarySize
     plcBinarySize = plcComponent.createIntegerSymbol("DRV_PLC_BIN_SIZE", plcStaticAddressing)
     plcBinarySize.setLabel("PLC Bin Size (bytes)")
     plcBinarySize.setVisible(False)
