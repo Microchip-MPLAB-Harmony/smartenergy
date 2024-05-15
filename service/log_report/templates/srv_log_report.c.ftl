@@ -59,8 +59,15 @@ Microchip or any third party.
 </#if>
 </#if>
 
+<#if sys_debug?? && sys_console??>
+<#assign SERIAL_DEBUG_ENABLE = true>
+<#else>
+<#assign SERIAL_DEBUG_ENABLE = false>
+</#if>
+<#if SERIAL_DEBUG_ENABLE = true>
 static char message[SYS_CONSOLE_PRINT_BUFFER_SIZE];
 
+</#if>
 // *****************************************************************************
 // *****************************************************************************
 // Section: File scope functions
@@ -99,12 +106,17 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
                                       SRV_LOG_REPORT_CODE code,
                                       const char *info, ...)
 {
+<#if SERIAL_DEBUG_ENABLE = true>    
     /* Format the information */
     va_start(srvLogReportArgs, info);
     (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
     va_end(srvLogReportArgs);
 
     SYS_DEBUG_MESSAGE((SYS_ERROR_LEVEL)logLevel, message);
+<#else>
+    (void)logLevel;
+    (void)info;
+</#if>
 
 <#if enableReportDisplay == true>
 <#if __PROCESSOR?matches("PIC32CX.*MT.*")>
@@ -119,18 +131,24 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
 void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
                             const char *info, ...)
 {
+<#if SERIAL_DEBUG_ENABLE = true> 
     /* Format the information */
     va_start(srvLogReportArgs, info);
     (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
     va_end(srvLogReportArgs);
 
     SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, message);
+<#else>
+    (void)logLevel;
+    (void)info;
+</#if>
 }
 
 void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
                            const uint8_t *buffer, uint32_t bufferLength,
                            const char *info, ...)
 {
+<#if SERIAL_DEBUG_ENABLE = true> 
     uint32_t blockLength;
     uint32_t lastBlockLength;
     uint32_t lastPosition;
@@ -181,6 +199,12 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
     }
 
     SYS_DEBUG_PRINT((SYS_ERROR_LEVEL)logLevel, "\r\n");
+<#else>
+    (void)logLevel;
+    (void)buffer;
+    (void)bufferLength;
+    (void)info;
+</#if>    
 }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
