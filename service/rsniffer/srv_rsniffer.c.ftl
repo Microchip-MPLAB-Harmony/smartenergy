@@ -443,6 +443,7 @@ ${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_
 
 void SRV_RSNIFFER_SetTxMessage (
     DRV_RF215_TX_REQUEST_OBJ* pReqObj,
+    DRV_RF215_PHY_CFG_OBJ* pPhyCfgObj,
     DRV_RF215_TX_HANDLE txHandle
 )
 {
@@ -465,6 +466,8 @@ void SRV_RSNIFFER_SetTxMessage (
 <#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
     if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
     {
+<#else>
+    (void)pPhyCfgObj;
 </#if>
 <#if drvRf215.DRV_RF215_FSK_EN == true>
 ${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MODSCHEME_RF_FSK_FECOFF;
@@ -495,6 +498,8 @@ ${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MODSCHEM
 <#if drvRf215.DRV_RF215_FSK_EN == true && drvRf215.DRV_RF215_OFDM_EN == true>
     if (pPhyCfgObj->phyType == PHY_TYPE_FSK)
     {
+<#else>
+    (void)pPhyCfgObj;
 </#if>
 <#if drvRf215.DRV_RF215_FSK_EN == true>
 ${PHY_TYPE_INDENT}pMsgDest[3] = (uint8_t) pReqObj->modScheme + RSNIFFER_MOD_RF_FSK_FEC_OFF;
