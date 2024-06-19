@@ -154,25 +154,28 @@ typedef enum
     DB_SET_ELEM_BAD_INDEX               =   209,
 
     /* PRIME DISPATCHER Errors */
-    DIS_ERROR_BUFF_ADDRESS_PROCESS      =   300,
-    DIS_ERROR_BUFF_ADDRESS_SEND         =   301,
-    DIS_EMPTY_ELEM_INSERT               =   302,
-    DIS_MODULE_NOT_REGISTERED           =   303,
-    DIS_ADD_MSG_ALREADY_ADDED           =   304,
-    DIS_MSG_GEN_ERROR_MSG_DEL           =   305,
-    DIS_TRY_SEND_MSG_DEL                =   306,
+    DIS_ERROR_BUFF_ADDRESS_SEND         =   300,
+    DIS_EMPTY_ELEM_INSERT               =   301,
+    DIS_MODULE_NOT_REGISTERED           =   302,
+    DIS_ADD_MSG_ALREADY_ADDED           =   303,
+    DIS_MSG_GEN_ERROR_MSG_DEL           =   304,
+    DIS_TRY_SEND_MSG_DEL                =   305,    
+    DIS_NULL_BUFF_QUEUE                 =   306,
 
     /* PRIME NOTIFICATIONS Errors */
     NOT_NOT_VALID_SIGNAL                =   400,
     NOT_TABLE_FULL                      =   401,
     NOT_TOO_MANY_EVENTS                 =   402,
+    NOT_WRONG_POINTER                   =   403,
 
     /* PRIME BMM Errors */
     BMM_ALLOC_BUFF_BIGGER_THAN_AVAILABLE=   500,
     BMM_ALLOC_NO_FREE_BUFF              =   501,
-    BMM_FREE_FREE_BUFF                  =   502,
+    BMM_FREE_FREE_BUFF                  =   502,  
+    BMM_FREE_ERROR                      =   503,
+    BMM_BUFFER_INTEGRITY_BROKEN         =   504,
 
-    /* Queue Management Errors */
+    /* Queue Service Errors */
     QUEUE_FULL_INSERT_END               =   600,
     QUEUE_FULL_INSERT_BEFORE            =   601,
     QUEUE_FULL_INSERT_AFTER             =   602,
@@ -198,16 +201,12 @@ typedef enum
     TMM_QUEUE_EMPTY_REMOVE              =   701,
     TMM_START_NULL_CB_FUNCTION          =   702,
     TMM_START_INVALID_TIMER_VALUE       =   703,
-    TMM_UPDATE_TIMER_NOT_RUNNING        =   704,
-    TMM_UPDATE_INVALID_TIMER_VALUE      =   705,
-    TMM_REMOVE_INVALID_TIMER_ID         =   706,
-    TMM_REMOVE_TIMER_NOT_RUNNING        =   707,
-    TMM_RUNNING_INVALID_TIMER_ID        =   708,
+    TMM_START_NO_TIME                   =   704,
 
     /* PRIME BCN Errors */
     BCN_BAD_VALUES_ADJUSTING            =   800,
 
-    /* PRIME IQ_PRO errors */
+    /* PRIME IQ errors */
     IQ_PRO_BAD_QUEUE                    =   900,
     IQ_PRO_START_PRO                    =   901,
     IQ_PRO_CONT_PRO                     =   902,
@@ -215,6 +214,7 @@ typedef enum
     IQ_PRO_BUSY_START_PRO               =   904,
     IQ_PRO_SERVICE_BAD_STATE            =   905,
     IQ_PRO_MAX_TIME_PROMOTING           =   906,
+    IQ_NETWORK_NODE_DISCONNECTED_STATE  =   907,
 
     /* PRIME BSI Errors */
     BSI_ERROR                           =   1000,
@@ -232,14 +232,33 @@ typedef enum
     PHY_WRP_CRC_WRONG_HEADER_TYPE       =   1200,
     PHY_WRP_WRONG_LEN                   =   1201,
     PHY_WRP_WRONG_MSG_TYPE              =   1202,
+    PHY_WRP_MUL_LCID_NOT_FOUND          =   1203,
 
     /* PRIME PNPDU Errors */
     PNU_ENHANCED_NOT_AVAILABLE          =   1300,
 
     /* PRIME SWI Errors */
     SWI_INVALID_CHANNEL                 =   1400,
+    
+    /* PRIME Management Plane Errors */
+    MNGP_FU_ST_MACHINE_CONFIRM_TIMEOUT  =   1500,
+    MNGP_FU_ST_MACHINE_WRONG_BUFFER     =   1501,
+    MNGP_FU_NODE_MNG_CONFIRM_TIMEOUT    =   1502,
+    
+    /* PRIME DATA Errors */
+    DATA_TX_EXTRA_QUEUE_FULL            =   1600,
+    DATA_CONN_CLOSED_INVALID_HANDLER    =   1601,
 
-    /* USI Errors */
+    /* PRIME CON Errors */
+    CON_UNICAST_NO_COMMON_ANCESTOR      =   1700,
+    CON_UNICAST_BAD_RESPONSE            =   1701,
+    CON_MULTICAST_SW_INCREASE_OVERFLOW  =   1702,
+    CON_MULTICAST_SW_DECREASE_OVERFLOW  =   1703,    
+    CON_MULTICAST_SW_SONS_INCREASE_OVERFLOW  =   1704,
+    CON_MULTICAST_SW_SONS_DECREASE_OVERFLOW  =   1705,  
+    CON_MULTICAST_NO_CONNECTIONS        =   1706,
+    
+    /* USI Service Errors */
     USI_BAD_LENGTH                      =   9001,
     USI_BAD_PROTOCOL                    =   9002,
     USI_BAD_CRC                         =   9003,
