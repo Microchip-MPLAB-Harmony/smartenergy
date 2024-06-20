@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Header for the AES wrapper between G3 stack and AES
+  Header for the AES wrapper between Smart Energy stacks and AES
 
   Company:
     Microchip Technology Inc.
@@ -8,10 +8,11 @@
     aes_wrapper.h
 
   Summary:
-    Interface definition of the AES wrapper between G3 and AES.
+    Interface definition of the AES wrapper between Smart Energy stacks and AES.
 
   Description:
-    This file defines the interface for the wrapper between G3 and AES.
+    This file defines the interface for the AES wrapper between Smart Energy 
+    stacks and AES.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -49,6 +50,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus // Provide C++ Compatibility
  extern "C" {
@@ -128,12 +130,13 @@ void AES_Wrapper_SetEncryptEcbKey(uint8_t *key);
 
 void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out);
 
+<#if (prime_config)??>
 //******************************************************************************
 /* Function:
     void AES_Wrapper_WrapKey(
-        const uint8_t *key, 
+        uint8_t *key, 
         uint32_t keyLen, 
-        const uint8_t *in, 
+        uint8_t *in, 
         uint32_t inLen,
         uint8_t *out)
     
@@ -169,15 +172,15 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out);
     The wrapped key is one byte longer than the plain key.
 */
 
-void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
     uint32_t inLen, uint8_t *out);
 
 ///******************************************************************************
 /* Function:
     bool AES_Wrapper_UnwrapKey(
-        const uint8_t *key, 
+        uint8_t *key, 
         uint32_t keyLen, 
-        const uint8_t *in, 
+        uint8_t *in, 
         uint32_t inLen,
         uint8_t *out)
     
@@ -213,8 +216,9 @@ void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in,
     The unwrapped key is one byte shorter than the wrapped key.
 */
 
-bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
     uint32_t inLen, uint8_t *out);
+</#if>
 
 #ifdef __cplusplus // Provide C++ Compatibility
 }

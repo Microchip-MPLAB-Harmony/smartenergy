@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Source for the AES wrapper between G3 stack and AES
+  Source for the AES wrapper between Smart Energy stacks and AES
 
   Company:
     Microchip Technology Inc.
@@ -8,10 +8,12 @@
     aes_wrapper.c
 
   Summary:
-    Interface implementation of the AES wrapper between G3 and AES.
+    Interface implementation of the AES wrapper between Smart Energy stacks and 
+    AES.
 
   Description:
-    This file implements the interface for the wrapper between G3 and AES.
+    This file implements the interface for the AES wrapper between Smart Energy 
+    stacks and AES.
 *******************************************************************************/
 
 /*
@@ -73,21 +75,22 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
     (void) Crypto_Sym_Aes_Cipher(&aesWrapperContext, in, 16, out);
 }
 
-void AES_Wrapper_WrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+<#if (prime_config)??>
+void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
     uint32_t inLen, uint8_t *out)
 {
     (void) Crypto_Sym_AesKeyWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen, 
         out, key, keyLen, NULL, 1);
 }
 
-bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *in, 
+bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
     uint32_t inLen, uint8_t *out)
 {
     crypto_Sym_Status_E unwrapResult;
     
-    unwrapResult = Crypto_Sym_AesKeyUnWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen, 
-        out, key, keyLen, NULL, 1);
-    
+    unwrapResult = Crypto_Sym_AesKeyUnWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, 
+        in, inLen, out, key, keyLen, NULL, 1);
+        
     if (unwrapResult == CRYPTO_SYM_CIPHER_SUCCESS) 
     {
         return true;
@@ -95,3 +98,4 @@ bool AES_Wrapper_UnwrapKey(const uint8_t *key, uint32_t keyLen, const uint8_t *i
 
     return false;
 }
+</#if>

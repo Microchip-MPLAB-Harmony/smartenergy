@@ -1,5 +1,5 @@
  /*******************************************************************************
-  Header for the cipher wrapper between G3 stack and Crypto
+  Header for the cipher wrapper between Smart Energy stacks and Crypto
 
   Company:
     Microchip Technology Inc.
@@ -8,11 +8,11 @@
     cipher_wrapper.h
 
   Summary:
-    Interface definition of the wrapper between G3 and Crypto.
+    Interface definition of the wrapper between Smart Energy stacks and Crypto.
 
   Description:
-    This file defines the interface for the wrapper between G3 and Crypto.
-    It includes calls to handle CCM, CMAC and EAX.
+    This file defines the interface for the wrapper between Smart Energy stacks 
+    and Crypto. It includes calls to handle CCM, CMAC and EAX (only G3).
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -261,6 +261,7 @@ int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint8_t *data, uint32_t dataLen,
                                            uint8_t *aad, uint32_t aadLen,
                                            uint8_t *tag, uint32_t tagLen);
 
+<#if (g3_config)??>
 //******************************************************************************
 /* Function:
     int32_t CIPHER_Wrapper_AesEaxEncrypt(uint8_t *data, uint32_t dataLen,
@@ -380,6 +381,7 @@ int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
                                      uint8_t *aad, uint32_t aadLen,
                                      uint8_t *tag, uint32_t tagLen,
                                      uint8_t *key);
+</#if>
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-  Source for the cipher wrapper between G3 stack and Crypto
+  Source for the cipher wrapper between Smart Energy stacks and Crypto
 
   Company:
     Microchip Technology Inc.
@@ -8,11 +8,12 @@
     cipher_wrapper.h
 
   Summary:
-    Interface implementation of the wrapper between G3 and Crypto.
+    Interface implementation of the wrapper between Smart Energy stacks and 
+    Crypto.
 
   Description:
-    This file implements the interface for the wrapper between G3 and Crypto.
-    It includes calls to handle CCM, CMAC and EAX.
+    This file implements the interface for the wrapper between Smart Energy 
+    stacks and Crypto. It includes calls to handle CCM, CMAC and EAX (only G3).
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
@@ -60,8 +61,10 @@ Microchip or any third party.
 /* CCM context used in this wrapper */
 static st_Crypto_Aead_AesCcm_ctx cipherWrapperCcmContext;
 
+<#if (g3_config)??>
 /* Auxiliary buffer for EAX output */
 static uint8_t cipherWrapperOutAux[128];
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -102,6 +105,7 @@ int32_t CIPHER_Wrapper_AesCcmEncryptAndTag(uint8_t *data, uint32_t dataLen,
             iv, ivLen, tag, tagLen, aad, aadLen);
 }
 
+<#if (g3_config)??>
 int32_t CIPHER_Wrapper_AesEaxEncrypt(uint8_t *data, uint32_t dataLen,
                                      uint8_t *iv, uint32_t ivLen,
                                      uint8_t *aad, uint32_t aadLen,
@@ -141,3 +145,4 @@ int32_t CIPHER_Wrapper_AesEaxDecrypt(uint8_t *data, uint32_t dataLen,
 
     return result;
 }
+</#if>
