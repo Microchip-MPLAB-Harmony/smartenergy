@@ -271,10 +271,8 @@ typedef enum
     PAL_PLC_TIMER_SYNC_ERROR            =   9102,
 
     /* PRIME Critical System Error */
-    CRITICAL_ERROR_PRIME_NO_PHY         =   9995,
-    CRITICAL_ERROR_PRIME_NO_PLC         =   9996,
-    CRITICAL_ERROR_PL360_FAILURE        =   9997,
-    CRITICAL_ERROR_RF215_FAILURE        =   9998,
+    CRITICAL_ERROR_PRIME_NO_PHY         =   9997,
+    CRITICAL_ERROR_PRIME_NO_PLC         =   9998,
     CRITICAL_ERROR                      =   9999
 
 
