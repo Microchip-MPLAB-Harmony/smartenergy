@@ -205,6 +205,8 @@ typedef enum
 
     /* PRIME BCN Errors */
     BCN_BAD_VALUES_ADJUSTING            =   800,
+    BCN_PROGRAMMED_PAST                 =   801,
+    BCN_NO_LSID                         =   802,
 
     /* PRIME IQ errors */
     IQ_PRO_BAD_QUEUE                    =   900,
@@ -215,6 +217,7 @@ typedef enum
     IQ_PRO_SERVICE_BAD_STATE            =   905,
     IQ_PRO_MAX_TIME_PROMOTING           =   906,
     IQ_NETWORK_NODE_DISCONNECTED_STATE  =   907,
+    IQ_SN_STATE_NOT_ALLOWED             =   908,
 
     /* PRIME BSI Errors */
     BSI_ERROR                           =   1000,
@@ -257,6 +260,12 @@ typedef enum
     CON_MULTICAST_SW_SONS_INCREASE_OVERFLOW  =   1704,
     CON_MULTICAST_SW_SONS_DECREASE_OVERFLOW  =   1705,  
     CON_MULTICAST_NO_CONNECTIONS        =   1706,
+    
+    /* PRIME RM Errors */
+    RM_NO_MODULATION_ASSIGNED           =   1800,
+    
+    /* PRIME ALV Errors */
+    ALV_BAD_VALUES_RECEIVED             =   1900,
     
     /* USI Service Errors */
     USI_BAD_LENGTH                      =   9001,
