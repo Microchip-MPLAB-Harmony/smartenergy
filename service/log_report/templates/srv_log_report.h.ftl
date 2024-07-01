@@ -230,6 +230,7 @@ typedef enum
     PRO_END_NODE_DISCONNECTED           =   1104,
     PRO_FIRST_DEM                       =   1105,
     PRO_NO_VBS_FREE                     =   1106,
+    PRO_SWITCH_INFO_NOT_FOUND           =   1107,
 
     /* PRIME PHY Wrapper Errors */
     PHY_WRP_CRC_WRONG_HEADER_TYPE       =   1200,
