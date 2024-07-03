@@ -31,18 +31,18 @@ def loadModule():
     ## PLC PHY Driver (G3, PRIME)
     drvPlcPhyComponent = Module.CreateComponent("drvPlcPhy", "PLC PHY", "/SmartEnergy/Drivers/", "driver/plcPhy/config/drv_plc_phy.py")
     drvPlcPhyComponent.addCapability("libdrvPlcPhy", "DRV_PLC_PHY", True)
-    drvPlcPhyComponent.addDependency("drv_plc_phy_SPI_dependency", "SPI", False, True)
-    drvPlcPhyComponent.addDependency("drv_plc_phy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-    drvPlcPhyComponent.addDependency("drv_plc_phy_CouplingDependency", "PCOUP", "PCOUP", True, False)
+    drvPlcPhyComponent.addDependency("drvPlcPhy_SPI_dependency", "SPI", False, True)
+    drvPlcPhyComponent.addDependency("drvPlcPhy_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+    drvPlcPhyComponent.addDependency("drvPlcPhy_CouplingDependency", "PCOUP", "PCOUP", True, False)
     drvPlcPhyComponent.setDisplayType("PLC PHY Driver")
     drvPlcPhyComponent.setHelpKeyword("drv_plc_phy")
 
     ## G3 MAC RT Driver
     drvG3MacRTComponent = Module.CreateComponent("drvG3MacRt", "G3 MAC RT", "/SmartEnergy/Drivers/", "driver/g3MacRt/config/drv_g3_macrt.py")
     drvG3MacRTComponent.addCapability("libdrvG3MacRt", "DRV_G3_MAC_RT", True)
-    drvG3MacRTComponent.addDependency("drv_g3_macrt_SPI_dependency", "SPI", False, True)
-    drvG3MacRTComponent.addDependency("drv_g3_macrt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-    drvG3MacRTComponent.addDependency("drv_g3_macrt_CouplingDependency", "PCOUP", "PCOUP", True, False)
+    drvG3MacRTComponent.addDependency("drvG3MacRt_SPI_dependency", "SPI", False, True)
+    drvG3MacRTComponent.addDependency("drvG3MacRt_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+    drvG3MacRTComponent.addDependency("drvG3MacRt_CouplingDependency", "PCOUP", "PCOUP", True, False)
     drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
     drvG3MacRTComponent.setHelpKeyword("drv_g3_macrt")
 
@@ -58,9 +58,9 @@ def loadModule():
     if ("WBZ45" not in processor) and ("PIC32CX1012BZ" not in processor):
         drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
         drvRf215Component.addCapability("libdrvRf215", "DRV_RF_PHY", True)
-        drvRf215Component.addDependency("drv_rf215_SPI_dependency", "SPI", False, True)
-        drvRf215Component.addDependency("drv_rf215_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-        drvRf215Component.addDependency("drv_rf215_SysTime", "SYS_TIME", "SYS_TIME", True, True)
+        drvRf215Component.addDependency("drvRf215_SPI_dependency", "SPI", False, True)
+        drvRf215Component.addDependency("drvRf215_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
+        drvRf215Component.addDependency("drvRf215_SysTime", "SYS_TIME", "SYS_TIME", True, True)
         drvRf215Component.setDisplayType("RF PHY Driver")
         drvRf215Component.setHelpKeyword("drv_rf215")
 

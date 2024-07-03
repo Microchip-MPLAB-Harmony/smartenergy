@@ -1363,7 +1363,7 @@ def onAttachmentConnected(source, target):
             # Enable "Generate Harmony System DMA Files" option in MCC
             Database.sendMessage("HarmonyCore", "ENABLE_SYS_DMA", {"isEnabled":True})
 
-    elif localConnectID == "drv_rf215_SPI_dependency":
+    elif localConnectID == "drvRf215_SPI_dependency":
         # Set PLIB Used
         plibUsed = localComponent.getSymbolByID("DRV_RF215_PLIB")
         plibUsed.setValue(remoteComponentID.upper())
@@ -1443,7 +1443,7 @@ def onAttachmentDisconnected(source, target):
     remoteComponent = target["component"]
     remoteComponentID = remoteComponent.getID()
 
-    if localConnectID == "drv_rf215_SPI_dependency":
+    if localConnectID == "drvRf215_SPI_dependency":
         # Disable read-only in PLIB
         deconfigureSpiPlib(localComponent)
 

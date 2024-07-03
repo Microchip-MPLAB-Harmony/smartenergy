@@ -248,6 +248,18 @@ def npcsChanged(symbol, event):
     currentNPCS = event["value"]
     configureSpiPlib(localComponent)
 
+def getIndexFromPinId(pinId):
+    availablePinDictionary = {}
+    availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
+    index = 0
+    for pad in sort_alphanumeric(availablePinDictionary.values()):
+        # print("DRVPLC handleMessage pad: {} pinId:{}".format(pad, pinId))
+        if pad == pinId:
+            return index
+        index += 1
+
+    return None
+
 def handleMessage(messageID, args):
 
     result_dict = {}
@@ -355,6 +367,71 @@ def handleMessage(messageID, args):
             plcTXDMAChannelComment.setVisible(False)
             plcRXDMAChannelComment.setVisible(False)
             plcDependencyDMAComment.setVisible(True)
+
+    elif (messageID == "DRVPLC_CONFIG_HW_IO"):
+        global plcDriverMode
+        
+        # print("DRVPLC handleMessage: {} args: {}".format(messageID, args))
+        result_dict = {"Result": "Fail"}
+        signalId, pinId, functionValue, nameValue, enable = args['config']
+
+        symbolName = None
+        symbolValue = None
+
+        if (functionValue.lower() == "gpio") or (signalId.lower() in ["int", "irq"]):
+            plcDevice = nameValue.split("_")[-2].upper()
+            if plcDevice == "PL360" or plcDevice =="PL460":
+                currentValue = plcDriverMode.getValue()
+                if currentValue != plcDevice:
+                    plcDriverMode.setValue(plcDevice)
+                
+            pinDescr = nameValue.split("_")[-1].lower()
+            if "enable" in pinDescr:
+                symbolName = "DRV_PLC_LDO_EN_PIN"
+            elif "extint" in pinDescr:
+                symbolName = "DRV_PLC_EXT_INT_PIN"
+            elif "nthw0" in pinDescr:
+                symbolName = "DRV_PLC_THMON_PIN"
+            elif "nrst" in pinDescr:
+                symbolName = "DRV_PLC_RESET_PIN"
+            elif "txen" in pinDescr:
+                symbolName = "DRV_PLC_TX_ENABLE_PIN"
+            elif "stby" in pinDescr:
+                symbolName = "DRV_PLC_STBY_PIN"
+
+            # print("DRVPLC handleMessage GPIO: {} - pinDescr: {}".format(symbolName, pinDescr))
+
+            if symbolName != None:
+                # Get index from pinId
+                symbolValue = getIndexFromPinId(pinId)
+                
+        elif signalId.lower() == "cs":
+            pinDescr = functionValue.split("_")[-1].lower()
+            if "io3" in pinDescr:
+                symbolName = "DRV_PLC_SPI_NPCS"
+                symbolValue = 0 # NPCS0
+            elif "io4" in pinDescr:
+                symbolName = "DRV_PLC_SPI_NPCS"
+                symbolValue = 1 # NPCS1
+            elif "pad" in pinDescr:
+                symbolName = "DRV_PLC_SPI_CS_PIN"
+                symbolValue = getIndexFromPinId(pinId)
+            # print("DRVPLC handleMessage CS: {} - pinDescr: {}".format(symbolName, pinDescr))
+
+        if symbolValue != None:
+            # print("CHRIS dbg >> drvG3MacRt DRVPLC_CONFIG_HW_IO set {}: {}".format(symbolName, symbolValue))
+            res = Database.setSymbolValue('drvG3MacRt', symbolName, symbolValue)
+            if res == True:
+                result_dict = {"Result": "Success"}
+                if symbolName == "DRV_PLC_EXT_INT_PIN":
+                    eic = Database.getSymbolValue("drvG3MacRt", "PLC_EIC_ID")
+                    if (eic != "0") and (functionValue.split("_")[0].upper() == "EIC"):
+                        intNum = int("".join(filter(lambda x: x.isdigit(), functionValue.split("_")[-1])))
+                        res = Database.setSymbolValue('drvG3MacRt', "DRV_PLC_EIC_SIGNAL", "EIC_PIN_{}".format(intNum))
+                        if res == True:
+                            result_dict = {"Result": "Success"}
+                        else:
+                            result_dict = {"Result": "Fail"}
 
     return result_dict
 
@@ -1270,7 +1347,7 @@ def onAttachmentConnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    if connectID == "drv_g3_macrt_SPI_dependency" :
+    if connectID == "drvG3MacRt_SPI_dependency" :
         plibUsed = localComponent.getSymbolByID("DRV_PLC_PLIB")
         plibUsed.clearValues()
         plibUsed.setValue(remoteID.upper())
@@ -1355,7 +1432,7 @@ def onAttachmentDisconnected(source, target):
     remoteID = remoteComponent.getID()
     connectID = source["id"]
 
-    if connectID == "drv_g3_macrt_SPI_dependency":
+    if connectID == "drvG3MacRt_SPI_dependency":
         # Disable read-only in PLIB
         deconfigureSpiPlib(localComponent)
 
