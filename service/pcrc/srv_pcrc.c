@@ -12,39 +12,34 @@
 
   Description:
     The CRC wrapper provides a simple interface to manage the CRC needs
-    for PLC components. This file implements the CRC core interface routines 
-    for PLC. 
+    for PLC components. This file implements the CRC core interface routines
+    for PLC.
 *******************************************************************************/
 
 //DOM-IGNORE-BEGIN
-/*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+/*
+Copyright (C) 2024, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+
+The software and documentation is provided by microchip and its contributors
+"as is" and any express, implied or statutory warranties, including, but not
+limited to, the implied warranties of merchantability, fitness for a particular
+purpose and non-infringement of third party intellectual property rights are
+disclaimed to the fullest extent permitted by law. In no event shall microchip
+or its contributors be liable for any direct, indirect, incidental, special,
+exemplary, or consequential damages (including, but not limited to, procurement
+of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract,
+strict liability, or tort (including negligence or otherwise) arising in any way
+out of the use of the software and documentation, even if advised of the
+possibility of such damage.
+
+Except as expressly permitted hereunder and subject to the applicable license terms
+for any third-party software incorporated in the software and any applicable open
+source software license terms, no license or other rights, whether express or
+implied, are granted under any patent or other intellectual property rights of
+Microchip or any third party.
+*/
 //DOM-IGNORE-END
-// *****************************************************************************
-// *****************************************************************************
-// Section: Macro Definitions
-// *****************************************************************************
-// *****************************************************************************
 
 // *****************************************************************************
 // *****************************************************************************
@@ -52,7 +47,6 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#include "stddef.h"
 #include "string.h"
 #include "srv_pcrc.h"
 
@@ -66,8 +60,10 @@
 static uint8_t pCrcSna8 = 0;
 static uint32_t pCrcSna32 = 0;
 
-/* PRIME v1.4: The CRC shall be calculated over the whole BPDU, including constant CRC field */
-static uint8_t pCrcConstBcn14[PCRC_CONST_BCN_PRIME_1_4_SIZE] = {0x00, 0x01, 0x04, 0x00};
+/* PRIME v1.4: The CRC shall be calculated over the whole BPDU, including */
+/* constant CRC field */
+static uint8_t pCrcConstBcn14[PCRC_CONST_BCN_PRIME_1_4_SIZE] = 
+    {0x00, 0x01, 0x04, 0x00};
 
 /* Table used to get CRC32 value */
 static const uint32_t pCrcTable32[256] = {
@@ -265,7 +261,8 @@ static uint8_t lSRV_PCRC_Get8(uint8_t *pData, size_t length,
 // *****************************************************************************
 
 uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
-        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue,bool v14Mode)
+        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue,
+        bool v14Mode)
 {
     uint32_t crc32Val;
     
@@ -283,7 +280,7 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
                     break;
 
                 case PCRC_CRC32:
-                    crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length , pCrcSna32);
+                    crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, pCrcSna32);
                     break;
 
                 default:
@@ -300,7 +297,9 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
             crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
             if (v14Mode) 
             {
-                crc32Val = (uint32_t)lSRV_PCRC_Get32(pCrcConstBcn14, PCRC_CONST_BCN_PRIME_1_4_SIZE, crc32Val);
+                crc32Val = (uint32_t)lSRV_PCRC_Get32(pCrcConstBcn14, 
+                                                     PCRC_CONST_BCN_PRIME_1_4_SIZE, 
+                                                     crc32Val);
             }
             break;
             
