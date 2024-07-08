@@ -22,7 +22,7 @@ Refer to the following links for release notes, training materials, and interfac
 
 - [Release Notes](./release_notes.md)
 - [MPLAB® Harmony License](Microchip_SLA001.md)
-- [MPLAB® Harmony 3 Smart Energy API Help](https://onlinedocs.microchip.com/g/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B-en-US-2/index.html?output=oxygen)
+- [MPLAB® Harmony 3 Smart Energy API Help](https://onlinedocs.microchip.com/g/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B)
 
 # Contents Summary
 
@@ -33,6 +33,15 @@ Refer to the following links for release notes, training materials, and interfac
 | docs       | Smart Energy help documentation                           |
 | driver     | Drivers for PLC, RF devices and Metrology                 |
 | service    | Common PLC services for communication stacks (G3, PRIME)  |
+
+# Code Examples
+
+The following applications are provided to demonstrate the Metrology and Dual Core capabilities of the PIC32CX-MT platform.
+
+| Name               | Description |
+| ----               | ----------- |
+| [Demo Meter Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=SE_Demo_Meter_Application&redirect=true) | This example is intended to show the Metering capabilities of both PIC32CX-MTSH and PIC32CX-MTC platforms. |
+| [Dual Core Demo Application](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=SE_Dual_Core_Demo_Application&redirect=true) | This example shows how to take advantage of the Dual Core in the PIC32CX-MTSH platform. |
 
 ____
 
