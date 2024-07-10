@@ -4,22 +4,23 @@
 
 
 project: metering_demo_freertos
-creation_date: 2024-02-15T17:59:49.173+01:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2024-07-09T17:25:16.510+02:00[Europe/Paris]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mcc_mode: Headless            # [IDE|Standalone|Headless]
-mcc_version: v5.5.0
-mcc_core_version: v5.7.0
+mcc_version: v5.5.1
+mcc_core_version: v5.7.1
 mplabx_version: NA        # if MPLAB X plugin only
 harmony_version: v1.5.1
 compiler: NA
 
 modules:
-    - {name: "core", version: "master"}
-    - {name: "csp", version: "master"}
-    - {name: "CMSIS_5", version: "5.9.0"}
-    - {name: "gfx", version: "dev"}
-    - {name: "bsp", version: "master"}
-    - {name: "smartenergy", version: "SMS-3864-test-g3-apps-with-latest-tools-versions"}
+    - {name: "core", version: "v3.13.5"}
+    - {name: "csp", version: "v3.19.1"}
+    - {name: "CMSIS_5", version: "5.8.0"}
+    - {name: "gfx", version: "v3.13.0"}
+    - {name: "bsp", version: "v3.20.1"}
+    - {name: "smartenergy", version: "v1.2.1"}
+    - {name: "CMSIS-FreeRTOS", version: "v10.5.1"}
 
 packs:
     - {name: "PIC32CX-MT_DFP", version: "1.3.132"}

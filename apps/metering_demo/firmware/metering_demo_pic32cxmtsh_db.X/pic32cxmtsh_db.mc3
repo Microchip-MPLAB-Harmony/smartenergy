@@ -8283,7 +8283,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\definitions.h</file>
-         <hash>3b1b713c5eb73c8ce8036206b2acd66a45499fac2384a3df333022631196f875</hash>
+         <hash>f29e5bf1b21eb94b2a4b130ac88b4b489067d0532640e960c65cfa7b8b98f5fc</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\device.h</file>
@@ -8315,7 +8315,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory.c</file>
-         <hash>808d43318deace95edc80d3ccbadfcfff5298b35a2e705be7ac5fcae1d7f8c98</hash>
+         <hash>1922248aa8310ad78b6ac1e65a01e87d9a3d3e8ed5a5bebfbd9b198d66ce81ec</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\driver\memory\src\drv_memory_file_system.c</file>
@@ -8403,7 +8403,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\initialization.c</file>
-         <hash>0d5fb159adc540eb001a5ba44db62c037c8ab40a07e21395c219e8669bebe547</hash>
+         <hash>2212a43481f4e290864f1f49b94052690c1b30fc769dbda116d191cffe08c8e1</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\interrupts.c</file>
@@ -8431,7 +8431,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.c</file>
-         <hash>9cff2e21f9c06b4c487ee43338ad07ca3226d98048ad2cc721376e7a26ad8446</hash>
+         <hash>e8a9ef0dd71749b44f616140ab6e8e8d565a0411221776993ebef85345d75130</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\clk\plib_clk.h</file>
@@ -8463,15 +8463,15 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\flexcom\usart\plib_flexcom_usart_local.h</file>
-         <hash>d7d8e1bab1992fd5471cbee03dfbe206d761d9e622c721c08f3546ef7d335b64</hash>
+         <hash>44c68d2efb80f2837e7bbcb39073972a6672c61ea2daf8f63e8c7e7da6e1208c</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\nvic\plib_nvic.c</file>
-         <hash>e1a45cc31cfa766bf8aaa63dc2be70fd895929838e8703b6d64fc5ecbb8405bb</hash>
+         <hash>e4bc1049829e1f1ec6ee6484be07962119bdeff72f6090dee06e0c87686eacd8</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\nvic\plib_nvic.h</file>
-         <hash>81e813a093101d546799e00723cbf7245e2d18471fa51c8d130c5809cecca03e</hash>
+         <hash>9936ac782115af41003255283fa2f603f4ff2212d16275b7c80ea8d067a9e208</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\pio\plib_pio.c</file>
@@ -8483,7 +8483,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\qspi\plib_qspi.c</file>
-         <hash>f4cbcb733af64dd7090226c3e8532e7f9bf04a4219b75fa7797d13476bcc523c</hash>
+         <hash>bc9a018b47d174570dfc624ef2683a996ceb66116bd018e0c34d9f22371214ae</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\qspi\plib_qspi.h</file>
@@ -8535,7 +8535,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.c</file>
-         <hash>42d59325645f54ccad2ab39bf1f21d77772172fc498713527834d0c8e775ea2a</hash>
+         <hash>2974c4da450f5a7b7013fd99e24aabe66f720a95d6e572d9edea3f76d8cb4f68</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\peripheral\supc\plib_supc.h</file>
@@ -8579,7 +8579,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\src\sys_command.c</file>
-         <hash>e13dfdfba00c4c9b65ef425ae0a568913d754b64e58bda03f37627b23bf9659a</hash>
+         <hash>84360285206bc304af70cc0b29fea061345ba6e27674613b5bb947da9fda0768</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\command\sys_command.h</file>
@@ -8611,7 +8611,7 @@
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\debug\sys_debug.h</file>
-         <hash>9ee0362649aa389b355ecff1ce0e64d124f8f83eda7e40a0c5195ee099c1a0ff</hash>
+         <hash>4162d9e1fab93b8b33f6c8a24726f5dc287ea05c31e3ab984c3c920c725d0882</hash>
       </entry>
       <entry>
          <file>..\src\config\pic32cxmtsh_db\system\fs\fat_fs\file_system\ff.c</file>
@@ -8763,7 +8763,7 @@
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_version.h</file>
-         <hash>8cda7ac3ff6f0eb5e83c4fe613dd195151b24da54167f5c3c007e599a03f1edc</hash>
+         <hash>2de01ae2556a38eb82c389de23c701805ec63308cfbcf3f84cb12141589b0858</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\core_cm4.h</file>
