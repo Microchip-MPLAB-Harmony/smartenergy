@@ -164,6 +164,7 @@ static void lDRV_PLC_PHY_COMM_TxCfmEvent(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ *pCfmO
 static void lDRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
 {
     uint8_t *pSrc;
+    uint16_t u16Aux;
 
     pSrc = sDataRxPar;
 
@@ -183,15 +184,17 @@ static void lDRV_PLC_PHY_COMM_RxEvent(DRV_PLC_PHY_RECEPTION_OBJ *pRxObj)
     if (pRxObj->dataLength > PLC_DATA_PKT_SIZE) {
         pRxObj->dataLength = PLC_DATA_PKT_SIZE;
     }
-    
-    pRxObj->snrHeader = (uint16_t)*pSrc++;
-    pRxObj->snrHeader += (uint16_t)*pSrc++ << 8;
-    pRxObj->snrPayload = (uint16_t)*pSrc++;
-    pRxObj->snrPayload += (uint16_t)*pSrc++ << 8;
+
+    u16Aux = (uint16_t)*pSrc++;
+    u16Aux += (uint16_t)*pSrc++ << 8;
+    pRxObj->snrHeader = (int16_t)u16Aux;
+    u16Aux = (uint16_t)*pSrc++;
+    u16Aux += (uint16_t)*pSrc++ << 8;
+    pRxObj->snrPayload = (int16_t)u16Aux;
 
     pRxObj->nbRx = *pSrc++;
-    pRxObj->rssi = *pSrc++;
     pRxObj->lqi = *pSrc++;
+    pRxObj->rssi = *pSrc++;
     pRxObj->crcOk = *pSrc++;
 
     /* Set data content pointer */
