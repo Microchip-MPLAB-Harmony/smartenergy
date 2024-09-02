@@ -3,6 +3,39 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.2.1
+
+### New Features
+
+- **Applications**
+  - Applications updated to use the code from new releases of dependent Harmony 3 modules.
+
+- **New Features and Enhancements**
+  - None.
+
+### Bug fixes
+
+- Added missing parameter on Embedded RF Sniffer function.
+- Restored FreeRTOS folder on RTOS-based projects.
+
+### Known Issues
+
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in PIC32CX-MT Dual Core 0 Demo applications. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
+- On example applications for SAMD20 platform, file *\src\config\sam_d20_xpro_pl460\peripheral\sercom\spi_master\plib_sercom0_spi_master.c* has to be reverted after regeneration, to preserve some required initialization values which are deleted when file is regenerated.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.20](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v4.40](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.5.1 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.3.132 or higher
+
+### Notes
+
+- None
+
 ## Smart Energy Release v1.2.0
 
 ### New Features
