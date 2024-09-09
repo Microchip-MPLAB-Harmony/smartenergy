@@ -254,6 +254,20 @@ static uint8_t lSRV_PCRC_Get8(uint8_t *pData, size_t length,
     return crc;
 }
 
+static uint8_t lSRV_PCRC_Get8ForUsi(uint8_t *pData, size_t length,
+        uint32_t crcInitValue)
+{
+    uint8_t crc;
+
+    crc = (uint8_t)crcInitValue;
+    while ((length--) > 0U)
+    {
+        crc = crc ^ *pData++;
+    }
+
+    return crc;
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: CRC Service Interface Implementation
@@ -315,7 +329,8 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
             switch(crcType)
             {
                 case PCRC_CRC8:
-                    crc32Val = (uint32_t)lSRV_PCRC_Get8(pData, length, initValue);
+                    crc32Val = (uint32_t)lSRV_PCRC_Get8ForUsi(pData, length, 
+                                                              initValue);
                     break;
                  
                 case PCRC_CRC16:            
