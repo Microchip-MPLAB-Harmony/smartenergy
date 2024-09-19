@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2023 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2024 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -296,7 +296,24 @@ static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
         cbIndex = lSRV_USI_GetCallbackIndexFromProtocol(protocol);
         if (dObj->callback[cbIndex] != NULL)
         {
-            dObj->callback[cbIndex](pData + 2, dataLength);
+            switch(protocol)
+            {
+                case SRV_USI_PROT_ID_MNGP_PRIME_GETQRY:
+                case SRV_USI_PROT_ID_MNGP_PRIME_GETRSP:
+                case SRV_USI_PROT_ID_MNGP_PRIME_SET:
+                case SRV_USI_PROT_ID_MNGP_PRIME_RESET:
+                case SRV_USI_PROT_ID_MNGP_PRIME_REBOOT:
+                case SRV_USI_PROT_ID_MNGP_PRIME_FU:
+                case SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN:
+                case SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN:
+                    /* MNGL spec. including header (2 bytes) */
+                    dObj->callback[cbIndex](pData, dataLength + 2);
+                    break;
+                     
+                default:
+                    dObj->callback[cbIndex](pData + 2, dataLength);
+                    break;
+            }
         }
     }
 }
