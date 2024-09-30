@@ -158,7 +158,7 @@ def instantiateComponent(pPVDDMonComponent):
     adcPeriphId = plcAdcId.getValue()
     if not (adcPeriphId in ["U2204", "44134", "11147"]):
         print("PLC PVDD Monitor Service is not supported for " + pvddmon_plib + " Plib")
-        print("CHRIS dbg-> adcPeriphId: {}".format(adcPeriphId))
+        print("adcPeriphId: {}".format(adcPeriphId))
         return
 
     if (adcPeriphId != "U2204"):

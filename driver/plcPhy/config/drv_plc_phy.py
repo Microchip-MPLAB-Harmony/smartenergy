@@ -258,7 +258,6 @@ def getIndexFromPinId(pinId):
     availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
     index = 0
     for pad in sort_alphanumeric(availablePinDictionary.values()):
-        # print("DRVPLCPHY handleMessage pad: {} pinId:{}".format(pad, pinId))
         if pad == pinId:
             return index
         index += 1
@@ -376,7 +375,6 @@ def handleMessage(messageID, args):
     elif (messageID == "DRVPLC_CONFIG_HW_IO"):
         global plcDriverMode
         
-        # print("DRVPLC handleMessage: {} args: {}".format(messageID, args))
         result_dict = {"Result": "Fail"}
         signalId, pinId, functionValue, nameValue, enable = args['config']
 
@@ -404,8 +402,6 @@ def handleMessage(messageID, args):
             elif "stby" in pinDescr:
                 symbolName = "DRV_PLC_STBY_PIN"
 
-            print("DRVPLCPHY handleMessage GPIO: {} - pinDescr: {}".format(symbolName, pinDescr))
-
             if symbolName != None:
                 # Get index from pinId
                 symbolValue = getIndexFromPinId(pinId)
@@ -421,10 +417,8 @@ def handleMessage(messageID, args):
             elif "pad" in pinDescr:
                 symbolName = "DRV_PLC_SPI_CS_PIN"
                 symbolValue = getIndexFromPinId(pinId)
-            # print("DRVPLCPHY handleMessage CS: {} - pinDescr: {}".format(symbolName, pinDescr))
 
         if symbolValue != None:
-            # print("CHRIS dbg >> drvPlcPhy DRVPLC_CONFIG_HW_IO set {}: {}".format(symbolName, symbolValue))
             res = Database.setSymbolValue('drvPlcPhy', symbolName, symbolValue)
             if res == True:
                 result_dict = {"Result": "Success"}
