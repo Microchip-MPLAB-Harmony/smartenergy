@@ -89,6 +89,7 @@ typedef enum
     PCRC_HT_USI       = 3, /* USI Packet type */
     PCRC_HT_SAR       = 4, /* PRIME SAR Packet type  */
     PCRC_HT_FU        = 5, /* PRIME FU Packet type */
+    PCRC_HT_BEACON14  = 6, /* PRIME 1.4 Beacon Packet type */
 }PCRC_HEADER_TYPE;
 
 // *****************************************************************************
@@ -133,7 +134,6 @@ typedef enum
       PCRC_HEADER_TYPE hdrType,
       PCRC_CRC_TYPE crcType,
       uint32_t initValue
-      bool v14Mode
     );
 
   Summary:
@@ -160,8 +160,6 @@ typedef enum
 
     initValue - Initialization value for CRC computation. Valid only in case
                 of header type PCRC_HT_USI.
-    
-    v14Mode   - True for PRIME v1.4 mode and otherwise false.
  
   Returns:
     If successful, the routine returns a valid CRC value.
@@ -174,15 +172,14 @@ typedef enum
     <code>
     uint32_t valueTmp32;
 
-    valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, PCRC_CRC32);
+    valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, PCRC_CRC32, 0);
     </code>
 
   Remarks:
     None.
 */
 uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
-    PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue, 
-    bool v14Mode);
+    PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue);
 
 // *****************************************************************************
 /* Function:

@@ -263,7 +263,7 @@ static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
         
         /* Check CRC */
         crcGetValue = SRV_PCRC_GetValue(pData, lengthWithoutCrc,
-                PCRC_HT_USI, crcType, 0, false);
+                PCRC_HT_USI, crcType, 0);
  
         if (crcType == PCRC_CRC8)
         {
@@ -376,7 +376,7 @@ static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     valueTmp[1] = USI_LEN_LO_PROTOCOL(length) + USI_TYPE_PROTOCOL((uint8_t)protocol);
     
     /* Get CRC from USI header: 2 bytes */
-    valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, crcType, 0, false);
+    valueTmp32 = SRV_PCRC_GetValue(&valueTmp[0], 2, PCRC_HT_USI, crcType, 0);
     /* Escape USI header */
     pNewData = lSRV_USI_EscapeData(pNewData, valueTmp, 2, pEndData);
     if (pNewData == NULL)
@@ -399,7 +399,7 @@ static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
     }
 
     /* Get CRC from USI data. */
-    valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType, valueTmp32, false);
+    valueTmp32 = SRV_PCRC_GetValue(pData, length, PCRC_HT_USI, crcType, valueTmp32);
     /* Escape USI data */
     pNewData = lSRV_USI_EscapeData(pNewData, pData, length, pEndData);
     if (pNewData == NULL)

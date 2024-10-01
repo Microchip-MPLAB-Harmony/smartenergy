@@ -275,8 +275,7 @@ static uint8_t lSRV_PCRC_Get8ForUsi(uint8_t *pData, size_t length,
 // *****************************************************************************
 
 uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
-        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue,
-        bool v14Mode)
+        PCRC_HEADER_TYPE hdrType, PCRC_CRC_TYPE crcType, uint32_t initValue)
 {
     uint32_t crc32Val;
     
@@ -309,12 +308,13 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
             
         case PCRC_HT_BEACON:
             crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
-            if (v14Mode) 
-            {
-                crc32Val = (uint32_t)lSRV_PCRC_Get32(pCrcConstBcn14, 
-                                                     PCRC_CONST_BCN_PRIME_1_4_SIZE, 
-                                                     crc32Val);
-            }
+            break;
+        
+        case PCRC_HT_BEACON14:
+            crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
+            crc32Val = (uint32_t)lSRV_PCRC_Get32(pCrcConstBcn14, 
+                                                 PCRC_CONST_BCN_PRIME_1_4_SIZE, 
+                                                 crc32Val);
             break;
             
         case PCRC_HT_SAR:
