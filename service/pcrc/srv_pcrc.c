@@ -285,6 +285,26 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
             switch (crcType) 
             {
                 case PCRC_CRC8:
+                    crc32Val = (uint32_t)lSRV_PCRC_Get8(pData, length, initValue);
+                    break;
+
+                case PCRC_CRC16:
+                    crc32Val = (uint32_t)lSRV_PCRC_Get16(pData, length, initValue);
+                    break;
+
+                case PCRC_CRC32:
+                    crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, initValue);
+                    break;
+
+                default:
+                    crc32Val = PCRC_INVALID;
+            }
+            break;
+
+        case PCRC_HT_PRIME_GENERIC:
+            switch (crcType) 
+            {
+                case PCRC_CRC8:
                     crc32Val = (uint32_t)lSRV_PCRC_Get8(pData, length, pCrcSna8);
                     break;
 
@@ -301,36 +321,18 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
             }
             break;
             
-            
-        case PCRC_HT_PROMOTION:
-            crc32Val = (uint32_t)lSRV_PCRC_Get8(pData, length, 0);
-            break;
-            
-        case PCRC_HT_BEACON:
-            crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
-            break;
-        
-        case PCRC_HT_BEACON14:
+        case PCRC_HT_PRIME_BEACON14:
             crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
             crc32Val = (uint32_t)lSRV_PCRC_Get32(pCrcConstBcn14, 
                                                  PCRC_CONST_BCN_PRIME_1_4_SIZE, 
                                                  crc32Val);
             break;
             
-        case PCRC_HT_SAR:
-            crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, 0);
-            break;
-            
-        case PCRC_HT_FU:
-            crc32Val = (uint32_t)lSRV_PCRC_Get32(pData, length, initValue);
-            break;
-            
         case PCRC_HT_USI:
             switch(crcType)
             {
                 case PCRC_CRC8:
-                    crc32Val = (uint32_t)lSRV_PCRC_Get8ForUsi(pData, length, 
-                                                              initValue);
+                    crc32Val = (uint32_t)lSRV_PCRC_Get8ForUsi(pData, length, initValue);
                     break;
                  
                 case PCRC_CRC16:            
