@@ -149,14 +149,10 @@ typedef enum
     length -    Length of the data stream.
 
     hdrType -   Header type to determine the method to obtain CRC.
-                It is different for USI and PRIME
-                packets (GENERIC, PROMOTION and BEACON).
 
-    crcType -   CRC type(8, 16 or 32 bits). Valid only in case of
-                header type PCRC_HT_USI.
+    crcType -   CRC type(8, 16 or 32 bits).
 
-    initValue - Initialization value for CRC computation. Valid only in case
-                of header type PCRC_HT_USI.
+    initValue - Initialization value for CRC computation.
  
   Returns:
     If successful, the routine returns a valid CRC value.
