@@ -139,7 +139,7 @@ static SRV_USI_CALLBACK_INDEX lSRV_USI_GetCallbackIndexFromProtocol(SRV_USI_PROT
         default:
 <#if SRV_USI_ERROR_LOG_REPORT == true>
             SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_PROTOCOL,
-                                             "Bad protocol to get callback\r\n");
+                                             "USI: Bad protocol to get callback\r\n");
 </#if>
             callbackIndex = SRV_USI_CALLBACK_INDEX_INVALID;
             break;
@@ -256,7 +256,7 @@ static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
             /* Discard message */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
             SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_LENGTH, 
-                                             "Received bad length\r\n");
+                                             "USI: Received bad length, protocol = 0x%02X\r\n", protocolValue);
 </#if>
             return;
         }
@@ -287,7 +287,7 @@ static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
             /* Discard message */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
             SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_BAD_CRC,
-                                             "Received wrong CRC\r\n");
+                                             "USI: Received wrong CRC\r\n");
 </#if>
             return;
         }
@@ -307,11 +307,11 @@ static void lSRV_USI_Callback_Handle ( uint8_t *pData, uint16_t length, uintptr_
                 case SRV_USI_PROT_ID_MNGP_PRIME_GETQRY_EN:
                 case SRV_USI_PROT_ID_MNGP_PRIME_GETRSP_EN:
                     /* MNGL spec. including header (2 bytes) */
-                    dObj->callback[cbIndex](pData, dataLength + 2);
+                    dObj->callback[cbIndex](pData, dataLength + 2U);
                     break;
                      
                 default:
-                    dObj->callback[cbIndex](pData + 2, dataLength);
+                    dObj->callback[cbIndex](pData + 2U, dataLength);
                     break;
             }
         }
@@ -384,7 +384,7 @@ static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE, 
-            "Error in Escape Data: can't fit in destination buffer\r\n");
+            "USI: Error in Escape Data in header: can't fit in destination buffer\r\n");
 </#if>
         return 0;
     }
@@ -407,7 +407,7 @@ static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE,
-            "Error in Escape Data: can't fit in destination buffer\r\n");
+            "USI: Error in Escape Data in data: can't fit in destination buffer\r\n");
 </#if>
         return 0;
     }
@@ -435,7 +435,7 @@ static size_t lSRV_USI_BuildMessage( uint8_t *pDstData, size_t maxDstLength,
         /* Error in Escape Data: can't fit in destination buffer */
 <#if SRV_USI_ERROR_LOG_REPORT == true>
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_ERROR_ESCAPE,
-            "Error in Escape Data: can't fit in destination buffer\r\n");
+            "USI: Error in Escape Data in CRC: can't fit in destination buffer\r\n");
 </#if>
         return 0;
     }
@@ -648,7 +648,8 @@ size_t SRV_USI_Send_Message( SRV_USI_HANDLE handle,
     {
 <#if SRV_USI_ERROR_LOG_REPORT == true>
         SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_ERROR, USI_INVALID_LENGTH, 
-                                         "Invalid length\r\n");
+                                         "USI: Invalid length = %u, protocol = 0x%02X\r\n", 
+                                         (uint16_t)length, (uint8_t)protocol);
 </#if>
         return 0;
     }
