@@ -9,10 +9,10 @@ package:
   dependencies:
     - name: "csp"
       type: "package"
-      version: "v3.19.1"
+      version: "v3.20.0-rc.1"
     - name: "core"
       type: "package"
       version: "v3.13.5"
     - name: "gfx"
       type: "package"
-      version: "v3.13.0"
+      version: "v3.15.3"
