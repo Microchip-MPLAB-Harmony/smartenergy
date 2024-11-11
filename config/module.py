@@ -46,14 +46,6 @@ def loadModule():
     drvG3MacRTComponent.setDisplayType("G3 MAC RT Driver")
     drvG3MacRTComponent.setHelpKeyword("drv_g3_macrt")
 
-    ## Metrology Driver
-    if (("MTSH" in processor) or ("MTC" in processor)):
-        drvMetrologyComponent = Module.CreateComponent("drvMet", "METROLOGY", "/SmartEnergy/Drivers/", "driver/metrology/config/drv_metrology.py")
-        drvMetrologyComponent.addDependency("drvMet_HarmonyCoreDependency", "Core Service", "Core Service", True, True)
-        drvMetrologyComponent.addCapability("libdrvMetrology", "DRV_METROLOGY", True)
-        drvMetrologyComponent.setDisplayType("Metrology")
-        drvMetrologyComponent.setHelpKeyword("drv_metrology")
-
     ## RF215 Driver
     if ("WBZ45" not in processor) and ("PIC32CX1012BZ" not in processor):
         drvRf215Component = Module.CreateComponent("drvRf215", "RF215", "/SmartEnergy/Drivers/", "driver/rf215/config/drv_rf215.py")
