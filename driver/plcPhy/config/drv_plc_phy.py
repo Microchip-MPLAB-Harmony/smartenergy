@@ -810,6 +810,9 @@ def enablePL460Capabilities(symbol, event):
     else:
         symbol.setVisible(False)
 
+    # Send PL360/PL460 to PLC PAL (if present) to set PVDD Monitor as read-only
+    Database.sendMessage("primePal", "PLC_DEVICE", {"Device": event["value"]})
+
 def showRTOSMenu(symbol, event):
     symbol.setVisible(event["value"] != "BareMetal")
 
@@ -940,6 +943,7 @@ def instantiateComponent(plcComponent):
     plcDriverMode.setLabel("PLC Driver Mode")
     plcDriverMode.setDefaultValue("PL460")
     plcDriverMode.setHelp(plc_phy_helpkeyword)
+    Database.sendMessage("primePal", "PLC_DEVICE", {"Device": "PL460"})
 
     # RTOS CONFIG
     plcRTOSMenu = plcComponent.createMenuSymbol("DRV_PLC_RTOS_MENU", None)
