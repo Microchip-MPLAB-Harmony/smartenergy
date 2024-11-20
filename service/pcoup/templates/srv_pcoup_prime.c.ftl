@@ -465,7 +465,7 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 </#if>
 
     pibObj.id = PLC_ID_DACC_TABLE_CFG;
-    pibObj.length = 17 << 2;
+    pibObj.length = 17U << 2;
     pibObj.pData = (uint8_t *)pCoupValues->daccTable;
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;

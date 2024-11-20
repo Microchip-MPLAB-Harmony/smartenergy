@@ -127,7 +127,7 @@ void SRV_PSNIFFER_SetTxPayloadSymbols(uint16_t payloadSym)
 
 void SRV_PSNIFFER_SetPLCChannel(uint8_t channel)
 {
-    if ((channel > 0) && (channel < 15))
+    if ((channel > 0U) && (channel < 15U))
     {
         srvPsnifferChannel = channel;
     }

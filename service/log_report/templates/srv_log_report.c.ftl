@@ -106,7 +106,7 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
                                       SRV_LOG_REPORT_CODE code,
                                       const char *info, ...)
 {
-<#if SERIAL_DEBUG_ENABLE = true>    
+<#if SERIAL_DEBUG_ENABLE = true>
     /* Format the information */
     va_start(srvLogReportArgs, info);
     (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
@@ -131,7 +131,7 @@ void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,
 void SRV_LOG_REPORT_Message(SRV_LOG_REPORT_LEVEL logLevel,
                             const char *info, ...)
 {
-<#if SERIAL_DEBUG_ENABLE = true> 
+<#if SERIAL_DEBUG_ENABLE = true>
     /* Format the information */
     va_start(srvLogReportArgs, info);
     (void) vsnprintf(message, SYS_CONSOLE_PRINT_BUFFER_SIZE, info, srvLogReportArgs);
@@ -148,7 +148,7 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
                            const uint8_t *buffer, uint32_t bufferLength,
                            const char *info, ...)
 {
-<#if SERIAL_DEBUG_ENABLE = true> 
+<#if SERIAL_DEBUG_ENABLE = true>
     uint32_t blockLength;
     uint32_t lastBlockLength;
     uint32_t lastPosition;
@@ -166,7 +166,7 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
     blockLength = SYS_CONSOLE_PRINT_BUFFER_SIZE / 2U;
     blockNumber = bufferLength / blockLength;
     lastBlockLength = bufferLength % blockLength;
-    if (lastBlockLength)
+    if (lastBlockLength != 0U)
     {
         ++blockNumber;
     }
@@ -184,7 +184,7 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
             blockLength = lastBlockLength;
         }
 
-        if (blockLength)
+        if (blockLength != 0U)
         {
             lastPosition = lastBlock * (SYS_CONSOLE_PRINT_BUFFER_SIZE / 2U);
             for (uint32_t i = 0U; i < blockLength; i++)
@@ -204,7 +204,7 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
     (void)buffer;
     (void)bufferLength;
     (void)info;
-</#if>    
+</#if>
 }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>

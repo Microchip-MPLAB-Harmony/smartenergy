@@ -11,7 +11,7 @@
     Interface definition of the AES wrapper between Smart Energy stacks and AES.
 
   Description:
-    This file defines the interface for the AES wrapper between Smart Energy 
+    This file defines the interface for the AES wrapper between Smart Energy
     stacks and AES.
 *******************************************************************************/
 
@@ -134,12 +134,12 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out);
 //******************************************************************************
 /* Function:
     void AES_Wrapper_WrapKey(
-        uint8_t *key, 
-        uint32_t keyLen, 
-        uint8_t *in, 
+        uint8_t *key,
+        uint32_t keyLen,
+        uint8_t *in,
         uint32_t inLen,
         uint8_t *out)
-    
+
   Summary:
     Wraps a key with AES Key Wrap Algorithm.
 
@@ -172,18 +172,18 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out);
     The wrapped key is one byte longer than the plain key.
 */
 
-void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
+void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in,
     uint32_t inLen, uint8_t *out);
 
-///******************************************************************************
+//******************************************************************************
 /* Function:
     bool AES_Wrapper_UnwrapKey(
-        uint8_t *key, 
-        uint32_t keyLen, 
-        uint8_t *in, 
+        uint8_t *key,
+        uint32_t keyLen,
+        uint8_t *in,
         uint32_t inLen,
         uint8_t *out)
-    
+
   Summary:
     Unwraps a key with AES Key Wrap Algorithm.
 
@@ -216,7 +216,7 @@ void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in,
     The unwrapped key is one byte shorter than the wrapped key.
 */
 
-bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
+bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in,
     uint32_t inLen, uint8_t *out);
 </#if>
 

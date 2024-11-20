@@ -454,7 +454,7 @@ void DRV_PLC_PHY_Task(void)
 
 </#if>
     /* Check event flags */
-    for (uint8_t idx = 0; idx < 2; idx++)
+    for (uint8_t idx = 0; idx < 2U; idx++)
     {
         if ((gPlcPhyObj->evTxCfm[idx]) || (gPlcPhyObj->evResetTxCfm))
         {
@@ -506,7 +506,7 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
     DRV_PLC_PHY_TRANSMISSION_CFM_OBJ cfmObj;
     uint8_t bufIdx = (uint8_t) transmitObj->bufferId;
 
-    if (bufIdx > TX_BUFFER_1)
+    if (bufIdx > (uint8_t)(TX_BUFFER_1))
     {
         /* Invalid buffer. */
         if (gPlcPhyObj->txCfmCallback != NULL)
@@ -571,7 +571,7 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
             }
 
             /* Send TX message */
-            if (bufIdx == TX_BUFFER_0)
+            if (bufIdx == (uint8_t)(TX_BUFFER_0))
             {
                 lDRV_PLC_PHY_COMM_SpiWriteCmd(TX0_PAR_ID, sDataTx, (uint16_t)size);
             }

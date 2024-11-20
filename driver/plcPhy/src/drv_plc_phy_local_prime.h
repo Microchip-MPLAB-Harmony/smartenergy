@@ -57,9 +57,9 @@ Microchip or any third party.
 
 #define PLC_STATUS_LENGTH     8U
 #define PLC_DATA_PKT_SIZE     512U
-#define PLC_TX_PAR_SIZE       sizeof(DRV_PLC_PHY_TRANSMISSION_OBJ)
-#define PLC_RX_PAR_SIZE       sizeof(DRV_PLC_PHY_RECEPTION_OBJ)
-#define PLC_CMF_PKT_SIZE      sizeof(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ)
+#define PLC_TX_PAR_SIZE       (uint16_t)(sizeof(DRV_PLC_PHY_TRANSMISSION_OBJ))
+#define PLC_RX_PAR_SIZE       (uint16_t)(sizeof(DRV_PLC_PHY_RECEPTION_OBJ))
+#define PLC_CMF_PKT_SIZE      (uint16_t)(sizeof(DRV_PLC_PHY_TRANSMISSION_CFM_OBJ))
 #define PLC_REG_PKT_SIZE      PLC_DATA_PKT_SIZE
 
 /* Number of transmission buffers */

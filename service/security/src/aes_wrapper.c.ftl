@@ -8,11 +8,11 @@
     aes_wrapper.c
 
   Summary:
-    Interface implementation of the AES wrapper between Smart Energy stacks and 
+    Interface implementation of the AES wrapper between Smart Energy stacks and
     AES.
 
   Description:
-    This file implements the interface for the AES wrapper between Smart Energy 
+    This file implements the interface for the AES wrapper between Smart Energy
     stacks and AES.
 *******************************************************************************/
 
@@ -67,7 +67,7 @@ void AES_Wrapper_SetEncryptEcbKey(uint8_t *key)
 {
     (void) Crypto_Sym_Aes_Init(&aesWrapperContext, CRYPTO_HANDLER_SW_WOLFCRYPT,
             CRYPTO_CIOP_ENCRYPT, CRYPTO_SYM_OPMODE_ECB,
-            key, CRYPTO_AESKEYSIZE_128, NULL, 1);
+            key, (uint32_t)(CRYPTO_AESKEYSIZE_128), NULL, 1);
 }
 
 void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
@@ -76,22 +76,22 @@ void AES_Wrapper_EncryptEcb(uint8_t *in, uint8_t *out)
 }
 
 <#if (prime_config)??>
-void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
+void AES_Wrapper_WrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in,
     uint32_t inLen, uint8_t *out)
 {
-    (void) Crypto_Sym_AesKeyWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen, 
+    (void) Crypto_Sym_AesKeyWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, in, inLen,
         out, key, keyLen, NULL, 1);
 }
 
-bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in, 
+bool AES_Wrapper_UnwrapKey(uint8_t *key, uint32_t keyLen, uint8_t *in,
     uint32_t inLen, uint8_t *out)
 {
     crypto_Sym_Status_E unwrapResult;
-    
-    unwrapResult = Crypto_Sym_AesKeyUnWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT, 
+
+    unwrapResult = Crypto_Sym_AesKeyUnWrapDirect(CRYPTO_HANDLER_SW_WOLFCRYPT,
         in, inLen, out, key, keyLen, NULL, 1);
-        
-    if (unwrapResult == CRYPTO_SYM_CIPHER_SUCCESS) 
+
+    if (unwrapResult == CRYPTO_SYM_CIPHER_SUCCESS)
     {
         return true;
     }
