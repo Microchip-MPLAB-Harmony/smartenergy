@@ -191,6 +191,9 @@ DRV_HANDLE DRV_PLC_PHY_Open(
         bootInfo.contextBoot = 0;
     }
 
+    /* Delay to ensure that NRST is pushed at least 2.15 ms after LDO is enabled */
+    gDrvPlcPhyObj.plcHal->delay(2150);
+
     DRV_PLC_BOOT_Start(&bootInfo, gDrvPlcPhyObj.plcHal);
 
     gDrvPlcPhyObj.nClients++;
