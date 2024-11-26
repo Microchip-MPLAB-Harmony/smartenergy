@@ -10,7 +10,6 @@ static const SRV_USI_USART_INTERFACE srvUsi${INDEX?string}InitData${SRV_USI_DEVI
     .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_ReadCallbackRegister,
     .readData = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Read,
     .writeData = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Write,
-    .writeIsBusy = (USI_USART_PLIB_WRITE_ISBUSY)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_WriteIsBusy,
 <#if SRV_USI_DEVICE?lower_case[0..*6] == "sercom">
     .intSource = ${SRV_USI_DEVICE}_IRQn,
 <#elseif SRV_USI_DEVICE?lower_case[0..*7] == "flexcom">
@@ -20,10 +19,14 @@ static const SRV_USI_USART_INTERFACE srvUsi${INDEX?string}InitData${SRV_USI_DEVI
 </#if>
 };
 
+static uint8_t CACHE_ALIGN srvUSI${INDEX?string}USARTReadBuffer[128] = {0};
+
 static const USI_USART_INIT_DATA srvUsi${INDEX?string}InitData = {
     .plib = (void*)&srvUsi${INDEX?string}InitData${SRV_USI_DEVICE?string},
     .pRdBuffer = (void*)srvUSI${INDEX?string}ReadBuffer,
     .rdBufferSize = SRV_USI${INDEX?string}_RD_BUF_SIZE,
+    .usartReadBuffer = (void *)srvUSI${INDEX?string}USARTReadBuffer,
+    .usartBufferSize = 128,
 };
 
 /* srvUSIUSARTDevDesc declared in USI USART service implementation (srv_usi_usart.c) */

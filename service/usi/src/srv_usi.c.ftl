@@ -654,9 +654,6 @@ size_t SRV_USI_Send_Message( SRV_USI_HANDLE handle,
         return 0;
     }
 
-    /* Waiting for USART/CDC is free */
-    while (dObj->devDesc->writeIsBusy(dObj->devIndex) == true){}
-
     /* Build USI message */
     writeLength = lSRV_USI_BuildMessage(dObj->pWrBuffer, dObj->wrBufferSize, protocol, data, (uint16_t)length);
     

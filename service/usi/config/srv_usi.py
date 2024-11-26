@@ -257,7 +257,7 @@ def onAttachmentDisconnected(source, target):
     if connectID == "srv_usi_USART_dependency":
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
         dict = Database.sendMessage("srv_usi", "USI_REMOVE_USART_API", {})
-        dict = Database.sendMessage(remoteID, "UART_NON_BLOCKING_MODE", {"isReadOnly":False})
+        dict = Database.sendMessage(remoteID, "UART_RING_BUFFER_MODE", {"isReadOnly":False})
 
     if connectID == "srv_usi_CDC_dependency":
         localComponent.getSymbolByID("SRV_USI_DEVICE").clearValue()
@@ -269,7 +269,7 @@ def handleMessage(messageID, args):
 
     if (messageID == "REQUEST_CONFIG_PARAMS"):
         if args.get("localComponentID") != None:
-            result_dict = Database.sendMessage(args["localComponentID"], "UART_NON_BLOCKING_MODE", {"isEnabled":True, "isReadOnly":True})
+            result_dict = Database.sendMessage(args["localComponentID"], "UART_RING_BUFFER_MODE", {"isEnabled":True, "isReadOnly":True})
 
     return result_dict
 
