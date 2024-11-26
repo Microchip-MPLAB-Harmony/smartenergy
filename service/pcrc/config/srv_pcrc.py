@@ -33,12 +33,12 @@ def instantiateComponent(crcComponentCommon):
 
     # CRC wrapper Files
     srvCrcSourceFile = crcComponentCommon.createFileSymbol("SRV_PCRC_SOURCE", None)
-    srvCrcSourceFile.setSourcePath("service/pcrc/srv_pcrc.c")
+    srvCrcSourceFile.setSourcePath("service/pcrc/srv_pcrc.c.ftl")
     srvCrcSourceFile.setOutputName("srv_pcrc.c")
     srvCrcSourceFile.setDestPath("service/pcrc")
     srvCrcSourceFile.setProjectPath("config/" + configName + "/service/pcrc/")
     srvCrcSourceFile.setType("SOURCE")
-    srvCrcSourceFile.setMarkup(False)
+    srvCrcSourceFile.setMarkup(True)
     srvCrcSourceFile.setOverwrite(True)
     srvCrcSourceFile.setEnabled(True)
 

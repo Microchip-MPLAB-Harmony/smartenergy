@@ -86,7 +86,8 @@ typedef enum
     PCRC_HT_GENERIC = 0, /* GENERIC Packet type */
     PCRC_HT_PRIME_GENERIC, /* PRIME Generic Packet type */
     PCRC_HT_PRIME_BEACON14, /* PRIME 1.4 Beacon Packet type */
-    PCRC_HT_USI /* USI Packet type */
+    PCRC_HT_USI, /* USI Packet type */
+    PCRC_HT_MM /* Meters And More Packet type */
 }PCRC_HEADER_TYPE;
 
 // *****************************************************************************
@@ -153,7 +154,7 @@ typedef enum
     crcType -   CRC type(8, 16 or 32 bits).
 
     initValue - Initialization value for CRC computation.
- 
+
   Returns:
     If successful, the routine returns a valid CRC value.
     If an error occurs, the return value is PCRC_INVALID. Error can occur if
@@ -198,13 +199,13 @@ uint32_t SRV_PCRC_GetValue(uint8_t *pData, size_t length,
   Example:
     <code>
     uint8_t sna[PCRC_SNA_SIZE];
-    
+
     SRV_PCRC_ConfigureSNA(sna);
     </code>
 
   Remarks:
     None.
-*/  
+*/
 void SRV_PCRC_ConfigureSNA (uint8_t* sna);
 
 #endif //SRV_PCRC_H
