@@ -97,8 +97,8 @@ extern uint8_t plc_phy_bin_end;
 #define VLO_STATE                              0x02U
 
 /* Signal Capture Mode Bit Mask */
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 5.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_10_1_DR_1 */
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 5.4 deviated 22 times. Deviation record ID - H3_MISRAC_2012_R_5_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
@@ -351,7 +351,7 @@ typedef enum {
 } DRV_PLC_PHY_BUFFER_ID;
 
 /* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 5.2 deviated once.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
+/* MISRA C-2012 Rule 5.2 deviated 5 times.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
@@ -429,7 +429,7 @@ typedef struct {
 } DRV_PLC_PHY_SIGNAL_CAPTURE;
 
     /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 6.1 deviated once. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+    /* MISRA C-2012 Rule 6.1 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
