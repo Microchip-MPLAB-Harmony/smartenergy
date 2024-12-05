@@ -48,8 +48,8 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "cipher_wrapper.h"
-#include "crypto/common_crypto/MCHP_Crypto_Mac_Cipher.h"
-#include "crypto/common_crypto/MCHP_Crypto_Aead_Cipher.h"
+#include "crypto/common_crypto/crypto_mac_cipher.h"
+#include "crypto/common_crypto/crypto_aead_cipher.h"
 #include <string.h>
 
 // *****************************************************************************

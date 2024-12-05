@@ -46,7 +46,7 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include "aes_wrapper.h"
-#include "crypto/common_crypto/MCHP_Crypto_Sym_Cipher.h"
+#include "crypto/common_crypto/crypto_sym_cipher.h"
 
 // *****************************************************************************
 // *****************************************************************************
