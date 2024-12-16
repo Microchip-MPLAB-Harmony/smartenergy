@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Package name="smartenergy" version: "v1.2.1">
+<Package name="smartenergy" version: "v1.3.0">
     <Dependencies>
-        <Dependency name="csp" version="v3.20.0-rc.1"/>
-        <Dependency name="core" version="v3.13.5"/>
-        <Dependency name="gfx" version="v3.13.0"/>
+        <Dependency name="csp" version="v3.20.0"/>
+        <Dependency name="core" version="v3.14.0"/>
+        <Dependency name="gfx" version="v3.15.3"/>
     </Dependencies>
 </Package>
