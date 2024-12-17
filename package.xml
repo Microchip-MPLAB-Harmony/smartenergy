@@ -2,7 +2,7 @@
 <Package name="smartenergy" version: "v1.3.0">
     <Dependencies>
         <Dependency name="csp" version="v3.20.0"/>
-        <Dependency name="core" version="v3.14.0"/>
+        <Dependency name="core" version="v3.14.1"/>
         <Dependency name="gfx" version="v3.15.3"/>
     </Dependencies>
 </Package>
