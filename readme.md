@@ -35,7 +35,6 @@ To view the documentation offline, follow these steps:
 | ---        | ---                                                                        |
 | apps       | Dual Core demo application                                                 |
 | config     | Smart Energy module configuration file                                     |
-| docs       | Smart Energy help documentation                                            |
 | driver     | Drivers for PLC and RF devices                                             |
 | service    | Common PLC services for communication stacks (G3, PRIME, Meters And More)  |
 
