@@ -3,6 +3,38 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.3.0
+
+### New Features
+
+- **Applications**
+  - Applications updated to use the code from new releases of dependent Harmony 3 modules.
+
+- **New Features and Enhancements**
+  - Added support for Meters And More PLC standard on both Drivers and Services.
+  - Reviewed and updated support for PRIME (PLC and RF) standard on both Drivers and Services.
+
+### Bug fixes
+
+- None.
+
+### Known Issues
+
+- "Image Copy Mode" setting value of the Secondary Project is not persisting in PIC32CX-MT Dual Core 0 Demo applications. Once the project has been opened, it is necessary to make a modification to replace the "default" value with the "manual" value. For further information, please check the project configuration following chapter 1.3.2.3 Linking Dual Core Demo Applications in the documentation provided in the docs folder.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.20](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v4.45](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.5.1 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.3.132 or higher
+
+### Notes
+
+- Metrology Driver and Demo App not available anymore in this repository. This has moved to a new smartenergy_metrology repository also available on this same platform.
+
 ## Smart Energy Release v1.2.1
 
 ### New Features
