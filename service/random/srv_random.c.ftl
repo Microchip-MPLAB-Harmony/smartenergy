@@ -52,7 +52,7 @@ Microchip or any third party.
 <#if (trng)??>
 <#elseif (lib_crypto)??>
 #include <stdlib.h>
-#include "crypto/common_crypto/MCHP_Crypto_RNG.h"
+#include "crypto/common_crypto/crypto_rng.h"
 <#else>
 #include <stdlib.h>
 </#if>
@@ -76,13 +76,15 @@ uint8_t SRV_RANDOM_Get8bits(void)
     uint8_t randBuf[1];
 
     // Generate random number from Crypto
-    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+    status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 1, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) {
+    if (status == CRYPTO_RNG_SUCCESS) 
+    {
         retValue = randBuf[0];
     }
-    else {
+    else 
+    {
         seed = SYS_TIME_CounterGet();
         srand(seed);
         retValue = (uint8_t)rand();
@@ -110,13 +112,15 @@ uint16_t SRV_RANDOM_Get16bits(void)
     uint8_t randBuf[2];
 
     // Generate random number from Crypto
-    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+    status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 2, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) {
+    if (status == CRYPTO_RNG_SUCCESS) 
+    {
         retValue = (randBuf[1] << 8) + randBuf[0];
     }
-    else {
+    else 
+    {
         seed = SYS_TIME_CounterGet();
         srand(seed);
         retValue = (uint16_t)rand();
@@ -157,14 +161,16 @@ uint32_t SRV_RANDOM_Get32bits(void)
     uint8_t randBuf[4];
 
     // Generate random number from Crypto
-    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+    status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 4, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) {
+    if (status == CRYPTO_RNG_SUCCESS) 
+    {
         retValue = (randBuf[3] << 24) + (randBuf[2] << 16) +
             (randBuf[1] << 8) + randBuf[0];
     }
-    else {
+    else 
+    {
         seed = SYS_TIME_CounterGet();
         srand(seed);
         retValue = rand();
@@ -215,10 +221,11 @@ void SRV_RANDOM_Get128bits(uint8_t *rndValue)
     uint8_t n;
 
     // Generate random number from Crypto
-    status = Crypto_Rng_Prng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
+    status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         rndValue, 16, NULL, 0, 1);
 
-    if (status != CRYPTO_RNG_SUCCESS) {
+    if (status != CRYPTO_RNG_SUCCESS) 
+    {
         seed = SYS_TIME_CounterGet();
         srand(seed);
 
