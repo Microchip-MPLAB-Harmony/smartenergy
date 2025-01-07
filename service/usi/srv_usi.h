@@ -604,7 +604,7 @@ void SRV_USI_Tasks( SYS_MODULE_OBJ object );
     length      - Length of the data to send in bytes
 
   Returns:
-    None
+    Number of bytes sent.
 
   Example:
     <code>
