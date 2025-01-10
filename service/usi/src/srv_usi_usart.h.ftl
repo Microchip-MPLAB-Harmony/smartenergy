@@ -87,7 +87,7 @@ typedef enum
 typedef void (* USI_USART_PLIB_CALLBACK)( uintptr_t context );
 
 typedef void(* USI_USART_PLIB_READ_CALLBACK_REG)(USI_USART_PLIB_CALLBACK callback, uintptr_t context);
-typedef bool(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
+typedef size_t(* USI_USART_PLIB_WRRD)(void *buffer, const size_t size);
 
 typedef struct
 {
