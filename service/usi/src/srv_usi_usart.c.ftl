@@ -89,11 +89,11 @@ static USI_USART_OBJ gUsiUsartOBJ[SRV_USI_USART_CONNECTIONS] = {0};
 static void lUSI_USART_TransferReceivedData(USI_USART_OBJ* dObj, size_t bytesRcv)
 {
     size_t numByte;
-    
+
     for(numByte = 0; numByte < bytesRcv; numByte++)
     {
         uint8_t rcvChar = dObj->usartReadBuffer[numByte];
-        
+
         switch (dObj->devStatus)
         {
             case USI_USART_IDLE:
@@ -112,16 +112,16 @@ static void lUSI_USART_TransferReceivedData(USI_USART_OBJ* dObj, size_t bytesRcv
 
                 if (rcvChar == USI_ESC_KEY_7E)
                 {
-                    if (dObj->byteCount == 0)
+                    if (dObj->byteCount == 0U)
                     {
                         /* Two consecutive 7E, synchronizing with the begin
                           of the message*/
                         break;
                     }
-                    
+
                     /* End of Message */
                      dObj->cbFunc(dObj->pRdBuffer, dObj->byteCount, dObj->context);
-                    
+
                     dObj->devStatus = USI_USART_IDLE;
 
                     /* Stop Counter to discard uncompleted Message */

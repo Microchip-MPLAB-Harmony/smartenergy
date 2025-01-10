@@ -167,7 +167,7 @@ void SRV_PSERIAL_ParseTxMessage(DRV_PLC_PHY_TRANSMISSION_OBJ* pDataDst, uint8_t*
     pDataDst->timeIni += ((uint32_t)*pDataSrc++) << 16;
     pDataDst->timeIni += ((uint32_t)*pDataSrc++) << 8;
     pDataDst->timeIni += (uint32_t)*pDataSrc++;
-    pDataDst->csma.disableRx = (uint32_t)*pDataSrc++;
+    pDataDst->csma.disableRx = (uint8_t)*pDataSrc++;
     pDataDst->csma.senseCount = 0;
     pDataDst->csma.senseDelayMs = 0;
     pDataDst->dataLength = ((uint16_t)*pDataSrc++) << 8;
