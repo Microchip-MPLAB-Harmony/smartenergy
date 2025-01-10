@@ -314,7 +314,7 @@ void USI_USART_Tasks (uint32_t index)
      /* Ring mode USART reception process */
     bytesRcv = dObj->plib->readData(dObj->usartReadBuffer, dObj->usartBufferSize);
 
-    if (bytesRcv != 0)
+    if (bytesRcv != 0U)
     {
         lUSI_USART_TransferReceivedData(dObj, bytesRcv);
     }
