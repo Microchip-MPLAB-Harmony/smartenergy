@@ -197,6 +197,7 @@ DRV_HANDLE DRV_PLC_PHY_Open(
     DRV_PLC_BOOT_Start(&bootInfo, gDrvPlcPhyObj.plcHal);
 
     gDrvPlcPhyObj.nClients++;
+    gDrvPlcPhyObj.consecutiveSpiErrors = 0;
 
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
     /* Post semaphore to resume task */
@@ -216,6 +217,7 @@ void DRV_PLC_PHY_Close( const DRV_HANDLE handle )
         gDrvPlcPhyObj.nClients--;
         gDrvPlcPhyObj.inUse = false;
         gDrvPlcPhyObj.status = SYS_STATUS_UNINITIALIZED;
+        gDrvPlcPhyObj.plcHal->enableExtInt(false);
     }
 }
 
@@ -293,7 +295,6 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
         }
         else if (state == DRV_PLC_BOOT_STATUS_READY)
         {
-            DRV_PLC_PHY_Init(&gDrvPlcPhyObj);
             gDrvPlcPhyObj.status = SYS_STATUS_READY;
             gDrvPlcPhyObj.state[0] = DRV_PLC_PHY_STATE_IDLE;
 <#if (DRV_PLC_PROFILE == "PRIME")>
@@ -306,7 +307,9 @@ void DRV_PLC_PHY_Tasks( SYS_MODULE_OBJ object )
                 gDrvPlcPhyObj.sleep = false;
                 gDrvPlcPhyObj.sleepDisableCallback(gDrvPlcPhyObj.contextSleep);
             }
+
 </#if>
+            DRV_PLC_PHY_Init(&gDrvPlcPhyObj);
         }
         else
         {

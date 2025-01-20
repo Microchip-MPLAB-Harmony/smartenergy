@@ -86,10 +86,10 @@ Microchip or any third party.
 
 typedef enum
 {
-    /* SPI has detected an unexpected status, reset is recommended */
+    /* SPI has detected an unexpected status, reset performed automatically */
     DRV_PLC_PHY_EXCEPTION_UNEXPECTED_KEY,
 
-    /* SPI critical error */
+    /* SPI critical error, maximum retry limit exceeded. The PLC Device could be not properly connected. */
     DRV_PLC_PHY_EXCEPTION_CRITICAL_ERROR,
 
     /* Device has been reseted by Debugging tool */
