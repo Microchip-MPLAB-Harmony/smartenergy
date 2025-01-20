@@ -704,14 +704,14 @@ void DRV_PLC_HAL_SendWrRdCmd(DRV_PLC_HAL_CMD *pCmd, DRV_PLC_HAL_INFO *pInfo)
     SYS_INT_SourceRestore(sPlcPlib->rfExtIntSource, rfExtIntStatus);
 
 </#if>
-    if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
 <#if core.DMA_ENABLE?has_content>
-        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx)){}
-        while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx)){}
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelTx)){}
+    while(SYS_DMA_ChannelIsBusy(sPlcPlib->dmaChannelRx)){}
 <#else>
-        while(sPlcPlib->spiIsBusy()){}
+    while(sPlcPlib->spiIsBusy()){}
 </#if>
 
+    if (pCmd->cmd == DRV_PLC_HAL_CMD_RD) {
         /* Update data received */
         (void) memcpy(pCmd->pData, &sRxSpiData[4], pCmd->length);
     }
