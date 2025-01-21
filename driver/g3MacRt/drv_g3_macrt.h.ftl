@@ -117,8 +117,14 @@ typedef enum
 
 typedef enum
 {
-    /* SPI has detected an unexpected status */
+    /* SPI has detected an unexpected status, reset performed automatically */
     DRV_G3_MACRT_EXCEPTION_UNEXPECTED_KEY,
+
+    /* SPI critical error, maximum retry limit exceeded. The PLC Device could be not properly connected. */
+    DRV_PLC_PHY_EXCEPTION_CRITICAL_ERROR,
+
+    /* Device has been reseted by Debugging tool */
+    DRV_G3_MACRT_EXCEPTION_DEBUG,
 
     /* Device has been reseted */
     DRV_G3_MACRT_EXCEPTION_RESET

@@ -197,6 +197,7 @@ DRV_HANDLE DRV_G3_MACRT_Open(
     DRV_PLC_BOOT_Start(&bootInfo, gDrvG3MacRtObj.plcHal);
 
     gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_BUSY;
+    gDrvG3MacRtObj.consecutiveSpiErrors = 0;
 
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
     /* Post semaphore to resume task */
@@ -357,7 +358,6 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object )
         }
         else if (state == DRV_PLC_BOOT_STATUS_READY)
         {
-            DRV_G3_MACRT_Init(&gDrvG3MacRtObj);
             gDrvG3MacRtObj.state = DRV_G3_MACRT_STATE_READY;
 <#if DRV_PLC_SLEEP_MODE == true>
             /*if (gDrvG3MacRtObj.sleep && gDrvG3MacRtObj.sleepIndCallback)
@@ -365,7 +365,9 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object )
                 gDrvG3MacRtObj.sleep = false;
                 gDrvG3MacRtObj.sleepIndCallback(gDrvG3MacRtObj.contextSleep);
             }*/
+
 </#if>
+            DRV_G3_MACRT_Init(&gDrvG3MacRtObj);
             if (gDrvG3MacRtObj.initCallback != NULL)
             {
                 gDrvG3MacRtObj.initCallback(true);
