@@ -303,7 +303,7 @@ static bool lDRV_PLC_PHY_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
     {
         /* Firmware is uploaded 2 times as maximum */
         gPlcPhyObj->consecutiveSpiErrors++;
-        if (gPlcPhyObj->consecutiveSpiErrors <= 2)
+        if (gPlcPhyObj->consecutiveSpiErrors <= 2U)
         {
             /* Update Driver Status */
             gPlcPhyObj->status = SYS_STATUS_BUSY;
