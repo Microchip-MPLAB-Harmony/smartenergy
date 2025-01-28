@@ -33,9 +33,25 @@ global plcAdcId
 srv_pvddmon_helpkeyword = "mcc_h3_srv_pvddmon_configurations"
 
 def handleMessage(messageID, args):
-    result_dict = {}
+    retDict = {}
+    if (messageID == "PLV_SRV_PVDDMON_CONFIG_HW_IO"):
+        component = "srv_pvddmon"
+        plib, channel, enable = args['config']
 
-    return result_dict
+        intSrcSymbolName = "SRV_PVDDMON_ADC_CHANNEL"
+
+        if enable == True:
+            res = Database.clearSymbolValue(component, intSrcSymbolName)
+            res = Database.setSymbolValue(component, intSrcSymbolName, int(channel))
+        else:
+            res = Database.clearSymbolValue(component, intSrcSymbolName)
+
+        if res == True:
+            retDict = {"Result": "Success"}
+        else:
+            retDict = {"Result": "Fail"}
+
+    return retDict
 
 def getNewADCThresholds(symbol, event):
     global plcAdcId
@@ -177,7 +193,7 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonADCComment1.setVisible(True)
 
     pPVDDMonADCComment2 = pPVDDMonComponent.createCommentSymbol("SRV_PVDDMON_ADC_COMMENT2", pPVDDMonPlib)
-    pPVDDMonADCComment2.setLabel("**** Enable manually ADC End of conversion interrupt in the channel configuration.")
+    pPVDDMonADCComment2.setLabel("**** Refer to PVdd Monitor documentation for ADC configuration requirements.")
     pPVDDMonADCComment2.setVisible(True)
 
     if (pvddmon_plib == ""):
