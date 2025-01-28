@@ -648,6 +648,21 @@ void DRV_G3_MACRT_SetCoordinator(const DRV_HANDLE handle)
     }
 }
 
+void DRV_G3_MACRT_SetBand(const DRV_HANDLE handle, MAC_RT_BAND band)
+{
+    if ((handle != DRV_HANDLE_INVALID) && (handle == 0U))
+    {
+        uint8_t bandValue;
+
+        bandValue = (uint8_t)band;
+        /* Send Set Band Request */
+        lDRV_G3_MACRT_COMM_SpiWriteCmd(SET_BAND_ID, &bandValue, 1U);
+
+        /* Delay to ensure new band is completely configured */
+        gG3MacRtObj->plcHal->delay(1000);
+    }
+}
+
 void DRV_G3_MACRT_EnablePhySniffer(const DRV_HANDLE handle)
 {
     if ((handle != DRV_HANDLE_INVALID) && (handle == 0U))

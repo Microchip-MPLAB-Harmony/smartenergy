@@ -24,22 +24,12 @@ DRV_G3_MACRT_INIT drvG3MacRtInitData = {
     /* PLC Binary end address */
     .binEndAddress = 0,
 <#else>
-  <#if ((DRV_PLC_BAND_IN_USE >= 5) && (DRV_PLC_G3_BAND_AUX_ACTIVE == true))>
- 
-    /* PLC MAC RT Binary start address */
-    .binStartAddress = (uint32_t)&g3_mac_rt_bin2_start,
-    
-    /* PLC MAC RT Binary end address */
-    .binEndAddress = (uint32_t)&g3_mac_rt_bin2_end,
 
-  <#else>
- 
     /* PLC MAC RT Binary start address */
     .binStartAddress = (uint32_t)&g3_mac_rt_bin_start,
     
     /* PLC MAC RT Binary end address */
     .binEndAddress = (uint32_t)&g3_mac_rt_bin_end,
-  </#if>
 </#if>  
 
     /* Secure Mode */

@@ -115,21 +115,25 @@ static uint16_t lDRV_PLC_PHY_COMM_GetDelayUs(DRV_PLC_PHY_ID id)
         switch (id)
         {
             case PLC_ID_TONE_MASK:
-            delay = 600;
-            break;
+                delay = 600;
+                break;
 
             case PLC_ID_PREDIST_COEF_TABLE_HI:
             case PLC_ID_PREDIST_COEF_TABLE_LO:
-            delay = 250;
-            break;
+                delay = 250;
+                break;
 
             case PLC_ID_PREDIST_COEF_TABLE_VLO:
-            delay = 350;
-            break;
+                delay = 350;
+                break;
+
+            case PLC_ID_BAND:
+                delay = 1000;
+                break;
 
             default:
-            delay = 50;
-            break;
+                delay = 50;
+                break;
         }
     }
 
