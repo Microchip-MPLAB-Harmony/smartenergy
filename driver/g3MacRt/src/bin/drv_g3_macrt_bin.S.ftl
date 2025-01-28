@@ -34,33 +34,19 @@ Microchip or any third party.
   .section .rodata
   .global g3_mac_rt_bin_start
   .global g3_mac_rt_bin_end
-  .global g3_mac_rt_bin2_start
-  .global g3_mac_rt_bin2_end
 
   .align 8
 g3_mac_rt_bin_start:
 <#if DRV_PLC_BAND_IN_USE == 1>
   .incbin "./G3_MAC_RT_CENA.bin"
-<#elseif DRV_PLC_BAND_IN_USE == 2 || DRV_PLC_BAND_IN_USE == 5 || DRV_PLC_BAND_IN_USE == 6>
+<#elseif DRV_PLC_BAND_IN_USE == 2>
   .incbin "./G3_MAC_RT_FCC.bin"
-<#elseif DRV_PLC_BAND_IN_USE == 3 || DRV_PLC_BAND_IN_USE == 7 || DRV_PLC_BAND_IN_USE == 8>
+<#elseif DRV_PLC_BAND_IN_USE == 3>
   .incbin "./G3_MAC_RT_G3_ARIB.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 4>
   .incbin "./G3_MAC_RT_CENB.bin"
+<#elseif DRV_PLC_BAND_IN_USE == 5 || DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7 || DRV_PLC_BAND_IN_USE == 8>
+  .incbin "./G3_MAC_RT_MULTIBAND.bin"
 </#if>
   .align 8
 g3_mac_rt_bin_end:
-<#if (DRV_PLC_BAND_IN_USE == 5) || (DRV_PLC_BAND_IN_USE == 7)>
-g3_mac_rt_bin2_start:
-  .incbin "./G3_MAC_RT_CENA.bin"
-  .align 8
-g3_mac_rt_bin2_end:
-<#elseif (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
-g3_mac_rt_bin2_start:
-  .incbin "./G3_MAC_RT_CENB.bin"
-  .align 8
-g3_mac_rt_bin2_end:
-<#else>
-g3_mac_rt_bin2_start:
-g3_mac_rt_bin2_end:
-</#if>

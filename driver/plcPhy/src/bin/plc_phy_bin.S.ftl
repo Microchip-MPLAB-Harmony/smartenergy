@@ -34,19 +34,19 @@ Microchip or any third party.
   .section .rodata
   .global plc_phy_bin_start
   .global plc_phy_bin_end
-  .global plc_phy_bin2_start
-  .global plc_phy_bin2_end
 
   .align 8
 plc_phy_bin_start:
 <#if DRV_PLC_BAND_IN_USE == 1>
   .incbin "./PLC_PHY_G3_CENA.bin"
-<#elseif DRV_PLC_BAND_IN_USE == 2 || DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7>
+<#elseif DRV_PLC_BAND_IN_USE == 2>
   .incbin "./PLC_PHY_G3_FCC.bin"
-<#elseif DRV_PLC_BAND_IN_USE == 3 || DRV_PLC_BAND_IN_USE == 8 || DRV_PLC_BAND_IN_USE == 9>
+<#elseif DRV_PLC_BAND_IN_USE == 3>
   .incbin "./PLC_PHY_G3_ARIB.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 4>
   .incbin "./PLC_PHY_G3_CENB.bin"
+<#elseif DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7 || DRV_PLC_BAND_IN_USE == 8 || DRV_PLC_BAND_IN_USE == 9>
+  .incbin "./PLC_PHY_G3_MULTIBAND.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 5>
   .incbin "./PLC_PHY_PRIME_2CHN.bin"
 <#elseif DRV_PLC_BAND_IN_USE == 10>
@@ -54,17 +54,3 @@ plc_phy_bin_start:
 </#if>
   .align 8
 plc_phy_bin_end:
-<#if (DRV_PLC_BAND_IN_USE == 6) || (DRV_PLC_BAND_IN_USE == 8)>
-plc_phy_bin2_start:
-  .incbin "./PLC_PHY_G3_CENA.bin"
-  .align 8
-plc_phy_bin2_end:
-<#elseif (DRV_PLC_BAND_IN_USE == 7) || (DRV_PLC_BAND_IN_USE == 9)>
-plc_phy_bin2_start:
-  .incbin "./PLC_PHY_G3_CENB.bin"
-  .align 8
-plc_phy_bin2_end:
-<#else>
-plc_phy_bin2_start:
-plc_phy_bin2_end:
-</#if>
