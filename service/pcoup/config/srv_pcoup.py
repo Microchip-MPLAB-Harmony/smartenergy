@@ -56,14 +56,32 @@ gain_high_fcc  = [49, 20, 256]
 gain_vlow_fcc  = [364, 180, 408]
 drv_conf_fcc   = 5
 
-rms_high_fcc_himp   = [1064, 763, 549, 394, 283, 204, 148, 108]
-rms_vlow_fcc_himp   = [3614, 2775, 2009, 1431, 1019, 725, 516, 367]
-thrs_high_fcc_himp  = [0, 0, 0, 0, 0, 0, 0, 0, 929, 668, 480, 345, 247, 179, 129, 94]
-thrs_vlow_fcc_himp  = [0, 0, 0, 0, 0, 0, 0, 0, 9668, 6931, 4955, 3538, 2520, 1793, 1276, 909]
-dacc_fcc_himp       = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
-gain_high_fcc_himp  = [105, 50, 256]
-gain_vlow_fcc_himp  = [364, 180, 408]
-drv_conf_fcc_himp   = 7
+rms_high_fcc_hiAtt   = [1064, 763, 549, 394, 283, 204, 148, 108]
+rms_vlow_fcc_hiAtt   = [3614, 2775, 2009, 1431, 1019, 725, 516, 367]
+thrs_high_fcc_hiAtt  = [0, 0, 0, 0, 0, 0, 0, 0, 929, 668, 480, 345, 247, 179, 129, 94]
+thrs_vlow_fcc_hiAtt  = [0, 0, 0, 0, 0, 0, 0, 0, 9668, 6931, 4955, 3538, 2520, 1793, 1276, 909]
+dacc_fcc_hiAtt       = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+gain_high_fcc_hiAtt  = [105, 50, 256]
+gain_vlow_fcc_hiAtt  = [364, 180, 408]
+drv_conf_fcc_hiAtt   = 7
+
+rms_high_mbsb_cena  = [82, 59, 43, 33, 27, 22, 19, 18]
+rms_vlow_mbsb_cena  = [501, 391, 284, 200, 141, 100, 71, 52]
+thrs_high_mbsb_cena = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+thrs_vlow_mbsb_cena = [0, 0, 0, 0, 0, 0, 0, 0, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000]
+dacc_mbsb_cena      = [0, 0, 0x00000100, 0x00000100, 0, 0, 0xFFFF00FF, 0x1D1D1D1D, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+gain_high_mbsb_cena = [90, 90, 90]
+gain_vlow_mbsb_cena = [597, 597, 597]
+drv_conf_mbsb_cena  = 0xA7
+
+rms_high_mbsb_fcc   = [1052, 748, 532, 378, 270, 193, 138, 99]
+rms_vlow_mbsb_fcc   = [4756, 3608, 2561, 1792, 1254, 882, 625, 443]
+thrs_high_mbsb_fcc  = [0, 0, 0, 0, 0, 0, 0, 0, 894, 635, 452, 322, 229, 164, 117, 85]
+thrs_vlow_mbsb_fcc  = [0, 0, 0, 0, 0, 0, 0, 0, 9028, 6391, 4494, 3170, 2249, 1607, 1153, 831]
+dacc_mbsb_fcc       = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+gain_high_mbsb_fcc  = [49, 20, 196]
+gain_vlow_mbsb_fcc  = [364, 180, 408]
+drv_conf_mbsb_fcc   = 0x47
 
 rms_high_cena_c07  = [1991, 1381, 976, 695, 495, 351, 250, 179]
 rms_vlow_cena_c07  = [6356, 4706, 3317, 2308, 1602, 1112, 778, 546]
@@ -356,59 +374,59 @@ thrs_vlow_drv_sb = [thrs_vlow_chn2_drv_sb, thrs_vlow_chn3_drv_sb, thrs_vlow_chn4
 gain_high_drv_sb = [gain_high_chn2_drv_sb, gain_high_chn3_drv_sb, gain_high_chn4_drv_sb, gain_high_chn5_drv_sb, gain_high_chn6_drv_sb, gain_high_chn7_drv_sb, gain_high_chn8_drv_sb]
 gain_vlow_drv_sb = [gain_vlow_chn2_drv_sb, gain_vlow_chn3_drv_sb, gain_vlow_chn4_drv_sb, gain_vlow_chn5_drv_sb, gain_vlow_chn6_drv_sb, gain_vlow_chn7_drv_sb, gain_vlow_chn8_drv_sb]
 
-rms_high_chn2_drv_himp = [737, 654, 581, 517, 460, 409, 364, 323]
-rms_high_chn3_drv_himp = [800, 697, 608, 532, 466, 409, 359, 315]
-rms_high_chn4_drv_himp = [1311, 1171, 1047, 936, 837, 748, 669, 597]
-rms_high_chn5_drv_himp = [1831, 1629, 1453, 1297, 1159, 1035, 925, 827]
-rms_high_chn6_drv_himp = [1707, 1520, 1360, 1219, 1096, 987, 890, 803]
-rms_high_chn7_drv_himp = [1248, 1125, 1016, 917, 830, 752, 682, 618]
-rms_high_chn8_drv_himp = [953, 868, 784, 706, 635, 573, 516, 466]
+rms_high_chn2_drv_hiAtt = [737, 654, 581, 517, 460, 409, 364, 323]
+rms_high_chn3_drv_hiAtt = [800, 697, 608, 532, 466, 409, 359, 315]
+rms_high_chn4_drv_hiAtt = [1311, 1171, 1047, 936, 837, 748, 669, 597]
+rms_high_chn5_drv_hiAtt = [1831, 1629, 1453, 1297, 1159, 1035, 925, 827]
+rms_high_chn6_drv_hiAtt = [1707, 1520, 1360, 1219, 1096, 987, 890, 803]
+rms_high_chn7_drv_hiAtt = [1248, 1125, 1016, 917, 830, 752, 682, 618]
+rms_high_chn8_drv_hiAtt = [953, 868, 784, 706, 635, 573, 516, 466]
 
-rms_vlow_chn2_drv_himp = [3492, 3124, 2766, 2430, 2122, 1853, 1622, 1425]
-rms_vlow_chn3_drv_himp = [2459, 2265, 2069, 1868, 1676, 1495, 1330, 1183]
-rms_vlow_chn4_drv_himp = [3124, 2868, 2609, 2358, 2114, 1882, 1673, 1486]
-rms_vlow_chn5_drv_himp = [3344, 3048, 2749, 2456, 2188, 1948, 1734, 1543]
-rms_vlow_chn6_drv_himp = [3074, 2814, 2546, 2283, 2042, 1825, 1632, 1459]
-rms_vlow_chn7_drv_himp = [2553, 2339, 2129, 1924, 1723, 1542, 1379, 1233]
-rms_vlow_chn8_drv_himp = [1838, 1668, 1500, 1345, 1203, 1076, 963, 861]
+rms_vlow_chn2_drv_hiAtt = [3492, 3124, 2766, 2430, 2122, 1853, 1622, 1425]
+rms_vlow_chn3_drv_hiAtt = [2459, 2265, 2069, 1868, 1676, 1495, 1330, 1183]
+rms_vlow_chn4_drv_hiAtt = [3124, 2868, 2609, 2358, 2114, 1882, 1673, 1486]
+rms_vlow_chn5_drv_hiAtt = [3344, 3048, 2749, 2456, 2188, 1948, 1734, 1543]
+rms_vlow_chn6_drv_hiAtt = [3074, 2814, 2546, 2283, 2042, 1825, 1632, 1459]
+rms_vlow_chn7_drv_hiAtt = [2553, 2339, 2129, 1924, 1723, 1542, 1379, 1233]
+rms_vlow_chn8_drv_hiAtt = [1838, 1668, 1500, 1345, 1203, 1076, 963, 861]
 
-thrs_high_chn2_drv_himp = thrs_high_dummy
-thrs_high_chn3_drv_himp = thrs_high_dummy
-thrs_high_chn4_drv_himp = thrs_high_dummy
-thrs_high_chn5_drv_himp = thrs_high_dummy
-thrs_high_chn6_drv_himp = [0, 0, 0, 0, 0, 0, 0, 0, 1485, 1321, 1181, 1060, 951, 857, 774, 697]
-thrs_high_chn7_drv_himp = thrs_high_dummy
-thrs_high_chn8_drv_himp = thrs_high_dummy
+thrs_high_chn2_drv_hiAtt = thrs_high_dummy
+thrs_high_chn3_drv_hiAtt = thrs_high_dummy
+thrs_high_chn4_drv_hiAtt = thrs_high_dummy
+thrs_high_chn5_drv_hiAtt = thrs_high_dummy
+thrs_high_chn6_drv_hiAtt = [0, 0, 0, 0, 0, 0, 0, 0, 1485, 1321, 1181, 1060, 951, 857, 774, 697]
+thrs_high_chn7_drv_hiAtt = thrs_high_dummy
+thrs_high_chn8_drv_hiAtt = thrs_high_dummy
 
-thrs_vlow_chn2_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn3_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn4_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn5_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn6_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn7_drv_himp = thrs_vlow_dummy
-thrs_vlow_chn8_drv_himp = thrs_vlow_dummy
+thrs_vlow_chn2_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn3_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn4_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn5_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn6_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn7_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_chn8_drv_hiAtt = thrs_vlow_dummy
 
-gain_high_chn2_drv_himp = [120, 120, 120]
-gain_vlow_chn2_drv_himp = [256, 256, 256]
-gain_high_chn3_drv_himp = [120, 120, 120]
-gain_vlow_chn3_drv_himp = [287, 287, 287]
-gain_high_chn4_drv_himp = [85, 85, 85]
-gain_vlow_chn4_drv_himp = [287, 287, 287]
-gain_high_chn5_drv_himp = [120, 120, 120]
-gain_vlow_chn5_drv_himp = [256, 256, 256]
-gain_high_chn6_drv_himp = [120, 30, 256]
-gain_vlow_chn6_drv_himp = [256, 128, 287]
-gain_high_chn7_drv_himp = [169, 169, 169]
-gain_vlow_chn7_drv_himp = [287, 287, 287]
-gain_high_chn8_drv_himp = [240, 240, 240]
-gain_vlow_chn8_drv_himp = [256, 256, 256]
+gain_high_chn2_drv_hiAtt = [120, 120, 120]
+gain_vlow_chn2_drv_hiAtt = [256, 256, 256]
+gain_high_chn3_drv_hiAtt = [120, 120, 120]
+gain_vlow_chn3_drv_hiAtt = [287, 287, 287]
+gain_high_chn4_drv_hiAtt = [85, 85, 85]
+gain_vlow_chn4_drv_hiAtt = [287, 287, 287]
+gain_high_chn5_drv_hiAtt = [120, 120, 120]
+gain_vlow_chn5_drv_hiAtt = [256, 256, 256]
+gain_high_chn6_drv_hiAtt = [120, 30, 256]
+gain_vlow_chn6_drv_hiAtt = [256, 128, 287]
+gain_high_chn7_drv_hiAtt = [169, 169, 169]
+gain_vlow_chn7_drv_hiAtt = [287, 287, 287]
+gain_high_chn8_drv_hiAtt = [240, 240, 240]
+gain_vlow_chn8_drv_hiAtt = [256, 256, 256]
 
-rms_high_drv_himp = [rms_high_chn2_drv_himp, rms_high_chn3_drv_himp, rms_high_chn4_drv_himp, rms_high_chn5_drv_himp, rms_high_chn6_drv_himp, rms_high_chn7_drv_himp, rms_high_chn8_drv_himp]
-rms_vlow_drv_himp = [rms_vlow_chn2_drv_himp, rms_vlow_chn3_drv_himp, rms_vlow_chn4_drv_himp, rms_vlow_chn5_drv_himp, rms_vlow_chn6_drv_himp, rms_vlow_chn7_drv_himp, rms_vlow_chn8_drv_himp]
-thrs_high_drv_himp = [thrs_high_chn2_drv_himp, thrs_high_chn3_drv_himp, thrs_high_chn4_drv_himp, thrs_high_chn5_drv_himp, thrs_high_chn6_drv_himp, thrs_high_chn7_drv_himp, thrs_high_chn8_drv_himp]
-thrs_vlow_drv_himp = [thrs_vlow_chn2_drv_himp, thrs_vlow_chn3_drv_himp, thrs_vlow_chn4_drv_himp, thrs_vlow_chn5_drv_himp, thrs_vlow_chn6_drv_himp, thrs_vlow_chn7_drv_himp, thrs_vlow_chn8_drv_himp]
-gain_high_drv_himp = [gain_high_chn2_drv_himp, gain_high_chn3_drv_himp, gain_high_chn4_drv_himp, gain_high_chn5_drv_himp, gain_high_chn6_drv_himp, gain_high_chn7_drv_himp, gain_high_chn8_drv_himp]
-gain_vlow_drv_himp = [gain_vlow_chn2_drv_himp, gain_vlow_chn3_drv_himp, gain_vlow_chn4_drv_himp, gain_vlow_chn5_drv_himp, gain_vlow_chn6_drv_himp, gain_vlow_chn7_drv_himp, gain_vlow_chn8_drv_himp]
+rms_high_drv_hiAtt = [rms_high_chn2_drv_hiAtt, rms_high_chn3_drv_hiAtt, rms_high_chn4_drv_hiAtt, rms_high_chn5_drv_hiAtt, rms_high_chn6_drv_hiAtt, rms_high_chn7_drv_hiAtt, rms_high_chn8_drv_hiAtt]
+rms_vlow_drv_hiAtt = [rms_vlow_chn2_drv_hiAtt, rms_vlow_chn3_drv_hiAtt, rms_vlow_chn4_drv_hiAtt, rms_vlow_chn5_drv_hiAtt, rms_vlow_chn6_drv_hiAtt, rms_vlow_chn7_drv_hiAtt, rms_vlow_chn8_drv_hiAtt]
+thrs_high_drv_hiAtt = [thrs_high_chn2_drv_hiAtt, thrs_high_chn3_drv_hiAtt, thrs_high_chn4_drv_hiAtt, thrs_high_chn5_drv_hiAtt, thrs_high_chn6_drv_hiAtt, thrs_high_chn7_drv_hiAtt, thrs_high_chn8_drv_hiAtt]
+thrs_vlow_drv_hiAtt = [thrs_vlow_chn2_drv_hiAtt, thrs_vlow_chn3_drv_hiAtt, thrs_vlow_chn4_drv_hiAtt, thrs_vlow_chn5_drv_hiAtt, thrs_vlow_chn6_drv_hiAtt, thrs_vlow_chn7_drv_hiAtt, thrs_vlow_chn8_drv_hiAtt]
+gain_high_drv_hiAtt = [gain_high_chn2_drv_hiAtt, gain_high_chn3_drv_hiAtt, gain_high_chn4_drv_hiAtt, gain_high_chn5_drv_hiAtt, gain_high_chn6_drv_hiAtt, gain_high_chn7_drv_hiAtt, gain_high_chn8_drv_hiAtt]
+gain_vlow_drv_hiAtt = [gain_vlow_chn2_drv_hiAtt, gain_vlow_chn3_drv_hiAtt, gain_vlow_chn4_drv_hiAtt, gain_vlow_chn5_drv_hiAtt, gain_vlow_chn6_drv_hiAtt, gain_vlow_chn7_drv_hiAtt, gain_vlow_chn8_drv_hiAtt]
 
 #### Double Channels ########################################################
 dacc_2chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x17171717, \
@@ -586,59 +604,59 @@ thrs_vlow_2chn_drv_sb = [thrs_vlow_2chn12_drv_sb, thrs_vlow_2chn23_drv_sb, thrs_
 gain_high_2chn_drv_sb = [gain_high_2chn12_drv_sb, gain_high_2chn23_drv_sb, gain_high_2chn34_drv_sb, gain_high_2chn45_drv_sb, gain_high_2chn56_drv_sb, gain_high_2chn67_drv_sb, gain_high_2chn78_drv_sb]
 gain_vlow_2chn_drv_sb = [gain_vlow_2chn12_drv_sb, gain_vlow_2chn23_drv_sb, gain_vlow_2chn34_drv_sb, gain_vlow_2chn45_drv_sb, gain_vlow_2chn56_drv_sb, gain_vlow_2chn67_drv_sb, gain_vlow_2chn78_drv_sb]
 
-rms_high_2chn12_drv_himp = rms_high_2chn12_drv_sb
-rms_high_2chn23_drv_himp = rms_high_2chn23_drv_sb
-rms_high_2chn34_drv_himp = rms_high_2chn34_drv_sb
-rms_high_2chn45_drv_himp = rms_high_2chn45_drv_sb
-rms_high_2chn56_drv_himp = rms_high_2chn56_drv_sb
-rms_high_2chn67_drv_himp = rms_high_2chn67_drv_sb
-rms_high_2chn78_drv_himp = rms_high_2chn78_drv_sb
+rms_high_2chn12_drv_hiAtt = rms_high_2chn12_drv_sb
+rms_high_2chn23_drv_hiAtt = rms_high_2chn23_drv_sb
+rms_high_2chn34_drv_hiAtt = rms_high_2chn34_drv_sb
+rms_high_2chn45_drv_hiAtt = rms_high_2chn45_drv_sb
+rms_high_2chn56_drv_hiAtt = rms_high_2chn56_drv_sb
+rms_high_2chn67_drv_hiAtt = rms_high_2chn67_drv_sb
+rms_high_2chn78_drv_hiAtt = rms_high_2chn78_drv_sb
 
-rms_vlow_2chn12_drv_himp = rms_vlow_2chn12_drv_sb
-rms_vlow_2chn23_drv_himp = rms_vlow_2chn23_drv_sb
-rms_vlow_2chn34_drv_himp = rms_vlow_2chn34_drv_sb
-rms_vlow_2chn45_drv_himp = rms_vlow_2chn45_drv_sb
-rms_vlow_2chn56_drv_himp = rms_vlow_2chn56_drv_sb
-rms_vlow_2chn67_drv_himp = rms_vlow_2chn67_drv_sb
-rms_vlow_2chn78_drv_himp = rms_vlow_2chn78_drv_sb
+rms_vlow_2chn12_drv_hiAtt = rms_vlow_2chn12_drv_sb
+rms_vlow_2chn23_drv_hiAtt = rms_vlow_2chn23_drv_sb
+rms_vlow_2chn34_drv_hiAtt = rms_vlow_2chn34_drv_sb
+rms_vlow_2chn45_drv_hiAtt = rms_vlow_2chn45_drv_sb
+rms_vlow_2chn56_drv_hiAtt = rms_vlow_2chn56_drv_sb
+rms_vlow_2chn67_drv_hiAtt = rms_vlow_2chn67_drv_sb
+rms_vlow_2chn78_drv_hiAtt = rms_vlow_2chn78_drv_sb
 
-thrs_high_2chn12_drv_himp = thrs_high_dummy
-thrs_high_2chn23_drv_himp = thrs_high_dummy
-thrs_high_2chn34_drv_himp = thrs_high_dummy
-thrs_high_2chn45_drv_himp = thrs_high_dummy
-thrs_high_2chn56_drv_himp = thrs_high_dummy
-thrs_high_2chn67_drv_himp = thrs_high_dummy
-thrs_high_2chn78_drv_himp = thrs_high_dummy
+thrs_high_2chn12_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn23_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn34_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn45_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn56_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn67_drv_hiAtt = thrs_high_dummy
+thrs_high_2chn78_drv_hiAtt = thrs_high_dummy
 
-thrs_vlow_2chn12_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn23_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn34_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn45_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn56_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn67_drv_himp = thrs_vlow_dummy
-thrs_vlow_2chn78_drv_himp = thrs_vlow_dummy
+thrs_vlow_2chn12_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn23_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn34_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn45_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn56_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn67_drv_hiAtt = thrs_vlow_dummy
+thrs_vlow_2chn78_drv_hiAtt = thrs_vlow_dummy
 
-gain_high_2chn12_drv_himp = [120, 60, 256]
-gain_vlow_2chn12_drv_himp = [256, 128, 256]
-gain_high_2chn23_drv_himp = [120, 60, 256]
-gain_vlow_2chn23_drv_himp = [256, 128, 256]
-gain_high_2chn34_drv_himp = [120, 60, 256]
-gain_vlow_2chn34_drv_himp = [256, 128, 256]
-gain_high_2chn45_drv_himp = [120, 60, 256]
-gain_vlow_2chn45_drv_himp = [256, 128, 256]
-gain_high_2chn56_drv_himp = [120, 60, 256]
-gain_vlow_2chn56_drv_himp = [256, 128, 256]
-gain_high_2chn67_drv_himp = [120, 60, 256]
-gain_vlow_2chn67_drv_himp = [256, 128, 256]
-gain_high_2chn78_drv_himp = [120, 60, 256]
-gain_vlow_2chn78_drv_himp = [256, 128, 256]
+gain_high_2chn12_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn12_drv_hiAtt = [256, 128, 256]
+gain_high_2chn23_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn23_drv_hiAtt = [256, 128, 256]
+gain_high_2chn34_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn34_drv_hiAtt = [256, 128, 256]
+gain_high_2chn45_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn45_drv_hiAtt = [256, 128, 256]
+gain_high_2chn56_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn56_drv_hiAtt = [256, 128, 256]
+gain_high_2chn67_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn67_drv_hiAtt = [256, 128, 256]
+gain_high_2chn78_drv_hiAtt = [120, 60, 256]
+gain_vlow_2chn78_drv_hiAtt = [256, 128, 256]
 
-rms_high_2chn_drv_himp = [rms_high_2chn12_drv_himp, rms_high_2chn23_drv_himp, rms_high_2chn34_drv_himp, rms_high_2chn45_drv_himp, rms_high_2chn56_drv_himp, rms_high_2chn67_drv_himp, rms_high_2chn78_drv_himp]
-rms_vlow_2chn_drv_himp = [rms_vlow_2chn12_drv_himp, rms_vlow_2chn23_drv_himp, rms_vlow_2chn34_drv_himp, rms_vlow_2chn45_drv_himp, rms_vlow_2chn56_drv_himp, rms_vlow_2chn67_drv_himp, rms_vlow_2chn78_drv_himp]
-thrs_high_2chn_drv_himp = [thrs_high_2chn12_drv_himp, thrs_high_2chn23_drv_himp, thrs_high_2chn34_drv_himp, thrs_high_2chn45_drv_himp, thrs_high_2chn56_drv_himp, thrs_high_2chn67_drv_himp, thrs_high_2chn78_drv_himp]
-thrs_vlow_2chn_drv_himp = [thrs_vlow_2chn12_drv_himp, thrs_vlow_2chn23_drv_himp, thrs_vlow_2chn34_drv_himp, thrs_vlow_2chn45_drv_himp, thrs_vlow_2chn56_drv_himp, thrs_vlow_2chn67_drv_himp, thrs_vlow_2chn78_drv_himp]
-gain_high_2chn_drv_himp = [gain_high_2chn12_drv_himp, gain_high_2chn23_drv_himp, gain_high_2chn34_drv_himp, gain_high_2chn45_drv_himp, gain_high_2chn56_drv_himp, gain_high_2chn67_drv_himp, gain_high_2chn78_drv_himp]
-gain_vlow_2chn_drv_himp = [gain_vlow_2chn12_drv_himp, gain_vlow_2chn23_drv_himp, gain_vlow_2chn34_drv_himp, gain_vlow_2chn45_drv_himp, gain_vlow_2chn56_drv_himp, gain_vlow_2chn67_drv_himp, gain_vlow_2chn78_drv_himp]
+rms_high_2chn_drv_hiAtt = [rms_high_2chn12_drv_hiAtt, rms_high_2chn23_drv_hiAtt, rms_high_2chn34_drv_hiAtt, rms_high_2chn45_drv_hiAtt, rms_high_2chn56_drv_hiAtt, rms_high_2chn67_drv_hiAtt, rms_high_2chn78_drv_hiAtt]
+rms_vlow_2chn_drv_hiAtt = [rms_vlow_2chn12_drv_hiAtt, rms_vlow_2chn23_drv_hiAtt, rms_vlow_2chn34_drv_hiAtt, rms_vlow_2chn45_drv_hiAtt, rms_vlow_2chn56_drv_hiAtt, rms_vlow_2chn67_drv_hiAtt, rms_vlow_2chn78_drv_hiAtt]
+thrs_high_2chn_drv_hiAtt = [thrs_high_2chn12_drv_hiAtt, thrs_high_2chn23_drv_hiAtt, thrs_high_2chn34_drv_hiAtt, thrs_high_2chn45_drv_hiAtt, thrs_high_2chn56_drv_hiAtt, thrs_high_2chn67_drv_hiAtt, thrs_high_2chn78_drv_hiAtt]
+thrs_vlow_2chn_drv_hiAtt = [thrs_vlow_2chn12_drv_hiAtt, thrs_vlow_2chn23_drv_hiAtt, thrs_vlow_2chn34_drv_hiAtt, thrs_vlow_2chn45_drv_hiAtt, thrs_vlow_2chn56_drv_hiAtt, thrs_vlow_2chn67_drv_hiAtt, thrs_vlow_2chn78_drv_hiAtt]
+gain_high_2chn_drv_hiAtt = [gain_high_2chn12_drv_hiAtt, gain_high_2chn23_drv_hiAtt, gain_high_2chn34_drv_hiAtt, gain_high_2chn45_drv_hiAtt, gain_high_2chn56_drv_hiAtt, gain_high_2chn67_drv_hiAtt, gain_high_2chn78_drv_hiAtt]
+gain_vlow_2chn_drv_hiAtt = [gain_vlow_2chn12_drv_hiAtt, gain_vlow_2chn23_drv_hiAtt, gain_vlow_2chn34_drv_hiAtt, gain_vlow_2chn45_drv_hiAtt, gain_vlow_2chn56_drv_hiAtt, gain_vlow_2chn67_drv_hiAtt, gain_vlow_2chn78_drv_hiAtt]
 
 ############################################################################
 #### Meters & More Coupling Parameters ####
@@ -670,17 +688,18 @@ def updateCouplingParameters():
 
     if plcProfile == "PRIME":
         updatePRIMECouplingParameters()
-    elif plcProfile == "G3-PLC":
-        updateG3CouplingParameters()
-    else:
+    elif plcProfile == "Meters&More":
         updateMMCouplingParameters()
+    else:
+        updateG3CouplingParameters()
+        
 
 ############################################################################
 #### G3 function to update the Coupling Parameters ####
 ############################################################################
 
 def updateG3CouplingParameters():
-    global pCoupG3RAuxBranch
+    global pCoupG3AuxBranch
     global pCoupG3MainPhyBand
     global pCoupG3AuxPhyBand
     global pCoupG3SourceFile
@@ -713,21 +732,24 @@ def updateG3CouplingParameters():
     pCoupMMSourceFile.setEnabled(False)
     pCoupMMHeaderFile.setEnabled(False)
 
-    pCoupG3RAuxBranch.setVisible(False)
+    pCoupG3MainPhyBand.setLabel("G3-PLC PHY Band")
+    pCoupG3MainPhyBand.setVisible(True)
+
+    pCoupG3MainBranch.setVisible(False)
+    mainBand = True
+    pCoupG3MainPhyBand.setValue("None")
+
+    pCoupG3AuxBranch.setVisible(False)
     auxiliaryBand = False
     pCoupG3AuxPhyBand.setValue("None")
 
-    plcPhyBand = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND")
-    plcHighAtt = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_HIGH_ATTENUATION")
-    plcMultiband = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_MULTIBAND")
-    plcInternal = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_INTERNAL")
-    plcBandAux = Database.getSymbolValue(plcDriver, "DRV_PLC_G3_BAND_AUX")
-
-    pCoupG3MainPhyBand.setLabel("G3-PLC PHY Band")
-    pCoupG3MainPhyBand.setVisible(True)
+    if (plcDevice == "PL460"):
+        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL460")
+    else:
+        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL360")
             
     if (plcDevice == "PL460"):
-        if plcPhyBand == "CEN-A":
+        if (g3_coupSettings == "CEN-A (only CENELEC-A; main branch)"):
             # print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
             rms_high  = rms_high_cena
             rms_vlow  = rms_vlow_cena
@@ -738,8 +760,9 @@ def updateG3CouplingParameters():
             gain_vlow = gain_vlow_cena
             line_drv  = drv_conf_cena
             pCoupG3MainPhyBand.setValue("CEN-A")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
-        elif plcPhyBand == "CEN-B":
+        elif (g3_coupSettings == "CEN-B (only CENELEC-B; main branch)"):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-B")
             rms_high  = rms_high_cenb
             rms_vlow  = rms_vlow_cenb
@@ -750,60 +773,251 @@ def updateG3CouplingParameters():
             gain_vlow = gain_vlow_cenb
             line_drv  = drv_conf_cenb
             pCoupG3MainPhyBand.setValue("CEN-B")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+        
+        elif ("FCC default (only FCC" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
+            rms_high  = rms_high_fcc
+            rms_vlow  = rms_vlow_fcc
+            thrs_high = thrs_high_fcc
+            thrs_vlow = thrs_vlow_fcc
+            dacc      = dacc_fcc
+            gain_high = gain_high_fcc
+            gain_vlow = gain_vlow_fcc
+            line_drv  = drv_conf_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+        
+        elif ("FCC high attenuation (only FCC" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
+            rms_high  = rms_high_fcc_hiAtt
+            rms_vlow  = rms_vlow_fcc_hiAtt
+            thrs_high = thrs_high_fcc_hiAtt
+            thrs_vlow = thrs_vlow_fcc_hiAtt
+            dacc      = dacc_fcc_hiAtt
+            gain_high = gain_high_fcc_hiAtt
+            gain_vlow = gain_vlow_fcc_hiAtt
+            line_drv  = drv_conf_fcc_hiAtt
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+        
+        elif ("FCC default & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
+            rms_high  = rms_high_fcc
+            rms_vlow  = rms_vlow_fcc
+            thrs_high = thrs_high_fcc
+            thrs_vlow = thrs_vlow_fcc
+            dacc      = dacc_fcc
+            gain_high = gain_high_fcc
+            gain_vlow = gain_vlow_fcc
+            line_drv  = drv_conf_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
-        elif plcPhyBand == "FCC" or plcPhyBand == "ARIB":
-            if (plcPhyBand == "FCC"):
-                pCoupG3MainPhyBand.setValue("FCC")
-            else:
-                pCoupG3MainPhyBand.setValue("ARIB")
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
+            auxiliaryBand = True
+            rms_high_aux  = rms_high_cena_c07
+            rms_vlow_aux  = rms_vlow_cena_c07
+            thrs_high_aux = thrs_high_cena_c07
+            thrs_vlow_aux = thrs_vlow_cena_c07
+            dacc_aux      = dacc_cena_c07_drv
+            gain_high_aux = gain_high_cena_c07
+            gain_vlow_aux = gain_vlow_cena_c07
+            line_drv_aux  = drv_conf_cena_c07
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC default & CEN-A (only CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
+            auxiliaryBand = True
+            mainBand = False
+            rms_high_aux  = rms_high_cena_c07
+            rms_vlow_aux  = rms_vlow_cena_c07
+            thrs_high_aux = thrs_high_cena_c07
+            thrs_vlow_aux = thrs_vlow_cena_c07
+            dacc_aux      = dacc_cena_c07_drv
+            gain_high_aux = gain_high_cena_c07
+            gain_vlow_aux = gain_vlow_cena_c07
+            line_drv_aux  = drv_conf_cena_c07
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
 
-            if (plcHighAtt == True):
-                # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
-                rms_high  = rms_high_fcc_himp
-                rms_vlow  = rms_vlow_fcc_himp
-                thrs_high = thrs_high_fcc_himp
-                thrs_vlow = thrs_vlow_fcc_himp
-                dacc      = dacc_fcc_himp
-                gain_high = gain_high_fcc_himp
-                gain_vlow = gain_vlow_fcc_himp
-                line_drv  = drv_conf_fcc_himp
-            else:
-                # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
-                rms_high  = rms_high_fcc
-                rms_vlow  = rms_vlow_fcc
-                thrs_high = thrs_high_fcc
-                thrs_vlow = thrs_vlow_fcc
-                dacc      = dacc_fcc
-                gain_high = gain_high_fcc
-                gain_vlow = gain_vlow_fcc
-                line_drv  = drv_conf_fcc
+        elif ("FCC default & CEN-B (FCC + CENELEC-B" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
+            rms_high  = rms_high_fcc
+            rms_vlow  = rms_vlow_fcc
+            thrs_high = thrs_high_fcc
+            thrs_vlow = thrs_vlow_fcc
+            dacc      = dacc_fcc
+            gain_high = gain_high_fcc
+            gain_vlow = gain_vlow_fcc
+            line_drv  = drv_conf_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
-            if (plcMultiband == True):
-                auxiliaryBand = True
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
+            auxiliaryBand = True
+            rms_high_aux  = rms_high_cenb_c14
+            rms_vlow_aux  = rms_vlow_cenb_c14
+            thrs_high_aux = thrs_high_cenb_c14
+            thrs_vlow_aux = thrs_vlow_cenb_c14
+            dacc_aux      = dacc_cenb_c14_drv
+            gain_high_aux = gain_high_cenb_c14
+            gain_vlow_aux = gain_vlow_cenb_c14
+            line_drv_aux  = drv_conf_cenb_c14
+            pCoupG3AuxPhyBand.setValue("CEN-B")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC default & CEN-B (only CENELEC-B" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
+            auxiliaryBand = True
+            mainBand = False
+            rms_high_aux  = rms_high_cenb_c14
+            rms_vlow_aux  = rms_vlow_cenb_c14
+            thrs_high_aux = thrs_high_cenb_c14
+            thrs_vlow_aux = thrs_vlow_cenb_c14
+            dacc_aux      = dacc_cenb_c14_drv
+            gain_high_aux = gain_high_cenb_c14
+            gain_vlow_aux = gain_vlow_cenb_c14
+            line_drv_aux  = drv_conf_cenb_c14
+            pCoupG3AuxPhyBand.setValue("CEN-B")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
 
-                if (plcBandAux == "CEN-A"):
-                    # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
-                    rms_high_aux  = rms_high_cena_c07
-                    rms_vlow_aux  = rms_vlow_cena_c07
-                    thrs_high_aux = thrs_high_cena_c07
-                    thrs_vlow_aux = thrs_vlow_cena_c07
-                    dacc_aux      = dacc_cena_c07_drv
-                    gain_high_aux = gain_high_cena_c07
-                    gain_vlow_aux = gain_vlow_cena_c07
-                    line_drv_aux  = drv_conf_cena_c07
-                    pCoupG3AuxPhyBand.setValue("CEN-A")
-                else:
-                    # "CEN-B"
-                    # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
-                    rms_high_aux  = rms_high_cenb_c14
-                    rms_vlow_aux  = rms_vlow_cenb_c14
-                    thrs_high_aux = thrs_high_cenb_c14
-                    thrs_vlow_aux = thrs_vlow_cenb_c14
-                    dacc_aux      = dacc_cenb_c14_drv
-                    gain_high_aux = gain_high_cenb_c14
-                    gain_vlow_aux = gain_vlow_cenb_c14
-                    line_drv_aux  = drv_conf_cenb_c14
-                    pCoupG3AuxPhyBand.setValue("CEN-B")
+        elif ("FCC high attenuation & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
+            rms_high  = rms_high_fcc_hiAtt
+            rms_vlow  = rms_vlow_fcc_hiAtt
+            thrs_high = thrs_high_fcc_hiAtt
+            thrs_vlow = thrs_vlow_fcc_hiAtt
+            dacc      = dacc_fcc_hiAtt
+            gain_high = gain_high_fcc_hiAtt
+            gain_vlow = gain_vlow_fcc_hiAtt
+            line_drv  = drv_conf_fcc_hiAtt
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
+            auxiliaryBand = True
+            rms_high_aux  = rms_high_cena_c07
+            rms_vlow_aux  = rms_vlow_cena_c07
+            thrs_high_aux = thrs_high_cena_c07
+            thrs_vlow_aux = thrs_vlow_cena_c07
+            dacc_aux      = dacc_cena_c07_drv
+            gain_high_aux = gain_high_cena_c07
+            gain_vlow_aux = gain_vlow_cena_c07
+            line_drv_aux  = drv_conf_cena_c07
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC high attenuation & CEN-A (only CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
+            auxiliaryBand = True
+            mainBand = False
+            rms_high_aux  = rms_high_cena_c07
+            rms_vlow_aux  = rms_vlow_cena_c07
+            thrs_high_aux = thrs_high_cena_c07
+            thrs_vlow_aux = thrs_vlow_cena_c07
+            dacc_aux      = dacc_cena_c07_drv
+            gain_high_aux = gain_high_cena_c07
+            gain_vlow_aux = gain_vlow_cena_c07
+            line_drv_aux  = drv_conf_cena_c07
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+
+        elif ("FCC high attenuation & CEN-B (FCC + CENELEC-B" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
+            rms_high  = rms_high_fcc_hiAtt
+            rms_vlow  = rms_vlow_fcc_hiAtt
+            thrs_high = thrs_high_fcc_hiAtt
+            thrs_vlow = thrs_vlow_fcc_hiAtt
+            dacc      = dacc_fcc_hiAtt
+            gain_high = gain_high_fcc_hiAtt
+            gain_vlow = gain_vlow_fcc_hiAtt
+            line_drv  = drv_conf_fcc_hiAtt
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
+            auxiliaryBand = True
+            rms_high_aux  = rms_high_cenb_c14
+            rms_vlow_aux  = rms_vlow_cenb_c14
+            thrs_high_aux = thrs_high_cenb_c14
+            thrs_vlow_aux = thrs_vlow_cenb_c14
+            dacc_aux      = dacc_cenb_c14_drv
+            gain_high_aux = gain_high_cenb_c14
+            gain_vlow_aux = gain_vlow_cenb_c14
+            line_drv_aux  = drv_conf_cenb_c14
+            pCoupG3AuxPhyBand.setValue("CEN-B")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC high attenuation & CEN-B (only CENELEC-B" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
+            auxiliaryBand = True
+            mainBand = False
+            rms_high_aux  = rms_high_cenb_c14
+            rms_vlow_aux  = rms_vlow_cenb_c14
+            thrs_high_aux = thrs_high_cenb_c14
+            thrs_vlow_aux = thrs_vlow_cenb_c14
+            dacc_aux      = dacc_cenb_c14_drv
+            gain_high_aux = gain_high_cenb_c14
+            gain_vlow_aux = gain_vlow_cenb_c14
+            line_drv_aux  = drv_conf_cenb_c14
+            pCoupG3AuxPhyBand.setValue("CEN-B")
+            pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+
+        elif ("Multiband single-branch FCC & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC MULTIBAND SINGLE-BRANCH")
+            rms_high  = rms_high_mbsb_fcc
+            rms_vlow  = rms_vlow_mbsb_fcc
+            thrs_high = thrs_high_mbsb_fcc
+            thrs_vlow = thrs_vlow_mbsb_fcc
+            dacc      = dacc_mbsb_fcc
+            gain_high = gain_high_mbsb_fcc
+            gain_vlow = gain_vlow_mbsb_fcc
+            line_drv  = drv_conf_mbsb_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch (ASO0)")
+
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-A MULTIBAND SINGLE-BRANCH")
+            auxiliaryBand = True
+            rms_high_aux  = rms_high_mbsb_cena
+            rms_vlow_aux  = rms_vlow_mbsb_cena
+            thrs_high_aux = thrs_high_mbsb_cena
+            thrs_vlow_aux = thrs_vlow_mbsb_cena
+            dacc_aux      = dacc_mbsb_cena
+            gain_high_aux = gain_high_mbsb_cena
+            gain_vlow_aux = gain_vlow_mbsb_cena
+            line_drv_aux  = drv_conf_mbsb_cena
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Main Transmission branch (ASO1)")
+
+        elif ("Multiband single-branch FCC & CEN-A (only FCC" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC MULTIBAND SINGLE-BRANCH")
+            rms_high  = rms_high_mbsb_fcc
+            rms_vlow  = rms_vlow_mbsb_fcc
+            thrs_high = thrs_high_mbsb_fcc
+            thrs_vlow = thrs_vlow_mbsb_fcc
+            dacc      = dacc_mbsb_fcc
+            gain_high = gain_high_mbsb_fcc
+            gain_vlow = gain_vlow_mbsb_fcc
+            line_drv  = drv_conf_mbsb_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch (ASO0)")
+        
+        elif ("Multiband single-branch FCC & CEN-A (only CENELEC-A" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-A MULTIBAND SINGLE-BRANCH")
+            auxiliaryBand = True
+            mainBand = False
+            rms_high_aux  = rms_high_mbsb_cena
+            rms_vlow_aux  = rms_vlow_mbsb_cena
+            thrs_high_aux = thrs_high_mbsb_cena
+            thrs_vlow_aux = thrs_vlow_mbsb_cena
+            dacc_aux      = dacc_mbsb_cena
+            gain_high_aux = gain_high_mbsb_cena
+            gain_vlow_aux = gain_vlow_mbsb_cena
+            line_drv_aux  = drv_conf_mbsb_cena
+            pCoupG3AuxPhyBand.setValue("CEN-A")
+            pCoupG3AuxBranch.setLabel("Main Transmission branch (ASO1)")
 
         else: # "CEN-A" as default configuration
             # print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
@@ -816,11 +1030,12 @@ def updateG3CouplingParameters():
             gain_vlow = gain_vlow_cena
             line_drv  = drv_conf_cena
             pCoupG3MainPhyBand.setValue("CEN-A")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
     else: # "PL360"
         line_drv = 0
         line_drv_aux = 0
-        if plcPhyBand == "CEN-A":
+        if ("PLCOUP007" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters -> PL360 G3 CEN-A")
             rms_high  = rms_high_cena_c07
             rms_vlow  = rms_vlow_cena_c07
@@ -830,91 +1045,80 @@ def updateG3CouplingParameters():
             gain_high = gain_high_cena_c07
             gain_vlow = gain_vlow_cena_c07
             pCoupG3MainPhyBand.setValue("CEN-A")
+            pCoupG3MainBranch.setLabel("Transmission branch 0")
 
-        elif plcPhyBand == "CEN-B":
+        elif ("PLCOUP014" in g3_coupSettings):
             pCoupG3MainPhyBand.setValue("CEN-B")
-            if (plcInternal == True):
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B Internal")
-                rms_high  = rms_high_cenb_c12
-                rms_vlow  = rms_vlow_cenb_c12
-                thrs_high = thrs_high_cenb_c12
-                thrs_vlow = thrs_vlow_cenb_c12
-                dacc      = dacc_cenb_c12
-                gain_high = gain_high_cenb_c12
-                gain_vlow = gain_vlow_cenb_c12
-            else:
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B External")
-                rms_high  = rms_high_cenb_c14
-                rms_vlow  = rms_vlow_cenb_c14
-                thrs_high = thrs_high_cenb_c14
-                thrs_vlow = thrs_vlow_cenb_c14
-                dacc      = dacc_cenb_c14
-                gain_high = gain_high_cenb_c14
-                gain_vlow = gain_vlow_cenb_c14
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B External")
+            rms_high  = rms_high_cenb_c14
+            rms_vlow  = rms_vlow_cenb_c14
+            thrs_high = thrs_high_cenb_c14
+            thrs_vlow = thrs_vlow_cenb_c14
+            dacc      = dacc_cenb_c14
+            gain_high = gain_high_cenb_c14
+            gain_vlow = gain_vlow_cenb_c14
+            pCoupG3MainBranch.setLabel("Transmission branch 0")
 
-        elif plcPhyBand == "FCC":
+        elif ("PLCOUP012" in g3_coupSettings):
+            pCoupG3MainPhyBand.setValue("CEN-B")
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 CEN-B Internal")
+            rms_high  = rms_high_cenb_c12
+            rms_vlow  = rms_vlow_cenb_c12
+            thrs_high = thrs_high_cenb_c12
+            thrs_vlow = thrs_vlow_cenb_c12
+            dacc      = dacc_cenb_c12
+            gain_high = gain_high_cenb_c12
+            gain_vlow = gain_vlow_cenb_c12
+            pCoupG3MainBranch.setLabel("Transmission branch 0")
+        
+        elif ("PLCOUP006" in g3_coupSettings):
             pCoupG3MainPhyBand.setValue("FCC")
-            if (plcMultiband == True):
-                auxiliaryBand = True
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC SB")
-                rms_high  = rms_high_fcc_c11
-                rms_vlow  = rms_vlow_fcc_c11
-                thrs_high = thrs_high_fcc_c11
-                thrs_vlow = thrs_vlow_fcc_c11
-                dacc      = dacc_fcc_c11
-                gain_high = gain_high_fcc_c11
-                gain_vlow = gain_vlow_fcc_c11
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC 2B")
+            rms_high  = rms_high_fcc_c06
+            rms_vlow  = rms_vlow_fcc_c06
+            thrs_high = thrs_high_fcc_c06
+            thrs_vlow = thrs_vlow_fcc_c06
+            dacc      = dacc_fcc_c06
+            gain_high = gain_high_fcc_c06
+            gain_vlow = gain_vlow_fcc_c06
+            pCoupG3MainBranch.setLabel("Transmission branch 0 and 1")
+        
+        elif ("PLCOUP011 (only FCC" in g3_coupSettings):
+            pCoupG3MainPhyBand.setValue("FCC")
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC SB")
+            rms_high  = rms_high_fcc_c11
+            rms_vlow  = rms_vlow_fcc_c11
+            thrs_high = thrs_high_fcc_c11
+            thrs_vlow = thrs_vlow_fcc_c11
+            dacc      = dacc_fcc_c11
+            gain_high = gain_high_fcc_c11
+            gain_vlow = gain_vlow_fcc_c11
+            pCoupG3MainBranch.setLabel("Transmission branch 1")
+        
+        elif ("PLCOUP011 (FCC + CENELEC-A" in g3_coupSettings):
+            auxiliaryBand = True
 
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
-                rms_high_aux  = rms_high_cena_c07
-                rms_vlow_aux  = rms_vlow_cena_c07
-                thrs_high_aux = thrs_high_cena_c07
-                thrs_vlow_aux = thrs_vlow_cena_c07
-                dacc_aux      = dacc_cena_c07
-                gain_high_aux = gain_high_cena_c07
-                gain_vlow_aux = gain_vlow_cena_c07
-                pCoupG3AuxPhyBand.setValue("CEN-A")
-            else:
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC 2B")
-                rms_high  = rms_high_fcc_c06
-                rms_vlow  = rms_vlow_fcc_c06
-                thrs_high = thrs_high_fcc_c06
-                thrs_vlow = thrs_vlow_fcc_c06
-                dacc      = dacc_fcc_c06
-                gain_high = gain_high_fcc_c06
-                gain_vlow = gain_vlow_fcc_c06
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
+            rms_high  = rms_high_cena_c07
+            rms_vlow  = rms_vlow_cena_c07
+            thrs_high = thrs_high_cena_c07
+            thrs_vlow = thrs_vlow_cena_c07
+            dacc      = dacc_cena_c07
+            gain_high = gain_high_cena_c07
+            gain_vlow = gain_vlow_cena_c07
+            pCoupG3MainPhyBand.setValue("CEN-A")
+            pCoupG3MainBranch.setLabel("Transmission branch 0")
 
-        elif plcPhyBand == "ARIB":
-            pCoupG3MainPhyBand.setValue("ARIB")
-            if (plcMultiband == True):
-                auxiliaryBand = True
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 ARIB SB")
-                rms_high  = rms_high_arib_c11
-                rms_vlow  = rms_vlow_arib_c11
-                thrs_high = thrs_high_arib_c11
-                thrs_vlow = thrs_vlow_arib_c11
-                dacc      = dacc_arib_c11
-                gain_high = gain_high_arib_c11
-                gain_vlow = gain_vlow_arib_c11
-
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 AUX CEN-A")
-                rms_high_aux  = rms_high_cena_c07
-                rms_vlow_aux  = rms_vlow_cena_c07
-                thrs_high_aux = thrs_high_cena_c07
-                thrs_vlow_aux = thrs_vlow_cena_c07
-                dacc_aux      = dacc_cena_c07
-                gain_high_aux = gain_high_cena_c07
-                gain_vlow_aux = gain_vlow_cena_c07
-                pCoupG3AuxPhyBand.setValue("CEN-A")
-            else:
-                # print("UpdatePlcCouplingParameters ->  PL360 G3 ARIB 2B")
-                rms_high  = rms_high_arib_c06
-                rms_vlow  = rms_vlow_arib_c06
-                thrs_high = thrs_high_arib_c06
-                thrs_vlow = thrs_vlow_arib_c06
-                dacc      = dacc_arib_c06
-                gain_high = gain_high_arib_c06
-                gain_vlow = gain_vlow_arib_c06
+            # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC SB")
+            rms_high_aux  = rms_high_fcc_c11
+            rms_vlow_aux  = rms_vlow_fcc_c11
+            thrs_high_aux = thrs_high_fcc_c11
+            thrs_vlow_aux = thrs_vlow_fcc_c11
+            dacc_aux      = dacc_fcc_c11
+            gain_high_aux = gain_high_fcc_c11
+            gain_vlow_aux = gain_vlow_fcc_c11
+            pCoupG3AuxPhyBand.setValue("FCC")
+            pCoupG3AuxBranch.setLabel("Transmission branch 1")
 
         else: # "CEN-A" as default configuration
             # print("UpdatePlcCouplingParameters -> PL360 G3 CEN-A")
@@ -926,28 +1130,32 @@ def updateG3CouplingParameters():
             gain_high = gain_high_cena_c07
             gain_vlow = gain_vlow_cena_c07
             pCoupG3MainPhyBand.setValue("CEN-A")
+            pCoupG3MainBranch.setLabel("Transmission branch 0")
 
     # Update Values of the Main Branch in Configuration Window
-    Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
+    if (mainBand == True):
+        pCoupG3MainBranch.setVisible(True)
+        
+        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
 
-    for idx in range(8):
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_HIGH_" + str(idx), rms_high[idx])
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_VLOW_" + str(idx), rms_vlow[idx])
+        for idx in range(8):
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_HIGH_" + str(idx), rms_high[idx])
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_RMS_VLOW_" + str(idx), rms_vlow[idx])
 
-    for idx in range(16):
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_HIGH_" + str(idx), thrs_high[idx])
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_VLOW_" + str(idx), thrs_vlow[idx])
+        for idx in range(16):
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_HIGH_" + str(idx), thrs_high[idx])
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_THRS_VLOW_" + str(idx), thrs_vlow[idx])
 
-    for idx in range(17):
-        pCoupG3DACC[idx].setValue(dacc[idx])
+        for idx in range(17):
+            pCoupG3DACC[idx].setValue(dacc[idx])
 
-    for idx in range(3):
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_" + str(idx), gain_high[idx])
-        Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_" + str(idx), gain_vlow[idx])
+        for idx in range(3):
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_HIGH_" + str(idx), gain_high[idx])
+            Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_GAIN_VLOW_" + str(idx), gain_vlow[idx])
 
     # Update Values of the Auxiliary Branch in Configuration Window
     if (auxiliaryBand == True):
-        pCoupG3RAuxBranch.setVisible(True)
+        pCoupG3AuxBranch.setVisible(True)
 
         Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_AUX_LINE_DRIVER", line_drv_aux)
 
@@ -1017,13 +1225,13 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
         if (channels & 0xFE):
             fcc_enable = True
             # Channels 2 - 8
-            # drv_sb / drv_himp
+            # drv_sb / drv_hiAtt
             dacc_fcc = dacc_chn_fcc_drv
 
         if (channels & 0x7F00):
             double_chn_enable = True
             # Double Channels
-            # drv_sb / drv_himp
+            # drv_sb / drv_hiAtt
             dacc_2chn = dacc_2chn_fcc_drv
 
     if (cen_enable == True):
@@ -1103,12 +1311,12 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
             if (highImp == True):
                 # drv_hmip
                 line_drv = 7
-                rms_high  = rms_high_drv_himp[channel - 2]
-                rms_vlow  = rms_vlow_drv_himp[channel - 2]
-                thrs_high = thrs_high_drv_himp[channel - 2]
-                thrs_vlow = thrs_vlow_drv_himp[channel - 2]
-                gain_high = gain_high_drv_himp[channel - 2]
-                gain_vlow = gain_vlow_drv_himp[channel - 2]
+                rms_high  = rms_high_drv_hiAtt[channel - 2]
+                rms_vlow  = rms_vlow_drv_hiAtt[channel - 2]
+                thrs_high = thrs_high_drv_hiAtt[channel - 2]
+                thrs_vlow = thrs_vlow_drv_hiAtt[channel - 2]
+                gain_high = gain_high_drv_hiAtt[channel - 2]
+                gain_vlow = gain_vlow_drv_hiAtt[channel - 2]
             else:
                 # drv_sb
                 line_drv = 5
@@ -1159,12 +1367,12 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
         if (highImp == True):
             # drv_hmip
             line_drv = 7
-            rms_high  = rms_high_2chn_drv_himp[channel]
-            rms_vlow  = rms_vlow_2chn_drv_himp[channel]
-            thrs_high = thrs_high_2chn_drv_himp[channel]
-            thrs_vlow = thrs_vlow_2chn_drv_himp[channel]
-            gain_high = gain_high_2chn_drv_himp[channel]
-            gain_vlow = gain_vlow_2chn_drv_himp[channel]
+            rms_high  = rms_high_2chn_drv_hiAtt[channel]
+            rms_vlow  = rms_vlow_2chn_drv_hiAtt[channel]
+            thrs_high = thrs_high_2chn_drv_hiAtt[channel]
+            thrs_vlow = thrs_vlow_2chn_drv_hiAtt[channel]
+            gain_high = gain_high_2chn_drv_hiAtt[channel]
+            gain_vlow = gain_vlow_2chn_drv_hiAtt[channel]
         else:
             # drv_sb
             line_drv = 5
@@ -1260,7 +1468,7 @@ def updatePRIMECouplingParameters():
 #### Meters&More function to update the Coupling Parameters ####
 ############################################################################
 def updateMMCouplingParameters():
-    global pCoupG3RAuxBranch
+    global pCoupG3AuxBranch
     global pCoupG3MainPhyBand
     global pCoupG3AuxPhyBand
     global pCoupG3SourceFile
@@ -1293,7 +1501,7 @@ def updateMMCouplingParameters():
     pCoupMMSourceFile.setEnabled(True)
     pCoupMMHeaderFile.setEnabled(True)
 
-    pCoupG3RAuxBranch.setVisible(False)
+    pCoupG3AuxBranch.setVisible(False)
     pCoupG3AuxPhyBand.setValue("None")
 
     pCoupG3MainPhyBand.setVisible(False)
@@ -1310,11 +1518,13 @@ def updateMMCouplingParameters():
         # print("UpdatePlcCouplingParameters -> PL460 MM CEN-A")
         line_drv  = mm_drv_conf_cena
         dacc      = mm_dacc_cena_drv
+        pCoupG3MainBranch.setLabel("Auxiliary Transmission branch")
 
     else: # "PL360"
         # print("UpdatePlcCouplingParameters -> PL360 MM CEN-A")
         line_drv  = 0
         dacc      = mm_dacc_cena
+        pCoupG3MainBranch.setLabel("Transmission branch 0")
 
     # Update Values of the Main Branch in Configuration Window
     Database.setSymbolValue("srv_pcoup", "SRV_PCOUP_G3_LINE_DRIVER", line_drv)
@@ -1381,7 +1591,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     global pCoupG3MainPhyBand
     # pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_G3_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC", "ARIB"])
-    pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_BAND", pCoupG3MainBranch, ["CEN-A", "CEN-B", "FCC"])
+    pCoupG3MainPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_MAIN_BAND", pCoupG3MainBranch, ["None", "CEN-A", "CEN-B", "FCC"])
     pCoupG3MainPhyBand.setLabel("G3-PLC PHY Band")
     pCoupG3MainPhyBand.setDefaultValue("FCC")
     pCoupG3MainPhyBand.setReadOnly(True)
@@ -1394,11 +1604,11 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3NumTxLvl.setMax(8)
     pCoupG3NumTxLvl.setHelp(srv_pcoup_helpkeyword)
     # Use an auxiliary control to handle dependencies with drvPlcPhy
-    pCoupG3NumTxLvl.setDependencies(dependenciesHandler, ["drvPlcPhy.DRV_PLC_COUP_G3_HIGH_ATTENUATION",
-                                                          "drvPlcPhy.DRV_PLC_COUP_G3_INTERNAL",
+    pCoupG3NumTxLvl.setDependencies(dependenciesHandler, ["drvPlcPhy.DRV_PLC_COUP_G3_SETTING_PL460",
+                                                          "drvPlcPhy.DRV_PLC_COUP_G3_SETTING_PL360",
                                                           "drvPlcPhy.DRV_PLC_MODE",
-                                                          "drvG3MacRt.DRV_PLC_COUP_G3_HIGH_ATTENUATION",
-                                                          "drvG3MacRt.DRV_PLC_COUP_G3_INTERNAL",
+                                                          "drvG3MacRt.DRV_PLC_COUP_G3_SETTING_PL460",
+                                                          "drvG3MacRt.DRV_PLC_COUP_G3_SETTING_PL360",
                                                           "drvG3MacRt.DRV_PLC_MODE"])
 
     pCoupG3RMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_RMS_HIGH", pCoupG3MainBranch)
@@ -1506,29 +1716,29 @@ def instantiateComponent(pCoupComponentCommon):
     #### G3 Auxiliary Transmission Branch ####
     ############################################################################
 
-    global pCoupG3RAuxBranch
-    pCoupG3RAuxBranch = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_BRANCH", pCoupG3TXBranches)
-    pCoupG3RAuxBranch.setLabel("Auxiliary Transmission branch")
-    pCoupG3RAuxBranch.setVisible(False)
-    pCoupG3RAuxBranch.setHelp(srv_pcoup_helpkeyword)
+    global pCoupG3AuxBranch
+    pCoupG3AuxBranch = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_BRANCH", pCoupG3TXBranches)
+    pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+    pCoupG3AuxBranch.setVisible(False)
+    pCoupG3AuxBranch.setHelp(srv_pcoup_helpkeyword)
 
     global pCoupG3AuxPhyBand
-    # pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_G3_BAND", pCoupG3RAuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
-    pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_BAND", pCoupG3RAuxBranch, ["None", "CEN-A", "CEN-B", "FCC"])
+    # pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_G3_BAND", pCoupG3AuxBranch, ["None", "CEN-A", "CEN-B", "FCC", "ARIB"])
+    pCoupG3AuxPhyBand = pCoupComponentCommon.createComboSymbol("SRV_PCOUP_G3_AUX_BAND", pCoupG3AuxBranch, ["None", "CEN-A", "CEN-B", "FCC"])
     pCoupG3AuxPhyBand.setLabel("G3-PLC PHY Band")
     pCoupG3AuxPhyBand.setDefaultValue("CEN-A")
     pCoupG3AuxPhyBand.setReadOnly(True)
     pCoupG3AuxPhyBand.setHelp(srv_pcoup_helpkeyword)
 
-    pCoupG3AuxNumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_NUM_TX_LVL", pCoupG3RAuxBranch)
+    pCoupG3AuxNumTxLvl = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_NUM_TX_LVL", pCoupG3AuxBranch)
     pCoupG3AuxNumTxLvl.setLabel("Number of TX levels")
     pCoupG3AuxNumTxLvl.setDefaultValue(8)
     pCoupG3AuxNumTxLvl.setHelp(srv_pcoup_helpkeyword)
 
-    pCoupG3AuxRMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_HIGH", pCoupG3RAuxBranch)
+    pCoupG3AuxRMSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_HIGH", pCoupG3AuxBranch)
     pCoupG3AuxRMSHigh.setLabel("Target RMS values in HIGH mode for dynamic Tx gain")
     pCoupG3AuxRMSHigh.setHelp(srv_pcoup_helpkeyword)
-    pCoupG3AuxRMSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_VLOW", pCoupG3RAuxBranch)
+    pCoupG3AuxRMSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_RMS_VLOW", pCoupG3AuxBranch)
     pCoupG3AuxRMSVlow.setLabel("Target RMS values in VLOW mode for dynamic Tx gain")
     pCoupG3AuxRMSVlow.setHelp(srv_pcoup_helpkeyword)
 
@@ -1545,10 +1755,10 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupG3Symbol.setMin(0)
         pCoupG3Symbol.setHelp(srv_pcoup_helpkeyword)
 
-    pCoupG3AuxTHRSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_HIGH", pCoupG3RAuxBranch)
+    pCoupG3AuxTHRSHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_HIGH", pCoupG3AuxBranch)
     pCoupG3AuxTHRSHigh.setLabel("Threshold RMS values in HIGH mode for dynamic Tx mode")
     pCoupG3AuxTHRSHigh.setHelp(srv_pcoup_helpkeyword)
-    pCoupG3AuxTHRSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_VLOW", pCoupG3RAuxBranch)
+    pCoupG3AuxTHRSVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_THRS_VLOW", pCoupG3AuxBranch)
     pCoupG3AuxTHRSVlow.setLabel("Threshold RMS values in VLOW mode for dynamic Tx mode")
     pCoupG3AuxTHRSVlow.setHelp(srv_pcoup_helpkeyword)
 
@@ -1571,7 +1781,7 @@ def instantiateComponent(pCoupComponentCommon):
         else:
             pCoupG3Symbol.setLabel("THRESHOLD_VLOW_HIGH_" + str(idx - 8))
 
-    pCoupG3AuxDACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_DACC", pCoupG3RAuxBranch)
+    pCoupG3AuxDACCMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_DACC", pCoupG3AuxBranch)
     pCoupG3AuxDACCMenu.setLabel("PLC DACC peripheral settings")
     pCoupG3AuxDACCMenu.setHelp(srv_pcoup_helpkeyword)
 
@@ -1583,10 +1793,10 @@ def instantiateComponent(pCoupComponentCommon):
         pCoupG3DACCAux[idx].setMax(0xFFFFFFFF)
         pCoupG3DACCAux[idx].setHelp(srv_pcoup_helpkeyword)
 
-    pCoupG3AuxGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH", pCoupG3RAuxBranch)
+    pCoupG3AuxGainHigh = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_HIGH", pCoupG3AuxBranch)
     pCoupG3AuxGainHigh.setLabel("Tx gain values for HIGH mode")
     pCoupG3AuxGainHigh.setHelp(srv_pcoup_helpkeyword)
-    pCoupG3AuxGainVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW", pCoupG3RAuxBranch)
+    pCoupG3AuxGainVlow = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_G3_AUX_GAIN_VLOW", pCoupG3AuxBranch)
     pCoupG3AuxGainVlow.setLabel("Tx gain values for VLOW mode")
     pCoupG3AuxGainVlow.setHelp(srv_pcoup_helpkeyword)
 
@@ -1620,7 +1830,7 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupG3GainVlowSymbols[2].setDependencies(gainUpdMinValue, ["SRV_PCOUP_G3_AUX_GAIN_VLOW_0"])
 
     global pCoupG3AuxLineDriver
-    pCoupG3AuxLineDriver = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_LINE_DRIVER", pCoupG3RAuxBranch)
+    pCoupG3AuxLineDriver = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_AUX_LINE_DRIVER", pCoupG3AuxBranch)
     pCoupG3AuxLineDriver.setLabel("PLC Line Driver settings")
     pCoupG3AuxLineDriver.setDefaultValue(0)
     pCoupG3AuxLineDriver.setReadOnly(True)

@@ -20,8 +20,6 @@ DRV_PLC_PHY_INIT drvPlcPhyInitData = {
     /* PLC PHY Number of clients */
     .numClients = DRV_PLC_PHY_CLIENTS_NUMBER_IDX,  
 
-    /* PLC PHY profile */
-    .plcProfile = DRV_PLC_PHY_PROFILE,
  <#if DRV_PLC_BIN_STATIC_ADDRESSING == true>
     /* PLC Binary start address */
     .binStartAddress = DRV_PLC_BIN_START_ADDRESS,

@@ -101,7 +101,6 @@ SYS_MODULE_OBJ DRV_G3_MACRT_Initialize(
     }
 
     gDrvG3MacRtObj.plcHal                = g3MacRtInit->plcHal;
-    gDrvG3MacRtObj.plcProfile            = g3MacRtInit->plcProfile;
     gDrvG3MacRtObj.binSize               = g3MacRtInit->binEndAddress - g3MacRtInit->binStartAddress;
     gDrvG3MacRtObj.binStartAddress       = g3MacRtInit->binStartAddress;
     gDrvG3MacRtObj.secure                = g3MacRtInit->secure;

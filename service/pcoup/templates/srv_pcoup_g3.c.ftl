@@ -69,10 +69,12 @@ Microchip or any third party.
     modes
  */
 
+<#if SRV_PCOUP_G3_MAIN_BAND != "None">
 static const uint16_t srvPlcCoupPredistCoefHigh[SRV_PCOUP_EQU_NUM_COEF] = SRV_PCOUP_PRED_HIGH_TBL;
 static const uint16_t srvPlcCoupPredistCoefVLow[SRV_PCOUP_EQU_NUM_COEF] = SRV_PCOUP_PRED_VLOW_TBL;
+</#if>
 
-<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
+<#if SRV_PCOUP_G3_AUX_BAND != "None">
 static const uint16_t srvPlcCoupAuxPredistCoefHigh[SRV_PCOUP_AUX_EQU_NUM_COEF] = SRV_PCOUP_AUX_PRED_HIGH_TBL;
 static const uint16_t srvPlcCoupAuxPredistCoefVLow[SRV_PCOUP_AUX_EQU_NUM_COEF] = SRV_PCOUP_AUX_PRED_VLOW_TBL;
 </#if>
@@ -90,6 +92,7 @@ static const uint16_t srvPlcCoupAuxPredistCoefVLow[SRV_PCOUP_AUX_EQU_NUM_COEF] =
     Values are defined in srv_pcoup.h file
  */
 
+<#if SRV_PCOUP_G3_MAIN_BAND != "None">
 static const SRV_PLC_PCOUP_DATA srvPlcCoup = {
   SRV_PCOUP_RMS_HIGH_TBL, SRV_PCOUP_RMS_VLOW_TBL,
   SRV_PCOUP_THRS_HIGH_TBL, SRV_PCOUP_THRS_VLOW_TBL,
@@ -99,8 +102,9 @@ static const SRV_PLC_PCOUP_DATA srvPlcCoup = {
   SRV_PCOUP_NUM_TX_LEVELS, SRV_PCOUP_EQU_NUM_COEF << 1,
   SRV_PCOUP_LINE_DRV_CONF
 };
+</#if>
 
-<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
+<#if SRV_PCOUP_G3_AUX_BAND != "None">
 static const SRV_PLC_PCOUP_DATA srvPlcCoupAux = {
   SRV_PCOUP_AUX_RMS_HIGH_TBL, SRV_PCOUP_AUX_RMS_VLOW_TBL,
   SRV_PCOUP_AUX_THRS_HIGH_TBL, SRV_PCOUP_AUX_THRS_VLOW_TBL,
@@ -118,10 +122,16 @@ static const SRV_PLC_PCOUP_DATA srvPlcCoupAux = {
 // *****************************************************************************
 // *****************************************************************************
 
-SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
+SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(uint8_t phyBand)
 {
+<#if (drvG3MacRt)??>
+    MAC_RT_BAND band = (MAC_RT_BAND)phyBand;
+<#else>
+    uint8_t band = phyBand;
+</#if>
+
     /* MISRA C-2012 deviation block start */
-<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
+<#if (SRV_PCOUP_G3_MAIN_BAND != "None") && (SRV_PCOUP_G3_AUX_BAND != "None")>
     /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
 <#else>
     /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
@@ -134,20 +144,62 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
     #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
 </#if>
 
-    if (branch == SRV_PLC_PCOUP_MAIN_BRANCH)
+<#if SRV_PCOUP_G3_MAIN_BAND != "None">
+  <#if SRV_PCOUP_G3_MAIN_BAND == "CEN-A">
+    if (band == G3_CEN_A)
     {
         /* PLC PHY Coupling parameters for Main transmission branch */
         return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
     }
-<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-
-    if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "CEN-B">
+    if (band == G3_CEN_B)
     {
-        /* PLC PHY Coupling parameters for Auxiliary transmission branch */
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
+    }
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "FCC">
+    if (band == G3_FCC)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
+    }
+  <#elseif SRV_PCOUP_G3_MAIN_BAND == "ARIB">
+    if (band == G3_ARIB)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
+    }
+  </#if>
+
+</#if>
+<#if SRV_PCOUP_G3_AUX_BAND != "None">
+  <#if SRV_PCOUP_G3_AUX_BAND == "CEN-A">
+    if (band == G3_CEN_A)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
         return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
     }
-</#if>
+  <#elseif SRV_PCOUP_G3_AUX_BAND == "CEN-B">
+    if (band == G3_CEN_B)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
+    }
+  <#elseif SRV_PCOUP_G3_AUX_BAND == "FCC">
+    if (band == G3_FCC)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
+    }
+  <#elseif SRV_PCOUP_G3_AUX_BAND == "ARIB">
+    if (band == G3_ARIB)
+    {
+        /* PLC PHY Coupling parameters for Main transmission branch */
+        return (SRV_PLC_PCOUP_DATA *)&srvPlcCoupAux;
+    }
+  </#if>
 
+</#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
@@ -156,11 +208,11 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(SRV_PLC_PCOUP_BRANCH branch)
 </#if>
     /* MISRA C-2012 deviation block end */
 
-    /* Transmission branch not recognized */
+    /* G3-PLC PHY band not recognized */
     return NULL;
 }
 
-bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
+bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, uint8_t phyBand)
 {
     SRV_PLC_PCOUP_DATA *pCoupValues;
     bool result, resultOut;
@@ -171,11 +223,11 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
 </#if>
 
     /* Get PLC PHY Coupling parameters for the desired transmission branch */
-    pCoupValues = SRV_PCOUP_Get_Config(branch);
+    pCoupValues = SRV_PCOUP_Get_Config(phyBand);
 
     if (pCoupValues == NULL)
     {
-        /* Transmission branch not recognized */
+        /* G3-PLC PHY not recognized */
         return false;
     }
 
@@ -342,39 +394,7 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, SRV_PLC_PCOUP_BRANCH branch)
     return result;
 }
 
-SRV_PLC_PCOUP_BRANCH SRV_PCOUP_Get_Default_Branch( void )
+uint8_t SRV_PCOUP_Get_Default_Phy_Band( void )
 {
-    return SRV_PCOUP_DEFAULT_BRANCH;
-}
-
-uint8_t SRV_PCOUP_Get_Phy_Band(SRV_PLC_PCOUP_BRANCH branch)
-{
-    if (branch == SRV_PLC_PCOUP_MAIN_BRANCH)
-    {
-        /* PHY band for Main transmission branch */
-<#if (SRV_PCOUP_G3_MAIN_BAND == "CEN-A")>
-        return (uint8_t)G3_CEN_A;
-<#elseif (SRV_PCOUP_G3_MAIN_BAND == "CEN-B")>
-       return (uint8_t)G3_CEN_B;
-<#elseif (SRV_PCOUP_G3_MAIN_BAND == "FCC")>
-       return (uint8_t)G3_FCC;
-<#else>
-       return (uint8_t)G3_ARIB;
-</#if>
-   }
-<#if (SRV_PCOUP_G3_MAIN_BAND == "FCC" || SRV_PCOUP_G3_MAIN_BAND == "ARIB") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-
-    if (branch == SRV_PLC_PCOUP_AUXILIARY_BRANCH)
-    {
-        /* PHY band for Main Auxiliary branch */
-  <#if (SRV_PCOUP_G3_AUX_BAND == "CEN-A")>
-        return (uint8_t)G3_CEN_A;
-  <#else>
-        return (uint8_t)G3_CEN_B;
-  </#if>
-    }
-</#if>
-
-    /* Transmission branch not recognized */
-    return (uint8_t)G3_INVALID;
+    return (uint8_t)SRV_PCOUP_DEFAULT_BAND;
 }

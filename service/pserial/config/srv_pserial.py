@@ -136,3 +136,52 @@ def instantiateComponent(pSerialComponentCommon):
     pSerialSystemDefIncFile.setOutputName("core.LIST_SYSTEM_DEFINITIONS_H_INCLUDES")
     pSerialSystemDefIncFile.setSourcePath("service/pserial/templates/system/system_definitions.h.ftl")
     pSerialSystemDefIncFile.setMarkup(True)
+
+    # Check PLC protocol
+    plcComponent = Database.getComponentByID("drvPlcPhy")
+    if plcComponent != None:
+        protocol = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
+        if protocol == "G3-PLC":
+            band = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_BAND_IN_USE")
+            if (band == 1):
+                pSerialPLCProfile.setSelectedKey("G3_CEN_A")
+            elif (band == 2):
+                pSerialPLCProfile.setSelectedKey("G3_FCC")
+            elif (band == 4):
+                pSerialPLCProfile.setSelectedKey("G3_CEN_B")
+            elif (band == 6):
+                defaultBand = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENA")
+                if defaultBand == "FCC":
+                    pSerialPLCProfile.setSelectedKey("G3_FCC")
+                else:
+                    pSerialPLCProfile.setSelectedKey("G3_CEN_A")
+            elif (band == 7):
+                defaultBand = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENB")
+                if defaultBand == "FCC":
+                    pSerialPLCProfile.setSelectedKey("G3_FCC")
+                else:
+                    pSerialPLCProfile.setSelectedKey("G3_CEN_B")
+        else:
+            pSerialPLCProfile.setSelectedKey("PRIME")
+    else:
+        plcComponent = Database.getComponentByID("drvG3MacRt")
+        if plcComponent != None:
+            band = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_BAND_IN_USE")
+            if (band == 1):
+                pSerialPLCProfile.setSelectedKey("G3_CEN_A")
+            elif (band == 2):
+                pSerialPLCProfile.setSelectedKey("G3_FCC")
+            elif (band == 4):
+                pSerialPLCProfile.setSelectedKey("G3_CEN_B")
+            elif (band == 5):
+                defaultBand = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENA")
+                if defaultBand == "FCC":
+                    pSerialPLCProfile.setSelectedKey("G3_FCC")
+                else:
+                    pSerialPLCProfile.setSelectedKey("G3_CEN_A")
+            elif (band == 6):
+                defaultBand = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENB")
+                if defaultBand == "FCC":
+                    pSerialPLCProfile.setSelectedKey("G3_FCC")
+                else:
+                    pSerialPLCProfile.setSelectedKey("G3_CEN_B")

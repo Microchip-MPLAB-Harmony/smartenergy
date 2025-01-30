@@ -575,7 +575,6 @@ typedef void ( *DRV_G3_MACRT_SLEEP_IND_CALLBACK )( void );
     DRV_G3_MACRT_INIT drvPLCMacRtInitData = {
         .plcHal = &drvPLCHalAPI,
         .numClients = DRV_G3_MACRT_CLIENTS_NUMBER_IDX,
-        .plcProfile = DRV_G3_MACRT_PLC_PROFILE,
         .binStartAddress = (uint32_t)&g3_macrt_bin_start,
         .binEndAddress = (uint32_t)&g3_macrt_bin_end,
         .secure = DRV_G3_MACRT_SECURE,
@@ -1714,6 +1713,42 @@ void DRV_G3_MACRT_EnableTX( const DRV_HANDLE handle, bool enable );
 */
 
 void DRV_G3_MACRT_SetCoordinator(const DRV_HANDLE handle);
+
+//***************************************************************************
+/*
+  Function:
+    void DRV_G3_MACRT_SetBand( const DRV_HANDLE handle, MAC_RT_BAND band )
+
+  Summary:
+    Sets G3-PLC band.
+
+  Description:
+    This function allows a client to set the G3-PLC band.
+
+  Precondition:
+    DRV_G3_MACRT_Open must have been called to obtain a valid opened device
+    handle.
+
+  Parameters:
+    handle - A valid open-instance handle, returned from the driver's open
+             routine.
+
+    band   - G3-PLC Band to set.
+
+  Returns:
+    None.
+
+  Example:
+    <code>
+    DRV_HANDLE drvHandler;
+
+    DRV_G3_MACRT_SetBand(drvHandler, G3_FCC);
+
+    </code>
+
+*/
+
+void DRV_G3_MACRT_SetBand(const DRV_HANDLE handle, MAC_RT_BAND band);
 
 //***************************************************************************
 /*

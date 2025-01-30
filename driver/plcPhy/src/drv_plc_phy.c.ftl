@@ -106,7 +106,6 @@ SYS_MODULE_OBJ DRV_PLC_PHY_Initialize(
 
     gDrvPlcPhyObj.plcHal                = plcPhyInit->plcHal;
     gDrvPlcPhyObj.nClientsMax           = plcPhyInit->numClients;
-    gDrvPlcPhyObj.plcProfile            = plcPhyInit->plcProfile;
     gDrvPlcPhyObj.binSize               = plcPhyInit->binEndAddress - plcPhyInit->binStartAddress;
     gDrvPlcPhyObj.binStartAddress       = plcPhyInit->binStartAddress;
     gDrvPlcPhyObj.secure                = plcPhyInit->secure;

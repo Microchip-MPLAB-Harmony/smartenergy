@@ -76,83 +76,83 @@
 #define DRV_PLC_PHY_CLIENTS_NUMBER_IDX        1U
 <#if DRV_PLC_BAND_IN_USE == 1>
 #define DRV_PLC_PHY_PROFILE                   0U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_A
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
 #define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36010103UL
 <#elseif DRV_PLC_BAND_IN_USE == 2>
 #define DRV_PLC_PHY_PROFILE                   2U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_FCC
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
 #define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36020103UL
 <#elseif DRV_PLC_BAND_IN_USE == 3>
 #define DRV_PLC_PHY_PROFILE                   3U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_ARIB
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
 #define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36030103UL
 <#elseif DRV_PLC_BAND_IN_USE == 4>
 #define DRV_PLC_PHY_PROFILE                   1U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_B
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
 #define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36040103UL
 <#elseif DRV_PLC_BAND_IN_USE == 5>
 #define DRV_PLC_PHY_PROFILE                   4U
-#define DRV_PLC_PHY_NUM_CARRIERS              97U
+#define DRV_PLC_PHY_NUM_CARRIERS_PER_CHANNEL  97U
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3600U
 #define DRV_PLC_PHY_HOST_VERSION              0x36000300UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36000003UL
+<#elseif DRV_PLC_BAND_IN_USE == 6>
+  <#if DRV_PLC_COUP_DEFAULT_G3_BAND_CENA == "CENELEC-A">
+#define DRV_PLC_PHY_PROFILE                   0U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36010103UL
+  <#else>
+#define DRV_PLC_PHY_PROFILE                   2U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36020103UL
+  </#if>
+<#elseif DRV_PLC_BAND_IN_USE == 7>
+  <#if DRV_PLC_COUP_DEFAULT_G3_BAND_CENB == "CENELEC-B">
+#define DRV_PLC_PHY_PROFILE                   1U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36040103UL
+  <#else>
+#define DRV_PLC_PHY_PROFILE                   2U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36020103UL
+  </#if>
+<#elseif DRV_PLC_BAND_IN_USE == 8>
+  <#if DRV_PLC_COUP_DEFAULT_G3_BAND_CENA == "CENELEC-A">
+#define DRV_PLC_PHY_PROFILE                   0U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36010103UL
+  <#else>
+#define DRV_PLC_PHY_PROFILE                   3U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36030103UL
+  </#if>
+<#elseif DRV_PLC_BAND_IN_USE == 9>
+  <#if DRV_PLC_COUP_DEFAULT_G3_BAND_CENB == "CENELEC-B">
+#define DRV_PLC_PHY_PROFILE                   1U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36040103UL
+  <#else>
+#define DRV_PLC_PHY_PROFILE                   3U
+#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
+#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
+#define DRV_PLC_PHY_HOST_PHY                  0x36030103UL
+  </#if>
 <#elseif DRV_PLC_BAND_IN_USE == 10>
 #define DRV_PLC_PHY_PROFILE                   8U
 #define DRV_PLC_PHY_HOST_PRODUCT              0x3608U
 #define DRV_PLC_PHY_HOST_VERSION              0x36080000UL
 #define DRV_PLC_PHY_HOST_PHY                  0x36080000UL
-<#elseif (DRV_PLC_BAND_IN_USE == 6 || DRV_PLC_BAND_IN_USE == 7)>
-    <#if DRV_PLC_G3_BAND_AUX_ACTIVE == true>
-        <#if (DRV_PLC_BAND_IN_USE == 6)>
-#define DRV_PLC_PHY_PROFILE                   0U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_A
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36010103UL
-        <#else>
-#define DRV_PLC_PHY_PROFILE                   1U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_B
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36040103UL
-        </#if>
-    <#else>
-#define DRV_PLC_PHY_PROFILE                   2U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_FCC
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36020103UL
-    </#if>
-<#elseif (DRV_PLC_BAND_IN_USE == 8 || DRV_PLC_BAND_IN_USE == 9)>
-    <#if DRV_PLC_G3_BAND_AUX_ACTIVE == true>
-        <#if (DRV_PLC_BAND_IN_USE == 8)>
-#define DRV_PLC_PHY_PROFILE                   0U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_A
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36010103UL
-        <#else>
-#define DRV_PLC_PHY_PROFILE                   1U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_CENELEC_B
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36040103UL
-        </#if>
-    <#else>
-#define DRV_PLC_PHY_PROFILE                   3U
-#define DRV_PLC_PHY_NUM_CARRIERS              NUM_CARRIERS_ARIB
-#define DRV_PLC_PHY_HOST_PRODUCT              0x3601U
-#define DRV_PLC_PHY_HOST_VERSION              0x36010300UL
-#define DRV_PLC_PHY_HOST_PHY                  0x36030103UL
-    </#if>
 </#if>
 #define DRV_PLC_PHY_HOST_DESC                 "${__PROCESSOR?string}"
 #define DRV_PLC_PHY_HOST_MODEL                3U

@@ -32,6 +32,7 @@ global g3MacRtBinFileCENA
 global g3MacRtBinFileCENB
 global g3MacRtBinFileFCC
 global g3MacRtBinFileARIB
+global g3MacRtBinFileMultiband
 global g3MacRtAsmBinFile
 
 global plcBandInUse
@@ -465,30 +466,51 @@ def setPlcBandInUse(plcBand):
 
     if (plcBand == "CEN-A"):
         plcBandInUse.setValue(PLC_PROFILE_G3_CEN_A)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
     elif (plcBand == "CEN-B"):
         plcBandInUse.setValue(PLC_PROFILE_G3_CEN_B)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
     elif (plcBand == "FCC"):
         plcBandInUse.setValue(PLC_PROFILE_G3_FCC)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_FCC", {})
     elif (plcBand == "ARIB"):
         plcBandInUse.setValue(PLC_PROFILE_G3_ARIB)
+        dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_ARIB", {})
 
 def setPlcMultiBandInUse(g3_band, g3_aux_band):
     if (g3_band == "FCC"):
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_A)
+            if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENA") == "CENELEC-A"):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
+            else:
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_FCC", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_FCC_CEN_B)
+            if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENB") == "CENELEC-B"):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
+            else:
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_FCC", {})
     else:
         if (g3_aux_band == "CEN-A"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_A)
+            if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENA") == "CENELEC-A"):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENA", {})
+            else:
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_ARIB", {})
         elif (g3_aux_band == "CEN-B"):
             plcBandInUse.setValue(PLC_PROFILE_G3_ARIB_CEN_B)
+            if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENB") == "CENELEC-B"):
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_CENB", {})
+            else:
+                dict = Database.sendMessage("srv_psniffer", "SRV_PSNIFFER_G3_ARIB", {})
 
 def removeAllBinFiles():
     g3MacRtBinFileCENA.setEnabled(False)
     g3MacRtBinFileCENB.setEnabled(False)
     g3MacRtBinFileFCC.setEnabled(False)
     g3MacRtBinFileARIB.setEnabled(False)
+    g3MacRtBinFileMultiband.setEnabled(False)
 
 def includeBinFile(plcBand):
     if (plcBand == "CEN-A"):
@@ -499,19 +521,35 @@ def includeBinFile(plcBand):
         g3MacRtBinFileFCC.setEnabled(True)
     elif (plcBand == "ARIB"):
         g3MacRtBinFileARIB.setEnabled(True)
+    else:
+        g3MacRtBinFileMultiband.setEnabled(True)
 
 def updateBinFiles():
     dict = {}
     removeAllBinFiles()
-    g3_band = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_G3_BAND")
-    includeBinFile(g3_band)
-    setPlcBandInUse(g3_band)
-    if (g3_band == "FCC" or g3_band =="ARIB") and (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_MULTIBAND") == True) :
-        g3_aux_band = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_G3_BAND_AUX")
-        includeBinFile(g3_aux_band)
-        setPlcMultiBandInUse(g3_band, g3_aux_band)
+    drvPlcMode = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
+    if (drvPlcMode == "PL460"):
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL460")
+    else:
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL360")
 
-    # Update Coupling Parameters
+    if ("only CENELEC-A" in g3_coupSettings):
+        includeBinFile("CEN-A")
+        setPlcBandInUse("CEN-A")
+    elif ("only CENELEC-B" in g3_coupSettings):
+        includeBinFile("CEN-B")
+        setPlcBandInUse("CEN-B")
+    elif ("only FCC" in g3_coupSettings):
+        includeBinFile("FCC")
+        setPlcBandInUse("FCC")
+    elif ("FCC + CENELEC-A" in g3_coupSettings):
+        includeBinFile("Multiband")
+        setPlcMultiBandInUse("FCC", "CEN-A")
+        
+    elif ("FCC + CENELEC-B" in g3_coupSettings):
+        includeBinFile("Multiband")
+        setPlcMultiBandInUse("FCC", "CEN-B")
+    
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
 
     # Check Internal/External Addressing
@@ -542,48 +580,43 @@ def showSleepPin(symbol, event):
 def showThermalMonitorPin(symbol, event):
     symbol.setVisible(event["value"])
 
-def showG3HighAttenuation(symbol, event):
-    global plcDriverMode
-    global plcG3Band
-
-    if (plcDriverMode.getValue() == "PL360"):
-        symbol.setVisible(False)
-    else:
-        if (plcG3Band.getValue() == "FCC") or (plcG3Band.getValue() == "ARIB"):
-            symbol.setVisible(True)
-        else:
-            symbol.setVisible(False)
-
-def showG3InternalDriver(symbol, event):
-    global plcDriverMode
-
-    if (event["symbol"].getValue() == "CEN-B") and plcDriverMode.getValue() == "PL360":
-        symbol.setVisible(True)
-    else:
-        symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
-
-def showG3Multiband(symbol, event):
-    if (event["symbol"].getValue() == "FCC") or (event["symbol"].getValue() == "ARIB"):
-        symbol.setVisible(True)
-    else:
-        symbol.setVisible(False)
-        # symbol.setReadOnly(True)
-        # symbol.setValue(False)
-        # symbol.setReadOnly(False)
-
-def showG3AuxBand(symbol, event):
-    if (event["value"] == True):
+def showG3CoupSettings460(symbol, event):
+    if (event["value"] == "PL460"):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
 
-def resetPlcBand(symbol, event):
-    symbol.setReadOnly(True)
-    symbol.setValue("CEN-A")
-    symbol.setReadOnly(False)
+def showG3CoupSettings360(symbol, event):
+    if (event["value"] == "PL360"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
+
+def showG3DefaultBandCENA(symbol, event):
+    drvPlcMode = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
+        
+    if (drvPlcMode == "PL460"):
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL460")
+    else:
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL360")
+
+    if ("FCC + CENELEC-A" in g3_coupSettings):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
+
+def showG3DefaultBandCENB(symbol, event):
+    drvPlcMode = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
+        
+    if (drvPlcMode == "PL460"):
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL460")
+    else:
+        g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL360")
+
+    if ("FCC + CENELEC-B" in g3_coupSettings):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
 
 def enablePL460Capabilities(symbol, event):
     if (event["value"] == "PL460"):
@@ -848,7 +881,7 @@ def instantiateComponent(g3MacRtComponent):
         currentNPCS = 0
 
         for npcs in range(0, spiNumNPCS):
-            spiNpcsUsed.addKey("NPCS" + str(npcs), str(npcs), "SPI NPCS" + str(npcs) + " used by RF215 Driver")
+            spiNpcsUsed.addKey("NPCS" + str(npcs), str(npcs), "SPI NPCS" + str(npcs) + " used by PLC Driver")
 
     global spiNumCSR
     spiNumCSR = g3MacRtComponent.createIntegerSymbol("DRV_PLC_SPI_NUM_CSR", None)
@@ -1204,6 +1237,13 @@ def instantiateComponent(g3MacRtComponent):
     g3MacRtBinFileARIB.setDestPath("driver/plc/g3MacRt/bin")
     g3MacRtBinFileARIB.setEnabled(False)
 
+    global g3MacRtBinFileMultiband
+    g3MacRtBinFileMultiband = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_MULTIBAND", None)
+    g3MacRtBinFileMultiband.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_MULTIBAND.bin")
+    g3MacRtBinFileMultiband.setOutputName("G3_MAC_RT_MULTIBAND.bin")
+    g3MacRtBinFileMultiband.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileMultiband.setEnabled(False)
+
     global g3MacRtAsmBinFile
     g3MacRtAsmBinFile = g3MacRtComponent.createFileSymbol("MACRT_ASM_BIN", None)
     g3MacRtAsmBinFile.setSourcePath("driver/g3MacRt/src/bin/drv_g3_macrt_bin.S.ftl")
@@ -1215,64 +1255,60 @@ def instantiateComponent(g3MacRtComponent):
 
     ##### Coupling Settings : G3  ####################################################
 
-    updBinFilesCtrl = g3MacRtComponent.createBooleanSymbol("DRV_PLC_UPD_BIN_FILES", None)
-    updBinFilesCtrl.setLabel("updBinFilesCtrl")
-    updBinFilesCtrl.setDescription("Auxiliary control")
-    updBinFilesCtrl.setVisible(False)
-    updBinFilesCtrl.setDefaultValue(False)
+    plcCoupSettingsOptions460 = [
+        "CEN-A (only CENELEC-A; main branch)",
+        "CEN-B (only CENELEC-B; main branch)",
+        "FCC default (only FCC; main branch)",
+        "FCC high attenuation (only FCC; main branch)",
+        "Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)",
+        "Multiband FCC default & CEN-A (only CENELEC-A; auxiliary branch)",
+        "Multiband FCC default & CEN-B (FCC + CENELEC-B; main branch + auxiliary branch)",
+        "Multiband FCC default & CEN-B (only CENELEC-B; auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-A (only CENELEC-A; auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-B (FCC + CENELEC-B; main branch + auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-B (only CENELEC-B; auxiliary branch)",
+        "Multiband single-branch FCC & CEN-A (FCC + CENELEC-A; main branch)",
+        "Multiband single-branch FCC & CEN-A (only FCC; main branch)",
+        "Multiband single-branch FCC & CEN-A (only CENELEC-A; main branch)",
+    ]
 
-    global plcCoupG3Settings
-    plcCoupG3Settings = g3MacRtComponent.createMenuSymbol("DRV_PLC_COUP_G3_SETTING", None)
-    plcCoupG3Settings.setLabel("PLC Coupling Settings")
-    plcCoupG3Settings.setDescription("Coupling Settings")
-    plcCoupG3Settings.setVisible(True)
-    plcCoupG3Settings.setHelp(plc_mac_rt_helpkeyword)
+    plcCoupSettings460 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupSettingsOptions460)
+    plcCoupSettings460.setLabel("PLC Coupling and Band Settings")
+    plcCoupSettings460.setDefaultValue("Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)")
+    plcCoupSettings460.setVisible(True)
+    plcCoupSettings460.setHelp(plc_mac_rt_helpkeyword)
+    plcCoupSettings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE"])
 
-    global plcG3Band
-    # plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC", "ARIB"])
-    plcG3Band = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND", plcCoupG3Settings, ["CEN-A", "CEN-B", "FCC"])
-    plcG3Band.setLabel("Main Branch")
-    plcG3Band.setDefaultValue("CEN-A")
-    plcG3Band.setHelp(plc_mac_rt_helpkeyword)
-    # plcG3Band.setDependencies(resetPlcBand, ["DRV_PLC_MODE"])
+    plcCoupSettingsOptions360 = [
+        "PLCOUP007 (only CENELEC-A; single branch; external driver)",
+        "PLCOUP014 (only CENELEC-B; external driver)",
+        "PLCOUP012 (only CENELEC-B; single branch; internal driver)",
+        "PLCOUP006 (only FCC; double branch; external driver)",
+        "PLCOUP011 (FCC + CENELEC-A; double branch; external driver)",
+        "PLCOUP011 (only FCC; single branch; external driver)",
+    ]
 
-    plcCoupG3Internal = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_INTERNAL", plcCoupG3Settings)
-    plcCoupG3Internal.setLabel("Internal Driver")
-    plcCoupG3Internal.setDescription("Internal Driver")
-    plcCoupG3Internal.setVisible(False)
-    plcCoupG3Internal.setDefaultValue(False)
-    plcCoupG3Internal.setHelp(plc_mac_rt_helpkeyword)
-    plcCoupG3Internal.setDependencies(showG3InternalDriver, ["DRV_PLC_G3_BAND"])
+    plcCoupSettings360 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupSettingsOptions360)
+    plcCoupSettings360.setLabel("PLC Coupling and Band Settings")
+    plcCoupSettings360.setDefaultValue("PLCOUP007 (only CENELEC-A)")
+    plcCoupSettings360.setVisible(False)
+    plcCoupSettings360.setHelp(plc_mac_rt_helpkeyword)
+    plcCoupSettings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE"])
 
-    plcCoupGMultiBand = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_MULTIBAND", plcCoupG3Settings)
-    plcCoupGMultiBand.setLabel("Multiband")
-    plcCoupGMultiBand.setDescription("Multiband")
-    plcCoupGMultiBand.setVisible(False)
-    plcCoupGMultiBand.setDefaultValue(False)
-    plcCoupGMultiBand.setHelp(plc_mac_rt_helpkeyword)
-    plcCoupGMultiBand.setDependencies(showG3Multiband, ["DRV_PLC_G3_BAND"])
+    plcCoupDefaultG3BandCENA = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_DEFAULT_G3_BAND_CENA", None, ["FCC", "CENELEC-A"])
+    plcCoupDefaultG3BandCENA.setLabel("Default G3-PLC Band")
+    plcCoupDefaultG3BandCENA.setDefaultValue("FCC")
+    plcCoupDefaultG3BandCENA.setVisible(True)
+    plcCoupDefaultG3BandCENA.setHelp(plc_mac_rt_helpkeyword)
+    plcCoupDefaultG3BandCENA.setDependencies(showG3DefaultBandCENA, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_G3_SETTING_PL360"])
 
-    plcG3BandAux = g3MacRtComponent.createComboSymbol("DRV_PLC_G3_BAND_AUX", plcCoupGMultiBand, ["CEN-A", "CEN-B"])
-    plcG3BandAux.setLabel("Auxiliary Branch")
-    plcG3BandAux.setDefaultValue("CEN-A")
-    plcG3BandAux.setVisible(False)
-    plcG3BandAux.setHelp(plc_mac_rt_helpkeyword)
-    plcG3BandAux.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
-
-    plcG3BandAuxActive = g3MacRtComponent.createBooleanSymbol("DRV_PLC_G3_BAND_AUX_ACTIVE", plcCoupGMultiBand)
-    plcG3BandAuxActive.setLabel("Set as default branch")
-    plcG3BandAuxActive.setDefaultValue(False)
-    plcG3BandAuxActive.setVisible(False)
-    plcG3BandAuxActive.setHelp(plc_mac_rt_helpkeyword)
-    plcG3BandAuxActive.setDependencies(showG3AuxBand, ["DRV_PLC_COUP_G3_MULTIBAND"])
-
-    plcCoupG3HighAttenuation = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_G3_HIGH_ATTENUATION", plcG3Band)
-    plcCoupG3HighAttenuation.setLabel("FCC high attenuation branch")
-    plcCoupG3HighAttenuation.setDescription("FCC high attenuation")
-    plcCoupG3HighAttenuation.setVisible(False)
-    plcCoupG3HighAttenuation.setDefaultValue(False)
-    plcCoupG3HighAttenuation.setHelp(plc_mac_rt_helpkeyword)
-    plcCoupG3HighAttenuation.setDependencies(showG3HighAttenuation, ["DRV_PLC_G3_BAND", "DRV_PLC_MODE"])
+    plcCoupDefaultG3BandCENB = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_DEFAULT_G3_BAND_CENB", None, ["FCC", "CENELEC-B"])
+    plcCoupDefaultG3BandCENB.setLabel("Default G3-PLC Band")
+    plcCoupDefaultG3BandCENB.setDefaultValue("FCC")
+    plcCoupDefaultG3BandCENB.setVisible(False)
+    plcCoupDefaultG3BandCENB.setHelp(plc_mac_rt_helpkeyword)
+    plcCoupDefaultG3BandCENB.setDependencies(showG3DefaultBandCENB, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_G3_SETTING_PL360"])
 
     ##### Coupling Settings : Generic  ####################################################
 
