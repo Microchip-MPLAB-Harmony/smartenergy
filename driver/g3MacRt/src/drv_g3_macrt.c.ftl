@@ -327,7 +327,7 @@ void DRV_G3_MACRT_Tasks( SYS_MODULE_OBJ object )
     /* Suspend task until semaphore is posted or timeout expires */
     if (gDrvG3MacRtObj.semaphoreID != NULL)
     {
-        uint16_t waitMS = 1;
+        OSAL_TICK_TYPE waitMS = 1;
 
         /* If PLC device is running, wait forever. Otherwise, wait for 1 ms. */
         if ((gDrvG3MacRtObj.state == DRV_G3_MACRT_STATE_READY) ||
