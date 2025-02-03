@@ -709,20 +709,28 @@ def updateG3CouplingParameters():
     global pCoupPRIMETXChannels
     global pCoupG3TXBranches
 
-    if Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE") != None:
+    plcDevice = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE")
+    if plcDevice != None:
         plcDriver = "drvPlcPhy"
-    elif Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE") != None:
-        plcDriver = "drvG3MacRt"
     else:
-        plcDriver = ""
-        print("updateG3CouplingParameters: DRV PLC MODE not found")
+        plcDevice = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
+        if plcDevice != None:
+            plcDriver = "drvG3MacRt"
+        else:
+            plcDriver = ""
+
+    if (plcDevice == "PL460"):
+        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL460")
+    else:
+        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL360")
+    
+    if g3_coupSettings == None:
+        print("updateG3CouplingParameters: DRV PLC Coupling Settings not found")
         return
 
     # Show G3 setting, hide PRIME setting
     pCoupG3TXBranches.setVisible(True)
     pCoupPRIMETXChannels.setVisible(False)
-
-    plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
 
     # Enable G3 COUP files
     pCoupG3SourceFile.setEnabled(True)
@@ -743,11 +751,6 @@ def updateG3CouplingParameters():
     auxiliaryBand = False
     pCoupG3AuxPhyBand.setValue("None")
 
-    if (plcDevice == "PL460"):
-        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL460")
-    else:
-        g3_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_G3_SETTING_PL360")
-            
     if (plcDevice == "PL460"):
         if (g3_coupSettings == "CEN-A (only CENELEC-A; main branch)"):
             # print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
