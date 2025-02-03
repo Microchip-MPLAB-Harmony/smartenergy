@@ -403,15 +403,18 @@ def handleMessage(messageID, args):
                 
         elif signalId.lower() == "cs":
             pinDescr = functionValue.split("_")[-1].lower()
-            if "io3" in pinDescr:
+            if "io3" in pinDescr: #flexcom
                 symbolName = "DRV_PLC_SPI_NPCS"
                 symbolValue = 0 # NPCS0
-            elif "io4" in pinDescr:
+            elif "io4" in pinDescr: #flexcom
                 symbolName = "DRV_PLC_SPI_NPCS"
                 symbolValue = 1 # NPCS1
-            elif "pad" in pinDescr:
+            elif "pad" in pinDescr: #sercom
                 symbolName = "DRV_PLC_SPI_CS_PIN"
                 symbolValue = getIndexFromPinId(pinId)
+            elif "npcs" in pinDescr: #spi
+                symbolName = "DRV_PLC_SPI_NPCS"
+                symbolValue = int("".join(filter(lambda x: x.isdigit(), pinDescr)))
 
         if symbolValue != None:
             res = Database.setSymbolValue('drvG3MacRt', symbolName, symbolValue)
