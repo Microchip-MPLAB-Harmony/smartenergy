@@ -533,13 +533,13 @@ def updateBinFiles():
     else:
         g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL360")
 
-    if ("only CENELEC-A" in g3_coupSettings):
+    if ("CENELEC-A only" in g3_coupSettings):
         includeBinFile("CEN-A")
         setPlcBandInUse("CEN-A")
-    elif ("only CENELEC-B" in g3_coupSettings):
+    elif ("CENELEC-B only" in g3_coupSettings):
         includeBinFile("CEN-B")
         setPlcBandInUse("CEN-B")
-    elif ("only FCC" in g3_coupSettings):
+    elif ("FCC only" in g3_coupSettings):
         includeBinFile("FCC")
         setPlcBandInUse("FCC")
     elif ("FCC + CENELEC-A" in g3_coupSettings):
@@ -1256,21 +1256,21 @@ def instantiateComponent(g3MacRtComponent):
     ##### Coupling Settings : G3  ####################################################
 
     plcCoupSettingsOptions460 = [
-        "CEN-A (only CENELEC-A; main branch)",
-        "CEN-B (only CENELEC-B; main branch)",
-        "FCC default (only FCC; main branch)",
-        "FCC high attenuation (only FCC; main branch)",
+        "CEN-A (CENELEC-A only; main branch)",
+        "CEN-B (CENELEC-B only; main branch)",
+        "FCC default (FCC only; main branch)",
+        "FCC high attenuation (FCC only; main branch)",
         "Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)",
-        "Multiband FCC default & CEN-A (only CENELEC-A; auxiliary branch)",
+        "Multiband FCC default & CEN-A (CENELEC-A only; auxiliary branch)",
         "Multiband FCC default & CEN-B (FCC + CENELEC-B; main branch + auxiliary branch)",
-        "Multiband FCC default & CEN-B (only CENELEC-B; auxiliary branch)",
+        "Multiband FCC default & CEN-B (CENELEC-B only; auxiliary branch)",
         "Multiband FCC high attenuation & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)",
-        "Multiband FCC high attenuation & CEN-A (only CENELEC-A; auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-A (CENELEC-A only; auxiliary branch)",
         "Multiband FCC high attenuation & CEN-B (FCC + CENELEC-B; main branch + auxiliary branch)",
-        "Multiband FCC high attenuation & CEN-B (only CENELEC-B; auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-B (CENELEC-B only; auxiliary branch)",
         "Multiband single-branch FCC & CEN-A (FCC + CENELEC-A; main branch)",
-        "Multiband single-branch FCC & CEN-A (only FCC; main branch)",
-        "Multiband single-branch FCC & CEN-A (only CENELEC-A; main branch)",
+        "Multiband single-branch FCC & CEN-A (FCC only; main branch)",
+        "Multiband single-branch FCC & CEN-A (CENELEC-A only; main branch)",
     ]
 
     plcCoupSettings460 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupSettingsOptions460)
@@ -1281,17 +1281,17 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupSettings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE"])
 
     plcCoupSettingsOptions360 = [
-        "PLCOUP007 (only CENELEC-A; single branch; external driver)",
-        "PLCOUP014 (only CENELEC-B; external driver)",
-        "PLCOUP012 (only CENELEC-B; single branch; internal driver)",
-        "PLCOUP006 (only FCC; double branch; external driver)",
+        "PLCOUP007 (CENELEC-A only; single branch; external driver)",
+        "PLCOUP014 (CENELEC-B only; external driver)",
+        "PLCOUP012 (CENELEC-B only; single branch; internal driver)",
+        "PLCOUP006 (FCC only; double branch; external driver)",
         "PLCOUP011 (FCC + CENELEC-A; double branch; external driver)",
-        "PLCOUP011 (only FCC; single branch; external driver)",
+        "PLCOUP011 (FCC only; single branch; external driver)",
     ]
 
     plcCoupSettings360 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupSettingsOptions360)
     plcCoupSettings360.setLabel("PLC Coupling and Band Settings")
-    plcCoupSettings360.setDefaultValue("PLCOUP007 (only CENELEC-A)")
+    plcCoupSettings360.setDefaultValue("PLCOUP007 (CENELEC-A only)")
     plcCoupSettings360.setVisible(False)
     plcCoupSettings360.setHelp(plc_mac_rt_helpkeyword)
     plcCoupSettings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE"])

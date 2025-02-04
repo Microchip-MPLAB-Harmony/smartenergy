@@ -752,7 +752,7 @@ def updateG3CouplingParameters():
     pCoupG3AuxPhyBand.setValue("None")
 
     if (plcDevice == "PL460"):
-        if (g3_coupSettings == "CEN-A (only CENELEC-A; main branch)"):
+        if (g3_coupSettings == "CEN-A (CENELEC-A only; main branch)"):
             # print("UpdatePlcCouplingParameters -> PL460 G3 CEN-A")
             rms_high  = rms_high_cena
             rms_vlow  = rms_vlow_cena
@@ -765,7 +765,7 @@ def updateG3CouplingParameters():
             pCoupG3MainPhyBand.setValue("CEN-A")
             pCoupG3MainBranch.setLabel("Main Transmission branch")
 
-        elif (g3_coupSettings == "CEN-B (only CENELEC-B; main branch)"):
+        elif (g3_coupSettings == "CEN-B (CENELEC-B only; main branch)"):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-B")
             rms_high  = rms_high_cenb
             rms_vlow  = rms_vlow_cenb
@@ -778,7 +778,7 @@ def updateG3CouplingParameters():
             pCoupG3MainPhyBand.setValue("CEN-B")
             pCoupG3MainBranch.setLabel("Main Transmission branch")
         
-        elif ("FCC default (only FCC" in g3_coupSettings):
+        elif ("FCC default (FCC only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
             rms_high  = rms_high_fcc
             rms_vlow  = rms_vlow_fcc
@@ -791,7 +791,7 @@ def updateG3CouplingParameters():
             pCoupG3MainPhyBand.setValue("FCC")
             pCoupG3MainBranch.setLabel("Main Transmission branch")
         
-        elif ("FCC high attenuation (only FCC" in g3_coupSettings):
+        elif ("FCC high attenuation (FCC only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
             rms_high  = rms_high_fcc_hiAtt
             rms_vlow  = rms_vlow_fcc_hiAtt
@@ -830,7 +830,7 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-A")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
         
-        elif ("FCC default & CEN-A (only CENELEC-A" in g3_coupSettings):
+        elif ("FCC default & CEN-A (CENELEC-A only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
             auxiliaryBand = True
             mainBand = False
@@ -871,7 +871,7 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-B")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
         
-        elif ("FCC default & CEN-B (only CENELEC-B" in g3_coupSettings):
+        elif ("FCC default & CEN-B (CENELEC-B only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
             auxiliaryBand = True
             mainBand = False
@@ -912,7 +912,7 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-A")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
         
-        elif ("FCC high attenuation & CEN-A (only CENELEC-A" in g3_coupSettings):
+        elif ("FCC high attenuation & CEN-A (CENELEC-A only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-A")
             auxiliaryBand = True
             mainBand = False
@@ -953,7 +953,7 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-B")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
         
-        elif ("FCC high attenuation & CEN-B (only CENELEC-B" in g3_coupSettings):
+        elif ("FCC high attenuation & CEN-B (CENELEC-B only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 AUX CEN-B")
             auxiliaryBand = True
             mainBand = False
@@ -994,7 +994,7 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-A")
             pCoupG3AuxBranch.setLabel("Main Transmission branch (ASO1)")
 
-        elif ("Multiband single-branch FCC & CEN-A (only FCC" in g3_coupSettings):
+        elif ("Multiband single-branch FCC & CEN-A (FCC only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC MULTIBAND SINGLE-BRANCH")
             rms_high  = rms_high_mbsb_fcc
             rms_vlow  = rms_vlow_mbsb_fcc
@@ -1007,7 +1007,7 @@ def updateG3CouplingParameters():
             pCoupG3MainPhyBand.setValue("FCC")
             pCoupG3MainBranch.setLabel("Main Transmission branch (ASO0)")
         
-        elif ("Multiband single-branch FCC & CEN-A (only CENELEC-A" in g3_coupSettings):
+        elif ("Multiband single-branch FCC & CEN-A (CENELEC-A only" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 CEN-A MULTIBAND SINGLE-BRANCH")
             auxiliaryBand = True
             mainBand = False
@@ -1086,7 +1086,7 @@ def updateG3CouplingParameters():
             gain_vlow = gain_vlow_fcc_c06
             pCoupG3MainBranch.setLabel("Transmission branch 0 and 1")
         
-        elif ("PLCOUP011 (only FCC" in g3_coupSettings):
+        elif ("PLCOUP011 (FCC only" in g3_coupSettings):
             pCoupG3MainPhyBand.setValue("FCC")
             # print("UpdatePlcCouplingParameters ->  PL360 G3 FCC SB")
             rms_high  = rms_high_fcc_c11
