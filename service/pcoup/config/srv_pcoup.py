@@ -166,8 +166,8 @@ dacc_chn1_drv_sb   = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000
 dacc_chn1_drv_aux  = [0x00000000, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
 				      0x20200000, 0x00004400, 0x0FD20005, 0x000003AA, 0xF0000000, 0x001020F0, 0x000003AA, 0xF0000000, 0x001020FF]
 
-# dacc_chn1_drv_full = [0x00000000, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0x00000000, 0xA92C00FF, 0x1A1A1A1A, \
-# 				      0x00002020, 0x00000044, 0x0FD20005, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF] #TBD
+dacc_chn1_drv_mbsb = [0x00000000, 0x00000000, 0x00000100, 0x00000100, 0x00000000, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
+					  0x00000000, 0x00000000, 0x00000006, 0x00000355, 0x00000000, 0x001020F0, 0x00000355, 0x00000000, 0x001020FF]
 
 rms_high_chn1_c07  = [1725, 1522, 1349, 1202, 1071, 957, 855, 764]
 rms_vlow_chn1_c07  = [4874, 4427, 3986, 3555, 3157, 2795, 2470, 2184]
@@ -190,13 +190,12 @@ thrs_vlow_chn1_drv_aux = thrs_vlow_chn1_c07
 gain_high_chn1_drv_aux = gain_high_chn1_c07
 gain_vlow_chn1_drv_aux = gain_vlow_chn1_c07
 
-# rms_high_chn1_drv_full  = [2226, 1586, 1132, 805, 573, 408, 290, 206] #TBD
-# rms_vlow_chn1_drv_full  = [5920, 4604, 3331, 2374, 1686, 1193, 846, 599] #TBD
-# thrs_high_chn1_drv_full = [0, 0, 0, 0, 0, 0, 0, 0, 1884, 1341, 955, 677, 483, 341, 243, 173] #TBD
-# thrs_vlow_chn1_drv_full = [0, 0, 0, 0, 0, 0, 0, 0, 9551, 6881, 4936, 3541, 2532, 1805, 1290, 922] #TBD
-# gain_high_chn1_drv_full = [126, 60, 336] #TBD
-# gain_vlow_chn1_drv_full = [532, 230, 597] #TBD
-# drv_conf_chn1_drv_full  = 5 #TBD
+rms_high_chn1_drv_mbsb  = [97, 86, 76, 67, 60, 52, 47, 41]
+rms_vlow_chn1_drv_mbsb  = [429, 394, 357, 320, 285, 253, 225, 200]
+thrs_high_chn1_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+thrs_vlow_chn1_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000]
+gain_high_chn1_drv_mbsb = [58, 58, 58]
+gain_vlow_chn1_drv_mbsb = [275, 275, 275]
 
 #### Channels 2 - 8 ########################################################
 dacc_chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
@@ -428,6 +427,60 @@ thrs_vlow_drv_hiAtt = [thrs_vlow_chn2_drv_hiAtt, thrs_vlow_chn3_drv_hiAtt, thrs_
 gain_high_drv_hiAtt = [gain_high_chn2_drv_hiAtt, gain_high_chn3_drv_hiAtt, gain_high_chn4_drv_hiAtt, gain_high_chn5_drv_hiAtt, gain_high_chn6_drv_hiAtt, gain_high_chn7_drv_hiAtt, gain_high_chn8_drv_hiAtt]
 gain_vlow_drv_hiAtt = [gain_vlow_chn2_drv_hiAtt, gain_vlow_chn3_drv_hiAtt, gain_vlow_chn4_drv_hiAtt, gain_vlow_chn5_drv_hiAtt, gain_vlow_chn6_drv_hiAtt, gain_vlow_chn7_drv_hiAtt, gain_vlow_chn8_drv_hiAtt]
 
+rms_high_chn2_drv_mbsb = [3343, 2929, 2580, 2279, 2017, 1790, 1589, 1411]
+rms_high_chn3_drv_mbsb = [3113, 2796, 2512, 2258, 2029, 1823, 1638, 1472]
+rms_high_chn4_drv_mbsb = [1625, 1452, 1297, 1160, 1036, 926, 828, 739]
+rms_high_chn5_drv_mbsb = [2254, 2006, 1786, 1591, 1417, 1263, 1125, 1003]
+rms_high_chn6_drv_mbsb = [2543, 2246, 1991, 1770, 1574, 1401, 1247, 1110]
+rms_high_chn7_drv_mbsb = [4720, 4057, 3506, 3042, 2652, 2325, 2050, 1812]
+rms_high_chn8_drv_mbsb = [7001, 6174, 5404, 4734, 4081, 3550, 3089, 2696]
+
+rms_vlow_chn2_drv_mbsb = [2127, 1937, 1744, 1556, 1382, 1228, 1091, 969]
+rms_vlow_chn3_drv_mbsb = [2651, 2437, 2218, 1998, 1780, 1580, 1400, 1241]
+rms_vlow_chn4_drv_mbsb = [3597, 3303, 3007, 2709, 2414, 2141, 1896, 1678]
+rms_vlow_chn5_drv_mbsb = [3839, 3497, 3151, 2810, 2497, 2215, 1964, 1740]
+rms_vlow_chn6_drv_mbsb = [3912, 3560, 3204, 2856, 2538, 2253, 2000, 1775]
+rms_vlow_chn7_drv_mbsb = [4441, 4070, 3696, 3321, 2955, 2624, 2329, 2067]
+rms_vlow_chn8_drv_mbsb = [4169, 3784, 3398, 3022, 2682, 2382, 2115, 1879]
+
+thrs_high_chn2_drv_mbsb = thrs_high_dummy
+thrs_high_chn3_drv_mbsb = thrs_high_dummy
+thrs_high_chn4_drv_mbsb = thrs_high_dummy
+thrs_high_chn5_drv_mbsb = thrs_high_dummy
+thrs_high_chn6_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 2164, 1912, 1695, 1506, 1340, 1192, 1061, 945]
+thrs_high_chn7_drv_mbsb = thrs_high_dummy
+thrs_high_chn8_drv_mbsb = thrs_high_dummy
+
+thrs_vlow_chn2_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn3_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn4_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn5_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn6_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn7_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_chn8_drv_mbsb = thrs_vlow_dummy
+
+gain_high_chn2_drv_mbsb = [120, 120, 120]
+gain_vlow_chn2_drv_mbsb = [256, 256, 256]
+gain_high_chn3_drv_mbsb = [120, 120, 120]
+gain_vlow_chn3_drv_mbsb = [287, 287, 287]
+gain_high_chn4_drv_mbsb = [85, 85, 85]
+gain_vlow_chn4_drv_mbsb = [287, 287, 287]
+gain_high_chn5_drv_mbsb = [120, 120, 120]
+gain_vlow_chn5_drv_mbsb = [256, 256, 256]
+gain_high_chn6_drv_mbsb = [120, 30, 196]
+gain_vlow_chn6_drv_mbsb = [256, 128, 287]
+gain_high_chn7_drv_mbsb = [169, 169, 169]
+gain_vlow_chn7_drv_mbsb = [287, 287, 287]
+gain_high_chn8_drv_mbsb = [240, 240, 240]
+gain_vlow_chn8_drv_mbsb = [256, 256, 256]
+
+rms_high_drv_mbsb = [rms_high_chn2_drv_mbsb, rms_high_chn3_drv_mbsb, rms_high_chn4_drv_mbsb, rms_high_chn5_drv_mbsb, rms_high_chn6_drv_mbsb, rms_high_chn7_drv_mbsb, rms_high_chn8_drv_mbsb]
+rms_vlow_drv_mbsb = [rms_vlow_chn2_drv_mbsb, rms_vlow_chn3_drv_mbsb, rms_vlow_chn4_drv_mbsb, rms_vlow_chn5_drv_mbsb, rms_vlow_chn6_drv_mbsb, rms_vlow_chn7_drv_mbsb, rms_vlow_chn8_drv_mbsb]
+thrs_high_drv_mbsb = [thrs_high_chn2_drv_mbsb, thrs_high_chn3_drv_mbsb, thrs_high_chn4_drv_mbsb, thrs_high_chn5_drv_mbsb, thrs_high_chn6_drv_mbsb, thrs_high_chn7_drv_mbsb, thrs_high_chn8_drv_mbsb]
+thrs_vlow_drv_mbsb = [thrs_vlow_chn2_drv_mbsb, thrs_vlow_chn3_drv_mbsb, thrs_vlow_chn4_drv_mbsb, thrs_vlow_chn5_drv_mbsb, thrs_vlow_chn6_drv_mbsb, thrs_vlow_chn7_drv_mbsb, thrs_vlow_chn8_drv_mbsb]
+gain_high_drv_mbsb = [gain_high_chn2_drv_mbsb, gain_high_chn3_drv_mbsb, gain_high_chn4_drv_mbsb, gain_high_chn5_drv_mbsb, gain_high_chn6_drv_mbsb, gain_high_chn7_drv_mbsb, gain_high_chn8_drv_mbsb]
+gain_vlow_drv_mbsb = [gain_vlow_chn2_drv_mbsb, gain_vlow_chn3_drv_mbsb, gain_vlow_chn4_drv_mbsb, gain_vlow_chn5_drv_mbsb, gain_vlow_chn6_drv_mbsb, gain_vlow_chn7_drv_mbsb, gain_vlow_chn8_drv_mbsb]
+
 #### Double Channels ########################################################
 dacc_2chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x17171717, \
 					      0x10101010, 0x00001111, 0x04380006, 0x000003AA, 0xF0000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
@@ -657,6 +710,60 @@ thrs_high_2chn_drv_hiAtt = [thrs_high_2chn12_drv_hiAtt, thrs_high_2chn23_drv_hiA
 thrs_vlow_2chn_drv_hiAtt = [thrs_vlow_2chn12_drv_hiAtt, thrs_vlow_2chn23_drv_hiAtt, thrs_vlow_2chn34_drv_hiAtt, thrs_vlow_2chn45_drv_hiAtt, thrs_vlow_2chn56_drv_hiAtt, thrs_vlow_2chn67_drv_hiAtt, thrs_vlow_2chn78_drv_hiAtt]
 gain_high_2chn_drv_hiAtt = [gain_high_2chn12_drv_hiAtt, gain_high_2chn23_drv_hiAtt, gain_high_2chn34_drv_hiAtt, gain_high_2chn45_drv_hiAtt, gain_high_2chn56_drv_hiAtt, gain_high_2chn67_drv_hiAtt, gain_high_2chn78_drv_hiAtt]
 gain_vlow_2chn_drv_hiAtt = [gain_vlow_2chn12_drv_hiAtt, gain_vlow_2chn23_drv_hiAtt, gain_vlow_2chn34_drv_hiAtt, gain_vlow_2chn45_drv_hiAtt, gain_vlow_2chn56_drv_hiAtt, gain_vlow_2chn67_drv_hiAtt, gain_vlow_2chn78_drv_hiAtt]
+
+rms_high_2chn12_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn23_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn34_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn45_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn56_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn67_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn78_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+
+rms_vlow_2chn12_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn23_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn34_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn45_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn56_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn67_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn78_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+
+thrs_high_2chn12_drv_mbsb = thrs_high_dummy
+thrs_high_2chn23_drv_mbsb = thrs_high_dummy
+thrs_high_2chn34_drv_mbsb = thrs_high_dummy
+thrs_high_2chn45_drv_mbsb = thrs_high_dummy
+thrs_high_2chn56_drv_mbsb = thrs_high_dummy
+thrs_high_2chn67_drv_mbsb = thrs_high_dummy
+thrs_high_2chn78_drv_mbsb = thrs_high_dummy
+
+thrs_vlow_2chn12_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn23_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn34_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn45_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn56_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn67_drv_mbsb = thrs_vlow_dummy
+thrs_vlow_2chn78_drv_mbsb = thrs_vlow_dummy
+
+gain_high_2chn12_drv_mbsb = [120, 120, 120]
+gain_vlow_2chn12_drv_mbsb = [256, 256, 256]
+gain_high_2chn23_drv_mbsb = [120, 120, 120]
+gain_vlow_2chn23_drv_mbsb = [275, 275, 275]
+gain_high_2chn34_drv_mbsb = [85, 85, 85]
+gain_vlow_2chn34_drv_mbsb = [287, 287, 287]
+gain_high_2chn45_drv_mbsb = [85, 85, 85]
+gain_vlow_2chn45_drv_mbsb = [275, 275, 275]
+gain_high_2chn56_drv_mbsb = [120, 120, 120]
+gain_vlow_2chn56_drv_mbsb = [256, 256, 256]
+gain_high_2chn67_drv_mbsb = [120, 120, 120]
+gain_vlow_2chn67_drv_mbsb = [275, 275, 275]
+gain_high_2chn78_drv_mbsb = [169, 169, 169]
+gain_vlow_2chn78_drv_mbsb = [275, 275, 275]
+
+rms_high_2chn_drv_mbsb = [rms_high_2chn12_drv_mbsb, rms_high_2chn23_drv_mbsb, rms_high_2chn34_drv_mbsb, rms_high_2chn45_drv_mbsb, rms_high_2chn56_drv_mbsb, rms_high_2chn67_drv_mbsb, rms_high_2chn78_drv_mbsb]
+rms_vlow_2chn_drv_mbsb = [rms_vlow_2chn12_drv_mbsb, rms_vlow_2chn23_drv_mbsb, rms_vlow_2chn34_drv_mbsb, rms_vlow_2chn45_drv_mbsb, rms_vlow_2chn56_drv_mbsb, rms_vlow_2chn67_drv_mbsb, rms_vlow_2chn78_drv_mbsb]
+thrs_high_2chn_drv_mbsb = [thrs_high_2chn12_drv_mbsb, thrs_high_2chn23_drv_mbsb, thrs_high_2chn34_drv_mbsb, thrs_high_2chn45_drv_mbsb, thrs_high_2chn56_drv_mbsb, thrs_high_2chn67_drv_mbsb, thrs_high_2chn78_drv_mbsb]
+thrs_vlow_2chn_drv_mbsb = [thrs_vlow_2chn12_drv_mbsb, thrs_vlow_2chn23_drv_mbsb, thrs_vlow_2chn34_drv_mbsb, thrs_vlow_2chn45_drv_mbsb, thrs_vlow_2chn56_drv_mbsb, thrs_vlow_2chn67_drv_mbsb, thrs_vlow_2chn78_drv_mbsb]
+gain_high_2chn_drv_mbsb = [gain_high_2chn12_drv_mbsb, gain_high_2chn23_drv_mbsb, gain_high_2chn34_drv_mbsb, gain_high_2chn45_drv_mbsb, gain_high_2chn56_drv_mbsb, gain_high_2chn67_drv_mbsb, gain_high_2chn78_drv_mbsb]
+gain_vlow_2chn_drv_mbsb = [gain_vlow_2chn12_drv_mbsb, gain_vlow_2chn23_drv_mbsb, gain_vlow_2chn34_drv_mbsb, gain_vlow_2chn45_drv_mbsb, gain_vlow_2chn56_drv_mbsb, gain_vlow_2chn67_drv_mbsb, gain_vlow_2chn78_drv_mbsb]
 
 ############################################################################
 #### Meters & More Coupling Parameters ####
@@ -1181,7 +1288,7 @@ def updateG3CouplingParameters():
 #### PRIME function to update the Coupling Parameters ####
 ############################################################################
 
-def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
+def pCoupConfigureDACC(plcDevice, channels, coupSettings):
     global pCoupPRIMEDACCCENAMenu
     global pCoupPRIMEDACCFCCMenu
     global pCoupPRIMEDACC2CHNMenu
@@ -1199,7 +1306,7 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
         if (channels & 0xFE):
             fcc_enable = True
             # Channels 2 - 8
-            if (cen_enable == True):
+            if ("PLCOUP011" in coupSettings):
                 # C11
                 dacc_fcc = dacc_chn_fcc_c11
             else:
@@ -1209,7 +1316,7 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
         if (channels & 0x7F00):
             double_chn_enable = True
             # Double Channels
-            if (cen_enable == True):
+            if ("PLCOUP011" in coupSettings):
                 # C11
                 dacc_2chn = dacc_2chn_fcc_c11
             else:
@@ -1218,9 +1325,12 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
     else:
         if (channels & 1):
             cen_enable = True
-            if (auxBranch == True):
+            if ("auxiliary" in coupSettings):
                 # drv_aux
                 dacc_cen = dacc_chn1_drv_aux
+            elif ("Multiband single-branch" in coupSettings):
+                # drv_mbsb
+                dacc_cen = dacc_chn1_drv_mbsb
             else:
                 # drv_sb
                 dacc_cen = dacc_chn1_drv_sb
@@ -1228,13 +1338,13 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
         if (channels & 0xFE):
             fcc_enable = True
             # Channels 2 - 8
-            # drv_sb / drv_hiAtt
+            # drv_sb / drv_hiAtt / drv_mbsb
             dacc_fcc = dacc_chn_fcc_drv
 
         if (channels & 0x7F00):
             double_chn_enable = True
             # Double Channels
-            # drv_sb / drv_hiAtt
+            # drv_sb / drv_hiAtt / drv_mbsb
             dacc_2chn = dacc_2chn_fcc_drv
 
     if (cen_enable == True):
@@ -1253,13 +1363,13 @@ def pCoupConfigureDACC(plcDevice, channels, auxBranch, highImp):
     pCoupPRIMEDACCFCCMenu.setVisible(fcc_enable)
     pCoupPRIMEDACC2CHNMenu.setVisible(double_chn_enable)
 
-def pCoupConfigureChannelDetImp(channels):
-    if (channels & 1):
+def pCoupConfigureChannelDetImp(channels, coupSettings):
+    if ((channels & 1) and ("Multiband single-branch" not in coupSettings)):
         return "CHN1"
     else:
         return "CHN6"
 
-def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
+def pCoupConfigureChannel(plcDevice, channel, coupSettings):
 
     if (plcDevice == "PL360"):
         line_drv = 0
@@ -1273,7 +1383,7 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
             gain_vlow = gain_vlow_chn1_c07
         else:
             # Channels 2 - 8
-            if (multiband):
+            if ("PLCOUP011" in coupSettings):
                 # C11
                 rms_high  = rms_high_c11[channel - 2]
                 rms_vlow  = rms_vlow_c11[channel - 2]
@@ -1291,7 +1401,7 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
                 gain_vlow = gain_vlow_c06[channel - 2]
     else:
         if (channel == 1):
-            if (auxBranch == True):
+            if ("auxiliary" in coupSettings):
                 # drv_aux
                 line_drv = 8
                 rms_high  = rms_high_chn1_drv_aux
@@ -1300,6 +1410,15 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
                 thrs_vlow = thrs_vlow_chn1_drv_aux
                 gain_high = gain_high_chn1_drv_aux
                 gain_vlow = gain_vlow_chn1_drv_aux
+            elif ("Multiband single-branch" in coupSettings):
+                # drv_mbsb
+                line_drv = 0xA7
+                rms_high  = rms_high_chn1_drv_mbsb
+                rms_vlow  = rms_vlow_chn1_drv_mbsb
+                thrs_high = thrs_high_chn1_drv_mbsb
+                thrs_vlow = thrs_vlow_chn1_drv_mbsb
+                gain_high = gain_high_chn1_drv_mbsb
+                gain_vlow = gain_vlow_chn1_drv_mbsb
             else:
                 # drv_sb
                 line_drv = 5
@@ -1311,7 +1430,7 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
                 gain_vlow = gain_vlow_chn1_drv_sb
         else:
             # Channels 2 - 8
-            if (highImp == True):
+            if ("high attenuation" in coupSettings):
                 # drv_hmip
                 line_drv = 7
                 rms_high  = rms_high_drv_hiAtt[channel - 2]
@@ -1320,6 +1439,15 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
                 thrs_vlow = thrs_vlow_drv_hiAtt[channel - 2]
                 gain_high = gain_high_drv_hiAtt[channel - 2]
                 gain_vlow = gain_vlow_drv_hiAtt[channel - 2]
+            elif ("Multiband single-branch" in coupSettings):
+                # drv_mbsb
+                line_drv = 0x47
+                rms_high  = rms_high_drv_mbsb[channel - 2]
+                rms_vlow  = rms_vlow_drv_mbsb[channel - 2]
+                thrs_high = thrs_high_drv_mbsb[channel - 2]
+                thrs_vlow = thrs_vlow_drv_mbsb[channel - 2]
+                gain_high = gain_high_drv_mbsb[channel - 2]
+                gain_vlow = gain_vlow_drv_mbsb[channel - 2]
             else:
                 # drv_sb
                 line_drv = 5
@@ -1346,11 +1474,11 @@ def pCoupConfigureChannel(plcDevice, channel, multiband, auxBranch, highImp):
         Database.setSymbolValue("srv_pcoup", symbol_id + "_GAIN_HIGH_" + str(idx), gain_high[idx])
         Database.setSymbolValue("srv_pcoup", symbol_id + "_GAIN_VLOW_" + str(idx), gain_vlow[idx])
 
-def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
+def pCoupConfigure2Channel(plcDevice, channel, coupSettings):
 
     if (plcDevice == "PL360"):
         line_drv = 0
-        if (multiband):
+        if ("PLCOUP011" in coupSettings):
             # C11
             rms_high  = rms_high_2chn_c11[channel]
             rms_vlow  = rms_vlow_2chn_c11[channel]
@@ -1367,7 +1495,7 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
             gain_high = gain_high_2chn_c06[channel]
             gain_vlow = gain_vlow_2chn_c06[channel]
     else:
-        if (highImp == True):
+        if ("high attenuation" in coupSettings):
             # drv_hmip
             line_drv = 7
             rms_high  = rms_high_2chn_drv_hiAtt[channel]
@@ -1376,6 +1504,15 @@ def pCoupConfigure2Channel(plcDevice, channel, multiband, highImp):
             thrs_vlow = thrs_vlow_2chn_drv_hiAtt[channel]
             gain_high = gain_high_2chn_drv_hiAtt[channel]
             gain_vlow = gain_vlow_2chn_drv_hiAtt[channel]
+        elif ("Multiband single-branch" in coupSettings):
+            # drv_mbsb
+            line_drv = 0x47
+            rms_high   = rms_high_2chn_drv_mbsb[channel]
+            rms_vlow  = rms_vlow_2chn_drv_mbsb[channel]
+            thrs_high = thrs_high_2chn_drv_mbsb[channel]
+            thrs_vlow = thrs_vlow_2chn_drv_mbsb[channel]
+            gain_high = gain_high_2chn_drv_mbsb[channel]
+            gain_vlow = gain_vlow_2chn_drv_mbsb[channel]
         else:
             # drv_sb
             line_drv = 5
@@ -1434,19 +1571,25 @@ def updatePRIMECouplingParameters():
 
     plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
     channels_sel = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_CHANNELS_SELECTED")
-    auxBranch = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_BAND_AUX")
-    highImp = Database.getSymbolValue(plcDriver, "DRV_PLC_PRIME_HIGH_ATTENUATION")
-    multiband = (channels_sel & 1) and (channels_sel & 0x7FFE)
+
+    if (plcDevice == "PL460"):
+        prime_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_PRIME_SETTING_PL460")
+    else:
+        prime_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_PRIME_SETTING_PL360")
+    
+    if prime_coupSettings == None:
+        print("updatePRIMECouplingParameters: DRV PLC Coupling Settings not found")
+        return
 
     # Configure DACC
-    pCoupConfigureDACC(plcDevice, channels_sel, auxBranch, highImp)
-    channel_imp_det = pCoupConfigureChannelDetImp(channels_sel)
+    pCoupConfigureDACC(plcDevice, channels_sel, prime_coupSettings)
+    channel_imp_det = pCoupConfigureChannelDetImp(channels_sel, prime_coupSettings)
 
     # Configure Single channels selected in PHY driver
     for idx in range(8):
         symbol_id = "SRV_PCOUP_PRIME_CHN" + str(idx + 1)
         if (channels_sel & (1 << idx)):
-            pCoupConfigureChannel(plcDevice, idx + 1, multiband, auxBranch, highImp)
+            pCoupConfigureChannel(plcDevice, idx + 1, prime_coupSettings)
             pCoupPRIMEMenuChn[idx].setVisible(True)
             Database.setSymbolValue("srv_pcoup", symbol_id, True)
         else:
@@ -1457,7 +1600,7 @@ def updatePRIMECouplingParameters():
     for idx in range(7):
         symbol_id = "SRV_PCOUP_PRIME_2CHN" + str(idx + 1) + str(idx + 2)
         if (channels_sel & (1 << (idx + 8))):
-            pCoupConfigure2Channel(plcDevice, idx, multiband, highImp)
+            pCoupConfigure2Channel(plcDevice, idx, prime_coupSettings)
             pCoupPRIMEMenu2Chn[idx].setVisible(True)
             Database.setSymbolValue("srv_pcoup", symbol_id, True)
         else:

@@ -43,6 +43,9 @@ global plcStaticAddressing
 global plcBinaryAddress
 global plcBinarySize
 
+global plcCoupPRIMECH
+global plcCoupPRIME2CH
+
 plc_phy_helpkeyword = "mcc_h3_plc_phy_driver_configurations"
 gPlcBand = ""
 
@@ -699,6 +702,18 @@ def showPRIMECoupSettings(symbol, event):
     else:
         symbol.setVisible(False)
 
+def showPrimeCoupSettings460(symbol, event):
+    if (event["value"] == "PL460"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
+
+def showPrimeCoupSettings360(symbol, event):
+    if (event["value"] == "PL360"):
+        symbol.setVisible(True)
+    else:
+        symbol.setVisible(False)
+
 def showG3CoupSettings460(symbol, event):
     drvPlcProfile = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
     if (drvPlcProfile == "G3-PLC"):
@@ -764,31 +779,62 @@ def showPrime2ChannelSelect(symbol, event):
         symbol.setVisible(False)
         plcCoupPRIME2Channel.setVisible(False)
 
-def checkPrimeChannelConf(symbol, event):
+def checkAvailableChannels(symbol, event):
     global plcDriverMode
+    global plcCoupPRIMESettings460
+    global plcCoupPRIMESettings360
+
+    # Check available channels depending on selected coupling
+    drvPlcMode = plcDriverMode.getValue()
+    if (drvPlcMode == "PL460"):
+        prime_coupSettings = plcCoupPRIMESettings460.getValue()
+    else:
+        prime_coupSettings = plcCoupPRIMESettings360.getValue()
+
+    if ("CHN1 only" in prime_coupSettings):
+        plcCoupPRIMECH[0].setReadOnly(False)
+        for idx in range(1, 8, 1):
+            plcCoupPRIMECH[idx].clearValues()
+            plcCoupPRIMECH[idx].setValue(False)
+            plcCoupPRIMECH[idx].setReadOnly(True)
+        
+        for idx in range(7):
+            plcCoupPRIME2CH[idx].clearValues()
+            plcCoupPRIME2CH[idx].setValue(False)
+            plcCoupPRIME2CH[idx].setReadOnly(True)
+
+    elif ("FCC only" in prime_coupSettings):
+        plcCoupPRIMECH[0].clearValues()
+        plcCoupPRIMECH[0].setValue(False)
+        plcCoupPRIMECH[0].setReadOnly(True)
+        for idx in range(1, 8, 1):
+            plcCoupPRIMECH[idx].setReadOnly(False)
+        
+        for idx in range(7):
+            plcCoupPRIME2CH[idx].setReadOnly(False)
+
+    else:
+        for idx in range(8):
+            plcCoupPRIMECH[idx].setReadOnly(False)
+        
+        for idx in range(7):
+            plcCoupPRIME2CH[idx].setReadOnly(False)
+    
+    # Send message to PLC COUP to update PRIME configuration
+    dict = {}
+    dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
+
+def checkPrimeChannelConf(symbol, event):
     global plcCoupPRIMEDefChannel
-    global plcCoupPRIMEHighAttenuation
-    global plcCoupPRIMEBandAux
 
     channels_selected = 0
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_1CHN_MODE") == True):
-        channels_selected = channels_selected | Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH1")
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH2") << 1)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH3") << 2)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH4") << 3)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH5") << 4)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH6") << 5)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH7") << 6)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CH8") << 7)
+        for idx in range(8):
+            channels_selected |= plcCoupPRIMECH[idx].getValue() << idx
 
     if (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CHN_MODE") == True):
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH1") << 8)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH2") << 9)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH3") << 10)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH4") << 11)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH5") << 12)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH6") << 13)
-        channels_selected = channels_selected | (Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH7") << 14)
+        for idx in range(7):
+            channels_selected |= plcCoupPRIME2CH[idx].getValue() << (idx + 8)
 
     channel_value = plcCoupPRIMEDefChannel.getValue()
     if (channel_value.rfind("_") > 0):
@@ -802,43 +848,12 @@ def checkPrimeChannelConf(symbol, event):
     else:
         symbol.setVisible(False)
 
-    # Set visibility of Auxiliary Band
-    if (plcDriverMode.getValue() == "PL360"):
-        plcCoupPRIMEBandAux.setVisible(False)
-    else:
-        if(channels_selected & 1):
-            plcCoupPRIMEBandAux.setVisible(True)
-        else:
-            plcCoupPRIMEBandAux.setVisible(False)
-
-    # Set visibility of High Attenuation
-    if (plcDriverMode.getValue() == "PL360"):
-        plcCoupPRIMEHighAttenuation.setVisible(False)
-    else:
-        if (channels_selected <= 1):
-            plcCoupPRIMEHighAttenuation.setVisible(False)
-        elif ((channels_selected & 1) and (channels_selected > 1) and Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_BAND_AUX") == False):
-            plcCoupPRIMEHighAttenuation.setVisible(False)
-        else:
-            plcCoupPRIMEHighAttenuation.setVisible(True)
-
     # Update internal Channels Selected Symbol
     Database.setSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_CHANNELS_SELECTED", channels_selected)
 
     # Send message to PLC COUP to update PRIME configuration
     dict = {}
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
-
-def checkPrime2ChannelConf(symbol, event):
-    global plcCoupPRIME2Channel
-
-    channel_def = int(plcCoupPRIME2Channel.getValue()[2])
-    channel_sel = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PRIME_2CH" + str(channel_def))
-
-    if (channel_sel == False):
-        symbol.setVisible(True)
-    else:
-        symbol.setVisible(False)
 
 def enablePL460Capabilities(symbol, event):
     if (event["value"] == "PL460"):
@@ -1501,7 +1516,7 @@ def instantiateComponent(plcComponent):
 
     ##### Coupling Settings : G3-PLC ###############################################
 
-    plcCoupSettingsOptions460 = [
+    plcCoupG3SettingsOptions460 = [
         "CEN-A (CENELEC-A only; main branch)",
         "CEN-B (CENELEC-B only; main branch)",
         "FCC default (FCC only; main branch)",
@@ -1519,14 +1534,14 @@ def instantiateComponent(plcComponent):
         "Multiband single-branch FCC & CEN-A (CENELEC-A only; main branch)",
     ]
 
-    plcCoupSettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupSettingsOptions460)
-    plcCoupSettings460.setLabel("PLC Coupling and Band Settings")
-    plcCoupSettings460.setDefaultValue("Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)")
-    plcCoupSettings460.setVisible(True)
-    plcCoupSettings460.setHelp(plc_phy_helpkeyword)
-    plcCoupSettings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
+    plcCoupG3Settings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupG3SettingsOptions460)
+    plcCoupG3Settings460.setLabel("PLC Coupling and Band Settings")
+    plcCoupG3Settings460.setDefaultValue("Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)")
+    plcCoupG3Settings460.setVisible(True)
+    plcCoupG3Settings460.setHelp(plc_phy_helpkeyword)
+    plcCoupG3Settings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
 
-    plcCoupSettingsOptions360 = [
+    plcCoupG3SettingsOptions360 = [
         "PLCOUP007 (CENELEC-A only; single branch; external driver)",
         "PLCOUP014 (CENELEC-B only; external driver)",
         "PLCOUP012 (CENELEC-B only; single branch; internal driver)",
@@ -1535,12 +1550,12 @@ def instantiateComponent(plcComponent):
         "PLCOUP011 (FCC only; single branch; external driver)",
     ]
 
-    plcCoupSettings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupSettingsOptions360)
-    plcCoupSettings360.setLabel("PLC Coupling and Band Settings")
-    plcCoupSettings360.setDefaultValue("PLCOUP007 (CENELEC-A only)")
-    plcCoupSettings360.setVisible(False)
-    plcCoupSettings360.setHelp(plc_phy_helpkeyword)
-    plcCoupSettings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
+    plcCoupG3Settings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupG3SettingsOptions360)
+    plcCoupG3Settings360.setLabel("PLC Coupling and Band Settings")
+    plcCoupG3Settings360.setDefaultValue("PLCOUP007 (CENELEC-A only)")
+    plcCoupG3Settings360.setVisible(False)
+    plcCoupG3Settings360.setHelp(plc_phy_helpkeyword)
+    plcCoupG3Settings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
 
     plcCoupDefaultG3BandCENA = plcComponent.createComboSymbol("DRV_PLC_COUP_DEFAULT_G3_BAND_CENA", None, ["FCC", "CENELEC-A"])
     plcCoupDefaultG3BandCENA.setLabel("Default G3-PLC Band")
@@ -1557,23 +1572,53 @@ def instantiateComponent(plcComponent):
     plcCoupDefaultG3BandCENB.setDependencies(showG3DefaultBandCENB, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_G3_SETTING_PL360", "DRV_PLC_PROFILE"])
 
     ##### Coupling Settings : PRIME  ####################################################
-    global plcCoupPRIMESettings
     plcCoupPRIMESettings = plcComponent.createMenuSymbol("DRV_PLC_COUP_PRIME_SETTING", None)
     plcCoupPRIMESettings.setLabel("PLC Coupling Settings")
-    plcCoupPRIMESettings.setDescription("Coupling Settings")
+    plcCoupPRIMESettings.setDescription("Options to configure PLC Coupling")
     plcCoupPRIMESettings.setVisible(False)
     plcCoupPRIMESettings.setDependencies(showPRIMECoupSettings, ["DRV_PLC_PROFILE"])
     plcCoupPRIMESettings.setHelp(plc_phy_helpkeyword)
 
+    plcCoupPrimeSettingsOptions460 = [
+        "CEN-A (CHN1 only; main branch)",
+        "FCC default (FCC only; main branch)",
+        "FCC high attenuation (FCC only; main branch)",
+        "Multiband FCC default & CEN-A (CHN1 + FCC; main branch + auxiliary branch)",
+        "Multiband FCC high attenuation & CEN-A (CHN1 + FCC; main branch + auxiliary branch)",
+        "Multiband single-branch FCC & CEN-A (CHN1 + FCC; main branch)",
+    ]
+
+    global plcCoupPRIMESettings460
+    plcCoupPRIMESettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_PRIME_SETTING_PL460", plcCoupPRIMESettings, plcCoupPrimeSettingsOptions460)
+    plcCoupPRIMESettings460.setLabel("PLC Coupling Variant")
+    plcCoupPRIMESettings460.setDefaultValue("Multiband FCC default & CEN-A (CHN1 + FCC; main branch + auxiliary branch)")
+    plcCoupPRIMESettings460.setVisible(True)
+    plcCoupPRIMESettings460.setHelp(plc_phy_helpkeyword)
+    plcCoupPRIMESettings460.setDependencies(showPrimeCoupSettings460, ["DRV_PLC_MODE"])
+
+    plcCoupPrimeSettingsOptions360 = [
+        "PLCOUP007 (CHN1 only; single branch; external driver)",
+        "PLCOUP006 (FCC only; double branch; external driver)",
+        "PLCOUP011 (CHN1 + FCC; double branch; external driver)",
+    ]
+
+    global plcCoupPRIMESettings360
+    plcCoupPRIMESettings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_PRIME_SETTING_PL360", plcCoupPRIMESettings, plcCoupPrimeSettingsOptions360)
+    plcCoupPRIMESettings360.setLabel("PLC Coupling Variant")
+    plcCoupPRIMESettings360.setDefaultValue("PLCOUP007 (CHN1 only)")
+    plcCoupPRIMESettings360.setVisible(False)
+    plcCoupPRIMESettings360.setHelp(plc_phy_helpkeyword)
+    plcCoupPRIMESettings360.setDependencies(showPrimeCoupSettings360, ["DRV_PLC_MODE"])
+
     plcCoupPRIME1ChnMode = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_1CHN_MODE", plcCoupPRIMESettings)
     plcCoupPRIME1ChnMode.setLabel("Single Channel Mode")
-    plcCoupPRIME1ChnMode.setDescription("Single Channel Mode")
-    plcCoupPRIME1ChnMode.setDefaultValue(False)
+    plcCoupPRIME1ChnMode.setDescription("Select Single Channels available")
+    plcCoupPRIME1ChnMode.setDefaultValue(True)
     plcCoupPRIME1ChnMode.setHelp(plc_phy_helpkeyword)
 
     plcCoupPRIME2ChnMode = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_2CHN_MODE", plcCoupPRIMESettings)
     plcCoupPRIME2ChnMode.setLabel("Double Channel Mode")
-    plcCoupPRIME2ChnMode.setDescription("Double Channel Mode")
+    plcCoupPRIME2ChnMode.setDescription("Select Double Channels Mode available")
     plcCoupPRIME2ChnMode.setDefaultValue(False)
     plcCoupPRIME2ChnMode.setHelp(plc_phy_helpkeyword)
 
@@ -1582,7 +1627,10 @@ def instantiateComponent(plcComponent):
         plcCoupPRIMECH[idx].setLabel("Channel " + str(idx + 1))
         plcCoupPRIMECH[idx].setDescription("Channel " + str(idx + 1))
         plcCoupPRIMECH[idx].setVisible(False)
-        plcCoupPRIMECH[idx].setDefaultValue(False)
+        if idx == 0:
+            plcCoupPRIMECH[idx].setDefaultValue(True)
+        else:
+            plcCoupPRIMECH[idx].setDefaultValue(False)
         plcCoupPRIMECH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_1CHN_MODE"])
         plcCoupPRIMECH[idx].setHelp(plc_phy_helpkeyword)
 
@@ -1602,33 +1650,19 @@ def instantiateComponent(plcComponent):
     plcCoupPRIMEDefChannel.setVisible(True)
     plcCoupPRIMEDefChannel.setHelp(plc_phy_helpkeyword)
 
-    global plcCoupPRIMEBandAux
-    plcCoupPRIMEBandAux = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_BAND_AUX", plcCoupPRIMECH[0])
-    plcCoupPRIMEBandAux.setLabel("Use Auxiliary Branch")
-    plcCoupPRIMEBandAux.setDefaultValue(False)
-    plcCoupPRIMEBandAux.setVisible(False)
-    plcCoupPRIMEBandAux.setHelp(plc_phy_helpkeyword)
-
-    global plcCoupPRIMEHighAttenuation
-    plcCoupPRIMEHighAttenuation = plcComponent.createBooleanSymbol("DRV_PLC_PRIME_HIGH_ATTENUATION", plcCoupPRIMESettings)
-    plcCoupPRIMEHighAttenuation.setLabel("High attenuation branch")
-    plcCoupPRIMEHighAttenuation.setDescription("High attenuation branch")
-    plcCoupPRIMEHighAttenuation.setVisible(False)
-    plcCoupPRIMEHighAttenuation.setDefaultValue(False)
-    plcCoupPRIMEHighAttenuation.setHelp(plc_phy_helpkeyword)
-
     plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEDefChannel)
     plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
     plcCoupPRIMEChannelWarning.setVisible(True)
     plcCoupPRIMEChannelWarning.setDependencies(checkPrimeChannelConf, ["DRV_PLC_PRIME_CH1", "DRV_PLC_PRIME_CH2", "DRV_PLC_PRIME_CH3", \
         "DRV_PLC_PRIME_CH4", "DRV_PLC_PRIME_CH5", "DRV_PLC_PRIME_CH6", "DRV_PLC_PRIME_CH7", "DRV_PLC_PRIME_CH8", "DRV_PLC_PRIME_1CHN_MODE", \
         "DRV_PLC_PRIME_2CH1", "DRV_PLC_PRIME_2CH2", "DRV_PLC_PRIME_2CH3", "DRV_PLC_PRIME_2CH4", "DRV_PLC_PRIME_2CH5", "DRV_PLC_PRIME_2CH6", \
-        "DRV_PLC_PRIME_2CH7", "DRV_PLC_PRIME_2CHN_MODE", "DRV_PLC_PRIME_DEF_CHN", "DRV_PLC_PRIME_BAND_AUX", "DRV_PLC_PRIME_HIGH_ATTENUATION", "DRV_PLC_MODE"])
+        "DRV_PLC_PRIME_2CH7", "DRV_PLC_PRIME_2CHN_MODE", "DRV_PLC_PRIME_DEF_CHN"])
 
     pCoupPRIMEChannelsSelected = plcComponent.createIntegerSymbol("DRV_PLC_PRIME_CHANNELS_SELECTED", plcCoupPRIMESettings)
     pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
     pCoupPRIMEChannelsSelected.setVisible(False)
-    pCoupPRIMEChannelsSelected.setDefaultValue(0)
+    pCoupPRIMEChannelsSelected.setDependencies(checkAvailableChannels, ["DRV_PLC_MODE", "DRV_PLC_COUP_PRIME_SETTING_PL460", "DRV_PLC_COUP_PRIME_SETTING_PL360"])
+    pCoupPRIMEChannelsSelected.setDefaultValue(1)
 
     ##### Coupling Settings : Meters&More ###############################################
 
