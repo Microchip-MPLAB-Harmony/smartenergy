@@ -769,18 +769,39 @@ gain_vlow_2chn_drv_mbsb = [gain_vlow_2chn12_drv_mbsb, gain_vlow_2chn23_drv_mbsb,
 #### Meters & More Coupling Parameters ####
 ############################################################################
 
-pCoupMMDACC = []
+# PLCOUP007
+mm_rms_high_c07  = [324, 293, 267, 242, 218, 194, 172, 153]
+mm_rms_vlow_c07  = [2432, 2172, 1932, 1714, 1515, 1342, 1189, 1052]
+mm_thrs_high_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 274, 247, 225, 205, 184, 164, 146, 130]
+mm_thrs_vlow_c07 = [0, 0, 0, 0, 0, 0, 0, 0, 5579, 4972, 4414, 3920, 3477, 3079, 2738, 2433]
+mm_gain_high_c07 = [25, 12, 50]
+mm_gain_vlow_c07 = [228, 114, 256]
+mm_dacc_c07      = [0, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0, 0xFFFF00FF, 0x17171717, 0x00002020, 0x00000044, 0x0FD20001, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
+mm_drv_conf_c07  = 0
 
-# from rms_high_cena_c07
-mm_rms_high_cena  = [324, 293, 267, 242, 218, 194, 172, 153]
-mm_rms_vlow_cena  = [2432, 2172, 1932, 1714, 1515, 1342, 1189, 1052]
-mm_thrs_high_cena = [0, 0, 0, 0, 0, 0, 0, 0, 274, 247, 225, 205, 184, 164, 146, 130]
-mm_thrs_vlow_cena = [0, 0, 0, 0, 0, 0, 0, 0, 5579, 4972, 4414, 3920, 3477, 3079, 2738, 2433]
-mm_dacc_cena      = [0, 0x00002120, 0x0000073F, 0x00003F3F, 0x00000333, 0, 0xFFFF00FF, 0x17171717, 0x00002020, 0x00000044, 0x0FD20001, 0x00000355, 0x0F000000, 0x001020F0, 0x00000355, 0x0F000000, 0x001020FF]
-mm_dacc_cena_drv  = [0, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC, 0, 0xFFFF00FF, 0x17171717, 0x20200000, 0x00004400, 0x0FD20001, 0x000003AA, 0xF0000000, 0x001020F0, 0x000003AA, 0xF0000000, 0x001020FF]
-mm_gain_high_cena = [25, 12, 50]
-mm_gain_vlow_cena = [228, 114, 256]
-mm_drv_conf_cena  = 8
+# PL460 Auxiliary Branch
+mm_dacc_aux      = [0, 0x21200000, 0x073F0000, 0x3F3F0000, 0x00000CCC, 0, 0xFFFF00FF, 0x17171717, 0x20200000, 0x00004400, 0x0FD20001, 0x000003AA, 0xF0000000, 0x001020F0, 0x000003AA, 0xF0000000, 0x001020FF]
+mm_drv_conf_aux  = 8
+
+# PL460 CEN-A Single Branch
+mm_rms_high_drv_sb  = [614, 548, 491, 438, 391, 348, 311, 278]
+mm_rms_vlow_drv_sb  = [3979, 3608, 3263, 2938, 2636, 2359, 2109, 1880]
+mm_thrs_high_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 511, 458, 411, 367, 328, 292, 262, 235]
+mm_thrs_vlow_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 5815, 5364, 4862, 4399, 3982, 3606, 3264, 2949]
+mm_gain_high_drv_sb = [22, 11, 44]
+mm_gain_vlow_drv_sb = [256, 128, 256]
+mm_dacc_drv_sb      = [0, 0, 0x00000100, 0x00000100, 0, 0, 0xFFFF00FF, 0x17171717, 0, 0, 0x00000001, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+mm_drv_conf_drv_sb  = 5
+
+# PL460 Multiband Single Branch
+mm_rms_high_drv_mbsb  = [0, 0, 0, 0, 0, 0, 0, 0]
+mm_rms_vlow_drv_mbsb  = [0, 0, 0, 0, 0, 0, 0, 0]
+mm_thrs_high_drv_mbsb = thrs_vlow_dummy
+mm_thrs_vlow_drv_mbsb = thrs_high_dummy
+mm_gain_high_drv_mbsb = [16, 16, 16]
+mm_gain_vlow_drv_mbsb = [16, 16, 16]
+mm_dacc_drv_mbsb      = [0, 0, 0x00000100, 0x00000100, 0, 0, 0xFFFF00FF, 0x15151515, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020F0]
+mm_drv_conf_drv_mbsb  = 0xA7
 
 ############################################################################
 
@@ -1638,6 +1659,7 @@ def updateMMCouplingParameters():
     pCoupPRIMETXChannels.setVisible(False)
 
     plcDevice = Database.getSymbolValue(plcDriver, "DRV_PLC_MODE")
+    mm_coupSettings = Database.getSymbolValue(plcDriver, "DRV_PLC_COUP_MM_SETTING_PL460")
 
     # Enable MM COUP files
     pCoupG3SourceFile.setEnabled(False)
@@ -1647,29 +1669,62 @@ def updateMMCouplingParameters():
     pCoupMMSourceFile.setEnabled(True)
     pCoupMMHeaderFile.setEnabled(True)
 
-    pCoupG3AuxBranch.setVisible(False)
-    pCoupG3AuxPhyBand.setValue("None")
-
+    pCoupG3MainBranch.setVisible(True)
     pCoupG3MainPhyBand.setVisible(False)
-    pCoupG3MainPhyBand.setValue("CEN-A")
-
-    rms_high  = mm_rms_high_cena
-    rms_vlow  = mm_rms_vlow_cena
-    thrs_high = mm_thrs_high_cena
-    thrs_vlow = mm_thrs_vlow_cena
-    gain_high = mm_gain_high_cena
-    gain_vlow = mm_gain_vlow_cena
+    pCoupG3AuxBranch.setVisible(False)
 
     if (plcDevice == "PL460"):
-        # print("UpdatePlcCouplingParameters -> PL460 MM CEN-A")
-        line_drv  = mm_drv_conf_cena
-        dacc      = mm_dacc_cena_drv
-        pCoupG3MainBranch.setLabel("Auxiliary Transmission branch")
+        if ("auxiliary branch" in mm_coupSettings):
+            # PL460 Auxiliary Branch
+            line_drv  = mm_drv_conf_aux
+            dacc      = mm_dacc_aux
+            rms_high  = mm_rms_high_c07
+            rms_vlow  = mm_rms_vlow_c07
+            thrs_high = mm_thrs_high_c07
+            thrs_vlow = mm_thrs_vlow_c07
+            gain_high = mm_gain_high_c07
+            gain_vlow = mm_gain_vlow_c07
+            line_drv  = mm_drv_conf_aux
+            dacc      = mm_dacc_aux
+            pCoupG3MainBranch.setLabel("Auxiliary Transmission branch")
+
+        elif ("Multiband single-branch" in mm_coupSettings):
+            # PL460 Multiband Single Branch
+            line_drv  = mm_drv_conf_drv_mbsb
+            dacc      = mm_dacc_drv_mbsb
+            rms_high  = mm_rms_high_drv_mbsb
+            rms_vlow  = mm_rms_vlow_drv_mbsb
+            thrs_high = mm_thrs_high_drv_mbsb
+            thrs_vlow = mm_thrs_vlow_drv_mbsb
+            gain_high = mm_gain_high_drv_mbsb
+            gain_vlow = mm_gain_vlow_drv_mbsb
+            line_drv  = mm_drv_conf_drv_mbsb
+            dacc      = mm_dacc_drv_mbsb
+            pCoupG3MainBranch.setLabel("Main Transmission branch (ASO1)")
+        
+        else:
+            # PL460 CEN-A Single Branch
+            line_drv  = mm_drv_conf_drv_sb
+            dacc      = mm_dacc_drv_sb
+            rms_high  = mm_rms_high_drv_sb
+            rms_vlow  = mm_rms_vlow_drv_sb
+            thrs_high = mm_thrs_high_drv_sb
+            thrs_vlow = mm_thrs_vlow_drv_sb
+            gain_high = mm_gain_high_drv_sb
+            gain_vlow = mm_gain_vlow_drv_sb
+            line_drv  = mm_drv_conf_drv_sb
+            dacc      = mm_dacc_drv_sb
+            pCoupG3MainBranch.setLabel("Main Transmission branch")        
 
     else: # "PL360"
-        # print("UpdatePlcCouplingParameters -> PL360 MM CEN-A")
-        line_drv  = 0
-        dacc      = mm_dacc_cena
+        line_drv  = mm_drv_conf_c07
+        dacc      = mm_dacc_c07
+        rms_high  = mm_rms_high_c07
+        rms_vlow  = mm_rms_vlow_c07
+        thrs_high = mm_thrs_high_c07
+        thrs_vlow = mm_thrs_vlow_c07
+        gain_high = mm_gain_high_c07
+        gain_vlow = mm_gain_vlow_c07
         pCoupG3MainBranch.setLabel("Transmission branch 0")
 
     # Update Values of the Main Branch in Configuration Window
