@@ -201,6 +201,11 @@ typedef struct
     OSAL_SEM_DECLARE(semaphoreID);
 
 </#if>
+<#if (DRV_PLC_PROFILE == "PRIME")>
+    DRV_PLC_PHY_TRANSMISSION_CFM_OBJ txCfmErrorObj;
+
+    bool                            evTxCfmError;
+</#if>
     /* Event detection flag: confirmation of the previous transmission */
 <#if (DRV_PLC_PROFILE == "G3-PLC")>
     volatile bool                   evTxCfm[1];
