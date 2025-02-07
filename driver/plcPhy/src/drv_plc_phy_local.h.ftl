@@ -124,10 +124,10 @@ typedef struct
     /* Flag to indicate this object is in use  */
     bool                            inUse;
 
-<#if (DRV_PLC_PROFILE == "G3-PLC")>
-    DRV_PLC_PHY_STATE               state[1];
-<#else>
+<#if (DRV_PLC_PROFILE == "PRIME")>
     DRV_PLC_PHY_STATE               state[2];
+<#else>
+    DRV_PLC_PHY_STATE               state[1];
 </#if>
 
     /* Keep track of the number of clients that have opened this driver */
@@ -204,10 +204,10 @@ typedef struct
     bool                            evTxCfmError;
 </#if>
     /* Event detection flag: confirmation of the previous transmission */
-<#if (DRV_PLC_PROFILE == "G3-PLC")>
-    volatile bool                   evTxCfm[1];
-<#else>
+<#if (DRV_PLC_PROFILE == "PRIME")>
     volatile bool                   evTxCfm[2];
+<#else>
+    volatile bool                   evTxCfm[1];
 </#if>
 
     /* Event detection flag: parameters of new reception */
