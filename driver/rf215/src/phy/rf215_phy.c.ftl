@@ -4611,7 +4611,7 @@ ${CCA_CW_INDENT}        }
     if (txError == true)
     {
         /* Continue listening and set pending TX confirm with TX error */
-        lRF215_TRX_RxListen(trxIdx);
+        lRF215_TRX_RxListen(trxIdx<#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>, true</#if>);
         RF215_PHY_SetTxCfm(txBufObj, RF215_TX_TIMEOUT);
     }
 
@@ -4648,7 +4648,7 @@ static void lRF215_TX_PrepareTimeExpired(uintptr_t context)
         if (timeHandle == SYS_TIME_HANDLE_INVALID)
         {
             /* Error: Timer could not be started. Continue listening. */
-            lRF215_TRX_RxListen(trxIdx);
+            lRF215_TRX_RxListen(trxIdx<#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>, true</#if>);
             result = RF215_TX_TIMEOUT;
         }
         else
