@@ -545,12 +545,23 @@ def updateBinFiles():
     elif ("FCC + CENELEC-A" in g3_coupSettings):
         includeBinFile("Multiband")
         setPlcMultiBandInUse("FCC", "CEN-A")
-        
     elif ("FCC + CENELEC-B" in g3_coupSettings):
         includeBinFile("Multiband")
         setPlcMultiBandInUse("FCC", "CEN-B")
     
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
+
+    # Check if impedance detection in FCC band is needed
+    if ("Multiband single-branch FCC & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_FCC", True)
+    else:
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_FCC", False)
+    
+    # Check if impedance detection in CEN-A band is needed
+    if ("PLCOUP011 (FCC + CENELEC-A" in g3_coupSettings):
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_CEN_A", True)
+    else:
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_CEN_A", False)
 
     # Check Internal/External Addressing
     if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
@@ -1275,7 +1286,7 @@ def instantiateComponent(g3MacRtComponent):
 
     plcCoupSettings460 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupSettingsOptions460)
     plcCoupSettings460.setLabel("PLC Coupling and Band Settings")
-    plcCoupSettings460.setDefaultValue("Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)")
+    plcCoupSettings460.setDefaultValue(plcCoupSettingsOptions460[4])
     plcCoupSettings460.setVisible(True)
     plcCoupSettings460.setHelp(plc_mac_rt_helpkeyword)
     plcCoupSettings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE"])
@@ -1291,7 +1302,7 @@ def instantiateComponent(g3MacRtComponent):
 
     plcCoupSettings360 = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupSettingsOptions360)
     plcCoupSettings360.setLabel("PLC Coupling and Band Settings")
-    plcCoupSettings360.setDefaultValue("PLCOUP007 (CENELEC-A only)")
+    plcCoupSettings360.setDefaultValue(plcCoupSettingsOptions360[0])
     plcCoupSettings360.setVisible(False)
     plcCoupSettings360.setHelp(plc_mac_rt_helpkeyword)
     plcCoupSettings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE"])
@@ -1310,6 +1321,16 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupDefaultG3BandCENB.setHelp(plc_mac_rt_helpkeyword)
     plcCoupDefaultG3BandCENB.setDependencies(showG3DefaultBandCENB, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_G3_SETTING_PL360"])
 
+    plcCoupImpDetectFcc = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_IMP_DETECT_FCC", None)
+    plcCoupImpDetectFcc.setLabel("Impedance detection in FCC band")
+    plcCoupImpDetectFcc.setVisible(False)
+    plcCoupImpDetectFcc.setDefaultValue(False)
+
+    plcCoupImpDetectCenA = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_IMP_DETECT_CEN_A", None)
+    plcCoupImpDetectCenA.setLabel("Impedance detection in CENELEC-A band")
+    plcCoupImpDetectCenA.setVisible(False)
+    plcCoupImpDetectCenA.setDefaultValue(False)
+
     ##### Coupling Settings : Generic  ####################################################
 
     global plcBandInUse
@@ -1319,7 +1340,7 @@ def instantiateComponent(g3MacRtComponent):
     plcBandInUse.setVisible(False)
     plcBandInUse.setReadOnly(True)
     plcBandInUse.setHelp(plc_mac_rt_helpkeyword)
-    plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_G3_BAND", "DRV_PLC_G3_BAND_AUX", "DRV_PLC_COUP_G3_MULTIBAND"])
+    plcBandInUse.setDependencies(updateG3PLCBandInUse, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL360", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENA", "DRV_PLC_COUP_DEFAULT_G3_BAND_CENB"])
 
     #### FreeMaker Files ######################################################
 

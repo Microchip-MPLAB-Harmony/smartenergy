@@ -1550,7 +1550,7 @@ def instantiateComponent(plcComponent):
 
     plcCoupG3Settings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL460", None, plcCoupG3SettingsOptions460)
     plcCoupG3Settings460.setLabel("PLC Coupling and Band Settings")
-    plcCoupG3Settings460.setDefaultValue("Multiband FCC default & CEN-A (FCC + CENELEC-A; main branch + auxiliary branch)")
+    plcCoupG3Settings460.setDefaultValue(plcCoupG3SettingsOptions460[4])
     plcCoupG3Settings460.setVisible(True)
     plcCoupG3Settings460.setHelp(plc_phy_helpkeyword)
     plcCoupG3Settings460.setDependencies(showG3CoupSettings460, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
@@ -1566,7 +1566,7 @@ def instantiateComponent(plcComponent):
 
     plcCoupG3Settings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupG3SettingsOptions360)
     plcCoupG3Settings360.setLabel("PLC Coupling and Band Settings")
-    plcCoupG3Settings360.setDefaultValue("PLCOUP007 (CENELEC-A only)")
+    plcCoupG3Settings360.setDefaultValue(showG3CoupSettings360[0])
     plcCoupG3Settings360.setVisible(False)
     plcCoupG3Settings360.setHelp(plc_phy_helpkeyword)
     plcCoupG3Settings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
@@ -1605,7 +1605,7 @@ def instantiateComponent(plcComponent):
     global plcCoupPRIMESettings460
     plcCoupPRIMESettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_PRIME_SETTING_PL460", plcCoupPRIMESettings, plcCoupPrimeSettingsOptions460)
     plcCoupPRIMESettings460.setLabel("PLC Coupling Variant")
-    plcCoupPRIMESettings460.setDefaultValue("Multiband FCC default & CEN-A (all channels; main branch + auxiliary branch)")
+    plcCoupPRIMESettings460.setDefaultValue(plcCoupPrimeSettingsOptions460[3])
     plcCoupPRIMESettings460.setVisible(True)
     plcCoupPRIMESettings460.setHelp(plc_phy_helpkeyword)
     plcCoupPRIMESettings460.setDependencies(showPrimeCoupSettings460, ["DRV_PLC_MODE"])
@@ -1688,14 +1688,14 @@ def instantiateComponent(plcComponent):
 
     plcCoupMMSettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_MM_SETTING_PL460", None, plcCoupMMSettingsOptions460)
     plcCoupMMSettings460.setLabel("PLC Coupling and Band Settings")
-    plcCoupMMSettings460.setDefaultValue("Multiband FCC default/high attenuation & CEN-A (FCC + CENELEC-A; auxiliary branch)")
+    plcCoupMMSettings460.setDefaultValue(plcCoupMMSettingsOptions460[1])
     plcCoupMMSettings460.setVisible(True)
     plcCoupMMSettings460.setHelp(plc_phy_helpkeyword)
     plcCoupMMSettings460.setDependencies(showMMCoupSettings460, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
 
     plcCoupMMAux = plcComponent.createIntegerSymbol("DRV_PLC_COUP_MM_AUX", None)
     plcCoupMMAux.setVisible(False)
-    plcCoupMMAux.setDependencies(updateMMCoupSettings, ["DRV_PLC_COUP_MM_SETTING_PL460"])
+    plcCoupMMAux.setDependencies(updateMMCoupSettings, ["DRV_PLC_MODE", "DRV_PLC_COUP_MM_SETTING_PL460"])
 
     ##### Coupling Settings : Generic  ####################################################
 
