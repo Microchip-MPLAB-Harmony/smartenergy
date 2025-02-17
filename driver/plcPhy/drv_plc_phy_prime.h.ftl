@@ -428,8 +428,8 @@ typedef struct {
 	uint8_t status;
 } DRV_PLC_PHY_SIGNAL_CAPTURE;
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 6.1 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+/* MISRA C-2012 deviation block start */
+/* MISRA C-2012 Rule 6.1 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
@@ -439,9 +439,12 @@ typedef struct {
 </#if>
 /* Structure defining information about CSMA algorithm */
 typedef struct {
-	uint8_t disableRx : 1;
-	uint8_t senseCount : 3;
-	uint8_t senseDelayMs : 4;
+  /* Use CSMA (0) or forced transmission (1) */
+  uint8_t disableRx : 1;
+  /* Number of CSMA senses */
+  uint8_t senseCount : 3;
+  /* CSMA Sense delay in milliseconds */
+  uint8_t senseDelayMs : 4;
 } DRV_PLC_PHY_CSMA;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     #pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
@@ -449,8 +452,7 @@ typedef struct {
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
-
+/* MISRA C-2012 deviation block end */
 
 // *****************************************************************************
 /* PRIME Transmission setup data
