@@ -551,17 +551,13 @@ def updateBinFiles():
     
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
 
-    # Check if impedance detection in FCC band is needed
+    # Check if impedance detection in FCC/CEN-A band is needed
     if ("Multiband single-branch FCC & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
-        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_FCC", True)
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_BAND_FORCED", "FCC")
+    elif ("PLCOUP011 (FCC + CENELEC-A" in g3_coupSettings):
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_BAND_FORCED", "CENELEC-A")
     else:
-        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_FCC", False)
-    
-    # Check if impedance detection in CEN-A band is needed
-    if ("PLCOUP011 (FCC + CENELEC-A" in g3_coupSettings):
-        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_CEN_A", True)
-    else:
-        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_CEN_A", False)
+        Database.setSymbolValue("drvG3MacRt", "DRV_PLC_COUP_IMP_DETECT_BAND_FORCED", "None")
 
     # Check Internal/External Addressing
     if (Database.getSymbolValue("drvG3MacRt", "DRV_PLC_BIN_STATIC_ADDRESSING") == False) :
@@ -1321,15 +1317,10 @@ def instantiateComponent(g3MacRtComponent):
     plcCoupDefaultG3BandCENB.setHelp(plc_mac_rt_helpkeyword)
     plcCoupDefaultG3BandCENB.setDependencies(showG3DefaultBandCENB, ["DRV_PLC_MODE", "DRV_PLC_COUP_G3_SETTING_PL460", "DRV_PLC_COUP_G3_SETTING_PL360"])
 
-    plcCoupImpDetectFcc = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_IMP_DETECT_FCC", None)
-    plcCoupImpDetectFcc.setLabel("Impedance detection in FCC band")
-    plcCoupImpDetectFcc.setVisible(False)
-    plcCoupImpDetectFcc.setDefaultValue(False)
-
-    plcCoupImpDetectCenA = g3MacRtComponent.createBooleanSymbol("DRV_PLC_COUP_IMP_DETECT_CEN_A", None)
-    plcCoupImpDetectCenA.setLabel("Impedance detection in CENELEC-A band")
-    plcCoupImpDetectCenA.setVisible(False)
-    plcCoupImpDetectCenA.setDefaultValue(False)
+    plcCoupImpDetect = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_IMP_DETECT_BAND_FORCED", None, ["None", "FCC", "CENELEC-A"])
+    plcCoupImpDetect.setLabel("Forced Impedance Detection")
+    plcCoupImpDetect.setVisible(True)
+    plcCoupImpDetect.setDefaultValue("None")
 
     ##### Coupling Settings : Generic  ####################################################
 
