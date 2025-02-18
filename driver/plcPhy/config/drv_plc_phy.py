@@ -1566,7 +1566,7 @@ def instantiateComponent(plcComponent):
 
     plcCoupG3Settings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_G3_SETTING_PL360", None, plcCoupG3SettingsOptions360)
     plcCoupG3Settings360.setLabel("PLC Coupling and Band Settings")
-    plcCoupG3Settings360.setDefaultValue(showG3CoupSettings360[0])
+    plcCoupG3Settings360.setDefaultValue(plcCoupG3SettingsOptions360[0])
     plcCoupG3Settings360.setVisible(False)
     plcCoupG3Settings360.setHelp(plc_phy_helpkeyword)
     plcCoupG3Settings360.setDependencies(showG3CoupSettings360, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
@@ -1619,7 +1619,7 @@ def instantiateComponent(plcComponent):
     global plcCoupPRIMESettings360
     plcCoupPRIMESettings360 = plcComponent.createComboSymbol("DRV_PLC_COUP_PRIME_SETTING_PL360", plcCoupPRIMESettings, plcCoupPrimeSettingsOptions360)
     plcCoupPRIMESettings360.setLabel("PLC Coupling Variant")
-    plcCoupPRIMESettings360.setDefaultValue("PLCOUP007 (CHN1 only)")
+    plcCoupPRIMESettings360.setDefaultValue(plcCoupPrimeSettingsOptions360[0])
     plcCoupPRIMESettings360.setVisible(False)
     plcCoupPRIMESettings360.setHelp(plc_phy_helpkeyword)
     plcCoupPRIMESettings360.setDependencies(showPrimeCoupSettings360, ["DRV_PLC_MODE"])
@@ -1689,7 +1689,7 @@ def instantiateComponent(plcComponent):
     plcCoupMMSettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_MM_SETTING_PL460", None, plcCoupMMSettingsOptions460)
     plcCoupMMSettings460.setLabel("PLC Coupling and Band Settings")
     plcCoupMMSettings460.setDefaultValue(plcCoupMMSettingsOptions460[1])
-    plcCoupMMSettings460.setVisible(True)
+    plcCoupMMSettings460.setVisible(False)
     plcCoupMMSettings460.setHelp(plc_phy_helpkeyword)
     plcCoupMMSettings460.setDependencies(showMMCoupSettings460, ["DRV_PLC_MODE", "DRV_PLC_PROFILE"])
 
