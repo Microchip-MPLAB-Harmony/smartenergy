@@ -377,7 +377,7 @@ rms_high_chn2_drv_hiAtt = [737, 654, 581, 517, 460, 409, 364, 323]
 rms_high_chn3_drv_hiAtt = [800, 697, 608, 532, 466, 409, 359, 315]
 rms_high_chn4_drv_hiAtt = [1311, 1171, 1047, 936, 837, 748, 669, 597]
 rms_high_chn5_drv_hiAtt = [1831, 1629, 1453, 1297, 1159, 1035, 925, 827]
-rms_high_chn6_drv_hiAtt = [1707, 1520, 1360, 1219, 1096, 987, 890, 803]
+rms_high_chn6_drv_hiAtt = [1715, 1516, 1352, 1210, 1086, 976, 879, 792]
 rms_high_chn7_drv_hiAtt = [1248, 1125, 1016, 917, 830, 752, 682, 618]
 rms_high_chn8_drv_hiAtt = [953, 868, 784, 706, 635, 573, 516, 466]
 
@@ -385,7 +385,7 @@ rms_vlow_chn2_drv_hiAtt = [3492, 3124, 2766, 2430, 2122, 1853, 1622, 1425]
 rms_vlow_chn3_drv_hiAtt = [2459, 2265, 2069, 1868, 1676, 1495, 1330, 1183]
 rms_vlow_chn4_drv_hiAtt = [3124, 2868, 2609, 2358, 2114, 1882, 1673, 1486]
 rms_vlow_chn5_drv_hiAtt = [3344, 3048, 2749, 2456, 2188, 1948, 1734, 1543]
-rms_vlow_chn6_drv_hiAtt = [3074, 2814, 2546, 2283, 2042, 1825, 1632, 1459]
+rms_vlow_chn6_drv_hiAtt = [3137, 2883, 2613, 2347, 2103, 1883, 1686, 1509]
 rms_vlow_chn7_drv_hiAtt = [2553, 2339, 2129, 1924, 1723, 1542, 1379, 1233]
 rms_vlow_chn8_drv_hiAtt = [1838, 1668, 1500, 1345, 1203, 1076, 963, 861]
 
@@ -393,7 +393,7 @@ thrs_high_chn2_drv_hiAtt = thrs_high_dummy
 thrs_high_chn3_drv_hiAtt = thrs_high_dummy
 thrs_high_chn4_drv_hiAtt = thrs_high_dummy
 thrs_high_chn5_drv_hiAtt = thrs_high_dummy
-thrs_high_chn6_drv_hiAtt = [0, 0, 0, 0, 0, 0, 0, 0, 1485, 1321, 1181, 1060, 951, 857, 774, 697]
+thrs_high_chn6_drv_hiAtt = [0, 0, 0, 0, 0, 0, 0, 0, 1426, 1266, 1127, 1008, 903, 816, 735, 662]
 thrs_high_chn7_drv_hiAtt = thrs_high_dummy
 thrs_high_chn8_drv_hiAtt = thrs_high_dummy
 
