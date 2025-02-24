@@ -323,29 +323,61 @@ thrs_vlow_c11 = [thrs_vlow_chn2_c11, thrs_vlow_chn3_c11, thrs_vlow_chn4_c11, thr
 gain_high_c11 = [gain_high_chn2_c11, gain_high_chn3_c11, gain_high_chn4_c11, gain_high_chn5_c11, gain_high_chn6_c11, gain_high_chn7_c11, gain_high_chn8_c11]
 gain_vlow_c11 = [gain_vlow_chn2_c11, gain_vlow_chn3_c11, gain_vlow_chn4_c11, gain_vlow_chn5_c11, gain_vlow_chn6_c11, gain_vlow_chn7_c11, gain_vlow_chn8_c11]
 
-rms_high_chn2_drv_sb = [792, 693, 607, 533, 468, 412, 362, 319]
-rms_high_chn3_drv_sb = [728, 642, 566, 501, 443, 392, 347, 308]
-rms_high_chn4_drv_sb = [1655, 1483, 1332, 1194, 1071, 961, 861, 772]
-rms_high_chn5_drv_sb = [1801, 1609, 1438, 1285, 1149, 1027, 918, 820]
-rms_high_chn6_drv_sb = [1233, 1099, 980, 874, 780, 695, 620, 553]
-rms_high_chn7_drv_sb = [1411, 1253, 1114,991, 881, 784, 698, 621]
-rms_high_chn8_drv_sb = [877, 778, 691, 614, 546, 487, 433, 385]
+rms_high_chn2_drv_sb_aux = [792, 693, 607, 533, 468, 412, 362, 319]
+rms_high_chn3_drv_sb_aux = [728, 642, 566, 501, 443, 392, 347, 308]
+rms_high_chn4_drv_sb_aux = [1655, 1483, 1332, 1194, 1071, 961, 861, 772]
+rms_high_chn5_drv_sb_aux = [1801, 1609, 1438, 1285, 1149, 1027, 918, 820]
+rms_high_chn6_drv_sb_aux = [1233, 1099, 980, 874, 780, 695, 620, 553]
+rms_high_chn7_drv_sb_aux = [1411, 1253, 1114,991, 881, 784, 698, 621]
+rms_high_chn8_drv_sb_aux = [877, 778, 691, 614, 546, 487, 433, 385]
 
-rms_vlow_chn2_drv_sb = [1627, 1473, 1319, 1168, 1030, 908, 800, 705]
-rms_vlow_chn3_drv_sb = [2801, 2570, 2334, 2097, 1864, 1649, 1458, 1289]
-rms_vlow_chn4_drv_sb = [3572, 3252, 2931, 2616, 2324, 2061, 1827, 1619]
-rms_vlow_chn5_drv_sb = [3924, 3584, 3241, 2902, 2589, 2308, 2055, 1830]
-rms_vlow_chn6_drv_sb = [3757, 3429, 3097, 2773, 2474, 2207, 1968, 1754]
-rms_vlow_chn7_drv_sb = [3771, 3433, 3093, 2762, 2460, 2191, 1952, 1739]
-rms_vlow_chn8_drv_sb = [4295, 3937, 3575, 3213, 2861, 2544, 2262, 2013]
+rms_vlow_chn2_drv_sb_aux = [1627, 1473, 1319, 1168, 1030, 908, 800, 705]
+rms_vlow_chn3_drv_sb_aux = [2801, 2570, 2334, 2097, 1864, 1649, 1458, 1289]
+rms_vlow_chn4_drv_sb_aux = [3572, 3252, 2931, 2616, 2324, 2061, 1827, 1619]
+rms_vlow_chn5_drv_sb_aux = [3924, 3584, 3241, 2902, 2589, 2308, 2055, 1830]
+rms_vlow_chn6_drv_sb_aux = [3757, 3429, 3097, 2773, 2474, 2207, 1968, 1754]
+rms_vlow_chn7_drv_sb_aux = [3771, 3433, 3093, 2762, 2460, 2191, 1952, 1739]
+rms_vlow_chn8_drv_sb_aux = [4295, 3937, 3575, 3213, 2861, 2544, 2262, 2013]
 
-thrs_high_chn2_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 670, 586, 514, 451, 396, 348, 306, 270]
-thrs_high_chn3_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 620, 547, 482, 427, 378, 334, 296, 262]
-thrs_high_chn4_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1407, 1263, 1133, 1016, 912, 818, 733, 657]
-thrs_high_chn5_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1530, 1367, 1223, 1093, 976, 872, 780, 697]
-thrs_high_chn6_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1048, 934, 833, 742, 663, 590, 527, 470]
-thrs_high_chn7_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1200, 1065, 946, 842, 749, 666, 593, 527]
-thrs_high_chn8_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 745, 660, 587, 521, 464, 413, 367, 326]
+thrs_high_chn2_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 670, 586, 514, 451, 396, 348, 306, 270]
+thrs_high_chn3_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 620, 547, 482, 427, 378, 334, 296, 262]
+thrs_high_chn4_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1407, 1263, 1133, 1016, 912, 818, 733, 657]
+thrs_high_chn5_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1530, 1367, 1223, 1093, 976, 872, 780, 697]
+thrs_high_chn6_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1048, 934, 833, 742, 663, 590, 527, 470]
+thrs_high_chn7_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1200, 1065, 946, 842, 749, 666, 593, 527]
+thrs_high_chn8_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 745, 660, 587, 521, 464, 413, 367, 326]
+
+thrs_vlow_chn2_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn3_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn4_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn5_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn6_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn7_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_chn8_drv_sb_aux = thrs_vlow_dummy
+
+rms_high_chn2_drv_sb = [821, 718, 629, 552, 485, 426, 375, 330]
+rms_high_chn3_drv_sb = [755, 665, 587, 519, 459, 406, 360, 319]
+rms_high_chn4_drv_sb = [1696, 1519, 1364, 1223, 1097, 984, 882, 791]
+rms_high_chn5_drv_sb = [1841, 1644, 1470, 1313, 1173, 1049, 937, 837]
+rms_high_chn6_drv_sb = [1255, 1119, 997, 889, 793, 707, 630, 562]
+rms_high_chn7_drv_sb = [1430, 1269, 1127, 1002, 891, 792, 705, 627]
+rms_high_chn8_drv_sb = [880, 780, 692, 615, 547, 487, 433, 384]
+
+rms_vlow_chn2_drv_sb = [1687, 1527, 1367, 1210, 1068, 941, 830, 731]
+rms_vlow_chn3_drv_sb = [2889, 2648, 2405, 2161, 1920, 1700, 1503, 1328]
+rms_vlow_chn4_drv_sb = [3663, 3335, 3005, 2681, 2382, 2112, 1873, 1660]
+rms_vlow_chn5_drv_sb = [4023, 3675, 3322, 2974, 2654, 2364, 2105, 1874]
+rms_vlow_chn6_drv_sb = [3833, 3498, 3159, 2828, 2523, 2250, 2005, 1787]
+rms_vlow_chn7_drv_sb = [3831, 3487, 3140, 2803, 2496, 2222, 1978, 1761]
+rms_vlow_chn8_drv_sb = [4340, 3977, 3611, 3244, 2888, 2566, 2281, 2029]
+
+thrs_high_chn2_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 699, 611, 535, 470, 413, 362, 319, 282]
+thrs_high_chn3_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 642, 566, 500, 442, 391, 346, 306, 272]
+thrs_high_chn4_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1442, 1293, 1161, 1042, 935, 838, 752, 674]
+thrs_high_chn5_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1564, 1396, 1248, 1115, 997, 890, 796, 711]
+thrs_high_chn6_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1067, 951, 847, 755, 674, 600, 535, 477]
+thrs_high_chn7_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1217, 1080, 959, 853, 759, 674, 600, 533]
+thrs_high_chn8_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 747, 663, 588, 522, 464, 413, 368, 327]
 
 thrs_vlow_chn2_drv_sb = thrs_vlow_dummy
 thrs_vlow_chn3_drv_sb = thrs_vlow_dummy
@@ -370,6 +402,10 @@ gain_vlow_chn7_drv_sb = [256, 128, 287]
 gain_high_chn8_drv_sb = [30, 30, 256]
 gain_vlow_chn8_drv_sb = [287, 128, 287]
 
+rms_high_drv_sb_aux = [rms_high_chn2_drv_sb_aux, rms_high_chn3_drv_sb_aux, rms_high_chn4_drv_sb_aux, rms_high_chn5_drv_sb_aux, rms_high_chn6_drv_sb_aux, rms_high_chn7_drv_sb_aux, rms_high_chn8_drv_sb_aux]
+rms_vlow_drv_sb_aux = [rms_vlow_chn2_drv_sb_aux, rms_vlow_chn3_drv_sb_aux, rms_vlow_chn4_drv_sb_aux, rms_vlow_chn5_drv_sb_aux, rms_vlow_chn6_drv_sb_aux, rms_vlow_chn7_drv_sb_aux, rms_vlow_chn8_drv_sb_aux]
+thrs_high_drv_sb_aux = [thrs_high_chn2_drv_sb_aux, thrs_high_chn3_drv_sb_aux, thrs_high_chn4_drv_sb_aux, thrs_high_chn5_drv_sb_aux, thrs_high_chn6_drv_sb_aux, thrs_high_chn7_drv_sb_aux, thrs_high_chn8_drv_sb_aux]
+thrs_vlow_drv_sb_aux = [thrs_vlow_chn2_drv_sb_aux, thrs_vlow_chn3_drv_sb_aux, thrs_vlow_chn4_drv_sb_aux, thrs_vlow_chn5_drv_sb_aux, thrs_vlow_chn6_drv_sb_aux, thrs_vlow_chn7_drv_sb_aux, thrs_vlow_chn8_drv_sb_aux]
 rms_high_drv_sb = [rms_high_chn2_drv_sb, rms_high_chn3_drv_sb, rms_high_chn4_drv_sb, rms_high_chn5_drv_sb, rms_high_chn6_drv_sb, rms_high_chn7_drv_sb, rms_high_chn8_drv_sb]
 rms_vlow_drv_sb = [rms_vlow_chn2_drv_sb, rms_vlow_chn3_drv_sb, rms_vlow_chn4_drv_sb, rms_vlow_chn5_drv_sb, rms_vlow_chn6_drv_sb, rms_vlow_chn7_drv_sb, rms_vlow_chn8_drv_sb]
 thrs_high_drv_sb = [thrs_high_chn2_drv_sb, thrs_high_chn3_drv_sb, thrs_high_chn4_drv_sb, thrs_high_chn5_drv_sb, thrs_high_chn6_drv_sb, thrs_high_chn7_drv_sb, thrs_high_chn8_drv_sb]
@@ -607,29 +643,61 @@ thrs_vlow_2chn_c11 = [thrs_vlow_2chn12_c11, thrs_vlow_2chn23_c11, thrs_vlow_2chn
 gain_high_2chn_c11 = [gain_high_2chn12_c11, gain_high_2chn23_c11, gain_high_2chn34_c11, gain_high_2chn45_c11, gain_high_2chn56_c11, gain_high_2chn67_c11, gain_high_2chn78_c11]
 gain_vlow_2chn_c11 = [gain_vlow_2chn12_c11, gain_vlow_2chn23_c11, gain_vlow_2chn34_c11, gain_vlow_2chn45_c11, gain_vlow_2chn56_c11, gain_vlow_2chn67_c11, gain_vlow_2chn78_c11]
 
-rms_high_2chn12_drv_sb = [401, 353, 310, 273, 240, 212, 187, 165]
-rms_high_2chn23_drv_sb = [1650, 1447, 1277, 1131, 1001, 887, 786, 696]
-rms_high_2chn34_drv_sb = [2291, 2033, 1810, 1616, 1444, 1290, 1153, 1031]
-rms_high_2chn45_drv_sb = [2136, 1912, 1712, 1535, 1375, 1232, 1104, 988]
-rms_high_2chn56_drv_sb = [1841, 1641, 1465, 1308, 1167, 1042, 930, 830]
-rms_high_2chn67_drv_sb = [1966, 1746, 1552, 1380, 1228, 1093, 972, 866]
-rms_high_2chn78_drv_sb = [2398, 2121, 1882, 1672, 1487, 1323, 1177, 1046]
+rms_high_2chn12_drv_sb_aux = [401, 353, 310, 273, 240, 212, 187, 165]
+rms_high_2chn23_drv_sb_aux = [1650, 1447, 1277, 1131, 1001, 887, 786, 696]
+rms_high_2chn34_drv_sb_aux = [2291, 2033, 1810, 1616, 1444, 1290, 1153, 1031]
+rms_high_2chn45_drv_sb_aux = [2136, 1912, 1712, 1535, 1375, 1232, 1104, 988]
+rms_high_2chn56_drv_sb_aux = [1841, 1641, 1465, 1308, 1167, 1042, 930, 830]
+rms_high_2chn67_drv_sb_aux = [1966, 1746, 1552, 1380, 1228, 1093, 972, 866]
+rms_high_2chn78_drv_sb_aux = [2398, 2121, 1882, 1672, 1487, 1323, 1177, 1046]
 
-rms_vlow_2chn12_drv_sb = [850, 767, 685, 609, 539, 475, 420, 370]
-rms_vlow_2chn23_drv_sb = [1566, 1413, 1263, 1123, 994, 878, 776, 686]
-rms_vlow_2chn34_drv_sb = [2283, 2064, 1850, 1648, 1464, 1296, 1148, 1017]
-rms_vlow_2chn45_drv_sb = [2768, 2509, 2255, 2017, 1798, 1598, 1420, 1262]
-rms_vlow_2chn56_drv_sb = [2840, 2579, 2323, 2082, 1860, 1658, 1477, 1316]
-rms_vlow_2chn67_drv_sb = [2773, 2517, 2266, 2031, 1814, 1617, 1441, 1284]
-rms_vlow_2chn78_drv_sb = [2823, 2557, 2299, 2057, 1836, 1635, 1456, 1297]
+rms_vlow_2chn12_drv_sb_aux = [850, 767, 685, 609, 539, 475, 420, 370]
+rms_vlow_2chn23_drv_sb_aux = [1566, 1413, 1263, 1123, 994, 878, 776, 686]
+rms_vlow_2chn34_drv_sb_aux = [2283, 2064, 1850, 1648, 1464, 1296, 1148, 1017]
+rms_vlow_2chn45_drv_sb_aux = [2768, 2509, 2255, 2017, 1798, 1598, 1420, 1262]
+rms_vlow_2chn56_drv_sb_aux = [2840, 2579, 2323, 2082, 1860, 1658, 1477, 1316]
+rms_vlow_2chn67_drv_sb_aux = [2773, 2517, 2266, 2031, 1814, 1617, 1441, 1284]
+rms_vlow_2chn78_drv_sb_aux = [2823, 2557, 2299, 2057, 1836, 1635, 1456, 1297]
 
-thrs_high_2chn12_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 341, 300, 264, 232, 204, 181, 159, 140]
-thrs_high_2chn23_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1402, 1231, 1086, 962, 850, 754, 669, 593]
-thrs_high_2chn34_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1947, 1729, 1541, 1375, 1229, 1099, 981, 877]
-thrs_high_2chn45_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1815, 1625, 1456, 1304, 1169, 1048, 939, 840]
-thrs_high_2chn56_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1564, 1394, 1245, 1110, 991, 885, 790, 705]
-thrs_high_2chn67_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1671, 1484, 1320, 1174, 1044, 929, 827, 736]
-thrs_high_2chn78_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 2042, 1806, 1603, 1424, 1266, 1127, 1002, 891]
+thrs_high_2chn12_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 341, 300, 264, 232, 204, 181, 159, 140]
+thrs_high_2chn23_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1402, 1231, 1086, 962, 850, 754, 669, 593]
+thrs_high_2chn34_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1947, 1729, 1541, 1375, 1229, 1099, 981, 877]
+thrs_high_2chn45_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1815, 1625, 1456, 1304, 1169, 1048, 939, 840]
+thrs_high_2chn56_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1564, 1394, 1245, 1110, 991, 885, 790, 705]
+thrs_high_2chn67_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 1671, 1484, 1320, 1174, 1044, 929, 827, 736]
+thrs_high_2chn78_drv_sb_aux = [0, 0, 0, 0, 0, 0, 0, 0, 2042, 1806, 1603, 1424, 1266, 1127, 1002, 891]
+
+thrs_vlow_2chn12_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn23_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn34_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn45_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn56_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn67_drv_sb_aux = thrs_vlow_dummy
+thrs_vlow_2chn78_drv_sb_aux = thrs_vlow_dummy
+
+rms_high_2chn12_drv_sb = [418, 367, 323, 285, 251, 221, 195, 172]
+rms_high_2chn23_drv_sb = [1707, 1498, 1321, 1169, 1035, 919,  814, 721]
+rms_high_2chn34_drv_sb = [2420, 2147, 1911, 1706, 1525, 1363, 1218, 1089]
+rms_high_2chn45_drv_sb = [2234, 2000, 1792, 1606, 1440, 1290, 1156, 1036]
+rms_high_2chn56_drv_sb = [1901, 1695, 1513, 1350, 1205, 1076, 960, 857]
+rms_high_2chn67_drv_sb = [2024, 1798, 1598, 1420, 1263, 1123, 999, 889]
+rms_high_2chn78_drv_sb = [2488, 2197, 1948, 1729, 1536, 1365, 1213, 1078]
+
+rms_vlow_2chn12_drv_sb = [883, 797, 711, 632, 559, 494, 436, 385]
+rms_vlow_2chn23_drv_sb = [1622, 1462, 1307, 1162, 1029, 909, 803, 710]
+rms_vlow_2chn34_drv_sb = [2358, 2132, 1911, 1703, 1513, 1339, 1186, 1050]
+rms_vlow_2chn45_drv_sb = [2845, 2579, 2319, 2074, 1848, 1643, 1460, 1298]
+rms_vlow_2chn56_drv_sb = [2907, 2640, 2378, 2131, 1904, 1696, 1511, 1345]
+rms_vlow_2chn67_drv_sb = [2830, 2568, 2312, 2071, 1849, 1648, 1468, 1308]
+rms_vlow_2chn78_drv_sb = [2869, 2599, 2336, 2088, 1862, 1657, 1475, 1313]
+
+thrs_high_2chn12_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 355, 311, 274, 241, 212, 187, 164, 146]
+thrs_high_2chn23_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1486, 1305, 1151, 1019, 904, 801, 709, 629]
+thrs_high_2chn34_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 2057, 1826, 1626, 1452, 1297, 1160, 1037, 926]
+thrs_high_2chn45_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1898, 1700, 1524, 1365, 1224, 1097, 983, 881]
+thrs_high_2chn56_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1615, 1441, 1286, 1147, 1024, 914, 816, 728]
+thrs_high_2chn67_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 1722, 1529, 1359, 1207, 1073, 955, 850, 756]
+thrs_high_2chn78_drv_sb = [0, 0, 0, 0, 0, 0, 0, 0, 2118, 1871, 1659, 1472, 1308, 1162, 1033, 918]
 
 thrs_vlow_2chn12_drv_sb = thrs_vlow_dummy
 thrs_vlow_2chn23_drv_sb = thrs_vlow_dummy
@@ -654,6 +722,10 @@ gain_vlow_2chn67_drv_sb = [256, 128, 256]
 gain_high_2chn78_drv_sb = [120, 60, 256]
 gain_vlow_2chn78_drv_sb = [256, 128, 256]
 
+rms_high_2chn_drv_sb_aux = [rms_high_2chn12_drv_sb_aux, rms_high_2chn23_drv_sb_aux, rms_high_2chn34_drv_sb_aux, rms_high_2chn45_drv_sb_aux, rms_high_2chn56_drv_sb_aux, rms_high_2chn67_drv_sb_aux, rms_high_2chn78_drv_sb_aux]
+rms_vlow_2chn_drv_sb_aux = [rms_vlow_2chn12_drv_sb_aux, rms_vlow_2chn23_drv_sb_aux, rms_vlow_2chn34_drv_sb_aux, rms_vlow_2chn45_drv_sb_aux, rms_vlow_2chn56_drv_sb_aux, rms_vlow_2chn67_drv_sb_aux, rms_vlow_2chn78_drv_sb_aux]
+thrs_high_2chn_drv_sb_aux = [thrs_high_2chn12_drv_sb_aux, thrs_high_2chn23_drv_sb_aux, thrs_high_2chn34_drv_sb_aux, thrs_high_2chn45_drv_sb_aux, thrs_high_2chn56_drv_sb_aux, thrs_high_2chn67_drv_sb_aux, thrs_high_2chn78_drv_sb_aux]
+thrs_vlow_2chn_drv_sb_aux = [thrs_vlow_2chn12_drv_sb_aux, thrs_vlow_2chn23_drv_sb_aux, thrs_vlow_2chn34_drv_sb_aux, thrs_vlow_2chn45_drv_sb_aux, thrs_vlow_2chn56_drv_sb_aux, thrs_vlow_2chn67_drv_sb_aux, thrs_vlow_2chn78_drv_sb_aux]
 rms_high_2chn_drv_sb = [rms_high_2chn12_drv_sb, rms_high_2chn23_drv_sb, rms_high_2chn34_drv_sb, rms_high_2chn45_drv_sb, rms_high_2chn56_drv_sb, rms_high_2chn67_drv_sb, rms_high_2chn78_drv_sb]
 rms_vlow_2chn_drv_sb = [rms_vlow_2chn12_drv_sb, rms_vlow_2chn23_drv_sb, rms_vlow_2chn34_drv_sb, rms_vlow_2chn45_drv_sb, rms_vlow_2chn56_drv_sb, rms_vlow_2chn67_drv_sb, rms_vlow_2chn78_drv_sb]
 thrs_high_2chn_drv_sb = [thrs_high_2chn12_drv_sb, thrs_high_2chn23_drv_sb, thrs_high_2chn34_drv_sb, thrs_high_2chn45_drv_sb, thrs_high_2chn56_drv_sb, thrs_high_2chn67_drv_sb, thrs_high_2chn78_drv_sb]
@@ -661,21 +733,21 @@ thrs_vlow_2chn_drv_sb = [thrs_vlow_2chn12_drv_sb, thrs_vlow_2chn23_drv_sb, thrs_
 gain_high_2chn_drv_sb = [gain_high_2chn12_drv_sb, gain_high_2chn23_drv_sb, gain_high_2chn34_drv_sb, gain_high_2chn45_drv_sb, gain_high_2chn56_drv_sb, gain_high_2chn67_drv_sb, gain_high_2chn78_drv_sb]
 gain_vlow_2chn_drv_sb = [gain_vlow_2chn12_drv_sb, gain_vlow_2chn23_drv_sb, gain_vlow_2chn34_drv_sb, gain_vlow_2chn45_drv_sb, gain_vlow_2chn56_drv_sb, gain_vlow_2chn67_drv_sb, gain_vlow_2chn78_drv_sb]
 
-rms_high_2chn12_drv_hiAtt = rms_high_2chn12_drv_sb
-rms_high_2chn23_drv_hiAtt = rms_high_2chn23_drv_sb
-rms_high_2chn34_drv_hiAtt = rms_high_2chn34_drv_sb
-rms_high_2chn45_drv_hiAtt = rms_high_2chn45_drv_sb
-rms_high_2chn56_drv_hiAtt = rms_high_2chn56_drv_sb
-rms_high_2chn67_drv_hiAtt = rms_high_2chn67_drv_sb
-rms_high_2chn78_drv_hiAtt = rms_high_2chn78_drv_sb
+rms_high_2chn12_drv_hiAtt = rms_high_2chn12_drv_sb_aux
+rms_high_2chn23_drv_hiAtt = rms_high_2chn23_drv_sb_aux
+rms_high_2chn34_drv_hiAtt = rms_high_2chn34_drv_sb_aux
+rms_high_2chn45_drv_hiAtt = rms_high_2chn45_drv_sb_aux
+rms_high_2chn56_drv_hiAtt = rms_high_2chn56_drv_sb_aux
+rms_high_2chn67_drv_hiAtt = rms_high_2chn67_drv_sb_aux
+rms_high_2chn78_drv_hiAtt = rms_high_2chn78_drv_sb_aux
 
-rms_vlow_2chn12_drv_hiAtt = rms_vlow_2chn12_drv_sb
-rms_vlow_2chn23_drv_hiAtt = rms_vlow_2chn23_drv_sb
-rms_vlow_2chn34_drv_hiAtt = rms_vlow_2chn34_drv_sb
-rms_vlow_2chn45_drv_hiAtt = rms_vlow_2chn45_drv_sb
-rms_vlow_2chn56_drv_hiAtt = rms_vlow_2chn56_drv_sb
-rms_vlow_2chn67_drv_hiAtt = rms_vlow_2chn67_drv_sb
-rms_vlow_2chn78_drv_hiAtt = rms_vlow_2chn78_drv_sb
+rms_vlow_2chn12_drv_hiAtt = rms_vlow_2chn12_drv_sb_aux
+rms_vlow_2chn23_drv_hiAtt = rms_vlow_2chn23_drv_sb_aux
+rms_vlow_2chn34_drv_hiAtt = rms_vlow_2chn34_drv_sb_aux
+rms_vlow_2chn45_drv_hiAtt = rms_vlow_2chn45_drv_sb_aux
+rms_vlow_2chn56_drv_hiAtt = rms_vlow_2chn56_drv_sb_aux
+rms_vlow_2chn67_drv_hiAtt = rms_vlow_2chn67_drv_sb_aux
+rms_vlow_2chn78_drv_hiAtt = rms_vlow_2chn78_drv_sb_aux
 
 thrs_high_2chn12_drv_hiAtt = thrs_high_dummy
 thrs_high_2chn23_drv_hiAtt = thrs_high_dummy
@@ -693,20 +765,20 @@ thrs_vlow_2chn56_drv_hiAtt = thrs_vlow_dummy
 thrs_vlow_2chn67_drv_hiAtt = thrs_vlow_dummy
 thrs_vlow_2chn78_drv_hiAtt = thrs_vlow_dummy
 
-gain_high_2chn12_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn12_drv_hiAtt = [256, 128, 256]
-gain_high_2chn23_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn23_drv_hiAtt = [256, 128, 256]
-gain_high_2chn34_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn34_drv_hiAtt = [256, 128, 256]
-gain_high_2chn45_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn45_drv_hiAtt = [256, 128, 256]
-gain_high_2chn56_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn56_drv_hiAtt = [256, 128, 256]
-gain_high_2chn67_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn67_drv_hiAtt = [256, 128, 256]
-gain_high_2chn78_drv_hiAtt = [120, 60, 256]
-gain_vlow_2chn78_drv_hiAtt = [256, 128, 256]
+gain_high_2chn12_drv_hiAtt = [120, 120, 120]
+gain_vlow_2chn12_drv_hiAtt = [256, 256, 256]
+gain_high_2chn23_drv_hiAtt = [120, 120, 120]
+gain_vlow_2chn23_drv_hiAtt = [275, 275, 275]
+gain_high_2chn34_drv_hiAtt = [85, 85, 85]
+gain_vlow_2chn34_drv_hiAtt = [287, 287, 287]
+gain_high_2chn45_drv_hiAtt = [85, 85, 85]
+gain_vlow_2chn45_drv_hiAtt = [275, 275, 275]
+gain_high_2chn56_drv_hiAtt = [120, 120, 120]
+gain_vlow_2chn56_drv_hiAtt = [256, 256, 256]
+gain_high_2chn67_drv_hiAtt = [120, 120, 120]
+gain_vlow_2chn67_drv_hiAtt = [275, 275, 275]
+gain_high_2chn78_drv_hiAtt = [169, 169, 169]
+gain_vlow_2chn78_drv_hiAtt = [275, 275, 275]
 
 rms_high_2chn_drv_hiAtt = [rms_high_2chn12_drv_hiAtt, rms_high_2chn23_drv_hiAtt, rms_high_2chn34_drv_hiAtt, rms_high_2chn45_drv_hiAtt, rms_high_2chn56_drv_hiAtt, rms_high_2chn67_drv_hiAtt, rms_high_2chn78_drv_hiAtt]
 rms_vlow_2chn_drv_hiAtt = [rms_vlow_2chn12_drv_hiAtt, rms_vlow_2chn23_drv_hiAtt, rms_vlow_2chn34_drv_hiAtt, rms_vlow_2chn45_drv_hiAtt, rms_vlow_2chn56_drv_hiAtt, rms_vlow_2chn67_drv_hiAtt, rms_vlow_2chn78_drv_hiAtt]
@@ -715,21 +787,21 @@ thrs_vlow_2chn_drv_hiAtt = [thrs_vlow_2chn12_drv_hiAtt, thrs_vlow_2chn23_drv_hiA
 gain_high_2chn_drv_hiAtt = [gain_high_2chn12_drv_hiAtt, gain_high_2chn23_drv_hiAtt, gain_high_2chn34_drv_hiAtt, gain_high_2chn45_drv_hiAtt, gain_high_2chn56_drv_hiAtt, gain_high_2chn67_drv_hiAtt, gain_high_2chn78_drv_hiAtt]
 gain_vlow_2chn_drv_hiAtt = [gain_vlow_2chn12_drv_hiAtt, gain_vlow_2chn23_drv_hiAtt, gain_vlow_2chn34_drv_hiAtt, gain_vlow_2chn45_drv_hiAtt, gain_vlow_2chn56_drv_hiAtt, gain_vlow_2chn67_drv_hiAtt, gain_vlow_2chn78_drv_hiAtt]
 
-rms_high_2chn12_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn23_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn34_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn45_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn56_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn67_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_high_2chn78_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_high_2chn12_drv_mbsb = rms_high_2chn12_drv_sb_aux
+rms_high_2chn23_drv_mbsb = rms_high_2chn23_drv_sb_aux
+rms_high_2chn34_drv_mbsb = rms_high_2chn34_drv_sb_aux
+rms_high_2chn45_drv_mbsb = rms_high_2chn45_drv_sb_aux
+rms_high_2chn56_drv_mbsb = rms_high_2chn56_drv_sb_aux
+rms_high_2chn67_drv_mbsb = rms_high_2chn67_drv_sb_aux
+rms_high_2chn78_drv_mbsb = rms_high_2chn78_drv_sb_aux
 
-rms_vlow_2chn12_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn23_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn34_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn45_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn56_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn67_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
-rms_vlow_2chn78_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0]
+rms_vlow_2chn12_drv_mbsb = rms_vlow_2chn12_drv_sb_aux
+rms_vlow_2chn23_drv_mbsb = rms_vlow_2chn23_drv_sb_aux
+rms_vlow_2chn34_drv_mbsb = rms_vlow_2chn34_drv_sb_aux
+rms_vlow_2chn45_drv_mbsb = rms_vlow_2chn45_drv_sb_aux
+rms_vlow_2chn56_drv_mbsb = rms_vlow_2chn56_drv_sb_aux
+rms_vlow_2chn67_drv_mbsb = rms_vlow_2chn67_drv_sb_aux
+rms_vlow_2chn78_drv_mbsb = rms_vlow_2chn78_drv_sb_aux
 
 thrs_high_2chn12_drv_mbsb = thrs_high_dummy
 thrs_high_2chn23_drv_mbsb = thrs_high_dummy
@@ -1525,6 +1597,15 @@ def pCoupConfigureChannel(plcDevice, channel, coupSettings):
                 thrs_vlow = thrs_vlow_drv_mbsb[channel - 2]
                 gain_high = gain_high_drv_mbsb[channel - 2]
                 gain_vlow = gain_vlow_drv_mbsb[channel - 2]
+            elif ("FCC default & CEN-A" in coupSettings):
+                # drv_sb with auxiliary branch
+                line_drv = 5
+                rms_high  = rms_high_drv_sb_aux[channel - 2]
+                rms_vlow  = rms_vlow_drv_sb_aux[channel - 2]
+                thrs_high = thrs_high_drv_sb_aux[channel - 2]
+                thrs_vlow = thrs_vlow_drv_sb_aux[channel - 2]
+                gain_high = gain_high_drv_sb[channel - 2]
+                gain_vlow = gain_vlow_drv_sb[channel - 2]
             else:
                 # drv_sb
                 line_drv = 5
@@ -1590,6 +1671,15 @@ def pCoupConfigure2Channel(plcDevice, channel, coupSettings):
             thrs_vlow = thrs_vlow_2chn_drv_mbsb[channel]
             gain_high = gain_high_2chn_drv_mbsb[channel]
             gain_vlow = gain_vlow_2chn_drv_mbsb[channel]
+        elif ("FCC default & CEN-A" in coupSettings):
+            # drv_sb with auxiliary branch
+            line_drv = 5
+            rms_high  = rms_high_2chn_drv_sb_aux[channel]
+            rms_vlow  = rms_vlow_2chn_drv_sb_aux[channel]
+            thrs_high = thrs_high_2chn_drv_sb_aux[channel]
+            thrs_vlow = thrs_vlow_2chn_drv_sb_aux[channel]
+            gain_high = gain_high_2chn_drv_sb[channel]
+            gain_vlow = gain_vlow_2chn_drv_sb[channel]
         else:
             # drv_sb
             line_drv = 5
@@ -2193,7 +2283,7 @@ def instantiateComponent(pCoupComponentCommon):
             if chn_idx == 0:
                 pCoupPRIMESymbol.setDefaultValue(rms_high_chn1_drv_aux[idx])
             else:
-                pCoupPRIMESymbol.setDefaultValue(rms_high_drv_sb[chn_idx - 1][idx])
+                pCoupPRIMESymbol.setDefaultValue(rms_high_drv_sb_aux[chn_idx - 1][idx])
 
             pCoupPRIMESymbol = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_RMS_VLOW_" + str(idx), pCoupPRIMERMSVlow)
             pCoupPRIMESymbol.setLabel("RMS_VLOW_" + str(idx))
@@ -2202,7 +2292,7 @@ def instantiateComponent(pCoupComponentCommon):
             if chn_idx == 0:
                 pCoupPRIMESymbol.setDefaultValue(rms_vlow_chn1_drv_aux[idx])
             else:
-                pCoupPRIMESymbol.setDefaultValue(rms_vlow_drv_sb[chn_idx - 1][idx])
+                pCoupPRIMESymbol.setDefaultValue(rms_vlow_drv_sb_aux[chn_idx - 1][idx])
 
         pCoupPRIMETHRSHigh = pCoupComponentCommon.createMenuSymbol(symbol_id + "_THRS_HIGH", pCoupPRIMEMenuChn[chn_idx])
         pCoupPRIMETHRSHigh.setLabel("Threshold RMS values in HIGH mode for dynamic Tx mode")
@@ -2218,7 +2308,7 @@ def instantiateComponent(pCoupComponentCommon):
             if chn_idx == 0:
                 pCoupPRIMESymbol.setDefaultValue(thrs_high_chn1_drv_aux[idx])
             else:
-                pCoupPRIMESymbol.setDefaultValue(thrs_high_drv_sb[chn_idx - 1][idx])
+                pCoupPRIMESymbol.setDefaultValue(thrs_high_drv_sb_aux[chn_idx - 1][idx])
 
             if (idx < 8):
                 pCoupPRIMESymbol.setLabel("THRESHOLD_HIGH_LOW_" + str(idx))
@@ -2231,7 +2321,7 @@ def instantiateComponent(pCoupComponentCommon):
             if chn_idx == 0:
                 pCoupPRIMESymbol.setDefaultValue(thrs_vlow_chn1_drv_aux[idx])
             else:
-                pCoupPRIMESymbol.setDefaultValue(thrs_vlow_drv_sb[chn_idx - 1][idx])
+                pCoupPRIMESymbol.setDefaultValue(thrs_vlow_drv_sb_aux[chn_idx - 1][idx])
 
             if (idx < 8):
                 pCoupPRIMESymbol.setLabel("THRESHOLD_VLOW_LOW_" + str(idx))
@@ -2316,13 +2406,13 @@ def instantiateComponent(pCoupComponentCommon):
         for idx in range(8):
             pCoupPRIMESymbol = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_RMS_HIGH_" + str(idx), pCoupPRIMERMSHigh)
             pCoupPRIMESymbol.setLabel("RMS_HIGH_" + str(idx))
-            pCoupPRIMESymbol.setDefaultValue(rms_high_2chn_drv_sb[chn_idx][idx])
+            pCoupPRIMESymbol.setDefaultValue(rms_high_2chn_drv_sb_aux[chn_idx][idx])
             pCoupPRIMESymbol.setMin(0)
             pCoupPRIMESymbol.setHelp(srv_pcoup_helpkeyword)
 
             pCoupPRIMESymbol = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_RMS_VLOW_" + str(idx), pCoupPRIMERMSVlow)
             pCoupPRIMESymbol.setLabel("RMS_VLOW_" + str(idx))
-            pCoupPRIMESymbol.setDefaultValue(rms_vlow_2chn_drv_sb[chn_idx][idx])
+            pCoupPRIMESymbol.setDefaultValue(rms_vlow_2chn_drv_sb_aux[chn_idx][idx])
             pCoupPRIMESymbol.setMin(0)
             pCoupPRIMESymbol.setHelp(srv_pcoup_helpkeyword)
 
@@ -2335,7 +2425,7 @@ def instantiateComponent(pCoupComponentCommon):
 
         for idx in range(16):
             pCoupPRIMESymbol = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_THRS_HIGH_" + str(idx), pCoupPRIMETHRSHigh)
-            pCoupPRIMESymbol.setDefaultValue(thrs_high_2chn_drv_sb[chn_idx][idx])
+            pCoupPRIMESymbol.setDefaultValue(thrs_high_2chn_drv_sb_aux[chn_idx][idx])
             pCoupPRIMESymbol.setMin(0)
             pCoupPRIMESymbol.setHelp(srv_pcoup_helpkeyword)
             if (idx < 8):
@@ -2344,7 +2434,7 @@ def instantiateComponent(pCoupComponentCommon):
                 pCoupPRIMESymbol.setLabel("THRESHOLD_HIGH_VLOW_" + str(idx - 8))
 
             pCoupPRIMESymbol = pCoupComponentCommon.createIntegerSymbol(symbol_id + "_THRS_VLOW_" + str(idx), pCoupPRIMETHRSVlow)
-            pCoupPRIMESymbol.setDefaultValue(thrs_vlow_2chn_drv_sb[chn_idx][idx])
+            pCoupPRIMESymbol.setDefaultValue(thrs_vlow_2chn_drv_sb_aux[chn_idx][idx])
             pCoupPRIMESymbol.setMin(0)
             pCoupPRIMESymbol.setHelp(srv_pcoup_helpkeyword)
             if (idx < 8):
