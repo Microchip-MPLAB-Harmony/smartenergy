@@ -47,14 +47,18 @@ gain_high_cenb = [221, 110, 496]
 gain_vlow_cenb = [786, 350, 883]
 drv_conf_cenb  = 5
 
-rms_high_fcc   = [1176, 833, 590, 418, 297, 212, 152, 110]
-rms_vlow_fcc   = [4652, 3533, 2528, 1783, 1259, 890, 632, 449]
-thrs_high_fcc  = [0, 0, 0, 0, 0, 0, 0, 0, 998, 707, 501, 355, 253, 180, 129, 93]
-thrs_vlow_fcc  = [0, 0, 0, 0, 0, 0, 0, 0, 9975, 7002, 4911, 3455, 2438, 1725, 1225, 872]
-dacc_fcc       = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
-gain_high_fcc  = [49, 20, 256]
-gain_vlow_fcc  = [364, 180, 408]
-drv_conf_fcc   = 5
+rms_high_fcc_mb  = [1176, 833, 590, 418, 297, 212, 152, 110]
+rms_vlow_fcc_mb  = [4652, 3533, 2528, 1783, 1259, 890, 632, 449]
+thrs_high_fcc_mb = [0, 0, 0, 0, 0, 0, 0, 0, 998, 707, 501, 355, 253, 180, 129, 93]
+thrs_vlow_fcc_mb = [0, 0, 0, 0, 0, 0, 0, 0, 9975, 7002, 4911, 3455, 2438, 1725, 1225, 872]
+rms_high_fcc     = [1167, 825, 584, 414, 294, 210, 150, 109]
+rms_vlow_fcc     = [4687, 3569, 2551, 1796, 1265, 893, 632, 449]
+thrs_high_fcc    = [0, 0, 0, 0, 0, 0, 0, 0, 991, 700, 496, 351, 249, 178, 128, 91]
+thrs_vlow_fcc    = [0, 0, 0, 0, 0, 0, 0, 0, 10252, 7186, 5032, 3530, 2487, 1758, 1248, 887]
+dacc_fcc         = [0, 0, 0x00000100, 0x00000100, 0, 0, 0x4F5000FF, 0x1B1B1B1B, 0, 0, 0x00000006, 0x00000355, 0, 0x001020F0, 0x00000355, 0, 0x001020FF]
+gain_high_fcc    = [49, 20, 256]
+gain_vlow_fcc    = [364, 180, 408]
+drv_conf_fcc     = 5
 
 rms_high_fcc_hiAtt   = [870, 628, 453, 326, 235, 169, 122, 88]
 rms_vlow_fcc_hiAtt   = [3635, 2810, 2032, 1449, 1033, 735, 523, 372]
@@ -934,10 +938,10 @@ def updateG3CouplingParameters():
         
         elif ("FCC default & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
-            rms_high  = rms_high_fcc
-            rms_vlow  = rms_vlow_fcc
-            thrs_high = thrs_high_fcc
-            thrs_vlow = thrs_vlow_fcc
+            rms_high  = rms_high_fcc_mb
+            rms_vlow  = rms_vlow_fcc_mb
+            thrs_high = thrs_high_fcc_mb
+            thrs_vlow = thrs_vlow_fcc_mb
             dacc      = dacc_fcc
             gain_high = gain_high_fcc
             gain_vlow = gain_vlow_fcc
@@ -973,12 +977,25 @@ def updateG3CouplingParameters():
             pCoupG3AuxPhyBand.setValue("CEN-A")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
 
+        elif ("FCC default & CEN-A (FCC only" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
+            rms_high  = rms_high_fcc_mb
+            rms_vlow  = rms_vlow_fcc_mb
+            thrs_high = thrs_high_fcc_mb
+            thrs_vlow = thrs_vlow_fcc_mb
+            dacc      = dacc_fcc
+            gain_high = gain_high_fcc
+            gain_vlow = gain_vlow_fcc
+            line_drv  = drv_conf_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
+
         elif ("FCC default & CEN-B (FCC + CENELEC-B" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
-            rms_high  = rms_high_fcc
-            rms_vlow  = rms_vlow_fcc
-            thrs_high = thrs_high_fcc
-            thrs_vlow = thrs_vlow_fcc
+            rms_high  = rms_high_fcc_mb
+            rms_vlow  = rms_vlow_fcc_mb
+            thrs_high = thrs_high_fcc_mb
+            thrs_vlow = thrs_vlow_fcc_mb
             dacc      = dacc_fcc
             gain_high = gain_high_fcc
             gain_vlow = gain_vlow_fcc
@@ -1013,6 +1030,19 @@ def updateG3CouplingParameters():
             line_drv_aux  = drv_conf_cenb_c14
             pCoupG3AuxPhyBand.setValue("CEN-B")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC default & CEN-B (FCC only" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB")
+            rms_high  = rms_high_fcc_mb
+            rms_vlow  = rms_vlow_fcc_mb
+            thrs_high = thrs_high_fcc_mb
+            thrs_vlow = thrs_vlow_fcc_mb
+            dacc      = dacc_fcc
+            gain_high = gain_high_fcc
+            gain_vlow = gain_vlow_fcc
+            line_drv  = drv_conf_fcc
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
         elif ("FCC high attenuation & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
@@ -1054,6 +1084,19 @@ def updateG3CouplingParameters():
             line_drv_aux  = drv_conf_cena_c07
             pCoupG3AuxPhyBand.setValue("CEN-A")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+        
+        elif ("FCC high attenuation & CEN-A (FCC only" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
+            rms_high  = rms_high_fcc_hiAtt
+            rms_vlow  = rms_vlow_fcc_hiAtt
+            thrs_high = thrs_high_fcc_hiAtt
+            thrs_vlow = thrs_vlow_fcc_hiAtt
+            dacc      = dacc_fcc_hiAtt
+            gain_high = gain_high_fcc_hiAtt
+            gain_vlow = gain_vlow_fcc_hiAtt
+            line_drv  = drv_conf_fcc_hiAtt
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
         elif ("FCC high attenuation & CEN-B (FCC + CENELEC-B" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
@@ -1095,6 +1138,19 @@ def updateG3CouplingParameters():
             line_drv_aux  = drv_conf_cenb_c14
             pCoupG3AuxPhyBand.setValue("CEN-B")
             pCoupG3AuxBranch.setLabel("Auxiliary Transmission branch")
+
+        elif ("FCC high attenuation & CEN-B (FCC only" in g3_coupSettings):
+            # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC / G3 ARIB HIGHT ATT")
+            rms_high  = rms_high_fcc_hiAtt
+            rms_vlow  = rms_vlow_fcc_hiAtt
+            thrs_high = thrs_high_fcc_hiAtt
+            thrs_vlow = thrs_vlow_fcc_hiAtt
+            dacc      = dacc_fcc_hiAtt
+            gain_high = gain_high_fcc_hiAtt
+            gain_vlow = gain_vlow_fcc_hiAtt
+            line_drv  = drv_conf_fcc_hiAtt
+            pCoupG3MainPhyBand.setValue("FCC")
+            pCoupG3MainBranch.setLabel("Main Transmission branch")
 
         elif ("Multiband single-branch FCC & CEN-A (FCC + CENELEC-A" in g3_coupSettings):
             # print("UpdatePlcCouplingParameters ->  PL460 G3 FCC MULTIBAND SINGLE-BRANCH")
@@ -1822,13 +1878,13 @@ def instantiateComponent(pCoupComponentCommon):
     for idx in range(8):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_RMS_HIGH_" + str(idx), pCoupG3RMSHigh)
         pCoupG3Symbol.setLabel("RMS_HIGH_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(rms_high_fcc[idx])
+        pCoupG3Symbol.setDefaultValue(rms_high_fcc_mb[idx])
         pCoupG3Symbol.setMin(0)
         pCoupG3Symbol.setHelp(srv_pcoup_helpkeyword)
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_RMS_VLOW_" + str(idx), pCoupG3RMSVlow)
         pCoupG3Symbol.setLabel("RMS_VLOW_" + str(idx))
-        pCoupG3Symbol.setDefaultValue(rms_vlow_fcc[idx])
+        pCoupG3Symbol.setDefaultValue(rms_vlow_fcc_mb[idx])
         pCoupG3Symbol.setMin(0)
         pCoupG3Symbol.setHelp(srv_pcoup_helpkeyword)
 
@@ -1841,7 +1897,7 @@ def instantiateComponent(pCoupComponentCommon):
 
     for idx in range(16):
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_THRS_HIGH_" + str(idx), pCoupG3THRSHigh)
-        pCoupG3Symbol.setDefaultValue(thrs_high_fcc[idx])
+        pCoupG3Symbol.setDefaultValue(thrs_high_fcc_mb[idx])
         pCoupG3Symbol.setMin(0)
         pCoupG3Symbol.setHelp(srv_pcoup_helpkeyword)
         if (idx < 8):
@@ -1850,7 +1906,7 @@ def instantiateComponent(pCoupComponentCommon):
             pCoupG3Symbol.setLabel("THRESHOLD_HIGH_VLOW_" + str(idx - 8))
 
         pCoupG3Symbol = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_G3_THRS_VLOW_" + str(idx), pCoupG3THRSVlow)
-        pCoupG3Symbol.setDefaultValue(thrs_vlow_fcc[idx])
+        pCoupG3Symbol.setDefaultValue(thrs_vlow_fcc_mb[idx])
         pCoupG3Symbol.setMin(0)
         pCoupG3Symbol.setHelp(srv_pcoup_helpkeyword)
         if (idx < 8):
