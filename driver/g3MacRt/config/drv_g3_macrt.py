@@ -1319,7 +1319,7 @@ def instantiateComponent(g3MacRtComponent):
 
     plcCoupImpDetect = g3MacRtComponent.createComboSymbol("DRV_PLC_COUP_IMP_DETECT_BAND_FORCED", None, ["None", "FCC", "CENELEC-A"])
     plcCoupImpDetect.setLabel("Forced Impedance Detection")
-    plcCoupImpDetect.setVisible(True)
+    plcCoupImpDetect.setVisible(False)
     plcCoupImpDetect.setDefaultValue("None")
 
     ##### Coupling Settings : Generic  ####################################################
