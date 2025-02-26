@@ -1640,11 +1640,8 @@ def instantiateComponent(plcComponent):
         plcCoupPRIMECH.append(plcComponent.createBooleanSymbol("DRV_PLC_PRIME_CH" + str(idx + 1), plcCoupPRIME1ChnMode))
         plcCoupPRIMECH[idx].setLabel("Channel " + str(idx + 1))
         plcCoupPRIMECH[idx].setDescription("Channel " + str(idx + 1))
-        plcCoupPRIMECH[idx].setVisible(False)
-        if idx == 0:
-            plcCoupPRIMECH[idx].setDefaultValue(True)
-        else:
-            plcCoupPRIMECH[idx].setDefaultValue(False)
+        plcCoupPRIMECH[idx].setVisible(True)
+        plcCoupPRIMECH[idx].setDefaultValue(True)
         plcCoupPRIMECH[idx].setDependencies(showChannelSelect, ["DRV_PLC_PRIME_1CHN_MODE"])
         plcCoupPRIMECH[idx].setHelp(plc_phy_helpkeyword)
 
@@ -1666,7 +1663,7 @@ def instantiateComponent(plcComponent):
 
     plcCoupPRIMEChannelWarning = plcComponent.createCommentSymbol("DRV_PLC_PRIME_CHANNEL_WARN", plcCoupPRIMEDefChannel)
     plcCoupPRIMEChannelWarning.setLabel("Warning!!! Default channel is not included in available channels")
-    plcCoupPRIMEChannelWarning.setVisible(True)
+    plcCoupPRIMEChannelWarning.setVisible(False)
     plcCoupPRIMEChannelWarning.setDependencies(checkPrimeChannelConf, ["DRV_PLC_PRIME_CH1", "DRV_PLC_PRIME_CH2", "DRV_PLC_PRIME_CH3", \
         "DRV_PLC_PRIME_CH4", "DRV_PLC_PRIME_CH5", "DRV_PLC_PRIME_CH6", "DRV_PLC_PRIME_CH7", "DRV_PLC_PRIME_CH8", "DRV_PLC_PRIME_1CHN_MODE", \
         "DRV_PLC_PRIME_2CH1", "DRV_PLC_PRIME_2CH2", "DRV_PLC_PRIME_2CH3", "DRV_PLC_PRIME_2CH4", "DRV_PLC_PRIME_2CH5", "DRV_PLC_PRIME_2CH6", \
@@ -1687,7 +1684,7 @@ def instantiateComponent(plcComponent):
     ]
 
     plcCoupMMSettings460 = plcComponent.createComboSymbol("DRV_PLC_COUP_MM_SETTING_PL460", None, plcCoupMMSettingsOptions460)
-    plcCoupMMSettings460.setLabel("PLC Coupling and Band Settings")
+    plcCoupMMSettings460.setLabel("PLC Coupling Settings")
     plcCoupMMSettings460.setDefaultValue(plcCoupMMSettingsOptions460[1])
     plcCoupMMSettings460.setVisible(False)
     plcCoupMMSettings460.setHelp(plc_phy_helpkeyword)
