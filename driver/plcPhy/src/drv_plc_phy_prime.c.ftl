@@ -575,7 +575,7 @@ void DRV_PLC_PHY_TxRequest(const DRV_HANDLE handle, DRV_PLC_PHY_TRANSMISSION_OBJ
     {
         gPlcPhyObj->txCfmErrorObj.timeIni = transmitObj->timeIni;
         gPlcPhyObj->txCfmErrorObj.frameType = transmitObj->frameType;
-        gPlcPhyObj->txCfmErrorObj.bufferId = bufIdx;
+        gPlcPhyObj->txCfmErrorObj.bufferId = (DRV_PLC_PHY_BUFFER_ID)(bufIdx);
         gPlcPhyObj->evTxCfmError = true;
     }
 }
