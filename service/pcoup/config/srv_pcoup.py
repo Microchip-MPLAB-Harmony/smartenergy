@@ -191,11 +191,11 @@ gain_high_chn1_drv_aux = gain_high_chn1_c07
 gain_vlow_chn1_drv_aux = gain_vlow_chn1_c07
 
 rms_high_chn1_drv_mbsb  = [97, 86, 76, 67, 60, 52, 47, 41]
-rms_vlow_chn1_drv_mbsb  = [429, 394, 357, 320, 285, 253, 225, 200]
+rms_vlow_chn1_drv_mbsb  = [448, 411, 373, 334, 297, 264, 235, 209]
 thrs_high_chn1_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 thrs_vlow_chn1_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000]
 gain_high_chn1_drv_mbsb = [58, 58, 58]
-gain_vlow_chn1_drv_mbsb = [275, 275, 275]
+gain_vlow_chn1_drv_mbsb = [287, 287, 287]
 
 #### Channels 2 - 8 ########################################################
 dacc_chn_fcc_c06      = [0x00000000, 0x10102120, 0x033F073F, 0x3F3F3F3F, 0x00000FFF, 0x00000000, 0xFFFF00FF, 0x1B1B1B1B, \
@@ -387,7 +387,7 @@ rms_vlow_chn4_drv_hiAtt = [3124, 2868, 2609, 2358, 2114, 1882, 1673, 1486]
 rms_vlow_chn5_drv_hiAtt = [3344, 3048, 2749, 2456, 2188, 1948, 1734, 1543]
 rms_vlow_chn6_drv_hiAtt = [3137, 2883, 2613, 2347, 2103, 1883, 1686, 1509]
 rms_vlow_chn7_drv_hiAtt = [2553, 2339, 2129, 1924, 1723, 1542, 1379, 1233]
-rms_vlow_chn8_drv_hiAtt = [1838, 1668, 1500, 1345, 1203, 1076, 963, 861]
+rms_vlow_chn8_drv_hiAtt = [2061, 1870, 1682, 1508, 1349, 1206, 1080, 965]
 
 thrs_high_chn2_drv_hiAtt = thrs_high_dummy
 thrs_high_chn3_drv_hiAtt = thrs_high_dummy
@@ -418,7 +418,7 @@ gain_vlow_chn6_drv_hiAtt = [256, 128, 287]
 gain_high_chn7_drv_hiAtt = [169, 169, 169]
 gain_vlow_chn7_drv_hiAtt = [287, 287, 287]
 gain_high_chn8_drv_hiAtt = [240, 240, 240]
-gain_vlow_chn8_drv_hiAtt = [256, 256, 256]
+gain_vlow_chn8_drv_hiAtt = [287, 287, 287]
 
 rms_high_drv_hiAtt = [rms_high_chn2_drv_hiAtt, rms_high_chn3_drv_hiAtt, rms_high_chn4_drv_hiAtt, rms_high_chn5_drv_hiAtt, rms_high_chn6_drv_hiAtt, rms_high_chn7_drv_hiAtt, rms_high_chn8_drv_hiAtt]
 rms_vlow_drv_hiAtt = [rms_vlow_chn2_drv_hiAtt, rms_vlow_chn3_drv_hiAtt, rms_vlow_chn4_drv_hiAtt, rms_vlow_chn5_drv_hiAtt, rms_vlow_chn6_drv_hiAtt, rms_vlow_chn7_drv_hiAtt, rms_vlow_chn8_drv_hiAtt]
@@ -428,12 +428,12 @@ gain_high_drv_hiAtt = [gain_high_chn2_drv_hiAtt, gain_high_chn3_drv_hiAtt, gain_
 gain_vlow_drv_hiAtt = [gain_vlow_chn2_drv_hiAtt, gain_vlow_chn3_drv_hiAtt, gain_vlow_chn4_drv_hiAtt, gain_vlow_chn5_drv_hiAtt, gain_vlow_chn6_drv_hiAtt, gain_vlow_chn7_drv_hiAtt, gain_vlow_chn8_drv_hiAtt]
 
 rms_high_chn2_drv_mbsb = [3343, 2929, 2580, 2279, 2017, 1790, 1589, 1411]
-rms_high_chn3_drv_mbsb = [3113, 2796, 2512, 2258, 2029, 1823, 1638, 1472]
+rms_high_chn3_drv_mbsb = [2473, 2221, 1995, 1794, 1612, 1448, 1301, 1169]
 rms_high_chn4_drv_mbsb = [1625, 1452, 1297, 1160, 1036, 926, 828, 739]
 rms_high_chn5_drv_mbsb = [2254, 2006, 1786, 1591, 1417, 1263, 1125, 1003]
-rms_high_chn6_drv_mbsb = [2543, 2246, 1991, 1770, 1574, 1401, 1247, 1110]
-rms_high_chn7_drv_mbsb = [4720, 4057, 3506, 3042, 2652, 2325, 2050, 1812]
-rms_high_chn8_drv_mbsb = [7001, 6174, 5404, 4734, 4081, 3550, 3089, 2696]
+rms_high_chn6_drv_mbsb = [2137, 1892, 1682, 1496, 1332, 1185, 1055, 939]
+rms_high_chn7_drv_mbsb = [1787, 1536, 1328, 1152, 1004, 880, 776, 686]
+rms_high_chn8_drv_mbsb = [1313, 1158, 1013, 888, 765, 666, 579, 506]
 
 rms_vlow_chn2_drv_mbsb = [2127, 1937, 1744, 1556, 1382, 1228, 1091, 969]
 rms_vlow_chn3_drv_mbsb = [2651, 2437, 2218, 1998, 1780, 1580, 1400, 1241]
@@ -447,7 +447,7 @@ thrs_high_chn2_drv_mbsb = thrs_high_dummy
 thrs_high_chn3_drv_mbsb = thrs_high_dummy
 thrs_high_chn4_drv_mbsb = thrs_high_dummy
 thrs_high_chn5_drv_mbsb = thrs_high_dummy
-thrs_high_chn6_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 2164, 1912, 1695, 1506, 1340, 1192, 1061, 945]
+thrs_high_chn6_drv_mbsb = [0, 0, 0, 0, 0, 0, 0, 0, 1816, 1609, 1430, 1272, 1133, 1008, 897, 799]
 thrs_high_chn7_drv_mbsb = thrs_high_dummy
 thrs_high_chn8_drv_mbsb = thrs_high_dummy
 
@@ -461,18 +461,18 @@ thrs_vlow_chn8_drv_mbsb = thrs_vlow_dummy
 
 gain_high_chn2_drv_mbsb = [120, 120, 120]
 gain_vlow_chn2_drv_mbsb = [256, 256, 256]
-gain_high_chn3_drv_mbsb = [120, 120, 120]
+gain_high_chn3_drv_mbsb = [95, 95, 95]
 gain_vlow_chn3_drv_mbsb = [287, 287, 287]
 gain_high_chn4_drv_mbsb = [85, 85, 85]
 gain_vlow_chn4_drv_mbsb = [287, 287, 287]
 gain_high_chn5_drv_mbsb = [120, 120, 120]
 gain_vlow_chn5_drv_mbsb = [256, 256, 256]
-gain_high_chn6_drv_mbsb = [120, 30, 196]
+gain_high_chn6_drv_mbsb = [101, 30, 196]
 gain_vlow_chn6_drv_mbsb = [256, 128, 287]
-gain_high_chn7_drv_mbsb = [169, 169, 169]
+gain_high_chn7_drv_mbsb = [64, 64, 64]
 gain_vlow_chn7_drv_mbsb = [287, 287, 287]
-gain_high_chn8_drv_mbsb = [240, 240, 240]
-gain_vlow_chn8_drv_mbsb = [256, 256, 256]
+gain_high_chn8_drv_mbsb = [45, 45, 45]
+gain_vlow_chn8_drv_mbsb = [287, 287, 287]
 
 rms_high_drv_mbsb = [rms_high_chn2_drv_mbsb, rms_high_chn3_drv_mbsb, rms_high_chn4_drv_mbsb, rms_high_chn5_drv_mbsb, rms_high_chn6_drv_mbsb, rms_high_chn7_drv_mbsb, rms_high_chn8_drv_mbsb]
 rms_vlow_drv_mbsb = [rms_vlow_chn2_drv_mbsb, rms_vlow_chn3_drv_mbsb, rms_vlow_chn4_drv_mbsb, rms_vlow_chn5_drv_mbsb, rms_vlow_chn6_drv_mbsb, rms_vlow_chn7_drv_mbsb, rms_vlow_chn8_drv_mbsb]
@@ -744,19 +744,19 @@ thrs_vlow_2chn67_drv_mbsb = thrs_vlow_dummy
 thrs_vlow_2chn78_drv_mbsb = thrs_vlow_dummy
 
 gain_high_2chn12_drv_mbsb = [120, 120, 120]
-gain_vlow_2chn12_drv_mbsb = [256, 256, 256]
-gain_high_2chn23_drv_mbsb = [120, 120, 120]
+gain_vlow_2chn12_drv_mbsb = [275, 275, 275]
+gain_high_2chn23_drv_mbsb = [95, 95, 95]
 gain_vlow_2chn23_drv_mbsb = [275, 275, 275]
 gain_high_2chn34_drv_mbsb = [85, 85, 85]
 gain_vlow_2chn34_drv_mbsb = [287, 287, 287]
 gain_high_2chn45_drv_mbsb = [85, 85, 85]
 gain_vlow_2chn45_drv_mbsb = [275, 275, 275]
-gain_high_2chn56_drv_mbsb = [120, 120, 120]
+gain_high_2chn56_drv_mbsb = [101, 101, 101]
 gain_vlow_2chn56_drv_mbsb = [256, 256, 256]
-gain_high_2chn67_drv_mbsb = [120, 120, 120]
+gain_high_2chn67_drv_mbsb = [64, 64, 64]
 gain_vlow_2chn67_drv_mbsb = [275, 275, 275]
-gain_high_2chn78_drv_mbsb = [169, 169, 169]
-gain_vlow_2chn78_drv_mbsb = [275, 275, 275]
+gain_high_2chn78_drv_mbsb = [45, 45, 45]
+gain_vlow_2chn78_drv_mbsb = [287, 287, 287]
 
 rms_high_2chn_drv_mbsb = [rms_high_2chn12_drv_mbsb, rms_high_2chn23_drv_mbsb, rms_high_2chn34_drv_mbsb, rms_high_2chn45_drv_mbsb, rms_high_2chn56_drv_mbsb, rms_high_2chn67_drv_mbsb, rms_high_2chn78_drv_mbsb]
 rms_vlow_2chn_drv_mbsb = [rms_vlow_2chn12_drv_mbsb, rms_vlow_2chn23_drv_mbsb, rms_vlow_2chn34_drv_mbsb, rms_vlow_2chn45_drv_mbsb, rms_vlow_2chn56_drv_mbsb, rms_vlow_2chn67_drv_mbsb, rms_vlow_2chn78_drv_mbsb]
