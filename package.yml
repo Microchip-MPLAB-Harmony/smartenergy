@@ -1,7 +1,7 @@
 package:
   format-version: "1.0.0"
   name: "smartenergy"
-  version: "v1.3.1"
+  version: "v1.4.0"
   type: "api"
   status: "production"
   required: false
@@ -9,10 +9,10 @@ package:
   dependencies:
     - name: "csp"
       type: "package"
-      version: "v3.20.0"
+      version: "v3.22.2"
     - name: "core"
       type: "package"
-      version: "v3.14.1"
+      version: "v3.15.1"
     - name: "gfx"
       type: "package"
       version: "v3.15.3"
