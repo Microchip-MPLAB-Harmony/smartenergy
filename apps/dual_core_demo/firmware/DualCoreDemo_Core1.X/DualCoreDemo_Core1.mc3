@@ -193,7 +193,10 @@
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
     &lt;GraphSettings canvasHeight=&quot;370&quot; canvasWidth=&quot;627&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;PowerProfiles dnOrder=&quot;1&quot;&gt;
+      &lt;Profile dnOrder=&quot;0&quot; id=&quot;profile0&quot; name=&quot;Main&quot;/&gt;
+    &lt;/PowerProfiles&gt;
+    &lt;ComponentGraph dnOrder=&quot;2&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;HarmonyCore&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
@@ -2279,11 +2282,11 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\definitions.h</file>
-         <hash>d258094aaf1efdbc6d0a71f19a7117295e4ab48c88f9a05abf69b17d77189718</hash>
+         <hash>11726af287c1c404bf0034762e9b4f2104e6de42372dead832ea0bf53ea951d7</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device.h</file>
-         <hash>dfa3a854416c1da134b39ad7fb6478f46ead8c9bb205966668c32658a48ace2f</hash>
+         <hash>ae014126e6002d640e9d71bdf7970f1005af3c1f82f96f6e08e9a343b6c9e041</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device_cache.h</file>
@@ -2303,19 +2306,19 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\exceptions.c</file>
-         <hash>89852728a9a1cc4c9746839cc3caf5308b8698c0c30bf6bfbad0db9e552a387e</hash>
+         <hash>a565e8d25d218b3e1069267ae9cc317161d062683a27c64e3cb454757bb82fd9</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\initialization.c</file>
-         <hash>56b3cce650e3aededfe87624876367c29c4d5cf64ad295afd50e77d0fb6cb058</hash>
+         <hash>b69e95de89a38def634e0625048f3710c44628cfab12037518c846da75c919bf</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\interrupts.c</file>
-         <hash>c40897c3cedd868105c41f0190ba13ff90c1c2a12e6f725e3636ac4f6bb0409a</hash>
+         <hash>99da1656a227dd415be16964716e3536f5fdfc539e8839ac8cff51b1a959e5f9</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\interrupts.h</file>
-         <hash>d300edeef77627a5efc8f57ae1730be6c5ec40b8ac11c89f34e074dda40eb7b9</hash>
+         <hash>18db07433bbba36c6d72fae057d13b7b19659c4c5628ff835671fb519064b436</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\libc_syscalls.c</file>
@@ -2323,7 +2326,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\osal\osal.h</file>
-         <hash>8404fbe44807fa0484ffb38843a72cb9af8e31c9c30bd1b2594e609b8ea317d9</hash>
+         <hash>1cfe3b61d9693b2369922041eef33fe16b3c1ccd9c85d4ded808b805f90a869c</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\osal\osal_definitions.h</file>
@@ -2331,7 +2334,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\osal\osal_impl_basic.h</file>
-         <hash>67ce72d34fd1e4dee0b6937fa026ab2c7bd285f82a24da09742c68333adaf0fc</hash>
+         <hash>65e68edbc0320d0407399f65e6d06ff7e6d3d7697231cf1fe0a1fdf1d65f0463</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.c</file>
@@ -2343,7 +2346,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>981d8d9c98f4cfe5d5329daf070291ddfc8668bc36be2706716708994f7211b5</hash>
+         <hash>98986d3d7b7383f8021ee11fd090eb8b929612b61e26076bf6e21a9a24218cb3</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.h</file>
@@ -2355,19 +2358,19 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.c</file>
-         <hash>525dafce99660f9f5c07af9fac0f7e4f3d7b2e28a5efa454b46a7f8e65208ffb</hash>
+         <hash>be13e8e011fa57194b5508b14d2d91490d1f670b79f9836797aa1e670ae4f308</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc0.h</file>
-         <hash>277612e993d15e55823cf233379dccb9b3561eaf8cc8e40477bdf5a94b8a3c96</hash>
+         <hash>fd1799f3c0a266ef3646f61f78fa8ddfa83db4b35bdb3552425ed6645625fd03</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc1.c</file>
-         <hash>2c213e2ab5f898960d4e851ffe9346699034ab44630cc44a96b9d019636cb5ef</hash>
+         <hash>c759b24fd9ad3d4bd43e69db75a4a0447815e9485e3b4838b846cd5838a4f7ca</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc1.h</file>
-         <hash>400e22f90f1a1593cd097b617eb5ea13f3d25fbac560761b0a3a0f0808e83bb1</hash>
+         <hash>a360d67155b4d6ba2fba1f7e9e520d0985e9c92c18642ca334e7a3c352dfe02f</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\ipc\plib_ipc_common.h</file>
@@ -2391,7 +2394,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\tc\plib_tc3.c</file>
-         <hash>6496455da581e2cf41dc35d507461972854a017b0ce8a0c054f2509b7916fa89</hash>
+         <hash>7b18b1c809665ec513273bd7d58d0a02350f25d7b6f1ba25cdbde6517bc306cd</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\tc\plib_tc3.h</file>
@@ -2435,7 +2438,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\ports\sys_ports.h</file>
-         <hash>73a53c684f6d8f825e50d6fd36ede7bc1caf621fe7a258d2974501f5164766b0</hash>
+         <hash>d02f8e61aca4d776d103656337f167050d0b8751eb65fcae72354e0410b4c502</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\system\ports\sys_ports_mapping.h</file>
@@ -2515,7 +2518,7 @@
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_version.h</file>
-         <hash>2de01ae2556a38eb82c389de23c701805ec63308cfbcf3f84cb12141589b0858</hash>
+         <hash>8cda7ac3ff6f0eb5e83c4fe613dd195151b24da54167f5c3c007e599a03f1edc</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\core_cm4.h</file>

@@ -14,7 +14,7 @@
 
 //DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -59,8 +59,8 @@
 #include "system/ports/sys_ports.h"
 #include "osal/osal.h"
 #include "system/debug/sys_debug.h"
-#include "peripheral/ipc/plib_ipc1.h"
 #include "system/time/sys_time.h"
+#include "peripheral/ipc/plib_ipc1.h"
 #include "appcore1.h"
 
 
@@ -74,13 +74,13 @@ extern "C" {
 // DOM-IGNORE-END
 
 /* Device Information */
-#define DEVICE_NAME			 "PIC32CX2051MTSH128S1"
-#define DEVICE_ARCH			 "CORTEX-M4"
-#define DEVICE_FAMILY		 "PIC32CX_MT"
-#define DEVICE_SERIES		 "PIC32CXMTSH"
+#define DEVICE_NAME          "PIC32CX2051MTSH128S1"
+#define DEVICE_ARCH          "CORTEX-M4"
+#define DEVICE_FAMILY        "PIC32CX_MT"
+#define DEVICE_SERIES        "PIC32CXMTSH"
 
 /* CPU clock frequency */
-#define CPU_CLOCK_FREQUENCY 240000000
+#define CPU_CLOCK_FREQUENCY 240000000U
 
 // *****************************************************************************
 // *****************************************************************************

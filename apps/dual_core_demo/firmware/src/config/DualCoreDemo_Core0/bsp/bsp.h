@@ -73,11 +73,11 @@
 #define PIOD_REGS   ((pio_group_registers_t*)(&(PIO1_REGS->PIO_GROUP[0])))
 
 /*** SWITCH Macros for SWITCH_SCRUP ***/
-#define SWITCH_SCRUP_Get() ((PIOA_REGS->PIO_PDSR >> 14) & 0x1)
+#define SWITCH_SCRUP_Get() ((PIOA_REGS->PIO_PDSR >> 14) & 0x1U)
 #define SWITCH_SCRUP_STATE_PRESSED 0
 #define SWITCH_SCRUP_STATE_RELEASED 1
 /*** SWITCH Macros for SWITCH_SCRDOWN ***/
-#define SWITCH_SCRDOWN_Get() ((PIOA_REGS->PIO_PDSR >> 15) & 0x1)
+#define SWITCH_SCRDOWN_Get() ((PIOA_REGS->PIO_PDSR >> 15) & 0x1U)
 #define SWITCH_SCRDOWN_STATE_PRESSED 0
 #define SWITCH_SCRDOWN_STATE_RELEASED 1
 

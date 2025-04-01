@@ -95,6 +95,7 @@
           <itemPath>../src/config/DualCoreDemo_Core0/device_cache.h</itemPath>
           <itemPath>../src/config/DualCoreDemo_Core0/user.h</itemPath>
           <itemPath>../src/config/DualCoreDemo_Core0/configuration.h</itemPath>
+          <itemPath>../src/config/DualCoreDemo_Core0/sys_tasks.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="packs" displayName="packs" projectFiles="true">
@@ -277,6 +278,7 @@
             <logicalFolder name="sefc" displayName="sefc" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core0/peripheral/sefc/plib_sefc1.c</itemPath>
               <itemPath>../src/config/DualCoreDemo_Core0/peripheral/sefc/plib_sefc0.c</itemPath>
+              <itemPath>../src/config/DualCoreDemo_Core0/peripheral/sefc/plib_sefc_common.c</itemPath>
             </logicalFolder>
             <logicalFolder name="supc" displayName="supc" projectFiles="true">
               <itemPath>../src/config/DualCoreDemo_Core0/peripheral/supc/plib_supc.c</itemPath>
@@ -385,6 +387,7 @@
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="cast-align" value="false"/>
         <property key="code-model" value="default"/>
         <property key="const-model" value="default"/>
@@ -463,6 +466,7 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -508,6 +512,7 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>
@@ -536,6 +541,7 @@
         <property key="use-indirect-calls" value="false"/>
       </C32CPP>
       <C32Global>
+        <property key="appendMe" value=""/>
         <property key="combine-sourcefiles" value="false"/>
         <property key="common-include-directories" value=""/>
         <property key="common-macros" value=""/>

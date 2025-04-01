@@ -52,7 +52,7 @@ typedef struct
     uintptr_t context;
 }ipc0_callback_object_t;
 
-volatile static ipc0_callback_object_t ipc0_callback_obj[TOTAL_IPC_IRQS];
+static volatile ipc0_callback_object_t ipc0_callback_obj[TOTAL_IPC_IRQS];
 
 
 void IPC0_SetIRQHandler(ipc_irq_mask_t irq_mask, IPC_CALLBACK handler, uintptr_t context)

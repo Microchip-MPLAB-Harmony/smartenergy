@@ -52,7 +52,7 @@ typedef struct
     uintptr_t context;
 }ipc1_callback_object_t;
 
-volatile static ipc1_callback_object_t ipc1_callback_obj[TOTAL_IPC_IRQS];
+static volatile ipc1_callback_object_t ipc1_callback_obj[TOTAL_IPC_IRQS];
 
 void  IPC1_Initialize(void)
 {

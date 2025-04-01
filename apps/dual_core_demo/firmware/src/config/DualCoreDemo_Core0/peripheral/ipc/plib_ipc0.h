@@ -83,6 +83,6 @@ static inline ipc_irq_mask_t IPC0_GetIRQStatus(void)
 
 void  IPC0_Initialize(void);
 
-void IPC0_SetIRQHandler(ipc_irq_mask_t irq, IPC_CALLBACK handler, uintptr_t context);
+void IPC0_SetIRQHandler(ipc_irq_mask_t irq_mask, IPC_CALLBACK handler, uintptr_t context);
 
 #endif //PLIB_IPC0_H
