@@ -22,7 +22,10 @@ Refer to the following links for release notes, training materials, and interfac
 
 - [Release Notes](./release_notes.md)
 - [MPLAB® Harmony License](Microchip_SLA001.md)
-- [MPLAB® Harmony 3 Smart Energy API Help](https://onlinedocs.microchip.com/g/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B)
+
+# Documentation
+
+Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_smartenergy&redirect=true) to view the online documentation of MPLAB® Harmony 3 Smart Energy library repository.
 
 To view the documentation offline, follow these steps:
  - Download the publication as a zip file from [here](https://onlinedocs.microchip.com/download/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B?type=webhelp).

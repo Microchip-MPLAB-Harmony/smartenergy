@@ -3,6 +3,39 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.4.0
+
+### New Features
+
+- **Applications**
+  - Applications updated to use the code from new releases of dependent Harmony 3 modules.
+
+- **New Features and Enhancements**
+  - Added support for Meters And More PLC standard on USI Service.
+  - Added support for new Multiband Single Branch Coupling on PLC Drivers and PLC Coupling Service.
+  - Reviewed and updated Coupling Configuration from MCC after adding Multiband Single Branch Coupling support.
+
+### Bug fixes
+
+- None.
+
+### Known Issues
+
+- None.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.25](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v4.60](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.5.2 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.3.132 or higher
+
+### Notes
+
+- Metrology Driver and Demo App not available anymore in this repository. This has moved to a new smartenergy_metrology repository also available on this same platform.
+
 ## Smart Energy Release v1.3.1
 
 ### New Features
