@@ -79,11 +79,11 @@ uint8_t SRV_RANDOM_Get8bits(void)
     status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 1, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) 
+    if (status == CRYPTO_RNG_SUCCESS)
     {
         retValue = randBuf[0];
     }
-    else 
+    else
     {
         seed = SYS_TIME_CounterGet();
         srand(seed);
@@ -115,11 +115,11 @@ uint16_t SRV_RANDOM_Get16bits(void)
     status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 2, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) 
+    if (status == CRYPTO_RNG_SUCCESS)
     {
-        retValue = (randBuf[1] << 8) + randBuf[0];
+        retValue = ((uint16_t)randBuf[1] << 8) + (uint16_t)randBuf[0];
     }
-    else 
+    else
     {
         seed = SYS_TIME_CounterGet();
         srand(seed);
@@ -164,23 +164,23 @@ uint32_t SRV_RANDOM_Get32bits(void)
     status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         randBuf, 4, NULL, 0, 1);
 
-    if (status == CRYPTO_RNG_SUCCESS) 
+    if (status == CRYPTO_RNG_SUCCESS)
     {
-        retValue = (randBuf[3] << 24) + (randBuf[2] << 16) +
-            (randBuf[1] << 8) + randBuf[0];
+        retValue = ((uint32_t)randBuf[3] << 24) + ((uint32_t)randBuf[2] << 16) +
+            ((uint32_t)randBuf[1] << 8) + (uint32_t)randBuf[0];
     }
-    else 
+    else
     {
         seed = SYS_TIME_CounterGet();
         srand(seed);
-        retValue = rand();
+        retValue = (uint32_t)rand();
     }
 <#else>
     uint32_t seed;
 
     seed = SYS_TIME_CounterGet();
     srand(seed);
-    retValue = rand();
+    retValue = (uint32_t)rand();
 </#if>
 
     return retValue;
@@ -224,14 +224,14 @@ void SRV_RANDOM_Get128bits(uint8_t *rndValue)
     status = Crypto_Rng_Generate(CRYPTO_HANDLER_SW_WOLFCRYPT,
         rndValue, 16, NULL, 0, 1);
 
-    if (status != CRYPTO_RNG_SUCCESS) 
+    if (status != CRYPTO_RNG_SUCCESS)
     {
         seed = SYS_TIME_CounterGet();
         srand(seed);
 
-        for (n = 0; n < 4; n ++)
+        for (n = 0; n < 4U; n ++)
         {
-            randNum = rand();
+            randNum = (uint32_t)rand();
 
             *rndValue++ = (uint8_t)(randNum >> 24);
             *rndValue++ = (uint8_t)(randNum >> 16);
@@ -247,9 +247,9 @@ void SRV_RANDOM_Get128bits(uint8_t *rndValue)
     seed = SYS_TIME_CounterGet();
     srand(seed);
 
-    for (n = 0; n < 4; n ++)
+    for (n = 0; n < 4U; n ++)
     {
-        randNum = rand();
+        randNum = (uint32_t)rand();
 
         *rndValue++ = (uint8_t)(randNum >> 24);
         *rndValue++ = (uint8_t)(randNum >> 16);
