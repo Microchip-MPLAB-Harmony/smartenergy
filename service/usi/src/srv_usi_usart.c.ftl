@@ -175,9 +175,6 @@ static void lUSI_USART_TransferReceivedData(USI_USART_OBJ* dObj, size_t bytesRcv
 
 void USI_USART_Initialize(uint32_t index, const void * const initData)
 {
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-    OSAL_RESULT semResult;
-</#if>
     USI_USART_OBJ* dObj = USI_USART_GET_INSTANCE(index);
     const USI_USART_INIT_DATA * const dObjInit = (const USI_USART_INIT_DATA * const)initData;
 
@@ -196,16 +193,6 @@ void USI_USART_Initialize(uint32_t index, const void * const initData)
     dObj->cbFunc = NULL;
     dObj->devStatus = USI_USART_IDLE;
     dObj->usiStatus = SRV_USI_STATUS_NOT_CONFIGURED;
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-
-    /* Create semaphore. It is used to suspend and resume task. */
-    semResult = OSAL_SEM_Create(&dObj->semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
-    if ((semResult != OSAL_RESULT_SUCCESS) || (dObj->semaphoreID == NULL))
-    {
-        /* Error: Not enough memory to create semaphore */
-        dObj->usiStatus = SRV_USI_STATUS_ERROR;
-    }
-</#if>
 }
 
 DRV_HANDLE USI_USART_Open(uint32_t index)

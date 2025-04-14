@@ -131,9 +131,6 @@ typedef struct
     USI_CDC_STATE                            devStatus;
     SRV_USI_STATUS                           usiStatus;
     uintptr_t                                context;
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-    OSAL_SEM_DECLARE(semaphoreID);
-</#if>
 } USI_CDC_OBJ;
 
 // *****************************************************************************

@@ -254,14 +254,6 @@ static USB_DEVICE_CDC_EVENT_RESPONSE lUSB_CDC_DeviceCDCEventHandler(USB_DEVICE_C
                 dObj->cdcIsReadComplete = true;
 
                 dObj->cdcNumBytesRead = eventDataRead->length;
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-
-                /* Post semaphore to resume task */
-                if (dObj->semaphoreID != NULL)
-                {
-                    (void) OSAL_SEM_PostISR(&dObj->semaphoreID);
-                }
-</#if>
             }
             break;
 
@@ -389,9 +381,6 @@ static void lUSI_CDC_DeviceEventHandler(USB_DEVICE_EVENT event, void * eventData
 
 void USI_CDC_Initialize(uint32_t index, const void * const initData)
 {
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-    OSAL_RESULT semResult;
-</#if>
     USI_CDC_OBJ* dObj = USI_CDC_GET_INSTANCE(index);
     const USI_CDC_INIT_DATA * const dObjInit = (const USI_CDC_INIT_DATA * const)initData;
 
@@ -413,16 +402,6 @@ void USI_CDC_Initialize(uint32_t index, const void * const initData)
     dObj->cdcIsReadComplete = false;
     dObj->readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
     dObj->writeTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-
-    /* Create semaphore. It is used to suspend and resume task. */
-    semResult = OSAL_SEM_Create(&dObj->semaphoreID, OSAL_SEM_TYPE_BINARY, 0, 0);
-    if ((semResult != OSAL_RESULT_SUCCESS) || (dObj->semaphoreID == NULL))
-    {
-        /* Error: Not enough memory to create semaphore */
-        dObj->usiStatus = SRV_USI_STATUS_ERROR;
-    }
-</#if>
 }
 
 DRV_HANDLE USI_CDC_Open(uint32_t index)
@@ -531,14 +510,6 @@ void USI_CDC_Tasks (uint32_t index)
         return;
     }
 
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-    /* Suspend task until semaphore is posted */
-    if (dObj->semaphoreID != NULL)
-    {
-        (void) OSAL_SEM_Pend(&dObj->semaphoreID, OSAL_WAIT_FOREVER);
-    }
-
-</#if>
     if (dObj->usiStatus != SRV_USI_STATUS_CONFIGURED)
     {
         return;

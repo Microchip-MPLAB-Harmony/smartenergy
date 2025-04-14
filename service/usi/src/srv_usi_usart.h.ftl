@@ -119,9 +119,6 @@ typedef struct
     
     size_t                                   usartBufferSize;
     uint8_t*                                 usartReadBuffer;
-<#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">
-    OSAL_SEM_DECLARE(semaphoreID);
-</#if>
 } USI_USART_OBJ;
 
 // *****************************************************************************

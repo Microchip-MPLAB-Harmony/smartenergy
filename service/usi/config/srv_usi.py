@@ -124,6 +124,21 @@ def instantiateComponent(usiComponent, index):
     usiRTOSTaskPriority.setMin(0)
     usiRTOSTaskPriority.setHelp(srv_usi_helpkeyword)
 
+    usiRTOSUseDelay = usiComponent.createBooleanSymbol("SRV_USI_RTOS_TASK_USE_DELAY", usiRTOSMenu)
+    usiRTOSUseDelay.setLabel("Use Task Delay")
+    usiRTOSUseDelay.setDescription("Specifies whether task delay is used or not")
+    usiRTOSUseDelay.setDefaultValue(True)
+    usiRTOSUseDelay.setReadOnly(True)
+    usiRTOSUseDelay.setHelp(srv_usi_helpkeyword)
+
+    usiRTOSDelay = usiComponent.createIntegerSymbol("SRV_USI_RTOS_TASK_DELAY_MS", usiRTOSUseDelay)
+    usiRTOSDelay.setLabel("Task Delay in ms")
+    usiRTOSDelay.setDescription("Specifies the Meters And More stack task delay in ms")
+    usiRTOSDelay.setDefaultValue(1)
+    usiRTOSDelay.setMin(1)
+    usiRTOSDelay.setMax(20)
+    usiRTOSDelay.setHelp(srv_usi_helpkeyword)
+
     usiRTOSMsgQSize = usiComponent.createIntegerSymbol("SRV_USI_RTOS_TASK_MSG_QTY", usiRTOSMenu)
     usiRTOSMsgQSize.setLabel("Maximum Message Queue Size")
     usiRTOSMsgQSize.setDescription("A µC/OS-III task contains an optional internal message queue (if OS_CFG_TASK_Q_EN is set to DEF_ENABLED in os_cfg.h). This argument specifies the maximum number of messages that the task can receive through this message queue. The user may specify that the task is unable to receive messages by setting this argument to 0")
