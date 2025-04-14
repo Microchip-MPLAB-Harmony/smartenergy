@@ -3228,7 +3228,7 @@ static void lRF215_PHY_SetChnNum(uint8_t trxIdx, uint16_t chnNumNew)
     const RF215_PLL_CONST_OBJ* pllConst = &rf215PllConst[trxIdx];
 
     /* If channel 0, get first available channel */
-    if (chnNumNew == 0)
+    if (chnNumNew == 0U)
     {
         chnNumNew = phyCfg->chnNumMin;
     }
@@ -5749,7 +5749,7 @@ void RF215_PHY_SetChannelRequest (
     }
 
     /* If channel 0, get first available channel */
-    if (channelNum == 0)
+    if (channelNum == 0U)
     {
         channelNum = phyCfg->chnNumMin;
     }
