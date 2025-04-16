@@ -158,6 +158,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x02U,
         .BBCn_FSKPE1 = 0x03U,
         .BBCn_FSKPE2 = 0xFCU,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 2,
+</#if>
         .sensitivityDBm = -91
     },
 
@@ -177,6 +180,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x0EU,
         .BBCn_FSKPE1 = 0x0FU,
         .BBCn_FSKPE2 = 0xF0U,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 3,
+</#if>
         .sensitivityDBm = -88
     },
 
@@ -196,6 +202,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x3CU,
         .BBCn_FSKPE1 = 0x3FU,
         .BBCn_FSKPE2 = 0xC0U,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 8,
+</#if>
         .sensitivityDBm = -86
     },
 
@@ -215,6 +224,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x74U,
         .BBCn_FSKPE1 = 0x7FU,
         .BBCn_FSKPE2 = 0x80U,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 8,
+</#if>
         .sensitivityDBm = -85
     },
 
@@ -234,6 +246,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x05U,
         .BBCn_FSKPE1 = 0x3CU,
         .BBCn_FSKPE2 = 0xC3U,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 8,
+</#if>
         .sensitivityDBm = -83
     },
 
@@ -253,6 +268,9 @@ static const RF215_FSK_SYM_RATE_CONST_OBJ fskSymRateConst[6] = {
         .BBCn_FSKPE0 = 0x13U,
         .BBCn_FSKPE1 = 0x29U,
         .BBCn_FSKPE2 = 0xC7U,
+<#if DRV_RF215_RPC_EN == true>
+        .minPreambleLen = 10,
+</#if>
         .sensitivityDBm = -82
     }
 };
@@ -275,7 +293,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         /* Higher threshold than in Table 6-93 to avoid false detections */
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(6U),
         .minMCS = OFDM_MCS_0,
-        .sensitivityDBm = -85
+        .sensitivityDBm = -85,
+        .maxTxPowerDBm = 10
     },
 
     /* Option 2 */
@@ -291,7 +310,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_1333kHz,
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(5U),
         .minMCS = OFDM_MCS_0,
-        .sensitivityDBm = -88
+        .sensitivityDBm = -88,
+        .maxTxPowerDBm = 10
     },
 
     /* Option 3 */
@@ -307,7 +327,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         .RFn_TXDFE_SR = RF215_RFn_TXDFE_SR_667kHz,
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(4U),
         .minMCS = OFDM_MCS_1, /* MCS0 not available in option 3 */
-        .sensitivityDBm = -91
+        .sensitivityDBm = -91,
+        .maxTxPowerDBm = 10
     },
 
     /* Option 4 */
@@ -324,7 +345,8 @@ static const RF215_OFDM_BW_OPT_CONST_OBJ ofdmBwOptConst[4] = {
         /* Higher threshold than in Table 6-93 to avoid false detections */
         .BBCn_OFDMSW_PDT = RF215_BBCn_OFDMSW_PDT(4U),
         .minMCS = OFDM_MCS_2, /* MCS0 and MCS1 not available in option 4 */
-        .sensitivityDBm = -94
+        .sensitivityDBm = -94,
+        .maxTxPowerDBm = 11
     }
 };
 
@@ -334,49 +356,49 @@ static const RF215_OFDM_MCS_CONST_OBJ ofdmMcsConst[7] = {
     {
         .repFactorShift = 2U,
         .bitsCarrierShift = 0U,
-        .minTxPwrAttMin = 0U
+        .minTxPwrAtt = 0U
     },
 
     /* MCS1 */
     {
         .repFactorShift = 1U,
         .bitsCarrierShift = 0U,
-        .minTxPwrAttMin = 0U
+        .minTxPwrAtt = 0U
     },
 
     /* MCS2 */
     {
         .repFactorShift = 1U,
         .bitsCarrierShift = 1U,
-        .minTxPwrAttMin = 0U
+        .minTxPwrAtt = 0U
     },
 
     /* MCS3 */
     {
         .repFactorShift = 0U,
         .bitsCarrierShift = 1U,
-        .minTxPwrAttMin = 0U
+        .minTxPwrAtt = 0U
     },
 
     /* MCS4 */
     {
         .repFactorShift = 0U,
         .bitsCarrierShift = 1U,
-        .minTxPwrAttMin = 1U
+        .minTxPwrAtt = 1U
     },
 
     /* MCS5 */
     {
         .repFactorShift = 0U,
         .bitsCarrierShift = 2U,
-        .minTxPwrAttMin = 3U
+        .minTxPwrAtt = 3U
     },
 
     /* MCS6 */
     {
         .repFactorShift = 0U,
         .bitsCarrierShift = 2U,
-        .minTxPwrAttMin = 5U
+        .minTxPwrAtt = 5U
     }
 };
 
@@ -438,6 +460,7 @@ static uint8_t rf215PhyRegRF_IQIFC1;
 // *****************************************************************************
 // *****************************************************************************
 
+static bool lRF215_TRX_SwitchTrxOff(uint8_t trxIdx);
 static void lRF215_TX_PrepareTimeExpired(uintptr_t context);
 <#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>
 static void lRF215_PHY_SetChnNum(uint8_t trxIdx, uint16_t chnNumNew);
@@ -537,8 +560,18 @@ static inline void lRF215_FSK_Regs (
      * MSE=0: Mode Switch disabled
      * RXPTO=0: Resynchronization if correlation is below threshold
      * RXO=2: Receiver restarted by >18dB stronger frame
+<#if DRV_RF215_RPC_EN == true>
+     * PDTM=1: Enable only if preamble length is <8 (only if RPC is used) */
+<#else>
      * PDTM=0: Enable only if preamble length is <8 (fixed to 8) */
+</#if>
     phyRegs->BBCn_FSKC2 = RF215_BBCn_FSKC2_Rst;
+<#if DRV_RF215_RPC_EN == true>
+    if (fskConst->minPreambleLen < 4U)
+    {
+        phyRegs->BBCn_FSKC2 |= RF215_BBCn_FSKC2_PDTM_RSSI;
+    }
+</#if>
 
     /* FSKC3.SFDT: SFD Detection Threshold default value 8 */
     fskc3 = RF215_BBCn_FSKC3_SFDT(8U);
@@ -564,10 +597,15 @@ static inline void lRF215_FSK_Regs (
      * RAWRBIT=1: RAW mode not used
      * SFD32=0: Dual SFD mode
      * SFDQ=0: Use soft decisions for SFD search */
+<#if DRV_RF215_RPC_EN == true>
+    phyRegs->BBCn_FSKC4 = RF215_BBCn_FSKC4_Rst;
+</#if>
 
+<#if DRV_RF215_RPC_EN == false>
     /* BBCn_FSKPLL: Not needed to modify default register value.
      * FSKPLL=8: Preamble length fixed to 8 octets */
 
+</#if>
     /* BBCn_FSKSFD0L/H: Not needed to modify default register value.
      * FSKSFD0L=0x09; FSKSFD0H=0x72: 802.15.4 SUN FSK SFD value for
      * uncoded format (phySunFskSfd=0)  */
@@ -581,6 +619,46 @@ static inline void lRF215_FSK_Regs (
      * DW=1: Data withening enabled
      * SFD=0: SFD0 used for TX (uncoded, FEC disabled) */
 
+<#if DRV_RF215_RPC_EN == true>
+    /* BBCn_FSKRPC:
+     * BASET: 4 us (default) is enough resolution
+     * EN: Enable only if minimum preamble length < 4 */
+    phyRegs->BBCn_FSKRPC = RF215_BBCn_FSKRPC_Rst;
+    if (fskConst->minPreambleLen < 4U)
+    {
+        uint16_t tOnUs, tOffUs;
+        uint8_t octectsOn, octectsOff;
+
+        /* RPC (Reduced Power Consumption) mode used
+         * Configure tON and tOFF depending on minimum preamble length
+         * tON = tMIN
+         * 2*tON + tOFF <= tTX_Preamble */
+        phyRegs->BBCn_FSKRPC |= RF215_BBCn_FSKRPC_EN_EN;
+        octectsOn = fskConst->minPreambleLen;
+        octectsOff = 8 - (octectsOn << 1);
+        tOnUs = ((octectsOn << 3) * 1000U) / fskConst->kHz;
+        tOffUs = ((octectsOff << 3) * 1000U) / fskConst->kHz;
+
+        /* Convert to 4 us base */
+        phyRegs->BBCn_FSKRPCONT = tOnUs >> 2;
+        phyRegs->BBCn_FSKRPCOFFT = tOffUs >> 2;
+
+        /* BBCn_FSKPLL:
+         * FSKPLL: Rx Preamble length set to minimum preamble length */
+        phyRegs->BBCn_FSKPLL = fskConst->minPreambleLen;
+    }
+    else
+    {
+        /* RPC (Reduced Power Consumption) mode not used */
+        phyRegs->BBCn_FSKRPCONT = RF215_BBCn_FSKRPCONT_Rst;
+        phyRegs->BBCn_FSKRPCOFFT = RF215_BBCn_FSKRPCOFFT_Rst;
+
+        /* BBCn_FSKPLL:
+         * FSKPLL=8: Rx Preamble length fixed to 8 octets (same as Tx) */
+        phyRegs->BBCn_FSKPLL = 8U;
+    }
+
+</#if>
     /* FSK Direct modulation and pre-emphashis settings. Recommended to enable
      * direct modulation and pre-emphasis filtering to improve the modulation
      * quality [Table 6-57].
@@ -988,9 +1066,19 @@ static void lRF215_BBC_WriteRegs(uint8_t trxIdx, RF215_PHY_REGS_OBJ* phyRegsNew)
     {
 </#if>
 <#if DRV_RF215_FSK_EN == true>
+    <#if DRV_RF215_RPC_EN == true>
+${PHY_TYPE_INDENT}/* Write up to 6 registers: BBCn_FSKC0 to BBCn_FSKPLL */
+${PHY_TYPE_INDENT}RF215_HAL_SpiWriteUpdate(RF215_BBCn_FSKC0(trxIdx),
+${PHY_TYPE_INDENT}        &phyRegsNew->BBCn_FSKC0, &pObj->phyRegs.BBCn_FSKC0, 6);
+
+${PHY_TYPE_INDENT}/* Write up to 3 registers: BBCn_FSKRPC to BBCn_FSKRPCOFFT */
+${PHY_TYPE_INDENT}RF215_HAL_SpiWriteUpdate(RF215_BBCn_FSKRPC(trxIdx),
+${PHY_TYPE_INDENT}        &phyRegsNew->BBCn_FSKRPC, &pObj->phyRegs.BBCn_FSKRPC, 3);
+    <#else>
 ${PHY_TYPE_INDENT}/* Write up to 4 registers: BBCn_FSKC0 to BBCn_FSKC3 */
 ${PHY_TYPE_INDENT}RF215_HAL_SpiWriteUpdate(RF215_BBCn_FSKC0(trxIdx),
 ${PHY_TYPE_INDENT}        &phyRegsNew->BBCn_FSKC0, &pObj->phyRegs.BBCn_FSKC0, 4);
+    </#if>
 
 ${PHY_TYPE_INDENT}/* Write up to 4 registers: BBCn_FSKDM to BBCn_FSKPE2 */
 ${PHY_TYPE_INDENT}RF215_HAL_SpiWriteUpdate(RF215_BBCn_FSKDM(trxIdx),
@@ -1883,6 +1971,39 @@ ${PHY_TYPE_INDENT}return ofdmBwOptConst[phyCfg->phyTypeCfg.ofdm.opt].sensitivity
 </#if>
 }
 
+static inline int8_t lRF215_PHY_MaxTxPowerDBm(uint8_t trxIdx)
+{
+<#if DRV_RF215_OFDM_EN == true>
+    DRV_RF215_PHY_CFG_OBJ* phyCfg = &rf215PhyObj[trxIdx].phyConfig;
+</#if>
+<#if DRV_RF215_RPC_EN == true>
+    int8_t maxTxPowerDBm = -3;
+<#else>
+    int8_t maxTxPowerDBm = 0;
+</#if>
+
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    if (phyCfg->phyType == PHY_TYPE_FSK)
+    {
+</#if>
+<#if DRV_RF215_FSK_EN == true>
+${PHY_TYPE_INDENT}maxTxPowerDBm += 14;
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+    else /* PHY_TYPE_OFDM */
+    {
+</#if>
+<#if DRV_RF215_OFDM_EN == true>
+${PHY_TYPE_INDENT}maxTxPowerDBm += ofdmBwOptConst[phyCfg->phyTypeCfg.ofdm.opt].maxTxPowerDBm;
+</#if>
+<#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
+    }
+</#if>
+
+    return maxTxPowerDBm;
+}
+
 static bool lRF215_PHY_BandOpModeToPhyCfg (
     DRV_RF215_PHY_BAND_OPM bandOpMode,
     DRV_RF215_PHY_CFG_OBJ* phyConfig
@@ -2461,6 +2582,11 @@ static void lRF215_TRX_RxListen(uint8_t trxIdx<#if DRV_RF215_FREQ_HOPPING_SUPPOR
 {
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
     bool rxCmd = false;
+<#if DRV_RF215_RPC_EN == true && DRV_RF215_FSK_EN == true>
+    uint8_t rxPreambleLen = 8U;
+    uint8_t fskRPC = RF215_BBCn_FSKRPC_Rst;
+    uint8_t minPreambleLen;
+</#if>
 
     if (pObj->trxState == RF215_RFn_STATE_RF_RESET)
     {
@@ -2470,6 +2596,51 @@ static void lRF215_TRX_RxListen(uint8_t trxIdx<#if DRV_RF215_FREQ_HOPPING_SUPPOR
 
     /* Update PHY state */
     pObj->phyState = PHY_STATE_RX_LISTEN;
+
+<#if DRV_RF215_RPC_EN == true && DRV_RF215_FSK_EN == true>
+    <#if DRV_RF215_OFDM_EN == true>
+    if (pObj->phyConfig.phyType == PHY_TYPE_FSK)
+    {
+    </#if>
+${PHY_TYPE_INDENT}minPreambleLen = fskSymRateConst[pObj->phyConfig.phyTypeCfg.fsk.symRate].minPreambleLen;
+${PHY_TYPE_INDENT}if (minPreambleLen < 4U)
+${PHY_TYPE_INDENT}{
+${PHY_TYPE_INDENT}    /* RPC (Reduced Power Consumption) mode used. Rx Preamble length set to minimum preamble length */
+${PHY_TYPE_INDENT}    rxPreambleLen = minPreambleLen;
+${PHY_TYPE_INDENT}    fskRPC |= RF215_BBCn_FSKRPC_EN_EN;
+${PHY_TYPE_INDENT}}
+
+${PHY_TYPE_INDENT}/* Check if we need to update registers for RPC */
+${PHY_TYPE_INDENT}if ((rxPreambleLen != pObj->phyRegs.BBCn_FSKPLL) || (fskRPC != pObj->phyRegs.BBCn_FSKRPC))
+${PHY_TYPE_INDENT}{
+${PHY_TYPE_INDENT}    /* Register(s) must be configured in TRXOFF state */
+${PHY_TYPE_INDENT}    if (lRF215_TRX_SwitchTrxOff(trxIdx) == true)
+${PHY_TYPE_INDENT}    {
+${PHY_TYPE_INDENT}        /* Write BBCn_FSKPLL if it changes */
+${PHY_TYPE_INDENT}        if (rxPreambleLen != pObj->phyRegs.BBCn_FSKPLL)
+${PHY_TYPE_INDENT}        {
+${PHY_TYPE_INDENT}            pObj->phyRegs.BBCn_FSKPLL = rxPreambleLen;
+${PHY_TYPE_INDENT}            RF215_HAL_SpiWrite(RF215_BBCn_FSKPLL(trxIdx), &pObj->phyRegs.BBCn_FSKPLL, 1U);
+${PHY_TYPE_INDENT}        }
+${PHY_TYPE_INDENT}
+${PHY_TYPE_INDENT}        /* Write BBCn_FSKRPC if it changes */
+${PHY_TYPE_INDENT}        if (fskRPC != pObj->phyRegs.BBCn_FSKRPC)
+${PHY_TYPE_INDENT}        {
+${PHY_TYPE_INDENT}            pObj->phyRegs.BBCn_FSKRPC = fskRPC;
+${PHY_TYPE_INDENT}            RF215_HAL_SpiWrite(RF215_BBCn_FSKRPC(trxIdx), &pObj->phyRegs.BBCn_FSKRPC, 1U);
+${PHY_TYPE_INDENT}        }
+${PHY_TYPE_INDENT}    }
+${PHY_TYPE_INDENT}    else
+${PHY_TYPE_INDENT}    {
+${PHY_TYPE_INDENT}        /* If transition to TXPREP in progress, this function will be called
+${PHY_TYPE_INDENT}         * again from TRXRDY interrupt */
+${PHY_TYPE_INDENT}        return;
+${PHY_TYPE_INDENT}    }
+${PHY_TYPE_INDENT}}
+    <#if DRV_RF215_OFDM_EN == true>
+    }
+    </#if>
+</#if>
 
     if (pObj->phyCfgPending == true)
     {
@@ -2938,7 +3109,16 @@ static inline void lRF215_TRX_ResetEvent(uint8_t trxIdx)
     regsOld->BBCn_FSKC1 = RF215_BBCn_FSKC1_Rst;
     regsOld->BBCn_FSKC2 = RF215_BBCn_FSKC2_Rst;
     regsOld->BBCn_FSKC3 = RF215_BBCn_FSKC3_Rst;
+<#if DRV_RF215_RPC_EN == true>
+    regsOld->BBCn_FSKC4 = RF215_BBCn_FSKC4_Rst;
+    regsOld->BBCn_FSKPLL = RF215_BBCn_FSKPLL_Rst;
+</#if>
     regsOld->BBCn_FSKPHRTX = RF215_BBCn_FSKPHRTX_Rst;
+<#if DRV_RF215_RPC_EN == true>
+    regsOld->BBCn_FSKRPC = RF215_BBCn_FSKRPC_Rst;
+    regsOld->BBCn_FSKRPCONT = RF215_BBCn_FSKRPCONT_Rst;
+    regsOld->BBCn_FSKRPCOFFT = RF215_BBCn_FSKRPCOFFT_Rst;
+</#if>
     regsOld->BBCn_FSKDM = RF215_BBCn_FSKDM_Rst;
     regsOld->BBCn_FSKPE0 = RF215_BBCn_FSKPE0_Rst;
     regsOld->BBCn_FSKPE1 = RF215_BBCn_FSKPE1_Rst;
@@ -4160,6 +4340,9 @@ static DRV_RF215_TX_RESULT lRF215_TX_ParamCfg(DRV_RF215_TX_BUFFER_OBJ* txBufObj)
 {
     RF215_PHY_REGS_OBJ* phyRegs;
     uint8_t* pPHR;
+<#if DRV_RF215_RPC_EN == true && DRV_RF215_FSK_EN == true>
+    bool fskRpcUpd = false;
+</#if>
     uint16_t addrPHR<#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>, channelNumPrev</#if>;
     uint8_t pac, phrtx, txPwrAtt<#if DRV_RF215_OFDM_EN == true>, mcsIndex</#if>;
     uint8_t trxIdx = txBufObj->clientObj->trxIndex;
@@ -4268,9 +4451,9 @@ static DRV_RF215_TX_RESULT lRF215_TX_ParamCfg(DRV_RF215_TX_BUFFER_OBJ* txBufObj)
 
     /* Check modulation scheme and TX power attenuation parameters */
     txPwrAtt = txBufObj->reqObj.txPwrAtt;
-    phrtx = BBC_FSKPHRTX_FEC_OFF;
     phyRegs = &pObj->phyRegs;
 <#if DRV_RF215_FSK_EN == true>
+    phrtx = BBC_FSKPHRTX_FEC_OFF;
     pPHR = &phyRegs->BBCn_FSKPHRTX;
     addrPHR = RF215_BBCn_FSKPHRTX(trxIdx);
 <#else>
@@ -4288,6 +4471,13 @@ ${PHY_TYPE_INDENT}if (txBufObj->reqObj.modScheme == FSK_FEC_ON)
 ${PHY_TYPE_INDENT}{
 ${PHY_TYPE_INDENT}    phrtx = BBC_FSKPHRTX_FEC_ON;
 ${PHY_TYPE_INDENT}}
+    <#if DRV_RF215_RPC_EN == true>
+
+${PHY_TYPE_INDENT}if ((8U != phyRegs->BBCn_FSKPLL) || (RF215_BBCn_FSKRPC_Rst != phyRegs->BBCn_FSKRPC))
+${PHY_TYPE_INDENT}{
+${PHY_TYPE_INDENT}    fskRpcUpd = true;
+${PHY_TYPE_INDENT}}
+    </#if>
 </#if>
 <#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
     }
@@ -4299,7 +4489,7 @@ ${PHY_TYPE_INDENT}/* OFDM: Minimum TX power attenuation to comply with EVM requi
 ${PHY_TYPE_INDENT}mcsIndex = (uint8_t) txBufObj->reqObj.modScheme;
 ${PHY_TYPE_INDENT}if (txPwrAtt < 31U)
 ${PHY_TYPE_INDENT}{
-${PHY_TYPE_INDENT}    txPwrAtt += ofdmMcsConst[mcsIndex].minTxPwrAttMin;
+${PHY_TYPE_INDENT}    txPwrAtt += ofdmMcsConst[mcsIndex].minTxPwrAtt;
 ${PHY_TYPE_INDENT}}
 
 ${PHY_TYPE_INDENT}/* BBCn_OFDMPHRTX register value, depending on MCS
@@ -4323,10 +4513,15 @@ ${PHY_TYPE_INDENT}addrPHR = RF215_BBCn_OFDMPHRTX(trxIdx);
      * PAC.PACUR: Power Amplifier Current Control. No power amplifier current
      * reduction to achieve maximum output power.
      * PAC.TXPWR: Transmitter Output Power. */
-    pac = RF215_RFn_PAC_PACUR_0mA | RF215_RFn_PAC_TXPWR(31U - txPwrAtt);
+    pac = <#if DRV_RF215_RPC_EN == true>RF215_RFn_PAC_PACUR_22mA<#else>RF215_RFn_PAC_PACUR_0mA</#if> | RF215_RFn_PAC_TXPWR(31U - txPwrAtt);
 
+<#if DRV_RF215_RPC_EN == true && DRV_RF215_FSK_EN == true>
+    /* Check if modulation scheme, TX power or RPC configuration change */
+    if ((*pPHR != phrtx) || (phyRegs->RFn_PAC != pac) || (fskRpcUpd == true))
+<#else>
     /* Check if modulation scheme or TX power change */
     if ((*pPHR != phrtx) || (phyRegs->RFn_PAC != pac))
+</#if>
     {
         /* Register(s) must be configured in TRXOFF state */
         if (lRF215_TRX_SwitchTrxOff(trxIdx) == true)
@@ -4344,6 +4539,30 @@ ${PHY_TYPE_INDENT}addrPHR = RF215_BBCn_OFDMPHRTX(trxIdx);
                 phyRegs->RFn_PAC = pac;
                 RF215_HAL_SpiWrite(RF215_RFn_PAC(trxIdx), &phyRegs->RFn_PAC, 1U);
             }
+<#if DRV_RF215_RPC_EN == true && DRV_RF215_FSK_EN == true>
+
+    <#if DRV_RF215_OFDM_EN == true>
+            if (pObj->phyConfig.phyType == PHY_TYPE_FSK)
+            {
+    </#if>
+${PHY_TYPE_INDENT}        /* BBCn_FSKPHRTX depending on FEC mode */
+${PHY_TYPE_INDENT}        /* Write BBCn_FSKPLL register if it changes */
+${PHY_TYPE_INDENT}        if (8U != phyRegs->BBCn_FSKPLL)
+${PHY_TYPE_INDENT}        {
+${PHY_TYPE_INDENT}            phyRegs->BBCn_FSKPLL = 8U;
+${PHY_TYPE_INDENT}            RF215_HAL_SpiWrite(RF215_BBCn_FSKPLL(trxIdx), &phyRegs->BBCn_FSKPLL, 1U);
+${PHY_TYPE_INDENT}        }
+
+${PHY_TYPE_INDENT}        /* Write BBCn_FSKRPC register if it changes */
+${PHY_TYPE_INDENT}        if (RF215_BBCn_FSKRPC_Rst != phyRegs->BBCn_FSKRPC)
+${PHY_TYPE_INDENT}        {
+${PHY_TYPE_INDENT}            phyRegs->BBCn_FSKRPC = RF215_BBCn_FSKRPC_Rst;
+${PHY_TYPE_INDENT}            RF215_HAL_SpiWrite(RF215_BBCn_FSKRPC(trxIdx), &phyRegs->BBCn_FSKRPC, 1U);
+${PHY_TYPE_INDENT}        }
+    <#if DRV_RF215_OFDM_EN == true>
+            }
+    </#if>
+</#if>
 
             /* Transmission parameters configured. Update PHY state */
             pObj->phyState = PHY_STATE_TX_CONFIG;
@@ -5890,6 +6109,10 @@ DRV_RF215_PIB_RESULT RF215_PHY_GetPib (
 
         case RF215_PIB_PHY_SENSITIVITY:
             *((int8_t *) value) = lRF215_PHY_SensitivityDBm(trxIndex);
+            break;
+
+        case RF215_PIB_PHY_MAX_TX_POWER:
+            *((int8_t *) value) = lRF215_PHY_MaxTxPowerDBm(trxIndex);
             break;
 
         case RF215_PIB_PHY_TURNAROUND_TIME:

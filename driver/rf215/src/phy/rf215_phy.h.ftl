@@ -386,6 +386,11 @@ typedef struct
     uint8_t                         BBCn_FSKPE1;
     uint8_t                         BBCn_FSKPE2;
 
+<#if DRV_RF215_RPC_EN == true>
+    /* Minimum preamble length (Table 6-64) */
+    uint8_t                         minPreambleLen;
+
+</#if>
     /* Receiver sensitivity for FSK in dBm.
      * From IEEE 802.15.4 section 19.6.7 Receiver sensitivity:
      * S = (S0 + 10log[R/R0]) dBm. Where S0 = -91 (without FEC) / -97 (with FEC);
@@ -438,6 +443,10 @@ typedef struct
      * Sensitivity for MCS6 is selected (worst case) */
     int8_t                          sensitivityDBm;
 
+    /* Maximum Tx Power in dBm.
+     * From Figure 11-2 of RF215 datasheet */
+    int8_t                          maxTxPowerDBm;
+
 } RF215_OFDM_BW_OPT_CONST_OBJ;
 
 // *****************************************************************************
@@ -456,7 +465,7 @@ typedef struct
     uint8_t                         bitsCarrierShift;
 
     /* Minimum TX power attenuation to satisfy EVM requirements [Table 6-91] */
-    uint8_t                         minTxPwrAttMin;
+    uint8_t                         minTxPwrAtt;
 
 } RF215_OFDM_MCS_CONST_OBJ;
 
@@ -614,12 +623,21 @@ typedef struct
     uint8_t                         BBCn_FSKC1;
     uint8_t                         BBCn_FSKC2;
     uint8_t                         BBCn_FSKC3;
+<#if DRV_RF215_RPC_EN == true>
+    uint8_t                         BBCn_FSKC4;
+    uint8_t                         BBCn_FSKPLL;
+</#if>
     uint8_t                         BBCn_FSKPHRTX;
     uint8_t                         BBCn_FSKPHRRX; /* read-only */
     uint8_t                         BBCn_FSKDM;
     uint8_t                         BBCn_FSKPE0;
     uint8_t                         BBCn_FSKPE1;
     uint8_t                         BBCn_FSKPE2;
+<#if DRV_RF215_RPC_EN == true>
+    uint8_t                         BBCn_FSKRPC;
+    uint8_t                         BBCn_FSKRPCONT;
+    uint8_t                         BBCn_FSKRPCOFFT;
+</#if>
 
 </#if>
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
