@@ -95,7 +95,7 @@ static void lSRV_LOG_REPORT_show_error(enum cl010_line disp_line, SRV_LOG_REPORT
 {
     uint32_t errorType;
 
-    errorType = code_type % 100000000; /* Only eight digits in the display */
+    errorType = ((uint32_t) code_type) % 100000000UL; /* Only eight digits in the display */
     cl010_show_numeric_string(disp_line, (const uint8_t *)&errorType);
 }
 </#if>
