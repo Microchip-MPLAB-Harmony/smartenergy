@@ -1187,11 +1187,11 @@ def instantiateComponent(rf215Component):
     rf24PhyChannel.setDependencies(rf24PhyChnNumHandler, ["DRV_RF215_TRX24_EN", "DRV_RF215_TRX24_PHY_BAND", "DRV_RF215_TRX24_PHY_TYPE", "DRV_RF215_TRX24_PHY_OPM"])
     rf24PhyChannel.setHelp(rf215_helpkeyword)
 
-    phyFskEn = rf215Component.createBooleanSymbol("DRV_RF215_RPC_EN", None)
-    phyFskEn.setLabel("Reduced Power Consumption")
-    phyFskEn.setDescription("Enable/disable recuced power consumption")
-    phyFskEn.setDefaultValue(False)
-    phyFskEn.setHelp(rf215_helpkeyword)
+    rpcEn = rf215Component.createBooleanSymbol("DRV_RF215_RPC_EN", None)
+    rpcEn.setLabel("Reduced Power Consumption")
+    rpcEn.setDescription("Enable/disable recuced power consumption")
+    rpcEn.setDefaultValue(False)
+    rpcEn.setHelp(rf215_helpkeyword)
 
     ############################################################################
     #### Code Generation ####
