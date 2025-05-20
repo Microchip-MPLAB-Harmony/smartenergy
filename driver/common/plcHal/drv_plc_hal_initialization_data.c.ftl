@@ -60,17 +60,6 @@ void _on_reset(void)
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
         <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
-        <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
-        <#lt>
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
         <#lt>       /* Wait for status CPMCKRDY */
@@ -82,12 +71,22 @@ void _on_reset(void)
         <#lt>       /* Wait for clock to be initialized */
         <#lt>   }
         <#lt>
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>   /* Enable LDO Pin */
         <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>   /* Enable Reset Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>
+        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>   {
+        <#lt>       /* Wait for clock to be initialized */
+        <#lt>   }
+        <#lt>
+        <#lt>   /* Disable STBY Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
+        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTC DB") || BOARD_FIND?matches("PIC32CXMTC Development Board")>
         <#lt>   /* Enable co-processor bus clock  */
@@ -99,17 +98,6 @@ void _on_reset(void)
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
         <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
-        <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PC21);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PC21);
-        <#lt>
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
         <#lt>       /* Wait for status CPMCKRDY */
@@ -121,12 +109,22 @@ void _on_reset(void)
         <#lt>       /* Wait for clock to be initialized */
         <#lt>   }
         <#lt>
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>   /* Enable LDO Pin */
         <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>   /* Enable Reset Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>
+        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>   {
+        <#lt>       /* Wait for clock to be initialized */
+        <#lt>   }
+        <#lt>
+        <#lt>   /* Disable STBY Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PC21);
+        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PC21);
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTG EK") || BOARD_FIND?matches("PIC32CXMTG Evaluation Kit")>
         <#lt>   /* Enable co-processor bus clock  */
@@ -138,17 +136,6 @@ void _on_reset(void)
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
         <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
-        <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
-        <#lt>
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
         <#lt>       /* Wait for status CPMCKRDY */
@@ -160,54 +147,64 @@ void _on_reset(void)
         <#lt>       /* Wait for clock to be initialized */
         <#lt>   }
         <#lt>
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>   /* Enable LDO Pin */
         <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>   /* Enable Reset Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>
+        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>   {
+        <#lt>       /* Wait for clock to be initialized */
+        <#lt>   }
+        <#lt>
+        <#lt>   /* Disable STBY Pin */
+        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
+        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
     </#if>
     <#if BOARD_FIND?matches("SAME70 XPLAINED ULTRA") || BOARD_FIND?matches("SAM E70 Xplained Ultra")>
         <#lt>    /* Enables PIOA and PIOC */
         <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID10_Msk | PMC_PCER0_PID12_Msk;
         <#lt>
+        <#lt>    /* Enable LDO Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
         <#lt>    /* Enable Reset Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
         <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>    /* Disable STBY Pin */
         <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA3);
         <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA3);
-        <#lt>    /* Enable LDO Pin */
-        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
     </#if>
     <#if BOARD_FIND?matches("WBZ451 CURIOSITY") || BOARD_FIND?matches("WBZ451 Curiosity")>
         <#lt>    __asm volatile ("NOP");
     </#if>
     <#if BOARD_FIND?matches("SAMD20 XPLAINED PRO") || BOARD_FIND?matches("SAM D20 Xplained Pro")>
-        <#lt>    /* Disable STBY Pin */
-        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
-        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
-        <#lt>    /* Enable Reset Pin */
-        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>    /* Enable LDO Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>    /* Enable Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>    /* Disable STBY Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
+        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
     </#if>
 </#if>
 <#if BOARD_FIND == "">
     #warning Board not supported. Please, review Pin configuration to initialize the PL460-EK GPIOs (RESET, STBY and LDO_EN).
     <#lt>    __asm volatile ("NOP");
+    <#lt>    /* Enable LDO Pin */
+    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+    <#lt>    // SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
     <#lt>    /* Enable Reset Pin */
     <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
     <#lt>    // SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
     <#lt>    /* Disable STBY Pin */
     <#lt>    // SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
     <#lt>    // SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
-    <#lt>    /* Enable LDO Pin */
-    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-    <#lt>    // SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
 </#if>
 }
 
