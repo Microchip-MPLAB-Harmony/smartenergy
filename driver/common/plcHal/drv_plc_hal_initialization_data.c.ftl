@@ -58,7 +58,7 @@ void _on_reset(void)
         <#lt>
         <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
-        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2 | PMC_CPU_CKR_CPCSS_MAINCK;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
@@ -96,7 +96,7 @@ void _on_reset(void)
         <#lt>
         <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
-        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2 | PMC_CPU_CKR_CPCSS_MAINCK;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
@@ -134,7 +134,7 @@ void _on_reset(void)
         <#lt>
         <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
         <#lt>   uint32_t reg = (PMC_REGS->PMC_CPU_CKR & ~PMC_CPU_CKR_CPPRES_Msk);
-        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>   reg |= PMC_CPU_CKR_CPPRES_CLK_2 | PMC_CPU_CKR_CPCSS_MAINCK;
         <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
         <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
         <#lt>   {
