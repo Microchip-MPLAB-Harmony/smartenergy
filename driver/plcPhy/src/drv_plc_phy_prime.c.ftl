@@ -793,7 +793,7 @@ bool DRV_PLC_PHY_PIBSet(const DRV_HANDLE handle, DRV_PLC_PHY_PIB_OBJ *pibObj)
 <#--  Connected directly to SPI PLIB  -->
     <#assign SPI_PLIB = DRV_PLC_PLIB>
 </#if>
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
 void DRV_PLC_PHY_ExternalInterruptHandler(uintptr_t context)
 <#else>
 void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
@@ -802,13 +802,19 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
     /* Avoid warning */
     (void)context;
 
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
     if (gPlcPhyObj != NULL)
 <#else>
     if ((gPlcPhyObj != NULL) && (pin == (PIO_PIN)gPlcPhyObj->plcHal->plcPlib->extIntPin))
 </#if>
     {
         DRV_PLC_PHY_EVENTS_OBJ evObj;
+
+        if (gPlcPhyObj->plcHal->getPinLevel(gPlcPhyObj->plcHal->plcPlib->extIntPio) == true)
+        {
+            /* External interrupt pin is not active */
+            return;
+        }
 
         /* Time guard */
         gPlcPhyObj->plcHal->delay(20);
@@ -874,13 +880,4 @@ void DRV_PLC_PHY_ExternalInterruptHandler(PIO_PIN pin, uintptr_t context)
         /* Time guard */
         gPlcPhyObj->plcHal->delay(20);
     }
-<#if SPI_PLIB?lower_case[0..*6] != "sercom">
-
-    /* PORT Interrupt Status Clear */
-<#if (PLC_PIO_ID??) && (PLC_PIO_ID == "11264")>
-    (&(PIO0_REGS->PIO_GROUP[DRV_PLC_EXT_INT_PIO_PORT]))->PIO_ISR;
-<#else>
-    ((pio_registers_t*)DRV_PLC_EXT_INT_PIO_PORT)->PIO_ISR;
-</#if>
-</#if>
 }
