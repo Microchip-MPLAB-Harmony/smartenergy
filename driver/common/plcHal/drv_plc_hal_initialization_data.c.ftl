@@ -5,7 +5,8 @@
     "PIC32CXMTG Evaluation Kit",
     "SAM E70 Xplained Ultra",
     "WBZ451 Curiosity",
-    "SAM D20 Xplained Pro"                      
+    "SAM D20 Xplained Pro"
+    "SAM E54 Xplained Pro"
 ]>
 <#assign SUPPORTED_SHD_BOARDS = [
     "PIC32CXMTSH DB",
@@ -13,7 +14,8 @@
     "PIC32CXMTG EK",
     "SAME70 XPLAINED ULTRA",
     "WBZ451 CURIOSITY",
-    "SAMD20 XPLAINED PRO"                          
+    "SAMD20 XPLAINED PRO"
+    "SAME54 XPLAINED PRO"
 ]>
 <#assign BOARD_FIND = "">
 /* MISRA C-2012 deviation block start */
@@ -191,6 +193,17 @@ void _on_reset(void)
         <#lt>    /* Disable STBY Pin */
         <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
         <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
+    </#if>
+    <#if BOARD_FIND?matches("SAME54 XPLAINED PRO") || BOARD_FIND?matches("SAM E54 Xplained Pro")>
+        <#lt>    /* Enable LDO Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>    /* Enable Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>    /* Disable STBY Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA22);
+        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA22);
     </#if>
 </#if>
 <#if BOARD_FIND == "">
