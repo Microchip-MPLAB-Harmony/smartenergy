@@ -10,13 +10,6 @@ static const SRV_USI_USART_INTERFACE srvUsi${INDEX?string}InitData${SRV_USI_DEVI
     .readCallbackRegister = (USI_USART_PLIB_READ_CALLBACK_REG)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_ReadCallbackRegister,
     .readData = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Read,
     .writeData = (USI_USART_PLIB_WRRD)${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_Write,
-<#if SRV_USI_DEVICE?lower_case[0..*6] == "sercom">
-    .intSource = ${SRV_USI_DEVICE}_IRQn,
-<#elseif SRV_USI_DEVICE?lower_case[0..*7] == "flexcom">
-    .intSource = ${SRV_USI_DEVICE}_IRQn,
-<#else>
-    .intSource = ${.vars["${SRV_USI_DEVICE?lower_case}"].USART_PLIB_API_PREFIX}_IRQn,
-</#if>
 };
 
 static uint8_t CACHE_ALIGN srvUSI${INDEX?string}USARTReadBuffer[128] = {0};
