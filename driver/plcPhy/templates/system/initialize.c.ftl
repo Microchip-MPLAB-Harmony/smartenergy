@@ -8,7 +8,7 @@
 <#--  Connected directly to SPI PLIB  -->
     <#assign SPI_PLIB = DRV_PLC_PLIB>
 </#if>
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
     EIC_CallbackRegister(DRV_PLC_EXT_INT_PIN, DRV_PLC_PHY_ExternalInterruptHandler, sysObj.drvPlcPhy);
 <#else>
     (void) PIO_PinInterruptCallbackRegister((PIO_PIN)DRV_PLC_EXT_INT_PIN, DRV_PLC_PHY_ExternalInterruptHandler, sysObj.drvPlcPhy);

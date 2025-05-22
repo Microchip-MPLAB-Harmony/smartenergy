@@ -67,13 +67,16 @@ Microchip or any third party.
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
     <#assign SPI_PREFFIX = "SPI">
 #include "peripheral/sercom/spi_master/plib_sercom_spi_master_common.h"
-#include "peripheral/eic/plib_eic.h"
+
 <#elseif SPI_PLIB?lower_case[0..*7] == "flexcom">
     <#assign SPI_PREFFIX = "FLEXCOM_SPI">
 #include "peripheral/flexcom/spi/master/plib_flexcom_spi_master_common.h"
 <#elseif SPI_PLIB?lower_case[0..*3] == "spi">
     <#assign SPI_PREFFIX = "SPI">
 #include "peripheral/spi/spi_master/plib_spi_master_common.h"
+</#if>
+<#if eic??>
+#include "peripheral/eic/plib_eic.h"
 </#if>
 
 // DOM-IGNORE-BEGIN
@@ -265,7 +268,7 @@ typedef struct
     /* PLC reset pin */
     SYS_PORT_PIN                           resetPin;
 
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
     EIC_PIN                                extIntPin;
 <#else>
     /* PLC external interrupt pin */

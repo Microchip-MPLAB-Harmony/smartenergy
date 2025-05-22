@@ -133,7 +133,7 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
     SYS_PORT_PinClear(sPlcPlib->resetPin);
 
     /* Disable External Interrupt */
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
     EIC_InterruptDisable(sPlcPlib->extIntPin);
 <#else>
     PIO_PinInterruptDisable((PIO_PIN)sPlcPlib->extIntPin);
@@ -300,7 +300,7 @@ void DRV_PLC_HAL_EnableInterrupts(bool enable)
     if (enable)
     {
         SYS_INT_SourceStatusClear(DRV_PLC_EXT_INT_SRC);
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
         EIC_InterruptEnable(sPlcPlib->extIntPin);
 <#else>
         PIO_PinInterruptEnable((PIO_PIN)sPlcPlib->extIntPin);
@@ -308,7 +308,7 @@ void DRV_PLC_HAL_EnableInterrupts(bool enable)
     }
     else
     {
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
         EIC_InterruptDisable(sPlcPlib->extIntPin);
 <#else>
         PIO_PinInterruptDisable((PIO_PIN)sPlcPlib->extIntPin);

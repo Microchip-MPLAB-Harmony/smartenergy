@@ -1362,7 +1362,7 @@ void DRV_G3_MACRT_ExceptionCallbackRegister(
 <#--  Connected directly to SPI PLIB  -->
     <#assign SPI_PLIB = DRV_PLC_PLIB>
 </#if>
-<#if SPI_PLIB?lower_case[0..*6] == "sercom">
+<#if eic??>
 // *****************************************************************************
 /* Function:
     void DRV_G3_MACRT_ExternalInterruptHandler(
