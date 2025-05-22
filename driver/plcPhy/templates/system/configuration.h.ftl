@@ -10,11 +10,16 @@
 </#if>
 <#if SPI_PLIB?lower_case[0..*6] == "sercom">
 #define DRV_PLC_SPI_CS_PIN                    ${DRV_PLC_SPI_CS_PIN?string}
+</#if>
+<#if eic??>
+<#if PLC_EIC_ID == "U2254">
+#define DRV_PLC_EXT_INT_SRC                   EIC_EXTINT_${DRV_PLC_EIC_SIGNAL?string[8..*9]}_IRQn
+<#else>
 #define DRV_PLC_EXT_INT_SRC                   EIC_IRQn
+</#if>
 #define DRV_PLC_EXT_INT_PIO                   ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_EXT_INT_PIN                   ${DRV_PLC_EIC_SIGNAL?string}
 <#else>
-#define DRV_PLC_EXT_INT_PIO_PORT              ${DRV_PLC_EXT_INT_PIO_PORT?string}
 #define DRV_PLC_EXT_INT_SRC                   ${DRV_PLC_EXT_INT_SRC?string}
 #define DRV_PLC_EXT_INT_PIO                   ${DRV_PLC_EXT_INT_PIN?string}
 #define DRV_PLC_EXT_INT_PIN                   ${DRV_PLC_EXT_INT_PIN?string}
