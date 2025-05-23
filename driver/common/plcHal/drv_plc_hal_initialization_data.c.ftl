@@ -207,17 +207,17 @@ void _on_reset(void)
     </#if>
 </#if>
 <#if BOARD_FIND == "">
-    #warning Board not supported. Please, review Pin configuration to initialize the PL460-EK GPIOs (RESET, STBY and LDO_EN).
-    <#lt>    __asm volatile ("NOP");
     <#lt>    /* Enable LDO Pin */
-    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-    <#lt>    // SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+    <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+    <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
     <#lt>    /* Enable Reset Pin */
-    <#lt>    // SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-    <#lt>    // SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+    <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+<#if DRV_PLC_SLEEP_MODE == true>
     <#lt>    /* Disable STBY Pin */
-    <#lt>    // SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
-    <#lt>    // SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
+    <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_STBY_PIN);
+    <#lt>    SYS_PORT_PinClear(DRV_PLC_STBY_PIN);
+</#if>
 </#if>
 }
 
