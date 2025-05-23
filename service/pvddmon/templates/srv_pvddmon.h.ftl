@@ -40,22 +40,6 @@ Microchip or any third party.
 #ifndef SRV_PVDDMON_H    // Guards against multiple inclusion
 #define SRV_PVDDMON_H
 
-<#compress> <#-- To remove unwanted new lines -->
-<#assign PVDD_MON_ADC_INSTANCE = "">
-<#assign PVDD_MON_MASK_PREFIX = "">
-
-<#if (afec0.AFEC_INSTANCE_NAME)?has_content>
-    <#assign PVDD_MON_ADC_INSTANCE = "AFEC0">
-    <#assign PVDD_MON_MASK_PREFIX = "AFEC">
-<#elseif (afec1.AFEC_INSTANCE_NAME)?has_content>
-    <#assign PVDD_MON_ADC_INSTANCE = "AFEC1">
-    <#assign PVDD_MON_MASK_PREFIX = "AFEC">
-<#elseif (adc.ADC_INSTANCE_NAME)?has_content>
-    <#assign PVDD_MON_ADC_INSTANCE = "ADC">
-    <#assign PVDD_MON_MASK_PREFIX = "ADC">
-</#if>
-
-</#compress>
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
@@ -63,11 +47,8 @@ Microchip or any third party.
 // *****************************************************************************
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "device.h"
-<#if core.CoreSysIntFile == true>
-#include "interrupts.h"
-</#if>
-#include "peripheral/${PVDD_MON_MASK_PREFIX?lower_case}/plib_${PVDD_MON_MASK_PREFIX?lower_case}_common.h"
 
 #ifdef __cplusplus // Provide C++ Compatibility
  extern "C" {

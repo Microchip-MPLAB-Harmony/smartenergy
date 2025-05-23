@@ -172,7 +172,7 @@ def instantiateComponent(pPVDDMonComponent):
     identifyPeripherals(pPVDDMonComponent)
 
     adcPeriphId = plcAdcId.getValue()
-    if not (adcPeriphId in ["U2204", "44134", "11147"]):
+    if not (adcPeriphId in ["U2204", "44134", "11147", "U2500"]):
         print("PLC PVDD Monitor Service is not supported for " + pvddmon_plib + " Plib")
         print("adcPeriphId: {}".format(adcPeriphId))
         return
@@ -273,16 +273,16 @@ def instantiateComponent(pPVDDMonComponent):
     pPVDDMonHisteresys.setDefaultValue(Hysteresis)
     pPVDDMonHisteresys.setHelp(srv_pvddmon_helpkeyword)
 
+    pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
+    pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.h.ftl")
+    pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
+    pPVDDMonHeaderFile.setDestPath("service/pvddmon")
+    pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+    pPVDDMonHeaderFile.setType("HEADER")
+    pPVDDMonHeaderFile.setMarkup(True)
+
     # PLC PVDD Monitor Files
     if (adcPeriphId == "U2204"):
-        pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
-        pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon_u2204.h.ftl")
-        pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
-        pPVDDMonHeaderFile.setDestPath("service/pvddmon")
-        pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
-        pPVDDMonHeaderFile.setType("HEADER")
-        pPVDDMonHeaderFile.setMarkup(True)
-
         pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
         pPVDDMonSourceFile.setSourcePath("service/pvddmon/srv_pvddmon_u2204.c")
         pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
@@ -290,14 +290,6 @@ def instantiateComponent(pPVDDMonComponent):
         pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
         pPVDDMonSourceFile.setType("SOURCE")
     else:
-        pPVDDMonHeaderFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_HEADER", None)
-        pPVDDMonHeaderFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.h.ftl")
-        pPVDDMonHeaderFile.setOutputName("srv_pvddmon.h")
-        pPVDDMonHeaderFile.setDestPath("service/pvddmon")
-        pPVDDMonHeaderFile.setProjectPath("config/" + configName + "/service/pvddmon/")
-        pPVDDMonHeaderFile.setType("HEADER")
-        pPVDDMonHeaderFile.setMarkup(True)
-
         pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
         pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.c.ftl")
         pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
