@@ -177,7 +177,7 @@ def instantiateComponent(pPVDDMonComponent):
         print("adcPeriphId: {}".format(adcPeriphId))
         return
 
-    if (adcPeriphId != "U2204"):
+    if (adcPeriphId != "U2204") and (adcPeriphId != "U2500"):
         pPVDDMonADCChannel = pPVDDMonComponent.createIntegerSymbol("SRV_PVDDMON_ADC_CHANNEL", pPVDDMonPlib)
         pPVDDMonADCChannel.setLabel("Channel")
         pPVDDMonADCChannel.setDefaultValue(0)
@@ -289,6 +289,14 @@ def instantiateComponent(pPVDDMonComponent):
         pPVDDMonSourceFile.setDestPath("service/pvddmon")
         pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
         pPVDDMonSourceFile.setType("SOURCE")
+    elif (adcPeriphId == "U2500"):
+        pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
+        pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon_u2500.c.ftl")
+        pPVDDMonSourceFile.setOutputName("srv_pvddmon.c")
+        pPVDDMonSourceFile.setDestPath("service/pvddmon")
+        pPVDDMonSourceFile.setProjectPath("config/" + configName + "/service/pvddmon/")
+        pPVDDMonSourceFile.setType("SOURCE")
+        pPVDDMonSourceFile.setMarkup(True)
     else:
         pPVDDMonSourceFile = pPVDDMonComponent.createFileSymbol("SRV_PVDDMON_SOURCE", None)
         pPVDDMonSourceFile.setSourcePath("service/pvddmon/templates/srv_pvddmon.c.ftl")

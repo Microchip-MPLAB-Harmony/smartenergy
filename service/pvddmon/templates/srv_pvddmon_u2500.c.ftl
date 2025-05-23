@@ -47,7 +47,7 @@ Microchip or any third party.
 #include "device.h"
 #include "interrupts.h"
 #include "srv_pvddmon.h"
-#include "peripheral/adc/plib_adc.h"
+#include "peripheral/adc/plib_${SRV_PVDDMON_PLIB?lower_case}.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -75,6 +75,16 @@ static void lADC_PVDDMONCallback( ADC_STATUS status, uintptr_t context )
     }
 }
 
+static void lADC_WindowModeSet(ADC_WINMODE mode)
+{
+    ${SRV_PVDDMON_PLIB}_REGS->ADC_CTRLB = (${SRV_PVDDMON_PLIB}_REGS->ADC_CTRLB & (uint16_t)~ADC_CTRLB_WINMODE_Msk) | ((uint16_t)mode << ADC_CTRLB_WINMODE_Pos);
+
+    while((${SRV_PVDDMON_PLIB}_REGS->ADC_SYNCBUSY & ADC_SYNCBUSY_CTRLB_Msk) == ADC_SYNCBUSY_CTRLB_Msk)
+    {
+        /* Wait for Synchronization */
+    }
+}
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: PLC PVDD Monitor Service Interface Implementation
@@ -84,13 +94,13 @@ static void lADC_PVDDMONCallback( ADC_STATUS status, uintptr_t context )
 void SRV_PVDDMON_Initialize (void)
 {
     /* Disable ADC channel */
-    ADC_Disable();
+    ${SRV_PVDDMON_PLIB}_Disable();
 
     /* Disable channel interrupts */
-    ADC_InterruptsDisable(ADC_STATUS_MASK);
+    ${SRV_PVDDMON_PLIB}_InterruptsDisable(ADC_STATUS_MASK);
 
     /* Clear all interrupt flags */
-    ADC_InterruptsClear(ADC_STATUS_MASK);
+    ${SRV_PVDDMON_PLIB}_InterruptsClear(ADC_STATUS_MASK);
 }
 
 void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
@@ -100,68 +110,68 @@ void SRV_PVDDMON_Start (SRV_PVDDMON_CMP_MODE cmpMode)
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
         /* Set Compare Window Register */
-        ADC_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD, SRV_PVDDMON_HIGH_TRESHOLD);
-        ADC_WindowModeSet(ADC_WINMODE_OUTSIDE_WINLT_AND_WINUT);
+        ${SRV_PVDDMON_PLIB}_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD, SRV_PVDDMON_HIGH_TRESHOLD);
+        lADC_WindowModeSet(ADC_WINMODE_OUTSIDE_WINLT_AND_WINUT);
     }
     else
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
         /* Set Compare Window Register */
-        ADC_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD_HYST, SRV_PVDDMON_HIGH_TRESHOLD_HYST);
-        ADC_WindowModeSet(ADC_WINMODE_BETWEEN_WINLT_AND_WINUT);
+        ${SRV_PVDDMON_PLIB}_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD_HYST, SRV_PVDDMON_HIGH_TRESHOLD_HYST);
+        lADC_WindowModeSet(ADC_WINMODE_BETWEEN_WINLT_AND_WINUT);
     }
 
     /* Enable channel interrupt */
-    ADC_InterruptsEnable(ADC_STATUS_WINMON);
+    ${SRV_PVDDMON_PLIB}_InterruptsEnable(ADC_STATUS_WINMON);
 
     /* Enable ADC channel */
-    ADC_Enable();
+    ${SRV_PVDDMON_PLIB}_Enable();
 
     /* Start ADC conversion */
-    ADC_ConversionStart();
+    ${SRV_PVDDMON_PLIB}_ConversionStart();
 }
 
 void SRV_PVDDMON_Restart (SRV_PVDDMON_CMP_MODE cmpMode)
 {
     /* Disable ADC channel */
-    ADC_Disable();
+    ${SRV_PVDDMON_PLIB}_Disable();
 
     /* Disable channel interrupts */
-    ADC_InterruptsDisable(ADC_STATUS_MASK);
+    ${SRV_PVDDMON_PLIB}_InterruptsDisable(ADC_STATUS_MASK);
 
     /* Clear all interrupt flags */
-    ADC_InterruptsClear(ADC_STATUS_MASK);
+    ${SRV_PVDDMON_PLIB}_InterruptsClear(ADC_STATUS_MASK);
 
     /* Set Comparison Mode */
     if (cmpMode == SRV_PVDDMON_CMP_MODE_OUT)
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_OUT;
         /* Set Compare Window Register */
-        ADC_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD, SRV_PVDDMON_HIGH_TRESHOLD);
-        ADC_WindowModeSet(ADC_WINMODE_OUTSIDE_WINLT_AND_WINUT);
+        ${SRV_PVDDMON_PLIB}_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD, SRV_PVDDMON_HIGH_TRESHOLD);
+        lADC_WindowModeSet(ADC_WINMODE_OUTSIDE_WINLT_AND_WINUT);
     }
     else
     {
         srv_pvddmon_mode = SRV_PVDDMON_CMP_MODE_IN;
         /* Set Compare Window Register */
-        ADC_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD_HYST, SRV_PVDDMON_HIGH_TRESHOLD_HYST);
-        ADC_WindowModeSet(ADC_WINMODE_BETWEEN_WINLT_AND_WINUT);
+        ${SRV_PVDDMON_PLIB}_ComparisonWindowSet(SRV_PVDDMON_LOW_TRESHOLD_HYST, SRV_PVDDMON_HIGH_TRESHOLD_HYST);
+        lADC_WindowModeSet(ADC_WINMODE_BETWEEN_WINLT_AND_WINUT);
     }
 
     /* Enable channel interrupt */
-    ADC_InterruptsEnable(ADC_STATUS_WINMON);
+    ${SRV_PVDDMON_PLIB}_InterruptsEnable(ADC_STATUS_WINMON);
 
     /* Enable ADC channel */
-    ADC_Enable();
+    ${SRV_PVDDMON_PLIB}_Enable();
 
     /* Start ADC conversion */
-    ADC_ConversionStart();
+    ${SRV_PVDDMON_PLIB}_ConversionStart();
 }
 
 void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t context)
 {
     /* Register ADC Callback */
-    ADC_CallbackRegister(lADC_PVDDMONCallback, context);
+    ${SRV_PVDDMON_PLIB}_CallbackRegister(lADC_PVDDMONCallback, context);
     ADC_CompareCallback = callback;
 }
 
@@ -169,10 +179,10 @@ bool SRV_PVDDMON_CheckWindow(void)
 {
     uint16_t adcValue;
 
-    adcValue = ADC_ConversionResultGet();
+    adcValue = ${SRV_PVDDMON_PLIB}_ConversionResultGet();
     while(adcValue == 0U)
     {
-        adcValue = ADC_ConversionResultGet();
+        adcValue = ${SRV_PVDDMON_PLIB}_ConversionResultGet();
     }
 
     if ((adcValue <= SRV_PVDDMON_HIGH_TRESHOLD) && (adcValue >= SRV_PVDDMON_LOW_TRESHOLD))

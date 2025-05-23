@@ -226,7 +226,7 @@ void SRV_PVDDMON_CallbackRegister (SRV_PVDDMON_CALLBACK callback, uintptr_t cont
 
 bool SRV_PVDDMON_CheckWindow(void)
 {
-    uint32_t adcValue;
+    uint16_t adcValue;
 
     adcValue = ${SRV_PVDDMON_PLIB}_ChannelResultGet(${PVDD_MON_MASK_PREFIX}_CH${SRV_PVDDMON_ADC_CHANNEL});
     while(adcValue == 0U)
