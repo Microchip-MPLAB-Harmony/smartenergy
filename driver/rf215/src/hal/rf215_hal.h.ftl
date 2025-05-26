@@ -212,13 +212,6 @@ typedef struct
     /* Status of the SYS_TIME interrupt */
     bool                            sysTimeIntStatus;
 
-</#if>
-    /* Interrupt source ID for the DMA interrupt */
-    INT_SOURCE                      dmaIntSource;
-
-    /* Status of the DMA interrupt */
-    bool                            dmaIntStatus;
-
 <#if (drvPlcPhy)?? || (drvG3MacRt)??>
     /* Interrupt source ID for PLC external interrupt */
     INT_SOURCE                      plcExtIntSource;
@@ -227,6 +220,13 @@ typedef struct
     bool                            plcExtIntStatus;
 
 </#if>
+</#if>
+    /* Interrupt source ID for the DMA interrupt */
+    INT_SOURCE                      dmaIntSource;
+
+    /* Status of the DMA interrupt */
+    bool                            dmaIntStatus;
+
     /* First reset flag */
     bool                            firstReset;
 

@@ -57,6 +57,9 @@ Microchip or any third party.
 </#if>
 #include "driver/rf215/drv_rf215_local.h"
 #include "driver/rf215/hal/rf215_hal.h"
+<#if eic??>
+#include "peripheral/eic/plib_eic.h"
+</#if>
 
 <#if core.PIO_ENABLE?has_content>
     <#assign PIO_PLIB = "PIO">
@@ -64,6 +67,13 @@ Microchip or any third party.
     <#assign PIO_PLIB = "GPIO">
 <#else>
     <#assign PIO_PLIB = "">
+</#if>
+<#if DRV_RF215_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_RF215_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_RF215_PLIB>
 </#if>
 // *****************************************************************************
 // *****************************************************************************
@@ -114,7 +124,11 @@ static uint8_t halSpiRxData[RF215_SPI_BUF_SIZE];
 
 static inline void lRF215_HAL_ExtIntDisable(void)
 {
+<#if eic??>
+    EIC_InterruptDisable(DRV_RF215_EXT_INT_EIC);
+<#else>
     ${PIO_PLIB}_PinInterruptDisable((PIO_PIN) DRV_RF215_EXT_INT_PIN);
+</#if>
     rf215HalObj.extIntDisableCount++;
 }
 
@@ -127,7 +141,11 @@ static inline void lRF215_HAL_ExtIntEnable(void)
 
     if (rf215HalObj.extIntDisableCount == 0U)
     {
+<#if eic??>
+        EIC_InterruptEnable(DRV_RF215_EXT_INT_EIC);
+<#else>
         ${PIO_PLIB}_PinInterruptEnable((PIO_PIN) DRV_RF215_EXT_INT_PIN);
+</#if>
     }
 }
 
@@ -232,6 +250,11 @@ static void lRF215_HAL_SpiTransferStart (
     /* Disable all interrupts for a while to avoid delays between SPI transfer
      * and SYS_TIME counter read */
     intStatus = SYS_INT_Disable();
+
+</#if>
+<#if SPI_PLIB?starts_with("SERCOM")>
+    /* Assert CS pin */
+    SYS_PORT_PinClear(DRV_RF215_SPI_CS_PIN);
 
 </#if>
 <#if core.DMA_ENABLE?has_content>
@@ -431,7 +454,15 @@ static void lRF215_HAL_SpiDmaHandler(SYS_DMA_TRANSFER_EVENT ev, uintptr_t ctxt)
     RF215_SPI_TRANSFER_OBJ* transfer = rf215HalObj.spiQueueFirst;
     SYS_DMA_CHANNEL dmaChannel = (SYS_DMA_CHANNEL) ctxt;
     bool restartTransfer = false;
+    
+<#if SPI_PLIB?starts_with("SERCOM")>
+    if (dmaChannel == DRV_RF215_SPI_RX_DMA_CH)
+    {
+        /* De-assert CS pin */
+        SYS_PORT_PinSet(DRV_RF215_SPI_CS_PIN);
+    }
 
+</#if>
     if (transfer == NULL)
     {
         /* Empty SPI transfer queue, probably because of RF215_HAL_Reset */
@@ -552,6 +583,16 @@ static void lRF215_HAL_SpiDmaHandler(uintptr_t ctxt)
 }
 </#if>
 
+<#if eic??>
+static void lRF215_HAL_ExtIntHandler(uintptr_t context)
+{
+    /* Check if external interrupt is still active */
+    if (SYS_PORT_PinRead(DRV_RF215_EXT_INT_PIN) == true)
+    {
+        DRV_RF215_ExtIntHandler();
+    }
+}
+<#else>
 static void lRF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
 {
     /* Check if external interrupt is still active */
@@ -560,6 +601,7 @@ static void lRF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
         DRV_RF215_ExtIntHandler();
     }
 }
+</#if>
 
 // *****************************************************************************
 // *****************************************************************************
@@ -567,23 +609,16 @@ static void lRF215_HAL_ExtIntHandler(PIO_PIN pin, uintptr_t context)
 // *****************************************************************************
 // *****************************************************************************
 
-<#if DRV_RF215_PLIB == "SRV_SPISPLIT">
-<#--  Connected to SPI PLIB through SPI Splitter  -->
-    <#assign SPI_PLIB = DRV_RF215_PLIB_SPISPLIT>
-<#else>
-<#--  Connected directly to SPI PLIB  -->
-    <#assign SPI_PLIB = DRV_RF215_PLIB>
-</#if>
 void RF215_HAL_Initialize(const DRV_RF215_INIT * const init)
 {
     /* Store interrupt sources */
 <#if DRV_RF215_TXRX_TIME_SUPPORT == true>
     rf215HalObj.sysTimeIntSource = init->sysTimeIntSource;
-</#if>
-    rf215HalObj.dmaIntSource = init->dmaIntSource;
 <#if (drvPlcPhy)?? || (drvG3MacRt)??>
     rf215HalObj.plcExtIntSource = init->plcExtIntSource;
 </#if>
+</#if>
+    rf215HalObj.dmaIntSource = init->dmaIntSource;
 
 <#if (DRV_RF215_PLIB == "SRV_SPISPLIT") || (core.DMA_ENABLE?has_content == false)>
     /* Store pointers to SPI PLIB functions */
@@ -634,11 +669,21 @@ void RF215_HAL_Initialize(const DRV_RF215_INIT * const init)
 </#if>
 
     /* Register callback for external interrupt pin */
+<#if eic??>
+    EIC_CallbackRegister(DRV_RF215_EXT_INT_EIC,
+            lRF215_HAL_ExtIntHandler, 0);
+<#else>
     (void) ${PIO_PLIB}_PinInterruptCallbackRegister((${PIO_PLIB}_PIN) DRV_RF215_EXT_INT_PIN,
             lRF215_HAL_ExtIntHandler, 0);
+</#if>
 
     /* Pin interrupt is disabled at initialization */
+<#if eic??>
+    rf215HalObj.extIntDisableCount = 0;
+    lRF215_HAL_ExtIntDisable();
+<#else>
     rf215HalObj.extIntDisableCount = 1;
+</#if>
     rf215HalObj.firstReset = true;
 
     /* Zero initialization */

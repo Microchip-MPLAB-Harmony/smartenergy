@@ -107,6 +107,9 @@ rfBandsOpModes = {
     "RF24": rf24BandsOpModes,
 }
 
+global eicPinDict
+eicPinDParams= {}
+
 rf215_helpkeyword = "mcc_h3_rf215_driver_configurations"
 
 def sort_alphanumeric(l):
@@ -745,6 +748,80 @@ def rf09PhyChnNumCommentHandler(symbol, event):
         if eventValue == False:
             symbol.setVisible(False)
 
+def identifyPeripherals(component):
+    periphNode = ATDF.getNode("/avr-tools-device-file/devices/device/peripherals")
+    peripherals = periphNode.getChildren()
+
+    pioIdCreated = False
+    eicIdCreated = False
+    dmacIdCreated = False
+    sercomIdCreated = False
+
+    global rfEicId
+    global rfSercomId
+
+    for module in range (0, len(peripherals)):
+        if str(peripherals[module].getAttribute("name")) == "PIO":
+            rfPioId = component.createStringSymbol("RF215_PIO_ID", None)
+            rfPioId.setDefaultValue(str(peripherals[module].getAttribute("id")))
+            pioIdCreated = True
+        elif str(peripherals[module].getAttribute("name")) == "EIC":
+            rfEicId = component.createStringSymbol("RF215_EIC_ID", None)
+            rfEicId.setDefaultValue(str(peripherals[module].getAttribute("id")))
+            eicIdCreated = True
+        elif str(peripherals[module].getAttribute("name")) == "DMAC":
+            rfDmacId = component.createStringSymbol("RF215_DMAC_ID", None)
+            rfDmacId.setDefaultValue(str(peripherals[module].getAttribute("id")))
+            dmacIdCreated = True
+        elif str(peripherals[module].getAttribute("name")) == "SERCOM":
+            rfSercomId = component.createStringSymbol("RF215_SERCOM_ID", None)
+            rfSercomId.setDefaultValue(str(peripherals[module].getAttribute("id")))
+            sercomIdCreated = True
+
+    if not pioIdCreated:
+        rfPioId = component.createStringSymbol("RF215_PIO_ID", None)
+        rfPioId.setDefaultValue("0")
+    if not eicIdCreated:
+        rfEicId = component.createStringSymbol("RF215_EIC_ID", None)
+        rfEicId.setDefaultValue("0")
+    if not dmacIdCreated:
+        rfDmacId = component.createStringSymbol("RF215_DMAC_ID", None)
+        rfDmacId.setDefaultValue("0")
+    if not sercomIdCreated:
+        rfSercomId = component.createStringSymbol("RF215_SERCOM_ID", None)
+        rfSercomId.setDefaultValue("0")
+
+    rfPioId.setVisible(False)
+    rfEicId.setVisible(True)
+    rfDmacId.setVisible(True)
+    rfSercomId.setVisible(False)
+
+def updateEICSignals(symbol, event):
+    global pinMap
+
+    rtsPinSymbol = event["symbol"]
+    newValue = rtsPinSymbol.getSelectedValue()
+    if newValue == "SELECT":
+        pinNumber = eicPinDParams['pinNumber']
+        if pinNumber != None:
+            symbol.setValue("")
+            Database.sendMessage("core", "PIN_CLEAR_CONFIG_VALUE", {'pinNumber': pinNumber, 'setting' : 'function'})
+            eicPinDParams[pinNumber] = None
+    else:
+        pinId = rtsPinSymbol.getSelectedKey().split("_")[-1]
+        pinNumber = pinMap[pinId]
+
+        symbol.setValue(newValue)
+
+        prevPinNumber = eicPinDParams.get('pinNumber')
+        if prevPinNumber != None:
+            Database.sendMessage("core", "PIN_CLEAR_CONFIG_VALUE", {'pinNumber': prevPinNumber, 'setting' : 'function'})
+
+        eicPinDParams['pinNumber'] = pinNumber
+        eicPinDParams['setting'] = 'function'
+        eicPinDParams['value'] = 'EIC_EXTINT{}'.format(newValue.split("_")[-1])
+        Database.sendMessage("core", "PIN_SET_CONFIG_VALUE", eicPinDParams)
+
 ################################################################################
 #### Component ####
 ################################################################################
@@ -760,6 +837,8 @@ def instantiateComponent(rf215Component):
     else:
         # DMA is not present (PDC is used for SAMG55/PIC32CXMT)
         isDMAPresent = False
+
+    identifyPeripherals(rf215Component)
 
     rfDevice = rf215Component.createComboSymbol("DRV_RF215_DEVICE", None, ["RF215", "RF215M"])
     rfDevice.setLabel("RF Device Used")
@@ -1010,6 +1089,43 @@ def instantiateComponent(rf215Component):
     pinExtInt.setDisplayMode("Description")
     pinExtInt.setHelp(rf215_helpkeyword)
 
+    global pinMap
+    pinMap = dict()
+    # Send message to core to get available pins
+    availablePinDictionary = {}
+    availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
+    for pinNumber, pinId in availablePinDictionary.items():
+        pinMap[str(pinId)] = int(pinNumber)
+
+    if rfEicId.getValue() != "0":
+        eicSignalDict = {}
+        eicPadList = []
+        eicSignalList = ATDF.getNode('/avr-tools-device-file/devices/device/peripherals/module@[name="EIC"]/instance/signals').getChildren()
+        for eicSignal in eicSignalList:
+            pad = eicSignal.getAttribute("pad")
+            group = eicSignal.getAttribute("group")
+            index = eicSignal.getAttribute("index")
+            if group == "EXTINT":
+                if pad not in eicPadList:
+                    eicPadList.append(pad)
+                    eicSignalDict[pad] = "EIC_PIN_{}".format(index)
+
+        eicPadList = sorted(eicPadList)
+        pinExtInt.addKey("SELECT", "SELECT", "Select RTS Pin")
+        for pad in eicPadList:
+            key = "SYS_PORT_PIN_" + pad
+            value = eicSignalDict[pad]
+            description = pad
+            pinExtInt.addKey(key, value, description)
+
+        # pad, value = list(eicSignalDict.items())[0]
+        plcEICSignal = rf215Component.createStringSymbol("DRV_RF215_EIC_SIGNAL", pinExtInt)
+        plcEICSignal.setLabel("EIC signal")
+        plcEICSignal.setDefaultValue("")
+        plcEICSignal.setReadOnly(True)
+        plcEICSignal.setDependencies(updateEICSignals, ["DRV_RF215_EXT_INT_PIN"])
+        plcEICSignal.setHelp(rf215_helpkeyword)
+
     pinReset = rf215Component.createKeyValueSetSymbol("DRV_RF215_RESET_PIN", None)
     pinReset.setLabel("Reset Pin")
     pinReset.setDescription("Select pin connected to RF device's RSTN pin. Configure in Pin Manager as Output Low")
@@ -1017,6 +1133,15 @@ def instantiateComponent(rf215Component):
     pinReset.setOutputMode("Key")
     pinReset.setDisplayMode("Description")
     pinReset.setHelp(rf215_helpkeyword)
+
+    pinCS = rf215Component.createKeyValueSetSymbol("DRV_RF215_SPI_CS_PIN", None)  # Only used with SERCOM
+    pinCS.setLabel("SPI Chip Select Pin")
+    pinCS.setDefaultValue(0)
+    pinCS.setOutputMode("Key")
+    pinCS.setHelp(rf215_helpkeyword)
+    pinCS.setDisplayMode("Description")
+    if rfSercomId.getValue() == "0":
+        pinCS.setVisible(False)
 
     useLedTxPin = rf215Component.createBooleanSymbol("DRV_RF215_USE_LED_TX", None)
     useLedTxPin.setLabel("Use LED TX Pin?")
@@ -1050,18 +1175,17 @@ def instantiateComponent(rf215Component):
     pinLedRx.setDependencies(showSymbol, ["DRV_RF215_USE_LED_RX"])
     pinLedRx.setHelp(rf215_helpkeyword)
 
-    # Send message to core to get available pins
-    availablePinDictionary = {}
-    availablePinDictionary = Database.sendMessage("core", "PIN_LIST", availablePinDictionary)
-
     for pad in sort_alphanumeric(availablePinDictionary.values()):
         key = "SYS_PORT_PIN_" + pad
         value = list(availablePinDictionary.keys())[list(availablePinDictionary.values()).index(pad)]
         description = pad
-        pinExtInt.addKey(key, value, description)
+        if rfEicId.getValue() == "0":
+            pinExtInt.addKey(key, value, description)
         pinReset.addKey(key, value, description)
         pinLedTx.addKey(key, value, description)
         pinLedRx.addKey(key, value, description)
+        if rfSercomId.getValue() != "0":
+            pinCS.addKey(key, value, description)
 
     rf215PinsComment = rf215Component.createCommentSymbol("DRV_RF215_PINS_CONFIG_COMMENT", None)
     rf215PinsComment.setLabel("***Above selected pins must be properly configured in Pin Manager***")

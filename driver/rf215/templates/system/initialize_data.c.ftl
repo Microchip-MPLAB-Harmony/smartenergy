@@ -53,7 +53,11 @@ static const DRV_RF215_INIT drvRf215InitData = {
 </#if>
     /* Interrupt source ID for DMA */
 <#if core.DMA_ENABLE?has_content>
+<#if RF215_DMAC_ID == "U2503">
+    .dmaIntSource = ${core.DMA_INSTANCE_NAME}_${DRV_RF215_RX_DMA_CHANNEL}_IRQn,
+<#else>
     .dmaIntSource = ${core.DMA_INSTANCE_NAME}_IRQn,
+</#if>
 <#else>
     .dmaIntSource = ${SPI_PLIB}_IRQn,
 </#if>
@@ -62,15 +66,11 @@ static const DRV_RF215_INIT drvRf215InitData = {
     /* Interrupt source ID for SYS_TIME */
     .sysTimeIntSource = ${.vars["${sys_time.SYS_TIME_PLIB?lower_case}"].IRQ_ENUM_NAME},
 
+<#if (drvPlcPhy)?? || (drvG3MacRt)??>
+    /* Interrupt source ID for PLC external interrupt */
+    .plcExtIntSource = DRV_PLC_EXT_INT_SRC,
+
 </#if>
-<#if (drvPlcPhy)??>
-    /* Interrupt source ID for PLC external interrupt */
-    .plcExtIntSource = PIO${drvPlcPhy.DRV_PLC_EXT_INT_PIN[14]}_IRQn,
-
-<#elseif (drvG3MacRt)??>
-    /* Interrupt source ID for PLC external interrupt */
-    .plcExtIntSource = PIO${drvG3MacRt.DRV_PLC_EXT_INT_PIN[14]}_IRQn,
-
 </#if>
 <#if DRV_RF215_TRX09_EN == true>
 <#if DRV_RF215_TRX09_PHY_TYPE == "FSK">

@@ -1150,11 +1150,11 @@ typedef struct
     /* Interrupt source ID for SYS_TIME */
     INT_SOURCE                      sysTimeIntSource;
 
-</#if>
 <#if (drvPlcPhy)?? || (drvG3MacRt)??>
     /* Interrupt source ID for PLC external interrupt */
     INT_SOURCE                      plcExtIntSource;
 
+</#if>
 </#if>
 <#if DRV_RF215_TRX09_EN == true>
     /* Initial PHY frequency band and operating mode for Sub-GHz transceiver */

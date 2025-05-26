@@ -31,6 +31,19 @@
         <#lt>#define DRV_RF215_SPI_RX_DMA_CH               SYS_DMA_CHANNEL_NONE
     </#if>
 </#if>
+<#if DRV_RF215_PLIB == "SRV_SPISPLIT">
+<#--  Connected to SPI PLIB through SPI Splitter  -->
+    <#assign SPI_PLIB = DRV_RF215_PLIB_SPISPLIT>
+<#else>
+<#--  Connected directly to SPI PLIB  -->
+    <#assign SPI_PLIB = DRV_RF215_PLIB>
+</#if>
+<#if SPI_PLIB?starts_with("SERCOM")>
+    <#lt>#define DRV_RF215_SPI_CS_PIN                  ${DRV_RF215_SPI_CS_PIN}
+</#if>
+<#if eic??>
+    <#lt>#define DRV_RF215_EXT_INT_EIC                 ${DRV_RF215_EIC_SIGNAL}
+</#if>
 #define DRV_RF215_EXT_INT_PIN                 ${DRV_RF215_EXT_INT_PIN}
 #define DRV_RF215_RESET_PIN                   ${DRV_RF215_RESET_PIN}
 <#if DRV_RF215_USE_LED_TX == true>
