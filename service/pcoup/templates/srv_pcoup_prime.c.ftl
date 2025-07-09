@@ -107,11 +107,15 @@ static const uint32_t srvPlcCoupDaccTable2Chn[17] = SRV_PCOUP_DACC_2CHN_TBL;
  */
 
 <#if (SRV_PCOUP_PRIME_CHN1 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn1High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN1_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn1Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN1_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn1Data = {
   SRV_PCOUP_CHN1_RMS_HIGH_TBL, SRV_PCOUP_CHN1_RMS_VLOW_TBL,
   SRV_PCOUP_CHN1_THRS_HIGH_TBL, SRV_PCOUP_CHN1_THRS_VLOW_TBL,
   srvPlcCoupDaccTableCenA,
   srvPlcCoupPredistCoefChn1High, srvPlcCoupPredistCoefChn1Low,
+  srvPlcCoupCarrierMaskChn1High, srvPlcCoupCarrierMaskChn1Vlow,
   SRV_PCOUP_CHN1_GAIN_HIGH_TBL, SRV_PCOUP_CHN1_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN1_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN1_LINE_DRV_CONF
 
@@ -119,154 +123,210 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn1Data = {
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN2 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn2High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN2_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn2Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN2_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn2Data = {
   SRV_PCOUP_CHN2_RMS_HIGH_TBL, SRV_PCOUP_CHN2_RMS_VLOW_TBL,
   SRV_PCOUP_CHN2_THRS_HIGH_TBL, SRV_PCOUP_CHN2_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn2High, srvPlcCoupCarrierMaskChn2Vlow,
   SRV_PCOUP_CHN2_GAIN_HIGH_TBL, SRV_PCOUP_CHN2_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN2_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN2_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN3 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn3High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN3_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn3Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN3_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn3Data = {
   SRV_PCOUP_CHN3_RMS_HIGH_TBL, SRV_PCOUP_CHN3_RMS_VLOW_TBL,
   SRV_PCOUP_CHN3_THRS_HIGH_TBL, SRV_PCOUP_CHN3_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn3High, srvPlcCoupCarrierMaskChn3Vlow,
   SRV_PCOUP_CHN3_GAIN_HIGH_TBL, SRV_PCOUP_CHN3_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN3_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN3_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN4 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn4High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN4_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn4Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN4_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn4Data = {
   SRV_PCOUP_CHN4_RMS_HIGH_TBL, SRV_PCOUP_CHN4_RMS_VLOW_TBL,
   SRV_PCOUP_CHN4_THRS_HIGH_TBL, SRV_PCOUP_CHN4_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn4High, srvPlcCoupCarrierMaskChn4Vlow,
   SRV_PCOUP_CHN4_GAIN_HIGH_TBL, SRV_PCOUP_CHN4_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN4_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN4_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN5 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn5High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN5_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn5Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN4_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn5Data = {
   SRV_PCOUP_CHN5_RMS_HIGH_TBL, SRV_PCOUP_CHN5_RMS_VLOW_TBL,
   SRV_PCOUP_CHN5_THRS_HIGH_TBL, SRV_PCOUP_CHN5_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn5High, srvPlcCoupCarrierMaskChn5Vlow,
   SRV_PCOUP_CHN5_GAIN_HIGH_TBL, SRV_PCOUP_CHN5_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN5_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN5_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN6 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn6High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN6_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn6Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN6_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn6Data = {
   SRV_PCOUP_CHN6_RMS_HIGH_TBL, SRV_PCOUP_CHN6_RMS_VLOW_TBL,
   SRV_PCOUP_CHN6_THRS_HIGH_TBL, SRV_PCOUP_CHN6_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn6High, srvPlcCoupCarrierMaskChn6Vlow,
   SRV_PCOUP_CHN6_GAIN_HIGH_TBL, SRV_PCOUP_CHN6_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN6_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN6_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN7 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn7High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN7_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn7Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN7_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn7Data = {
   SRV_PCOUP_CHN7_RMS_HIGH_TBL, SRV_PCOUP_CHN7_RMS_VLOW_TBL,
   SRV_PCOUP_CHN7_THRS_HIGH_TBL, SRV_PCOUP_CHN7_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn7High, srvPlcCoupCarrierMaskChn7Vlow,
   SRV_PCOUP_CHN7_GAIN_HIGH_TBL, SRV_PCOUP_CHN7_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN7_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN7_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN8 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn8High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN8_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn8Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN8_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn8Data = {
   SRV_PCOUP_CHN8_RMS_HIGH_TBL, SRV_PCOUP_CHN8_RMS_VLOW_TBL,
   SRV_PCOUP_CHN8_THRS_HIGH_TBL, SRV_PCOUP_CHN8_THRS_VLOW_TBL,
   srvPlcCoupDaccTableFcc,
   srvPlcCoupPredistCoefDummy, srvPlcCoupPredistCoefDummy,
+  srvPlcCoupCarrierMaskChn8High, srvPlcCoupCarrierMaskChn8Vlow,
   SRV_PCOUP_CHN8_GAIN_HIGH_TBL, SRV_PCOUP_CHN8_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN8_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN8_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN12 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn12High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN12_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn12Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN12_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn12Data = {
   SRV_PCOUP_CHN12_RMS_HIGH_TBL, SRV_PCOUP_CHN12_RMS_VLOW_TBL,
   SRV_PCOUP_CHN12_THRS_HIGH_TBL, SRV_PCOUP_CHN12_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn12High, srvPlcCoupCarrierMaskChn12Vlow,
   SRV_PCOUP_CHN12_GAIN_HIGH_TBL, SRV_PCOUP_CHN12_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN12_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN12_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN23 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn23High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN23_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn23Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN23_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn23Data = {
   SRV_PCOUP_CHN23_RMS_HIGH_TBL, SRV_PCOUP_CHN23_RMS_VLOW_TBL,
   SRV_PCOUP_CHN23_THRS_HIGH_TBL, SRV_PCOUP_CHN23_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn23High, srvPlcCoupCarrierMaskChn23Vlow,
   SRV_PCOUP_CHN23_GAIN_HIGH_TBL, SRV_PCOUP_CHN23_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN23_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN23_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN34 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn34High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN34_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn34Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN34_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn34Data = {
   SRV_PCOUP_CHN34_RMS_HIGH_TBL, SRV_PCOUP_CHN34_RMS_VLOW_TBL,
   SRV_PCOUP_CHN34_THRS_HIGH_TBL, SRV_PCOUP_CHN34_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn34High, srvPlcCoupCarrierMaskChn34Vlow,
   SRV_PCOUP_CHN34_GAIN_HIGH_TBL, SRV_PCOUP_CHN34_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN34_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN34_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN45 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn45High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN45_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn45Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN45_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn45Data = {
   SRV_PCOUP_CHN45_RMS_HIGH_TBL, SRV_PCOUP_CHN45_RMS_VLOW_TBL,
   SRV_PCOUP_CHN45_THRS_HIGH_TBL, SRV_PCOUP_CHN45_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn45High, srvPlcCoupCarrierMaskChn45Vlow,
   SRV_PCOUP_CHN45_GAIN_HIGH_TBL, SRV_PCOUP_CHN45_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN45_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN45_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN56 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn56High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN56_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn56Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN56_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn56Data = {
   SRV_PCOUP_CHN56_RMS_HIGH_TBL, SRV_PCOUP_CHN56_RMS_VLOW_TBL,
   SRV_PCOUP_CHN56_THRS_HIGH_TBL, SRV_PCOUP_CHN56_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn56High, srvPlcCoupCarrierMaskChn56Vlow,
   SRV_PCOUP_CHN56_GAIN_HIGH_TBL, SRV_PCOUP_CHN56_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN56_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN56_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN67 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn67High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN67_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn67Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN67_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn67Data = {
   SRV_PCOUP_CHN67_RMS_HIGH_TBL, SRV_PCOUP_CHN67_RMS_VLOW_TBL,
   SRV_PCOUP_CHN67_THRS_HIGH_TBL, SRV_PCOUP_CHN67_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn67High, srvPlcCoupCarrierMaskChn67Vlow,
   SRV_PCOUP_CHN67_GAIN_HIGH_TBL, SRV_PCOUP_CHN67_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN67_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN67_LINE_DRV_CONF
 };
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN78 == true)>
+static const uint8_t srvPlcCoupCarrierMaskChn78High[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN78_CARRIER_MASK_HIGH_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn78Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN] = SRV_PCOUP_CHN78_CARRIER_MASK_VLOW_TBL;
+
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn78Data = {
   SRV_PCOUP_CHN78_RMS_HIGH_TBL, SRV_PCOUP_CHN78_RMS_VLOW_TBL,
   SRV_PCOUP_CHN78_THRS_HIGH_TBL, SRV_PCOUP_CHN78_THRS_VLOW_TBL,
   srvPlcCoupDaccTable2Chn,
   srvPlcCoupPredist2ChnCoefDummy, srvPlcCoupPredist2ChnCoefDummy,
+  srvPlcCoupCarrierMaskChn78High, srvPlcCoupCarrierMaskChn78Vlow,
   SRV_PCOUP_CHN78_GAIN_HIGH_TBL, SRV_PCOUP_CHN78_GAIN_VLOW_TBL,
   SRV_PCOUP_CHN78_MAX_NUM_TX_LEVELS, SRV_PCOUP_CHN78_LINE_DRV_CONF
 };
@@ -452,9 +512,9 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 
     /* MISRA C-2012 deviation block start */
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
-    /* MISRA C-2012 Rule 11.8 deviated 5 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2012 Rule 11.8 deviated 7 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
 <#else>
-    /* MISRA C-2012 Rule 11.8 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2012 Rule 11.8 deviated 5 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
@@ -467,6 +527,24 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
     pibObj.id = PLC_ID_DACC_TABLE_CFG;
     pibObj.length = 17U << 2;
     pibObj.pData = (uint8_t *)pCoupValues->daccTable;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
+
+    pibObj.length = SRV_PCOUP_CARRIER_MASK_SIZE_CHN;
+  <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
+    if (channel >= CHN1_CHN2)
+    {
+        pibObj.length = SRV_PCOUP_CARRIER_MASK_SIZE_2_CHN;
+    }
+
+</#if>
+    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_HI;  
+    pibObj.pData = (uint8_t *)pCoupValues->carrierMaskHigh;
+    resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
+    result = result && resultOut;
+
+    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_VLO;
+    pibObj.pData = (uint8_t *)pCoupValues->carrierMaskVlow;
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
 
