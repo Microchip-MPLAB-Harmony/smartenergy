@@ -220,7 +220,11 @@ typedef struct
     volatile uint16_t               evRegRspLength;
 
     /* Event detection flag: reset waiting tx cfm */
-    volatile bool                   evResetTxCfm;
+<#if (DRV_PLC_PROFILE == "PRIME")>
+    volatile bool                   evResetTxCfm[2];
+<#else>
+    volatile bool                   evResetTxCfm[1];
+</#if>
 
 } DRV_PLC_PHY_OBJ;
 
