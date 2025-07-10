@@ -1392,10 +1392,57 @@ def pCoupConfigureDACC(plcDevice, channels, coupSettings):
     pCoupPRIMEDACC2CHNMenu.setVisible(double_chn_enable)
 
 def pCoupConfigureChannelDetImp(channels, coupSettings):
-    if ((channels & 1) and ("Multiband single-branch" not in coupSettings)):
-        return "CHN1"
-    else:
-        return "CHN6"
+    global pCoupPRIMEChannelsImpDetect
+
+    channelsImpDetect = 0x7CFD
+    chnImpDetect = 0
+    if "CHN1 only" in coupSettings:
+        # Only channel 1 valid for impedance detection
+        channelsImpDetect = 0x0001
+        chnImpDetect = 1
+    elif "FCC default (FCC channels only" in coupSettings:
+        # All FCC channels valid for impedance detection
+        channelsImpDetect = 0x7CFC
+        chnImpDetect = 5
+    elif "FCC high attenuation (FCC channels only" in coupSettings:
+        # Channels 3, 4, 6, 10, 11, 12 valid for impedance detection
+        channelsImpDetect = 0x0E2C
+        chnImpDetect = 4
+    elif "Multiband high attenuation" in coupSettings:
+        # Channels 1, 3, 4, 6, 10, 11, 12 valid for impedance detection
+        channelsImpDetect = 0x0E2D
+        chnImpDetect = 4
+    elif "Multiband single-branch" in coupSettings:
+        # All channels but 1, 2, 9, 10 valid for impedance detection
+        channelsImpDetect = 0x7CFC
+        chnImpDetect = 5
+    elif "PLCOUP006" in coupSettings:
+        # All FCC channels valid for impedance detection
+        channelsImpDetect = 0x7CFC
+        chnImpDetect = 5
+    elif "PLCOUP011" in coupSettings:
+        # Only channel 1 valid for impedance detection
+        channelsImpDetect = 0x0001
+        chnImpDetect = 1
+
+    pCoupPRIMEChannelsImpDetect.setValue(channelsImpDetect)
+
+    if chnImpDetect != 0:
+        if (channels & (1 << (chnImpDetect - 1))) == 0:
+            chnImpDetect = 0
+
+    if chnImpDetect == 0:
+        for chn in range(1, 16):
+            if (channels & channelsImpDetect & (1 << (chn - 1))) != 0:
+                chnImpDetect = chn
+                break
+
+    if chnImpDetect == 0:
+        return "CHN_INVALID"
+    elif chnImpDetect > 8:
+        return "CHN%d_CHN%d"%(chnImpDetect - 8, chnImpDetect - 7)
+
+    return "CHN%d"%(chnImpDetect)
 
 def pCoupConfigureChannel(plcDevice, channel, coupSettings):
 
@@ -2059,6 +2106,13 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPRIMEChannelsSelected.setVisible(False)
     pCoupPRIMEChannelsSelected.setDefaultValue(0)
 
+    global pCoupPRIMEChannelsImpDetect
+    pCoupPRIMEChannelsImpDetect = pCoupComponentCommon.createIntegerSymbol("SRV_PCOUP_PRIME_CHANNELS_IMP_DETECT", pCoupPRIMETXChannels)
+    pCoupPRIMEChannelsImpDetect.setLabel("PRIME Channels for Impedance Detection")
+    pCoupPRIMEChannelsImpDetect.setVisible(False)
+    pCoupPRIMEChannelsImpDetect.setReadOnly(True)
+    pCoupPRIMEChannelsImpDetect.setDefaultValue(0)
+
     global pCoupPRIMEChannelImpedanceDetection
     pCoupPRIMEChannelImpedanceDetection = pCoupComponentCommon.createKeyValueSetSymbol("SRV_PCOUP_PRIME_CHANNEL_IMP_DET", pCoupPRIMETXChannels)
     pCoupPRIMEChannelImpedanceDetection.setLabel("Impedance Detection")
@@ -2067,7 +2121,21 @@ def instantiateComponent(pCoupComponentCommon):
     pCoupPRIMEChannelImpedanceDetection.setOutputMode("Key")
     pCoupPRIMEChannelImpedanceDetection.setDisplayMode("Description")
     pCoupPRIMEChannelImpedanceDetection.addKey("CHN1", "1", "CHN1")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN2", "2", "CHN2")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN3", "3", "CHN3")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN4", "4", "CHN4")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN5", "5", "CHN5")
     pCoupPRIMEChannelImpedanceDetection.addKey("CHN6", "6", "CHN6")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN7", "7", "CHN7")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN8", "8", "CHN8")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN1_CHN2", "9", "CHN1_CHN2")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN2_CHN3", "10", "CHN2_CHN3")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN3_CHN4", "11", "CHN3_CHN4")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN4_CHN5", "12", "CHN4_CHN5")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN5_CHN6", "13", "CHN5_CHN6")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN6_CHN7", "14", "CHN6_CHN7")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN7_CHN8", "15", "CHN7_CHN8")
+    pCoupPRIMEChannelImpedanceDetection.addKey("CHN_INVALID", "0", "CHN_INVALID")
 
     global pCoupPRIMEDACCCENAMenu
     pCoupPRIMEDACCCENAMenu = pCoupComponentCommon.createMenuSymbol("SRV_PCOUP_DACC_CENA", pCoupPRIMETXChannels)

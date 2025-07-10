@@ -77,6 +77,9 @@ Microchip or any third party.
 /* PLC PRIME PHY Channel for impedance detection */
 #define SRV_PCOUP_CHANNEL_IMP_DET                ${SRV_PCOUP_PRIME_CHANNEL_IMP_DET?string}
 
+/* List of channels that support impedance detection */
+#define SRV_PCOUP_CHANNEL_LIST_IMP_DET           ${SRV_PCOUP_PRIME_CHANNELS_IMP_DETECT?string}
+
 /* PLC PRIME PHY Channel List */
 #define SRV_PCOUP_CHANNEL_LIST                   ${drvPlcPhy.DRV_PLC_PRIME_CHANNELS_SELECTED?string}
 
@@ -178,7 +181,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN2 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN2_CARRIER_MASK_HIGH_TBL     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xFF, 0x80}
 #define SRV_PCOUP_CHN2_CARRIER_MASK_VLOW_TBL     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x80}
   <#else>
@@ -188,7 +191,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN3 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN3_CARRIER_MASK_HIGH_TBL     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xFF, 0x80}
 #define SRV_PCOUP_CHN3_CARRIER_MASK_VLOW_TBL     {0x00, 0x00, 0x00, 0x00, 0x01, 0xFF, 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
   <#else>
@@ -198,7 +201,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN4 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN4_CARRIER_MASK_HIGH_TBL     {0xFF, 0xFF, 0xFF, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN4_CARRIER_MASK_VLOW_TBL     {0xFF, 0xFF, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
   <#else>
@@ -208,7 +211,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN5 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN5_CARRIER_MASK_HIGH_TBL     {0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN5_CARRIER_MASK_VLOW_TBL     {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80}
   <#else>
@@ -218,7 +221,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN6 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN6_CARRIER_MASK_HIGH_TBL     {0xFF, 0xFF, 0xFF, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN6_CARRIER_MASK_VLOW_TBL     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xFF, 0x80}
   <#else>
@@ -228,7 +231,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN7 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN7_CARRIER_MASK_HIGH_TBL     {0xFF, 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN7_CARRIER_MASK_VLOW_TBL     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3F, 0xFF, 0x80}
   <#else>
@@ -238,7 +241,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN8 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN8_CARRIER_MASK_HIGH_TBL     {0xFF, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN8_CARRIER_MASK_VLOW_TBL     {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80}
   <#else>
@@ -248,7 +251,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN12 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN12_CARRIER_MASK_HIGH_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3F, 0xFF, 0xC0}
 #define SRV_PCOUP_CHN12_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -262,7 +265,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN23 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN23_CARRIER_MASK_HIGH_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xFF, 0xC0}
 #define SRV_PCOUP_CHN23_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -276,7 +279,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN34 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN34_CARRIER_MASK_HIGH_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0xFF, 0xFF, 0xFF, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN34_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFC, 0x00, 0x00, 0x00, 0x00, \
@@ -290,7 +293,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN45 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN45_CARRIER_MASK_HIGH_TBL    {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN45_CARRIER_MASK_VLOW_TBL    {0xFF, 0xFF, 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -304,7 +307,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN56 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN56_CARRIER_MASK_HIGH_TBL    {0xFF, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x3F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN56_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -318,7 +321,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN67 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN67_CARRIER_MASK_HIGH_TBL    {0x00, 0x00, 0x3F, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN67_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -332,7 +335,7 @@ Microchip or any third party.
 
 </#if>
 <#if (SRV_PCOUP_PRIME_2CHN78 == true)>
-  <#if drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation")>
+  <#if (drvPlcPhy.DRV_PLC_MODE == "PL460") && (drvPlcPhy.DRV_PLC_COUP_PRIME_SETTING_PL460?contains("high attenuation"))>
 #define SRV_PCOUP_CHN78_CARRIER_MASK_HIGH_TBL    {0xFF, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define SRV_PCOUP_CHN78_CARRIER_MASK_VLOW_TBL    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
@@ -778,6 +781,88 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel);
   ***************************************************************************/
 
 uint16_t SRV_PCOUP_GetChannelList(void);
+
+/***************************************************************************
+  Function:
+    uint16_t SRV_PCOUP_GetChannelListImpedanceDetection(void)
+
+  Summary:
+    Get the PRIME channel list valid for impedance detection.
+
+  Description:
+    This function allows to get the PRIME channel list valid for impedance detection.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    PRIME channel list valid for impedance detection. The channel list is a bitmask
+    corresponding to the following values.
+    Single channel:
+      Channel 1 : bit 0
+      Channel 2 : bit 1
+      Channel 3 : bit 2
+      Channel 4 : bit 3
+      Channel 5 : bit 4
+      Channel 6 : bit 5
+      Channel 7 : bit 6
+      Channel 8 : bit 7
+    In double channel:
+      Channel 1-2 : bit 8
+      Channel 2-3 : bit 9
+      Channel 3-4 : bit 10
+      Channel 4-5 : bit 11
+      Channel 5-6 : bit 12
+      Channel 6-7 : bit 13
+      Channel 7-8 : bit 14
+
+  Example:
+    <code>
+    uint16_t plcChannelListImpDetect;
+
+    plcChannelListImpDetect = SRV_PCOUP_GetChannelListImpedanceDetection();
+
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
+
+uint16_t SRV_PCOUP_GetChannelListImpedanceDetection(void);
+
+/***************************************************************************
+  Function:
+    DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetChannelImpedanceDetection(void)
+
+  Summary:
+    Get the PRIME channel for impedance detection.
+
+  Description:
+    This function allows to get the PRIME channel that should be used for impedance detection.
+
+  Precondition:
+    None.
+
+  Parameters:
+    None.
+
+  Returns:
+    PRIME channel that should be used for impedance detection.
+
+  Example:
+    <code>
+    DRV_PLC_PHY_CHANNEL plcChannelImpDetect;
+
+    plcChannelImpDetect = SRV_PCOUP_GetChannelImpedanceDetection();
+
+    </code>
+
+  Remarks:
+    None.
+  ***************************************************************************/
 
 DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetChannelImpedanceDetection(void);
 

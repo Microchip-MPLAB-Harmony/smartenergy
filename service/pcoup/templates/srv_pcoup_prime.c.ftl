@@ -169,7 +169,7 @@ static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn4Data = {
 </#if>
 <#if (SRV_PCOUP_PRIME_CHN5 == true)>
 static const uint8_t srvPlcCoupCarrierMaskChn5High[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN5_CARRIER_MASK_HIGH_TBL;
-static const uint8_t srvPlcCoupCarrierMaskChn5Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN4_CARRIER_MASK_VLOW_TBL;
+static const uint8_t srvPlcCoupCarrierMaskChn5Vlow[SRV_PCOUP_CARRIER_MASK_SIZE_CHN] = SRV_PCOUP_CHN5_CARRIER_MASK_VLOW_TBL;
 
 static const SRV_PLC_PCOUP_CHANNEL_DATA srvPlcCoupChn5Data = {
   SRV_PCOUP_CHN5_RMS_HIGH_TBL, SRV_PCOUP_CHN5_RMS_VLOW_TBL,
@@ -587,12 +587,15 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 
 uint16_t SRV_PCOUP_GetChannelList(void)
 {
-  return (uint16_t)SRV_PCOUP_CHANNEL_LIST;
+    return (uint16_t)SRV_PCOUP_CHANNEL_LIST;
+}
+
+uint16_t SRV_PCOUP_GetChannelListImpedanceDetection(void)
+{
+    return (uint16_t)SRV_PCOUP_CHANNEL_LIST_IMP_DET;
 }
 
 DRV_PLC_PHY_CHANNEL SRV_PCOUP_GetChannelImpedanceDetection(void)
 {
-  DRV_PLC_PHY_CHANNEL channel = (DRV_PLC_PHY_CHANNEL)SRV_PCOUP_CHANNEL_IMP_DET;
-
-  return channel;
+    return SRV_PCOUP_CHANNEL_IMP_DET;
 }
