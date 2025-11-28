@@ -44,3 +44,10 @@ def instantiateComponent(srvQueueComponent):
     pQueueHeader.setDestPath("service/queue")
     pQueueHeader.setProjectPath("config/" + configName + "/service/queue/")
     pQueueHeader.setType("HEADER")
+    
+    pQueueHeader = srvQueueComponent.createFileSymbol("SRV_QUEUE_LOCAL_HEADER", None)
+    pQueueHeader.setSourcePath("service/queue/srv_queue_local.h")
+    pQueueHeader.setOutputName("srv_queue_local.h")
+    pQueueHeader.setDestPath("service/queue")
+    pQueueHeader.setProjectPath("config/" + configName + "/service/queue/")
+    pQueueHeader.setType("HEADER")
