@@ -161,10 +161,10 @@ typedef enum
   Remarks:
     The function does not add a newline after printing the information.
 	The following error code ranges are already reserved:
-	- SRV_USI: 100 - 124
-	- SRV_QUEUE: 125 - 149
-	- PRIME PAL: 200 - 219
-	- PRIME Stack: 220 - 9999
+	- SRV_USI:     100 - 199
+	- SRV_QUEUE:   200 - 299
+	- PRIME PAL:   300 - 399
+	- PRIME Stack: 400 - 9999
 */
 
 void SRV_LOG_REPORT_Message_With_Code(SRV_LOG_REPORT_LEVEL logLevel,

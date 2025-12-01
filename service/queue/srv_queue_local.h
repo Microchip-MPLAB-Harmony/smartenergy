@@ -48,25 +48,25 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-/* Queue Service Errors */
-#define QUEUE_FULL_INSERT_END               125U
-#define QUEUE_FULL_INSERT_BEFORE            126U
-#define QUEUE_FULL_INSERT_AFTER             127U
-#define QUEUE_FULL_INSERT_FIRST             128U
-#define QUEUE_EMPTY_REMOVE_HEAD             129U
-#define QUEUE_EMPTY_READ_REMOVE             130U
-#define QUEUE_FULL_APPEND                   131U
-#define QUEUE_APPEND_BAD_ELEMENT            132U
-#define QUEUE_BAD_ELEMENT                   133U
-#define QUEUE_BAD_TAIL                      134U
-#define QUEUE_APPEND_PRIO_SINGLE            135U
-#define QUEUE_NOT_INIT_NULL_SIZE            136U
-#define QUEUE_FIRST_BAD_INIT                137U
-#define QUEUE_LAST_NOT_TAIL                 138U
-#define QUEUE_TOO_BIG                       139U
-#define QUEUE_BAD_NEXT_ELEMENT              140U
-#define QUEUE_WRONG_CHAIN                   141U
-#define QUEUE_APPEND_AGAIN                  142U
-#define QUEUE_APPEND_AGAIN_ONE_ELEMENT      143U
+/* Queue Service Errors (reserved 200 - 299) */
+#define QUEUE_FULL_INSERT_END               200U
+#define QUEUE_FULL_INSERT_BEFORE            201U
+#define QUEUE_FULL_INSERT_AFTER             202U
+#define QUEUE_FULL_INSERT_FIRST             203U
+#define QUEUE_EMPTY_REMOVE_HEAD             204U
+#define QUEUE_EMPTY_READ_REMOVE             205U
+#define QUEUE_FULL_APPEND                   206U
+#define QUEUE_APPEND_BAD_ELEMENT            207U
+#define QUEUE_BAD_ELEMENT                   208U
+#define QUEUE_BAD_TAIL                      209U
+#define QUEUE_APPEND_PRIO_SINGLE            210U
+#define QUEUE_NOT_INIT_NULL_SIZE            211U
+#define QUEUE_FIRST_BAD_INIT                212U
+#define QUEUE_LAST_NOT_TAIL                 213U
+#define QUEUE_TOO_BIG                       214U
+#define QUEUE_BAD_NEXT_ELEMENT              215U
+#define QUEUE_WRONG_CHAIN                   216U
+#define QUEUE_APPEND_AGAIN                  217U
+#define QUEUE_APPEND_AGAIN_ONE_ELEMENT      218U
 
 #endif //#ifndef SRV_QUEUE_LOCAL_H

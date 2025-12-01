@@ -100,7 +100,7 @@ Microchip or any third party.
 #define USI_LEN_EX2_PROTOCOL(A)     (uint8_t)((((A) & 0x3C00U)) >> 6)
 #define USI_CMD2_PROTOCOL(A)        (uint8_t)((A) & USI_CMD2_MSK)
 
-/* USI Service Errors */
+/* USI Service Errors (reserved 100 - 199) */
 #define USI_BAD_LENGTH              100U
 #define USI_BAD_PROTOCOL            101U
 #define USI_BAD_CRC                 102U
