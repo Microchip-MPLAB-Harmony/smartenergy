@@ -101,11 +101,11 @@ Microchip or any third party.
 #define USI_CMD2_PROTOCOL(A)        (uint8_t)((A) & USI_CMD2_MSK)
 
 /* USI Service Errors (reserved 100 - 199) */
-#define USI_BAD_LENGTH              100U
-#define USI_BAD_PROTOCOL            101U
-#define USI_BAD_CRC                 102U
-#define USI_INVALID_LENGTH          103U
-#define USI_ERROR_ESCAPE            104U
+#define USI_BAD_LENGTH              100UL
+#define USI_BAD_PROTOCOL            101UL
+#define USI_BAD_CRC                 102UL
+#define USI_INVALID_LENGTH          103UL
+#define USI_ERROR_ESCAPE            104UL
 
 // *****************************************************************************
 /* USI Callback Index
