@@ -126,9 +126,11 @@ void DRV_PLC_HAL_Init(DRV_PLC_PLIB_INTERFACE *plcPlib)
     SYS_PORT_PinClear(sPlcPlib->stByPin);
 
 </#if>
+<#if DRV_PLC_LDO_EN_CONTROL == true>
     /* Enable LDO_EN pin */
     SYS_PORT_PinSet(sPlcPlib->ldoPin);
 
+</#if>
     /* Push NRST pin */
     SYS_PORT_PinClear(sPlcPlib->resetPin);
 

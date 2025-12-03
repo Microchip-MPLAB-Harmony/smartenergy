@@ -407,7 +407,7 @@ def handleMessage(messageID, args):
 
     elif (messageID == "DRVPLC_CONFIG_HW_IO"):
         global plcDriverMode
-        
+
         result_dict = {"Result": "Fail"}
         signalId, pinId, functionValue, nameValue, enable = args['config']
 
@@ -420,7 +420,7 @@ def handleMessage(messageID, args):
                 currentValue = plcDriverMode.getValue()
                 if currentValue != plcDevice:
                     plcDriverMode.setValue(plcDevice)
-                
+
             pinDescr = nameValue.split("_")[-1].lower()
             if "enable" in pinDescr:
                 symbolName = "DRV_PLC_LDO_EN_PIN"
@@ -438,7 +438,7 @@ def handleMessage(messageID, args):
             if symbolName != None:
                 # Get index from pinId
                 symbolValue = getIndexFromPinId(pinId)
-                
+
         elif signalId.lower() == "cs":
             pinDescr = functionValue.split("_")[-1].lower()
             if "io3" in pinDescr: #flexcom
@@ -472,7 +472,7 @@ def handleMessage(messageID, args):
         plcStaticAddressing.setValue(args["enable"])
         plcBinaryAddress.setValue(int(args["address"]))
         plcBinarySize.setValue(int(args["size"]))
-        
+
     return result_dict
 
 def sort_alphanumeric(l):
@@ -609,7 +609,7 @@ def updateBinFiles():
     drvPlcProfile = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_PROFILE")
     if (drvPlcProfile == "G3-PLC"):
         drvPlcMode = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_MODE")
-        
+
         if (drvPlcMode == "PL460"):
             g3_coupSettings = Database.getSymbolValue("drvPlcPhy", "DRV_PLC_COUP_G3_SETTING_PL460")
         else:
@@ -627,11 +627,11 @@ def updateBinFiles():
         elif ("FCC + CENELEC-A" in g3_coupSettings):
             includeBinFile("Multiband")
             setG3PlcMultiBandInUse("FCC", "CEN-A")
-            
+
         elif ("FCC + CENELEC-B" in g3_coupSettings):
             includeBinFile("Multiband")
             setG3PlcMultiBandInUse("FCC", "CEN-B")
-        
+
         dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
     elif (drvPlcProfile == "Meters&More") :
         includeBinFile("MM")
@@ -659,7 +659,7 @@ def plcShowAddressingMode(symbol, event):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
-    
+
 def plcBinAddressingMode(symbol, event):
     symbol.setVisible(event["value"])
     updateBinFiles()
@@ -689,6 +689,9 @@ def showPL460Pins(symbol, event):
         symbol.setVisible(True)
     else:
         symbol.setVisible(False)
+
+def showLDOEnPin(symbol, event):
+    symbol.setVisible(event["value"])
 
 def showSleepPin(symbol, event):
     symbol.setVisible(event["value"])
@@ -797,7 +800,7 @@ def checkAvailableChannels(symbol, event):
             plcCoupPRIMECH[idx].clearValues()
             plcCoupPRIMECH[idx].setValue(False)
             plcCoupPRIMECH[idx].setReadOnly(True)
-        
+
         for idx in range(7):
             plcCoupPRIME2CH[idx].clearValues()
             plcCoupPRIME2CH[idx].setValue(False)
@@ -809,17 +812,17 @@ def checkAvailableChannels(symbol, event):
         plcCoupPRIMECH[0].setReadOnly(True)
         for idx in range(1, 8, 1):
             plcCoupPRIMECH[idx].setReadOnly(False)
-        
+
         for idx in range(7):
             plcCoupPRIME2CH[idx].setReadOnly(False)
 
     else:
         for idx in range(8):
             plcCoupPRIMECH[idx].setReadOnly(False)
-        
+
         for idx in range(7):
             plcCoupPRIME2CH[idx].setReadOnly(False)
-    
+
     # Send message to PLC COUP to update PRIME configuration
     dict = {}
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_PRIME_PARAMETERS", {})
@@ -1167,12 +1170,20 @@ def instantiateComponent(plcComponent):
     plcResetPin.setHelp(plc_phy_helpkeyword)
     plcResetPin.setDisplayMode("Description")
 
-    plcLDOEnPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
+    plcLDOEnControl = plcComponent.createBooleanSymbol("DRV_PLC_LDO_EN_CONTROL", None)
+    plcLDOEnControl.setLabel("LDO Enable Control")
+    plcLDOEnControl.setDefaultValue(False)
+    plcLDOEnControl.setHelp(plc_phy_helpkeyword)
+    plcLDOEnControl.setVisible(True)
+
+    plcLDOEnPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", plcLDOEnControl)
     plcLDOEnPin.setLabel("LDO Enable Pin")
     plcLDOEnPin.setDefaultValue(0)
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setHelp(plc_phy_helpkeyword)
     plcLDOEnPin.setDisplayMode("Description")
+    plcLDOEnPin.setVisible(False)
+    plcLDOEnPin.setDependencies(showLDOEnPin, ["DRV_PLC_LDO_EN_CONTROL"])
 
     plcTxEnablePin = plcComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")
@@ -1180,7 +1191,7 @@ def instantiateComponent(plcComponent):
     plcTxEnablePin.setOutputMode("Key")
     plcTxEnablePin.setDisplayMode("Description")
     plcTxEnablePin.setHelp(plc_phy_helpkeyword)
-    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
+    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
     plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
@@ -1201,7 +1212,7 @@ def instantiateComponent(plcComponent):
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
     plcThermalMonitor.setHelp(plc_phy_helpkeyword)
-    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
+    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
     plcThMonPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
     plcThMonPin.setLabel("Thermal Monitor Pin")

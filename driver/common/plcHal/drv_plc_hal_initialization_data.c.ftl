@@ -339,9 +339,11 @@ static DRV_PLC_PLIB_INTERFACE drvPLCPlib = {
     /* SPI clock frequency */
     .spiClockFrequency = DRV_PLC_SPI_CLK,
 
+<#if DRV_PLC_LDO_EN_CONTROL == true>
     /* PLC LDO Enable Pin */
     .ldoPin = DRV_PLC_LDO_EN_PIN,
 
+</#if>
     /* PLC Reset Pin */
     .resetPin = DRV_PLC_RESET_PIN,
 

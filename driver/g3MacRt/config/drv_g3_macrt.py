@@ -370,7 +370,7 @@ def handleMessage(messageID, args):
 
     elif (messageID == "DRVPLC_CONFIG_HW_IO"):
         global plcDriverMode
-        
+
         result_dict = {"Result": "Fail"}
         signalId, pinId, functionValue, nameValue, enable = args['config']
 
@@ -383,7 +383,7 @@ def handleMessage(messageID, args):
                 currentValue = plcDriverMode.getValue()
                 if currentValue != plcDevice:
                     plcDriverMode.setValue(plcDevice)
-                
+
             pinDescr = nameValue.split("_")[-1].lower()
             if "enable" in pinDescr:
                 symbolName = "DRV_PLC_LDO_EN_PIN"
@@ -401,7 +401,7 @@ def handleMessage(messageID, args):
             if symbolName != None:
                 # Get index from pinId
                 symbolValue = getIndexFromPinId(pinId)
-                
+
         elif signalId.lower() == "cs":
             pinDescr = functionValue.split("_")[-1].lower()
             if "io3" in pinDescr: #flexcom
@@ -548,7 +548,7 @@ def updateBinFiles():
     elif ("FCC + CENELEC-B" in g3_coupSettings):
         includeBinFile("Multiband")
         setPlcMultiBandInUse("FCC", "CEN-B")
-    
+
     dict = Database.sendMessage("srv_pcoup", "SRV_PCOUP_UPDATE_G3_PARAMETERS", {})
 
     # Check if impedance detection in FCC/CEN-A band is needed
@@ -581,6 +581,9 @@ def showPL460Pins(symbol, event):
     else:
         symbol.setVisible(False)
 
+def showLDOEnPin(symbol, event):
+    symbol.setVisible(event["value"])
+
 def showSleepPin(symbol, event):
     symbol.setVisible(event["value"])
 
@@ -601,7 +604,7 @@ def showG3CoupSettings360(symbol, event):
 
 def showG3DefaultBandCENA(symbol, event):
     drvPlcMode = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
-        
+
     if (drvPlcMode == "PL460"):
         g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL460")
     else:
@@ -614,7 +617,7 @@ def showG3DefaultBandCENA(symbol, event):
 
 def showG3DefaultBandCENB(symbol, event):
     drvPlcMode = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_MODE")
-        
+
     if (drvPlcMode == "PL460"):
         g3_coupSettings = Database.getSymbolValue("drvG3MacRt", "DRV_PLC_COUP_G3_SETTING_PL460")
     else:
@@ -930,12 +933,20 @@ def instantiateComponent(g3MacRtComponent):
     plcResetPin.setDisplayMode("Description")
     plcResetPin.setHelp(plc_mac_rt_helpkeyword)
 
-    plcLDOEnPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", None)
+    plcLDOEnControl = g3MacRtComponent.createBooleanSymbol("DRV_PLC_LDO_EN_CONTROL", None)
+    plcLDOEnControl.setLabel("LDO Enable Control")
+    plcLDOEnControl.setDefaultValue(False)
+    plcLDOEnControl.setHelp(plc_mac_rt_helpkeyword)
+    plcLDOEnControl.setVisible(True)
+
+    plcLDOEnPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", plcLDOEnControl)
     plcLDOEnPin.setLabel("LDO Enable Pin")
     plcLDOEnPin.setDefaultValue(0)
     plcLDOEnPin.setOutputMode("Key")
     plcLDOEnPin.setDisplayMode("Description")
     plcLDOEnPin.setHelp(plc_mac_rt_helpkeyword)
+    plcLDOEnPin.setVisible(False)
+    plcLDOEnPin.setDependencies(showLDOEnPin, ["DRV_PLC_LDO_EN_CONTROL"])
 
     plcTxEnablePin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")
@@ -943,7 +954,7 @@ def instantiateComponent(g3MacRtComponent):
     plcTxEnablePin.setOutputMode("Key")
     plcTxEnablePin.setDisplayMode("Description")
     plcTxEnablePin.setHelp(plc_mac_rt_helpkeyword)
-    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
+    plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
     plcSleepMode = g3MacRtComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
@@ -964,7 +975,7 @@ def instantiateComponent(g3MacRtComponent):
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
     plcThermalMonitor.setHelp(plc_mac_rt_helpkeyword)
-    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"]);
+    plcThermalMonitor.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
     plcThMonPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_THMON_PIN", plcThermalMonitor)
     plcThMonPin.setLabel("Thermal Monitor Pin")

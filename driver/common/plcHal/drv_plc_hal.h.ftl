@@ -262,9 +262,11 @@ typedef struct
     /* SPI clock frequency */
     uint32_t                               spiClockFrequency;
 
+<#if DRV_PLC_LDO_EN_CONTROL == true>
     /* PLC LDO enable pin */
     SYS_PORT_PIN                           ldoPin;
 
+</#if>
     /* PLC reset pin */
     SYS_PORT_PIN                           resetPin;
 
