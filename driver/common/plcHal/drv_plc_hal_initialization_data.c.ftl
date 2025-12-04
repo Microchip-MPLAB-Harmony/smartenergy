@@ -53,153 +53,208 @@ void _on_reset(void)
 </#if>
 <#if BOARD_FIND != "">
     <#if BOARD_FIND?matches("PIC32CXMTSH DB") || BOARD_FIND?matches("PIC32CXMTSH Development Board")>
-        <#lt>   /* Enable co-processor bus clock  */
-        <#lt>   PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
-        <#lt>   /* Coprocessor Peripheral Enable */
-        <#lt>   RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB1")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable PIOA clock */
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
-        <#lt>   uint32_t prescaler;
-        <#lt>   uint32_t reg = PMC_REGS->PMC_CPU_CKR;
-        <#lt>   if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
-        <#lt>   }
-        <#lt>   else
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
-        <#lt>   }
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
+        <#lt>    /* Enable co-processor bus clock  */
+        <#lt>    PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
+        <#lt>    /* Coprocessor Peripheral Enable */
+        <#lt>    RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
         <#lt>
-        <#lt>   reg &= ~PMC_CPU_CKR_CPPRES_Msk;
-        <#lt>   reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
-        <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
-        <#lt>   {
-        <#lt>       /* Wait for status CPMCKRDY */
-        <#lt>   }
+        <#lt>    /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
+        <#lt>    uint32_t prescaler;
+        <#lt>    uint32_t reg = PMC_REGS->PMC_CPU_CKR;
+        <#lt>    if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>    }
+        <#lt>    else
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
-        <#lt>   while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    reg &= ~PMC_CPU_CKR_CPPRES_Msk;
+        <#lt>    reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
+        <#lt>    PMC_REGS->PMC_CPU_CKR = reg;
+        <#lt>    while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
+        <#lt>    {
+        <#lt>        /* Wait for status CPMCKRDY */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Enable LDO Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-        <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
+        <#lt>    while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    /* Enable LDO Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>    /* Enable Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
+        <#lt>
+        <#lt>    /* Disable STBY Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA16);
+        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA16);
+    </#if>
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTC DB") || BOARD_FIND?matches("PIC32CXMTC Development Board")>
-        <#lt>   /* Enable co-processor bus clock  */
-        <#lt>   PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
-        <#lt>   /* Coprocessor Peripheral Enable */
-        <#lt>   RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB1")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable PIOA clock */
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
-        <#lt>   uint32_t prescaler;
-        <#lt>   uint32_t reg = PMC_REGS->PMC_CPU_CKR;
-        <#lt>   if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
-        <#lt>   }
-        <#lt>   else
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
-        <#lt>   }
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
+        <#lt>    /* Enable co-processor bus clock  */
+        <#lt>    PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
+        <#lt>    /* Coprocessor Peripheral Enable */
+        <#lt>    RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
         <#lt>
-        <#lt>   reg &= ~PMC_CPU_CKR_CPPRES_Msk;
-        <#lt>   reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
-        <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
-        <#lt>   {
-        <#lt>       /* Wait for status CPMCKRDY */
-        <#lt>   }
+        <#lt>    /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
+        <#lt>    uint32_t prescaler;
+        <#lt>    uint32_t reg = PMC_REGS->PMC_CPU_CKR;
+        <#lt>    if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>    }
+        <#lt>    else
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
-        <#lt>   while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    reg &= ~PMC_CPU_CKR_CPPRES_Msk;
+        <#lt>    reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
+        <#lt>    PMC_REGS->PMC_CPU_CKR = reg;
+        <#lt>    while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
+        <#lt>    {
+        <#lt>        /* Wait for status CPMCKRDY */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Enable LDO Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-        <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
+        <#lt>    while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    /* Enable LDO Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>    /* Enable Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PC21);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PC21);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
+        <#lt>
+        <#lt>    /* Disable STBY Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PC21);
+        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PC21);
+    </#if>
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTG EK") || BOARD_FIND?matches("PIC32CXMTG Evaluation Kit")>
-        <#lt>   /* Enable co-processor bus clock  */
-        <#lt>   PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
-        <#lt>   /* Coprocessor Peripheral Enable */
-        <#lt>   RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PA31")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable PIOA clock */
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
-        <#lt>   uint32_t prescaler;
-        <#lt>   uint32_t reg = PMC_REGS->PMC_CPU_CKR;
-        <#lt>   if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
-        <#lt>   }
-        <#lt>   else
-        <#lt>   {
-        <#lt>       prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
-        <#lt>   }
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
+        <#lt>    /* Enable co-processor bus clock  */
+        <#lt>    PMC_REGS->PMC_SCER = (PMC_SCER_CPKEY_PASSWD | PMC_SCER_CPBMCK_Msk);
+        <#lt>    /* Coprocessor Peripheral Enable */
+        <#lt>    RSTC_REGS->RSTC_MR |= (RSTC_MR_KEY_PASSWD | RSTC_MR_CPEREN_Msk);
         <#lt>
-        <#lt>   reg &= ~PMC_CPU_CKR_CPPRES_Msk;
-        <#lt>   reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
-        <#lt>   PMC_REGS->PMC_CPU_CKR = reg;
-        <#lt>   while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
-        <#lt>   {
-        <#lt>       /* Wait for status CPMCKRDY */
-        <#lt>   }
+        <#lt>    /* Program PMC_CPU_CKR.CPPRES and wait for PMC_SR.CPMCKRDY to be set   */
+        <#lt>    uint32_t prescaler;
+        <#lt>    uint32_t reg = PMC_REGS->PMC_CPU_CKR;
+        <#lt>    if ((reg & PMC_CPU_CKR_CPPRES_Msk) == PMC_CPU_CKR_CPPRES_CLK_1)
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_2;
+        <#lt>    }
+        <#lt>    else
+        <#lt>    {
+        <#lt>        prescaler = PMC_CPU_CKR_CPPRES_CLK_1;
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
-        <#lt>   while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    reg &= ~PMC_CPU_CKR_CPPRES_Msk;
+        <#lt>    reg |= prescaler | PMC_CPU_CKR_CPCSS_MAINCK;
+        <#lt>    PMC_REGS->PMC_CPU_CKR = reg;
+        <#lt>    while ((PMC_REGS->PMC_SR & PMC_SR_CPMCKRDY_Msk) != PMC_SR_CPMCKRDY_Msk)
+        <#lt>    {
+        <#lt>        /* Wait for status CPMCKRDY */
+        <#lt>    }
         <#lt>
-        <#lt>   /* Enable LDO Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
-        <#lt>   SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
-        <#lt>   /* Enable Reset Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
-        <#lt>   SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOD);
+        <#lt>    while((PMC_REGS->PMC_CSR2 & PMC_CSR2_PID85_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
         <#lt>
-        <#lt>   PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
-        <#lt>   while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
-        <#lt>   {
-        <#lt>       /* Wait for clock to be initialized */
-        <#lt>   }
+        <#lt>    /* Enable LDO Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
+        <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
+        <#lt>    /* Enable Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
         <#lt>
-        <#lt>   /* Disable STBY Pin */
-        <#lt>   SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
-        <#lt>   SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
+        <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
+        <#lt>    while((PMC_REGS->PMC_CSR0 & PMC_CSR0_PID17_Msk) == 0U)
+        <#lt>    {
+        <#lt>        /* Wait for clock to be initialized */
+        <#lt>    }
+        <#lt>
+        <#lt>    /* Disable STBY Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA0);
+        <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA0);
+    </#if>
     </#if>
     <#if BOARD_FIND?matches("SAME70 XPLAINED ULTRA") || BOARD_FIND?matches("SAM E70 Xplained Ultra")>
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PA19")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable PIOB clock */
+        <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID11_Msk;
+        <#lt>
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
         <#lt>    /* Enables PIOA and PIOC */
         <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID10_Msk | PMC_PCER0_PID12_Msk;
         <#lt>
@@ -213,10 +268,18 @@ void _on_reset(void)
         <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA3);
         <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA3);
     </#if>
+    </#if>
     <#if BOARD_FIND?matches("WBZ451 CURIOSITY") || BOARD_FIND?matches("WBZ451 Curiosity")>
         <#lt>    __asm volatile ("NOP");
     </#if>
     <#if BOARD_FIND?matches("SAMD20 XPLAINED PRO") || BOARD_FIND?matches("SAM D20 Xplained Pro")>
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB01")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
         <#lt>    /* Enable LDO Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
@@ -227,7 +290,15 @@ void _on_reset(void)
         <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA08);
         <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA08);
     </#if>
+    </#if>
     <#if BOARD_FIND?matches("SAME54 XPLAINED PRO") || BOARD_FIND?matches("SAM E54 Xplained Pro")>
+    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB05")>
+    <#--  PL460-EK v5 connected  -->
+        <#lt>    /* Enable and Clear Reset Pin */
+        <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
+        <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
+    <#else>
+    <#--  PL460-EK v4 or earlier  -->
         <#lt>    /* Enable LDO Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
         <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
@@ -238,12 +309,15 @@ void _on_reset(void)
         <#lt>    SYS_PORT_PinOutputEnable(SYS_PORT_PIN_PA22);
         <#lt>    SYS_PORT_PinClear(SYS_PORT_PIN_PA22);
     </#if>
+    </#if>
 </#if>
 <#if BOARD_FIND == "">
+<#if DRV_PLC_LDO_EN_CONTROL == true>
     <#lt>    /* Enable LDO Pin */
     <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_LDO_EN_PIN);
     <#lt>    SYS_PORT_PinSet(DRV_PLC_LDO_EN_PIN);
-    <#lt>    /* Enable Reset Pin */
+</#if>
+    <#lt>    /* Enable and Clear Reset Pin */
     <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
     <#lt>    SYS_PORT_PinClear(DRV_PLC_RESET_PIN);
 <#if DRV_PLC_SLEEP_MODE == true>

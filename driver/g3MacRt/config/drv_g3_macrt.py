@@ -387,16 +387,20 @@ def handleMessage(messageID, args):
             pinDescr = nameValue.split("_")[-1].lower()
             if "enable" in pinDescr:
                 symbolName = "DRV_PLC_LDO_EN_PIN"
+                plcLDOEnControl.setVisible(True)
+                plcLDOEnControl.setValue(True)
             elif "extint" in pinDescr:
                 symbolName = "DRV_PLC_EXT_INT_PIN"
             elif "nthw0" in pinDescr:
                 symbolName = "DRV_PLC_THMON_PIN"
+                plcThermalMonitor.setValue(True)
             elif "nrst" in pinDescr:
                 symbolName = "DRV_PLC_RESET_PIN"
             elif "txen" in pinDescr:
                 symbolName = "DRV_PLC_TX_ENABLE_PIN"
             elif "stby" in pinDescr:
                 symbolName = "DRV_PLC_STBY_PIN"
+                plcSleepMode.setVisible(True)
 
             if symbolName != None:
                 # Get index from pinId
@@ -933,11 +937,12 @@ def instantiateComponent(g3MacRtComponent):
     plcResetPin.setDisplayMode("Description")
     plcResetPin.setHelp(plc_mac_rt_helpkeyword)
 
+    global plcLDOEnControl
     plcLDOEnControl = g3MacRtComponent.createBooleanSymbol("DRV_PLC_LDO_EN_CONTROL", None)
     plcLDOEnControl.setLabel("LDO Enable Control")
     plcLDOEnControl.setDefaultValue(False)
     plcLDOEnControl.setHelp(plc_mac_rt_helpkeyword)
-    plcLDOEnControl.setVisible(True)
+    plcLDOEnControl.setVisible(False)
 
     plcLDOEnPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", plcLDOEnControl)
     plcLDOEnPin.setLabel("LDO Enable Pin")
@@ -956,10 +961,11 @@ def instantiateComponent(g3MacRtComponent):
     plcTxEnablePin.setHelp(plc_mac_rt_helpkeyword)
     plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
+    global plcSleepMode
     plcSleepMode = g3MacRtComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
     plcSleepMode.setDefaultValue(False)
-    plcSleepMode.setVisible(True)
+    plcSleepMode.setVisible(False)
     plcSleepMode.setHelp(plc_mac_rt_helpkeyword)
 
     plcStbyPin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
@@ -971,6 +977,7 @@ def instantiateComponent(g3MacRtComponent):
     plcStbyPin.setHelp(plc_mac_rt_helpkeyword)
     plcStbyPin.setDependencies(showSleepPin, ["DRV_PLC_SLEEP_MODE"])
 
+    global plcThermalMonitor
     plcThermalMonitor = g3MacRtComponent.createBooleanSymbol("DRV_PLC_THERMAL_MONITOR", None)
     plcThermalMonitor.setLabel("Thermal Monitor")
     plcThermalMonitor.setDefaultValue(False)
