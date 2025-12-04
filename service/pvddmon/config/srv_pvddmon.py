@@ -155,7 +155,7 @@ def instantiateComponent(pPVDDMonComponent):
     pVddHighThrs = 13000
     pVddLowThrs = 10000
     pVddResolution = 12
-    ResUp = 36000
+    ResUp = 120000
     ResDown = 10000
     Hysteresis = 100
 
