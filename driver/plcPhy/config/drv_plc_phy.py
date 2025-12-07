@@ -1449,52 +1449,66 @@ def instantiateComponent(plcComponent):
     #### Binary PHY Files ######################################################
 
     global plcSourceBinFileG3CENA
-    plcSourceBinFileG3CENA = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_CENA", None)
+    plcSourceBinFileG3CENA = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_CENA", None)
     plcSourceBinFileG3CENA.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_CENA.bin")
     plcSourceBinFileG3CENA.setOutputName("PLC_PHY_G3_CENA.bin")
     plcSourceBinFileG3CENA.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileG3CENA.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileG3CENA.setType("SOURCE")
     plcSourceBinFileG3CENA.setEnabled(True)
 
     global plcSourceBinFileG3CENB
-    plcSourceBinFileG3CENB = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_CENB", None)
+    plcSourceBinFileG3CENB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_CENB", None)
     plcSourceBinFileG3CENB.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_CENB.bin")
     plcSourceBinFileG3CENB.setOutputName("PLC_PHY_G3_CENB.bin")
     plcSourceBinFileG3CENB.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileG3CENB.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileG3CENB.setType("SOURCE")
     plcSourceBinFileG3CENB.setEnabled(False)
 
     global plcSourceBinFileG3FCC
-    plcSourceBinFileG3FCC = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_FCC", None)
+    plcSourceBinFileG3FCC = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_FCC", None)
     plcSourceBinFileG3FCC.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_FCC.bin")
     plcSourceBinFileG3FCC.setOutputName("PLC_PHY_G3_FCC.bin")
     plcSourceBinFileG3FCC.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileG3FCC.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileG3FCC.setType("SOURCE")
     plcSourceBinFileG3FCC.setEnabled(False)
 
     global plcSourceBinFileG3ARIB
-    plcSourceBinFileG3ARIB = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_ARIB", None)
+    plcSourceBinFileG3ARIB = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_ARIB", None)
     plcSourceBinFileG3ARIB.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_ARIB.bin")
     plcSourceBinFileG3ARIB.setOutputName("PLC_PHY_G3_ARIB.bin")
     plcSourceBinFileG3ARIB.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileG3ARIB.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileG3ARIB.setType("SOURCE")
     plcSourceBinFileG3ARIB.setEnabled(False)
 
     global plcSourceBinFileG3Multiband
-    plcSourceBinFileG3Multiband = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_G3_MULTIBAND", None)
+    plcSourceBinFileG3Multiband = plcComponent.createFileSymbol("PLC_SOURCE_BIN_G3_MULTIBAND", None)
     plcSourceBinFileG3Multiband.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_G3_MULTIBAND.bin")
     plcSourceBinFileG3Multiband.setOutputName("PLC_PHY_G3_MULTIBAND.bin")
     plcSourceBinFileG3Multiband.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileG3Multiband.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileG3Multiband.setType("SOURCE")
     plcSourceBinFileG3Multiband.setEnabled(True)
 
     global plcSourceBinFilePRIME
-    plcSourceBinFilePRIME = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_PRIME", None)
+    plcSourceBinFilePRIME = plcComponent.createFileSymbol("PLC_SOURCE_BIN_PRIME", None)
     plcSourceBinFilePRIME.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_PRIME_2CHN.bin")
     plcSourceBinFilePRIME.setOutputName("PLC_PHY_PRIME_2CHN.bin")
     plcSourceBinFilePRIME.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFilePRIME.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFilePRIME.setType("SOURCE")
     plcSourceBinFilePRIME.setEnabled(False)
 
     global plcSourceBinFileMM
-    plcSourceBinFileMM = plcComponent.createLibrarySymbol("PLC_SOURCE_BIN_MM", None)
+    plcSourceBinFileMM = plcComponent.createFileSymbol("PLC_SOURCE_BIN_MM", None)
     plcSourceBinFileMM.setSourcePath("driver/plcPhy/src/bin/PLC_PHY_MM.bin")
     plcSourceBinFileMM.setOutputName("PLC_PHY_MM.bin")
     plcSourceBinFileMM.setDestPath("driver/plc/phy/bin")
+    plcSourceBinFileMM.setProjectPath("config/" + configName + "/driver/plc/phy/bin")
+    plcSourceBinFileMM.setType("SOURCE")
     plcSourceBinFileMM.setEnabled(False)
 
     global plcAssemblyBinFile

@@ -1235,38 +1235,48 @@ def instantiateComponent(g3MacRtComponent):
     #### Binary PHY Files ######################################################
 
     global g3MacRtBinFileCENA
-    g3MacRtBinFileCENA = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_CENA", None)
+    g3MacRtBinFileCENA = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_CENA", None)
     g3MacRtBinFileCENA.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_CENA.bin")
     g3MacRtBinFileCENA.setOutputName("G3_MAC_RT_CENA.bin")
     g3MacRtBinFileCENA.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileCENA.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
+    g3MacRtBinFileCENA.setType("SOURCE")
     g3MacRtBinFileCENA.setEnabled(True)
 
     global g3MacRtBinFileCENB
-    g3MacRtBinFileCENB = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_CENB", None)
+    g3MacRtBinFileCENB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_CENB", None)
     g3MacRtBinFileCENB.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_CENB.bin")
     g3MacRtBinFileCENB.setOutputName("G3_MAC_RT_CENB.bin")
     g3MacRtBinFileCENB.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileCENB.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
+    g3MacRtBinFileCENB.setType("SOURCE")
     g3MacRtBinFileCENB.setEnabled(False)
 
     global g3MacRtBinFileFCC
-    g3MacRtBinFileFCC = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_FCC", None)
+    g3MacRtBinFileFCC = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_FCC", None)
     g3MacRtBinFileFCC.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_FCC.bin")
     g3MacRtBinFileFCC.setOutputName("G3_MAC_RT_FCC.bin")
     g3MacRtBinFileFCC.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileFCC.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
+    g3MacRtBinFileFCC.setType("SOURCE")
     g3MacRtBinFileFCC.setEnabled(False)
 
     global g3MacRtBinFileARIB
-    g3MacRtBinFileARIB = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_ARIB", None)
+    g3MacRtBinFileARIB = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_ARIB", None)
     g3MacRtBinFileARIB.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_ARIB.bin")
     g3MacRtBinFileARIB.setOutputName("G3_MAC_RT_ARIB.bin")
     g3MacRtBinFileARIB.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileARIB.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
+    g3MacRtBinFileARIB.setType("SOURCE")
     g3MacRtBinFileARIB.setEnabled(False)
 
     global g3MacRtBinFileMultiband
-    g3MacRtBinFileMultiband = g3MacRtComponent.createLibrarySymbol("MACRT_SOURCE_BIN_G3_MULTIBAND", None)
+    g3MacRtBinFileMultiband = g3MacRtComponent.createFileSymbol("MACRT_SOURCE_BIN_G3_MULTIBAND", None)
     g3MacRtBinFileMultiband.setSourcePath("driver/g3MacRt/src/bin/G3_MAC_RT_MULTIBAND.bin")
     g3MacRtBinFileMultiband.setOutputName("G3_MAC_RT_MULTIBAND.bin")
     g3MacRtBinFileMultiband.setDestPath("driver/plc/g3MacRt/bin")
+    g3MacRtBinFileMultiband.setProjectPath("config/" + configName + "/driver/plc/g3MacRt/bin")
+    g3MacRtBinFileMultiband.setType("SOURCE")
     g3MacRtBinFileMultiband.setEnabled(False)
 
     global g3MacRtAsmBinFile
