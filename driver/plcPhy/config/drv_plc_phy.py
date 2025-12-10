@@ -424,7 +424,6 @@ def handleMessage(messageID, args):
             pinDescr = nameValue.split("_")[-1].lower()
             if "enable" in pinDescr:
                 symbolName = "DRV_PLC_LDO_EN_PIN"
-                plcLDOEnControl.setVisible(True)
                 plcLDOEnControl.setValue(True)
             elif "extint" in pinDescr:
                 symbolName = "DRV_PLC_EXT_INT_PIN"
@@ -437,7 +436,6 @@ def handleMessage(messageID, args):
                 symbolName = "DRV_PLC_TX_ENABLE_PIN"
             elif "stby" in pinDescr:
                 symbolName = "DRV_PLC_STBY_PIN"
-                plcSleepMode.setVisible(True)
 
             if symbolName != None:
                 # Get index from pinId
@@ -1179,7 +1177,7 @@ def instantiateComponent(plcComponent):
     plcLDOEnControl.setLabel("LDO Enable Control")
     plcLDOEnControl.setDefaultValue(False)
     plcLDOEnControl.setHelp(plc_phy_helpkeyword)
-    plcLDOEnControl.setVisible(False)
+    plcLDOEnControl.setVisible(True)
 
     plcLDOEnPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_LDO_EN_PIN", plcLDOEnControl)
     plcLDOEnPin.setLabel("LDO Enable Pin")
@@ -1198,12 +1196,11 @@ def instantiateComponent(plcComponent):
     plcTxEnablePin.setHelp(plc_phy_helpkeyword)
     plcTxEnablePin.setDependencies(enablePL460Capabilities, ["DRV_PLC_MODE"])
 
-    global plcSleepMode
     plcSleepMode = plcComponent.createBooleanSymbol("DRV_PLC_SLEEP_MODE", None)
     plcSleepMode.setLabel("Sleep Mode")
     plcSleepMode.setDefaultValue(False)
     plcSleepMode.setHelp(plc_phy_helpkeyword)
-    plcSleepMode.setVisible(False)
+    plcSleepMode.setVisible(True)
 
     plcStbyPin = plcComponent.createKeyValueSetSymbol("DRV_PLC_STBY_PIN", plcSleepMode)
     plcStbyPin.setLabel("Stand By Pin")
