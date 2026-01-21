@@ -650,7 +650,6 @@ def updateBinFiles():
         plcAssemblyBinFile.setEnabled(True)
     else:
         # External Addressing
-        removeAllBinFiles()
         plcAssemblyBinFile.setEnabled(False)
 
 def updateG3PLCBandInUse(symbol, event):
