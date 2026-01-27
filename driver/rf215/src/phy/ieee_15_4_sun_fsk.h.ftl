@@ -648,14 +648,14 @@ Microchip or any third party.
 
 /******************* Frequency band 902-907.5 & 915-928 MHz *******************/
 
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 5.4 deviated 4 times.  Deviation record ID - H3_MISRAC_2012_R_5_4_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 5.4 deviated 4 times.  Deviation record ID - H3_MISRAC_2023_R_5_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.4" "H3_MISRAC_2012_R_5_4_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 5.4" "H3_MISRAC_2023_R_5_4_DR_1"
 </#if>
 
 /* Operating mode #1 */
@@ -754,12 +754,12 @@ Microchip or any third party.
     }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 5.4"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 5.4"
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic pop
 </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */
 
 /************************* Frequency band 915-928 MHz *************************/
 

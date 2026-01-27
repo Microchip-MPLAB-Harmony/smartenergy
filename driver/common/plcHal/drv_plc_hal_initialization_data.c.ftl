@@ -18,16 +18,16 @@
     "SAME54 XPLAINED PRO"
 ]>
 <#assign BOARD_FIND = "">
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 8.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_8_4_DR_1 */
-/* MISRA C-2012 Rule 21.2 deviated once. Deviation record ID - H3_MISRAC_2012_R_21_2_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 8.4 deviated once. Deviation record ID - H3_MISRAC_2023_R_8_4_DR_1 */
+/* MISRA C-2023 Rule 21.2 deviated once. Deviation record ID - H3_MISRAC_2023_R_21_2_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 8.4" "H3_MISRAC_2012_R_8_4_DR_1"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 21.2" "H3_MISRAC_2012_R_21_2_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 8.4" "H3_MISRAC_2023_R_8_4_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 21.2" "H3_MISRAC_2023_R_21_2_DR_1"
 </#if>
 
 /* This routine must initialize the PL460 control pins as soon as possible */
@@ -329,13 +329,13 @@ void _on_reset(void)
 }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 8.4"
-#pragma coverity compliance end_block "MISRA C-2012 Rule 21.2"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 8.4"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 21.2"
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic pop
 </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */
 
 // </editor-fold>
 

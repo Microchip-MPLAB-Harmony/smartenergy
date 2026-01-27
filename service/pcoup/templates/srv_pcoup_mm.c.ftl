@@ -81,25 +81,25 @@ static const SRV_PLC_PCOUP_DATA srvPlcCoup = {
 
 SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(void)
 {
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     return (SRV_PLC_PCOUP_DATA *)&srvPlcCoup;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 }
 
 bool SRV_PCOUP_Set_Config(DRV_HANDLE handle)
@@ -161,23 +161,23 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle)
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     return result;
 }

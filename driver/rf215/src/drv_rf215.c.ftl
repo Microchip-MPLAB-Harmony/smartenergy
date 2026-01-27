@@ -183,18 +183,18 @@ static void lDRV_RF215_ReadPNVN(uintptr_t context, void* pData<#if DRV_RF215_TXR
         return;
     }
 
-    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2023 deviation block start */
 <#if DRV_RF215_TRX09_EN == true && DRV_RF215_TRX24_EN == true>
-    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#else>
-    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     /* Disable clock output by default (not used) */
@@ -211,12 +211,12 @@ static void lDRV_RF215_ReadPNVN(uintptr_t context, void* pData<#if DRV_RF215_TXR
 
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
 <#if DRV_RF215_TRX09_EN == true>
     /* RF09 TRX reset event */
@@ -470,23 +470,23 @@ SYS_MODULE_OBJ DRV_RF215_Initialize (
     const SYS_MODULE_INIT * const init
 )
 {
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.3" "H3_MISRAC_2023_R_11_3_DR_1"
 </#if>
     const DRV_RF215_INIT * const rfPhyInit = (const DRV_RF215_INIT * const)init;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
     DRV_RF215_PHY_BAND_OPM bandOpMode;
     uint16_t channelNum;
 <#if (HarmonyCore.SELECT_RTOS)?? && HarmonyCore.SELECT_RTOS != "BareMetal">

@@ -301,23 +301,23 @@ void DRV_G3_MACRT_Task(void)
         }
         else
         {
-            /* MISRA C-2012 deviation block start */
-            /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+            /* MISRA C-2023 deviation block start */
+            /* MISRA C-2023 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
             #pragma GCC diagnostic push
             #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-            #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+            #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.3" "H3_MISRAC_2023_R_11_3_DR_1"
 </#if>
             pTxCfmObj = (MAC_RT_TX_CFM_OBJ *)gG3TxConfirm;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-            #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+            #pragma coverity compliance end_block "MISRA C-2023 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
             #pragma GCC diagnostic pop
     </#if>
 </#if>
-            /* MISRA C-2012 deviation block end */
+            /* MISRA C-2023 deviation block end */
         }
 
         /* Report to upper layer */
@@ -338,23 +338,23 @@ void DRV_G3_MACRT_Task(void)
         /* Report to upper layer */
         if (gG3MacRtObj->rxParamsIndCallback != NULL)
         {
-            /* MISRA C-2012 deviation block start */
-            /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+            /* MISRA C-2023 deviation block start */
+            /* MISRA C-2023 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
             #pragma GCC diagnostic push
             #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-            #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+            #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.3" "H3_MISRAC_2023_R_11_3_DR_1"
 </#if>
             gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[0]);
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-            #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+            #pragma coverity compliance end_block "MISRA C-2023 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
             #pragma GCC diagnostic pop
     </#if>
 </#if>
-            /* MISRA C-2012 deviation block end */
+            /* MISRA C-2023 deviation block end */
         }
     }
     else
@@ -367,23 +367,23 @@ void DRV_G3_MACRT_Task(void)
             /* Report to upper layer */
             if (gG3MacRtObj->rxParamsIndCallback != NULL)
             {
-                /* MISRA C-2012 deviation block start */
-                /* MISRA C-2012 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+                /* MISRA C-2023 deviation block start */
+                /* MISRA C-2023 Rule 11.3 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_3_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
                 #pragma GCC diagnostic push
                 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-                #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.3" "H3_MISRAC_2012_R_11_3_DR_1"
+                #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.3" "H3_MISRAC_2023_R_11_3_DR_1"
 </#if>
                 gG3MacRtObj->rxParamsIndCallback((MAC_RT_RX_PARAMETERS_OBJ *)gG3RxParameters[1]);
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-                #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
+                #pragma coverity compliance end_block "MISRA C-2023 Rule 11.3"
     <#if core.COMPILER_CHOICE == "XC32">
                 #pragma GCC diagnostic pop
     </#if>
 </#if>
-                /* MISRA C-2012 deviation block end */
+                /* MISRA C-2023 deviation block end */
             }
         }
     }

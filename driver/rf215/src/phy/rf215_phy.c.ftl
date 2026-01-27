@@ -1044,20 +1044,20 @@ static void lRF215_BBC_WriteRegs(uint8_t trxIdx, RF215_PHY_REGS_OBJ* phyRegsNew)
 {
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
 
-    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2023 deviation block start */
 <#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
-    /* MISRA C-2012 Rule 18.1 deviated 6 times. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 Rule 18.1 deviated 6 times. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#elseif DRV_RF215_FSK_EN == true>
-    /* MISRA C-2012 Rule 18.1 deviated 4 times. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 Rule 18.1 deviated 4 times. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#else>
-    /* MISRA C-2012 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
 <#if DRV_RF215_FSK_EN == true && DRV_RF215_OFDM_EN == true>
@@ -1099,12 +1099,12 @@ ${PHY_TYPE_INDENT}        &phyRegsNew->BBCn_OFDMPHRRX, &pObj->phyRegs.BBCn_OFDMP
 </#if>
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 }
 
 static inline void lRF215_BBC_SetPhyControl(uint8_t trxIdx, uint8_t pc)
@@ -1144,14 +1144,14 @@ static inline void lRF215_BBC_SetFBLI(uint8_t trxIdx, uint16_t fbli)
         regsOld->BBCn_FBLIH = regsNew.BBCn_FBLIH + 1U;
     }
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
     /* Write up to 2 registers: BBCn_FBLIL, BBCn_FBLIH */
@@ -1159,12 +1159,12 @@ static inline void lRF215_BBC_SetFBLI(uint8_t trxIdx, uint16_t fbli)
             &regsNew.BBCn_FBLIL, &regsOld->BBCn_FBLIL, 2U);
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 }
 
 static inline uint16_t lRF215_BBC_GetBestFBLI (
@@ -2451,50 +2451,50 @@ static void lRF215_PHY_CheckAborts(uint8_t trxIdx, bool reset)
             RF215_PHY_SetTxCfm(pObj->txBufObj, RF215_TX_ABORTED);
             break;
 
-        /* MISRA C-2012 deviation block start */
-        /* MISRA C-2012 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_16_4_DR_1 */
+        /* MISRA C-2023 deviation block start */
+        /* MISRA C-2023 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2023_R_16_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic push
         #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-        #pragma coverity compliance block deviate "MISRA C-2012 Rule 16.4" "H3_MISRAC_2012_R_16_4_DR_1"
+        #pragma coverity compliance block deviate "MISRA C-2023 Rule 16.4" "H3_MISRAC_2023_R_16_4_DR_1"
 </#if>
 
         default:
             break;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-        #pragma coverity compliance end_block "MISRA C-2012 Rule 16.4"
+        #pragma coverity compliance end_block "MISRA C-2023 Rule 16.4"
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic pop
     </#if>
 </#if>
-        /* MISRA C-2012 deviation block end */
+        /* MISRA C-2023 deviation block end */
     }
 }
 
 static inline void lRF215_TRX_Command(uint8_t trxIdx, const uint8_t* pCommand)
 {
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     RF215_HAL_SpiWrite(RF215_RFn_CMD(trxIdx), (void *) pCommand, 1);
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 }
 
 static inline void lRF215_TRX_CommandSleep(uint8_t trxIdx)
@@ -3025,23 +3025,23 @@ static inline void lRF215_TRX_ResetEvent(uint8_t trxIdx)
     RF215_PHY_OBJ* pObj = &rf215PhyObj[trxIdx];
     RF215_PHY_REGS_OBJ* regsOld = &pObj->phyRegs;
     RF215_PHY_STATE phyState = pObj->phyState;
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
     RF215_REG_VALUES_OBJ* constRegs = (RF215_REG_VALUES_OBJ *) &rf215RegValues;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     if (phyState == PHY_STATE_SLEPT)
     {
@@ -3130,14 +3130,14 @@ static inline void lRF215_TRX_ResetEvent(uint8_t trxIdx)
     lRF215_BBC_Regs(pObj, &regsNew);
     lRF215_TXRXFE_Regs(pObj, &regsNew);
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
     /* Write up to 16 registers: RFn_CS to RFn_TXDFE */
@@ -3145,12 +3145,12 @@ static inline void lRF215_TRX_ResetEvent(uint8_t trxIdx)
             &regsNew.RFn_CS, &regsOld->RFn_CS, 16);
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     /* Adjust CCA duration (minimum is AGC update time) */
     lRF215_RXFE_AdjustEDD(trxIdx);
@@ -3193,14 +3193,14 @@ static inline void lRF215_TRX_ResetEvent(uint8_t trxIdx)
     }
 }
 
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 17.2 deviated once. Deviation record ID - H3_MISRAC_2012_R_17_2_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 17.2 deviated once. Deviation record ID - H3_MISRAC_2023_R_17_2_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 17.2" "H3_MISRAC_2012_R_17_2_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 17.2" "H3_MISRAC_2023_R_17_2_DR_1"
 </#if>
 
 static DRV_RF215_PIB_RESULT lRF215_PHY_SetPhyConfig (
@@ -3350,14 +3350,14 @@ static DRV_RF215_PIB_RESULT lRF215_PHY_SetPhyConfig (
     lRF215_BBC_Regs(pObj, &regsNew);
     lRF215_TXRXFE_Regs(pObj, &regsNew);
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
     /* Write up to 16 registers: RFn_CS to RFn_TXDFE */
@@ -3365,12 +3365,12 @@ static DRV_RF215_PIB_RESULT lRF215_PHY_SetPhyConfig (
             &regsNew.RFn_CS, &pObj->phyRegs.RFn_CS, 16U);
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     /* Adjust CCA duration (minimum is AGC update time) */
     lRF215_RXFE_AdjustEDD(trxIdx);
@@ -3390,12 +3390,12 @@ static DRV_RF215_PIB_RESULT lRF215_PHY_SetPhyConfig (
 }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 17.2"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 17.2"
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic pop
 </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */
 
 <#if DRV_RF215_FREQ_HOPPING_SUPPORT == true>
 static void lRF215_PHY_SetChnNum(uint8_t trxIdx, uint16_t chnNumNew)
@@ -3460,14 +3460,14 @@ static void lRF215_PHY_SetChnNum(uint8_t trxIdx, uint16_t chnNumNew)
     lRF215_BBC_Regs(pObj, &regsNew);
     lRF215_TXRXFE_Regs(pObj, &regsNew);
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 18.1 deviated twice. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
     /* Write up to 16 registers: RFn_CS to RFn_TXDFE */
@@ -3475,12 +3475,12 @@ static void lRF215_PHY_SetChnNum(uint8_t trxIdx, uint16_t chnNumNew)
             &regsNew.RFn_CS, &pObj->phyRegs.RFn_CS, 16);
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     /* Write BBC configuration, depending on PHY type */
     lRF215_BBC_WriteRegs(trxIdx, &regsNew);
@@ -4292,14 +4292,14 @@ ${CCA_CW_INDENT}    regsNew.BBCn_AMEDT = (uint8_t) pObj->phyConfig.ccaEdThreshol
         regsNew.BBCn_AMEDT = phyRegs->BBCn_AMEDT;
     }
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 18.1 deviated 4 times. Deviation record ID - H3_MISRAC_2012_R_18_1_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 18.1 deviated 4 times. Deviation record ID - H3_MISRAC_2023_R_18_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 18.1" "H3_MISRAC_2012_R_18_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 18.1" "H3_MISRAC_2023_R_18_1_DR_1"
 </#if>
 
     /* Write up to 2 registers: BBCn_AMCS, BBCn_AMEDT */
@@ -4325,12 +4325,12 @@ ${CCA_CW_INDENT}        &regsNew.BBCn_TXFLL, &phyRegs->BBCn_TXFLL, 2U);
 </#if>
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 18.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 18.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     /* Update PHY state */
     pObj->phyState = PHY_STATE_TX_TXPREP;

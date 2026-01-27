@@ -489,7 +489,7 @@ void PIO_PortClear(PIO_PORT port, uint32_t mask);
 <<<<<<< HEAD
 =======
      Toggles PC5 and PC7 pins
->>>>>>> d3342b368 ([PIO] pio_11264 MISRAC 2012 required rule violation fix)
+>>>>>>> d3342b368 ([PIO] pio_11264 MISRAC 2023 required rule violation fix)
     PIO_PortToggle(PIO_PORT_C, 0x00A0);
 
     </code>

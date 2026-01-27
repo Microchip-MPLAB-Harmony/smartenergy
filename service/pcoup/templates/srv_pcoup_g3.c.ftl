@@ -130,18 +130,18 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(uint8_t phyBand)
     uint8_t band = phyBand;
 </#if>
 
-    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2023 deviation block start */
 <#if (SRV_PCOUP_G3_MAIN_BAND != "None") && (SRV_PCOUP_G3_AUX_BAND != "None")>
-    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#else>
-    /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
 <#if SRV_PCOUP_G3_MAIN_BAND != "None">
@@ -201,12 +201,12 @@ SRV_PLC_PCOUP_DATA * SRV_PCOUP_Get_Config(uint8_t phyBand)
 
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     /* G3-PLC PHY band not recognized */
     return NULL;
@@ -282,14 +282,14 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, uint8_t phyBand)
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     pibObj.id = PLC_ID_PREDIST_COEF_TABLE_HI;
@@ -304,12 +304,12 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, uint8_t phyBand)
     result = result && resultOut;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 <#elseif (drvG3MacRt)??>
     pibObj.pib = MAC_RT_PIB_MANUF_PHY_PARAM;
     pibObj.index = (uint16_t)PHY_PIB_PLC_IC_DRIVER_CFG;
@@ -361,14 +361,14 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, uint8_t phyBand)
     resultOut = (DRV_G3_MACRT_PIBSet(handle, &pibObj) == MAC_RT_STATUS_SUCCESS);
     result = result && resultOut;
 
-    /* MISRA C-2012 deviation block start */
-    /* MISRA C-2012 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 deviation block start */
+    /* MISRA C-2023 Rule 11.8 deviated twice. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     pibObj.index = (uint16_t)PHY_PIB_PREDIST_COEF_TABLE_HI;
@@ -383,12 +383,12 @@ bool SRV_PCOUP_Set_Config(DRV_HANDLE handle, uint8_t phyBand)
     result = result && resultOut;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 </#if>
 
     return result;

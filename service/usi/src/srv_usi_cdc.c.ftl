@@ -273,25 +273,25 @@ static USB_DEVICE_CDC_EVENT_RESPONSE lUSB_CDC_DeviceCDCEventHandler(USB_DEVICE_C
             /* This means that the data write got completed. */
             break;
 
-        /* MISRA C-2012 deviation block start */
-        /* MISRA C-2012 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_16_4_DR_1 */
+        /* MISRA C-2023 deviation block start */
+        /* MISRA C-2023 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2023_R_16_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic push
         #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-        #pragma coverity compliance block deviate "MISRA C-2012 Rule 16.4" "H3_MISRAC_2012_R_16_4_DR_1"
+        #pragma coverity compliance block deviate "MISRA C-2023 Rule 16.4" "H3_MISRAC_2023_R_16_4_DR_1"
 </#if>
         default:
             break;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-        #pragma coverity compliance end_block "MISRA C-2012 Rule 16.4"
+        #pragma coverity compliance end_block "MISRA C-2023 Rule 16.4"
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic pop
     </#if>
 </#if>
-        /* MISRA C-2012 deviation block end */
+        /* MISRA C-2023 deviation block end */
     }
 
     return USB_DEVICE_CDC_EVENT_RESPONSE_NONE;
@@ -351,25 +351,25 @@ static void lUSI_CDC_DeviceEventHandler(USB_DEVICE_EVENT event, void * eventData
         case USB_DEVICE_EVENT_ERROR:
             break;
 
-        /* MISRA C-2012 deviation block start */
-        /* MISRA C-2012 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2012_R_16_4_DR_1 */
+        /* MISRA C-2023 deviation block start */
+        /* MISRA C-2023 Rule 16.4 deviated once. Deviation record ID - H3_MISRAC_2023_R_16_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic push
         #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-        #pragma coverity compliance block deviate "MISRA C-2012 Rule 16.4" "H3_MISRAC_2012_R_16_4_DR_1"
+        #pragma coverity compliance block deviate "MISRA C-2023 Rule 16.4" "H3_MISRAC_2023_R_16_4_DR_1"
 </#if>
         default:
             break;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-        #pragma coverity compliance end_block "MISRA C-2012 Rule 16.4"
+        #pragma coverity compliance end_block "MISRA C-2023 Rule 16.4"
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic pop
     </#if>
 </#if>
-        /* MISRA C-2012 deviation block end */
+        /* MISRA C-2023 deviation block end */
     }
 }
 

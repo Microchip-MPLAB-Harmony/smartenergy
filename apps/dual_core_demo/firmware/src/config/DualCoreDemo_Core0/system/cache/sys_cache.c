@@ -97,7 +97,7 @@ void SYS_CACHE_CleanDCache_by_Addr (void *addr, int32_t size)
 {
 }
 
-/* MISRA C-2012 Rule 5.1 deviated:1 Deviation record ID -  H3_MISRAC_2012_R_5_1_DR_1 */
+/* MISRA C-2023 Rule 5.1 deviated:1 Deviation record ID -  H3_MISRAC_2023_R_5_1_DR_1 */
 
 void SYS_CACHE_CleanInvalidateDCache (void)
 {
@@ -107,4 +107,4 @@ void SYS_CACHE_CleanInvalidateDCache_by_Addr (void *addr, int32_t size)
 {
 }
 
-/* MISRAC 2012 deviation block end */
+/* MISRAC 2023 deviation block end */

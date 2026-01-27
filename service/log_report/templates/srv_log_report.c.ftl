@@ -74,16 +74,16 @@ static char message[SYS_CONSOLE_PRINT_BUFFER_SIZE];
 // *****************************************************************************
 // *****************************************************************************
 
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 17.1 deviated 6 times. Deviation record ID - H3_MISRAC_2012_R_17_1_DR_1 */
-/* MISRA C-2012 Rule 21.6 deviated 4 times. Deviation record ID - H3_MISRAC_2012_R_21_1_DR_6 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 17.1 deviated 6 times. Deviation record ID - H3_MISRAC_2023_R_17_1_DR_1 */
+/* MISRA C-2023 Rule 21.6 deviated 4 times. Deviation record ID - H3_MISRAC_2023_R_21_1_DR_6 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 17.1" "H3_MISRAC_2012_R_17_1_DR_1"
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 21.6" "H3_MISRAC_2012_R_21_1_DR_6"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 17.1" "H3_MISRAC_2023_R_17_1_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 21.6" "H3_MISRAC_2023_R_21_1_DR_6"
 </#if>
 
 static va_list srvLogReportArgs;
@@ -215,10 +215,10 @@ void SRV_LOG_REPORT_Buffer(SRV_LOG_REPORT_LEVEL logLevel,
 }
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 17.1"
-#pragma coverity compliance end_block "MISRA C-2012 Rule 21.6"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 17.1"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 21.6"
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic pop
 </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */

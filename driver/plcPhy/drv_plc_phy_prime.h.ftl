@@ -97,14 +97,14 @@ extern uint8_t plc_phy_bin_end;
 #define VLO_STATE                              0x02U
 
 /* Signal Capture Mode Bit Mask */
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 5.4 deviated 22 times. Deviation record ID - H3_MISRAC_2012_R_5_4_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 5.4 deviated 22 times. Deviation record ID - H3_MISRAC_2023_R_5_4_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 5.4" "H3_MISRAC_2012_R_5_4_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 5.4" "H3_MISRAC_2023_R_5_4_DR_1"
 </#if>
 #define DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT 0U
 #define DRV_PLC_SIGNAL_CAPTURE_CHANNEL (0xFU << DRV_PLC_SIGNAL_CAPTURE_CHANNEL_SHIFT)
@@ -129,12 +129,12 @@ extern uint8_t plc_phy_bin_end;
 #define DRV_PLC_SIGNAL_CAPTURE_CHN_7 0x07U
 #define DRV_PLC_SIGNAL_CAPTURE_CHN_8 0x08U
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 5.4"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 5.4"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
 #define SIGNAL_CAPTURE_FRAG_SIZE                  255U
 
@@ -357,14 +357,14 @@ typedef enum {
   TX_BUFFER_1 = 1,
 } DRV_PLC_PHY_BUFFER_ID;
 
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 5.2 deviated 5 times.  Deviation record ID - H3_MISRAC_2012_R_5_2_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 5.2 deviated 5 times.  Deviation record ID - H3_MISRAC_2023_R_5_2_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 </#if>
-#pragma coverity compliance block deviate "MISRA C-2012 Rule 5.2" "H3_MISRAC_2012_R_5_2_DR_1"
+#pragma coverity compliance block deviate "MISRA C-2023 Rule 5.2" "H3_MISRAC_2023_R_5_2_DR_1"
 </#if>
 
 // *****************************************************************************
@@ -415,12 +415,12 @@ typedef enum {
 } DRV_PLC_PHY_TX_RESULT;
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-#pragma coverity compliance end_block "MISRA C-2012 Rule 5.2"
+#pragma coverity compliance end_block "MISRA C-2023 Rule 5.2"
 <#if core.COMPILER_CHOICE == "XC32">
 #pragma GCC diagnostic pop
 </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */
 
 /* Signal Capture States */
 typedef enum {
@@ -435,14 +435,14 @@ typedef struct {
 	uint8_t status;
 } DRV_PLC_PHY_SIGNAL_CAPTURE;
 
-/* MISRA C-2012 deviation block start */
-/* MISRA C-2012 Rule 6.1 deviated 3 times. Deviation record ID - H3_MISRAC_2012_R_6_1_DR_1 */
+/* MISRA C-2023 deviation block start */
+/* MISRA C-2023 Rule 6.1 deviated 3 times. Deviation record ID - H3_MISRAC_2023_R_6_1_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 6.1" "H3_MISRAC_2012_R_6_1_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 6.1" "H3_MISRAC_2023_R_6_1_DR_1"
 </#if>
 /* Structure defining information about CSMA algorithm */
 typedef struct {
@@ -454,12 +454,12 @@ typedef struct {
   uint8_t senseDelayMs : 4;
 } DRV_PLC_PHY_CSMA;
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 6.1"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 6.1"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-/* MISRA C-2012 deviation block end */
+/* MISRA C-2023 deviation block end */
 
 // *****************************************************************************
 /* PRIME Transmission setup data

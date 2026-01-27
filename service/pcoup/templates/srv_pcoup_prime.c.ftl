@@ -426,25 +426,25 @@ SRV_PLC_PCOUP_CHANNEL_DATA * SRV_PCOUP_GetChannelConfig(DRV_PLC_PHY_CHANNEL chan
 {
     if ((channel >= CHN1) && (channel <= CHN7_CHN8))
     {
-        /* MISRA C-2012 deviation block start */
-        /* MISRA C-2012 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+        /* MISRA C-2023 deviation block start */
+        /* MISRA C-2023 Rule 11.8 deviated once. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic push
         #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-        #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+        #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
         return (SRV_PLC_PCOUP_CHANNEL_DATA *)srvPlcCoupChnData[channel];
 
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-        #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+        #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
         #pragma GCC diagnostic pop
     </#if>
 </#if>
-        /* MISRA C-2012 deviation block end */
+        /* MISRA C-2023 deviation block end */
     }
 
     /* Channel not recognized */
@@ -510,18 +510,18 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
 
-    /* MISRA C-2012 deviation block start */
+    /* MISRA C-2023 deviation block start */
 <#if (SRV_PCOUP_PRIME_CHANNELS_SELECTED >= 256) >
-    /* MISRA C-2012 Rule 11.8 deviated 7 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated 7 times. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 <#else>
-    /* MISRA C-2012 Rule 11.8 deviated 5 times. Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+    /* MISRA C-2023 Rule 11.8 deviated 5 times. Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunknown-pragmas"
     </#if>
-    #pragma coverity compliance block deviate "MISRA C-2012 Rule 11.8" "H3_MISRAC_2012_R_11_8_DR_1"
+    #pragma coverity compliance block deviate "MISRA C-2023 Rule 11.8" "H3_MISRAC_2023_R_11_8_DR_1"
 </#if>
 
     pibObj.id = PLC_ID_DACC_TABLE_CFG;
@@ -538,7 +538,7 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
     }
 
 </#if>
-    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_HI;  
+    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_HI;
     pibObj.pData = (uint8_t *)pCoupValues->carrierMaskHigh;
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
@@ -575,12 +575,12 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
 
 </#if>
 <#if core.COVERITY_SUPPRESS_DEVIATION?? && core.COVERITY_SUPPRESS_DEVIATION>
-    #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
+    #pragma coverity compliance end_block "MISRA C-2023 Rule 11.8"
     <#if core.COMPILER_CHOICE == "XC32">
     #pragma GCC diagnostic pop
     </#if>
 </#if>
-    /* MISRA C-2012 deviation block end */
+    /* MISRA C-2023 deviation block end */
 
     return result;
 }
