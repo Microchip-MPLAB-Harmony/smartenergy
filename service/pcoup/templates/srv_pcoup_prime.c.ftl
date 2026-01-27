@@ -538,12 +538,12 @@ bool SRV_PCOUP_SetChannelConfig(DRV_HANDLE handle, DRV_PLC_PHY_CHANNEL channel)
     }
 
 </#if>
-    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_HI;
+    pibObj.id = PLC_ID_TX_RMS_CALC_HI_CARRIER_MASK;
     pibObj.pData = (uint8_t *)pCoupValues->carrierMaskHigh;
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
 
-    pibObj.id = PLC_ID_TX_RMS_CALC_CARRIER_MASK_VLO;
+    pibObj.id = PLC_ID_TX_RMS_CALC_VLO_CARRIER_MASK;
     pibObj.pData = (uint8_t *)pCoupValues->carrierMaskVlow;
     resultOut = DRV_PLC_PHY_PIBSet(handle, &pibObj);
     result = result && resultOut;
