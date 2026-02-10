@@ -1701,7 +1701,7 @@ def instantiateComponent(plcComponent):
     pCoupPRIMEChannelsSelected.setLabel("Channels Selected")
     pCoupPRIMEChannelsSelected.setVisible(False)
     pCoupPRIMEChannelsSelected.setDependencies(checkAvailableChannels, ["DRV_PLC_MODE", "DRV_PLC_COUP_PRIME_SETTING_PL460", "DRV_PLC_COUP_PRIME_SETTING_PL360"])
-    pCoupPRIMEChannelsSelected.setDefaultValue(1)
+    pCoupPRIMEChannelsSelected.setDefaultValue(255)
 
     ##### Coupling Settings : Meters&More ###############################################
 

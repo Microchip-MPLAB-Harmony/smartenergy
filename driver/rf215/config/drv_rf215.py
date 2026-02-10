@@ -792,8 +792,8 @@ def identifyPeripherals(component):
         rfSercomId.setDefaultValue("0")
 
     rfPioId.setVisible(False)
-    rfEicId.setVisible(True)
-    rfDmacId.setVisible(True)
+    rfEicId.setVisible(False)
+    rfDmacId.setVisible(False)
     rfSercomId.setVisible(False)
 
 def updateEICSignals(symbol, event):
