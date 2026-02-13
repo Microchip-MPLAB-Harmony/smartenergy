@@ -125,7 +125,7 @@ static bool lDRV_G3_MACRT_COMM_CheckComm(DRV_PLC_HAL_INFO *info)
     {
         /* Firmware is uploaded 2 times as maximum */
         gG3MacRtObj->consecutiveSpiErrors++;
-        if (gG3MacRtObj->consecutiveSpiErrors <= 2)
+        if (gG3MacRtObj->consecutiveSpiErrors <= 2U)
         {
             /* Update Driver Status */
             gG3MacRtObj->state = DRV_G3_MACRT_STATE_BUSY;
