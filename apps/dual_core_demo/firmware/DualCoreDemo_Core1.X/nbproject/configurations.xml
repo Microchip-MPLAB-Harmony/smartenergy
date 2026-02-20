@@ -200,8 +200,28 @@
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="true">
+      <logicalFolder name="DualCoreDemo_Core1_DualCoreDemo_Core1"
+                     displayName="DualCoreDemo_Core1_DualCoreDemo_Core1"
+                     projectFiles="true">
+        <logicalFolder name="components" displayName="components" projectFiles="true">
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/tc3.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/core.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/ipc1.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/ipc0.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/dfp.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/flexcom0.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/HarmonyCore.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/sys_time.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/stdio.yml</itemPath>
+          <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/components/cmsis.yml</itemPath>
+        </logicalFolder>
+        <itemPath>DualCoreDemo_Core1_DualCoreDemo_Core1/mcc-config.mc4</itemPath>
+      </logicalFolder>
       <itemPath>Makefile</itemPath>
-      <itemPath>DualCoreDemo_Core1.mc3</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LibraryFiles"
+                   displayName="LibraryFiles"
+                   projectFiles="true">
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -282,8 +302,8 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.3.132"/>
         <pack name="CMSIS" vendor="ARM" version="5.8.0"/>
+        <pack name="PIC32CX-MT_DFP" vendor="Microchip" version="1.4.152"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -313,9 +333,8 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <C32>
-        <property key="additional-warnings" value="true"/>
+        <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="cast-align" value="false"/>
         <property key="code-model" value="default"/>
         <property key="const-model" value="default"/>
@@ -335,7 +354,7 @@
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
         <property key="keep-inline" value="false"/>
-        <property key="make-warnings-into-errors" value="true"/>
+        <property key="make-warnings-into-errors" value="false"/>
         <property key="oXC16gcc-errata" value=""/>
         <property key="oXC16gcc-large-aggregate" value="false"/>
         <property key="oXC16gcc-mpa-lvl" value=""/>
@@ -345,7 +364,7 @@
         <property key="oXC16gcc-sfr-warn" value="false"/>
         <property key="oXC16gcc-smar-io-lvl" value="1"/>
         <property key="oXC16gcc-smart-io-fmt" value=""/>
-        <property key="optimization-level" value=""/>
+        <property key="optimization-level" value="-O1"/>
         <property key="place-data-into-section" value="true"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
@@ -394,7 +413,6 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -440,7 +458,6 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>
