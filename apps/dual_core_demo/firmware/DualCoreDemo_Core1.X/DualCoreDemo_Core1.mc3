@@ -200,7 +200,7 @@
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;HarmonyCore&quot; x=&quot;480&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;340&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;core&quot; x=&quot;240&quot; y=&quot;20&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;core&quot; x=&quot;241&quot; y=&quot;19&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;dfp&quot; x=&quot;20&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;flexcom0&quot; x=&quot;51&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;ipc0&quot; x=&quot;490&quot; y=&quot;195&quot;/&gt;
@@ -2282,7 +2282,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\definitions.h</file>
-         <hash>11726af287c1c404bf0034762e9b4f2104e6de42372dead832ea0bf53ea951d7</hash>
+         <hash>df8a442ea0e9e72acf60eaea119989d24ae66ccb8775f28e38687f574b492120</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\device.h</file>
@@ -2306,15 +2306,15 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\exceptions.c</file>
-         <hash>a565e8d25d218b3e1069267ae9cc317161d062683a27c64e3cb454757bb82fd9</hash>
+         <hash>251729130964d6a74b7a9ee99700b57a16c0e1b5d31029678e06ecd3d8dedc9e</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\initialization.c</file>
-         <hash>b69e95de89a38def634e0625048f3710c44628cfab12037518c846da75c919bf</hash>
+         <hash>c3d11aaa2ca36c836003ec5a94384852cbb9b294b0f616a24aef2a73a9978580</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\interrupts.c</file>
-         <hash>99da1656a227dd415be16964716e3536f5fdfc539e8839ac8cff51b1a959e5f9</hash>
+         <hash>fe2e0552e1ab988ecabfe490634057975f4a2521bcc2dfef4fb02a233def3aa2</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\interrupts.h</file>
@@ -2322,7 +2322,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\libc_syscalls.c</file>
-         <hash>88bb2e34c939601b5b7ad076556e3ee0fcedf388436b8cddb6d6fd3e9d07472f</hash>
+         <hash>c9afc1b1257829415a1a6746ce3744f0a768b339d59fff2ab3ca1fab58b2a916</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\osal\osal.h</file>
@@ -2338,19 +2338,19 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.c</file>
-         <hash>faa3fdcd2d805352885ced4f36ee9c62b1264dad36a76eb6ef8dad0b507bcc3a</hash>
+         <hash>97cd915816713cf214681a3ada997fbc73d4b1d6a038d019a850e3071a945271</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\clk\plib_clk.h</file>
-         <hash>5a026b0800dac06e42b59dc2e6ebf24fdea3100de7ba02cebf0fc09118fbd1e6</hash>
+         <hash>d43ffaa293078e1568eebca34f7aece1e49634f50987d5afbef08a88c6928a81</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.c</file>
-         <hash>98986d3d7b7383f8021ee11fd090eb8b929612b61e26076bf6e21a9a24218cb3</hash>
+         <hash>462515f6284ccdd19bff3ba6767d321ff77889200f14c3419a2d8eaaafaf2a6a</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom0_usart.h</file>
-         <hash>e8c6d549b9a49f8712575b00abd814342ec6cb595a1506a872b9ad67329cba90</hash>
+         <hash>da7a7090bee7cbd7dac190f2be9b06e90783c1e314fdb33af4b5a2c5c98c4974</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\peripheral\flexcom\usart\plib_flexcom_usart_local.h</file>
@@ -2410,7 +2410,7 @@
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\startup_xc32.c</file>
-         <hash>ae8889b90560858b225c5e014a4c3e0fc8052db4011f079d84d15222fe4d4d2b</hash>
+         <hash>f68ad2bcc464e7aecf9c6b8dd1f0d361448d66f540697c3c733f338fdd04be97</hash>
       </entry>
       <entry>
          <file>..\src\config\DualCoreDemo_Core1\stdio\xc32_monitor.c</file>

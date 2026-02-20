@@ -146,9 +146,9 @@ void SYS_Initialize ( void* data )
 
     SEFC1_Initialize();
 
-
+  
     DWDT_Initialize();
-    CLK_Initialize();
+    CLOCK_Initialize();
     RSTC_Initialize();
 
     PIO_Initialize();
@@ -157,10 +157,10 @@ void SYS_Initialize ( void* data )
 
 
 
-
-    TC0_CH0_TimerInitialize();
-
-
+ 
+    TC0_CH0_TimerInitialize(); 
+     
+    
     IPC0_Initialize();
 
     FLEXCOM0_USART_Initialize();
@@ -174,12 +174,12 @@ void SYS_Initialize ( void* data )
     /* MISRA C-2023 Rule 11.8 - Deviation record ID - H3_MISRAC_2023_R_11_8_DR_1 */
 
 
-    /* MISRA C-2023 Rule 11.3, 11.8 deviated below. Deviation record ID -
-    H3_MISRAC_2023_R_11_3_DR_1 & H3_MISRAC_2023_R_11_8_DR_1*/
-
+    /* MISRA C-2012 Rule 11.3, 11.8 deviated below. Deviation record ID -  
+    H3_MISRAC_2012_R_11_3_DR_1 & H3_MISRAC_2012_R_11_8_DR_1*/
+        
     sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
-
-    /* MISRAC 2023 deviation block end */
+    
+    /* MISRAC 2012 deviation block end */
 
 
     /* MISRAC 2023 deviation block end */

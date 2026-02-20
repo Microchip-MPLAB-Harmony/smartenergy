@@ -61,7 +61,7 @@ typedef enum
 
 // *****************************************************************************
 /* Function:
-    void CLK_Initialize ( void )
+    void CLOCK_Initialize ( void )
 
   Summary:
     Initializes hardware of the System Clock and Peripheral Clock.
@@ -81,7 +81,7 @@ typedef enum
   Example:
     <code>
     Example 1: Do not alter the configuration bit settings
-    CLK_Initialize ( );
+    CLOCK_Initialize ( );
 
     </code>
 
@@ -89,7 +89,7 @@ typedef enum
     None.
 */
 
-void CLK_Initialize ( void );
+void CLOCK_Initialize ( void );
 
 #ifdef __cplusplus
 }
