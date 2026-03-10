@@ -52,7 +52,11 @@ Microchip or any third party.
 #include "srv_rsniffer.h"
 #include "configuration.h"
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if (primeTimeManagement)??>
+#include "service/time_management/srv_time_management.h"
+<#else>
 #include "system/time/sys_time.h"
+</#if>
 </#if>
 
 // *****************************************************************************
@@ -167,7 +171,7 @@ Microchip or any third party.
 // *****************************************************************************
 // *****************************************************************************
 
-<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true && !(primeTimeManagement)??>
 static uint64_t srvRsnifferPrevSysTime = 0;
 static uint32_t srvRsnifferPrevTimeUS = 0;
 </#if>
@@ -255,7 +259,7 @@ ${PHY_TYPE_INDENT}frameType = (uint8_t) pPhyCfgObj->phyTypeCfg.ofdm.opt + RSNIFF
 }
 </#if>
 
-<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true && !(primeTimeManagement)??>
 static uint32_t lSRV_RSNIFFER_SysTimeToUS(uint64_t sysTime)
 {
     uint64_t sysTimeDiff;
@@ -345,7 +349,11 @@ ${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_
 
     /* Initial and end time of RX frame */
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if (primeTimeManagement)??>
+    timeIni = SRV_TIME_MANAGEMENT_CountToUS(pIndObj->timeIniCount);
+<#else>
     timeIni = lSRV_RSNIFFER_SysTimeToUS(pIndObj->timeIniCount);
+</#if>
 <#else>
     timeIni = 0;
 </#if>
@@ -406,7 +414,11 @@ ${PHY_TYPE_INDENT}srvRsnifferRxMsg[3] = (uint8_t) pIndObj->modScheme + RSNIFFER_
 
     /* Initial and end time of RX frame */
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if (primeTimeManagement)??>
+    timeIni = SRV_TIME_MANAGEMENT_CountToUS(pIndObj->timeIniCount);
+<#else>
     timeIni = lSRV_RSNIFFER_SysTimeToUS(pIndObj->timeIniCount);
+</#if>
 <#else>
     timeIni = 0;
 </#if>
@@ -595,7 +607,11 @@ uint8_t* SRV_RSNIFFER_SerialCfmMessage (
 
     /* Initial and end time of RX frame */
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if (primeTimeManagement)??>
+    timeIni = SRV_TIME_MANAGEMENT_CountToUS(pCfmObj->timeIniCount);
+<#else>
     timeIni = lSRV_RSNIFFER_SysTimeToUS(pCfmObj->timeIniCount);
+</#if>
 <#else>
     timeIni = 0;
 </#if>
@@ -630,7 +646,11 @@ uint8_t* SRV_RSNIFFER_SerialCfmMessage (
 </#if>
     /* Initial and end time of RX frame */
 <#if drvRf215.DRV_RF215_TXRX_TIME_SUPPORT == true>
+<#if (primeTimeManagement)??>
+    timeIni = SRV_TIME_MANAGEMENT_CountToUS(pCfmObj->timeIniCount);
+<#else>
     timeIni = lSRV_RSNIFFER_SysTimeToUS(pCfmObj->timeIniCount);
+</#if>
 <#else>
     timeIni = 0;
 </#if>
