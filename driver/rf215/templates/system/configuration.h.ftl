@@ -43,6 +43,11 @@
 </#if>
 <#if eic??>
     <#lt>#define DRV_RF215_EXT_INT_EIC                 ${DRV_RF215_EIC_SIGNAL}
+<#if RF215_EIC_ID == "U2254">
+    <#lt>#define DRV_RF215_EXT_INT_SRC                 EIC_EXTINT_${DRV_RF215_EIC_SIGNAL?string[8..*9]}_IRQn
+<#else>
+    <#lt>#define DRV_RF215_EXT_INT_SRC                 EIC_IRQn
+</#if>
 </#if>
 #define DRV_RF215_EXT_INT_PIN                 ${DRV_RF215_EXT_INT_PIN}
 #define DRV_RF215_RESET_PIN                   ${DRV_RF215_RESET_PIN}

@@ -199,7 +199,7 @@ typedef struct
     const void*                     spiRxAddr;
 
     /* Flag to indicate error in DMA for SPI transmit */
-    bool                            dmaTxError;
+    volatile bool                   dmaTxError;
 <#else>
     /* Pointer to SPI Write and Read function */
     DRV_RF215_PLIB_SPI_WRITE_READ   spiPlibWriteRead;
