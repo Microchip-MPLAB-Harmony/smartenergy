@@ -103,13 +103,11 @@ def configureSpiPlib(localComponent):
         else:
             prefix = "SPI_"
 
-        if shdIsActive() == False:
-            # Set NPCSx enabled if not SHD
-            spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
-            if spiSymbol != None:
-                spiSymbol.clearValues()
-                spiSymbol.setValue(True)
-                spiSymbol.setReadOnly(True)
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(True)
+            spiSymbol.setReadOnly(True)
 
         # Set CSSAT to 0
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
@@ -230,13 +228,11 @@ def deconfigureSpiPlib(localComponent):
         else:
             prefix = "SPI_"
 
-        if shdIsActive() == False:
-            # Disable read-only if not SHD
-            spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
-            if spiSymbol != None:
-                spiSymbol.clearValues()
-                spiSymbol.setValue(False)
-                spiSymbol.setReadOnly(False)
+        spiSymbol = remoteComponent.getSymbolByID(prefix + "EN_NPCS" + str(currentNPCS))
+        if spiSymbol != None:
+            spiSymbol.clearValues()
+            spiSymbol.setValue(False)
+            spiSymbol.setReadOnly(False)
 
         spiSymbol = remoteComponent.getSymbolByID(prefix + "CSR" + str(currentNPCS) + "_CSAAT")
         if spiSymbol != None:
