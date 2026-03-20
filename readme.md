@@ -21,11 +21,11 @@ The Smart Energy package also offers support for Dual Core applications.
 Refer to the following links for release notes, training materials, and interface reference information.
 
 - [Release Notes](./release_notes.md)
-- [Microchip SLA](Microchip_SLA001.md)
+- [License](License.md)
 
 # Documentation
 
-Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MH3_smartenergy&redirect=true) to view the online documentation of MPLAB® Harmony 3 Smart Energy library repository.
+Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=Smart_Energy_Library&redirect=true) to view the online documentation of MPLAB® Harmony 3 Smart Energy library repository.
 
 To view the documentation offline, follow these steps:
  - Download the publication as a zip file from [here](https://onlinedocs.microchip.com/download/GUID-87F4E49E-0A61-4067-B9CF-1FE226A94F9B?type=webhelp).
@@ -51,7 +51,7 @@ The following applications are provided to demonstrate the Dual Core capabilitie
 
 ____
 
-[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/blob/master/Microchip_SLA001.md)
+[![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/blob/master/License.md)
 [![Commit activity](https://img.shields.io/github/commit-activity/y/Microchip-MPLAB-Harmony/smartenergy.svg)](https://github.com/Microchip-MPLAB-Harmony/smartenergy/graphs/commit-activity)
 [![Contributors](https://img.shields.io/github/contributors-anon/Microchip-MPLAB-Harmony/smartenergy.svg)]()
 

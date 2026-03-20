@@ -3,6 +3,48 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.5.0
+
+### New Features
+
+- **Applications**
+  - Updated Dual Core Demo to latest MCC tool.
+
+- **New Features and Enhancements**
+  - Added Linear Congruential Random Generator (LCRNG) implementation for parts not having TRNG.
+  - Added support for SAME54 in PLC and RF215 Drivers.
+  - Added Reduced Power Consumption mode to RF215 driver.
+  - Added function SRV_PCOUP_GetChannelListImpedanceDetection to retrieve the list of channels for which impedance detection is valid.
+  - Added PL460-EK rev5 support.
+  - Adapted AES related functions in Security Service to Crypto v4.0.0-E3 requirements.
+  - Moved error codes to services and increased error range to a minimum of 100 per module.
+
+### Bug fixes
+
+- Fixed MISRA corrections across driver and services.
+- Fixed check for lib_crypto existence in aes_wrapper.
+- Do not remove binaries in external addressing for PRIME service with multiple binaries.
+- Improved PL460 pin initialization order and use of MAINCK (12 MHz RC Oscillator) for coprocessor clock in on_reset function.
+- Use SRV_PVDDMON_PLIB instead of PVDD_MON_ADC_INSTANCE to avoid issues when both AFEC0 and AFEC1 are included.
+- Fixes in RF215 HAL: stale NVIC pending IRQ (for devices with EIC) and DMA handler race condition (for devices with DMA).
+
+### Known Issues
+
+- Dual Core Demo example does not build correctly with XC32 v5.00, version v4.60 is kept for this example.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.25](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v5.00](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.6.3 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.4.152 or higher
+
+### Notes
+
+- None
+
 ## Smart Energy Release v1.4.1
 
 ### New Features
