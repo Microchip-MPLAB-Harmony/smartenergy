@@ -17,7 +17,7 @@
 
 //DOM-IGNORE-BEGIN
 /*
-Copyright (C) 2023, Microchip Technology Inc., and its subsidiaries. All rights reserved.
+Copyright (C) 2026, Microchip Technology Inc., and its subsidiaries. All rights reserved.
 
 The software and documentation is provided by microchip and its contributors
 "as is" and any express, implied or statutory warranties, including, but not
@@ -78,9 +78,6 @@ static DRV_PLC_BOOT_INFO sDrvPlcBootInfo = {0};
 /* This is the maximum size of the fragments to handle the upload task of binary
  file to PLC transceiver */
 #define MAX_FRAG_SIZE      512U
-
-static DRV_PLC_BOOT_DATA_CALLBACK sDrvPlcBootCb = NULL;
-static uintptr_t sDrvPlcBootContext;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -190,13 +187,13 @@ static void lDRV_PLC_BOOT_FirmwareUploadTask(void)
     /* Get next address to be programmed */
     progAddr = sDrvPlcBootInfo.pDst;
 
-    if (sDrvPlcBootCb != NULL)
+    if (sDrvPlcBootInfo.bootDataCallback != NULL)
     {
         /* Fragmented Bootloader from external interactions */
         uint32_t address;
 
         /* Call function to get the next fragment of boot data */
-        sDrvPlcBootCb(&address, &fragSize, sDrvPlcBootContext);
+        sDrvPlcBootInfo.bootDataCallback(&address, &fragSize, sDrvPlcBootInfo.contextBoot);
         pData = (uint8_t *)address;
 
         /* Check Secure Mode */
@@ -377,6 +374,11 @@ void DRV_PLC_BOOT_Start(DRV_PLC_BOOT_INFO *pBootInfo, DRV_PLC_HAL_INTERFACE *pHa
     {
         sDrvPlcBootInfo.bootDataCallback = pBootInfo->bootDataCallback;
         sDrvPlcBootInfo.contextBoot = pBootInfo->contextBoot;
+    }
+    else
+    {
+        sDrvPlcBootInfo.bootDataCallback = NULL;
+        sDrvPlcBootInfo.contextBoot = 0U;
     }
 
     lDRV_PLC_BOOT_EnableBootCmd();
