@@ -81,6 +81,47 @@ def shdIsActive():
 
     return False
 
+def getConnectedPL460Revision():
+    """Return the connected PL460 EK revision as "PL460 v4" / "PL460 v5" if any. """
+
+    for componentID in Database.getActiveComponentIDs():
+        if not componentID.startswith("mainBoard_"):
+            continue
+        for symbolID in Database.getComponentSymbolIDs(componentID):
+            if "CONNECTOR" not in symbolID:
+                continue
+            # Use Database.getSymbolValue (not getSymbolByID().getValue()):
+            # connector menus/groups are value-less symbols that would raise
+            # AttributeError on getValue(). getSymbolValue returns None for them.
+            try:
+                value = Database.getSymbolValue(componentID, symbolID)
+            except Exception:
+                continue
+            if value is None:
+                continue
+            value = str(value)
+            if "PL460" in value:
+                if "v5" in value.lower():
+                    return "PL460 v5"
+                return "PL460 v4"
+
+    return ""
+
+def updatePL460Revision():
+    """Refresh DRV_PLC_PL460_REVISION from the connected click board.
+
+    Never raises: a detection failure must not block drvPlcPhy activation
+    (the symbol simply keeps its default value).
+    """
+    try:
+        revision = getConnectedPL460Revision()
+        if revision == "":
+            return
+        if plcPL460Revision.getValue() != revision:
+            plcPL460Revision.setValue(revision)
+    except Exception:
+        pass
+
 def configureSpiPlib(localComponent):
     global currentNPCS
     global spiNumNPCS
@@ -465,6 +506,9 @@ def handleMessage(messageID, args):
                             result_dict = {"Result": "Success"}
                         else:
                             result_dict = {"Result": "Fail"}
+
+        # The click board pins just changed: refresh the detected PL460 revision.
+        updatePL460Revision()
 
     elif (messageID == "SET_STATIC_ADDRESSING"):
         plcStaticAddressing.setValue(args["enable"])
@@ -1183,6 +1227,15 @@ def instantiateComponent(plcComponent):
     plcLDOEnPin.setVisible(False)
     plcLDOEnPin.setDependencies(showLDOEnPin, ["DRV_PLC_LDO_EN_CONTROL"])
 
+    # Revision of the connected PL460 EK.
+    global plcPL460Revision
+    plcPL460Revision = plcComponent.createComboSymbol("DRV_PLC_PL460_REVISION", None, ["PL460 v4", "PL460 v5"])
+    plcPL460Revision.setLabel("PL460 EK Revision")
+    plcPL460Revision.setDefaultValue("PL460 v5")
+    plcPL460Revision.setHelp(plc_phy_helpkeyword)
+    plcPL460Revision.setReadOnly(True)
+    plcPL460Revision.setVisible(True)
+
     plcTxEnablePin = plcComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")
     plcTxEnablePin.setDefaultValue(0)
@@ -1782,6 +1835,9 @@ def instantiateComponent(plcComponent):
 
     updateBinFiles()
 
+    # Detect the PL460 EK revision from an already-connected click board
+    updatePL460Revision()
+
 ################################################################################
 #### Business Logic ####
 ################################################################################
@@ -1867,6 +1923,9 @@ def onAttachmentConnected(source, target):
                 plibReceiver = remoteComponent.getSymbolByID("SPI_RECIEVER_ENABLE")
                 if plibReceiver != None:
                     plibReceiver.setReadOnly(True)
+
+    # Any attachment may be a board / click / shield connecting.
+    updatePL460Revision()
 
 def onAttachmentDisconnected(source, target):
     global isDMAPresent

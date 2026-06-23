@@ -5,7 +5,7 @@
     "PIC32CXMTG Evaluation Kit",
     "SAM E70 Xplained Ultra",
     "WBZ451 Curiosity",
-    "SAM D20 Xplained Pro"
+    "SAM D20 Xplained Pro",
     "SAM E54 Xplained Pro"
 ]>
 <#assign SUPPORTED_SHD_BOARDS = [
@@ -14,7 +14,7 @@
     "PIC32CXMTG EK",
     "SAME70 XPLAINED ULTRA",
     "WBZ451 CURIOSITY",
-    "SAMD20 XPLAINED PRO"
+    "SAMD20 XPLAINED PRO",
     "SAME54 XPLAINED PRO"
 ]>
 <#assign BOARD_FIND = "">
@@ -53,7 +53,7 @@ void _on_reset(void)
 </#if>
 <#if BOARD_FIND != "">
     <#if BOARD_FIND?matches("PIC32CXMTSH DB") || BOARD_FIND?matches("PIC32CXMTSH Development Board")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB1")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable PIOA clock */
         <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
@@ -117,7 +117,7 @@ void _on_reset(void)
     </#if>
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTC DB") || BOARD_FIND?matches("PIC32CXMTC Development Board")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB1")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable PIOA clock */
         <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
@@ -181,7 +181,7 @@ void _on_reset(void)
     </#if>
     </#if>
     <#if BOARD_FIND?matches("PIC32CXMTG EK") || BOARD_FIND?matches("PIC32CXMTG Evaluation Kit")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PA31")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable PIOA clock */
         <#lt>    PMC_REGS->PMC_PCR = PMC_PCR_CMD_Msk | PMC_PCR_EN_Msk | PMC_PCR_PID(ID_PIOA);
@@ -245,7 +245,7 @@ void _on_reset(void)
     </#if>
     </#if>
     <#if BOARD_FIND?matches("SAME70 XPLAINED ULTRA") || BOARD_FIND?matches("SAM E70 Xplained Ultra")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PA19")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable PIOB clock */
         <#lt>    PMC_REGS->PMC_PCER0 = PMC_PCER0_PID11_Msk;
@@ -273,7 +273,7 @@ void _on_reset(void)
         <#lt>    __asm volatile ("NOP");
     </#if>
     <#if BOARD_FIND?matches("SAMD20 XPLAINED PRO") || BOARD_FIND?matches("SAM D20 Xplained Pro")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB01")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable and Clear Reset Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
@@ -292,7 +292,7 @@ void _on_reset(void)
     </#if>
     </#if>
     <#if BOARD_FIND?matches("SAME54 XPLAINED PRO") || BOARD_FIND?matches("SAM E54 Xplained Pro")>
-    <#if DRV_PLC_TX_ENABLE_PIN?? && DRV_PLC_TX_ENABLE_PIN?contains("PB05")>
+    <#if DRV_PLC_PL460_REVISION?? && DRV_PLC_PL460_REVISION == "PL460 v5">
     <#--  PL460-EK v5 connected  -->
         <#lt>    /* Enable and Clear Reset Pin */
         <#lt>    SYS_PORT_PinOutputEnable(DRV_PLC_RESET_PIN);
