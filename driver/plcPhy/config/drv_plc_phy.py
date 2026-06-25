@@ -1234,7 +1234,7 @@ def instantiateComponent(plcComponent):
     plcPL460Revision.setDefaultValue("PL460 v5")
     plcPL460Revision.setHelp(plc_phy_helpkeyword)
     plcPL460Revision.setReadOnly(True)
-    plcPL460Revision.setVisible(True)
+    plcPL460Revision.setVisible(False)
 
     plcTxEnablePin = plcComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")

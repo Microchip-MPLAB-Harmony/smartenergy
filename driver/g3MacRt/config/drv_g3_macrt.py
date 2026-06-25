@@ -1002,7 +1002,7 @@ def instantiateComponent(g3MacRtComponent):
     plcPL460Revision.setDefaultValue("PL460 v5")
     plcPL460Revision.setHelp(plc_mac_rt_helpkeyword)
     plcPL460Revision.setReadOnly(True)
-    plcPL460Revision.setVisible(True)
+    plcPL460Revision.setVisible(False)
 
     plcTxEnablePin = g3MacRtComponent.createKeyValueSetSymbol("DRV_PLC_TX_ENABLE_PIN", None)
     plcTxEnablePin.setLabel("TX Enable Pin")
