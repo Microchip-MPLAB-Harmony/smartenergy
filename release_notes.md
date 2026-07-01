@@ -3,6 +3,34 @@
 
 # Microchip MPLAB® Harmony 3 Release Notes
 
+## Smart Energy Release v1.5.1
+
+### Enhancements
+
+- Generalized the PL460-EK v4/v5 revision detection so it no longer depends on the extension connector used, across all supported boards.
+- Refactored the random-number retrieval into a shared function, also used to provide the nonce required when using Crypto library.
+
+### Bug fixes
+
+- Fixed the wiring of the PLC boot data callback so a registered callback (used to stream the firmware image from an external memory) is invoked correctly.
+
+### Known Issues
+
+- None.
+
+### Development Tools
+
+- [MPLAB® X IDE v6.30](https://www.microchip.com/mplab/mplab-x-ide)
+- [MPLAB® XC32 C/C++ Compiler v5.10](https://www.microchip.com/mplab/compilers)
+- MPLAB® X IDE plug-ins:
+  - MPLAB® Code Configurator 5.6.3 or higher
+- PIC32CX-MT family (MCUs):
+  - PIC32CX-MT DFP 1.4.152 or higher
+
+### Notes
+
+- None
+
 ## Smart Energy Release v1.5.0
 
 ### New Features
